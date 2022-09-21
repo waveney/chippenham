@@ -1,0 +1,23 @@
+Notes on the data 
+
+Venues and Map Points
+  All venues are map points and already have lat long, MapImp and Icons.  Map Points is for additional things to add for the festival map
+
+
+YEAR, CALYEAR, SHOWYEAR, PLANYEAR
+  YEAR is the year the action is about (defaults to PLANYEAR, but can switch by adding Y=2999 to any link). 
+  CALYEAR is the actual calender year
+  PLANYEAR is the year being planned - will be set to the next year as soon as the festival had ended
+  SHOWYEAR is the year most of the public front end works with.  Will remain as the festival just held until new stuff is ready to display - most front end progs call set_ShowYear to override YEAR default - call is needed before a call to dohead.
+
+
+CONF - the real top from Configure.ini IF present, otherwise default values used - useful for testing, stage and non wmff usage
+ user
+ passwd
+ dbase
+ testing
+ 
+FESTSYS - data that is not year related
+  Includes Features - controls many things
+  
+YEARDATA - Data that is year related
