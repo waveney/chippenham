@@ -11,8 +11,8 @@
 
   echo "<div class='content'><h2>Add/Edit Venues</h2>\n";
   echo "<form method=post action='AddVenue'>\n";
-  if (isset($_POST{'VenueId'})) { /* Response to update button */
-    $vid = $_POST{'VenueId'};
+  if (isset($_POST['VenueId'])) { /* Response to update button */
+    $vid = $_POST['VenueId'];
     if ($vid > 0) {                                 // existing Venue
       $Venue = Get_Venue($vid);
       Update_db_post('Venues',$Venue);
@@ -26,8 +26,8 @@
       $vid = Insert_db_post('Venues',$Venue,$proc);
     }
     Update_MapPoints(); 
-  } elseif (isset($_GET{'v'})) {
-    $vid = $_GET{'v'};
+  } elseif (isset($_GET['v'])) {
+    $vid = $_GET['v'];
     $Venue = Get_Venue($vid);
   } elseif (isset($_GET['Copy'])) {
     $cvid = $_GET['Copy'];

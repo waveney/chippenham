@@ -24,7 +24,7 @@
     if (strlen($_POST['ContactName']) < 2) { echo "<p class=Err>Please give an emergency contact\n"; $err=1; };
     if (strlen($_POST['ContactPhone']) < 6) { echo "<p class=Err>Please give emergency Phone number(s)\n"; $err=1; };
 
-    Clean_Email($_POST{'Email'});
+    Clean_Email($_POST['Email']);
     if (!$err) {
 //      echo "<P>VALID...<P>";
       $_POST['AccessKey'] = rand_string(40);

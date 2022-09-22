@@ -10,7 +10,7 @@
   global $YEAR,$FESTSYS;
     
   $Ven = Get_Venue($V);
-  $host = "https://" . $_SERVER{'HTTP_HOST'};
+  $host = "https://" . $_SERVER['HTTP_HOST'];
   
   $ShowMode = '';
   $AtEnd = [];

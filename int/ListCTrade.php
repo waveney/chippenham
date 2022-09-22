@@ -38,10 +38,10 @@
     $Tid = $_GET['id'];
     $Trady = Get_Trade_Year($Tid,$YEAR);
     $Trad = Get_Trader($Tid);
-    Trade_Action($_GET{'ACTION'},$Trad,$Trady,1);
+    Trade_Action($_GET['ACTION'],$Trad,$Trady,1);
   }
 
-  if (isset($_GET{'INC'})) {
+  if (isset($_GET['INC'])) {
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Not Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&SUB>Include Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a>, </h2>";

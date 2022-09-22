@@ -12,9 +12,9 @@
   
   $DispTyp = 0;
   $DispLim = 50;
-  if (isset($_GET{'S'}) || isset($_POST['S'])) {
-    if (isset($_GET{'S'})) $DispLim = $_GET{'S'};
-    if (isset($_POST{'S'})) $DispLim = $_POST{'S'};
+  if (isset($_GET['S']) || isset($_POST['S'])) {
+    if (isset($_GET['S'])) $DispLim = $_GET['S'];
+    if (isset($_POST['S'])) $DispLim = $_POST['S'];
     if ($DispLim == 'ALL') $DispLim = 1000;
     $DispTyp = 1;
   } else { 

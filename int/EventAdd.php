@@ -75,11 +75,11 @@ A similar feature will appear eventually for music.<p>
 
   echo "<h2>Add/Edit Events</h2>\n";
   echo "<form method=post action='EventAdd'>\n";
-  if (isset($_POST{'EventId'})) { // Response to update button
-    $eid = $_POST{'EventId'};
+  if (isset($_POST['EventId'])) { // Response to update button
+    $eid = $_POST['EventId'];
     if ($eid > 0) $Event = Get_Event($eid);
-    if (isset($_POST{'ACTION'})) {
-      switch ($_POST{'ACTION'}) {
+    if (isset($_POST['ACTION'])) {
+      switch ($_POST['ACTION']) {
       case 'Divide':
         //echo fm_smalltext('Divide into ','SlotSize',30,2) . fm_smalltext(' minute slots with ','SlotSetup',0,2) . " minute setup";
         $slotsize  = $_POST['SlotSize'];
@@ -142,7 +142,7 @@ A similar feature will appear eventually for music.<p>
         break;
 
       case 'Add': // Add N Subevents starting and ending at current ends - if a subevent, parent is ses parent
-        $AddIn = $_POST{'Slots'};
+        $AddIn = $_POST['Slots'];
         $Se = $Event['SubEvent'];
         $SubEvent = $Event;
         $SubEvent['End'] = $SubEvent['Start'];
@@ -199,8 +199,8 @@ A similar feature will appear eventually for music.<p>
         if (!$err && $Other) foreach ($Other as $i=>$ov) {  // Start with venues only
           if ($ov['Type'] == 'Venue') {
             $id = $ov['BigEid'];
-            if ($_POST{"VEN$id"} != $ov['Identifier']) {
-              $ven = $_POST{"VEN$id"};
+            if ($_POST["VEN$id"] != $ov['Identifier']) {
+              $ven = $_POST["VEN$id"];
               if ($ven != 0 ) {
                       if ($Event['Venue'] == $ven) $err = 1;
                 foreach ($Other as $ii=>$oov) if ($ov['Type'] == 'Venue' && $oov['Identifier'] == $ven) $err=1;
@@ -214,21 +214,21 @@ A similar feature will appear eventually for music.<p>
             }
           }
         }
-        if ($err==0 && $_POST{'NEWVEN'} > 0) { // Add venue
-          if ($Other) foreach ($Other as $i=>$ov) if ($ov['Type'] == 'Venue' && $ov['Identifier'] == $_POST{'NEWVEN'}) $err++;
-          if ($err == 0 && $Event['Venue'] == $_POST{'NEWVEN'}) $err++; 
+        if ($err==0 && $_POST['NEWVEN'] > 0) { // Add venue
+          if ($Other) foreach ($Other as $i=>$ov) if ($ov['Type'] == 'Venue' && $ov['Identifier'] == $_POST['NEWVEN']) $err++;
+          if ($err == 0 && $Event['Venue'] == $_POST['NEWVEN']) $err++; 
           if ($err == 0) {
-            $BigE = array('Event'=>$eid, 'Type'=>'Venue', 'Identifier'=>$_POST{'NEWVEN'});
+            $BigE = array('Event'=>$eid, 'Type'=>'Venue', 'Identifier'=>$_POST['NEWVEN']);
             New_BigEvent($BigE);
             $OtherValid = 0;
           }
         }
-        if ($err) echo "<h2 class=ERR>The Event already has Venue " . $Venues[$_POST{'NEWVEN'}] . "</h2>\n";
+        if ($err) echo "<h2 class=ERR>The Event already has Venue " . $Venues[$_POST['NEWVEN']] . "</h2>\n";
         if (!$OtherValid) unset($Other);
       }  
     } else { // New
       $proc = 1;
-      if (!isset($_POST['SN']) || strlen($_POST{'SN'}) < 2) { 
+      if (!isset($_POST['SN']) || strlen($_POST['SN']) < 2) { 
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $Event = $_POST;
         $proc = 0;
@@ -237,7 +237,7 @@ A similar feature will appear eventually for music.<p>
       Parse_TimeInputs($EventTimeFields,$EventTimeMinFields);
       
       Parse_Perf_Selection();
-      $_POST{'Year'} = $YEAR;
+      $_POST['Year'] = $YEAR;
       $eid = Insert_db_post('Events',$Event,$proc); //
       $empty = array();
       Check_4Changes($empty,$Event);
@@ -262,7 +262,7 @@ A similar feature will appear eventually for music.<p>
   } else {
     $eid = -1;
     $Event = array();
-    if (isset($_GET{'Act'})) $Event['Act1'] = $_GET{'Act'};
+    if (isset($_GET['Act'])) $Event['Act1'] = $_GET['Act'];
   }
 
 // $Event_Types = array('Dance','Music','Workshop','Craft','Mixed','Other');

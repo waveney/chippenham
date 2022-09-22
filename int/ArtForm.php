@@ -20,7 +20,7 @@
   if (isset($_POST['submit'])) {
     $err = 0;
     if (strlen($_POST['SN']) < 2) { echo "<p class=Err>Please give your name\n"; $err=1; };
-    Clean_Email($_POST{'Email'});
+    Clean_Email($_POST['Email']);
     if (strlen($_POST['Email']) < 6) { echo "<p class=Err>Please give your Email\n"; $err=1; };
     if (strlen($_POST['Phone']) < 6) { echo "<p class=Err>Please give your Phone number\n"; $err=1; };
     if (strlen($_POST['Address']) < 20) { echo "<p class=Err>Please give your Address\n"; $err=1; };

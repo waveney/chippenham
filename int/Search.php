@@ -9,14 +9,14 @@
 */
   $table = 0;
   $lsted = array();
-  if (isset($_POST{'Search'})) {
+  if (isset($_POST['Search'])) {
     $xtr = '';
     $from = $until = '';
-    if ($_POST{'Who'}) $xtr = ' AND Who=' . $_POST{'Who'};
-    if ($_POST{'From'}) $from = Extract_Date($_POST{'From'});
-    if ($_POST{'Until'}) $until = Extract_Date($_POST{'Until'});
-    $targ = $_POST{'Target'};
-    if (isset($_POST{'Titles'}) || !isset($_POST{'Cont'})) {
+    if ($_POST['Who']) $xtr = ' AND Who=' . $_POST['Who'];
+    if ($_POST['From']) $from = Extract_Date($_POST['From']);
+    if ($_POST['Until']) $until = Extract_Date($_POST['Until']);
+    $targ = $_POST['Target'];
+    if (isset($_POST['Titles']) || !isset($_POST['Cont'])) {
       if ($from) $xtr .= " AND Created>$from ";
       if ($until) $xtr .= " AND Created<$until ";
       if ($_POST['Search_Loc']) $xtr .= " AND Dir=" . $_POST['Search_Dir'];
@@ -32,7 +32,7 @@
       }
     }
 
-    if (isset($_POST{'Cont'})) {
+    if (isset($_POST['Cont'])) {
       if ($_POST['Search_Loc']) {
         $path = Dir_FullPName($_POST['Search_Dir'],32);
         exec("grep -lir '" . $targ . "' Store/$path", $greplst);
@@ -44,7 +44,7 @@
           $doc = Find_Doc_For($file);
           if (!$doc) continue;
 //echo "from = $from until = $until now =" . time() . "doc= ". var_dump($doc) . "<P>";
-          if ($_POST{'Who'}) if ($doc['Who'] != $_POST{'Who'}) continue;
+          if ($_POST['Who']) if ($doc['Who'] != $_POST['Who']) continue;
           if ($from) if ($doc['Created'] < $from) continue;
           if ($until) if ($doc['Created'] > $until) continue;
           if (isset($lsted[$doc['DocId']])) continue;

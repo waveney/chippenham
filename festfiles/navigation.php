@@ -17,9 +17,9 @@
   $host= "https://" . $_SERVER['HTTP_HOST'];
 
   global $USERID,$PerfTypes;
-  if ( isset($USER{'AccessLevel'}) && $USER{'AccessLevel'} == $Access_Type['Participant'] ) {
+  if ( isset($USER['AccessLevel']) && $USER['AccessLevel'] == $Access_Type['Participant'] ) {
     echo "<div class=Staff><div class=navigation>";
-    switch ($USER{'Subtype'}) {
+    switch ($USER['Subtype']) {
     case 'Perf':
       include_once("DanceLib.php");
       $Side = Get_Side($USERID);

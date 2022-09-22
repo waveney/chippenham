@@ -32,9 +32,9 @@
 
   echo "<h2>";
   $Loc = 0;
-  if (isset($_GET{'LOC'})) $Loc = $_GET{'LOC'};
+  if (isset($_GET['LOC'])) $Loc = $_GET['LOC'];
   $Contact =0;
-  if (isset($_GET{'CONT'})) $Contact = $_GET{'CONT'};
+  if (isset($_GET['CONT'])) $Contact = $_GET['CONT'];
   if ($Loc == 0) echo "<a href=InviteDance?LOC=1" . ($Contact?"&CONT=1":"") . "&Y=$YEAR$Invited>Show Location</a> &nbsp; &nbsp; &nbsp; &nbsp;\n";
   if ($Contact == 0) echo "<a href=InviteDance?CONT=1" .($Loc?"&LOC=1":"") . "&Y=$YEAR$Invited>Show Contact</a>\n";
   echo "</h2>";

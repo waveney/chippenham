@@ -423,8 +423,8 @@ function Dir_File_Count($dir) {
 
 function SearchForm($where=0) {
   $SearchLocs = ['Everywhere','Here'];
-  if (!isset($_POST{'Titles'}) && !isset($_POST{'Cont'})) { $_POST{'Titles'} = 1; }
-  elseif (!$_POST{'Titles'} && !$_POST{'Cont'}) $_POST{'Titles'} = 1;
+  if (!isset($_POST['Titles']) && !isset($_POST['Cont'])) { $_POST['Titles'] = 1; }
+  elseif (!$_POST['Titles'] && !$_POST['Cont']) $_POST['Titles'] = 1;
   echo "<form action=Search method=post>";
   echo fm_hidden('Search_Dir',$where);
   echo "Search " . fm_checkbox("Titles",$_POST,'Titles');

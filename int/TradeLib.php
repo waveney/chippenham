@@ -332,11 +332,11 @@ function Default_Trade($id,$type=1) {
 function PayCodeGen($Type,$TYid) { // Type = DEP, BAL, PAY
   $digits = (string)($TYid*123) . "000000000000";
   // 1. Add the values of the digits in the even-numbered positions: 2, 4, 6, etc.
-  $even_sum = ord($Type[0]) + ord($Type[2]) + $digits{1} + $digits{3} + $digits{5} + $digits{7} + $digits{9} + $digits{11};
+  $even_sum = ord($Type[0]) + ord($Type[2]) + $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
   // 2. Multiply this result by 3.
   $even_sum_three = $even_sum * 3;
   // 3. Add the values of the digits in the odd-numbered positions: 1, 3, 5, etc.
-  $odd_sum = ord($Type[1]) + $digits{0} + $digits{2} + $digits{4} + $digits{6} + $digits{8} + $digits{10};
+  $odd_sum = ord($Type[1]) + $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
   // 4. Sum the results of steps 2 and 3.
   $total_sum = $even_sum_three + $odd_sum;
 
@@ -470,7 +470,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     fm_addall('disabled readonly');
   }
 
-  $Self = $_SERVER{'PHP_SELF'};
+  $Self = $_SERVER['PHP_SELF'];
   if ($year != $CurYear) {
     if ($Mode && Get_Trade_Year($Tid,$CurYear)) 
       echo "<div class=floatright><h2><a href=$Self?id=$Tid&Y=$CurYear>$CurYear</a></h2></div>";  
@@ -714,7 +714,7 @@ function Trader_Details($key,&$data,$att=0) {
   global $Trade_Days,$TradeLocData,$TradeTypeData,$Prefixes,$YEAR;
   $Trad = &$data[0];
   if (isset($data[1])) $Trady = &$data[1];
-  $host = "https://" . $_SERVER{'HTTP_HOST'};
+  $host = "https://" . $_SERVER['HTTP_HOST'];
   $Tid = $Trad['Tid'];
   switch ($key) {
   case 'WHO':  return $Trad['Contact']? UpperFirstChr(firstword($Trad['Contact'])) : $Trad['SN'];
@@ -881,7 +881,8 @@ function Submit_Application(&$Trad,&$Trady,$Mode=0) {
 
   echo "<h3>Your application has been submitted</h3>\nAn email has been sent to you with a summary of your submission and a link to enable you to update it.\n<p>";
   
-  echo "<b>IF</b> you do not see the email, Please check your SPAM folder and mark the message as <b>Not SPAM</b>, otherwise you will not see any subsequent message from us.<p>";
+  echo "<b>IF</b> you do not see the email, Please check your SPAM folder and mark the message as <b>Not SPAM</b>, " .
+       "otherwise you will not see any subsequent message from us.<p>";
 }
 
 function Validate_Trade($Mode=0) { // Mode 1 for Staff Submit, less stringent
@@ -1041,7 +1042,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   $Mess = '';
   if (isset($_POST{'Action'})) {
     include_once("Uploading.php");
-    $Action = $_POST{'Action'};
+    $Action = $_POST['Action'];
     switch ($Action) {
     case 'PASpecUpload':
       $Mess = Upload_PASpec();
@@ -1054,7 +1055,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
       break;
     case 'Delete':
       if (Access('SysAdmin')) {
-        $Tid = $_POST{'Tid'};
+        $Tid = $_POST['Tid'];
         db_delete('Trade',$Tid);
         include_once("Staff.php");  // No return
       }
@@ -1067,20 +1068,20 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   if ($iddd != 0) {
     unset($_POST['Tid']);
     if ($iddd > 0) {
-      $_GET{'id'} = $iddd;
+      $_GET['id'] = $iddd;
     } else {
       unset($_GET['id']);
     }
   }
 
-  if (isset($_POST{'Tid'})) { /* Response to update button */
-    $Tid = $_POST{'Tid'};
+  if (isset($_POST['Tid'])) { /* Response to update button */
+    $Tid = $_POST['Tid'];
 
 //    A_Check('Participant','Trader',$Tid); // Check Surpressed until access resolved
 
     if (!$Orgs) {
       if (Feature("TradePower")) for ($i=0;$i<3;$i++) if ($_POST["PowerType$i"]==1) $_POST["Power$i"] = -1;
-      Clean_Email($_POST{'Email'});
+      Clean_Email($_POST['Email']);
 //    Clean_Email($_POST{'AltEmail'});
       $proc = Validate_Trade($Mode);
     }
@@ -1097,12 +1098,12 @@ function Trade_Main($Mode,$Program,$iddd=0) {
         echo "<h2 class=ERR>Could not find Trader $Tid</h2>\n";
       }
 
-      if (isset($_POST{'NewAccessKey'})) $_POST{'AccessKey'} = rand_string(40);
+      if (isset($_POST{'NewAccessKey'})) $_POST['AccessKey'] = rand_string(40);
 
       Update_db_post('Trade',$Trad);
       Report_Log('Trade');
       if ($Mode < 2 && !$Orgs) {
-        if ($_POST{'Year'} == $PLANYEAR) {
+        if ($_POST['Year'] == $PLANYEAR) {
           $same = 1;
           if (isset($Trady) && $Trady) {
             $OldFee = $Trady['Fee'];
@@ -1135,8 +1136,8 @@ function Trade_Main($Mode,$Program,$iddd=0) {
             if (!Feature('AutoInvoices') && $Trady['Fee'] >=0 && $OldFee != $Trady['Fee'] && $Trady['BookingState'] >= $Trade_State['Accepted']) 
                   Send_Trade_Finance_Email($Trad,$Trady,'Trade_UpdateBalance');
           } else {
-            $chks = ['Insurance','RiskAssessment','PitchSize0','PitchSize1','PitchSize2','Power0','Power1','Power2','YNotes','BookingState','Submit','Days','Fee','PitchLoc0','PitchLoc1',
-                      'PitchLoc2','ACTION'];
+            $chks = ['Insurance','RiskAssessment','PitchSize0','PitchSize1','PitchSize2','Power0','Power1','Power2','YNotes','BookingState','Submit',
+                     'Days','Fee','PitchLoc0','PitchLoc1','PitchLoc2','ACTION'];
             foreach($chks as $c) if (isset($_POST[$c]) && $_POST[$c]) {
               if ($c == 'PitchSize0' && $_POST[$c] == "3Mx3M") continue; // This is the only non blank default
               if (isset($_POST['Fee']) && ($_POST['Fee'] < 0) && ($_POST['BookingState'] >= $Trade_State['Accepted'])) $_POST['BookingState'] = $Trade_State['Fully Paid'];
@@ -1166,8 +1167,8 @@ function Trade_Main($Mode,$Program,$iddd=0) {
     }
     if ($Mode !== 2 && $proc && isset($_POST['Submit'])) Submit_Application($Trad,$Trady,$Mode);
 
-  } elseif (isset($_GET{'id'})) { // Link from elsewhere 
-    $Tid = $_GET{'id'};
+  } elseif (isset($_GET['id'])) { // Link from elsewhere 
+    $Tid = $_GET['id'];
     $Trad = Get_Trader($Tid);
     if ($Trad && $Trad['IsTrader'] && !$Orgs) {
       $Tradyrs = Get_Trade_Years($Tid);

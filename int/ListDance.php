@@ -39,13 +39,13 @@
   $link = 'AddPerf';
   $LastYear = $YEARDATA['PrevFest'];
 
-  if ($_GET{'SEL'} == 'ALL') {
+  if ($_GET['SEL'] == 'ALL') {
     $SideQ = $db->query("SELECT s.*, y.*, s.SideId FROM Sides AS s LEFT JOIN SideYear as y ON s.SideId=y.SideId AND y.year='$YEAR' WHERE s.IsASide=1 ORDER BY SN");
     $col5 = "Invite";
     $col6 = "Coming";
     $col7 = "Wshp";
     if (Feature('DanceComp')) $col9 = "Dance Comp";
-  } else if ($_GET{'SEL'} == 'INV') {
+  } else if ($_GET['SEL'] == 'INV') {
 
     $flds = "s.*, ly.Invite, ly.Coming, y.Invite, y.Invited, y.Coming";
     $SideQ = $db->query("SELECT $flds FROM Sides AS s LEFT JOIN SideYear as y ON s.SideId=y.SideId AND y.year='$PLANYEAR' " .
@@ -55,7 +55,7 @@
     $col7 = "Invite $PLANYEAR";
     $col8 = "Invited $PLANYEAR";
     $col9 = "Coming $PLANYEAR";
-  } else if ($_GET{'SEL'} == 'Coming') {
+  } else if ($_GET['SEL'] == 'Coming') {
     echo "In the Missing Col: A=Address, D=Days, I=Insurance, M=Mobile, P=Performers Nos<p>\n";
   
     $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, SideYear as y WHERE s.IsASide=1 AND s.SideId=y.SideId AND y.year='$YEAR' AND y.Coming=" . 
@@ -91,7 +91,7 @@
     if ($col10) echo "<th><input type=checkbox name=SelectAll id=SelectAll onchange=ToolSelectAll(event)>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";
-    if ($_GET{'SEL'}) {
+    if ($_GET['SEL']) {
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contact</a>\n";
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
@@ -138,7 +138,7 @@
           echo "<td>" . $fetch['Type'];
         }
       }
-      if ($_GET{'SEL'}) {
+      if ($_GET['SEL']) {
         echo "<td>" . $fetch['Contact'];
         echo "<td>";
           if ($fetch['Email']) {

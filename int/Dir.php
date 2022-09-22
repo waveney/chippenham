@@ -9,8 +9,8 @@
 // if ($_POST) var_dump($_POST);
 
   include_once("DocLib.php");
-  if (isset($_REQUEST{'d'})) {
-    $d = $_REQUEST{'d'};
+  if (isset($_REQUEST['d'])) {
+    $d = $_REQUEST['d'];
   } else {
     $d = 0;
   }
@@ -25,14 +25,14 @@
   $AllActive = array();
   foreach ($AllU as $id=>$name) if ($AllA[$id] >= 2 && $AllA[$id] <= 6) $AllActive[$id]=$name;
 
-  if (isset($_REQUEST{'Action'})) { $Act = $_REQUEST{'Action'}; }
+  if (isset($_REQUEST['Action'])) { $Act = $_REQUEST['Action']; }
   else { $Act = ''; }
   $skip = 0;
   
   switch ($Act) {
     case 'Create': 
       if ($dir) {
-        $NewDir = $_POST{'DirName'};
+        $NewDir = $_POST['DirName'];
         if (strlen($NewDir) < 2) {
           $ErrMess = "Directory name too short"; 
         } else {
@@ -79,7 +79,7 @@
       break;
     case 'Rename':
       if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
-        $NewDir = $_POST{'DirName'};
+        $NewDir = $_POST['DirName'];
         if ($dir['SN'] == $NewDir) break;
         $fullname = Dir_FullName($d);
           $fullpath = dirname($fullname);
@@ -88,7 +88,7 @@
            break;
         }
         rename("Store" . $fullname, "Store" . $fullpath . "/" . $NewDir);
-         $dir['SN'] = addslashes($NewDir);
+        $dir['SN'] = addslashes($NewDir);
         Put_DirInfo($dir);
       } else {
         $ErrMess = "Insufficient Priviledge";
@@ -109,7 +109,7 @@
       break;
     case 'Move':
       if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
-        $NewDir = $_POST{'NewDir'};
+        $NewDir = $_POST['NewDir'];
         $name = $dir['SN'];
         if ($dir['Parent'] == $NewDir) break;
         $fullname = Dir_FullName($d);
@@ -141,7 +141,7 @@
       break;
     case 'Chown':
       if ($d > 0 && Access('Committee','Docs')) {
-        $dir['Who'] = $_POST{'Who'};
+        $dir['Who'] = $_POST['Who'];
         Put_DirInfo($dir);
       } else {
         $ErrMess = "Insufficient Priviledge";
@@ -184,12 +184,12 @@
 
 //if ($DBG) fwrite($DBG,"Got here\n");
 
-  if (isset($_REQUEST{'FileAction'})) { $Act = $_REQUEST{'FileAction'}; }
+  if (isset($_REQUEST['FileAction'])) { $Act = $_REQUEST['FileAction']; }
   else { $Act = ''; }
   
   if (!$skip && $Act) {
-    if (isset($_REQUEST{'f'})) {
-      $f = $_REQUEST{'f'};
+    if (isset($_REQUEST['f'])) {
+      $f = $_REQUEST['f'];
     } else {
       $f = 0;
     };
@@ -213,7 +213,7 @@
         break;
       case 'Rename':
         if (Access('Committee','Docs') || $finf['Who'] == $USERID || $dir['Who'] == $USERID ) {
-          $NewDoc = $_POST{'DocName'};
+          $NewDoc = $_POST['DocName'];
           if ($finf['SN'] == $NewDoc) break;
           $fullname = File_FullName($f);
             $fullpath = dirname($fullname);
@@ -243,7 +243,7 @@
         break;
       case 'Move':
         if (Access('Committee','Docs') || $finf['Who'] == $USERID || $dir['Who'] == $USERID ) {
-          $NewDir = $_POST{'NewDir'};
+          $NewDir = $_POST['NewDir'];
           $name = $finf['SN'];
           if ($finf['Dir'] == $NewDir) break;
           $fullname = File_FullName($f);
@@ -274,7 +274,7 @@
         break;
       case 'Chown':
         if (Access('Committee','Docs')) {
-           $finf['Who'] = $_POST{'Who'};
+           $finf['Who'] = $_POST['Who'];
           Put_DocInfo($finf);
         } else {
           $ErrMess = "Insufficient Priviledge";

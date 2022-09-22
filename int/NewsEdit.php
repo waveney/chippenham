@@ -12,9 +12,9 @@
   
   $Action = 0; 
   $Mess = '';
-  if (isset($_POST{'Action'})) {
+  if (isset($_POST['Action'])) {
     include_once("Uploading.php");
-    $Action = $_POST{'Action'};
+    $Action = $_POST['Action'];
     switch ($Action) {
     case 'Photo':
       $Mess = Upload_Image('News','image');

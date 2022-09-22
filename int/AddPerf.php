@@ -81,10 +81,10 @@
     }
   }
 //  echo "<!-- " . var_dump($_POST) . " -->\n";
-  if (isset($_POST{'SideId'})) { // Response to update button 
+  if (isset($_POST['SideId'])) { // Response to update button 
     
-    Clean_Email($_POST{'Email'});
-    Clean_Email($_POST{'AltEmail'});
+    Clean_Email($_POST['Email']);
+    Clean_Email($_POST['AltEmail']);
     Parse_TimeInputs($Dance_TimeFeilds);    
     Parse_DateInputs($DateFlds);
  
@@ -102,13 +102,13 @@
         date_default_timezone_set('GMT');
         if (strlen($_POST['Invited'])) $_POST['Invited'] .= ", ";
         $_POST['Invited'] .= date('j/n');
-      } elseif (isset($_POST{'NewAccessKey'})) {
-        $_POST{'AccessKey'} = rand_string(40);
-      } elseif (isset($_POST{'Contract'})) { 
+      } elseif (isset($_POST['NewAccessKey'])) {
+        $_POST['AccessKey'] = rand_string(40);
+      } elseif (isset($_POST['Contract'])) { 
         Contract_Save($Side,$Sidey,2); 
-      } elseif (isset($_POST{'Contract2'})) { 
+      } elseif (isset($_POST['Contract2'])) { 
         Contract_Save($Side,$Sidey,2,1); 
-      } elseif (isset($_POST{'Decline'})) { 
+      } elseif (isset($_POST['Decline'])) { 
         Contract_Decline($Side,$Sidey,2); 
       }
 

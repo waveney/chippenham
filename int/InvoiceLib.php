@@ -419,8 +419,10 @@ function Create_Invoice($Dat=0) { // form to fill in - not for trade
   if ($Dat) echo fm_hidden('i',$dat);
   echo "<div class=tablecont><table border>";
   echo "<tr>" . fm_radio("Organisation",$Org_Cats,$inv,'OrgType','onchange=InvoiceCatChange(event,###V)');
-  echo "<td class=InvOrg1 $hide1 >" . fm_select($Traders,$inv,'Tid') . "<td class=InvOrg1  $hide1>If the trader, is not in list, then <a href=Trade><b>Create them</b></a> first"; 
-  echo "<td class=InvOrg2 $hide2 >" . fm_select($Orgs,$inv,'Oid') . "<td class=InvOrg2  $hide2 >If the organisation, is not in list, then <a href=Trade?ORGS><b>Create them</b></a> first";
+  echo "<td class=InvOrg1 $hide1 >" . fm_select($Traders,$inv,'Tid') . 
+       "<td class=InvOrg1  $hide1>If the trader, is not in list, then <a href=Trade><b>Create them</b></a> first"; 
+  echo "<td class=InvOrg2 $hide2 >" . fm_select($Orgs,$inv,'Oid') . 
+       "<td class=InvOrg2  $hide2 >If the organisation, is not in list, then <a href=Trade?ORGS><b>Create them</b></a> first";
 
   echo "<tr><td colspan=5>Include UPTO 3 items, if the first is positive, and the others negative, the negative ones will be in red";
   echo "<tr><td colspan=2>Description<td>Amount";
@@ -627,11 +629,11 @@ function Pay_Rec_Gen($Type,$Val,$Src=0,$SrcId=0,$Name='',$Reason='',$PayDays=0) 
 
   $digits = (string)($PRid*123) . "000000000000";
   // 1. Add the values of the digits in the even-numbered positions: 2, 4, 6, etc.
-  $even_sum = ord($Type[0]) + ord($Type[2]) + $digits{1} + $digits{3} + $digits{5} + $digits{7} + $digits{9} + $digits{11};
+  $even_sum = ord($Type[0]) + ord($Type[2]) + $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
   // 2. Multiply this result by 3.
   $even_sum_three = $even_sum * 3;
   // 3. Add the values of the digits in the odd-numbered positions: 1, 3, 5, etc.
-  $odd_sum = ord($Type[1]) + $digits{0} + $digits{2} + $digits{4} + $digits{6} + $digits{8} + $digits{10};
+  $odd_sum = ord($Type[1]) + $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
   // 4. Sum the results of steps 2 and 3.
   $total_sum = $even_sum_three + $odd_sum;
 

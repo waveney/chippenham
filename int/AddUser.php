@@ -10,14 +10,14 @@
 
   echo "<h2>Add/Edit Fest Con Users</h2>\n";
   echo "<form method=post action='AddUser'>\n";
-  if (isset($_POST{'UserId'})) { /* Response to update button */
-    $unum = $_POST{'UserId'};
+  if (isset($_POST['UserId'])) { /* Response to update button */
+    $unum = $_POST['UserId'];
     if ($unum > 0) {                                 // existing User
       $User = Get_User($unum);
-      if (isset($_POST{'ACTION'})) {
-        switch ($_POST{'ACTION'}) {
+      if (isset($_POST['ACTION'])) {
+        switch ($_POST['ACTION']) {
         case 'Set Password' :
-          $hash = crypt($_POST{'NewPass'},"WM");
+          $hash = crypt($_POST['NewPass'],"WM");
           $User['password'] = $hash;
           $a = Put_User($User);
           break;
@@ -45,8 +45,8 @@
       }
       $unum = Insert_db_post('FestUsers',$User,$proc);
     }
-  } elseif (isset($_GET{'usernum'}) && $_GET{'usernum'}) {
-    $unum = $_GET{'usernum'};
+  } elseif (isset($_GET['usernum']) && $_GET['usernum']) {
+    $unum = $_GET['usernum'];
     $User = Get_User($unum);
   } else {
     $unum = -1;

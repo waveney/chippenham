@@ -628,7 +628,7 @@ function Extended_Prog($type,$id,$all=0) {
     $Worst= 99;
     $EventLink = ($all?'EventAdd':'EventShow');
     $VenueLink = ($all?'AddVenue':'VenueShow');
-    $host = "https://" . $_SERVER{'HTTP_HOST'};
+    $host = "https://" . $_SERVER['HTTP_HOST'];
 
     foreach ($Evs as $ei=>$e) $Evs[$ei]['ActAs'] = $id;
     $Found = 0;
@@ -756,7 +756,7 @@ function Dance_Email_Details($key,&$data,$att=0) {
   if (isset($data[1])) $Sidey = &$data[1];
   $snum = $Side['SideId'];
   $str = '';
-  $host = "https://" . $_SERVER{'HTTP_HOST'};
+  $host = "https://" . $_SERVER['HTTP_HOST'];
   switch ($key) {
   case 'WHO':  return $Side['Contact']? firstword($Side['Contact']) : $Side['SN'];
   case 'LINK': return "<a href='$host/int/Direct?t=Perf&id=$snum&key=" . $Side['AccessKey'] . "&Y=$YEAR'><b>this link</b></a>  " ;

@@ -23,7 +23,7 @@ function Submit_Steward() {
   if (strlen($_POST['ContactName']) < 2) { echo "<p class=Err>Please give an emergency contact\n"; $err=1; };
   if (strlen($_POST['ContactPhone']) < 6) { echo "<p class=Err>Please give emergency Phone number(s)\n"; $err=1; };
 
-  Clean_Email($_POST{'Email'});
+  Clean_Email($_POST['Email']);
   if (!$err) {
 //      echo "<P>VALID...<P>";
     $_POST['AccessKey'] = rand_string(40);
@@ -43,7 +43,7 @@ function Submit_Steward() {
     $id = $_POST['id'];
     $stew = Get_Steward($id);
     A_Check('Participant','Steward',$id);
-    Clean_Email($_POST{'Email'});
+    Clean_Email($_POST['Email']);
     Update_db_post('Stewards',$stew);
     switch ($_REQUEST['ACTION']) {
     case 'Submit':

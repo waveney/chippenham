@@ -25,12 +25,12 @@ function Grab_Data($day='',$Media='Dance') {
   $VenueUse = array();
   $evs = array();
   $Sand = 0;
-  if (isset($_REQUES{'SAND'})) $Sand = 1;
+  if (isset($_REQUES['SAND'])) $Sand = 1;
 
   if ($day) { $DAY=$day;
-  } else if (isset($_GET{'d'})) { $DAY = $_GET{'d'}; } else { $DAY='Sat'; }
+  } else if (isset($_GET['d'])) { $DAY = $_GET['d']; } else { $DAY='Sat'; }
 
-  if (!isset($_GET{'EInfo'})) $_GET{'EInfo'} = 0;
+  if (!isset($_GET['EInfo'])) $_GET['EInfo'] = 0;
   for ($t=9;$t<($Media=='Dance'?18:24);$t++) { // TODO fix for non 30 minute slots TODO Start and end from Master
     $Times[] = $t*100;
     if ($Media != 'Dance') $Times[] = $t*100+15;
@@ -553,9 +553,9 @@ function Grab_Music_Data($day='') {
   if (isset($_POST{'SAND'})) $Sand = 1;
 
   if ($day) { $DAY=$day;
-  } else if (isset($_GET{'d'})) { $DAY = $_GET{'d'}; } else { $DAY='Sat'; }
+  } else if (isset($_GET['d'])) { $DAY = $_GET['d']; } else { $DAY='Sat'; }
 
-  if (!isset($_GET{'EInfo'})) $_GET{'EInfo'} = 0;
+  if (!isset($_GET['EInfo'])) $_GET['EInfo'] = 0;
   for ($t=10;$t<24;$t++) {
     $Times[] = $t*100;
     $Times[] = $t*100+15;

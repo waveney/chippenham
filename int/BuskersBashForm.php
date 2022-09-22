@@ -18,7 +18,7 @@
     if (strlen($_POST['SN']) < 2) { echo "<p class=Err>Please give your band's name\n"; $err=1; };
     if (strlen($_POST['Example'])< 12) { echo "<p class=Err>Please give a link to an example of you performing - Youtube or equivalent\n"; $err=1; };
     if (strlen($_POST['Contact']) < 6) { echo "<p class=Err>Please give the contact name\n"; $err=1; };
-    Clean_Email($_POST{'Email'});
+    Clean_Email($_POST['Email']);
     if (strlen($_POST['Email']) < 6) { echo "<p class=Err>Please give the contacts Email\n"; $err=1; };
     if (strlen($_POST['Phone']) < 6) { echo "<p class=Err>Please give the contacts Phone number\n"; $err=1; };
     if (strlen($_POST['Address']) < 20) { echo "<p class=Err>Please give the contacts Address\n"; $err=1; };

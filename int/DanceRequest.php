@@ -5,7 +5,7 @@
   include_once("MusicLib.php"); 
   include_once("PLib.php");
     
-  $snum=$_GET{'sidenum'};
+  $snum=$_GET['sidenum'];
   A_Check('Participant');
 
   dostaffhead("Requested", ["/js/clipboard.min.js", "/js/emailclick.js", "/js/Participants.js","js/dropzone.js","css/dropzone.css", "js/InviteThings.js"],1);

@@ -73,9 +73,9 @@
   $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'BrianMBispHarris');
   setcookie('WMFFD',$biscuit,0,'/');
 
-  $USER{'AccessLevel'} = $Access_Type['Participant'];
-  $USER{'Subtype'} = $CakeTypes[$t];
-  $USER{'UserId'} = $USERID = $id;
+  $USER['AccessLevel'] = $Access_Type['Participant'];
+  $USER['Subtype'] = $CakeTypes[$t];
+  $USER['UserId'] = $USERID = $id;
 
   $_GET['id'] = $id;
   if ($DoHead[$t]) dostaffhead($CakeTypes[$t],["/js/clipboard.min.js", "/js/emailclick.js", "/js/Participants.js","js/dropzone.js","css/dropzone.css"]);

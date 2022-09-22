@@ -19,10 +19,10 @@
   echo "<div class='content'><h2>Add/Edit Bugs</h2>\n";
   echo "<form method=post action='AddBug'>\n";
   if (isset($_POST{'BugId'})) { // Response to update button
-    $b = $_POST{'BugId'};
+    $b = $_POST['BugId'];
     if ($b > 0) $Bug = Get_Bug($b);
-    if (isset($_POST{'ACTION'})) {
-      switch ($_POST{'ACTION'}) {
+    if (isset($_POST['ACTION'])) {
+      switch ($_POST['ACTION']) {
       case 'Divide':
         break;
       case 'Delete':
@@ -44,8 +44,8 @@
       $em = Get_Emails('Bugs');
       if ($em) NewSendEmail(0,0,$em,"WMFF Bug report by " .$USER['SN'],$je);
     }
-  } elseif (isset($_GET{'b'})) {
-    $b = $_GET{'b'};
+  } elseif (isset($_GET['b'])) {
+    $b = $_GET['b'];
     $Bug = Get_Bug($b);
   } else {
     $b = -1;

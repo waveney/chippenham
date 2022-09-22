@@ -5,7 +5,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
   global $YEARDATA,$Side_Statuses,$Importance,$Surfaces,$Surface_Colours,$Noise_Levels,$Noise_Colours,$Share_Spots,$Mess,$Action,$ADDALL,$CALYEAR,$PLANYEAR,$YEAR;
   global $OlapTypes,$OlapCats,$OlapDays,$PerfTypes,$ShowAvailOnly;
   if ($CatT == '') {
-    $CatT = ($Side['IsASide'] ? 'Side' : $Side['IsAnAct'] ? 'Act' : 'Other');
+    $CatT = ($Side['IsASide'] ? 'Side' : ($Side['IsAnAct'] ? 'Act' : 'Other'));
   }
 
   $Mstate = ($PLANYEAR == $CALYEAR && $PLANYEAR == $YEAR);
@@ -387,7 +387,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     if ($Mstate) $Imp = 'class=imp';
   }
 //echo "HERE";
-  $Self = ($Mode ? $_SERVER{'PHP_SELF'} : "AddPerf"); // TODO
+  $Self = ($Mode ? $_SERVER['PHP_SELF'] : "AddPerf"); // TODO
   
 // Get_SideYears, OLIst is YEar fields from the years
   $OList = [];

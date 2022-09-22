@@ -10,14 +10,14 @@
 //  include_once("PartLib.php");
   global $YEAR,$SelectPerf,$Sides,$Order,$things;
 
-  if (isset($_GET{'e'})) { $Eid = $_GET{'e'}; } else { Error_Page('Big Event without Event'); };
+  if (isset($_GET['e'])) { $Eid = $_GET['e']; } else { Error_Page('Big Event without Event'); };
   $Event = Get_Event($Eid);
   if (!$Event['BigEvent']) Error_Page('Not A Big Event');
   $DAY = $Event['Day'];
   $Day = DayList($DAY);
   $YEAR = $Event['Year'];
 
-  if (!isset($_GET{'EInfo'})) $_GET{'EInfo'} = 0;
+  if (!isset($_GET['EInfo'])) $_GET['EInfo'] = 0;
   $extra = $extra2 = '';
   if (preg_match('/Procession/',$Event['SN'])) {
     $extra = " AND y.Procession=1 AND y.$Day=1";

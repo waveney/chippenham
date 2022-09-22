@@ -29,15 +29,15 @@
     $sid = $_GET['SideId'];
     $side = Get_Side($sid);
     $sidey = Get_SideYear($sid);
-    Music_Actions($_GET{'ACTION'},$side,$sidey);
+    Music_Actions($_GET['ACTION'],$side,$sidey);
   }
 
-  if ($_GET{'SEL'} == 'ALL') {
+  if ($_GET['SEL'] == 'ALL') {
     $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.year='$YEAR' WHERE $TypeSel AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
     if (substr($YEAR,0,4) == '2020') $col10 = 'Change';
-  } else if ($_GET{'SEL'} == 'INV') {
+  } else if ($_GET['SEL'] == 'INV') {
     $LastYear = $PLANYEAR-1;
     $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.year='$PLANYEAR' WHERE $TypeSel AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Invited $LastYear";
@@ -45,12 +45,12 @@
     $col7 = "Invite $PLANYEAR";
     $col8 = "Invited $PLANYEAR";
     $col9 = "Coming $PLANYEAR";
-  } else if ($_GET{'SEL'} == 'Coming') {
+  } else if ($_GET['SEL'] == 'Coming') {
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.$DiffFld,s.Importance) AS EffectiveImportance FROM Sides AS s, $YearTab as y " .
                 "WHERE $TypeSel AND s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState=" . 
                 $Book_State['Contract Signed'] . " ORDER BY EffectiveImportance DESC, SN"); 
     $col5 = "Complete?";
-  } else if ($_GET{'SEL'} == 'Booking') {
+  } else if ($_GET['SEL'] == 'Booking') {
     $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.year='$YEAR' AND ( y.YearState>0 || y.TickBox4>0)" . 
                 " AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
@@ -61,7 +61,7 @@
     if (substr($YEAR,0,4) == '2020') $col10 = 'Change';
     echo "Under <b>Actions</b> various errors are reported, the most significant error is indicated.  Please fix these before issuing the contracts.<p>\n";
     echo "Missing: P - Needs Phone, E Needs Email, T Needs Tech Spec, B Needs Bank (Only if fees), I Insurance.<p>";
-  } else if ($_GET{'SEL'} == 'Avail') {
+  } else if ($_GET['SEL'] == 'Avail') {
     $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.year='$YEAR' AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
@@ -69,7 +69,7 @@
     $col8 = "Availability";
 //    $col9 = "Prev Fest State";
  
-  } else if ($_GET{'SEL'} == 'BookingLastYear') {
+  } else if ($_GET['SEL'] == 'BookingLastYear') {
 
     $PrevYear = '2021'; // TODO fix fudge
     echo "<div class=content><h2>List $Perf $PrevYear</h2>\n";
@@ -94,7 +94,7 @@
     echo "<thead><tr>";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";
-    if ($_GET{'SEL'}) {
+    if ($_GET['SEL']) {
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contact</a>\n";
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
 //      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Link</a>\n";
@@ -117,7 +117,7 @@
       } else {
         echo "<td>" . $fetch['Type'];// . $fetch['syId'];
       }
-      if ($_GET{'SEL'}) {
+      if ($_GET['SEL']) {
         echo "<td>" . ($fetch['HasAgent']?$fetch['AgentName']:$fetch['Contact']);
         echo "<td>" . linkemailhtml($fetch,'Act',(!$fetch['Email'] && $fetch['AltEmail']? 'Alt' : '' ));
       } 

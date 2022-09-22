@@ -1,8 +1,8 @@
 <?php
   include_once("fest.php");
   /* Remove any Participant overlay */
-  if (isset($_COOKIE{'WMFFD'})) {
-    unset($_COOKIE{'WMFFD'});
+  if (isset($_COOKIE['WMFFD'])) {
+    unset($_COOKIE['WMFFD']);
     setcookie('WMFFD','',1,'/');
   }
   A_Check('Upload');

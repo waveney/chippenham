@@ -13,20 +13,20 @@ function Upload_Init($Dir='') {
 
 // echo "Upload Init $Dir<p>";
   if ($Dir == '' || $Dir == 'Side' || $Dir == 'Act' || $Dir == 'Other' || $Dir == 'Sides' || $Dir == 'Acts' || $Dir == 'Others' || $Dir == 'Perf') {
-    $snum = $_POST{'Id'};
+    $snum = $_POST['Id'];
     $Side = Get_Side($snum);
     $Put = "Put_Side";
     $Sidey = Get_SideYear($snum);
     $Puty = 'Put_SideYear';
   } else if ($Dir == 'Trade') {
-    $snum = $_POST{'Tid'};
+    $snum = $_POST['Tid'];
     $type = 'Trade';
     $Side = Get_Trader($snum);
     $Sidey = Get_Trade_Year($snum,$YEAR);
     $Puty = 'Put_Trade_Year';
     $Put = 'Put_Trader';
   } else if ($Dir == 'News') {
-    $snum = $_POST{'id'};
+    $snum = $_POST['id'];
     $type = 'News';
     $Side = Get_News($snum);
     $Put = 'Put_News';

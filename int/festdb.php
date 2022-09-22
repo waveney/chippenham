@@ -59,8 +59,8 @@ $UpdateLog = '';
 function Report_Log($roll) {
   global $Access_Type,$USER,$USERID,$UpdateLog,$FESTSYS;
   if ($UpdateLog) {
-    if ($USER{'AccessLevel'} == $Access_Type['Participant']) {
-      switch ($USER{'Subtype'}) {
+    if ($USER['AccessLevel'] == $Access_Type['Participant']) {
+      switch ($USER['Subtype']) {
       case 'Side':
         $Side = Get_Side($USERID);
         $who = $Side['SN'];
@@ -177,7 +177,7 @@ function Insert_db($table, &$from, &$data=0, $proced=1) {
         $newrec .= " $fname=" . '"' . $dbform . '"';
       } elseif ($ftype == "tinyint" || $ftype == 'smallint') {
         $dbform = 0;
-        if ($from{$fname}) {
+        if ($from[$fname]) {
           if ((string)(int)$from[$fname] = $from[$fname]) { $dbform = $from[$fname]; } else { $dbform = 1; };
         }
         if ($data) $data[$fname] = $dbform;

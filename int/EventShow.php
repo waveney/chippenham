@@ -87,7 +87,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   If it is public then this will be accessable by main site, otherwise only if you have the link - not planning on restrictions (currently)
 */
 
-  $Eid = $_GET{'e'};
+  $Eid = $_GET['e'];
   if (!is_numeric($Eid)) exit("Invalid Event Number");
   $Ev = Get_Event($Eid);  
   $YEAR = $Ev['Year'];

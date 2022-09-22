@@ -113,7 +113,7 @@ Coming ...
     }
   }
 
-  $V = isset($_GET{'V'})? $_GET{'V'} : "";
+  $V = isset($_GET['V'])? $_GET['V'] : "";
 /*  switch ($V) {
     case 'OPEN': echo "- All Open Tasks"; break;
     case 'ALL': echo "- All Tasks"; break;

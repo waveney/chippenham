@@ -7,8 +7,8 @@
 
 $BUTTON = 0;
 
-if (isset($_REQUEST{'Y'})) $YEAR = $_REQUEST{'Y'};
-if (isset($_REQUEST{'B'})) $BUTTON = ($_REQUEST{'B'}+1) % 4;
+if (isset($_REQUEST['Y'])) $YEAR = $_REQUEST['Y'];
+if (isset($_REQUEST['B'])) $BUTTON = ($_REQUEST['B']+1) % 4;
 
 if (isset($YEAR)) {
   if (strlen($YEAR)>10) exit("Invalid Year");
@@ -50,19 +50,19 @@ function Set_User() {
   if (isset($USER)) return;
   $USER = array();
   $USERID = 0;
-  if (isset($_COOKIE{'WMFFD'})) {
-    $biscuit = $_COOKIE{'WMFFD'};
+  if (isset($_COOKIE['WMFFD'])) {
+    $biscuit = $_COOKIE['WMFFD'];
     $Cake = openssl_decrypt($biscuit,'aes-128-ctr','Quarterjack',0,'BrianMBispHarris');
     $crumbs = explode(':',$Cake);
-    $USER{'Subtype'} = $crumbs[0];
-    $USER{'AccessLevel'} = $crumbs[1];
-    $USERID = $USER{'UserId'} = $crumbs[2];
+    $USER['Subtype'] = $crumbs[0];
+    $USER['AccessLevel'] = $crumbs[1];
+    $USERID = $USER['UserId'] = $crumbs[2];
     if ($USERID) return;
     $USER = array();
     $USERID = 0;
   }
-  if (isset($_COOKIE{'WMFF2'})) {
-    $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE{'WMFF2'} . "'");
+  if (isset($_COOKIE['WMFF2'])) {
+    $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['WMFF2'] . "'");
     if ($res) {
       $USER = $res->fetch_assoc();
       $USERID = $USER['UserId'];
@@ -81,14 +81,14 @@ function Set_User() {
       }
     }
   } 
-  if (isset($_COOKIE{'WMFF'})) {
-    $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE{'WMFF'} . "'");
+  if (isset($_COOKIE['WMFF'])) {
+    $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['WMFF'] . "'");
     if ($res) {
       $USER = $res->fetch_assoc();
       $USERID = $USER['UserId'];
       $db->query("UPDATE FestUsers SET LastAccess='" . time() . "' WHERE UserId=$USERID" );
       setcookie('WMFF2',$USER['Yale'], mktime(0,0,0,1,1,$CALYEAR+1) ,'/' );
-      $_COOKIE{'WMFF2'} = $ans['Yale'];
+      $_COOKIE['WMFF2'] = $ans['Yale'];
     }
   } 
 }
@@ -98,23 +98,23 @@ function Access($level,$subtype=0,$thing=0) {
   $want = $Access_Type[$level];
   Set_User();
 //if ($level == 'Committee') echo "In Access 1<br>";
-  if (!isset($USER{'AccessLevel'})) return 0;
-  if ($USER{'AccessLevel'} < $want) return 0;
+  if (!isset($USER['AccessLevel'])) return 0;
+  if ($USER['AccessLevel'] < $want) return 0;
   
-  if ($USER{'AccessLevel'} > $want+1) return 1;
+  if ($USER['AccessLevel'] > $want+1) return 1;
 
-  switch  ($USER{'AccessLevel'}) {
+  switch  ($USER['AccessLevel']) {
 
   case $Access_Type['Participant'] : 
     if (!$subtype) return 1;
     if ($USER['Subtype'] == 'Other' && $subtype == 'Act') {}
-    elseif ($USER{'Subtype'} != $subtype) return 0;
+    elseif ($USER['Subtype'] != $subtype) return 0;
     return $thing == $USERID;
 
   case $Access_Type['Upload'] :
   case $Access_Type['Staff'] :
   case $Access_Type['Steward'] :
-    if (!$subtype) return $USER{'AccessLevel'} >= $want;
+    if (!$subtype) return $USER['AccessLevel'] >= $want;
     if (isset($USER[$subtype]) && $USER[$subtype]) return 1;
     return 0; 
 
@@ -214,12 +214,12 @@ function Put_User(&$data,$Save_User=0) {
 function Error_Page ($message) {
   global $Access_Type,$USER,$USERID;
   set_user();
-  if (isset($USER{'AccessLevel'})) { $type = $USER{'AccessLevel'}; } else { $type = 0; }
+  if (isset($USER['AccessLevel'])) { $type = $USER['AccessLevel']; } else { $type = 0; }
 //  var_dump($USER);
 //  echo "$type<p>";
   switch ($type) {
   case $Access_Type['Participant'] :
-    switch ( $USER{'Subtype'}) {
+    switch ( $USER['Subtype']) {
     case 'Side' :
     case 'Act' :
       include_once('int/MusicLib.php');

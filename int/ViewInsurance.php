@@ -9,16 +9,16 @@
 
   echo '<h2>Insurance</h2>';
 
-  if (isset($_GET{'sidenum'})) {
-    $snum = $_GET{'sidenum'};
+  if (isset($_GET['sidenum'])) {
+    $snum = $_GET['sidenum'];
     $data = Get_Side($snum);
     $type = 'Sides';
-  } else if (isset($_GET{'othernum'})) {
-    $snum = $_GET{'othernum'};
+  } else if (isset($_GET['othernum'])) {
+    $snum = $_GET['othernum'];
     $data = Get_Other($snum);
     $type = 'Others';
-  } else if (isset($_GET{'actnum'})) {
-    $snum = $_GET{'actnum'};
+  } else if (isset($_GET['actnum'])) {
+    $snum = $_GET['actnum'];
     $data = Get_Act($snum);
     $type = 'Acts';
   } else Error_Page("Viewing Insurance of nothing");

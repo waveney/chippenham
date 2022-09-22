@@ -12,24 +12,24 @@
 //var_dump($_POST);
 //var_dump($Event_Types);
 
-  if (isset($_POST{'ACTION'}) && Access('Staff','Venues')) {
+  if (isset($_POST['ACTION']) && Access('Staff','Venues')) {
     foreach ($_POST as $f=>$v) {
       if (preg_match('/E(\d*)/',$f,$res)) {
         $ev=$res[1];
         $Event = Get_Event($ev);
 
-        switch ($_POST{'ACTION'}) {
+        switch ($_POST['ACTION']) {
         case 'Delete' :
           $Event['Year'] -= 1000;
           $Event['SubEvent'] = 0;
           break;
 
         case 'Rename as':
-          $Event['SN'] = $_POST{'NewName'};
+          $Event['SN'] = $_POST['NewName'];
           break;
 
         case 'Move by':
-          if ($delta = $_POST{'Minutes'}) {
+          if ($delta = $_POST['Minutes']) {
             $Event['Start'] = timeadd($Event['Start'],$delta);
             $Event['End'] = timeadd($Event['End'],$delta);
             if ($Event['SlotEnd']) $Event['SlotEnd'] = timeadd($Event['SlotEnd'],$delta);
@@ -37,7 +37,7 @@
           break;
 
         case 'Move to':
-          if ($v = $_POST{'v'}) $Event['Venue'] = $v;
+          if ($v = $_POST['v']) $Event['Venue'] = $v;
           break;
           
         case 'Chown to':
@@ -70,12 +70,12 @@
     $se = 0;
     $SubE = " Year='$YEAR' ";
     echo "<h2>List All Events</h2>";
-  } else if (isset($_GET{'se'})) {
-    $se = $_GET{'se'};
+  } else if (isset($_GET['se'])) {
+    $se = $_GET['se'];
     $SubE = " ( SubEvent='$se' OR EventId='$se' )";
     echo "<h2>List Sub Events</h2>";
-  } else if (isset($_POST{'se'})) {
-    $se = $_POST{'se'};
+  } else if (isset($_POST['se'])) {
+    $se = $_POST['se'];
     $SubE = " ( SubEvent='$se' OR EventId='$se' )";
     echo "<h2>List Sub Events</h2>";
   } else {
