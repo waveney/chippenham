@@ -6,7 +6,8 @@
   include_once("int/ProgLib.php");
 
   echo "<h2 class=subtitle>Festival Map</h2>";
-  echo "Zoom out to find Wimborne, Zoom in for more detail.  Every marker shows a venue for something, click on the marker for more info.<p>\n";
+  echo "Zoom out to find " . Feature('FestHomeName','Wimborne') . 
+       ", Zoom in for more detail.  Every marker shows a venue for something, click on the marker for more info.<p>\n";
 
   echo "<div id=MapWrap>";
   echo "<div id=DirPaneWrap><div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div></div>";
@@ -15,7 +16,7 @@
   $Feat = 0;
   if (isset($_GET['F'])) $Feat = $_GET['F'];
 //  echo "<button class=PurpButton onclick=ShowDirect()>Directions</button> (From the Square if it does not know your location)\n";
-  Init_Map(-1,0,17,$Feat);
+  Init_Map(-1,0,Feature('MapStartZoom',17),$Feat);
   
   dotail();
 ?>

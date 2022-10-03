@@ -19,9 +19,9 @@
     elseif ($Trad['AccessKey'] != $_GET['key']) Error_Page("Sorry - This is not the right key");  // No return
 
     $Cake = sprintf("%s:%d:%06d",'Trader',$Access_Type['Participant'],$Tid ); 
-    $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'BrianMBispHarris');
-    setcookie('WMFFD',$biscuit,0,'/');
-    $_COOKIE['WMFFD'] = $biscuit;
+    $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers');
+    setcookie('FESTD',$biscuit,0,'/');
+    $_COOKIE['FESTD'] = $biscuit;
 
     dostaffhead("Trader", ["/js/Participants.js", "/js/dropzone.js"]);
 
@@ -60,9 +60,9 @@
     if ($Side['AccessKey'] != $_GET['key']) Error_Page("Sorry - This is not the right key");  // No return
 
     $Cake = sprintf("%s:%d:%06d",$Type,$Access_Type['Participant'],$SideId ); 
-    $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'BrianMBispHarris');
-    setcookie('WMFFD',$biscuit,0,'/');
-    $_COOKIE['WMFFD'] = $biscuit;
+    $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers');
+    setcookie('FESTD',$biscuit,0,'/');
+    $_COOKIE['FESTD'] = $biscuit;
 
     dostaffhead($Type, ["/js/Participants.js", "/js/dropzone.js"]);
 

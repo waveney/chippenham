@@ -70,8 +70,8 @@
   $DoHead = ['s'=>1,'a'=>1,'o'=>1,'t'=>1,'w'=>1,'v'=>0,'u'=>1,'c'=>1,'p'=>1,'ART'=>1];
 
   $Cake = sprintf("%s:%d:%06d",$CakeTypes[$t],$Access_Type['Participant'],$id ); 
-  $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'BrianMBispHarris');
-  setcookie('WMFFD',$biscuit,0,'/');
+  $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers');
+  setcookie('FESTD',$biscuit,0,'/');
 
   $USER['AccessLevel'] = $Access_Type['Participant'];
   $USER['Subtype'] = $CakeTypes[$t];

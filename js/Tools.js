@@ -251,6 +251,92 @@ function Set_ColBlobs(Blobs,MaxBlob) {
   }
 }
 
+
+function AutoInput(f,after) {
+  debugger;
+  var newval = document.getElementById(f).value;
+  var id = f;
+  if (document.getElementById(f).newid ) id = document.getElementById(f).newid;
+  var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
+  var typeval = document.getElementById('AutoType').value;
+  var refval = document.getElementById('AutoRef').value;
+  $.post("formfill.php", {'D':typeval, 'F':id, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) {
+    var elem = document.getElementById(f);
+    var m = data.match(/^\s*?@(.*)@/);
+    if (m) {
+      elem.newid = elem.name = m[1];
+    } else if (m = data.match(/^\s*?#(.*)#/)) { // Photo update 
+      m = data.split('#')
+      elem.value = m[1];
+      document.getElementById(m[2]).src = m[3];
+    } else if (m = data.match(/^\s*!(.*)!/)) $('#ErrorMessage').html( m[1] );
+
+    var dbg = document.getElementById('Debug');
+    if (dbg) $('#Debug').html( data) ;  
+    if (data.match(/FORCERELOAD54321/m)) {
+      setTimeout(function(){
+//        var Location = window.location.pathname + "?id=" + refval;  //  window.location.hostname
+//        window.location.href = Location;
+
+        window.location.reload();
+        }, 100);
+    } else if (data.match(/FORCELOADCHANGE54321/m)) {
+      setTimeout(function(){
+        var Location = window.location.pathname + "?id=" + refval;  //  window.location.hostname
+        window.location.href = Location;
+        }, 100);
+    } else if (data.match(/CALLxxAFTER/m)) {
+      after(f);
+    } else if (m=data.match(/REPLACE_ID_WITH:(.*) /m)) {
+     if (document.getElementById(f)) document.getElementById(f).id = m[1];    
+    }
+  });
+}
+
+function AutoCheckBoxInput(f) {
+  debugger;
+  var cbval = document.getElementById(f).checked;
+  var newval = (cbval?1:0); 
+  var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
+  var typeval = document.getElementById('AutoType').value;
+  var refval = document.getElementById('AutoRef').value;
+  var dbg = document.getElementById('Debug');
+  if (dbg) {
+    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) { $('#Debug').html( data)});
+  } else {
+    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval});
+  }
+}
+
+function AutoRadioInput(f,i) {
+  debugger;
+  var newval = document.getElementById(f+i).value;
+  var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
+  var typeval = document.getElementById('AutoType').value;
+  var refval = document.getElementById('AutoRef').value;
+  var dbg = document.getElementById('Debug');
+  if (dbg) {
+    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) { $('#Debug').html( data);
+    if (data.match(/FORCERELOAD54321/m)) {
+      setTimeout(function(){
+        window.location.reload();
+        }, 100);
+    } else if (data.match(/FORCELOADCHANGE54321/m)) {
+      setTimeout(function(){
+        var Location = window.location.pathname + "?id=" + refval;  //  window.location.hostname
+        window.location.href = Location;
+        }, 100);
+    } 
+   });
+  } else {
+    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval});
+  }
+
+}
+
+
+
+
 var LoadStack = [];
 
 function Register_Onload(fun,p1,p2) {

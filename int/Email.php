@@ -290,6 +290,9 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
           case 'DATES':
             $rep = FestDate($YEARDATA['FirstDay']) . " to " . FestDate($YEARDATA['LastDay'],'M') ;
             break;
+          case 'FESTDAY0':
+            $rep = FestDate($YEARDATA['FirstDay'],'L') ;
+            break;
           case 'FESTIVAL':
             $rep = $FESTSYS['FestName'];
             break;

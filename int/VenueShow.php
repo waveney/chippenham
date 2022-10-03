@@ -10,7 +10,7 @@
   global $db, $YEAR,$ll,$SpecialImage,$Pictures,$PerfTypes,$DayLongList;
 
 function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
-  global $ll,$SpecialImage,$Pictures;
+  global $ll,$SpecialImage,$Pictures,$FESTSYS;
   
   $things = 0;
 //var_dump($imps);
@@ -355,14 +355,14 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 
   if ($Poster) {
     echo "<div class=floatright id=qrcode></div>";
-    echo "<h3> To find out more scan this:<br>to visit wimbornefolk.co.uk</h3>"; // pixels should be multiple of 41
-    echo '<script type="text/javascript">
-      var qrcode = new QRCode(document.getElementById("qrcode"), {
-        text: "https://wimbornefolk.co.uk/int/QRVenueShow?V=' . $V . '",
+    echo "<h3> To find out more scan this:<br>to visit " . $FESTSYS['HostURL'] . "</h3>"; // pixels should be multiple of 41
+    echo "<script type='text/javascript'>
+      var qrcode = new QRCode(document.getElementById('qrcode'), {
+        text: 'https://" . $FESTSYS['HostURL'] . "/int/QRVenueShow?V=$V',
         width: 123,
         height: 123,
       });
-      </script>';
+      </script>";
     echo "<br clear=all></body></html>\n";
   } else {
     dotail();

@@ -10,6 +10,7 @@
   $Years2Show = ['This','Both','Next'];
 
   echo "<div class='content'><h2>General Festival Year Settings</h2>\n";
+  echo "<p><p><p>";
   $Gens = Get_Years();
   
   function Put_General($now) {

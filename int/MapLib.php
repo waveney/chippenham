@@ -93,7 +93,8 @@ function Init_Map($CentType,$Centerid,$Zoom,$Features=1) { // CentType 0=Venue, 
     $Lat = $ven['Lat'];
     $Long = $ven['Lng'];
   } else {
-    $Lat = $Long = 0;
+    $Lat = Feature('MapLat',0);
+    $Long = Feature('MapLong',0);
   }
 
   $V = $FESTSYS['V'];

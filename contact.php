@@ -27,7 +27,7 @@
     echo "<div class=smallfloatleft><div class=mini>\n";
     if ($user['WMFFemail']) echo "<a href=mailto:" . $user['WMFFemail'] . '@' . $FESTSYS['HostURL'] . ">";
     if (feature('ShowContactPhotos')) {
-      echo "<img alt='Wimborne Minster Folk Festival' style='float:left; max-width:100px;max-height:100px;margin-right:5px' src='";
+      echo "<img alt='Chippenham Folk Festival' style='float:left; max-width:100px;max-height:100px;margin-right:5px' src='";
       echo ($user['Image']?$user['Image']:"/images/WimborneFolkLogo.png") . "'>";
     }
     if ($user['Contacts'] == 1) echo "<h2 class=minittl>" . $user['SN'] . "</h2>";

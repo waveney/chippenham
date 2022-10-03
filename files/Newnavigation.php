@@ -10,7 +10,7 @@
   $V=$FESTSYS['V'];  
   $Bars = 1;
   $UserName = '';
-  if (isset($_COOKIE{'WMFF2'}) || isset($USER{'AccessLevel'})) {
+  if (isset($_COOKIE{'FEST2'}) || isset($USER{'AccessLevel'})) {
     $Bars = 2;
     $UserName = (isset($USER['Login'])? $USER['Login'] : "");
   }
@@ -24,7 +24,7 @@
       '<Home'=>'',
       'Line-Up'=>[
         'Dance'=>'LineUp?T=Dance',
-//        'Music'=>'LineUp?T=Music', 
+        'Music'=>'LineUp?T=Music', 
 //        'Comedy'=>'LineUp?T=Comedy',
 //        'Family'=>'LineUp?T=Family',
 //        'Traders'=>'int/TradeShow',
@@ -35,15 +35,15 @@
         'By Time'=>'WhatsOnWhen',
         'Now'=>'WhatsOnNow',
         'Dancing'=>"int/ShowDanceProg?Cond=1&Pub=1&Y=$YEAR",
-//        'Concerts'=>'Sherlock?t=Concert',
-//        'Music'=>'Sherlock?t=Music',
-//        'Special Events'=>'Sherlock?t=Special',
+        'Concerts'=>'Sherlock?t=Concert',
+        'Music'=>'Sherlock?t=Music',
+        'Special Events'=>'Sherlock?t=Special',
         'Family'=>'Sherlock?t=Family',
         'Ceilidhs'=>'Sherlock?t=Ceilidh',
         'Workshops'=>'Sherlock?t=Workshop',
 //        'Art'=>'Sherlock?t=Art',
 //        'Comedy'=>'Sherlock?t=Comedy',
-//        'Sessions'=>'Sherlock?t=Session',
+        'Sessions'=>'Sherlock?t=Session',
 //        'Religion'=>'Sherlock?t=Religion',
         ],
       'Information'=>[
@@ -67,26 +67,19 @@
 //        '*Buskers Bash'=>'BuskersBash',
         'Donate'=>'Donate',
          ],
-      '-Gallery'=>[
-        '2019 Photos'=>'gallery/gallery2019',
-        '2018 Photos'=>'gallery/gallery2018',
-        '2017 Photos'=>'int/ShowGallery?g=2',
-        '2016 Photos'=>'gallery/2016/index',
-        '2015 Photos'=>'gallery/2015/index',
-        '2014 Photos'=>'gallery/2014/index',
-        '2013 Photos'=>'gallery/2013/index',
-        '2017 Laugh out Loud Photos'=>'int/ShowGallery?g=3',
-       ],
-      '!/images/icons/Facebook.png'=>'!http://facebook.com/WimborneFolk',
-      '!/images/icons/Twitter.png'=>'!http://twitter.com/WimborneFolk',
-      '!/images/icons/Instagram.png'=>'!http://instagram.com/WimborneFolk',
+//      '-Gallery'=>[
+//       ],
+      '!/images/icons/Facebook.png'=>('!http://facebook.com/' . Feature('Facebook','**NONE**')),
+      '!/images/icons/Twitter.png'=>('!http://twitter.com/' . Feature('Twitter','**NONE**')),
+      '!/images/icons/Instagram.png'=>'!http://instagram.com/' . (Feature('Instagram','**NONE**')),
+      '!/images/icons/YouTube.png'=>'!http://YouTube.com/' . (Feature('YouTube','**NONE**')),
       '=Buy Tickets'=>'Tickets',
       '%Donate'=>'Donate',
       ],
     'Private'=> [  
       'Staff Tools'=>'int/Staff',
       '-Documents'=>'int/Dir',
-      '-Time Line'=>"int/TimeLine?Y=$YEAR",
+//      '-Time Line'=>"int/TimeLine?Y=$YEAR",
       "Logout $UserName"=>'int/Login?ACTION=LOGOUT',
       ],
     'Perf'=>[
@@ -128,6 +121,7 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         $HoverBar .= $str;
         continue 2;
       case '!' :
+        if (preg_match('/\*\*NONE\*\*/',$link,$res)) continue 2;
         $Minor = 1;
         $text = "<img src='" . substr($text,1) . "' class=HeaderIcon>";
         break;
@@ -136,7 +130,7 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         $text = substr($text,1);
         break;
       case '=' :
-        if ($YEARDATA['TicketControl'] > 2 || $YEARDATA['TicketControl'] == 0) continue 2;
+        if (empty($YEARDATA) || $YEARDATA['TicketControl'] > 2 || $YEARDATA['TicketControl'] == 0) continue 2;
         $xtra = "id=MenuGetTicket";
         $text = substr($text,1);
         break;
@@ -212,12 +206,12 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         default:
           break;
       }
-      if (isset($_COOKIE{'WMFF2'})) {
+      if (isset($_COOKIE['FEST2'])) {
         $MainBar .=  "<div class=MenuTesting>";
         Show_Bar($Menus['Testing']);
         $MainBar .=  "</div>";
       }
-    } else if (isset($_COOKIE{'WMFF2'}) && $UserName ) {
+    } else if (isset($_COOKIE['FEST2']) && $UserName ) {
       Show_Bar($Menus['Private']);
     }
     $MainBar .= "</div>";

@@ -7,10 +7,12 @@
   global $FESTSYS;
   echo "<h2>Master Data Settings and Global Actions</h2>\n";
 
+//var_dump($_REQUEST);
+
   if (isset($_POST['Update'])) Update_db_post('MasterData',$FESTSYS);
 
   echo "<form method=post>\n";
-  echo fm_hidden('id',1);
+  Register_AutoUpdate('MasterData',1);
   echo "<div class=tablecont><table>";
   echo "<tr>" . fm_text("Festival Name",$FESTSYS,'FestName',3);
   echo "<tr>" . fm_text("Festival Short Name",$FESTSYS,'ShortName');
@@ -29,12 +31,13 @@
   echo "<tr>" . fm_text("Default Page Banner",$FESTSYS,'DefaultPageBanner',3);
   echo "<tr>" . fm_textarea("Analytics code",$FESTSYS,'Analytics',3,3);
   echo "<tr>" . fm_text("Directions Google API key",$FESTSYS,'GoogleAPI',3);
-  echo "<tr>" . fm_textarea("Trade Terms and Conditions",$FESTSYS,'TradeTandC',3,3);
-  echo "<tr>" . fm_textarea("Trade Times",$FESTSYS,'TradeTimes',3,3);
-  echo "<tr>" . fm_textarea("Trade FAQ",$FESTSYS,'TradeFAQ',3,3);
+//  echo "<tr>" . fm_textarea("Trade Terms and Conditions",$FESTSYS,'TradeTandC',3,3);
+//  echo "<tr>" . fm_textarea("Trade Times",$FESTSYS,'TradeTimes',3,3);
+//  echo "<tr>" . fm_textarea("Trade FAQ",$FESTSYS,'TradeFAQ',3,3);
+  echo "<tr>" . fm_textarea("Footer Text",$FESTSYS,'FooterText',3,3);
   echo "</table></div>\n";
 
-  echo "<Center><input type=Submit name='Update' value='Update'></center>\n";
+//  echo "<Center><input type=Submit name='Update' value='Update'></center>\n";
   echo "</form>\n";
   
   echo "Features: Separate features by lines then Name:Value:Comment<p>";

@@ -242,7 +242,7 @@ function Invoice_Print(&$inv) {
   $pdf->Text($padx+15*$cw,$pady+50*$ch,Feature('FestLegalAddr2',"Hanham Road, Wimborne"));
   $pdf->Text($padx+15*$cw,$pady+51*$ch,Feature('FestLegalAddr3',"Dorset, BH21 1AS"));
   
-  $pdf->Text($padx+1*$cw,$pady+53*$ch,Feature('FestTresEmail',"Email:Treasurer@wimbornefolk.co.uk"));
+  $pdf->Text($padx+1*$cw,$pady+53*$ch,Feature('FestTresEmail',"Email:Treasurer@"));
 
   if (Feature('FestCompanyNumber')) $pdf->Text($padx+36*$cw,$pady+53*$ch,"Registered in England: " . Feature('FestCompanyNumber'));
   if (Feature('FestVatNumber')) {

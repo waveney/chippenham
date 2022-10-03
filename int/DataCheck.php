@@ -91,13 +91,13 @@ function Links_Email($Addr,&$list) {
     case 'o':
     case 't':
       $Mess .= "You are recorded as the contact person for the " . $e[0] . " <b>" . $e[3] . "</b> you can update, amend and cancel your record " .
-        "<a href=https://wimbornefolk.co.uk/int/Access?i=" . $e[2] . "&t=" . $e[1] . "&k=" . $e[4] . ">Here</a><p>";
+        "<a href=https://" . $FESTSYS['HostURL'] . "/int/Access?i=" . $e[2] . "&t=" . $e[1] . "&k=" . $e[4] . ">Here</a><p>";
       break;
 
     case 'w':
     case 'v':
       $Mess .= "You are recorded as a " . $e[0] . " you can update, amend and cancel your record " .
-        "<a href=https://wimbornefolk.co.uk/int/Access?i=" . $e[2] . "&t=" . $e[1] . "&k=" . $e[4] . ">Here</a><p>";
+        "<a href=https://" . $FESTSYS['HostURL'] . "/int/Access?i=" . $e[2] . "&t=" . $e[1] . "&k=" . $e[4] . ">Here</a><p>";
       break;
 
     case 'sa':

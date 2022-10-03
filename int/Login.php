@@ -22,7 +22,7 @@ function Logon(&$use=0) {
     if (!$use && $ans) {
       $cry = crypt($pwd,'WM');
       if ($cry != $ans['password']) {
-        setcookie('WMFF2','',-1,'/');
+        setcookie('FEST2','',-1,'/');
         return "Username/Password Error";
       }
     } else {
@@ -30,8 +30,8 @@ function Logon(&$use=0) {
     }
     if ($ans['AccessLevel']) {
       $ans['Yale'] = rand_string(40);
-      setcookie('WMFF2',$ans['Yale'],($Rem ? mktime(0,0,0,1,1,$CALYEAR+1) : 0),'/' );
-      $_COOKIE['WMFF2'] = $ans['Yale'];
+      setcookie('FEST2',$ans['Yale'],($Rem ? mktime(0,0,0,1,1,$CALYEAR+1) : 0),'/' );
+      $_COOKIE['FEST2'] = $ans['Yale'];
       Put_User($ans);
       $USER=$ans;
       $USERID = $USER['UserId'];
@@ -148,7 +148,7 @@ function NewPasswd() {
             $ans['Yale'] = rand_string(40);
             $USER = $ans;
             $USERID = $user;
-            setcookie('WMFF2',$ans['Yale'],($_POST['RememberMe'] ? mktime(0,0,0,1,1,$CALYEAR+1) : 0 ),'/');
+            setcookie('FEST2',$ans['Yale'],($_POST['RememberMe'] ? mktime(0,0,0,1,1,$CALYEAR+1) : 0 ),'/');
                   Put_User($ans);
                  include ("Staff.php"); // no return wanted
             exit;
@@ -182,7 +182,7 @@ function NewPasswd() {
       Login(Logon()); // No Return    
     case 'LOGOUT' :
       $USER = 0;
-      setcookie('WMFF2',0,1,'/');
+      setcookie('FEST2',0,1,'/');
       if (@ $CONF['testing']) Login();
       include_once("../index.php"); 
       exit;

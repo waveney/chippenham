@@ -3,7 +3,7 @@ img {
   border-style: none;
 }
 body {
-  background:#00344c ;
+  background:black; /*#00344c ;*/
   min-width:320px;
   height:100%;
   color:#000000;

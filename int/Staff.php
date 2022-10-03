@@ -1,9 +1,9 @@
 <?php
   include_once("fest.php");
   /* Remove any Participant overlay */
-  if (isset($_COOKIE['WMFFD'])) {
-    unset($_COOKIE['WMFFD']);
-    setcookie('WMFFD','',1,'/');
+  if (isset($_COOKIE['FESTD'])) {
+    unset($_COOKIE['FESTD']);
+    setcookie('FESTD','',1,'/');
   }
   A_Check('Upload');
   $host= "https://" . $_SERVER['HTTP_HOST'];
@@ -43,7 +43,9 @@
   if (isset($Years[$YEARDATA['PrevFest']])) echo "<a href=Staff?Y=" . $YEARDATA['PrevFest'] .">" . $YEARDATA['PrevFest'] . "</a> &nbsp; ";
   if (isset($Years[$YEARDATA['NextFest']])) echo "<a href=Staff?Y=" . $YEARDATA['NextFest'] .">" . $YEARDATA['NextFest'] . "</a>\n";
   echo "</h2></div>";
-  echo "<h2>Staff Pages - $YEAR <span style='font-size:16;font-weight:normal;'>For other years select &gt;&gt;&gt;</span></h2>\n";
+  echo "<h2>Staff Pages - $YEAR";
+  if (isset($Years[$YEARDATA['PrevFest']])) echo "<span style='font-size:16;font-weight:normal;'>For other years select &gt;&gt;&gt;</span>";
+  echo "</h2>\n";
   
   $txt = "<div class=tablecont><table border width=100% class=Staff style='min-width:800px'>\n";
    
@@ -79,67 +81,6 @@
 //      $txt .= "<li class=smalltext><a href=TLImport1>Timeline Import 1</a>\n";
       }
     $txt .= "</ul><p>\n";
-  }
-
-// *********************** Users  **************************************************************
-  if ($x = StaffTable('Any','Users')) {
-    $txt .= $x;
-    $txt .= "<ul>\n";
-    $txt .= "<li><a href=Login?ACTION=NEWPASSWD>New Password</a>\n";
-    if (Access('Committee','Users')) {
-      $txt .= "<li><a href=AddUser>Add User</a>";
-      $txt .= "<li><a href=ListUsers?FULL>List Committee/Group Users</a>";
-      $txt .= "<li><a href=UserDocs>Storage Used</a>";
-      $txt .= "<li><a href=ContactCats>Contact Categories</a>";      
-    } else {
-      $txt .= "<li><a href=ListUsers>List Committee/Group Users</a>";    
-    }
-    $txt .= "</ul><p>\n";
-  }
-
-// *********************** MUSIC ****************************************************
-  if ($x = StaffTable('Music','Music')) {
-    $txt .= $x;
-    $txt .= "<ul>\n";
-    $txt .= "<li><a href=MusicFAQ>Music FAQ</a>\n";
-    if (Access('Staff')) {
-      $txt .= "<li><a href=ListMusic?SEL=Avail&Y=$YEAR&T=M>List Music Acts Available</a>\n";
-      $txt .= "<li><a href=ListMusic?SEL=Booking&Y=$YEAR&T=M>List Music Acts Booking</a>\n";
-      $txt .= "<li><a href=ListMusic?SEL=BookingLastYear&Y=$YEAR&T=M>List Music Acts Booking Last Year</a>\n";
-      $txt .= "<li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=M>List All Music Acts in Database</a>\n";
-
-//      $txt .= "<li>Music Acts Summary"; //<a href=MusicSummary?Y=$YEAR>Music Acts Summary</a>\n";
-    }
-    if (Access('Staff','Music')) {
-//      $txt .= "<li>Invite Music Acts\n";
-      $txt .= "<li><a href=CreatePerf?T=Music&Y=$YEAR>Add Music Act to Database</a>";
-/*
-//      if ($YEAR == $PLANYEAR) $txt .= "<li><a href=MusicProg?>Edit Music Programming</a>";
-*/
-//      $txt .= "<li>Edit Music Programming";
-      if (Access('SysAdmin')) {
-        $txt .= "<li><a href=ShowMusicProg?Y=$YEAR>View Music Programming\n</a>"; 
-      } else {
-//        $txt .= "<li>View Music Programming\n"; 
-      }
-    } else {
-//      $txt .= "<li><a href=ShowMusicProg?Y=$YEAR>View Music Programme</a>";
-    }
-    if (Access('SysAdmin')) {
-      $txt .= "<p><div class=tablecont><table><tr><td>";
-      $txt .= "<li class=smalltext><a href=ShowMusicProg?Pub=1&Y=$YEAR>Public Music Programme</a>";
-      $txt .= "<li class=smalltext><a href=MusicTypes>Set Music Types</a>";
-//      $txt .= "<li class=smalltext><a href=ResetImageSizes?PERF>Scan and save Image sizes</a>";
-//      $txt .= "<li class=smalltext><a href=CopyActYear>Copy all ActYear data to SideYear</a>";
-      $txt .= "<li class=smalltext><a href=FixBug5?Y=$YEAR>Create/Copy missing Music SideYear records after Date Change</a>";
-      $txt .= "<li class=smalltext><a href=CopyLast2This?Y=$YEAR>Create/Copy Last years music acts to this year</a>";
-      $txt .= "</table></div><p>\n";
-    }
-    $txt .= "<li><a href=ContractView?t=1>Dummy Music Contract</a>";
-    $txt .= "<li><a href=LiveNLoudView?Y=$YEAR>Show Live N Loud applications</a>";
-    $txt .= "<li><a href=BuskersBashView?Y=$YEAR>Show Buskers Bash applications</a>";
-//    if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=LiveNLoudEmail>Send LNL bulk email</a>";
-    $txt .= "</ul>\n";
   }
   
 // *********************** DANCE ****************************************************
@@ -198,7 +139,7 @@
       $txt .= "<li class=smalltext><a href=CarPark?Y=$YEAR>Car Park Tickets</a>";
       if ($YEAR == $PLANYEAR) $txt .= "<li class=smalltext><a href=WristbandsSent>Mark Wristbands Sent</a>";
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=1&Pub=1&Y=$YEAR>Public Dance Programme</a>";
-      $txt .= "<li class=smalltext><a href=FixBug3?Y=$YEAR>Create/Copy missing SideYear records after Date Change</a>";
+//      $txt .= "<li class=smalltext><a href=FixBug3?Y=$YEAR>Create/Copy missing SideYear records after Date Change</a>";
 //      $txt .= "<li class=smalltext><a href=FixBug2?Y=$YEAR>Change order of message records</a>";
       $txt .= "<td width=300px>";
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=0&Pub=1&Head=0&Day=Sat&Y=$YEAR>Dance Programme - Sat - no headers</a>";
@@ -211,6 +152,52 @@
     }
     $txt .= "</ul>\n";
   }
+
+// *********************** MUSIC ****************************************************
+  if ($x = StaffTable('Music','Music')) {
+    $txt .= $x;
+    $txt .= "<ul>\n";
+    $txt .= "<li><a href=MusicFAQ>Music FAQ</a>\n";
+    if (Access('Staff')) {
+      $txt .= "<li><a href=ListMusic?SEL=Avail&Y=$YEAR&T=M>List Music Acts Available</a>\n";
+      $txt .= "<li><a href=ListMusic?SEL=Booking&Y=$YEAR&T=M>List Music Acts Booking</a>\n";
+      $txt .= "<li><a href=ListMusic?SEL=BookingLastYear&Y=$YEAR&T=M>List Music Acts Booking Last Year</a>\n";
+      $txt .= "<li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=M>List All Music Acts in Database</a>\n";
+
+//      $txt .= "<li>Music Acts Summary"; //<a href=MusicSummary?Y=$YEAR>Music Acts Summary</a>\n";
+    }
+    if (Access('Staff','Music')) {
+//      $txt .= "<li>Invite Music Acts\n";
+      $txt .= "<li><a href=CreatePerf?T=Music&Y=$YEAR>Add Music Act to Database</a>";
+/*
+//      if ($YEAR == $PLANYEAR) $txt .= "<li><a href=MusicProg?>Edit Music Programming</a>";
+*/
+//      $txt .= "<li>Edit Music Programming";
+      if (Access('SysAdmin')) {
+        $txt .= "<li><a href=ShowMusicProg?Y=$YEAR>View Music Programming\n</a>"; 
+      } else {
+//        $txt .= "<li>View Music Programming\n"; 
+      }
+    } else {
+//      $txt .= "<li><a href=ShowMusicProg?Y=$YEAR>View Music Programme</a>";
+    }
+    if (Access('SysAdmin')) {
+      $txt .= "<p><div class=tablecont><table><tr><td>";
+      $txt .= "<li class=smalltext><a href=ShowMusicProg?Pub=1&Y=$YEAR>Public Music Programme</a>";
+      $txt .= "<li class=smalltext><a href=MusicTypes>Set Music Types</a>";
+//      $txt .= "<li class=smalltext><a href=ResetImageSizes?PERF>Scan and save Image sizes</a>";
+//      $txt .= "<li class=smalltext><a href=CopyActYear>Copy all ActYear data to SideYear</a>";
+//      $txt .= "<li class=smalltext><a href=FixBug5?Y=$YEAR>Create/Copy missing Music SideYear records after Date Change</a>";
+//      $txt .= "<li class=smalltext><a href=CopyLast2This?Y=$YEAR>Create/Copy Last years music acts to this year</a>";
+      $txt .= "</table></div><p>\n";
+    }
+    $txt .= "<li><a href=ContractView?t=1>Dummy Music Contract</a>";
+//    $txt .= "<li><a href=LiveNLoudView?Y=$YEAR>Show Live N Loud applications</a>";
+//    $txt .= "<li><a href=BuskersBashView?Y=$YEAR>Show Buskers Bash applications</a>";
+//    if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=LiveNLoudEmail>Send LNL bulk email</a>";
+    $txt .= "</ul>\n";
+  }
+
 // *********************** Comedy, Childrens Ent, Other Perf
   if ($x = StaffTable('Comedy','Comedy')) {
     $txt .= $x;
@@ -348,7 +335,8 @@
     if (Access('Staff','Venues')) $txt .= "<li><a href=VenueComplete?Y=$YEAR>Mark Venues as Complete</a>\n";
     if (Access('Committee','Venues')) $txt .= "<li><a href=MapPoints>Additional Map Points</a>\n";
     if (Access('SysAdmin')) $txt .= "<li><a href=MapPTypes>Map Point Types</a>\n";
-    if (Access('SysAdmin')) $txt .= "<li><a href=AddVenue?NEWACCESS onClick=\"javascript:return confirm('are you sure you update these?');\">Generate New Access Keys for Venues</a>\n";
+    if (Access('SysAdmin')) $txt .= "<li><a href=AddVenue?NEWACCESS onClick=\"javascript:return confirm('are you sure you update these?');\">" .
+                                    "Generate New Access Keys for Venues</a>\n";
     if ($YEAR == $PLANYEAR && Access('Staff')) $txt .= "<li><a href=VenueActive>Refresh Active Venue List</a>\n";
     
     $txt .= "</ul>\n";
@@ -360,7 +348,8 @@
     $txt .= "<ul>\n";
 //    $txt .= "<li><a href=StewardView>Stewarding Applications (old)</a>\n";
     $txt .= "<li><a href=Volunteers?A=New>Volunteering Application Form</a>\n";
-    $txt .= "<li><a href=Volunteers?A=List>Volunteers (new)</a>\n";
+    $txt .= "<li><a href=Volunteers?A=List>Volunteers</a>\n";
+    $txt .= "<li><a href=VolCats>Volunteer Categories</a>\n";
     if (Access('Staff','Photos')) {
       $txt .= "<li><a href=PhotoUpload>Photo Upload</a>";
       $txt .= "<li><a href=PhotoManage>Photo Manage</a>";
@@ -373,7 +362,6 @@
     if (Access('Staff')) $txt .= "<li><a href=CarerTickets?Y=$YEAR>Manage Carer / Partner Tickets</a>\n"; 
     if (Access('Staff','Sponsors')) $txt .= "<li><a href=TaxiCompanies>Manage Taxi Company List</a>\n"; 
     if (Access('SysAdmin')) $txt .= "<li><a href=ConvertPhotos>Convert Archive Format</a>";
-//    $txt .= "<li><a href=ContractView>Dummy Music Contract</a>";
     $txt .= "</ul>\n";
   }
 
@@ -418,6 +406,33 @@
     $txt .= "</ul>";
   }
 
+// *********************** Users  **************************************************************
+  if ($x = StaffTable('Any','Users')) {
+    $txt .= $x;
+    $txt .= "<ul>\n";
+    $txt .= "<li><a href=Login?ACTION=NEWPASSWD>New Password</a>\n";
+    if (Access('Committee','Users')) {
+      $txt .= "<li><a href=AddUser>Add User</a>";
+      $txt .= "<li><a href=ListUsers?FULL>List Committee/Group Users</a>";
+      $txt .= "<li><a href=UserDocs>Storage Used</a>";
+      $txt .= "<li><a href=ContactCats>Contact Categories</a>";      
+    } else {
+      $txt .= "<li><a href=ListUsers>List Committee/Group Users</a>";    
+    }
+    if (Access('SysAdmin')) {
+//      $txt .= "<p>";
+//      $txt .= "<li class=smalltext><a href=ImportDebtorCodes>Import Debtor Codes</a>";
+//      $txt .= "<li class=smalltext><a href=ImportProgAds>Import Programme ads</a>\n";  
+//      $txt .= "<p>";
+      $txt .= "<p>";
+      $txt .= "<li><a href=Sponsors>Sponsors</a>\n";
+      $txt .= "<li><a href=WaterManage>Water Refills</a>\n";
+
+//      $txt .= "<li><a href=ImportOldInvoice>Import Old Invoices</a>\n";  
+    }
+    $txt .= "</ul><p>\n";
+  }
+
 // *********************** GENERAL ADMIN *********************************************************
   if ($x = StaffTable('Any','General Admin')) {
     $txt .= $x;
@@ -437,7 +452,8 @@
     if (Access('Staff')) $txt .= "<li><a href=AdminGuide>Admin Guide</a> \n";
     if (Access('SysAdmin')) {
 //      $txt .= "<li><a href=BannerManage>Manage Banners</a> \n";
-      if ( Capability("EnableMusic") || Capability("EnableMusic")) $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
+      $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
+      $txt .= "<li><a href=TsAndCs?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";
       $txt .= "<li><a href=MasterData>Festival System Data Settings</a> \n";
     }

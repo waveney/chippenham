@@ -39,7 +39,7 @@
       $id = Insert_db_post('SignUp',$art);
     
       ART_Email_Signup($art,'ART_Application',$art['Email']);
-      ART_Email_Signup($art,'ART_Debbie','art@wimbornefolk.co.uk');
+      ART_Email_Signup($art,'ART_Debbie','art@');
       
       echo "<h2 class=subtitle>Thankyou for submitting your application</h2>";
       if (Access('Staff')) echo "<h2><a href=ArtView>Back to List of applications</a></h2>";
@@ -50,7 +50,7 @@
     $id = $_POST['id'];
     $art = Get_Signup($id);
     Update_db_post('SignUp',$art);
-    if (!Access('Staff')) ART_Email_Signup($art,'ART_Debbie_Update','art@wimbornefolk.co.uk');    
+    if (!Access('Staff')) ART_Email_Signup($art,'ART_Debbie_Update','art@');    
     $_POST = $art;
   } else if (isset($_POST['ACTION'])) {
     $id = $_POST['id'];
@@ -87,7 +87,8 @@
   echo "<tr>" . fm_radio('Is this a',$ArtValues,$_POST,'Tickbox2');
   echo "<tr>" . fm_text('Describe your genre of art',$_POST,'Style',4);  
   echo "<tr>" . fm_radio('Do you require a stall',$ArtPosition,$_POST,'Tickbox3');  
-  echo "<tr>" . fm_text('Are you prepared to deliver an hour’s workshop to the public',$_POST,'Instr4',3) . "<td>The festival may be prepared to assist with any reasonable expenses for products";
+  echo "<tr>" . fm_text('Are you prepared to deliver an hour’s workshop to the public',$_POST,'Instr4',3) . 
+       "<td>The festival may be prepared to assist with any reasonable expenses for products";
   echo "<tr>" . fm_text("Social Media link(s)",$_POST,'Social',4);
   if (Access('SysAdmin')) {
     if ($id>0) echo "<tr><td class=NotSide>" . $_POST['AccessKey'] . "<td><a href=Access?i=$id&t=ART&k=" . $_POST['AccessKey'] . ">Use</a>" . help('Testing');
@@ -101,7 +102,8 @@
     
     }
   } else {
-    echo "Please submit your application, you can update it at any time.<p>  You will be notified by email if you are sucessful, and be asked to pay any fees if you are selling<p>";
+    echo "Please submit your application, you can update it at any time.<p>  " .
+         "You will be notified by email if you are sucessful, and be asked to pay any fees if you are selling<p>";
     echo "<input type=submit name=submit value='Submit Application' onclick=$('#Patience').show()><p>\n";   
     echo "<h2 hidden class=Err id=Patience>This takes a few moments, please be patient</h2>";
   }

@@ -5,7 +5,7 @@
   $id    = $_POST['I'];
   $type  = $_POST['D'];
 
-//  var_dump($_POST);  
+  var_dump($_POST);  
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
@@ -196,6 +196,46 @@
 
     // SHOULD never get here...    
     exit;  
+    
+  case 'Volunteers':
+    include_once("GetPut.php");
+    if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {        
+      $vfld = $mtch[1];
+      $Catid = $mtch[2];
+      $Year = $mtch[3];
+      switch ($vfld) {
+        case 'Props':
+        case 'Likes':
+        case 'Dislikes':
+        case 'Other1':
+        case 'Other2':
+        case 'Other3':
+          $VCY = Gen_Get_Cond1('VolCatYear'," Volid=$id AND Catid=$Catid AND Year=$Year ");
+          if (!$VCY) $VCY = ['Volid'=>$id,'CatId'=>$Catid,'Year'=>$Year, 'Props'=>0];
+          $VCY[$vfld] = $Value;
+          return Gen_Put('VolCatYear',$VCY);
+        default: 
+          $VY = Gen_Get_Cond1('VolYear'," Volid=$id AND Year=$Year ");
+//echo "<br>A:"; var_dump($VY);
+          if (!$VY) $VY = ['Volid'=>$id, 'Year'=>$Year];
+          $VY[$vfld] = $Value;
+//echo "<br>B:"; var_dump($VY);
+          return Gen_Put('VolYear',$VY);
+      }
+    } else {
+      $N = Gen_Get($type,$id);
+      $N[$field] = $Value;
+      echo Gen_Put($type,$N);   
+    }
+    exit;
+     
+  default:
+    include_once("GetPut.php");
+    $N = Gen_Get($type,$id);
+    $N[$field] = $Value;
+    echo Gen_Put($type,$N);
+ 
+    exit;
      
   }
 ?>

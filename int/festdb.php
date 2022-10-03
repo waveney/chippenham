@@ -5,7 +5,7 @@ $TableIndexes = array(  'Sides'=>'SideId', 'SideYear'=>'syId', 'FestUsers'=>'Use
                         'Bugs'=>'BugId', 'BigEvent'=>'BigEid', 'DanceTypes'=>'TypeId', 
                         'Directory'=>'DirId', 'Documents'=>'DocId', 'EventTypes'=>'ETypeNo',
                         'MusicTypes'=>'TypeId','TimeLine'=>'TLid', 'BandMembers'=>'BandMemId', 'ActYear'=>'ActId',
-                        'TradeLocs'=>'TLocId','Trade'=>'Tid','TradeYear'=>'TYid','VolYear'=>'VYid'
+                        'TradeLocs'=>'TLocId','Trade'=>'Tid','TradeYear'=>'TYid'
                         );
 
 function db_open () {
@@ -32,7 +32,7 @@ function table_fields($table) {
   static $tables = array();
   if (isset($tables[$table])) return $tables[$table];
 
-  $qry = "SELECT Column_Name, Data_type FROM information_schema.columns WHERE table_schema='" . $CONF['dbase'] ."' AND table_name='" . $table . "'";
+  $qry = "SELECT COLUMN_NAME, DATA_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='" . $CONF['dbase'] ."' AND TABLE_NAME='" . $table . "'";
   $Flds = $db->query($qry);
   while ($Field = $Flds->fetch_array()) {
     $tables[$table][$Field['COLUMN_NAME']] = $Field['DATA_TYPE'];
@@ -167,7 +167,6 @@ function Insert_db($table, &$from, &$data=0, $proced=1) {
   $fcnt = 0;
   $Flds = table_fields($table);
   $indxname = (isset($TableIndexes[$table])?$TableIndexes[$table]:'id');
-//echo "Fields: "; var_dump($from);
   foreach ($Flds as $fname=>$ftype) {
     if (isset($from[$fname]) && $from[$fname] != '' && $indxname!=$fname ) { 
       if ($fcnt++ > 0) { $newrec .= " , "; }
@@ -184,11 +183,10 @@ function Insert_db($table, &$from, &$data=0, $proced=1) {
         $newrec .= " $fname=$dbform ";
       } else {
         if ($data) $data[$fname] = $from[$fname];
-        $newrec .= " $fname=$from[$fname] ";
+        $newrec .= " $fname=$from[$fname]";
       }
     }
   }
-//var_dump($newrec);
   if ($proced) {
     $insert = $db->query($newrec);
     if ($insert) {
@@ -297,6 +295,13 @@ function Capability($Name,$default='') {  // Return value of Capability if set f
     }
   }
   if (isset($Capabilities[$Name])) return $Capabilities[$Name];
+  return $default;
+}
+
+function TnC($Name,$default='') {  // Return value of T and C if set from TsAndCs
+  static $TsAndCs;
+  if (!$TsAndCs) $TsAndCs = Gen_Get("TsAndCs",1);
+  if (isset($TsAndCs[$Name])) return $TsAndCs[$Name];
   return $default;
 }
 

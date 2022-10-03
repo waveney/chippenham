@@ -2,7 +2,8 @@
 
 function ViewFile($file,$read=1,$targetname='',$Single=1) {
 global $USERID;
-
+global $FESTSYS;
+  
   $path = pathinfo($file );
   $Dir = $path['dirname'];
   $BName = $path['basename'];
@@ -80,7 +81,7 @@ if ($read) { // Attempt to read rather than download
       echo "<iframe id=$id src='Temp/$tf.html' width=100%  height=" . ($Single?"800":"100%") . " $onload></iframe>"; 
     } else {
       copy($file,"Temp/$tf");
-      echo "<iframe id=$id src='https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwimbornefolk.co.uk%2Fint%2FTemp%2F$tf' width=100% height=" .  
+      echo "<iframe id=$id src='https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2F" . $FESTSYS['HostURL'] . "%2Fint%2FTemp%2F$tf' width=100% height=" .  
           ($Single?"800":"100%") . " $onload></iframe>";
       if ($Single) dotail();
     }

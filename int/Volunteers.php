@@ -11,6 +11,8 @@
     VolAction('NotThisYear');
   } else if (isset($_REQUEST['Delete'])) {
     VolAction('Delete');
+  } else if (isset($_REQUEST['ACTION'])) {
+    VolAction($_REQUEST['ACTION']);
   } else if (isset($_REQUEST['A'])) {
     VolAction($_REQUEST['A']);
   } else {

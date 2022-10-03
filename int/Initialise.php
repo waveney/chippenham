@@ -315,7 +315,7 @@ function Setup_Sysadmin() {
   $ans['Yale'] = rand_string(40);
   $USER = $ans;
   $USERID = $userid;
-  setcookie('WMFF2',$ans['Yale'], mktime(0,0,0,1,1,$YEAR+1),'/');
+  setcookie('FEST2',$ans['Yale'], mktime(0,0,0,1,1,$YEAR+1),'/');
   Put_User($ans);
 }
 

@@ -50,9 +50,9 @@ function Set_User() {
   if (isset($USER)) return;
   $USER = array();
   $USERID = 0;
-  if (isset($_COOKIE['WMFFD'])) {
-    $biscuit = $_COOKIE['WMFFD'];
-    $Cake = openssl_decrypt($biscuit,'aes-128-ctr','Quarterjack',0,'BrianMBispHarris');
+  if (isset($_COOKIE['FESTD'])) {
+    $biscuit = $_COOKIE['FESTD'];
+    $Cake = openssl_decrypt($biscuit,'aes-128-ctr','Quarterjack',0,'MollySummers');
     $crumbs = explode(':',$Cake);
     $USER['Subtype'] = $crumbs[0];
     $USER['AccessLevel'] = $crumbs[1];
@@ -61,8 +61,9 @@ function Set_User() {
     $USER = array();
     $USERID = 0;
   }
-  if (isset($_COOKIE['WMFF2'])) {
-    $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['WMFF2'] . "'");
+  
+  if (isset($_COOKIE['FEST2'])) {
+    $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['FEST2'] . "'");
     if ($res) {
       $USER = $res->fetch_assoc();
       $USERID = $USER['UserId'];
@@ -81,14 +82,14 @@ function Set_User() {
       }
     }
   } 
-  if (isset($_COOKIE['WMFF'])) {
-    $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['WMFF'] . "'");
+  if (isset($_COOKIE['FEST'])) {
+    $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['FEST'] . "'");
     if ($res) {
       $USER = $res->fetch_assoc();
       $USERID = $USER['UserId'];
       $db->query("UPDATE FestUsers SET LastAccess='" . time() . "' WHERE UserId=$USERID" );
-      setcookie('WMFF2',$USER['Yale'], mktime(0,0,0,1,1,$CALYEAR+1) ,'/' );
-      $_COOKIE['WMFF2'] = $ans['Yale'];
+      setcookie('FEST2',$USER['Yale'], mktime(0,0,0,1,1,$CALYEAR+1) ,'/' );
+      $_COOKIE['FEST2'] = $ans['Yale'];
     }
   } 
 }
@@ -272,6 +273,7 @@ function Get_Years() {
 
 $YEARDATA = Get_General();
 $PLANYEARDATA = Get_General($PLANYEAR);
+//var_dump($YEARDATA,$PLANYEARDATA);exit;
 if ($PLANYEARDATA['Years2Show'] > 0) $NEXTYEARDATA = Get_General($PLANYEARDATA['NextFest']);
 
 function First_Sent($stuff) {

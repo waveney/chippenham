@@ -4,7 +4,7 @@
   Set_User();
   $hpre = Feature('HeaderPreTools');
   if ($hpre) echo $hpre;
-  if (isset($_COOKIE{'WMFF'}) || isset($_COOKIE{'WMFF2'})) {
+  if (isset($_COOKIE['FEST']) || isset($_COOKIE['FEST2'])) {
     echo "<div class=Staff><div class=navigation>";
     echo "<a href=/int/Staff.php onmouseover=NoHoverSticky()>Staff Tools</a>";
     if (!isset($USER{'Subtype'})) {

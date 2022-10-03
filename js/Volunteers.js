@@ -13,6 +13,10 @@ function Update_VolClasses() {
   if (Odays) { $(".SC_Days").show() } else { $(".SC_Days").hide() } 
 }
 
+function Update_VolCats(cls) {
+  $('.'+cls).toggle();
+}
+
 $(document).ready(function() {
   Update_VolClasses();
 } );

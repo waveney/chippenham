@@ -239,7 +239,7 @@ function BB_Action($action,$id) {
     // InvoiceLib needs list of reserved codes
     $bb['State'] = $StatesSignup['Accepted'];
     if ($BBDepositValue) Invoice_AssignCode("BB$id",$BBDepositValue*100,3,$id,$bb['SN'],"Buskers Bash"); 
-    Email_BB_Signup($bb,'BB_Invite',[['to',$bb['Email']],['replyto','BuskersBash@wimbornefolk.co.uk']]);
+    Email_BB_Signup($bb,'BB_Invite',[['to',$bb['Email']],['replyto','BuskersBash@']]);
     break;
     
   case 'Resend':

@@ -3,7 +3,7 @@
   include_once("int/DateTime.php");
 
   dohead("Buy Tickets and Passes",[],1);
-  global $YEARDATA,$YEAR;
+  global $YEARDATA,$YEAR,$FESTSYS;
   set_ShowYear();
   include_once "int/ProgLib.php";
   
@@ -13,8 +13,8 @@
   }
   
   echo "<div class=biodiv>";
-  echo "<img src='https://wimbornefolk.co.uk/images/Weekend-Wristband.jpg' class=bioimg />";
-  echo "<p>Tickets for Wimborne Minster Folk Festival</p>";
+  echo "<img src='/images/Weekend-Wristband.jpg' class=bioimg />";
+
   echo "</div>";
 
   if ($YEARDATA['TicketControl'] == 1 && Days2Festival() < 10) {
@@ -25,13 +25,13 @@
          "Camping may be purchased at the campsite gate if space is available.<p>";
   }
 
-  echo "Select from the options below to purchase your passes and tickets for Wimborne Minster Folk Festival " . substr($YEAR,0,4) . ".<p>";
+  echo "Select from the options below to purchase your passes and tickets for " . $FESTSYS['FullName'] . " " . substr($YEAR,0,4) . ".<p>";
  
   echo "The weekend Pass is access to everything (apart from events at the Tivoli and events before Friday).  The Saturday Pass gives access to everything on Saturday only.  
   Event tickets are just access to that individual event.<p>";
 
   if ($YEARDATA['BookingFee']) echo "Please note that there is a booking fee of " . $YEARDATA['BookingFee'] . " when ordering tickets online.<p> ";
-  echo "Please <a href='mailto:carers@wimbornefolk.co.uk'>Contact Us</a> if you require a carer ticket.<p>";
+  echo "Please <a href='mailto:carers@XXX'>Contact Us</a> if you require a carer ticket.<p>";
 
   if ($YEARDATA['CampingCost'] && $YEARDATA['CampingControl'] == 1) {
     echo "Order your festival tickets and camping together, by selecting <strong>Continue Shopping</strong> ";
@@ -202,9 +202,10 @@
        "then book your tickets with us!</p>";
 
   if ($YEARDATA['TicketControl'] == 1) {
-    echo "<h2>Official Ticket Outlets</h2>
-<p>Tickets and day/weekend passes are on sale at these Wimborne outlets:</p>
-<ul><li><strong>Tourist Information Centre</strong>, Wimborne, BH21 1HR &#8211; Telephone bookings: 01202 886116</li></ul>";
+    echo "<h2>Official Ticket Outlets</h2>";
+    echo "<p>Tickets and day/weekend passes are on sale at these outlets:</p>";
+    
+    // TODO Add a list for fest
   }
   
   dotail();

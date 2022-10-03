@@ -6,12 +6,12 @@
 ?>
 <div class="biodiv">
 <img src="/images/Young-Volunteer-2015.jpg" alt="Wimborne Minster Folk Festival" class="bioimg" />
-<p>Apply to volunteer at Wimborne Minster Folk Festival</p>
+<p>Apply to volunteer at Chippenham Folk Festival</p>
 </div>
 
-Please volunteer at Wimborne Minster Folk Festival<p>
+Please volunteer at Chippenham Folk Festival<p>
 
-We are looking for vibrant people to be part of the festival team who are prepared to work in shifts, for at least 6-8 hours for the festival.<p>
+We are looking for vibrant people to be part of the festival team who are prepared to work in shifts.<p>
 
 You must be over 18, reliable, have good people skills and be able to remain pleasant and cheerful whatever the circumstances!<p>
 
