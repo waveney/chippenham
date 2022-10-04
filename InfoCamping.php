@@ -7,7 +7,7 @@
   include_once("int/MapLib.php");
 ?>
 
-There will be no festival provided campsites this year.  There are some around that may have space.<p>
+Details to follow.
 
 <?php
 

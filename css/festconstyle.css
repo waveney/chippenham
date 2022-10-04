@@ -48,7 +48,7 @@ input[type=submit], .FakeButton, input[type=submit] .Button0 {
   border:2px;
   border-color:white;
   margin:2px;
-  background-color:#8234C6;
+  background-color:var(--main-col-dark);/*#8234C6;*/
   color:white;
 }
 
@@ -59,7 +59,7 @@ input[type=submit] .Button1 {
   border-color:white;
   margin:2px;
   color:white;
-  background-color:#82f4C6;
+  background-color:var(--main-col-dark);/*#8234C6;*/
 }
 input[type=submit] .Button2 {
   font-size:20px;
@@ -68,7 +68,7 @@ input[type=submit] .Button2 {
   border-color:white;
   margin:2px;
   color:white;
-  background-color:#8234f6;
+  background-color:var(--main-col);/*#8234f6;*/
 }
 input[type=submit] .Button3 {
   font-size:20px;
@@ -77,7 +77,7 @@ input[type=submit] .Button3 {
   border-color:white;
   margin:2px;
   color:white;
-  background-color:#f234C6;
+  background-color:var(--main-col-dark);/*#8234C6;*/
 }
 
 #smallsubmit {
@@ -179,12 +179,12 @@ input[type=password] {
 
 #staffformid, #Posterid {
   font-size:13pt;
-  color: #EC038C;
+  color: var(--main-col-dark);
   background-color:white;
   padding:0px;
   border:0px;
   margin:0 0 0 0;
-  font-weight:520;
+  font-weight:550;
 }
 
 .Vuse2 {
@@ -658,7 +658,7 @@ input[type='file'] {
   font-size:20px;
   padding:5px;
   border:2px;
-  background-color:#8234C6;
+  background-color:var(--main-col-dark);/*#8234C6;*/
   color:white;
 }
 

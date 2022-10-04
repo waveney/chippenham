@@ -10,7 +10,6 @@ OldStuff/*
 !int/*/.htaccess
 int/Configuration.ini
 images/*.*
-images/Sponsors
 images/Sides
 images/Works
 images/Trade
@@ -20,7 +19,6 @@ images/images
 images/Lol*
 images/Lnl*
 images/Buskers*
-images/ArticleImgs
 images/TradeMaps
 int/ArchiveImages
 int/Store

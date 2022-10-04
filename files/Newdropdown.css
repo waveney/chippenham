@@ -296,7 +296,7 @@
 
 /* sub Main */
 .PrivateBar .navigation, .PrivateBar .dropdown-content a:hover {
-  background-color:#ec038c;
+  background-color:var(--main-col);
 
 }
 

@@ -5,7 +5,7 @@
   $id    = $_POST['I'];
   $type  = $_POST['D'];
 
-  var_dump($_POST);  
+//  var_dump($_POST);  
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':

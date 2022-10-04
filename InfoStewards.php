@@ -5,7 +5,7 @@
 
 ?>
 <div class="biodiv">
-<img src="/images/Young-Volunteer-2015.jpg" alt="Wimborne Minster Folk Festival" class="bioimg" />
+<img src="/images/ArticleImgs/Taskforce.jpg" alt="Chippenham Folk Festival" class="bioimg" />
 <p>Apply to volunteer at Chippenham Folk Festival</p>
 </div>
 
@@ -15,14 +15,14 @@ We are looking for vibrant people to be part of the festival team who are prepar
 
 You must be over 18, reliable, have good people skills and be able to remain pleasant and cheerful whatever the circumstances!<p>
 
-In exchange for your time, we will give you a pass for festival events and to <a href="http://partyinthepaddock.com" rel="tag"><strong>Party In The Paddock</strong></a> plus a free souvenir programme, free parking and free camping!<p>
+In exchange for your time, we will give you a pass for festival events plus a free souvenir programme, free parking and free camping!<p>
 
 <ul>
 <li>You will generally be working in teams.
 <li>Training will be given if necessary.
 <!--<li>Certain jobs may require a DBS (Disclosure & Barring Service) check, which we can arrange.-->
 <li>You will need to sort out your own refreshments.
-<li>A free day/weekend pass will be given to stewards which covers all festival events and entry to <a href="http://partyinthepaddock.com" rel="tag"><strong>Party In The Paddock</strong></a>.
+<li>A free day/weekend pass will be given to stewards which covers all festival events
 <li>You will receive a free souvenir programme.
 <li>Free parking will be available for stewards within the festival area.
 </ul>

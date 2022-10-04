@@ -34,7 +34,7 @@
       $Banner .= "<li><img src='$img' class=WMFFBannerDefault>";
     }
     $Banner .= '</ul></div><script>$(function() { $(".rslides").responsiveSlides(); });</script>';
-    $Banner .= "<div class=BanOverlay><img src=/images/icons/wimborne-folk-festival-logo-white-shadow.png?1>";
+    $Banner .= "<div class=BanOverlay><!--<img src=/images/icons/wimborne-folk-festival-logo-white-shadow.png?1>-->";
     $Banner .= "<img src=/images/icons/underline.png?1>";
     $Banner .= "</div>";
 
@@ -48,8 +48,8 @@
     $Banner .= "</div>";
   } else {
     $Banner  = "<div class=WMFFBanner400><img src=" . $FESTSYS['DefaultPageBanner'] . " class=WMFFBannerDefault>";
-    $Banner .= "<div class=BanOverlay><img src=/images/icons/wimborne-folk-festival-logo-white-shadow.png?1>";
-    $Banner .= "<img src=/images/icons/underline.png?1>";
+    $Banner .= "<div class=BanOverlay><!--<img src=/images/icons/wimborne-folk-festival-logo-white-shadow.png?1>-->";
+//    $Banner .= "<img src=/images/icons/underline.png?1>";
     $Banner .= "</div>";
 
     if ($YEARDATA['Years2Show'] == 2) {  
@@ -71,7 +71,7 @@
 
   echo "<div style=margin:10>";
   echo '<center><h2>Sponsors & Supporters</h2></center>';
-  echo "<center>Wimborne Minster Folk Festival would not be possible without the amazing help and generosity of the following companies and organisations:<p>";
+  echo "<center>Chippenham Folk Festival would not be possible without the amazing help and generosity of the following companies and organisations:<p>";
   echo "</center>";
   $Spons = Get_Sponsors();
   echo "<div hidden>";

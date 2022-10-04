@@ -1,9 +1,15 @@
+:root{
+  --main-col:#fcb900;
+  --main-col-dark:#993300;
+  --main-contrast(:black);
+}
+
 img {
   display: inline;
   border-style: none;
 }
 body {
-  background:black; /*#00344c ;*/
+  background:var(--main-col);
   min-width:320px;
   height:100%;
   color:#000000;
@@ -14,18 +20,18 @@ body {
 /*  -webkit-transform: translate3d(0,0,0); /* made no difference */
 }
 a {
-  color: #EC038C;
+  color: var(--main-col-dark);
   text-decoration: none;
-  font-weight:500;
+  font-weight:520;
 }
 A:link, .FakeLink {
   text-decoration: none; 
-  color: #EC038C;
+  color: var(--main-col-dark);
   transition:color .5s;
 }
 A:visited, A:active, A:hover {
   text-decoration: none; 
-  color: #EC038C;
+  color: var(--main-col-dark);
 }
 #HeadRow {
   background-color:#c2eff4;
@@ -958,7 +964,7 @@ textarea:Focus
   font-size:20px;
   font-weight:bold;
   color:white !important;
-  background:#EC038C;
+  background:var(--main-col);
   border-radius:5px;
 }
 
@@ -966,7 +972,7 @@ textarea:Focus
   padding:5px;
   font-size:20px;
   font-weight:bold;
-  color:#EC038C !important;
+  color:var(--main-col) !important;
   background:lightgray;
   border-radius:15px;
 }
@@ -1335,8 +1341,8 @@ button {
 }
 .trader-app-link a{
   min-width: 180px;
-  background:#EC038C;
-  color: #fff;
+  background:var(--main-col);
+  color: var(--main-contrast);
   padding: 16px 30px;
   display: inline-block;
   transition: all ease-in-out 0.4s;
@@ -1348,13 +1354,13 @@ button {
   font-size:20px;
 }
 .trader-app-link a:hover{
-  background:#EC038C;
+  background:var(--main-col);
   color: #fff;
 }
 .trader-app-link a:before {
   content: '';
   position: absolute;
-  border: #EC038C solid 4px;
+  border: var(--main-col) solid 4px;
   top: 0;
   right: 0;
   bottom: 0;
@@ -1368,7 +1374,7 @@ button {
   right: -8px;
   bottom: -8px;
   left: -8px;
-  border: #EC038C solid 4px;
+  border: var(--main-col) solid 4px;
 }
 
 .TwoCols {
