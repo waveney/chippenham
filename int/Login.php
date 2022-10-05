@@ -123,7 +123,7 @@ function Login($errmsg='', $message='') {
   echo "<div class=tablecont><table class=simpletable><tr><td>User Name or Email:<td><input type=text Name=UserName>\n";
   echo "<tr><td>Password:<td><input type=password Name=password>\n";
   $_POST['RememberMe'] = 1;
-  echo "<tr><td>" . fm_checkbox("Remember Me",$_POST,'RememberMe');
+  echo "<tr><td>" . fm_checkbox("Remember Me",$_POST,'RememberMe') "- This will use a cookie;
   echo "</table></div>\n";
   echo "<p><input type=submit Name=ACTION value=Logon><p>\n";
 

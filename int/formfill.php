@@ -232,7 +232,7 @@
   default:
     include_once("GetPut.php");
     global $TableIndexes;
-    $idx = (isset($TableIndexes[$table])?$TableIndexes[$table]:'id');
+    $idx = (isset($TableIndexes[$type])?$TableIndexes[$type]:'id');
     $N = Gen_Get($type,$id,$idx);
     $N[$field] = $Value;
     echo Gen_Put($type,$N,$idx);

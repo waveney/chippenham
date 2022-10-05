@@ -19,10 +19,10 @@ function Gen_Put($Table, &$now, $idx='id') {
   }
 }
 
-function Gen_Get_All($Table) {
+function Gen_Get_All($Table, $extra='') {
   global $db;
   $Ts = [];
-  $res = $db->query("SELECT * FROM $Table");
+  $res = $db->query("SELECT * FROM $Table $extra");
   if ($res) while ($ans = $res->fetch_assoc()) $Ts[] = $ans;
   return $Ts;
 }

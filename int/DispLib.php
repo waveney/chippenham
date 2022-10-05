@@ -387,14 +387,16 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
     default:
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . " data-width=" . $Art['ImageWidth'] .">";
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+         " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
       echo "<br><span class=\"ArtTextL\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
           
     case 1: // Small Image (to left of title and text)
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . " data-width=" . $Art['ImageWidth'] . ">";
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+        " data-width=" . $Art['ImageWidth'] . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextS\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
@@ -410,7 +412,8 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
     case 3: // Banner Image
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . " data-width=" . $Art['ImageWidth'] .">";
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+         " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextBI\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
@@ -425,7 +428,8 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
     case 5: // Fixed Image large box has ratio of 550:500
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleF\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div><br>";
-      if ($Art['Image']) echo "<img class=\"ArtImageF\" id=\"ArtImg$i\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . " data-width=" . $Art['ImageWidth'] .">";
+      if ($Art['Image']) echo "<img class=\"ArtImageF rounded\" id=\"ArtImg$i\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a><br style='height:0' clear=\"all\">";
       echo "<div class=\"ArtTextF\" id=\"ArtText$i\">" . $Art['Text'] . "</div>";
       break;

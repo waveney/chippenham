@@ -26,10 +26,13 @@ function Show_Cat($Cat,$Act='UPDATE') {
   echo "<tr>" . fm_text('ShortName',$Cat,'ShortName')  . "<td>Short name of volunteer Category (May be the same)\n";
   echo "<tr>" . fm_text('Email',$Cat,'Email') . "<td>Email address of category leader can by multiple separated by commas\n";
   echo "<tr>" . fm_number('Properties',$Cat,'Props');
+  echo "<tr>" . fm_number('Relative Importance',$Cat,'Importance');
   echo "<tr>" . fm_textarea('Description',$Cat,'Description',3,3);
 
   echo "<tr>" . fm_text('List of When',$Cat,'Listofwhen',2) . "<td>'Before',-2,-1,0,1,2,3,...\n";
   echo "<tr>" . fm_text('Extra Like text',$Cat,'LExtra',2);
+    echo "<td rowspan=8>";
+    if (!empty($Cat['Image'])) echo "<img src='" . $Cat['Image'] . "' width=300>";
   echo "<tr>" . fm_text('Extra Dislike text',$Cat,'DExtra',2);
   echo "<tr>" . fm_text('Other Question 1',$Cat,'OtherQ1',2);
   echo "<tr>" . fm_text('Extra Text 1',$Cat,'Q1Extra',2);
@@ -37,7 +40,8 @@ function Show_Cat($Cat,$Act='UPDATE') {
   echo "<tr>" . fm_text('Extra Text 2',$Cat,'Q2Extra',2);
   echo "<tr>" . fm_text('Other Question 3',$Cat,'OtherQ3',2); 
   echo "<tr>" . fm_text('Extra Text 3',$Cat,'Q3Extra',2); 
-
+  echo "<tr>" . fm_textarea('Long Description',$Cat,'LongDesc',3,3); 
+  echo "<tr>" . fm_text('Image',$Cat,'Image',2); 
   if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
   echo "</table><br>\n";
   if (empty($Cat['id'])) {
@@ -59,12 +63,13 @@ function ListCats() {
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>InUse</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Importance</a>\n";
   echo "</thead><tbody>";
 
   foreach($Cats as $C) {
     $Cid = $C['id'];
     echo "<tr><td><a href=VolCats?ACTION=SHOW&id=$Cid>$Cid</a><td><a href=VolCats?ACTION=SHOW&id=$Cid>" . $C['Name'] . "</a><td>";
-    echo ['No','Yes'][($C['Props'] & VOL_USE)] . "<td>" . $C['Email'] . "\n";
+    echo ['No','Yes'][($C['Props'] & VOL_USE)] . "<td>" . $C['Email'] . "<td>" . $C['Importance'] . "\n";
   }
   echo "</table></div>\n";
         

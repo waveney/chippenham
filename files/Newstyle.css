@@ -1524,3 +1524,7 @@ button {
   font-size: 80%;
 }
 
+.rounded {
+  border:3px solid var(--main-col);
+  border-radius:20px;
+}

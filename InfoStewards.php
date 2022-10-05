@@ -1,14 +1,44 @@
 <?php
   include_once("int/fest.php");
+  include_once("int/VolLib.php");
+  global $FESTSYS,$PLANYEAR,$YEARDATA;
+  
+  dohead("Get Involved",[],1);
 
-  dohead("Volunteers",[],1);
+  echo "The festival is entirely reliant on a dedicated army of brilliant volunteers all who give up their time and provide their " .
+       "skills and expertise to the event free of charge. $PLANYEAR's event runs from " . FestDate($YEARDATA['FirstDay'],'Y') . " to " . 
+       FestDate($YEARDATA['LastDay'],'Y') . ", there are many different ways in which you can get involved...<p>" .
+       "When you get to the form you can select more than one team.<p>";
 
-?>
-<div class="biodiv">
-<img src="/images/ArticleImgs/Taskforce.jpg" alt="Chippenham Folk Festival" class="bioimg" />
-<p>Apply to volunteer at Chippenham Folk Festival</p>
-</div>
 
+  $Vol_Cats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
+  $Shown = 0;
+  echo "<table>";
+  foreach ($Vol_Cats as $Cat) {
+    if (($Cat['Props'] & VOL_USE)==0) continue;
+    echo "<tr>";
+
+    if ($Shown & 1) {
+      echo "<td width=45%>";
+      echo "<img src=" . $Cat['Image'] ." width=90% class=rounded>";   
+      echo "<td width=45% valign=top>";
+      echo "<h1>" . $Cat['Name'] . "</h1>";
+      echo $Cat['LongDesc'];
+      echo "<div class=trader-app-link><a href=int/Volunteers?A=New>Please Volunteer for " . $Cat['Name'] . "</a></div>";
+    } else {
+      echo "<td width=45% valign=top>";     
+      echo "<h1>" . $Cat['Name'] . "</h1>";
+      echo $Cat['LongDesc'];
+      echo "<div class=trader-app-link><a href=int/Volunteers?A=New>Please Volunteer for " . $Cat['Name'] . "</a></div>";
+      echo "<td width=45%>";     
+      echo "<img src=" . $Cat['Image'] ." width=90% class=rounded>";   
+    }
+    $Shown++;
+  }
+  echo "</table>";
+   
+  dotail();  
+/*
 Please volunteer at Chippenham Folk Festival<p>
 
 We are looking for vibrant people to be part of the festival team who are prepared to work in shifts.<p>
@@ -94,4 +124,5 @@ Schedules will be designed to suit your requirements as much as possible.<p>
 
 <?php
   dotail();
+*/
 ?>

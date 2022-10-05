@@ -18,7 +18,7 @@ define('VOL_Other1',8);
 define('VOL_Other2',16);
 define('VOL_Other3',32);
 
-$VolCats = Gen_Get_All('VolCats');
+$VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
 
 function Get_Vol_Details(&$vol) {
   global $VolCats,$Relations,$YEARDATA,$YEAR,$PLANYEAR;
@@ -195,31 +195,31 @@ function VolForm(&$Vol,$Err='') {
     $Catid = $Cat['id'];
 
     $VCY = Get_Vol_Cat_Year($Volid,$Catid);
-    $Hide = (($VCY['Props'] & VOL_USE) ?"":" hidden ");
+    $Hide = (($VCY['Props'] & VOL_USE) ?"":"hidden ");
 
     if ($cp & VOL_Likes)   { 
       $rows++; 
-      $Ctxt .= "\n<tr>" . fm_text1("Prefered " . $Cat['Name'] . " Tasks", $VCY,'Likes',3," colspan=3 class=$cls $Hide",'',"Likes:$Catid:$PLANYEAR") . 
+      $Ctxt .= "\n<tr>" . fm_text1("Prefered " . $Cat['Name'] . " Tasks", $VCY,'Likes',3,"colspan=3 class=$cls $Hide",'',"Likes:$Catid:$PLANYEAR") . 
                              $Cat['LExtra']; 
     };
     if ($cp & VOL_Dislikes){ 
       $rows++; 
-      $Ctxt .= "\n<tr>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',3," colspan=3 class=$cls $Hide",'',"Dislikes:$Catid:$PLANYEAR") .
+      $Ctxt .= "\n<tr>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',3,"colspan=3 class=$cls $Hide",'',"Dislikes:$Catid:$PLANYEAR") .
                              $Cat['DExtra']; 
     };
     if ($cp & VOL_Other1)  { 
       $rows++; 
-      $Ctxt .= "\n<tr>" . fm_text1($Cat['OtherQ1'], $VCY,'Other1',3," colspan=3 class=$cls $Hide",'',"Other1:$Catid:$PLANYEAR") .
+      $Ctxt .= "\n<tr>" . fm_text1($Cat['OtherQ1'], $VCY,'Other1',3,"colspan=3 class=$cls $Hide",'',"Other1:$Catid:$PLANYEAR") .
                              $Cat['Q1Extra']; 
     };   
     if ($cp & VOL_Other2)  { 
       $rows++; 
-      $Ctxt .= "\n<tr>" . fm_text1($Cat['OtherQ2'], $VCY,'Other2',3," colspan=3 class=$cls $Hide",'',"Other2:$Catid:$PLANYEAR") .
+      $Ctxt .= "\n<tr>" . fm_text1($Cat['OtherQ2'], $VCY,'Other2',3,"colspan=3 class=$cls $Hide",'',"Other2:$Catid:$PLANYEAR") .
                              $Cat['Q2Extra']; 
     };      
     if ($cp & VOL_Other3)  { 
       $rows++; 
-      $Ctxt .= "\n<tr>" . fm_text1($Cat['OtherQ3'], $VCY,'Other3',3," colspan=3 class=$cls $Hide",'',"Other3:$Catid:$PLANYEAR") .
+      $Ctxt .= "\n<tr>" . fm_text1($Cat['OtherQ3'], $VCY,'Other3',3,"colspan=3 class=$cls $Hide",'',"Other3:$Catid:$PLANYEAR") .
                              $Cat['Q3Extra']; 
     };   
     $Ctxt = "\n<tr><td rowspan=$rows>" .  fm_checkbox($Cat['Name'],$VCY,'Props',"onchange=Update_VolCats('$cls')","Props:$Catid:$PLANYEAR",1,' colspan=3') . " " .
