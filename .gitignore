@@ -3,22 +3,12 @@ int/.*.swp
 .htaccess
 tickets
 OldStuff/*
-!images/icons
-!images/Banners
-!images/2018Pics
-!images/stuff
-!int/*/.htaccess
 int/Configuration.ini
-images/*.*
 images/Sides
 images/Works
 images/Trade
 images/Venues
 images/gallery
-images/images
-images/Lol*
-images/Lnl*
-images/Buskers*
 images/TradeMaps
 int/ArchiveImages
 int/Store
@@ -35,6 +25,5 @@ int/Invoices/*/*.pdf
 int/Invoices/OldInvoices
 devtools
 cache
-files/TitlePrefix
 Schema/.skeema
 

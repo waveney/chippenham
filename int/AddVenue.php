@@ -47,6 +47,7 @@
     $vid = -1;
   }
 
+  if ($vid > 0) Register_Autoupdate('Venues',$vid);
   $RealSites = Get_Real_Venues(0);
   $VirtSites = Get_Virtual_Venues();
 

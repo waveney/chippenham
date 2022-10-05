@@ -67,8 +67,9 @@
 //        '*Buskers Bash'=>'BuskersBash',
         'Donate'=>'Donate',
          ],
-//      '-Gallery'=>[
-//       ],
+      '-Gallery'=>[
+        '*2022 Photos'=>'gallery/gallery2022',
+       ],
       '!/images/icons/Facebook.png'=>('!http://facebook.com/' . Feature('Facebook','**NONE**')),
       '!/images/icons/Twitter.png'=>('!http://twitter.com/' . Feature('Twitter','**NONE**')),
       '!/images/icons/Instagram.png'=>'!http://instagram.com/' . (Feature('Instagram','**NONE**')),
