@@ -1,21 +1,21 @@
 <?php
 // General Table operations
 
-function Gen_Get($Table,$id) {
+function Gen_Get($Table,$id, $idx='id') {
   global $db;
-  $res = $db->query("SELECT * FROM $Table WHERE id=$id");
+  $res = $db->query("SELECT * FROM $Table WHERE $idx=$id");
   if ($res) if ($ans = $res->fetch_assoc()) return $ans;
   return [];
 }
 
-function Gen_Put($Table, &$now) {
+function Gen_Put($Table, &$now, $idx='id') {
   global $db,$GAMEID;
-  if (isset($now['id'])) {
-    $e=$now['id'];
-    $Cur = Gen_Get($Table,$e);
+  if (isset($now[$idx])) {
+    $e=$now[$idx];
+    $Cur = Gen_Get($Table,$e,$idx);
     return Update_db($Table,$Cur,$now);
   } else {
-    return $now['id'] = Insert_db ($Table, $now );
+    return $now[$idx] = Insert_db ($Table, $now );
   }
 }
 

@@ -231,9 +231,11 @@
      
   default:
     include_once("GetPut.php");
-    $N = Gen_Get($type,$id);
+    global $TableIndexes;
+    $idx = (isset($TableIndexes[$table])?$TableIndexes[$table]:'id');
+    $N = Gen_Get($type,$id,$idx);
     $N[$field] = $Value;
-    echo Gen_Put($type,$N);
+    echo Gen_Put($type,$N,$idx);
  
     exit;
      
