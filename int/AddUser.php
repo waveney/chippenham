@@ -57,6 +57,7 @@
     echo "<tr><td>User Id:<td>";
       if (isset($unum) && $unum > 0) {
         echo $unum . fm_hidden('UserId',$unum);
+        Register_Autoupdate('FestUsers',$unum);
       } else {
         echo fm_hidden('UserId',-1);
         $User['AccessLevel'] = $Access_Type['Committee'];

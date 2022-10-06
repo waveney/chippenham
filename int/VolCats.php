@@ -51,7 +51,7 @@ function Show_Cat($Cat,$Act='UPDATE') {
 }
 
 function ListCats() {
-  $Cats = Gen_Get_All('VolCats');
+  $Cats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
         
   echo "<h1>Volunteer Categories</h1>";
   echo "Clicking on the name takes you to edit access<br>\n";
