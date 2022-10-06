@@ -222,23 +222,32 @@
 //echo "<br>B:"; var_dump($VY);
           return Gen_Put('VolYear',$VY);
       }
-    } else {
-      $N = Gen_Get($type,$id);
-      $N[$field] = $Value;
-      echo Gen_Put($type,$N);   
-    }
+    } 
+    break;
     exit;
+    
+  case 'FestUsers':
+    include_once("GetPut.php");
+    if (preg_match('/UserCap:(\d*)/',$field,$mtch)?true:false) {        
+      $Capid = $mtch[1];    
+      $Cap = Gen_Get_Cond1('UserCap'," User=$id AND Capability=$Capid ");
+      if (!$Cap) $Cap = ['User'=>$id,'Capability'=>$Capid];
+      $Cap['Level'] = $Value;
+      return Gen_Put('UserCap',$Cap);
+    }
+    break;
      
   default:
-    include_once("GetPut.php");
-    global $TableIndexes;
-    $idx = (isset($TableIndexes[$type])?$TableIndexes[$type]:'id');
-    $N = Gen_Get($type,$id,$idx);
-    $N[$field] = $Value;
-    echo Gen_Put($type,$N,$idx);
- 
-    exit;
-     
+    break;
   }
+  include_once("GetPut.php");
+  global $TableIndexes;
+  $idx = (isset($TableIndexes[$type])?$TableIndexes[$type]:'id');
+  $N = Gen_Get($type,$id,$idx);
+  $N[$field] = $Value;
+  echo Gen_Put($type,$N,$idx);
+ 
+  exit;
+  
 ?>
 

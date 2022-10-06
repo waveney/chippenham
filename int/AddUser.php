@@ -7,12 +7,19 @@
   global $FESTSYS,$Sections;
 
   Set_User_Help();
+  include_once("GetPut.php");
 
   echo "<h2>Add/Edit Fest Con Users</h2>\n";
   echo "<form method=post action='AddUser'>\n";
   if (isset($_POST['UserId'])) { /* Response to update button */
     $unum = $_POST['UserId'];
     if ($unum > 0) {                                 // existing User
+    
+      $Stypes = [];
+      $Ttypes = Gen_Get_All('UserCap',"WHERE User=$unum");
+
+      foreach($Ttypes as $T) $Stypes[$T['Capability']] = $T['Level'];
+    
       $User = Get_User($unum);
       if (isset($_POST['ACTION'])) {
         switch ($_POST['ACTION']) {
@@ -52,6 +59,13 @@
     $unum = -1;
   }
 
+  $Stypes = [];
+  if ($unum > 0) {                                 // existing User   
+    $Ttypes = Gen_Get_All('UserCap',"WHERE User=$unum");
+    foreach($Ttypes as $T) $Stypes[$T['Capability']] = $T['Level'];
+  }
+// var_dump($Stypes);
+
 //  echo "<!-- " . var_dump($User) . " -->\n";
   echo "<div class=tablecont><table width=90% border>\n";
     echo "<tr><td>User Id:<td>";
@@ -75,9 +89,12 @@
     echo "<tr>" . fm_text('Image', $User,'Image',3);
     echo "<tr>" . fm_radio('Show on Contacts Page',$User_Public_Vis,$User,'Contacts');
     $r = 0;
-    foreach($Sections as $sec) {
-      if ((($r++)&1) == 0) echo "<tr>";
-      echo fm_radio("Change " . $sec ,$Area_Levels,$User,$sec,0);
+    if ($unum > 0) {
+      foreach($Sections as $Si => $sec) {
+        if ($Si == 0) continue;
+        if ((($r++)&1) == 0) echo "<tr>";
+        echo fm_radio("Change " . $sec ,$Area_Levels,$Stypes,$Si,'',1,'',"UserCap:$Si");
+      }
     }
     if (isset($User['LastAccess'])) echo "<tr><td>Last Login:<td>" . ($User['LastAccess']? date('d/m/y H:i:s',$User['LastAccess']):'Never');
     if (Access('SysAdmin')) {
@@ -86,6 +103,7 @@
       echo "<tr>" . fm_textarea('Prefs',$User,'Prefs',6,2);
       echo "<tr><td>Log Use" . fm_checkbox('',$User,'LogUse');
     }
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
     echo "</table></div>\n";
 
   if ($unum > 0) {

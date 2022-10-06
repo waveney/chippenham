@@ -16,9 +16,10 @@ if (isset($YEAR)) {
 
 $Access_Levels = ['','Participant','Upload','Steward','Staff','Committee','SysAdmin','Internal'];// Sound Engineers will be Stewards, Upload not used yet
 $Access_Type = array_flip($Access_Levels);
-$Area_Levels = array( 'No','Edit','Edit and Report');
+$Area_Levels = [ 'No','Edit'];//,'Edit and Report');
 $Area_Type = array_flip($Area_Levels);
-$Sections = [ 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','Other','TLine','Bugs','Photos','Comedy','Family','News']; // Note fest_users fields must match
+$Sections = ['', 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','Other','TLine','Bugs','Photos','Comedy','Family','News','Volunteers','Art',
+   'Tickets']; // Note fest_users fields must match
 $Importance = array('None','Some','High','Very High','Even Higher','Highest','The Queen');
 $Book_States = array('None','Declined','Booking','Contract Ready','Contract Signed');
 $Book_Colours = ['white','salmon','yellow','orange','lime'];
@@ -94,6 +95,18 @@ function Set_User() {
   } 
 }
 
+function Is_SubType($Name) {
+  global $USER,$USERID;
+  static $Stypes;
+  include_once("GetPut.php");
+  if (empty($Stypes)) {
+    $Ttypes = Gen_Get_All('UserCap',"WHERE User=$USERID");
+    foreach($Ttypes as $T) $Stypes[$T['Capability']] = $T['Level'];
+  }
+  if (isset($Stypes[$Name])) return $Stypes[$Name];
+  return 0;
+}
+
 function Access($level,$subtype=0,$thing=0) {
   global $Access_Type,$USER,$USERID;
   $want = $Access_Type[$level];
@@ -116,15 +129,17 @@ function Access($level,$subtype=0,$thing=0) {
   case $Access_Type['Staff'] :
   case $Access_Type['Steward'] :
     if (!$subtype) return $USER['AccessLevel'] >= $want;
-    if (isset($USER[$subtype]) && $USER[$subtype]) return 1;
-    return 0; 
+    return Is_SubType($subtype);
+//    if (isset($USER[$subtype]) && $USER[$subtype]) return 1;
+//    return 0; 
 
 
   case $Access_Type['Committee'] :
 //if ($level == 'Committee') echo "In Access 2<br>";
     if (!$subtype) return 1;
-    if (isset($USER[$subtype]) && $USER[$subtype]) return 1;
-    return 0;
+    return Is_SubType($subtype);
+//    if (isset($USER[$subtype]) && $USER[$subtype]) return 1;
+//    return 0;
 
   case $Access_Type['SysAdmin'] : 
     return 1;

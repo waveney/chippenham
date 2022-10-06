@@ -421,6 +421,7 @@
     }
     if (Access('SysAdmin')) {
 //      $txt .= "<p>";
+//      $txt .= "<li><a href=Capabilities>Capabilities</a>";      
 //      $txt .= "<li class=smalltext><a href=ImportDebtorCodes>Import Debtor Codes</a>";
 //      $txt .= "<li class=smalltext><a href=ImportProgAds>Import Programme ads</a>\n";  
 //      $txt .= "<p>";
