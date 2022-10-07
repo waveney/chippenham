@@ -10,7 +10,7 @@ $VisParts = array('All','None'); // Add subcats when needed
 $Thing_Types = array('Sides','Acts','Others');
 $Public_Event_Types = array('As Global','Yes', 'Not yet','Never');
 
-$Day_Type = ['Fri'=>0,'Sat'=>1,'Sun'=>2]; // TODO wrong needs generalising
+$Day_Type = ['Thur'=>-1,'Fri'=>0,'Sat'=>1,'Sun'=>2,'Mon'=>3,'Tue'=>4]; 
 $Info_Type = array_flip($InfoLevels);
 $Public_Event_Type = array_flip($Public_Event_Types);
 include_once("DateTime.php");

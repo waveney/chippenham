@@ -117,7 +117,7 @@ function EventCheck($checkid=0) {
     }
 
     foreach ($evlist as $e=>$ev) { //Check for don't use if other venue used
-      if ($e['BigEvent']) continue; // For now
+      if ($ev['BigEvent']) continue; // For now
       if (isset($Venues[$ev['Venue']]['DontUseIf']) && $Venues[$ev['Venue']]['DontUseIf']) {
         $block = $Venues[$ev['Venue']]['DontUseIf'];
         $realstart = timereal($ev['Start']) - $ev['Setup'];

@@ -85,7 +85,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
 */
       }
       if ($e['BigEvent']) {
-        if ($e['SN'] == 'Procession') $Procession = $eid;
+        if ($e['SN'] == Feature("Procession")) $Procession = $eid;
         $Other = Get_Other_Things_For($eid);
         $sidcount = 1;
         $Events[$eid]['Other'] = $Other;
@@ -112,7 +112,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
   }
   if ($Procession == 0) {
     $ErrC ++;
-    echo "<span class=Err>No Procession Yet</span>";
+    echo "<span class=Err>No " . Feature("Procession") . " Yet</span>";
   }
 
 //var_dump($dancing);
@@ -431,10 +431,10 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
         }
         if ($side['Sat'] && $side['Procession'] != $InProcession) {
           if ($InProcession) { 
-            $Err[] = "In the Procession, but don't want to be.";
+            $Err[] = "In the " . Feature("Procession") . ", but don't want to be.";
             $ErrC++;
-          } else if (!$Procession) { 
-            $Merr[] = "Not yet in the procession.";
+          } else if (Feature("Procession") && !$Procession) { 
+            $Merr[] = "Not yet in the " . Feature("Procession") . ".";
             $MerrC++;
           }
         }

@@ -41,7 +41,7 @@
   if ($datay['Sat']) {
     echo "<tr><td>Sat:<td>Yes ";
     if ($t == 'Side') echo "- Spots " . $datay["SatDance"];
-    if ($datay['Procession']) echo " Procession";
+    if (Feature("Procession") && $datay['Procession']) echo ' ' . Feature("Procession"," Procession");
   };
   if ($datay['Sun']) {
     echo "<tr><td>Sun:<td>Yes ";

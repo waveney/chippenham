@@ -19,7 +19,7 @@
 
   if (!isset($_GET['EInfo'])) $_GET['EInfo'] = 0;
   $extra = $extra2 = '';
-  if (preg_match('/Procession/',$Event['SN'])) {
+  if (Feature("Procession") && (preg_match('/' . Feature("Procession") . '/',$Event['SN'])) {
     $extra = " AND y.Procession=1 AND y.$Day=1";
   }
 

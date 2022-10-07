@@ -5,9 +5,10 @@
   dostaffhead("Dance Summary");
   include_once("DanceLib.php");
   echo "<h2>Dance Summary $YEAR</h2>\n";
+  global $YEARDATA;
 
   $Types = Get_Dance_Types(1);
-  $Category = array(
+  $Category = array(// (Show Condition - optional)Text => SQL test
                 'Invited'=>"y.Invited<>''", 
                 'Coming'=>("y.Coming=" . $Coming_Type['Y']),
                 'Possibly'=>( "y.Coming=" . $Coming_Type['P']),
@@ -17,9 +18,11 @@
                 'Bl'=>"Blank",
                 'Coming on Sat'=>("y.Coming=" . $Coming_Type['Y'] . " AND y.Sat=1 "),
                 'Coming on Sun'=>("y.Coming=" . $Coming_Type['Y'] . " AND y.Sun=1 "),
+                '($YEARDATA["FirstDay"] <= 3 && $YEARDATA["LastDay"] > 2)Coming on Mon'=>("y.Coming=" . $Coming_Type['Y'] . " AND y.Mon=1 "),
                 'Bla'=>"Blank",
                 'Fri Evening'=>("y.Coming=" . $Coming_Type['Y'] . " AND y.FriEve=1 "),
                 'Sat Evening'=>("y.Coming=" . $Coming_Type['Y'] . " AND y.SatEve=1 "),
+                '($YEARDATA["FirstDay"] <= 3 && $YEARDATA["LastDay"] > 2)Sun Evening'=>("y.Coming=" . $Coming_Type['Y'] . " AND y.SunEve=1 "),
                 ); 
 
   echo "<div class=tablecont><table border><tr><th>Category<th>Total";
@@ -29,6 +32,11 @@
 
   foreach ($Category as $cat=>$srch) {
     if ($srch == 'Blank') { echo "<tr height=15>"; continue; }
+    if (preg_match('/\((.*?)\)(.*)/',$cat,$mtch)) {
+      if (!eval("return " . $mtch[1] . " ;")) continue;
+      $cat = $mtch[2];
+    }
+    
     $qtxt = "SELECT y.SideId FROM SideYear y WHERE y.Year='$YEAR' AND y.SideId>0 AND $srch";
     $qry = $db->query($qtxt);
     $catcount = $qry->num_rows;

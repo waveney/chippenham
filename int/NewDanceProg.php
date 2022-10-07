@@ -5,6 +5,7 @@
   include_once("NewProgramLib.php");
 
   Prog_Headers();
+
   Grab_Data();
   Scan_Data();
   Create_Grid();

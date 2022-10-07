@@ -490,7 +490,8 @@ function Controls($level=0,$condense=0) {
   echo fm_hidden('Y',$YEAR);
   echo "<input type=submit name=d value=Fri $classFri> ";
   echo "<input type=submit name=d value=Sat $classSat> ";
-  echo "<input type=submit name=d value=Sun $classSun>\n";
+  echo "<input type=submit name=d value=Sun $classSun> ";
+  echo "<input type=submit name=d value=Mon $classMon>\n";
   $_GET['EInfo'] = UserGetPref('ProgErr');
   
   echo "<tr>" . fm_radio("Errors",$InfoLevels,$_GET,'EInfo',"onchange=SaveAndUpdateInfo()");

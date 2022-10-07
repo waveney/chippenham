@@ -27,7 +27,7 @@ $OlapCats = array('Side','Act','Comedy','Family','Other');
 $Proforma_Colours = ['Decide'=>'DarkOrange','Details'=>'Magenta','Program'=>'Yellow','ProgChk'=>'lightsalmon','NewProg'=>'yellow','FinalInfo'=>'LawnGreen',
 'FinalInfo2'=>'MediumSeaGreen', 'Invite'=>'Beige','Remind'=>'khaki', 'Change'=>'DarkOrange', 'Reinvite'=>'Beige','Cancel'=>'lightgrey',
 'SpecInvite'=>'Beige','SpecPoss'=>'Khaki'];
-$TickBoxes = [['Seen Programme','Invited','YHAS','Program:','D',2],NULL,NULL,['Date Change','TickBox4','NVAL',0,'MCFO',5]]; // Year -> Name',Criteria, test , value, Usage [DMCFO],size=2
+$TickBoxes = [['Seen Programme','Invited','YHAS','Program:','D',2]]; //,NULL,NULL,['Date Change','TickBox4','NVAL',0,'MCFO',5]]; // Year -> Name',Criteria, test , value, Usage [DMCFO],size=2
 $PerfListStates = ['Not Open','Open'];
 
 
@@ -463,7 +463,7 @@ Contract Signed - Enables listing to public.',
 
 function Default_SY($id=0) { 
   global $YEAR,$USERID;
-  $ans = array('SatDance'=>3,'SunDance'=>4,'Year'=>$YEAR,'Procession'=>1,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0);
+  $ans = array('SatDance'=>3,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'Procession'=>1,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0);
   if ($id) $ans['SideId'] = $id;
   return $ans;
 }

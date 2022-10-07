@@ -502,7 +502,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       echo "<tr>";
         echo "<td rowspan=2>" . fm_checkbox('Saturday',$Sidey,'Sat','onchange=ComeSwitch(event)');
         echo fm_text1('Daytime &half; hr Spots',$Sidey,'SatDance',0.5,'class=ComeSat');
-        echo "<td class=ComeSat>" . fm_checkbox('Plus the Procession',$Sidey,'Procession');
+        if (Feature("Procession")) echo "<td class=ComeSat>" . fm_checkbox('Plus the ' . Feature("Procession",'Procession'),$Sidey,'Procession');
         if ($YEARDATA['LastDay'] > 1)  echo "<td class=ComeSat>" . fm_checkbox('Dance Saturday Eve?',$Sidey,'SatEve');
         echo "<tr>" .fm_text1('Earliest Spot',$Sidey,'SatArrive',0.5,'class=ComeSat');
         echo fm_text1('End of latest Spot',$Sidey,'SatDepart',0.5,'class=ComeSat');  
