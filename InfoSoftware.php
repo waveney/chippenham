@@ -4,9 +4,11 @@
   dohead("Folk Festival Software",[],1);
 ?>
 <h3>BACKGROUND</h3>
-A sophisticated database and website system is being developed for Wimborne Minster Folk Festival, using experence and knowledge from providing facilities for many events 
+A sophisticated database and website system was developed for Wimborne Minster Folk Festival, using experence and knowledge from providing facilities for many events 
 (Folk Festivals and Science
 Fiction Conventions) over many years.  It is going to be of considerable use to other festivals and events in the future.<p>
+
+I have now parted company with Wimborne (Non) Folk Festival.  I now work with Chippenham, Swanage and any other genuine Folk Festival.<p>
 
 Rather than having lots of non-integrated spreadsheets and lists on many peoples computers to be lost when people leave and difficult to maintain, 
 the idea is to keep everything in one place (heavily backed up).  All records are central, with the philosophy that at the committee level, (almost) 
@@ -26,7 +28,7 @@ This is where 90%+ of the system is.  It has support for:
 <ul>
 <li>Common document storage - across the festival committee and staff, with some access control based on function
 <li>Timeline management - who is doing what and when, also recuring tasks from year to year 
-<li>Music management - records of artists, contracts and their programmes.  (Not as full feature as dance at the moment, but will be expanded this year)
+<li>Music management - records of artists, contracts and their programmes.  (Not as full feature as dance at the moment, but will be expanded in the future)
 <li>Dance management - many year records of dance sides, their wishes, requests, working out the dance scheduals, 
 ensuring they have breaks, dance when they want and handle performer overlaps
 <li>Other Performer management (eg Childrens) - Similar to Music
@@ -45,14 +47,14 @@ This sits on top of a database with everything stored in it.<p>
 This is potentially available as a number of separate packages, dance, music, documents, timeline, trade etc.<p>
 
 <h3>OTHER FESTIVALS</h3>
-Realising that what has been developed for Wimborne, could be of considerable use for other festivals, some work has been done to generalise it so others could use it.<p>
+Realising that what was developed for Wimborne, could be of considerable use for other festivals, some work has been done to generalise it so others could use it.<p>
 
 This is an on going development and some parts are still very Wimborne specific, the intention is that it is licenseable in the future, if you are interested in what has been
 developed so far and would like to be involved, please contact the <a href=mailto:Richard@wavwebs.com>Richard</a>.<p>
 
 Note: The intention is to license the system, but (currently) none of the data about individual dance sides, performers etc.<p> 
 
-The raw system is at <a href=https://github.com/waveney/wmff>Github</a>.<p>
+The raw system is at <a href=https://github.com/waveney/chippenham>Github</a>.<p>
 
 
 <?php

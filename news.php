@@ -11,7 +11,11 @@
 
   echo "<div class=mini>";
   echo "<h2 class=subtitle>Facebook News</h2>\n";
-  echo '<div class="fb-page" data-href="https://www.facebook.com/WimborneFolk" data-tabs="timeline" data-width="500" data-height="800" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WimborneFolk" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WimborneFolk">Wimborne Minster Folk Festival</a></blockquote></div>';
+  echo '<div class="fb-page" data-href="https://www.facebook.com/' . Festure('Facebook') . 
+       '" data-tabs="timeline" data-width="500" data-height="800" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" 
+       data-show-facepile="true"><blockquote cite="https://www.facebook.com/' . Festure('Facebook') . 
+       '" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/' . Festure('Facebook') . 
+       '">' . $FESTSYS['FestName'] . '</a></blockquote></div>';
   echo "</div>";
 
   dotail();

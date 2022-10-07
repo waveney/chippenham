@@ -20,7 +20,7 @@
 
   echo "<br clear=all>";
   echo '<h2 class="subtitle">Sponsors & Supporters</h2>';
-  echo "Wimborne Minster Folk Festival would not be possible without the amazing help and generosity of the following companies and organisations:<p>";
+  echo "<center>" . $FESTSYS['FestName'] . " would not be possible without the amazing help and generosity of the following companies and organisations:<p>";
   
   $Spons = Get_Sponsors();
   echo "<div hidden>";

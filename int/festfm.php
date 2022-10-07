@@ -474,7 +474,7 @@ function ChunkSplit($txt,$maxlen,$maxchnks) {
 }
 
 function linkemailhtml(&$data,$type="Side",$xtr='',$ButtonExtra='') {
-  global $YEAR,$USER;
+  global $YEAR,$USER,$FESTSYS;
   if (!Access('Staff')) return 0;
   include_once("DanceLib.php");
   $Label = '';
@@ -518,7 +518,7 @@ function linkemailhtml(&$data,$type="Side",$xtr='',$ButtonExtra='') {
   if (!isset($id)) return "";
 
   $link = "'mailto:$email?from=" . $USER['Email'] .
-         "&subject=" . urlencode("Wimborne Minster Folk Festival $YEAR and " . $data['SN']) . "'";
+         "&subject=" . urlencode($FESTSYS['FestName'] . " $YEAR and " . $data['SN']) . "'";
   $direct = "<a href=https://" . $_SERVER['HTTP_HOST'] . "/int/Direct?t=$type&id=$id&key=$key&Y=$YEAR>this link</a>  " ;
 
   if (isset($data['SideId'])) {

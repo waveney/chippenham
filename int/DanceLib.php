@@ -372,7 +372,7 @@ function Put_Perf_Type(&$now) {
 }
 
 function Set_Side_Help() {
-  static $t = array(
+  $t = array(
         'SN'=>'To appear on website and in the programme',
         'ShortName'=>'IF the name is more than 20 characters, give a short form to appear on the Grids.',
         'Type'=>'For example North West, Border, Folk, Jazz',
@@ -389,7 +389,7 @@ function Set_Side_Help() {
         'Video'=>'You can use a YouTube embed or share link',
         'Likes'=>'Venues prefered, sides like to share with',
         'Dislikes'=>'Venues disliked, sides do not want to share with - not in use',
-        'Pre2017'=>'Previous Wimbornes/Invites etc',
+        'Pre2017'=>'Previous Festivals/Invites etc',
         'AccessKey'=>'Allows user editing of many fields.  When you use the Email links here it is always appended to the message',
         'Photo'=>'Give URL of photo to use or upload one',
         'Mobile'=>'As an emergency contact number, this is important',
@@ -400,7 +400,8 @@ function Set_Side_Help() {
         'DataCheck'=>'Not yet working',
         'MorrisAnimal'=>'If the side has a morris animal - what kind is it',
         'Workshops'=>'That the side could run',
-        'Overlaps'=>'Do you overlap with any dance sides, musicians or other performers who might be at Wimborne, if so please describe in detail and we will try and prevent clashes',
+        'Overlaps'=>('Do you overlap with any dance sides, musicians or other performers who might be at' . $FESTSYS['FestName'] . 
+                    ', if so please describe in detail and we will try and prevent clashes'),
         'OverlapRules'=>'Dancer - must have break between spots, Musician allowed to play at same spot for two periods - then must break, Avoid - Dont put these together.
 Major - major error, minor avoid if you can',
         'Contact'=>'Main Contact',
@@ -426,7 +427,7 @@ IF you wish to remove a performer type tell Richard - there are many small chang
 }
 
 function Set_Side_Year_Help() {
-  static $t = array(
+  $t = array(
         'Performers'=>'Number of Dancers and Musicians that will want wristbands, put -1 if none are wanted',
         'FriEve'=>'Would you like to have some dancing on Friday Evening?',
         'SatEve'=>'Would you like to have some dancing on Saturday Evening?',

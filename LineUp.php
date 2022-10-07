@@ -33,11 +33,12 @@
     }
   }
   
+  $Place = Feature('FestHomeName');
   if ($PState) switch ($T) {
   case 'Dance':
     $ET = Get_Event_Type_For("Dancing");
     if ($YEAR != $PLANYEAR) {
-      echo "In $YEAR, These Dance teams were in Wimborne.  Click on the name or photograph to find out more and where they were dancing.<p>\n" .
+      echo "In $YEAR, These Dance teams were in $Place.  Click on the name or photograph to find out more and where they were dancing.<p>\n" .
                           "<b><a href=/int/ShowDanceProg?Cond=1&Pub=1&Y=$YEAR>Dance Programme for " . substr($YEAR,0,4) . "</a></b><p>\n";
     } else {
 //      echo "In " . ($YEAR-1) . " we had over " . Count_Perf_Type('IsASide',$YEAR-1) . " teams performing, for $YEAR we already have " .
@@ -62,7 +63,7 @@
   case 'Music':
     $ET = Get_Event_Type_For("Music");
     if ($YEAR != $PLANYEAR) {
-      echo "In $YEAR, These Acts were in Wimborne.  Click on the name or photograph to find out more and where they performed.<p>\n";
+      echo "In $YEAR, These Acts were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
     } else {
       echo "Click on the name of a Act, or their photograph to find out more about them and where they are performing.<p>\n";
     }
@@ -77,7 +78,7 @@
   case 'Comedy':
     $ET = Get_Event_Type_For("Comedy");
     if ($YEAR != $PLANYEAR) {
-      echo "In $YEAR, These Acts were in Wimborne.  Click on the name or photograph to find out more and where they performed.<p>\n";
+      echo "In $YEAR, These Acts were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
     } else {
 //      echo "Click on the name of a Act, or their photograph to find out more about them and where they are performing.<p>\n";
     }
@@ -93,7 +94,7 @@
   case 'Family':
     $ET['FirstYear'] = 2019; // FUDGE TODO make better
     if ($YEAR != $PLANYEAR) {
-      echo "In $YEAR, These Children's Entertainers were in Wimborne.  Click on the name or photograph to find out more and where they performed.<p>\n";
+      echo "In $YEAR, These Children's Entertainers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
     } else {
       echo "Click on the name of a Children's Entertainer, or their photograph to find out more about them and where they are performing.<p>\n";
     }
@@ -108,7 +109,7 @@
     $ET['FirstYear'] = 2019; // FUDGE TODO make better
     echo "These are performers who don't fit into any of the other categories.<p>";
     if ($YEAR != $PLANYEAR) {
-      echo "In $YEAR, These other performers were in Wimborne.  Click on the name or photograph to find out more and where they performed.<p>\n";
+      echo "In $YEAR, These other performers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
     } else {
       echo "Click on the name of a performer, or their photograph to find out more about them and where they are performing.<p>\n";
     }

@@ -237,10 +237,10 @@ function Invoice_Print(&$inv) {
 
   // footer
   $pdf->Text($padx+1*$cw,$pady+48*$ch,"Registered Office:");
-  $pdf->Text($padx+15*$cw,$pady+48*$ch,Feature('FestLegalTitle',"Wimborne Minster Folk Festival Ltd"));
-  $pdf->Text($padx+15*$cw,$pady+49*$ch,Feature('FestLegalAddr1',"Allendale Community Centre"));
-  $pdf->Text($padx+15*$cw,$pady+50*$ch,Feature('FestLegalAddr2',"Hanham Road, Wimborne"));
-  $pdf->Text($padx+15*$cw,$pady+51*$ch,Feature('FestLegalAddr3',"Dorset, BH21 1AS"));
+  $pdf->Text($padx+15*$cw,$pady+48*$ch,Feature('FestLegalTitle'));
+  $pdf->Text($padx+15*$cw,$pady+49*$ch,Feature('FestLegalAddr1'));
+  $pdf->Text($padx+15*$cw,$pady+50*$ch,Feature('FestLegalAddr2'));
+  $pdf->Text($padx+15*$cw,$pady+51*$ch,Feature('FestLegalAddr3'));
   
   $pdf->Text($padx+1*$cw,$pady+53*$ch,Feature('FestTresEmail',"Email:Treasurer@"));
 
@@ -733,7 +733,6 @@ function Bespoke_Inv_CoverNote($id,&$inv) {
   $inv['CoverNote'] = $Mess = (isset($_POST['Message'])?$_POST['Message']:$inv['CoverNote']);
 
   if (isset($_POST['SEND'])) {
-    $too = [['to',$inv['Email'],$inv['Contact']],['from','treasurer@' . $FESTSYS['HostURL'],'Wimborne Treasurer'],['replyto','treasurer@' . $FESTSYS['HostURL'],'Wimborne Treasurer']];
     $pdf = Get_Invoice_Pdf($id,'',$inv['Revision']);
     echo Email_Proforma(3,$inv['SourceId'],$too,$Mess,$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
   

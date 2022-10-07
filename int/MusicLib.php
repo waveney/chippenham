@@ -657,7 +657,9 @@ function Music_Email_Too(&$data) {
   
   if (!$name) $name = $data['SN'];
       
-  $too = [['to',$em,$name],['from','Music@' . $FESTSYS['HostURL'],'Wimborne Music'],['replyto','Music@' . $FESTSYS['HostURL'],'Wimborne Music']];
+  $too = [['to',$em,$name],
+          ['from','Music@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' Music'],
+          ['replyto','Music@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' Music']];
   return $too;
 }
 ?>

@@ -71,7 +71,7 @@
 
   echo "<div style=margin:10>";
   echo '<center><h2>Sponsors & Supporters</h2></center>';
-  echo "<center>Chippenham Folk Festival would not be possible without the amazing help and generosity of the following companies and organisations:<p>";
+  echo "<center>" . $FESTSYS['FestName'] . " would not be possible without the amazing help and generosity of the following companies and organisations:<p>";
   echo "</center>";
   $Spons = Get_Sponsors();
   echo "<div hidden>";

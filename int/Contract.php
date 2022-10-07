@@ -3,10 +3,10 @@
   include_once("MusicLib.php"); 
   include_once("ProgLib.php"); 
   include_once("PLib.php");
-  include_once("InnerMusicFAQ.php"); 
-
+  include_once("Email.php");
+  
 function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 proposed, 1 freeze reason - see contractConfirm, ctype 0=Side,1=act,2=other
-  global $Mess,$Action,$YEARDATA,$Cat_Type,$YEAR,$PLANYEAR,$DayLongList, $Event_Types,$ContractMethods,$USERID,$ReportTo;
+  global $Mess,$Action,$YEARDATA,$Cat_Type,$YEAR,$PLANYEAR,$DayLongList, $Event_Types,$ContractMethods,$USERID,$ReportTo,$FESTSYS;
 
   $str = "<div class=content900>\n";
   $Venues = Get_Real_Venues(1);
@@ -36,7 +36,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $Evs = [['SN' => 'Concert','Type' => 5, 'Day'=> 1, 'Start'=>1900, 'End'=>2000, 'Setup' => 10, 'Venue'=>$Ven, 'SubEvent' => 0, 'Duration'=>60]];
   }
 
-  $str .= "<h2>Wimborne Minster Folk Festival - $kwd Contract</h2>\n";
+  $str .= "<h2>" . $FESTSYS['FestName'] . " - $kwd Contract</h2>\n";
   if ($kwd) $str .= "<em><b>$kwd contract:</b></em><p>\n";
 
   $str .= "Standard Agreement between " . ($ctype == 1?"Band/Artist/Performer":"Performer") . " &amp; Employer.<p>\n";
@@ -50,7 +50,7 @@ services, under the following terms and conditions:<p>\n";
 
   $str .= "This agreement for performance services is entered into by the performers(s) known as:<br>";
 
-  $str .= "<b>" . $Booked['SN'] . "</b> for and on behalf of Wimborne Minister Folk Festival (now referred to as Employer) and \n";
+  $str .= "<b>" . $Booked['SN'] . "</b> for and on behalf of " . $FESTSYS['FestName'] . " (now referred to as Employer) and \n";
   $str .= "<b>" . $Side['SN'] . " </b>(now referred to as Artist)<p>";
 
   $str .= "Performances:<p>";
@@ -190,13 +190,15 @@ services, under the following terms and conditions:<p>\n";
     break;
   
   case 1:
-    $faq = Contract_TandCs();
+    $faq = TnC('MusicFAQ');
+    $faq = Parse_Proforma($faq);
     $faq = preg_replace("/<h2 class=OtherFAQ.*?<\/h2>/",'',$faq);
     if (!$camp) $faq = preg_replace("/<CAMPCLAUSE>.*<\/CAMPCLAUSE>/",'',$faq);
     break;
       
   case 2:
-    $faq = Contract_TandCs();  
+    $faq = TnC('MusicFAQ');
+    $faq = Parse_Proforma($faq);
     $faq = preg_replace("/<h2 class=MusicFAQ.*?<\/h2>/",'',$faq);  
     $faq = preg_replace("/<dt class=MusicFAQ.*?<dt>/s",'<dt>',$faq);
     $faq = preg_replace("/class=OtherFAQ/",'',$faq);

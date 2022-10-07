@@ -72,6 +72,7 @@ then the actual use of them is upto the people with dance control.
 <tr><td>Comedy<td>Ability to setup comedy acts, edit their details, setup contracts etc (for near future enhancement)
 <tr><td>Family<td>Ability to setup Family/Childrens, edit their details, setup contracts etc (for near future enhancement)
 <tr><td>News<td>Ability to edit Articles and News (for near future enhancement)
+<tr><td>Stewards<td>Ability to edit Volunteer records
 </table><p>
 
 Note the first 10 users are reserved for internal use, though only a few are actually used currently.<p>
@@ -144,6 +145,24 @@ Format of controls: Control : Value : Comment<p>
 <tr><td>UseArticles
 <tr><td>VatRate<td>VAT% (if any)
 <tr><td>VolDBS<td>If set to 1, enable DBS input for Volunteers
+<tr><td>VolFirstAid<td>As for DBS for First aid training
+<tr><td>NewPhotos<td>Redundant
+<tr><td>EmailButtons<td>For future feature
+<tr><td>TradeInvoicePay<td>Turn on Trade Invoices
+<tr><td>CopyTradeEmailsTo<td>Email Address to copy all trade emails to
+<tr><td>CopyTradeEmailsName<td>Name of person to get copys of trade emails 
+<tr><td>TradeDateChange<td>For changing festival dates
+<tr><td>SpecialInvite<td>No idea what this is for
+<tr><td>Twitter<td>Address to put after twitter for a twitter link
+<tr><td>Facebook<td>Address to put after Facebook for a Facebook link
+<tr><td>Instagram<td>Address to put after Instagram for a Instagram link
+<tr><td>YouTube<td>Address to put after YouTube for a YouTube link
+<tr><td>FooterBack<td>Colour for background of footer
+<tr><td>MapLat<td>
+<tr><td>MapLong<td>
+<tr><td>MapStartZoom<td>15 to 17 is best
+<tr><td>FestHomeName<td>Name of place wher the festival is
+<tr><td>Procession<td>If present called Procession/Parade/Whatever
 </table><p>
 
 <H3>General Year Data</h3>
@@ -258,7 +277,7 @@ If a range is given (eg 14-16) this gives a range of zoom levels that it will be
 <tr><td>Link<td>A link to be used on the map point (if any)
 </table>
 
-Example: I use a big text label for Wimborne at low zoom, then switch to individual features when zoomed in.<p>
+Example: I use a big text label for Chippenham at low zoom, then switch to individual features when zoomed in.<p>
 
 <h3>Email Proformas</h3>
 

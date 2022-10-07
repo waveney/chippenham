@@ -1,9 +1,9 @@
-# wmff
-Wimborne Minster Folk festival Website
+# Chip
+Chippenham Folk festival Website
 
 This is the master data for the website, no data is loaded here (ever)
 
-Needs php 7
+Needs php 8
 
 Installation:
 

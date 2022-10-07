@@ -14,7 +14,7 @@
   include_once("ProgLib.php");
   include_once("TradeLib.php");
   $Years = Get_Years();
-  $Days = array('All','Sat','Sun','&lt;Sat','Sat&amp;Sun');
+  $Days = array('All','Sat','Sun','Mon');
   $Heads = [];
 
   function StaffTable($Section,$Heading,$cols=1) {
@@ -144,9 +144,10 @@
       $txt .= "<td width=300px>";
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=0&Pub=1&Head=0&Day=Sat&Y=$YEAR>Dance Programme - Sat - no headers</a>";
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=0&Pub=1&Head=0&Day=Sun&Y=$YEAR>Dance Programme - Sun - no headers</a>";
+      $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=0&Pub=1&Head=0&Day=Mon&Y=$YEAR>Dance Programme - Mon - no headers</a>";
       $txt .= "<li class=smalltext><a href=CheckDuplicates?Y=$YEAR>Check for Duplicate Year Tables Entries</a>";      
 //      $txt .= "<li class=smalltext><a href=ImportDance2>Import Appalachian List</a>"; // Should never be needed again
-      $txt .= "<li class=smalltext><a href=CheckAccessKeys>Check and fix Blank Access Keys</a>"; 
+//      $txt .= "<li class=smalltext><a href=CheckAccessKeys>Check and fix Blank Access Keys</a>"; 
       $txt .= "<li class=smalltext><a href=ResetImageSizes>Scan and save all Perf Image sizes</a>";
       $txt .= "</table></div>\n";
     }

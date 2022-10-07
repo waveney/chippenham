@@ -55,7 +55,9 @@ if (isset($_REQUEST['REEDIT'])) {
   if (isset($_POST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
 
   if (isset($_POST['SEND'])) {
-    $too = [['to',$To,$Side['Contact']],['from','Dance@' . $FESTSYS['HostURL'],'Wimborne Dance'],['replyto','Dance@' . $FESTSYS['HostURL'],'Wimborne Dance']];
+    $too = [['to',$To,$Side['Contact']],
+            ['from','Dance@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' Dance'],
+            ['replyto','Dance@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' Dance']];
     if ($_POST['CCs']) {
       $CCs = explode("\n",$_POST['CCs']);
       foreach ($CCs as $CC) {

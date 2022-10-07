@@ -7,21 +7,29 @@
 
 <h2>About the Festival</h2>
 
-<p><strong>Wimborne Minster Folk Festival</strong> is Wimborne's biggest event of the year.  Over the second weekend of June, it attracts tens of thousands of people into the town for three days of folk, family and fun.</p>
+<p><strong>Chippenham Folk Festival</strong> is Chippenham's biggest event of the year.  Over the Spring Bank Holiday weekend at the end of May, 
+it attracts tens of thousands of people into the town for Four days of folk, family and fun.</p>
 
-<p>One of the UK's premier in-town folk festivals, it draws people from all over the UK, including a high proportion from across the Dorset, Hampshire and Wiltshire area likely to return to spend money in the town.</p>
+<p>One of the UK's premier in-town folk festivals, it draws people from all over the UK.</p>
 
-<p>'Folk, family and fun' are at the heart of the festival: celebrating folk music and dance; offering a family-friendly atmosphere; and providing a range of fun activities for all ages.</p>
+<p>'Folk, family and fun' are at the heart of the festival: celebrating folk music and dance; 
+offering a family-friendly atmosphere; and providing a range of fun activities for all ages.</p>
 
-<p>Wimborne is in the spotlight over the folk festival weekend, with TV, radio, press and online media coverage showcasing what the town has to offer.  We are highly active on social media, reaching thousands of people across <a href="http://facebook.com/WimborneFolk" rel="tag" target="_blank"><strong>Facebook</strong></a>, <a href="http://twitter.com/WimborneFolk" rel="tag" target="_blank"><strong>Twitter</strong></a> and <a href="http://instagram.com/WimborneFolk" rel="tag" target="_blank"><strong>Instagram</strong></a>.</p>
+<p>Chippenham is in the spotlight over the folk festival weekend, with TV, radio, press and 
+online media coverage showcasing what the town has to offer.  We are highly active on social media, 
+reaching thousands of people across <a href="http://facebook.com/chippfolk" rel="tag" target="_blank"><strong>Facebook</strong></a>, 
+<a href="http://twitter.com/chippfolk" rel="tag" target="_blank"><strong>Twitter</strong></a> and 
+<a href="http://instagram.com/chippfolk" rel="tag" target="_blank"><strong>Instagram</strong></a>.</p>
 
-<p>Organised entirely by volunteers, the festival aims to deliver a range of benefits to Wimborne's economy and community.  We are proud to have the backing of East Dorset District Council, Wimborne Minster Town Council and the Wimborne Business Improvement District (BID).</p>
+<p>Organised entirely by volunteers, the festival aims to deliver a range of benefits to Chippenham's economy and community.</p>
 
 <h2>How to Help</h2>
 
-<p>Our sponsors play a vital role in helping the festival thrive and continue 'giving back' to Wimborne for years to come.  As a sponsor, your business would be aligned with our family-friendly values and enjoy multiple opportunities to reach thousands of valuable potential customers.  We offer a range of sponsorship packages to suit any budget.</p>
+<p>Our sponsors play a vital role in helping the festival thrive and continue 'giving back' to Chippenham for years to come.  
+As a sponsor, your business would be aligned with our family-friendly values and enjoy multiple opportunities to reach thousands 
+of valuable potential customers.  We offer a range of sponsorship packages to suit any budget.</p>
 
-<p>If you are interested in supporting the festival, please contact committee secretary <a href="/contact" rel="bookmark"><strong>Graham Brown</strong></a>.</p>
+<!--<p>If you are interested in supporting the festival, please contact committee secretary <a href="/contact" rel="bookmark"><strong>Graham Brown</strong></a>.</p>-->
 
 <?php 
   global $SHOWYEAR;
