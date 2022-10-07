@@ -1,5 +1,6 @@
 <?php
   include_once("fest.php");
+  include_once("GetPut.php");
   A_Check('Committee','Users');
 
   dostaffhead("Add/Change User");
@@ -7,7 +8,6 @@
   global $FESTSYS,$Sections;
 
   Set_User_Help();
-  include_once("GetPut.php");
 
   echo "<h2>Add/Edit Fest Con Users</h2>\n";
   echo "<form method=post action='AddUser'>\n";

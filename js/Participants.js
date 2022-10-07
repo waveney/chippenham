@@ -96,8 +96,10 @@ function CheckContract() {
 
 function ComeAnyWarning() {
   var Come = $("input[name='Coming']:checked");
-  if (Come && Come.val() != 2 && ($("[Name=Fri]").is(":checked") || $("[Name=Sat]").is(":checked") || $("[Name=Sun]").is(":checked"))) { $('#ComeAny').show(); $('#WhatDays').hide() } 
-  else if (Come && Come.val() == 2 && (!$("[Name=Fri]").is(":checked") && !$("[Name=Sat]").is(":checked") && !$("[Name=Sun]").is(":checked"))) { $('#ComeAny').hide(); $('#WhatDays').show() } 
+  if (Come && Come.val() != 2 && ($("[Name=Fri]").is(":checked") || $("[Name=Sat]").is(":checked") || $("[Name=Sun]").is(":checked") || 
+     $("[Name=Mon]").is(":checked"))) { $('#ComeAny').show(); $('#WhatDays').hide() } 
+  else if (Come && Come.val() == 2 && (!$("[Name=Fri]").is(":checked") && !$("[Name=Sat]").is(":checked") && !$("[Name=Sun]").is(":checked")  && 
+     !$("[Name=Mon]").is(":checked"))) { $('#ComeAny').hide(); $('#WhatDays').show() } 
   else { $('#ComeAny').hide(); ; $('#WhatDays').hide() }
 } 
 
@@ -107,10 +109,11 @@ $(document).ready(function() {
   if(! $("[Name=Fri]").is(":checked")) $('.ComeFri').hide();
   if(! $("[Name=Sat]").is(":checked")) $('.ComeSat').hide();
   if(! $("[Name=Sun]").is(":checked")) $('.ComeSun').hide();
+  if(! $("[Name=Sun]").is(":checked")) $('.ComeMon').hide();
   if(! $("[Name=MFri]").is(":checked")) $('.ComeMFri').hide();
   if(! $("[Name=MSat]").is(":checked")) $('.ComeMSat').hide();
   if(! $("[Name=MSun]").is(":checked")) $('.ComeMSun').hide();
-
+  if(! $("[Name=MSun]").is(":checked")) $('.ComeMMon').hide();
   AgentChange();
   CheckContract();
   ComeAnyWarning();

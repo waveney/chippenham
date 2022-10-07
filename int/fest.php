@@ -16,7 +16,7 @@ if (isset($YEAR)) {
 
 $Access_Levels = ['','Participant','Upload','Steward','Staff','Committee','SysAdmin','Internal'];// Sound Engineers will be Stewards, Upload not used yet
 $Access_Type = array_flip($Access_Levels);
-$Area_Levels = [ 'No','Edit'];//,'Edit and Report');
+$Area_Levels = [ 'No','Edit','Edit and Report'];
 $Area_Type = array_flip($Area_Levels);
 $Sections = ['', 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','Other','TLine','Bugs','Photos','Comedy','Family','News','Volunteers','Art',
    'Tickets']; // Note fest_users fields must match
@@ -130,16 +130,10 @@ function Access($level,$subtype=0,$thing=0) {
   case $Access_Type['Steward'] :
     if (!$subtype) return $USER['AccessLevel'] >= $want;
     return Is_SubType($subtype);
-//    if (isset($USER[$subtype]) && $USER[$subtype]) return 1;
-//    return 0; 
-
 
   case $Access_Type['Committee'] :
-//if ($level == 'Committee') echo "In Access 2<br>";
     if (!$subtype) return 1;
     return Is_SubType($subtype);
-//    if (isset($USER[$subtype]) && $USER[$subtype]) return 1;
-//    return 0;
 
   case $Access_Type['SysAdmin'] : 
     return 1;

@@ -65,7 +65,7 @@
     echo "<tr><td>Id:<td>";
     if (isset($Gen['id'])) {
       echo $Gen['id'] . fm_hidden('id',$Gen['id']);
-      Register_Autoupdate('YearData', $Gen['id']);
+      Register_Autoupdate('General', $Gen['id']);
     } else {
       echo "Not Assigned";
     }
