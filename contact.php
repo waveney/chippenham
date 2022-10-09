@@ -27,7 +27,7 @@
     echo "<div class=smallfloatleft><div class=mini>\n";
     if ($user['WMFFemail']) echo "<a href=mailto:" . $user['WMFFemail'] . '@' . $FESTSYS['HostURL'] . ">";
     if (feature('ShowContactPhotos')) {
-      echo "<img alt='Chippenham Folk Festival' style='float:left; max-width:100px;max-height:100px;margin-right:5px' src='";
+      echo "<img alt='Chippenham Folk Festival' style='float:left; max-width:200px;max-height:200px;margin-right:5px' src='";
       echo ($user['Image']?$user['Image']:"/images/WimborneFolkLogo.png") . "'>";
     }
     if ($user['Contacts'] == 1) echo "<h2 class=minittl>" . $user['SN'] . "</h2>";
@@ -42,8 +42,11 @@
 
 <p style="color:#CC0000; font-weight:bold;">In the event of an emergency, please find a steward or security or go to our first aid points (The Square or Willow Walk) or if life threatening, dial 999.</p> */
 
-  echo "<br clear=all>";
-  echo "Please note that we may not be able to respond to urgent emails and bear in mind that due to the high number of enquiries we get throughout the year, " .
+  echo "<br clear=all><p><br clear=all><p><br clear=all>";
+
+//  echo "<br clear=all><p><br clear=all><p><br clear=all>";
+//    echo "<br clear=all><p><br clear=all><p><br clear=all>";
+      echo "Please note that we may not be able to respond to urgent emails and bear in mind that due to the high number of enquiries we get throughout the year, " .
        "we may not be able to respond to every email.<p>";
 
   dotail();
