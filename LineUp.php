@@ -6,7 +6,7 @@
   if (isset($_GET['T'])) $T = $_GET['T'];
   if (strlen($T) > 12 || preg_match('/\W/',$T)) $T = 'Dance';  
 
-  dohead("$T Line-up",[],1,'T');
+  dohead("$T Line-up",[],1);
 
   set_ShowYear();
   include_once("int/ProgLib.php");
