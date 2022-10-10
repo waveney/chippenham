@@ -11,7 +11,8 @@ var mtypready = 0;
 var docready = 0;
 var gmap;
 var DSrequest;
-var Wimb = {lat: 50.800150, lng: -1.988000};
+//var From = {lat: 50.800150, lng: -1.988000};
+//var From  = {lat: 51.45925, lng: -2.11694};
 var MapDataDate = 0;
 
 
@@ -42,8 +43,9 @@ function ShowDirect(MarkId) { // Open directions window from current loc (me) to
       dirDisp = new google.maps.DirectionsRenderer();
       dirDisp.setMap(map);
     }
+    var dfltloc = {lat: +$('#DirLat').val(), lng: +$('#DirLong').val()};
     DSrequest = {
-      origin: (direct && me && me.position)?me.position:Wimb,
+      origin: (direct && me && me.position)?me.position:dfltloc,
       destination: markers[MarkId].position,
       travelMode: (zoom < 15?'DRIVING':'WALKING'),
       unitSystem: 1, //IMPERIAL
@@ -106,11 +108,12 @@ function initMap() {
       }
       if ((MapFeatures == 2) && (data.id < 1000000)) return;
       if ((MapFeatures == 3) && (!data.usage || !data.usage.match(/^D/))) return;
-      if ((MapFeatures == 4) && (data.icon != 3) && (data.icon != 5)) return; // Car Parks
+      if ((MapFeatures == 4) && (data.icon != 3) && (data.icon != 5) && (data.icon != 10)) return; // Car Parks
       if ((MapFeatures == 5) && (!data.usage || !data.usage.match(/^.M/))) return;
       if ((MapFeatures == 6) && (!data.usage || !data.usage.match(/^...C/))) return;
       if ((MapFeatures == 7) && (!data.usage || !data.usage.match(/^..F/))) return;
       if ((MapFeatures == 8) && (!data.usage || !data.usage.match(/^.....Y/))) return;
+      if ((MapFeatures == 9) && (data.icon != 9) && (data.icon != 5)) return; // Camp Sites
       if (data.icon != 1) { // text
         var marker = new google.maps.Marker({
           position: latLng,

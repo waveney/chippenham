@@ -49,7 +49,6 @@ function Update_MapPoints() {
 
   $data = array();
   $res = $db->query("SELECT * FROM Venues WHERE Status=0 AND Lat!='' AND MapImp>=0 ");// Normal Code
-//  $res = $db->query("SELECT * FROM Venues WHERE Lat!='' "); // ALL VENUES
   if ($res) while($ven = $res->fetch_assoc()) {
     $usage = (($ven['Dance']?'D':'_').($ven['Music']?'M':'_').($ven['Child']?'F':'_').($ven['Craft']?'C':'_').($ven['Other']?'O':'_').($ven['Comedy']?'Y':'_'));
     if ($usage == '______' || $usage == '____O_' ) {
@@ -80,10 +79,14 @@ function Update_MapPoints() {
   return file_put_contents("cache/mappoints.json",json_encode($data));
 }
 
-// Features 1= normal, 0 none, 2 no venues, 3=Dance only, 4 = CarParks, 5 = Music only, 6=Craft, 7=Family, 8=Comedy
+// Features 1= normal, 0 none, 2 no venues, 3=Dance only, 4 = CarParks, 5 = Music only, 6=Craft, 7=Family, 8=Comedy, 9=Campsites
 
-function Init_Map($CentType,$Centerid,$Zoom,$Features=1) { // CentType 0=Venue, 1=Mappoint, -1=WImborne
+function Init_Map($CentType,$Centerid,$Zoom,$Features=1) { // CentType 0=Venue, 1=Mappoint, -1= Festival home
   global $FESTSYS;  
+  $DirLat  = Feature('DefaultDirLat');
+  if ($DirLat == 0) $DirLat = Feature('MapLat');
+  $DirLong  = Feature('DefaultDirLong');
+  if ($DirLong == 0) $DirLong = Feature('MapLong');
   if ($CentType > 0) {
     $mp = Get_Map_Point($Centerid);
     $Lat = $mp['Lat'];
@@ -99,7 +102,7 @@ function Init_Map($CentType,$Centerid,$Zoom,$Features=1) { // CentType 0=Venue, 
 
   $V = $FESTSYS['V'];
   echo fm_hidden('MapLat',$Lat) . fm_hidden('MapLong',$Long) . fm_hidden('MapZoom',$Zoom) . fm_hidden('MapFeat',$Features) .
-       fm_hidden('MapDataDate',filemtime("cache/mappoints.json"));
+       fm_hidden('DirLat',$DirLat) . fm_hidden('DirLong',$DirLong) . fm_hidden('MapDataDate',filemtime("cache/mappoints.json"));
        
   echo "<script src='https://maps.googleapis.com/maps/api/js?key=" . $FESTSYS['GoogleAPI'] . "' ></script>";
   echo "<script src=/js/maplabel.js?V=$V ></script>";

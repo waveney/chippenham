@@ -23,6 +23,9 @@
   echo "</table></div><p>";
 
   $ans = $db->query("SELECT * FROM FestUsers WHERE Contacts!=0 ORDER BY RelOrder DESC");
+  $url = $FESTSYS['HostURL'];
+  $url = preg_replace('/\./','. ',$url);
+
   while ($user = $ans->fetch_assoc()) {
     echo "<div class=smallfloatleft><div class=mini>\n";
     if ($user['WMFFemail']) echo "<a href=mailto:" . $user['WMFFemail'] . '@' . $FESTSYS['HostURL'] . ">";
@@ -32,7 +35,7 @@
     }
     if ($user['Contacts'] == 1) echo "<h2 class=minittl>" . $user['SN'] . "</h2>";
     echo "<span class=minitxt>" . $user['Roll'] . "</span>";
-    if ($user['WMFFemail']) echo "<br>" . $user['WMFFemail'] . '@' . $FESTSYS['HostURL'] . "</a>";
+    if ($user['WMFFemail']) echo "<br>" . $user['WMFFemail'] . "@ $url</a>";
     echo "</div></div>\n";
   }
 
