@@ -52,7 +52,7 @@ h2 {
 .button
     {
     padding:2.5px 10px 2.5px 10px;
-    background-color:#004668;
+    background-color:#var(--main-col-dark);
     margin:5px 0 0 0;
     transition:background 1s, color 1s;
     color:#FFFFFF;
@@ -74,7 +74,7 @@ h2 {
 .navbutton
     {
     padding:9.5px 10px;
-    background-color:#004668;
+    background-color:#var(--main-col-dark);
     font-size:18px;
     margin:0px;
     transition:background 1s, color 1s;
@@ -93,7 +93,7 @@ h2 {
     }
 .navbuttondrop:hover
     {
-    background-color:#004668;
+    background-color:#var(--main-col-dark);
     }
 .staffnavbutton
     {
@@ -104,7 +104,7 @@ h2 {
     transition:background 1s, color 1s;
     }
 .staffnavbutton:hover {
-  background-color:#004668;
+  background-color:#var(--main-col-dark);
 }
 .content, .contentlim {
   min-height:650px;
@@ -143,7 +143,7 @@ sup {
     min-width:250px;
     max-width:500px;
     min-height:250px;
-    background-color:#004668;
+    background-color:#var(--main-col-dark);
     width:100%;
     text-align:center;
     color:#FFFFFF;
@@ -172,7 +172,7 @@ sup {
     min-width:150px;
     max-width:200px;
     min-height:150px;
-    background-color:#004668;
+    background-color:#var(--main-col-dark);
     width:100%;
     text-align:center;
     color:#FFFFFF;
@@ -251,7 +251,7 @@ sup {
     {
     margin:0 0 0 0;
     font-size:40px;
-    color:#004668;
+    color:#var(--main-col-dark);
     }
 .footersubtitle {
     margin:0 0 0 0;
@@ -270,7 +270,7 @@ sup {
     {
     margin:0 0 0 0;
     font-size:30px;
-    color:#004668;
+    color:#var(--main-col-dark);
     }
 p {
   text-align:justify;
@@ -358,7 +358,7 @@ input
     }
 input:Focus
     {
-    border:solid 2px #004668;
+    border:solid 2px #var(--main-col-dark);
     color:#000000;
     }
 select
@@ -371,7 +371,7 @@ select
     }
 select:Focus
     {
-    border:solid 2px #004668;
+    border:solid 2px #var(--main-col-dark);
     color:#000000;
     }
 textarea
@@ -385,7 +385,7 @@ textarea
     }
 textarea:Focus
     {
-    border:solid 2px #004668;
+    border:solid 2px #var(--main-col-dark);
     color:#000000;
     }
 
@@ -570,7 +570,7 @@ textarea:Focus
     display: inline-block;
     margin-bottom:25px;
     background-color:#FFFFFF;
-    border:solid 4px #004668;
+    border:solid 4px #var(--main-col-dark);
     border-radius:15px;
     }
 .adminarticlettl {
@@ -579,7 +579,7 @@ textarea:Focus
     text-align:center;
     font-size:30px;
     color:#FFFFFF;
-    background-color:#004668;
+    background-color:#var(--main-col-dark);
     }
 .adminarticletxt {
     max-width:100%;
@@ -815,8 +815,8 @@ textarea:Focus
   max-width:95%;
   min-width:30%;
   border-spacing:5px;
-  background-color:#004668; 
-  border-color:#004668; 
+  background-color:var(--main-col-dark); 
+  border-color:var(--main-col-dark); 
   border-width:2px;
   padding-right:3px;
 }
@@ -1087,7 +1087,7 @@ textarea {
 
 .ArtTextBT {
   text-align:center;
-  color: #004668;
+  color: #var(--main-col-dark);
   font-weight:normal;
   font-size:24px;
 }
@@ -1173,7 +1173,7 @@ button {
 
 .LineupBase {
   background:#f6f6f6;
-  color: #004668;
+  color: #var(--main-col-dark);
 }
 
 .LineupFit1 {
@@ -1223,7 +1223,7 @@ button {
   margin-bottom:2px;
   padding:5px;
   text-align: center;
-  color: #004668;
+  color: #var(--main-col-dark);
 }
 
 .LUHighlight a .LineUpFitTitle {
@@ -1231,7 +1231,7 @@ button {
 }
 
 .LUHighlight, .LUHighlight a, .LUHighlight a:visited {
-  background-color:#43a9b2;
+  background-color:var(--main-col);
   color:white;
   animation-name: pbpop;  
   animation-duration: 0.3s;
@@ -1276,7 +1276,7 @@ button {
 
 .TradeFlexCont h2 {
   background:#f6f6f6;
-  color:#004668;
+  color:#var(--main-col-dark);
   margin-bottom:2px;
   padding:5px;
   padding-left:10px;
@@ -1284,7 +1284,7 @@ button {
 }
 
 .TradeFlexCont:hover h2 {
-  background-color:#43a9b2;
+  background-color:#var(--main-col);
   color:white;
 }
 
@@ -1318,13 +1318,13 @@ button {
 }
 
 .VenueFlexCont a {
-  color:#004668;
+  color:#var(--main-col-dark);
 }
 
 .VenueFlexCont:hover {
   font-size:24px;
   color:white;
-  background: #43a9b2;
+  background: var(--main-col);
   animation-name: pbpop;  
   animation-duration: 0.3s;
   animation-timing-function: linear;
@@ -1448,7 +1448,7 @@ button {
   transition:opacity .5s, filter .5s;
   font-weight:bold;
   background:#f0f0f0;
-  color:#004668;
+  color:#var(--main-col-dark);
   margin-bottom:2px;
   padding:5px;
   padding-left:10px;
@@ -1456,7 +1456,7 @@ button {
 }
 
 .sponttl:hover {
-  background-color:#43a9b2;
+  background-color:var(--main-col);
   color:white;
 }
 

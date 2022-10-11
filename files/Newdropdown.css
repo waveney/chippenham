@@ -22,7 +22,7 @@
 }
 
 .main-header:hover .PublicBar a {
-  color: #004668;
+  color: var(--main-col-dark);
 }
 
 .main-header .header-logo {
@@ -63,7 +63,7 @@
 }
 
 .fixedheader .FestDates, .fixedheader .SmallDates {
-  color: #004668;
+  color: var(--main-col-dark);
 }
 
 .SmallDates {
@@ -139,7 +139,7 @@
 }
 
 .MenuIcon:hover {
-  background: #004668;
+  background: var(--main-col-dark);
   color:white;
 }
 
@@ -154,7 +154,7 @@
 }
 
 .main-header .fixedheader a  {
-  color: #004668;
+  color: var(--main-col-dark);
 }
 
 .navigation a { 
@@ -170,7 +170,7 @@
 
 .fixedheader .navigation a:hover,
 .navigation a:hover {
-  background-color:#43a9b2;
+  background-color:var(--main-col-dark);
   color:white;
   transition: all ease-in-out 0.4s;
   transform-origin: top center;
@@ -201,7 +201,7 @@
 }
 
 .fixedheader .navigation a {
-  color: #004668;
+  color: var(--main-col-dark);
 }
 
 .fixedheader .PrivateBar a {
@@ -257,19 +257,19 @@
   display: block; 
   background-color:white;
   padding:12px;  
-  color:#43a9b2;
-/*  border:0.5px solid #43a9b2; /* works - do I want it? */ 
+  color:var(--main-col-dark);
+/*  border:0.5px solid var(--main-col); /* works - do I want it? */ 
 }
 
 .dropdown-content a:hover {
-  background-color:#43a9b2;
+  background-color:var(--main-col-dark);
   color:white;
 }
 
 .main-header .dropdown-content a, 
 .main-header .dropdown-content a:link, 
 .main-header .dropdown-content a:visited  {
-  color:#43a9b2;
+  color:var(--main-col-dark);
 }
 
 .main-header .dropdown-content a:hover  {
@@ -296,12 +296,12 @@
 
 /* sub Main */
 .PrivateBar .navigation, .PrivateBar .dropdown-content a:hover {
-  background-color:var(--main-col);
+  background-color:var(--main-col-dark);
 
 }
 
 .PrivateBar .navigation a:hover, .PrivateBar .dropdown-content {
-  background-color:#43a9b2;
+  background-color:var(--main-col-dark);
 }
 
 .PrivateBar .MenuTesting, .MenuTesting a {
