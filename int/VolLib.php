@@ -260,7 +260,8 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
 
     echo "\n<tr><td><h3>Anything Else /Notes:</h3><td colspan=3>" . fm_basictextarea($VYear,'Notes',3,3,'',"Notes::$PLANYEAR");
-    echo "\n<tr><td>Application Status:<td>" . $YearStatus[empty($VYear['Status'])?0:$VYear['Status']];
+    $Stat = empty($VYear['Status'])?0:$VYear['Status'];
+    echo "\n<tr><td>Application Status:<td " . ($Stat?'style=color:Green;font-weight:bold;>': 'style=color:Red;font-weight:bold;>') . $YearStatus[$Stat];
     
     echo "\n<tr><td><b>Part 4: Actions:</b><td colspan=3><div class=tablecont><table border=0><tr><td width=33%>";
     echo "<input type=submit hidden name=ACTION value=View>\n";
