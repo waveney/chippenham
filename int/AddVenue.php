@@ -33,6 +33,11 @@
     $cvid = $_GET['Copy'];
     $Venue = Get_Venue($cvid);
     $vid = -1;
+  } elseif (isset($_GET['Delete'])) {
+    $cvid = $_GET['Delete'];
+    db_delete("Venues",$cvid);
+    echo "Venue Deleted.";
+    dotail();
   } elseif (isset($_REQUEST['NEWACCESS'])) {
     $Vens = Get_Venues(1);
     foreach ($Vens as $Ven) {
@@ -122,6 +127,7 @@
   echo "<h2><a href=VenueList>List Venues</a> , \n";
     echo "<a href=AddVenue>Add Another Venue</a>, \n";
     echo "<a href=AddVenue?Copy=$vid>Copy To Another Venue</a>, \n";
+    if (Access('SysAdmin')) echo "<a href=AddVenue?Delete=$vid>Delete Venue</a>, \n";
     echo "<a href=VenueShow?v=$vid&Mode=1>Show Venue</a></h2>";
 
   dotail();
