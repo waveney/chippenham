@@ -349,7 +349,7 @@
     $txt .= "<ul>\n";
 //    $txt .= "<li><a href=StewardView>Stewarding Applications (old)</a>\n";
     $txt .= "<li><a href=Volunteers?A=New>Volunteering Application Form</a>\n";
-    $txt .= "<li><a href=Volunteers?A=List>Volunteers</a>\n";
+    $txt .= "<li><a href=Volunteers?A=List>List Volunteers</a>\n";
     $txt .= "<li><a href=VolCats>Volunteer Categories</a>\n";
     if (Access('Staff','Photos')) {
       $txt .= "<li><a href=PhotoUpload>Photo Upload</a>";

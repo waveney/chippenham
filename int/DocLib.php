@@ -330,7 +330,7 @@ function Doc_List($file,$opts=0) {
   echo "<tr>";
   if ($opts & 1) echo "<td>" . Get_Parent($d);
   echo "<td><a href=ShowFile?f=$fid>" . $name . "</a>";
-  echo "<td class=FullD hidden>" . $AllU[$file['Who']];
+  echo "<td class=FullD hidden>" . (empty($AllU[$file['Who']])?'Nobody': $AllU[$file['Who']]);
   echo "<td align=right>" . formatBytes($file['filesize'],0);
   echo "<td class=FullD hidden>" . date('d/m/y H:i:s',$file['Created']);
   echo "<td class=FullD hidden>"; // . ($Access_Levels[$file['AccessLevel']

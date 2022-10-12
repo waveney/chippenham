@@ -571,10 +571,14 @@
 /* Footer Stuff */
 .footer {
   font-size:9pt;
-  padding: 0px 0px 25px 25px;
+/*  padding: 0px 0px 25px 25px;*/
 /*  background:url(/images/icons/Flora.png) repeat-x bottom left;*/
   background-color:#00344c ;
   color:#FFFFFF;
+/*  position: absolute;
+  bottom: 0px;
+  width:100%;
+  */
 }
 
 .copyright{

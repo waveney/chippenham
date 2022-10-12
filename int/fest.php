@@ -96,12 +96,12 @@ function Set_User() {
 }
 
 function Is_SubType($Name) {
-  global $USER,$USERID;
+  global $USER,$USERID,$Sections;
   static $Stypes;
   include_once("GetPut.php");
   if (empty($Stypes)) {
     $Ttypes = Gen_Get_All('UserCap',"WHERE User=$USERID");
-    foreach($Ttypes as $T) $Stypes[$T['Capability']] = $T['Level'];
+    foreach($Ttypes as $T) $Stypes[$Sections[$T['Capability']]] = $T['Level'];
   }
   if (isset($Stypes[$Name])) return $Stypes[$Name];
   return 0;
@@ -111,12 +111,11 @@ function Access($level,$subtype=0,$thing=0) {
   global $Access_Type,$USER,$USERID;
   $want = $Access_Type[$level];
   Set_User();
-//if ($level == 'Committee') echo "In Access 1<br>";
+//echo "Access $level $subtype<br>";
   if (!isset($USER['AccessLevel'])) return 0;
   if ($USER['AccessLevel'] < $want) return 0;
   
   if ($USER['AccessLevel'] > $want+1) return 1;
-
   switch  ($USER['AccessLevel']) {
 
   case $Access_Type['Participant'] : 
