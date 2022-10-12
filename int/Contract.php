@@ -239,7 +239,8 @@ services, under the following terms and conditions:<p>\n";
   }
 
   if ($mode < -1) {
-    $str .= "<p><span class=NotSide>NOTE: A parking statement inserted prior to the changes statement to say there is free parking near the venue(s), if appropriate.</span><p>";
+    $str .= "<p><span class=NotSide>NOTE: A parking statement inserted prior to the changes statement " .
+             "to say there is free parking near the venue(s), if appropriate.</span><p>";
     $str .= "<p><span class=NotSide>NOTE2: Additional clause(s) can be added for a particular venue, if appropriate.</span><p>";
   }
 

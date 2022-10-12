@@ -468,7 +468,8 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
                     $Imp2Use = $s['Importance'];
                     if ($s['DiffImportance']) {
                       $Imp2Use = 0;
-                      foreach($PerfTypes as $pt=>$pd) if ($s[$pd[0]] && $Imp2Use < $s[$pd[2] . 'Importance']) $Imp2Use = $s[$pd[2] . 'Importance'];
+                      foreach($PerfTypes as $pt=>$pd) if (Capability("Enable" . $pd[2])) if ($s[$pd[0]] && $Imp2Use < $s[$pd[2] . 'Importance']) 
+                        $Imp2Use = $s[$pd[2] . 'Importance'];
                     }
                     $imps[$Imp2Use][] = $s; 
                     $Perfs[$e["PerfType$i"]][$Imp2Use][] = $s; 

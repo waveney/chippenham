@@ -19,7 +19,7 @@ function formatminimax(&$side,$link,$mnat=2,$sdisp=1) {
   $Imp = $side['Importance'];
   if ($side['DiffImportance']) {
     $imp = 0;
-    foreach($PerfTypes as $pt=>$pd) if ($side[$pd[0]] && $imp < $side[$pd[2] . 'Importance'] ) $imp = $side[$pd[2] . 'Importance'];
+    foreach($PerfTypes as $pt=>$pd) if (Capability("Enable" . $pd[2])) if ($side[$pd[0]] && $imp < $side[$pd[2] . 'Importance'] ) $imp = $side[$pd[2] . 'Importance'];
   }
   
   $mnmx = ($Imp >= $mnat?'maxi':'mini');

@@ -24,7 +24,7 @@ function Print_Thing($thing,$right=0) {
     $iimp = $thing['Importance'];
     if ($thing['DiffImportance']) {
       $iimp = 0;
-      foreach($PerfTypes as $pt=>$pd) if ($thing[$pd[0]] && ($iimp < $thing[$pd[2] . 'Importance'])) $iimp = $thing[$pd[2] . 'Importance'];
+      foreach($PerfTypes as $pt=>$pd) if (Capability("Enable" . $pd[2])) if ($thing[$pd[0]] && ($iimp < $thing[$pd[2] . 'Importance'])) $iimp = $thing[$pd[2] . 'Importance'];
     }
     echo "<h2 class=EventMinittl style='font-size:" . (27+ $iimp) . "px;'>"; 
     echo $thing['SN'];  

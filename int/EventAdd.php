@@ -374,7 +374,7 @@ A similar feature will appear eventually for music.<p>
 
       if (!((isset($Event['BigEvent']) && $Event['BigEvent']))) {
         $PTypes = [];
-        foreach ($PerfTypes as $p=>$d) $PTypes[] = $p;
+        foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $PTypes[] = $p;
         for ($i=1; $i<5; $i++) {
           if (!isset($Event["PerfType$i"])) $Event["PerfType$i"]=0;
           echo "<tr><td colspan=2>";
@@ -382,7 +382,7 @@ A similar feature will appear eventually for music.<p>
 
           $sid = (isset($Event["Side$i"])?$Event["Side$i"] : 0);
           $pi = 0;
-          foreach ($PerfTypes as $p=>$d) {
+          foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) {
             echo ($SelectPerf[$p]?fm_select($SelectPerf[$p],$Event,"Side$i",1,"id=Perf$pi" . "_Side$i " . ($Event["PerfType$i"]==$pi?'':'hidden'),"Perf$pi" . "_Side$i") :"");
             if ($sid && ($Event["PerfType$i"] == $pi) && !isset($SelectPerf[$p][$sid])) {
               $Side = Get_Side($sid);

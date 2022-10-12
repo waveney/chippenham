@@ -211,7 +211,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
               if (!$s['DiffImportance']) {
                 $iimp = $s['Importance'];
               } else {
-                foreach ($PerfTypes as $j=>$pd) if ($s[$pd[0]] && $s[$pd[2] . "Importance"] > $iimp) $iimp = $s[$pd[2] . "Importance"];
+                foreach ($PerfTypes as $j=>$pd) if (Capability("Enable" . $pd[2])) if ($s[$pd[0]] && $s[$pd[2] . "Importance"] > $iimp) $iimp = $s[$pd[2] . "Importance"];
               }
               $e['With'][$Poster?$iimp:0][] = array_merge($s,$sidy);
             }

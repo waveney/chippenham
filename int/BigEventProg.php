@@ -23,7 +23,7 @@
     $extra = " AND y.Procession=1 AND y.$Day=1";
   }
 
-  foreach ($PerfTypes as $p=>$d) $SelectPerf[$p] = ($d[0] == 'IsASide'? Select_Come_All($extra): Select_Perf_Come_All($d[0],$extra2)); 
+  foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $SelectPerf[$p] = ($d[0] == 'IsASide'? Select_Come_All($extra): Select_Perf_Come_All($d[0],$extra2)); 
   
   $Sides = Select_Perf_Full();
 

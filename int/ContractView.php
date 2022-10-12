@@ -1,6 +1,7 @@
 <?php 
   include_once("fest.php");
   include_once("Contract.php");
+  include_once("GetPut.php");
   
   dostaffhead("Dummy Contract");
   

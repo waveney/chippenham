@@ -17,7 +17,7 @@
   $Sidey = Get_SideYear($snum);
   
   $emails = [];
-  foreach ($PerfTypes as $n=>$p) if ($Side[$p[0]]) $emails[] = $p[1] . "@" . $FESTSYS['HostURL'];
+  foreach ($PerfTypes as $n=>$p) if (Capability("Enable" . $p[2])) if ($Side[$p[0]]) $emails[] = $p[1] . "@" . $FESTSYS['HostURL'];
   $txt = $Side['SN'] . " request an invite for $YEAR";
 
   NewSendEmail(1,$snum,$emails,$Side['SN'] . " request invite for $YEAR",$txt);

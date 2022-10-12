@@ -45,7 +45,7 @@
       $act = Get_Side($b[0]);
       echo "<tr><td>";
 //      $ts = [];
-//      foreach($PerfTypes as $p=>$d) if ($act[$d[0]]) $ts[] = $p;
+//      foreach($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) if ($act[$d[0]]) $ts[] = $p;
 //      echo implode(", ",$ts);
 //    if ($act['IsASide']) echo "Side ";
 //    if ($act['IsAnAct']) echo "Act ";

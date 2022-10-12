@@ -147,7 +147,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       if (!$Wide) echo "<tr><td class=NotSide>";//<td class=NotSide>";
         echo "<td class=NotSide colspan=3>";
         echo Help('PerfTypes') . " ";
-        foreach ($PerfTypes as $t=>$p) echo fm_checkbox($t,$Side,$p[0]) . " ";
+        foreach ($PerfTypes as $t=>$p) if (Capability("Enable" . $p[2])) echo fm_checkbox($t,$Side,$p[0]) . " ";
         echo "<td class=NotSide>State:" . fm_select($Side_Statuses,$Side,'SideStatus') . "\n";
         if ($PerfTC > 1 && $Side['DiffImportance']) {
           echo "<tr><td class=NotSide>Importances:" . help('Importance');
@@ -286,12 +286,13 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       $ActList=Act_All();
       $OtherList=Other_All();
       $row = 0;
-      echo "<tr id=OverlapRow$row class=NotSide><td rowspan=$rows class=NotSide>Overlap Rules: \n" . help('OverlapRules'); //<button type=button onclick=AddOverlapRow()>+</button>\n";
+      echo "<tr id=OverlapRow$row class=NotSide><td rowspan=$rows class=NotSide>Overlap Rules: \n" . 
+            help('OverlapRules'); //<button type=button onclick=AddOverlapRow()>+</button>\n";
 
-      foreach ($PerfTypes as $p=>$d) $SelectPerf[$p] = ($d[0] == 'IsASide'? Sides_All($snum,1): Perf_Name_List(($d[0])));
+      foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $SelectPerf[$p] = ($d[0] == 'IsASide'? Sides_All($snum,1): Perf_Name_List(($d[0])));
 
       $PTypes = [];
-      foreach ($PerfTypes as $p=>$d) $PTypes[] = $p;
+      foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $PTypes[] = $p;
 
       for ($i = 0; $i < $rows; $i++) {
         $O = (isset($olaps[$i]) ? $olaps[$i] : ['Sid1'=>$snum,'Cat2'=>0,'Sid2'=>0]);
@@ -304,7 +305,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
  
         $sid = $O[$Other];
         $pi = 0;
-        foreach ($PerfTypes as $p=>$d) {
+        foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) {
  
           echo ($SelectPerf[$p]?fm_select($SelectPerf[$p],$O,$Other,1,"id=Perf$pi" . "_Side$i " . ($O[$OtherCat]==$pi?'':'hidden'),"Perf$pi" . "_Side$i") :"");
           if ($sid && ($O[$OtherCat] == $pi) && !isset($SelectPerf[$p][$sid])) {
@@ -378,7 +379,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   }
 
   $NotD = 0;
-  foreach ($PerfTypes as $p=>$d) if (($d[0] != 'IsASide') && $Side[$d[0]]) $NotD = 1;
+  foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) if (($d[0] != 'IsASide') && $Side[$d[0]]) $NotD = 1;
 
   $Adv = '';
   $Imp = '';
@@ -453,7 +454,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
          
     echo "<tr>";
       $Perfs = [];
-      foreach ($PerfTypes as $t=>$d) if ($Side[$d[0]]) $Perfs[] = $d[2];
+      foreach ($PerfTypes as $t=>$d) if (Capability("Enable" . $d[2])) if ($Side[$d[0]]) $Perfs[] = $d[2];
       $AllMU = Get_AllUsers4Perf($Perfs,$Sidey['BookedBy']);
       echo "<td class=NotSide>Booked By: " . fm_select($AllMU,$Sidey,'BookedBy',1);
       echo fm_date('Release Date',$Sidey,'ReleaseDate','class=NotSide','class=NotSide');     
@@ -635,7 +636,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     echo fm_number1('Cost of this',$Sidey,'OtherPayCost','class=NotSide colspan=1');
     if (!isset($Sidey['BudgetArea']) || $Sidey['BudgetArea']==0) {
       $area = 0;
-      foreach ($PerfTypes as $t=>$d) {
+      foreach ($PerfTypes as $t=>$d) if (Capability("Enable" . $d[2])) {
         if ($Side[$d[0]] && $d[3] && $area==0) $area = FindBudget($d[3]);
       }
       if ($area > 0) $Sidey['BudgetArea'] = $area;

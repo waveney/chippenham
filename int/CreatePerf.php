@@ -12,7 +12,7 @@
   if (isset($_GET['T'])) $T = $_GET['T'];
   if (isset($_POST['T'])) $T = $_POST['T'];
   $Perf = 0; 
-  foreach ($PerfTypes as $p=>$d) if ($d[4] == $T || $d[2] == $T) { $Perf = $p; $Type = $d[2]; };
+  foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) if ($d[4] == $T || $d[2] == $T) { $Perf = $p; $Type = $d[2]; };
 //var_dump($Type);
   A_Check('Staff',$Type);
 
@@ -27,7 +27,7 @@
         foreach ($similar as $i=>$side) {
           echo "<li><b><a href=AddPerf?sidenum=" . $side['SideId']  . ">" . $side['SN'] . "</b> is: ";
           $cnt = 0;
-          foreach ($PerfTypes as $p=>$d) if ($side[$d[0]]) {
+          foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) if ($side[$d[0]]) {
             if ($cnt++) echo ", ";
             echo $p;
           }
@@ -36,7 +36,7 @@
         echo "</ul>or <form method=post>" . fm_hidden('SN',$_POST['SN']) . fm_hidden('T',$Type) . "<input type=submit name=CONTINUE value=Continue><p>or<p>";  
 //        dotail();
       } else { // It is new
-        foreach ($PerfTypes as $p=>$d) $_POST[$d[0]]=0;
+        foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $_POST[$d[0]]=0;
         $_POST[$PerfTypes[$Perf][0]] = 1;
         $_POST['AccessKey'] = rand_string(40);
         

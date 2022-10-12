@@ -19,7 +19,7 @@ $Access_Type = array_flip($Access_Levels);
 $Area_Levels = [ 'No','Edit','Edit and Report'];
 $Area_Type = array_flip($Area_Levels);
 $Sections = ['', 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','Other','TLine','Bugs','Photos','Comedy','Family','News','Volunteers','Art',
-   'Tickets']; // Note fest_users fields must match
+   'Tickets']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD
 $Importance = array('None','Some','High','Very High','Even Higher','Highest','The Queen');
 $Book_States = array('None','Declined','Booking','Contract Ready','Contract Signed');
 $Book_Colours = ['white','salmon','yellow','orange','lime'];

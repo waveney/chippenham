@@ -372,6 +372,7 @@ function Put_Perf_Type(&$now) {
 }
 
 function Set_Side_Help() {
+  global $FESTSYS;
   $t = array(
         'SN'=>'To appear on website and in the programme',
         'ShortName'=>'IF the name is more than 20 characters, give a short form to appear on the Grids.',
