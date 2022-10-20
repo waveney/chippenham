@@ -5,7 +5,7 @@
   $id    = $_POST['I'];
   $type  = $_POST['D'];
 
-//  var_dump($_POST);  
+///  var_dump($_POST);  
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
@@ -207,9 +207,11 @@
         case 'Props':
         case 'Likes':
         case 'Dislikes':
+        case 'Experience':
         case 'Other1':
         case 'Other2':
         case 'Other3':
+        case 'Other4':
           $VCY = Gen_Get_Cond1('VolCatYear'," Volid=$id AND Catid=$Catid AND Year=$Year ");
           if (!$VCY) $VCY = ['Volid'=>$id,'CatId'=>$Catid,'Year'=>$Year, 'Props'=>0];
           $VCY[$vfld] = $Value;
@@ -220,7 +222,7 @@
           if (!$VY) $VY = ['Volid'=>$id, 'Year'=>$Year];
           $VY[$vfld] = $Value;
 //echo "<br>B:"; var_dump($VY);
-          return Gen_Put('VolYear',$VY);
+          return "In VolYear" . Gen_Put('VolYear',$VY);
       }
     } 
     break;
@@ -236,6 +238,13 @@
       return Gen_Put('UserCap',$Cap);
     }
     break;
+    
+  case 'VolCats':
+    if ($field != 'Props') break;
+    include_once("GetPut.php");
+    $N = Gen_Get($type,$id);
+    $N[$field] = hexdec($Value);
+    return Gen_Put($type,$N);
      
   default:
     break;
@@ -245,7 +254,7 @@
   $idx = (isset($TableIndexes[$type])?$TableIndexes[$type]:'id');
   $N = Gen_Get($type,$id,$idx);
   $N[$field] = $Value;
-  echo Gen_Put($type,$N,$idx);
+  return Gen_Put($type,$N,$idx);
  
   exit;
   

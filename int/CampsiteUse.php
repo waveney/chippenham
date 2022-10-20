@@ -4,7 +4,7 @@
 
   dostaffhead("Manage Campsite Useage");
 
-  function Get_Campsites() {
+  function Get_CampsiteUses() {
     global $db,$YEAR;
     $cs = array();
     $res = $db->query("SELECT * FROM CampsiteUse WHERE Year='$YEAR' ORDER BY PRIORITY ASC");
@@ -12,15 +12,15 @@
     return $cs;
   }
 
-  function Get_Campsite($id) {
+  function Get_CampsiteUse($id) {
     global $db;
     $res = $db->query("SELECT * FROM CampsiteUse WHERE id=$id");
     if ($res) while($c = $res->fetch_assoc()) return $c;
   }
 
-  function Put_Campsite($now) {
+  function Put_CampsiteUse($now) {
     $e=$now['id'];
-    $Cur = Get_Campsite($e);
+    $Cur = Get_CampsiteUse($e);
     return Update_db('CampsiteUse',$Cur,$now);
   }
 
@@ -34,9 +34,9 @@
   
   echo "Maintain the number of passes you need for your department, if one person is staying 3 nights you need 3 passes.<p>";
 
-  $Camps=Get_Campsites(1);
+  $Camps=Get_CampsiteUses(1);
 
-  if (UpdateMany('CampsiteUse','Put_Campsite',$Camps,0)) $Camps=Get_Campsites(1);
+  if (UpdateMany('CampsiteUse','Put_Campsite',$Camps,0)) $Camps=Get_CampsiteUses(1);
 
   $coln = 0;
   echo "<form method=post action=Campsite>";

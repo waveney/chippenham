@@ -23,7 +23,7 @@ function Gen_Get_All($Table, $extra='') {
   global $db;
   $Ts = [];
   $res = $db->query("SELECT * FROM $Table $extra");
-  if ($res) while ($ans = $res->fetch_assoc()) $Ts[] = $ans;
+  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans['id']] = $ans;
   return $Ts;
 }
 
@@ -31,7 +31,7 @@ function Gen_Get_Cond($Table,$Cond) {
   global $db;
   $Ts = [];
   $res = $db->query("SELECT * FROM $Table WHERE $Cond");
-  if ($res) while ($ans = $res->fetch_assoc()) $Ts[] = $ans;
+  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans['id']] = $ans;
   return $Ts;
 }
 

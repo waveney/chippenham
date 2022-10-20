@@ -182,7 +182,7 @@ services, under the following terms and conditions:<p>\n";
   
   
 */
-  
+
   switch ($ctype) {
   case 0:
     $faq = "Payment: All payments will be made by BACS, within 48 hours of the end of the Festival. " .
@@ -190,15 +190,15 @@ services, under the following terms and conditions:<p>\n";
     break;
   
   case 1:
-    $faq = TnC('MusicFAQ');
-    $faq = Parse_Proforma($faq);
+    $faq = TnC('PerfTnC');
+    Parse_Proforma($faq);
     $faq = preg_replace("/<h2 class=OtherFAQ.*?<\/h2>/",'',$faq);
     if (!$camp) $faq = preg_replace("/<CAMPCLAUSE>.*<\/CAMPCLAUSE>/",'',$faq);
     break;
       
   case 2:
-    $faq = TnC('MusicFAQ');
-    $faq = Parse_Proforma($faq);
+    $faq = TnC('PerfTnC');
+    Parse_Proforma($faq);
     $faq = preg_replace("/<h2 class=MusicFAQ.*?<\/h2>/",'',$faq);  
     $faq = preg_replace("/<dt class=MusicFAQ.*?<dt>/s",'<dt>',$faq);
     $faq = preg_replace("/class=OtherFAQ/",'',$faq);
@@ -231,6 +231,8 @@ services, under the following terms and conditions:<p>\n";
   }
   
   if (!$SoundChecks) $faq = preg_replace("/<SOUNDCHECK>.*<\/SOUNDCHECK>/",'',$faq);
+
+//echo "FAQ = $faq<p>NOT FAQ<p>";
 
   $str .= $faq;
 

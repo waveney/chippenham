@@ -185,6 +185,7 @@ function fm_select(&$Options,$data,$field,$blank=0,$selopt='',$field2='',$Max=0)
   return fm_select2($Options,'@@@@@@',$field,$blank,$selopt,$field2,$Max);
 }
 
+// tabs 0=none, 1 normal, 2 lines between, 3 box before txt
 function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field2='',$colours=0,$multi=0,$extra3='',$extra4='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
@@ -196,10 +197,12 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
   $done = 0;
   foreach($defn as $i=>$d) {
     if (!$d) continue;
-    $str.= (($done && $tabs == 2) ? "<br>" : " ");
+    $str.= (($done && $tabs >= 2) ? "<br>" : " ");
     $done = 1;
     if ($colours) $str .= "<span style='background:" . $colours[$i] . ";padding:4; white-space: nowrap;'>";
-    $str .= "<label for=$field2$i $extra3>$d:</label>";
+    if ($tabs < 3) {
+      $str .= "<label for=$field2$i $extra3>$d:</label>";
+    } 
     $ex = $extra;
     $ex = preg_replace('/###F/',("'" . $field2 . "'"),$ex);
     $ex = preg_replace('/###V/',("'" . $i . "'"),$ex);
@@ -215,6 +218,10 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
       if (isset($data[$field]) && ($data[$field] == $i)) $str .= " checked";
     }
     $str .= ">\n";
+    if ($tabs == 3) {
+      $str .= " <label for=$field2$i $extra3>$d:</label>";
+    } 
+
     if ($colours) $str .= "</span>";
   }
   return $str;
@@ -264,6 +271,29 @@ function fm_pence1($desc,&$data,$field,$extra1='',$extra2='',$field2='') {
   if ($AutoADD) $str .=  " oninput=AutoInput('$field2') ";
   return $str . " $ADDALL>";
 }
+
+function fm_hex($Name,&$data=0,$field,$extra1='',$extra2='',$field2='') {
+  global $ADDALL,$AutoADD,$AutoAfter;
+  if ($field2 == '') $field2=$field;
+  $str = "<td $extra1>";
+  if ($Name) $str .= "$Name: ";
+  $str .= help($field) . "<td $extra1><input type=text name=$field2 id=$field2 $extra2";
+  if ($data) if (isset($data[$field])) $str .= " value=\"" . dechex($data[$field]) . "\"";
+  if ($AutoADD) $str .=  " oninput=AutoInput('$field2') ";
+  return $str . " $ADDALL>\n";
+}
+
+function fm_hex1($Name,&$data=0,$field,$extra1='',$extra2='',$field2='') {
+  global $ADDALL,$AutoADD,$AutoAfter;
+  if ($field2 == '') $field2=$field;
+  $str = "<td $extra1>";
+  if ($Name) $str .= "$Name: ";
+  $str .= help($field) . "<input type=text name=$field2 id=$field2 $extra2";
+  if ($data) if (isset($data[$field])) $str .= " value=\"" . dechex($data[$field]) . "\"";
+  if ($AutoADD) $str .=  " oninput=AutoInput('$field2') ";
+  return $str . " $ADDALL>\n";
+}
+
 
 function Disp_CB($what) {
   echo "<td>" . ($what?'Y':'');
@@ -557,6 +587,7 @@ $DDdata = [
                  'Extra'=>"acceptedFiles: 'image/*',", 'Show'=>1],
     'NewImage' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1, 
                  'Extra'=>"acceptedFiles: 'image/*',"],
+    'FirstAid' => [],
 ];
 
 

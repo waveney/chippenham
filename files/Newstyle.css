@@ -1528,3 +1528,8 @@ button {
   border:3px solid var(--main-col);
   border-radius:20px;
 }
+
+.Inline {
+  display:inline;
+  padding-left:10px;
+}

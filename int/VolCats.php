@@ -10,8 +10,10 @@
   A_Check('Staff'); // Will refine gate later
   
 function Show_Cat($Cat,$Act='UPDATE') {
-  echo "Properties: 1=In use, 2=Likes, 4=Dislikes, 8=OtherQ1, 16=OtherQ2, 32=OtherQ3<br>";
-  echo "For List of When: 'Before' - long time before, 0=Friday of festival, -1 = day before, 1 next day etc.  upto -4 and +11<p>\n";
+  echo "Properties: 1=In use, 2=Likes, 4=Dislikes, 8=Need Over 21, 10=Upload, 20=Experience, 40=Need Money, 80=Need DBS, " .
+       " 100=OtherQ1, 200=OtherQ2, 400=OtherQ3, 800=OtherQ4, " .
+       " 1000=LongQ1, 2000=LongQ2, 4000=LongQ3, 8000=LongQ4<br>";
+  echo "For List of When: 'Before' - long time before, 'Week' - week before, 0=Friday of festival, -1 = day before, 1 next day etc.  upto -4 and +11<p>\n";
 
   echo "<table border>";
   if (isset($Cat['id'])) {
@@ -25,13 +27,13 @@ function Show_Cat($Cat,$Act='UPDATE') {
   echo "<tr>" . fm_text('Name',$Cat,'Name') . "<td>Full name of volunteer Category\n";
   echo "<tr>" . fm_text('ShortName',$Cat,'ShortName')  . "<td>Short name of volunteer Category (May be the same)\n";
   echo "<tr>" . fm_text('Email',$Cat,'Email') . "<td>Email address of category leader can by multiple separated by commas\n";
-  echo "<tr>" . fm_number('Properties',$Cat,'Props');
+  echo "<tr>" . fm_hex('Properties',$Cat,'Props');
   echo "<tr>" . fm_number('Relative Importance',$Cat,'Importance');
   echo "<tr>" . fm_textarea('Description',$Cat,'Description',3,3);
 
-  echo "<tr>" . fm_text('List of When',$Cat,'Listofwhen',2) . "<td>'Before',-2,-1,0,1,2,3,...\n";
+  echo "<tr>" . fm_text('List of When',$Cat,'Listofwhen',2) . "<td>'Before','Week',-2,-1,0,1,2,3,...\n";
   echo "<tr>" . fm_text('Extra Like text',$Cat,'LExtra',2);
-    echo "<td rowspan=8>";
+    echo "<td rowspan=10>";
     if (!empty($Cat['Image'])) echo "<img src='" . $Cat['Image'] . "' width=300>";
   echo "<tr>" . fm_text('Extra Dislike text',$Cat,'DExtra',2);
   echo "<tr>" . fm_text('Other Question 1',$Cat,'OtherQ1',2);
@@ -40,6 +42,8 @@ function Show_Cat($Cat,$Act='UPDATE') {
   echo "<tr>" . fm_text('Extra Text 2',$Cat,'Q2Extra',2);
   echo "<tr>" . fm_text('Other Question 3',$Cat,'OtherQ3',2); 
   echo "<tr>" . fm_text('Extra Text 3',$Cat,'Q3Extra',2); 
+  echo "<tr>" . fm_text('Other Question 4',$Cat,'OtherQ4',2); 
+  echo "<tr>" . fm_text('Extra Text 4',$Cat,'Q4Extra',2); 
   echo "<tr>" . fm_textarea('Long Description',$Cat,'LongDesc',3,3); 
   echo "<tr>" . fm_text('Image',$Cat,'Image',2); 
   if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  

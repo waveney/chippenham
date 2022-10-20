@@ -282,6 +282,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
           switch ($key) {
           case 'PLANYEAR': 
           case 'THISYEAR': // For historic proformas should be removed in time
+          case 'YEAR':
             $rep = $PLANYEAR;
             break;
           case 'NEXTYEAR': 
@@ -355,7 +356,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
 
           default:
  //var_dump($helper,$helperdata,$attachments,$embeded);
-            $rep = ($helper?$helper($key,$helperdata,$attachments,$embeded):"*$key*");
+            $rep = ($helper?$helper($key,$helperdata,$attachments,$embeded):"@@$key@@");
             break;
           }
         $Reps[$key] =$rep;

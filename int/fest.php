@@ -46,27 +46,17 @@ $Months = ['','Jan','Feb','Mar','Apr','May','June','July','Aug','Sep','Oct','Nov
 
 date_default_timezone_set('GMT');
 
-function Set_User() {
+function Check_Login() {
   global $db,$USER,$USERID,$AccessType,$YEAR,$CALYEAR;
-  if (isset($USER)) return;
-  $USER = array();
-  $USERID = 0;
-  if (isset($_COOKIE['FESTD'])) {
-    $biscuit = $_COOKIE['FESTD'];
-    $Cake = openssl_decrypt($biscuit,'aes-128-ctr','Quarterjack',0,'MollySummers');
-    $crumbs = explode(':',$Cake);
-    $USER['Subtype'] = $crumbs[0];
-    $USER['AccessLevel'] = $crumbs[1];
-    $USERID = $USER['UserId'] = $crumbs[2];
-    if ($USERID) return;
-    $USER = array();
-    $USERID = 0;
-  }
-  
+
   if (isset($_COOKIE['FEST2'])) {
     $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['FEST2'] . "'");
     if ($res) {
       $USER = $res->fetch_assoc();
+      if (empty($USER['UserId'])) {
+        $USER = [];
+        return;
+      }
       $USERID = $USER['UserId'];
       $db->query("UPDATE FestUsers SET LastAccess='" . time() . "' WHERE UserId=$USERID" );
 // Track suspicious things
@@ -83,18 +73,27 @@ function Set_User() {
       }
     }
   } 
-  if (isset($_COOKIE['FEST'])) {
-    $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['FEST'] . "'");
-    if ($res) {
-      $USER = $res->fetch_assoc();
-      $USERID = $USER['UserId'];
-      $db->query("UPDATE FestUsers SET LastAccess='" . time() . "' WHERE UserId=$USERID" );
-      setcookie('FEST2',$USER['Yale'], mktime(0,0,0,1,1,$CALYEAR+1) ,'/' );
-      $_COOKIE['FEST2'] = $ans['Yale'];
-    }
-  } 
 }
 
+function Set_User() {
+  global $db,$USER,$USERID,$AccessType,$YEAR,$CALYEAR;
+  if (isset($USER)) return;
+  $USER = array();
+  $USERID = 0;
+  if (isset($_COOKIE['FESTD'])) {
+    $biscuit = $_COOKIE['FESTD'];
+    $Cake = openssl_decrypt($biscuit,'aes-128-ctr','Quarterjack',0,'MollySummers');
+    $crumbs = explode(':',$Cake);
+    $USER['Subtype'] = $crumbs[0];
+    $USER['AccessLevel'] = $crumbs[1];
+    $USERID = $USER['UserId'] = $crumbs[2];
+    if ($USERID) return;
+    $USER = array();
+    $USERID = 0;
+  }
+  Check_Login();
+}
+  
 function Is_SubType($Name) {
   global $USER,$USERID,$Sections;
   static $Stypes;

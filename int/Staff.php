@@ -352,16 +352,17 @@
     $txt .= "<li><a href=Volunteers?A=List>List Volunteers</a>\n";
     $txt .= "<li><a href=VolCats>Volunteer Categories</a>\n";
     if (Access('Staff','Photos')) {
-      $txt .= "<li><a href=PhotoUpload>Photo Upload</a>";
+      $txt .= "<p><li><a href=PhotoUpload>Photo Upload</a>";
       $txt .= "<li><a href=PhotoManage>Photo Manage</a>";
       $txt .= "<li><a href=GallManage>Gallery Manage</a>";
     }
     $txt .= "<p>";
     
 //    $txt .= "<li><a href=LaughView?Y=$YEAR>Show Laugh Out Loud applications</a>";
-    if (Access('Committee')) $txt .= "<li><a href=Campsite?Y=$YEAR>Manage Campsite Use</a>\n"; 
-    if (Access('Staff')) $txt .= "<li><a href=CarerTickets?Y=$YEAR>Manage Carer / Partner Tickets</a>\n"; 
-    if (Access('Staff','Sponsors')) $txt .= "<li><a href=TaxiCompanies>Manage Taxi Company List</a>\n"; 
+    if (Access('Committee')) $txt .= "<li><a href=Campsites?Y=$YEAR>Campsites</a>\n"; 
+    if (Access('SysAdmin')) $txt .= "<li><a href=CampsiteUse?Y=$YEAR>Manage Campsite Use</a>\n"; 
+    if (Access('SysAdmin')) $txt .= "<li><a href=CarerTickets?Y=$YEAR>Manage Carer / Partner Tickets</a>\n"; 
+    if (Access('SysAdmin','Sponsors')) $txt .= "<li><a href=TaxiCompanies>Manage Taxi Company List</a>\n"; 
     if (Access('SysAdmin')) $txt .= "<li><a href=ConvertPhotos>Convert Archive Format</a>";
     $txt .= "</ul>\n";
   }
