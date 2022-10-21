@@ -12,7 +12,8 @@
   echo "This is for things on the maps that are NOT venues.  Please don't have too many.<p>\n";
   echo "Importance should be lower than x (Most important), can be range x-y<p>\n";
   echo "To have text by an icon, set the Text Size.  For text without marker create a text type entry.<p>\n";
-  
+
+//var_dump($_REQUEST); 
   $Types = Get_Map_Point_Types();
   foreach ($Types as $t) $Icons[] = $t['SN'];
   array_unshift($Icons,"");
