@@ -122,6 +122,7 @@ function initMap() {
           dirExtra:data.extra,
         });
         if (MapFeatures == 4) minz=15;
+        if ((MapFeatures == 9) && (data.icon == 9)) minz=14;
         if (data.icon > 1 && mtypes[data.icon].Icon) marker.setIcon("/images/icons/" + mtypes[data.icon].Icon);
         marker.setMap(map);
         marker.setVisible(zoom>=minz && zoom <= maxz);

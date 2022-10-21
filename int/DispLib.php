@@ -224,8 +224,8 @@ function Expand_Special(&$Art) {
   switch ($words[0]) {
   case '@Dance_Imp':
     $lvl = (isset($words[1])?$words[1]:0);
-    $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.IsASide=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.Coming=" . $Coming_Type['Y'] .
-                        " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.DanceImportance>$lvl)) AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
+    $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.IsASide=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.Coming=" . $Coming_Type['Y'] .    
+                    " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.DanceImportance>$lvl)) AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
     if (!$ans) { $Art = []; return; }  
   
     while ( $Dstuff = $ans->fetch_assoc()) {
@@ -257,7 +257,8 @@ function Expand_Special(&$Art) {
     
     $Art['Text'] = "$Dsc Dance team" . ($Dsc == 1?" has":"s have") . " already confirmed for $YEAR.  Many of your favourite teams and some new faces.";
 
-    $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.Coming=" . 
+    $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
+                    "WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.Coming=" . 
                     $Coming_Type['Y'] . " AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
 
     if (!$ans) return; 
@@ -276,7 +277,8 @@ function Expand_Special(&$Art) {
   case '@Music_Imp': 
     $lvl = (isset($words[1])?$words[1]:0);
     $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.IsAnAct=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.YearState>0 " . 
-                        " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.MusicImportance>$lvl)) AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
+                        " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.MusicImportance>$lvl)) AND " .
+                        "y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
     if (!$ans) { echo "EEK"; $Art = []; return; }  
   
     while ( $Mstuff = $ans->fetch_assoc()) {

@@ -13,14 +13,14 @@
 
   $Vol_Cats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
   $Shown = 0;
-  echo "<table>";
+  echo "<table width=95%>";
   foreach ($Vol_Cats as $Cat) {
     if (($Cat['Props'] & VOL_USE)==0) continue;
     echo "<tr>";
 
     if ($Shown & 1) {
       echo "<td width=45%>";
-      echo "<img src=" . $Cat['Image'] ." width=90% class=rounded>";   
+      echo "<center><img src=" . $Cat['Image'] ." width=400 class=rounded></center>";   
       echo "<td width=45% valign=top>";
       echo "<h1>" . $Cat['Name'] . "</h1>";
       echo $Cat['LongDesc'];
@@ -31,7 +31,7 @@
       echo $Cat['LongDesc'];
       echo "<div class=trader-app-link><a href=int/Volunteers?A=New>Please Volunteer for " . $Cat['Name'] . "</a></div>";
       echo "<td width=45%>";     
-      echo "<img src=" . $Cat['Image'] ." width=90% class=rounded>";   
+      echo "<center><img src=" . $Cat['Image'] ." width=400 class=rounded></center>";   
     }
     $Shown++;
   }

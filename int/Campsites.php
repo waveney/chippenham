@@ -58,6 +58,7 @@ function Show_Site(&$Site,$Act='UPDATE') {
   echo "<tr>" . fm_text('Postcode',$Site,'Postcode') . "<td>Used for Directions\n";
   echo "<tr>" . fm_text('Address',$Site,'Address',3) . "<td>Used for Directions\n";
   echo "<tr>" . fm_number('Properties',$Site,'Props');
+  echo "<tr>" . fm_number('Map Point',$Site,'MapPoint');
   echo "<tr>" . fm_number('Relative Importance',$Site,'Importance');
   echo "<tr>" . fm_textarea('Short Description',$Site,'ShortDesc',3,3);
   echo "<tr>" . fm_textarea('Long Description',$Site,'LongDesc',3,3);
