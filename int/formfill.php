@@ -198,7 +198,6 @@
     exit;  
     
   case 'Volunteers':
-    include_once("GetPut.php");
     if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {        
       $vfld = $mtch[1];
       $Catid = $mtch[2];
@@ -229,7 +228,6 @@
     exit;
     
   case 'FestUsers':
-    include_once("GetPut.php");
     if (preg_match('/UserCap:(\d*)/',$field,$mtch)?true:false) {        
       $Capid = $mtch[1];    
       $Cap = Gen_Get_Cond1('UserCap'," User=$id AND Capability=$Capid ");
@@ -241,7 +239,6 @@
     
   case 'VolCats':
     if ($field != 'Props') break;
-    include_once("GetPut.php");
     $N = Gen_Get($type,$id);
     $N[$field] = hexdec($Value);
     return Gen_Put($type,$N);
@@ -249,7 +246,6 @@
   default:
     break;
   }
-  include_once("GetPut.php");
   global $TableIndexes;
   $idx = (isset($TableIndexes[$type])?$TableIndexes[$type]:'id');
   $N = Gen_Get($type,$id,$idx);

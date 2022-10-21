@@ -26,25 +26,15 @@
         'Dance'=>'LineUp?T=Dance',
         'Music'=>'LineUp?T=Music', 
 //        'Comedy'=>'LineUp?T=Comedy',
-//        'Family'=>'LineUp?T=Family',
+        'Family'=>'LineUp?T=Family',
 //        'Traders'=>'int/TradeShow',
-//        'Art'=>'InfoArt',
+
         ],
       "Timetable"=>[
         'By Venue'=>'WhatsOnWhere',
         'By Time'=>'WhatsOnWhen',
         'Now'=>'WhatsOnNow',
-        'Dancing'=>"int/ShowDanceProg?Cond=1&Pub=1&Y=$YEAR",
-        'Concerts'=>'Sherlock?t=Concert',
-        'Music'=>'Sherlock?t=Music',
-        'Special Events'=>'Sherlock?t=Special',
-        'Family'=>'Sherlock?t=Family',
-        'Ceilidhs'=>'Sherlock?t=Ceilidh',
-        'Workshops'=>'Sherlock?t=Workshop',
-//        'Art'=>'Sherlock?t=Art',
-//        'Comedy'=>'Sherlock?t=Comedy',
-        'Sessions'=>'Sherlock?t=Session',
-//        'Religion'=>'Sherlock?t=Religion',
+        '@'=>0, //Special
         ],
       'Information'=>[
         'Festival Map'=>'Map',
@@ -103,14 +93,13 @@
 global $MainBar,$HoverBar,$HoverBar2;
 $MainBar = $HoverBar = $HoverBar2 = '';
 
-
 function Show_Bar(&$Bar,$level=0,$Pval=1) { 
-  global $USERID,$host,$PerfTypes,$MainBar,$HoverBar,$HoverBar2,$YEARDATA;
+  global $USERID,$host,$PerfTypes,$MainBar,$HoverBar,$HoverBar2,$YEARDATA,$Event_Types_Full;
   $host= "https://" . $_SERVER['HTTP_HOST'];
 //  echo "<ul class=MenuLevel$level>";
   $P=$Pval*100;
   $Pi = 0;
-  foreach ($Bar as $text=>$link) {
+  foreach ($Bar as $text=>&$link) {
     $Minor = 0;
     $xtra = '';
     $Pi++; $P++;
@@ -158,6 +147,12 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         $xtra = "id=MenuDonate";
         $text = substr($text,1);
         break;
+      case '@' :
+        foreach ($Event_Types_Full as $ET) {
+          if ($ET['DontList']) continue;
+          $Bar[$ET['Plural']] = (empty($ET['Sherlock']) || is_numeric($ET['Sherlock'])?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
+        }
+        continue 2;
         
       default:
     }
@@ -174,6 +169,8 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
     } elseif (substr($link,0,1) == "!") {
       $MainBar .= "<a class='MenuMinor$Minor headericon' $xtra href='" . substr($link,1) . "' target=_blank>$text</a>";
       $HoverBar2 .= "<div class=hoverdown><a class='headericon' $xtra href='" . substr($link,1) . "' target=_blank>$text</a></div>";
+    } elseif ($link == 0) {
+      // Nothing
     } else {
       if ($level == 1) $xtra .= " style='animation-duration: " . (150 * $Pi) . "ms; '";
       $MainBar .=  "<a href='$host/$link' class='MenuMinor$Minor' $xtra onmouseover=NoHoverSticky(event)>$text</a>";
@@ -188,10 +185,11 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
 
   // This generates the info into MainBar and HoverBar
 
+//  TidyBar($Menus);
+// var_dump($Menus);
   $MainBar .= "<nav class='PublicBar PublicBar$Bars navigation' align=right>";
   Show_Bar($Menus['Public']);
   $MainBar .= "</nav>";
-  
 //  echo $MainBar;
   
   if ($Bars == 2) {

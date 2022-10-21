@@ -2,7 +2,6 @@
   include_once("fest.php");
 
   dostaffhead("Ts and Cs");
-  include_once("GetPut.php");
  
   global $USER,$USERID,$db,$PLANYEAR;
 
@@ -22,6 +21,7 @@
   echo "<tr>" . fm_textarea('Dance FAQ',$TnC,'DanceFAQ',4,4);
   echo "<tr>" . fm_textarea('Music FAQ',$TnC,'MusicFAQ',4,4);
   echo "<tr>" . fm_textarea('Dummy Contract',$TnC,'DummyContract',4,4);
+  echo "<tr>" . fm_textarea('Camping General',$TnC,'CampGen',4,4);
  
   if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
   echo "</table><br>\n";

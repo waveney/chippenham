@@ -1,6 +1,5 @@
 <?php
   include_once("fest.php");
-  include_once("GetPut.php");
   
   if (isset($_REQUEST['FULL'])) {
     $Full = 1;

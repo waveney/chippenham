@@ -2,7 +2,6 @@
   include_once("fest.php");
 
   dostaffhead("Donate Types");
-  include_once("GetPut.php");
  
   global $USER,$USERID,$db,$PLANYEAR;
 

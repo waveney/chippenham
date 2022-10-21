@@ -354,31 +354,11 @@ function &Select_All_Other() {
   return $dummy;
 }
 
-$Event_Types_Full = array();
-
-function Event_Types_ReRead() {
-  global $db, $Event_Types_Full;
-  $Event_Types_Full = array();
-  $res = $db->query("SELECT * FROM EventTypes ORDER BY SN ");
-  if ($res) while ($typ = $res->fetch_assoc()) $Event_Types_Full[$typ['ETypeNo']] = $typ;
-  return $Event_Types_Full;
-}
-
-$Event_Types_Full = Event_Types_ReRead();
-
-function Get_Event_Types($tup=0) { // 0 just names, 1 all data
-  global $Event_Types_Full;
-  if ($tup) return $Event_Types_Full;
-  $ans = array();
-  foreach($Event_Types_Full as $t=>$et) $ans[$t] = $et['SN'];
-  return $ans;
-}
-
 function Get_Event_Type($id) {
   global $Event_Types_Full;
   return $Event_Types_Full[$id];
 }
- 
+
 function Put_Event_Type(&$now) {
   $e=$now['ETypeNo'];
   $Cur = Get_Event_Type($e);

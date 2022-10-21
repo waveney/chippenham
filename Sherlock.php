@@ -3,6 +3,7 @@
 
   set_ShowYear();
   $Types = $Type = $_GET['t'];
+
   if (strlen($Type) > 20) $Types = $Type = 'Dance';
 
 
@@ -11,6 +12,8 @@
   global $db,$YEAR,$PLANYEAR,$SHOWYEAR,$YEARDATA,$DayLongList;
 
   $Ets = Get_Event_Types(1);
+  if (is_numeric($Type)) $Types = $Type = $Ets[$Type];
+  
   $Vens = Get_Venues(1);
 
   $Extras = ['Music'=>' OR e.ListMusic=1 ', 'Dance'=>' OR e.ListDance=1 ', 'Comedy'=>' OR e.ListComedy=1 ']; // Need Dance Equiv

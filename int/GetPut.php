@@ -51,4 +51,22 @@ function Gen_Select($Clause) {
   return $Ts;
 }
 
+function Event_Types_ReRead() {
+  global $db, $Event_Types_Full;
+  $Event_Types_Full = array();
+  $res = $db->query("SELECT * FROM EventTypes ORDER BY Importance DESC ");
+  if ($res) while ($typ = $res->fetch_assoc()) $Event_Types_Full[$typ['ETypeNo']] = $typ;
+  return $Event_Types_Full;
+}
+
+$Event_Types_Full = Event_Types_ReRead();
+
+function Get_Event_Types($tup=0) { // 0 just names, 1 all data
+  global $Event_Types_Full;
+  if ($tup) return $Event_Types_Full;
+  $ans = array();
+  foreach($Event_Types_Full as $t=>$et) $ans[$t] = $et['SN'];
+  return $ans;
+}
+
 ?>

@@ -1,6 +1,5 @@
 <?php
   include_once('int/fest.php');
-  include_once("int/GetPut.php");
   
   dohead("Donate",[],1);
   

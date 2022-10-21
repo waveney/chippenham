@@ -1,10 +1,11 @@
 <?php
   include_once("int/fest.php");
-  include_once("int/GetPut.php");
   include_once("int/DateTime.php");
   include_once("int/MapLib.php");
   dohead("Camping",[],'images/icons/CampingBanner.png');
   global $YEARDATA;
+
+  echo TnC('CampGen') . "<p>\n";
 
   $Camps = Gen_Get_All('Campsites'," ORDER BY Importance DESC ");
   $Blobs = 0;
@@ -29,7 +30,7 @@
     $Blobnum++;
     
   }
-//  echo "</div>";
+
   echo "</div><div class=OneCol id=TwoCols2></div></div>";
    echo "</div>";   
 //  echo "<div id=Blob$Blobnum><div id=BlobMap>";

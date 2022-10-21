@@ -1,6 +1,6 @@
 <?php
   include_once("fest.php");
-  include_once("GetPut.php");
+
   A_Check('Committee','Users');
 
   dostaffhead("Add/Change User");

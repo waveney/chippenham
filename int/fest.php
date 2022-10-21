@@ -4,6 +4,7 @@
 
   include_once("festdb.php");
   include_once("festfm.php");
+  include_once("GetPut.php");
 
 $BUTTON = 0;
 
@@ -97,7 +98,6 @@ function Set_User() {
 function Is_SubType($Name) {
   global $USER,$USERID,$Sections;
   static $Stypes;
-  include_once("GetPut.php");
   if (empty($Stypes)) {
     $Ttypes = Gen_Get_All('UserCap',"WHERE User=$USERID");
     foreach($Ttypes as $T) $Stypes[$Sections[$T['Capability']]] = $T['Level'];

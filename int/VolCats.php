@@ -2,7 +2,7 @@
   include_once("fest.php");
 
   dostaffhead("Volunteer Categories",[ "/js/Volunteers.js"]);
-  include_once("GetPut.php");
+
   include_once("VolLib.php");
  
   global $USER,$USERID,$db,$PLANYEAR,$StewClasses,$Relations,$Days;
