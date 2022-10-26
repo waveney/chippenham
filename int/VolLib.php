@@ -16,7 +16,6 @@ $CampStatus = ['No','Yes, I am in a group of volunteers, another person is booki
 // $CampType = ['','Small Tent','Large Tent','Campervan','Caravan'];
 $CampType = Gen_Get_Names('Camptypes');
 
-
 define('VOL_USE',1);
 define('VOL_Likes',2);
 define('VOL_Dislikes',4);

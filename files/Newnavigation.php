@@ -41,7 +41,7 @@
         'Camping'=>'InfoCamping',
         'Parking'=>'InfoParking',
         'Travel'=>'InfoGettingHere',
-//        'Mailing List'=>'InfoMailingList',
+        'Mailing List'=>'InfoMailingList',
         'Contact Us'=>'contact',
 //        'Road Closures'=>'RoadClosure',
 //        'Allendale Centre and Cafe'=>'InfoAllendale',

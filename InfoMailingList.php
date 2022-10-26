@@ -5,7 +5,7 @@
 
 ?>
 <!-- Begin Mailchimp Signup Form -->
-<div id="mc_embed_signup">
+<div id="mc_embed_signup" style='max-width:1000px;'>
 <form action="https://wimbornefolk.us19.list-manage.com/subscribe/post?u=05c2a1d96eaee5c1536d388cc&amp;id=0272065cc3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
     <div id="mc_embed_signup_scroll">
 <h2>Subscribe to our mailing list</h2>
@@ -33,7 +33,7 @@
 <div id="mergeRow-gdpr" class="mergeRow gdpr-mergeRow content__gdprBlock mc-field-group">
     <div class="content__gdpr">
         <label>Marketing Permissions</label>
-        <p>Please select all the ways you would like to hear from Wimborne Minster Folk Festival:</p>
+        <p>Please select all the ways you would like to hear from Chippenham Folk Festival:</p>
         <fieldset class="mc_fieldset gdprRequired mc-field-group" name="interestgroup_field">
 <label class="checkbox subfield" for="gdpr_28267"><input type="checkbox" id="gdpr_28267" name="gdpr[28267]" value="Y" class="av-checkbox "><span>Email</span> </label>
         </fieldset>
