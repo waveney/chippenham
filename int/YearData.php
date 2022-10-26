@@ -109,9 +109,9 @@
                   fm_number1("Sunday Pass Price1",$Gen,'SundayPass1') . fm_number1("Sunday Pass Price2",$Gen,'SundayPass2');
     echo "<tr>" . fm_textarea("Text for Sunday Pass",$Gen,'SundayText',6,2);
 
-    echo "<tr>" . fm_number1("Programme Book",$Gen,'ProgrammeBook');
-    echo "<tr>" . fm_text1("Booking Fee",$Gen,'BookingFee');
-    if (Feature('Camping')) {
+    echo "<tr>" . fm_number("Programme Book",$Gen,'ProgrammeBook');
+    echo "<tr>" . fm_text("Booking Fee",$Gen,'BookingFee') . "<td colspan=2>4 Parts separated by commas: Text, Book fixed fee, Per Ticket %, Per Ticket fee";
+    if (Feature('Camping')==1) { // Wimborne style
       echo "<tr>" . fm_number1("Camping Cost",$Gen,'CampingCost') . "<td>This is the cost to us per night - not the public price";
       echo "<tr>" . fm_number1("Camping Gate Fee",$Gen,'CampingGateFee') . "<td>This is the cost at the gate per night";
       echo "<tr>" . fm_number1("Camping Fee 1 Night",$Gen,'CampingPrice1Day') . "<td>If any of these are zero, then it is not available";

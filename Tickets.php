@@ -12,6 +12,14 @@
     dotail();
   }
   
+  // This is a short term kludge
+  
+  echo '<p><script type="text/javascript" src="https://theticketsellerslive.blob.core.windows.net/webcontent/embed/iframeResizer.min.js"></script><iframe src="https://ww2.theticketsellers.co.uk/embed/10055506" scrolling="no" style="border: 0px; width: 1px; min-width: 100%; max-width: 1100px;" onload="iFrameResize()"></iframe></p>';
+  
+  dotail();
+  
+  // Old code for Ticketsource 
+
   echo "<div class=biodiv>";
   echo "<img src='/images/Weekend-Wristband.jpg' class=bioimg />";
 
