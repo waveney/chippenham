@@ -27,6 +27,14 @@ function Gen_Get_All($Table, $extra='') {
   return $Ts;
 }
 
+function Gen_Get_Names($Table, $extra='') {
+  global $db;
+  $Ts = [];
+  $res = $db->query("SELECT * FROM $Table $extra");
+  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans['id']] = $ans['Name'];
+  return $Ts;
+}
+
 function Gen_Get_Cond($Table,$Cond) {
   global $db;
   $Ts = [];

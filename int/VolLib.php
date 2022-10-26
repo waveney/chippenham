@@ -12,8 +12,9 @@ $Relations = array('','Husband','Wife','Partner','Son','Daughter','Mother','Fath
                 'Son/Daughter in law', 'Friend','Other');
 $YearStatus = ['Not Submitted','Submitted','Withdrawn'];
 $AgeCats = ['Under 18','Over 18','Over 21'];
-$CampStatus = ['No','Yes, I am in a group of volunteers, another person is booking the space. - Two people in a tent/van only need one tent/van space'];
-$CampType = ['','Small Tent','Large Tent','Campervan','Caravan'];
+$CampStatus = ['No','Yes, I am in a group of volunteers, another person is booking the space. e.g. Two people in a tent/van only need one tent/van space'];
+// $CampType = ['','Small Tent','Large Tent','Campervan','Caravan'];
+$CampType = Gen_Get_Names('Camptypes');
 
 
 define('VOL_USE',1);

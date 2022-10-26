@@ -6,7 +6,7 @@
   z-index: 2000;
   border-bottom: 1px solid #fff;
   height: 80px;
-  background: #fcb900;
+  background: var(--main-col);
 /*  background:  linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.2)); */
   transition: all ease-in-out 0.4s;
   color:white;
@@ -255,10 +255,10 @@
   text-align:center;
   font-size: 16pt;
   display: block; 
-  background-color:white;
+  background-color:#f0f0f0;
   padding:12px;  
   color:var(--main-col-dark);
-/*  border:0.5px solid var(--main-col); /* works - do I want it? */ 
+  border:0.5px solid var(--main-col); 
 }
 
 .dropdown-content a:hover {
