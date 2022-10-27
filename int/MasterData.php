@@ -16,7 +16,6 @@
   echo "<div class=tablecont><table>";
   echo "<tr>" . fm_text("Festival Name",$FESTSYS,'FestName',3);
   echo "<tr>" . fm_text("Festival Short Name",$FESTSYS,'ShortName');
-  echo "<tr>" . fm_text("Version",$FESTSYS,'Version') ;//. "<td>Not used now";
   echo "<tr>" . fm_text("Show Year",$FESTSYS,'ShowYear');
   echo "<tr>" . fm_text("Plan Year",$FESTSYS,'PlanYear');
   echo "<tr>" . fm_text("Host URL",$FESTSYS,'HostURL');
@@ -31,9 +30,6 @@
   echo "<tr>" . fm_text("Default Page Banner",$FESTSYS,'DefaultPageBanner',3);
   echo "<tr>" . fm_textarea("Analytics code",$FESTSYS,'Analytics',3,3);
   echo "<tr>" . fm_text("Directions Google API key",$FESTSYS,'GoogleAPI',3);
-//  echo "<tr>" . fm_textarea("Trade Terms and Conditions",$FESTSYS,'TradeTandC',3,3);
-//  echo "<tr>" . fm_textarea("Trade Times",$FESTSYS,'TradeTimes',3,3);
-//  echo "<tr>" . fm_textarea("Trade FAQ",$FESTSYS,'TradeFAQ',3,3);
   echo "<tr>" . fm_textarea("Footer Text",$FESTSYS,'FooterText',3,3);
   echo "</table></div>\n";
 

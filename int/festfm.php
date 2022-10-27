@@ -219,7 +219,7 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
     }
     $str .= ">\n";
     if ($tabs == 3) {
-      $str .= " <label for=$field2$i $extra3>$d:</label>";
+      $str .= " <label for=$field2$i $extra3>$d</label>";
     } 
 
     if ($colours) $str .= "</span>";

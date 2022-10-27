@@ -283,7 +283,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
         if ($cp & (VOL_Other1 << ($i-1))) {
           $rows++; 
           if ($cp & (VOL_Other1 << ($i+3))) {
-            $Ctxt .= "\n<tr>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"OtherQ1$i",3,3,"class=$cls $Hide");
+            $Ctxt .= "\n<tr>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i:$Catid:$PLANYEAR",3,3,"class=$cls $Hide");
           
           } else {
             $Ctxt .= "\n<tr>" . fm_text1($Cat["OtherQ$i"], $VCY,"OtherQ$i",4,"colspan=4 class=$cls $Hide",'',"Other$i:$Catid:$PLANYEAR") .

@@ -6,11 +6,14 @@
   dostaffhead("Upload Photos");
   global $SHOWYEAR,$PLANYEAR;
 
-  $Places = array('General Images'=>'images',
-        "Gallery for $SHOWYEAR"=>"images/gallery/$SHOWYEAR",
-        "Gallery for $PLANYEAR"=>"images/gallery/$PLANYEAR",
+  $Places = array(
+        "Articles / Front Page"=>"images/ArticleImgs",
+        "Gallery for $SHOWYEAR"=>"images/Gallery/$SHOWYEAR",
+        "Gallery for $PLANYEAR"=>"images/Gallery/$PLANYEAR",
         "Icons"=>"images/icons",
-        "Sponsors"=>"images/Sponsors");
+        "Sponsors"=>"images/Sponsors",
+        'General Images'=>'images',
+        );
   $Pflip = array_flip($Places);
 
 // var_dump($_POST);
