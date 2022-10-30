@@ -14,6 +14,7 @@
 
   $coln = 0;
   echo "<h2>Galleries</h2><p>";
+  echo "Non zero Menu Bar entries will be in the site banner ordered by that number<p>";
   echo "<form method=post action=GallManage>";
   echo "<div class=tablecont><table id=indextable border>\n";
   echo "<thead><tr>";
@@ -22,6 +23,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Credits</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Media</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Banner</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Menu Bar Order</a>\n";
   echo "</thead><tbody>";
   foreach($Gals as $g) {
     $i =  $g['id'];
@@ -31,6 +33,7 @@
 
     echo "<td>" . fm_select($Medias,$g,'Media',0,'',"Media$i");
     echo fm_text1("",$g,'Banner',1,'','',"Banner$i");
+    echo fm_number1("",$g,'MenuBarOrder','','',"MenuBarOrder$i");
     echo "<td><a href=" . ($g['Media']?'GallVManage':'GallCManage') . "?g=" . $g['id'] . ">Edit</a>";
     echo "<td><a href=ShowGallery?g=" . $g['id'] . ">Show</a>";
 
@@ -40,6 +43,7 @@
   echo "<td><input type=text name=Credits0 >";
   echo "<td>" . fm_select($Medias,$g,"Media0");
   echo "<td><input type=text name=Banner0 >";
+  echo "<td><input type=text name=MenuBarOrder0 >";
   echo "</table></div>\n";
   echo "<input type=submit name=Update value=Update>\n";
   echo "</form></div>";

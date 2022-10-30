@@ -58,7 +58,7 @@
         'Donate'=>'Donate',
          ],
       '-Gallery'=>[
-        '*2022 Photos'=>'gallery/gallery2022',
+        '@'=>1, //Special
        ],
       '!/images/icons/Facebook.png'=>('!http://facebook.com/' . Feature('Facebook','**NONE**')),
       '!/images/icons/Twitter.png'=>('!http://twitter.com/' . Feature('Twitter','**NONE**')),
@@ -148,9 +148,20 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         $text = substr($text,1);
         break;
       case '@' :
-        foreach ($Event_Types_Full as $ET) {
-          if ($ET['DontList']) continue;
-          $Bar[$ET['Plural']] = (empty($ET['Sherlock']) || is_numeric($ET['Sherlock'])?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
+        switch ($link) {
+        case 0:
+          foreach ($Event_Types_Full as $ET) {
+            if ($ET['DontList']) continue;
+            $Bar[$ET['Plural']] = (empty($ET['Sherlock']) || is_numeric($ET['Sherlock'])?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
+          }
+          break;
+        case 1:
+          $Gals = Gen_Get_All('Galleries'," ORDER BY MenuBarOrder DESC");
+          foreach ($Gals as $G) {
+            if ($G['MenuBarOrder']) $Bar[$G['SN']] = "int/ShowGallery?g=" . $G['id'];
+          }
+          break;          
+          
         }
         continue 2;
         
