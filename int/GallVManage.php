@@ -17,7 +17,57 @@
   $Gals = Get_Gallery_Names(1);
   $Galid = (isset($_GET['g'])? $_GET['g'] : (isset($_POST['g'])? $_POST['g']:0 ));
   if (strlen($Galid) > 4) $Galid=0;
-  $GalName = $Gals[$Galid]['SN'];
+  $GalName = $Gals[$Galid];
+
+  if (isset($_REQUEST['ACTION'])) {
+    switch ($_REQUEST['ACTION']) {
+    case 'Move': // Move to other gallery
+      $Tgt = $_REQUEST['MoveTo'];
+      $Count = 0;
+//echo "<p>EEP";
+      foreach ($_REQUEST as $R=>$V) {
+//echo "<p>doing $R<br>";
+        if (preg_match('/Sel(\d*)/',$R,$mtch)) {
+          $pid = $mtch[1];
+          if ($Tgt) {
+            $Photo = Get_Gallery_Photo($pid);
+            $Photo['Galid'] = $Tgt;
+            Put_Gallery_Photo($Photo);
+          } else {
+            db_delete('GallPhotos',$pid);
+          }
+          $Count++;
+        }
+      }
+      if ($Tgt) {
+        echo "Moved $Count to " . $Gals[$Tgt] . "<p>";
+      } else {
+        echo "Deleted $Count photos from Gallery - they are still stored on the server<p>";
+      }
+      break;
+      
+    case 'Copy': // Copy Photo in another gallery - source is used for both
+      $Tgt = $_REQUEST['CopyTo'];
+      if (!$Tgt) break;
+      $Count = 0;
+      foreach ($_REQUEST as $R=>$V) {
+        if (preg_match('/Sel(\d*)/',$R,$mtch)) {
+          $pid = $mtch[1];
+          $Photo = Get_Gallery_Photo($pid);
+          $Photo['Galid'] = $Tgt;
+          unset($Photo['id']);
+          Gen_Put('GallPhotos',$Photo);
+          $Count++;
+        }
+      }
+      echo "Copied $Count to " . $Gals[$Tgt] . "<p>";
+      break;
+    
+    default:
+      break;
+    }
+  }
+
 
   if (isset($_POST['IMPORT'])) { 
     $Prefix = $_POST['FilePrefix'];
@@ -90,10 +140,10 @@
   }
 
   echo "<h2>Manage Gallery - $GalName</h2>\n";
-  echo "<form method=post action=GallCManage>";
+  echo "<form method=post action=GallVManage>";
     echo fm_hidden('g',$Galid);
     echo "<h3>Import Photos</h3>Give Name of Directory (All Images will be imported) or Full Prefix (Any File with that Prefix will be imported): ";
-    echo fm_textinput('FilePrefix',$_POST['FilePrefix']);
+    echo fm_textinput('FilePrefix',isset($_POST['FilePrefix'])?$_POST['FilePrefix']:"");
     echo "<input type=submit name=IMPORT value=Import>";
     echo "</form><p>";
 
@@ -104,10 +154,11 @@
 
   echo "If used Order controls the order of pictures appearing, two pictures of the same Order value may appear in any order.<p>\n";
   $coln = 0;
-  echo "<form method=post action=GallCManage>";
+  echo "<form method=post action=GallVManage>";
   echo fm_hidden('g',$Galid);
   echo "<div class=tablecont><table id=indextable border>\n";
   echo "<thead><tr>";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Sel</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>File</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Caption</a>\n";
@@ -116,7 +167,7 @@
   echo "</thead><tbody>";
   foreach($Gal as $g) {
     $i = $g['id'];
-    echo "<tr><td>$i";
+    echo "<tr><td>" . fm_checkbox('',$g,'Select','',"Sel$i") . "<td>$i";
     echo fm_text1("",$g,'File',1,'','',"File$i") . "</a>";
     echo fm_text1("",$g,'Caption',1,'','',"Caption$i") . "</a>";
     echo fm_number1("",$g,'RelOrder','','',"RelOrder$i") . "</a>";
@@ -128,6 +179,8 @@
   echo "<td><input type=number name=RelOrder0 >";
   echo "</table></div>\n";
   echo "<input type=submit name=Update value=Update>\n";
+  echo "<input type=submit name=ACTION value=Move> selected to: " . fm_select($Gals,$g,'MoveTo',1);
+  echo "<input type=submit name=ACTION value=Copy> selected to: " . fm_select($Gals,$g,'CopyTo',1);
   echo "</form></div>";
   echo "<h2><a href=GallManage>Back to Galleries</a>, <a href=ShowGallery?g=$Galid>Show Gallery</a></h2><p>\n";
 

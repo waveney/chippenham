@@ -134,11 +134,11 @@ function Image_Cache_Update_POST(&$Datas,$field='Photo',$path='') {
 }
 
 
-function Get_Gallery_Names() {
+function Get_Gallery_Names($type=0) {
   global $db;
   $res=$db->query("SELECT * FROM Galleries");
   if ($res) {
-    while ($g = $res->fetch_assoc()) $ans[$g['id']] = $g;
+    while ($g = $res->fetch_assoc()) $ans[$g['id']] = ($type?$g['SN']:$g);
     return $ans;
   }
 }
@@ -171,8 +171,7 @@ function Get_Gallery_Photo($id) {
 }
 
 function Put_Gallery_Photo(&$now) {
-  $Cur = Get_Gallery_Photo($now['id']);
-  Update_db('GallPhotos',$Cur,$now);
+  return Gen_Put('GallPhotos',$now);
 }
 
 ?>

@@ -274,8 +274,10 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
   global $PLANYEAR,$YEARDATA,$FESTSYS,$USERID;
   static $attnum = 0;
   $Reps = [];
+  $Limit = 0;
   
   while (preg_match('/\*(\w*)\*/',$Mess)) {
+    if ($Limit++ > 10) break; // Limit recursion to 10 deep
     if (preg_match_all('/\*(\S*)\*/',$Mess,$Matches)) {
       foreach($Matches[1] as $key) {
         if (!isset($Reps[$key])) {
