@@ -8,8 +8,8 @@
   echo "<div class='content'><h2>Manage Email Proformas</h2>\n";
   
   $prefixes = ['BB'=>Capability("EnableMisc"),'Dance'=>Capability('EnableDance'),'Finance'=>Capability('EnableFinance'),'LNL'=>Capability("EnableMisc"),'Login'=>1,
-               'Trade'=>Capability("EnableTrade"),'lol'=>Capability("EnableMisc"), 'Stew'=>Capability("EnableMisc"),'Vol'=>Capability("EnableMisc"),
-               'Invoice'=>Capability('EnableFinance') || Capability('EnableTrade')];
+               'Trade'=>Capability("EnableTrade"),'lol'=>Capability("EnableMisc"), 'Stew'=>Capability("EnableVols"),'Vol'=>Capability("EnableVols"),
+               'Invoice'=>Capability('EnableFinance') || Capability('EnableTrade'), 'ART'=>Capability('EnableArt')];
   
   if (Access('SysAdmin')) {
     $Edit = 1;
@@ -37,6 +37,10 @@
   if ($Pros) foreach($Pros as $t) {
     $nam = $t['SN'];
     preg_match('/(.*?)_/',$nam,$res);
+    if (!isset($prefixes[$res[1]])) {
+      echo "Message $nam has an unknown prefix - Richard can fix<p>";
+      continue;
+    }
     if (!Access('Internal') && (!isset($res[1]) || !$prefixes[$res[1]])) continue;
     $i = $t['id'];
     echo "<tr><td>$i" . fm_text1("",$t,'SN',2,'','',"SN$i");

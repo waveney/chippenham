@@ -119,7 +119,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
   try {
     $email->SMTPDebug = ((Access('SysAdmin') && UserGetPref('EmailDebug'))?2:0);  // 2 general testing, 4 problems...
     $email->isSMTP();
-    $mailserv = $FESTSYS['HostURL'];
+    $mailserv = Feature('SMPTserver',$FESTSYS['HostURL']);
     if (Feature('SMTPsubdomain')) $mailserv = Feature('SMTPsubdomain') . "." . $mailserv;
     $email->Host = $mailserv;
     $email->SMTPAuth = true;
@@ -421,7 +421,7 @@ function Replace_Help($Area='',$Right=0) {
   $Reps = [
   ['*WHO*','First name of contact','All'],
   ['*PLANYEAR*/*NEXTYEAR*','Year for the booking, Planyear+1','All'],
-  ['*DATES*','Dates of Saturday and Sunday','All'],
+  ['*DATES*','Dates of Festival From - to','All'],
   ['*LOCATION*','Location(s) of Pitches','Trade'],
   ['*PRICE*','Total Price quoted','Trade'],
   ['*LINK*','Personal Link for Participants','Trade, Volunteers, Performers'],

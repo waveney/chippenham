@@ -291,7 +291,7 @@
     $Vens = Get_AVenues();
     $txt .= "<ul>\n";
     $txt .= "<li><a href=EventList?Y=$YEAR>List All Events</a>\n";
-    if (Access('Staff','Venues') && $YEAR==$PLANYEAR) $txt .= "<li><a href=EventAdd>Create Event(s)</a>";
+    if (Access('Staff','Events') && $YEAR==$PLANYEAR) $txt .= "<li><a href=EventAdd>Create Event(s)</a>";
     
     $txt .= "<li><form method=Post action=EventList class=staffform>";
       $txt .= "<input type=submit name=a value='List Events at' id=staffformid>" . 
@@ -309,7 +309,7 @@
                 fm_radio('',$Days,$_POST,'DAYS','',0) . fm_checkbox('Pics',$_POST,'Pics') .
                 "</form>\n";
 
-    if (Access('Staff','Venues')) $txt .= "<li><a href=EventTypes>Event Types</a>\n";
+    if (Access('Staff','Events')) $txt .= "<li><a href=EventTypes>Event Types</a>\n";
     if (Access('SysAdmin')) $txt .= "<li><a href=TicketEvents?Y=$YEAR>List Ticketed Events</a>\n";
     if (Access('Staff')) $txt .= "<li><a href=StewList?Y=$YEAR>List Stewarding Events</a>\n";
     $txt .= "<li><a href=EventSummary?Y=$YEAR>Event Summary</a>\n";

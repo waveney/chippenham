@@ -7,21 +7,15 @@ Needs php 8
 
 Installation:
 
-Needs to be at a webspace root, Php needs the webspace root in the php include path.
+Needs to be at a webspace root, Php needs the Document root in the php include path.
 
 Needs ImageMagick installed for some features to work.
 
-Then run int/Initialise.php - this will create appropriate subdirectories and populate the database with appropriate initial tables and values.
+Then run int/Initialise.php - this will create appropriate subdirectories and populate the database with appropriate initial tables and values (Warning probably out of date).
 
 It will (soon?) track changes to the structure of the database and automatically update as appropriate.
 
 See int/AdminGuide.php for a lot more about the system admin
 
 Does not include the data from the database, and most uploaded images under /images
-
-
-Branches:
-* master - all code changes to be against this branch
-* live - the live real site
-
 

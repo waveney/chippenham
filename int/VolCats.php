@@ -29,7 +29,7 @@ function Show_Cat($Cat,$Act='UPDATE') {
   echo "<tr>" . fm_text('Email',$Cat,'Email') . "<td>Email address of category leader can by multiple separated by commas\n";
   echo "<tr>" . fm_hex('Properties',$Cat,'Props');
   echo "<tr>" . fm_number('Relative Importance',$Cat,'Importance');
-  echo "<tr>" . fm_textarea('Description',$Cat,'Description',3,3);
+  echo "<tr>" . fm_textarea('Short Description',$Cat,'Description',3,3);
 
   echo "<tr>" . fm_text('List of When',$Cat,'Listofwhen',2) . "<td>'Before','Week',-2,-1,0,1,2,3,...\n";
   echo "<tr>" . fm_text('Extra Like text',$Cat,'LExtra',2);

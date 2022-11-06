@@ -179,8 +179,8 @@
   echo "<td><input type=number name=RelOrder0 >";
   echo "</table></div>\n";
   echo "<input type=submit name=Update value=Update>\n";
-  echo "<input type=submit name=ACTION value=Move> selected to: " . fm_select($Gals,$g,'MoveTo',1);
-  echo "<input type=submit name=ACTION value=Copy> selected to: " . fm_select($Gals,$g,'CopyTo',1);
+  echo "<input type=submit name=ACTION value=Move> selected to: " . fm_select($Gals,$_REQUEST,'MoveTo',1);
+  echo "<input type=submit name=ACTION value=Copy> selected to: " . fm_select($Gals,$_REQUEST,'CopyTo',1);
   echo "</form></div>";
   echo "<h2><a href=GallManage>Back to Galleries</a>, <a href=ShowGallery?g=$Galid>Show Gallery</a></h2><p>\n";
 

@@ -69,6 +69,8 @@
     default:
       break;
     }
+    
+    $
   }
   if (isset($_POST['IMPORT'])) { 
     $Prefix = $_POST['FilePrefix'];
@@ -151,11 +153,22 @@
   echo "<h3>Current Gallery</h3>\n";
 
   $Gal = Get_Gallery_Photos($Galid);
-  if (UpdateMany('GallPhotos','Put_Gallery_Photo',$Gal,2,'','','File')) $Gal = Get_Gallery_Photos($Galid);
+  if (UpdateMany('GallPhotos','Put_Gallery_Photo',$Gal,0)) $Gal = Get_Gallery_Photos($Galid);
 
   echo "If used Order controls the order of pictures appearing, two pictures of the same Order value may appear in any order.<p>\n";
+  echo "To delete a photo move the entry to the blank gallery.<p>\n";
+  
   $coln = 0;
+  
+//  $GalSize = count($Gal);
+  
   echo "<form method=post action=GallCManage>";
+  
+//  $Page = 0;
+//  if (isset($_REQUEST['Page'])) $Page = $_REQUEST['Page'];
+//  echo fm_hidden('Page',$Page);
+  
+  
   echo fm_hidden('g',$Galid);
   echo "<div class=tablecont><table id=indextable border>\n";
   echo "<thead><tr>";
@@ -166,7 +179,10 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Order</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Thumbnail</a>\n";
   echo "</thead><tbody>";
+  
+//  $GCount = $Skip = 0;
   foreach($Gal as $g) {
+//    if ($Page > 0 && ($Skip < ($Page*100)) continue;
     $i = $g['id'];
     echo "<tr><td>" . fm_checkbox('',$g,'Select','',"Sel$i") . "<td>$i";
     echo fm_text1("",$g,'File',1,'','',"File$i") . "</a>";
@@ -181,8 +197,8 @@
   echo "<td><input type=number name=RelOrder0 >";
   echo "</table></div>\n";
   echo "<input type=submit name=Update value=Update>\n";
-  echo "<input type=submit name=ACTION value=Move> selected to: " . fm_select($Gals,$g,'MoveTo',1);
-  echo "<input type=submit name=ACTION value=Copy> selected to: " . fm_select($Gals,$g,'CopyTo',1);
+  echo "<input type=submit name=ACTION value=Move> selected to: " . fm_select($Gals,$_REQUEST,'MoveTo',1);
+  echo "<input type=submit name=ACTION value=Copy> selected to: " . fm_select($Gals,$_REQUEST,'CopyTo',1);
   echo "</form>";
   echo "<h2><a href=GallManage>Back to Galleries</a>, <a href=ShowGallery?g=$Galid>Show Gallery</a></h2><p>\n";
 
