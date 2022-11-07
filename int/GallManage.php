@@ -14,7 +14,9 @@
 
   $coln = 0;
   echo "<h2>Galleries</h2><p>";
-  echo "Non zero Menu Bar entries will be in the site banner ordered by that number<p>";
+  echo "Non zero postive Menu Bar entries will be in the site banner ordered by that number<br>";
+  echo "Any negative Menu Bar entry will not appear on 'All Galleries'<p>";
+ 
   echo "<form method=post action=GallManage>";
   echo "<div class=tablecont><table id=indextable border>\n";
   echo "<thead><tr>";

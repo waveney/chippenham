@@ -43,8 +43,6 @@
         'Travel'=>'InfoGettingHere',
         'Mailing List'=>'InfoMailingList',
         'Contact Us'=>'contact',
-//        'Road Closures'=>'RoadClosure',
-//        'Allendale Centre and Cafe'=>'InfoAllendale',
         'Data Privacy'=>'InfoData',
         'Festival Software'=>'InfoSoftware',
         ],
@@ -59,6 +57,8 @@
          ],
       '-Gallery'=>[
         '@'=>1, //Special
+        '>All Galleries'=>'int/Galleries',
+        
        ],
       '!/images/icons/Facebook.png'=>('!http://facebook.com/' . Feature('Facebook','**NONE**')),
       '!/images/icons/Twitter.png'=>('!http://twitter.com/' . Feature('Twitter','**NONE**')),
@@ -158,13 +158,19 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         case 1:
           $Gals = Gen_Get_All('Galleries'," ORDER BY MenuBarOrder DESC");
           foreach ($Gals as $G) {
-            if ($G['MenuBarOrder']) $Bar[$G['SN']] = "int/ShowGallery?g=" . $G['id'];
+            if ($G['MenuBarOrder']>0) $Bar[$G['SN']] = "int/ShowGallery?g=" . $G['id'];
           }
           break;          
           
         }
         continue 2;
-        
+      
+      case '>' : // Move to End
+        $text = substr($text,1);
+        $Bar[$text] = $link;
+        continue 2;
+        break;
+      
       default:
     }
     if (is_array($link)) {

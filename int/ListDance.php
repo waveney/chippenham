@@ -118,9 +118,9 @@
       $snum = $fetch['SideId'];
       echo "<tr>";
       if ($col10) echo "<td><input type=checkbox name=E$i class=SelectAllAble>";
-      echo "<td><a href=$link?sidenum=$snum&Y=$YEAR>" . $fetch['SN'] . "</a>";
+      echo "<td><a href=$link?sidenum=$snum&Y=$YEAR>" . (empty($fetch['SN'])?'Nameless':$fetch['SN']) . "</a>";
       if ($fetch['SideStatus']) {
-        echo "<td>DEAD";
+        echo "<td>Folded";
       } else {
         $ty = strtolower($fetch['Type']);
         $colour = '';
