@@ -12,6 +12,7 @@
   $Teams=Get_ContactCats(1);
   
   foreach ($Teams as $t) {
+    if ($t['RelOrder']<0) continue;
     echo "<tr><td>" . $t['SN'] . "<td style='font-weight:bold; color:" . $ContCatColours[$t['OpenState']] . "'>" . $ContCatState[$t['OpenState']];
     if ($t['OpenState']) {
       echo "<td><a href='mailto:" . $t['Email'] . '@' . $FESTSYS['HostURL'] . "'>"  . $t['Email'] . '@' . $FESTSYS['HostURL'] . "</a>";
@@ -41,7 +42,7 @@
 
 /*
 <!-- <h2 class="subtitle">Contact Us during the Festival Weekend</h2>
-<p>If you need to get in touch with the festival committee during the festival weekend, please find a steward, ask at our Information Points on The Square or at The Allendale Centre or send an email to <a href="mailto:info@wimbornefolk.co.uk">info@wimbornefolk.co.uk</a> and we'll put you in touch with the committee.</p>
+<p>If you need to get in touch with the festival committee during the festival weekend, please find a steward, ask at our Information Points on The Square or at The Allendale Centre 
 
 <p style="color:#CC0000; font-weight:bold;">In the event of an emergency, please find a steward or security or go to our first aid points (The Square or Willow Walk) or if life threatening, dial 999.</p> */
 

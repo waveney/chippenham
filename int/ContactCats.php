@@ -11,13 +11,14 @@
   
   
   echo "<div class='content'><h2>Manage Contact Categories</h2>\n";
+  echo "If the order is negative it will be skipped<p>\n";
   
   global $ContCatState, $ContCatColours;
   
   $Teams=Get_ContactCats(1);
 //var_dump($Teams);
 
-  if (UpdateMany('ContactCats','Put_ContactCat',$Teams,0)) $Teams=Get_ContactCats(1);
+  if (UpdateMany('ContactCats','Put_ContactCat',$Teams,1)) $Teams=Get_ContactCats(1);
 
   $coln = 0;
 
