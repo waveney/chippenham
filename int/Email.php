@@ -124,12 +124,11 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
     $email->Host = $mailserv;
     $email->SMTPAuth = true;
     $email->AuthType = 'LOGIN';
-    $email->From = $email->Username = $FESTSYS['SMTPuser'] . "@" . $FESTSYS['HostURL'];
+    $email->From = $email->Username = $FESTSYS['SMTPuser'];
     $email->FromName = $FESTSYS['FestName'];
     $email->Password = $FESTSYS['SMTPpwd'];
     $email->SMTPSecure = 'tls';
     $email->Port = 587;
-    $email->SMTPOptions = ['ssl' => [ 'verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true]];
     
     if ($from) {
       if (is_array($from)) {

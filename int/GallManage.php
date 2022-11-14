@@ -22,19 +22,19 @@
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Credits</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Media</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Banner</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Level</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Gallery Set</a>\n";  
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Menu Bar Order</a>\n";
   echo "</thead><tbody>";
   foreach($Gals as $g) {
     $i =  $g['id'];
     echo "<tr><td>" . $i;
     echo fm_text1("",$g,'SN',1,'','',"SN$i") . "</a>";
-    echo fm_text1("",$g,'Credits',1,'','',"Credits$i") . "</a>";
 
     echo "<td>" . fm_select($Medias,$g,'Media',0,'',"Media$i");
-    echo fm_text1("",$g,'Banner',1,'','',"Banner$i");
+    echo fm_number1("",$g,'Level','','',"Level$i");
+    echo fm_text1("",$g,'GallerySet',1,'','',"GallerySet$i");
     echo fm_number1("",$g,'MenuBarOrder','','',"MenuBarOrder$i");
     echo "<td><a href=" . ($g['Media']?'GallVManage':'GallCManage') . "?g=" . $g['id'] . ">Edit</a>";
     echo "<td><a href=ShowGallery?g=" . $g['id'] . ">Show</a>";
@@ -42,9 +42,8 @@
     echo "\n";
   }
   echo "<tr><td><td><input type=text size=20 name=SN0 >";
-  echo "<td><input type=text name=Credits0 >";
-  echo "<td>" . fm_select($Medias,$g,"Media0");
-  echo "<td><input type=text name=Banner0 >";
+  echo "<td>" . fm_select($Medias,$g,"Media0") . fm_number1("",$g,'Level');
+  echo "<td><input type=text name=GallerySet0 >";
   echo "<td><input type=text name=MenuBarOrder0 >";
   echo "</table></div>\n";
   echo "<input type=submit name=Update value=Update>\n";

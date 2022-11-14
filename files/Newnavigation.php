@@ -57,7 +57,7 @@
          ],
       '-Gallery'=>[
         '@'=>1, //Special
-        '>All Galleries'=>'int/Galleries',
+        '>All Galleries'=>'int/ShowGallery?g=All_Galleries',
         
        ],
       '!/images/icons/Facebook.png'=>('!http://facebook.com/' . Feature('Facebook','**NONE**')),
@@ -156,7 +156,7 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
           }
           break;
         case 1:
-          $Gals = Gen_Get_All('Galleries'," ORDER BY MenuBarOrder DESC");
+          $Gals = Gen_Get_All('Galleries',"WHERE Level=0 ORDER BY MenuBarOrder DESC");
           foreach ($Gals as $G) {
             if ($G['MenuBarOrder']>0) $Bar[$G['SN']] = "int/ShowGallery?g=" . $G['id'];
           }

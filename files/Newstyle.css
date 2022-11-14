@@ -1335,6 +1335,45 @@ button {
   color:white;
 }
 
+
+.GalleryFlexCont {
+  max-width:400px;
+  min-width:250px;
+  width:100%;
+  display: inline-block;
+  text-align:center;
+  font-size:20px;
+  margin:10px;
+  padding-top:28px;
+  border: 2px solid #f1f1f1;
+  background: #f8f8f8;
+/*  height:60px;*/
+}
+
+.GalleryFlexCont a {
+  color:#var(--main-col-dark);
+}
+
+.GalleryFlexCont img {
+  max-width:250px;
+}
+
+.GalleryFlexCont:hover {
+  color:#var(--main-col-dark);
+/*  font-size:24px;
+  color:white;
+  background: var(--main-col);/*
+  animation-name: pbpop;  
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;*/ 
+}
+
+.GalleryFlexCont:hover a {
+  font-size:24px;
+/*  color:white; */
+}
+
 .trader-app-link{
   width: 100%;
   padding: 20px 20px 50px;

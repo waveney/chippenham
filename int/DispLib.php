@@ -106,6 +106,7 @@ function ImpCount($imps) {
 }
 
 function Gallery($id,$embed=0) {
+  global $YEAR;
   include_once("ImageLib.php");
   $PS = (isset($_GET['S']) ? $_GET['S'] : 50);
 
@@ -113,7 +114,8 @@ function Gallery($id,$embed=0) {
   if (is_numeric($id)) {
     $Gal = db_get('Galleries',"id='$id'");
   } else {
-    $Gal = db_get('Galleries',"SN='$id'");
+    $nam = preg_replace('/_/',' ',$id);
+    $Gal = db_get('Galleries',"SN='$nam'");
   }
 
   if (!$Gal) {
@@ -127,72 +129,93 @@ function Gallery($id,$embed=0) {
     if (isset($Gal['Banner'])) $Banner = $Gal['Banner'];
     dohead($name, ['/files/gallery.css'],$Banner);
   }
-
+  
   echo "<h2 class=maintitle>$name</h2><p>";
-  echo "Click on any slide to start a Slide Show with that slide.<p>\n";
+  if ($Gal['Description']) echo $Gal['Description'] . "<p>";
 
-  if ($Gal['Credits']) {
-    echo '<h2 class="subtitle">Credits</h2>';
-    echo "Photos by: " . $Gal['Credits'] . "<p>";
-  }
+  if ($Gal['Level'] == 0) {
 
+    echo "Click on any slide to start a Slide Show with that slide.<p>\n";
 
-  $Imgs = Get_Gallery_Photos($Gal['id']);
-  $ImgCount = count($Imgs);
-
-
-  $PStr = "";
-  if ($ImgCount > $PS) {
-    $Page = (isset($_GET['p']) ? $_GET['p'] : 1);
-    $lastP = ceil($ImgCount/$PS);
-    if ($Page > $lastP) $Page = $lastP;
-    $PStr .= "<div class=gallerypage>Page : ";
-    $bl = "<a href=ShowGallery?g=$id";
-    if ($PS != 50) $bl .= "&S=$PS";
-    $bl .= "&p=";
-    $PStr .= $bl . "1>First</a> ";
-    if ($Page > 1) $PStr .= $bl . ($Page-1) . ">Prev</a> ";
-    for ($p = 1; $p <= $lastP; $p++) { 
-      if ($p == $Page) {
-        $PStr .= "$p ";
-      } else {
-        $PStr .= $bl . $p . ">$p</a> ";
-      }
+    if ($Gal['Credits']) {
+      echo '<h2 class="subtitle">Credits</h2>';
+      echo "Photos by: " . $Gal['Credits'] . "<p>";
     }
-    if ($Page != $lastP) $PStr .= $bl . ($Page+1) . ">Next</a> ";
-    $PStr .= $bl . $lastP . ">Last</a></div><p>";
-    $first = ($Page-1)*$PS;
-    $last = $first+$PS;
-  } else {
-    $first = 0;
-    $last = $PS;
-  }
-  $PStr .= "<p>\n";
-  
-  echo $PStr;
-  
-  echo '<div id=galleryflex>';
 
 
-  $count = 0;
-  if ($Imgs) {
-    foreach ($Imgs as $img) {
-      if ($count >= $first && $count < $last) {
+    $Imgs = Get_Gallery_Photos($Gal['id']);
+    $ImgCount = count($Imgs);
+
+
+    $PStr = "";
+    if ($ImgCount > $PS) {
+      $Page = (isset($_GET['p']) ? $_GET['p'] : 1);
+      $lastP = ceil($ImgCount/$PS);
+      if ($Page > $lastP) $Page = $lastP;
+      $PStr .= "<div class=gallerypage>Page : ";
+      $bl = "<a href=ShowGallery?g=$id";
+      if ($PS != 50) $bl .= "&S=$PS";
+      $bl .= "&p=";
+      $PStr .= $bl . "1>First</a> ";
+      if ($Page > 1) $PStr .= $bl . ($Page-1) . ">Prev</a> ";
+      for ($p = 1; $p <= $lastP; $p++) { 
+        if ($p == $Page) {
+          $PStr .= "$p ";
+        } else {
+          $PStr .= $bl . $p . ">$p</a> ";
+        }
+      }
+      if ($Page != $lastP) $PStr .= $bl . ($Page+1) . ">Next</a> ";
+      $PStr .= $bl . $lastP . ">Last</a></div><p>";
+      $first = ($Page-1)*$PS;
+      $last = $first+$PS;
+    } else {
+      $first = 0;
+      $last = $PS;
+    }
+    $PStr .= "<p>\n";
+  
+    echo $PStr;
+  
+    echo '<div id=galleryflex>';
+
+
+    $count = 0;
+    if ($Imgs) {
+      foreach ($Imgs as $img) {
+        if ($count >= $first && $count < $last) {
       
-        echo "<div class=galleryarticle><a href=/int/SlideShow?g=$id&s=$count><img class=galleryarticleimg src=\"" . $img['File'] . "\"></a>";
-        if ($img['Caption']) echo "<div class=gallerycaption> " . $img['Caption'] . "</div>";
-        echo "</div>\n";
+          echo "<div class=galleryarticle><a href=/int/SlideShow?g=$id&s=$count><img class=galleryarticleimg src=\"" . $img['File'] . "\"></a>";
+          if ($img['Caption']) echo "<div class=gallerycaption> " . $img['Caption'] . "</div>";
+          echo "</div>\n";
+        }
+        $count++;
       }
-      $count++;
+    } else {
+      echo "<h2 class=Err>Sorry that Gallery is empty</h2>\n";
     }
-  } else {
-    echo "<h2 class=Err>Sorry that Gallery is empty</h2>\n";
-  }
 
-  echo "</div>" . $PStr;
+    echo "</div>" . $PStr;
   
-  if ($Gal['Credits']) {
-    echo "<p>Photos by: " . $Gal['Credits'] . "<p>";
+    if ($Gal['Credits']) {
+      echo "<p>Photos by: " . $Gal['Credits'] . "<p>";
+    }
+  } else { //Sub Gallery
+    $Gals = Gen_Get_Cond('Galleries'," GallerySet='" . $Gal['SN'] . "' ORDER BY MenuBarOrder DESC" );
+
+    echo "<div id=flex5>\n";    
+    foreach ($Gals as $G) {
+      if ($G['id'] == $Gal['id']) continue;
+      echo "<div class=GalleryFlexCont><a href=/int/ShowGallery?g=" . $G['id'] . "&Y=$YEAR>" . $G['SN'] . "</a><br>";
+      if ($G['Image']) {
+        $GalEnt = Gen_Get('GallPhotos',$G['Image']);
+        echo "<img src=" . $GalEnt['File'] . " class=GalImg><br>";
+      }
+      if ($G['Description']) echo $G['Description'];
+      echo "</div>";
+    
+    }
+    echo "</div><br>";  
   }
 
   if (!$embed) dotail();

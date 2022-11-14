@@ -70,7 +70,6 @@
       break;
     }
     
-    $
   }
   if (isset($_POST['IMPORT'])) { 
     $Prefix = $_POST['FilePrefix'];
@@ -102,6 +101,8 @@
       $globs = glob("../$Prefix*");
       foreach($globs as $fil) {
         $file = preg_replace('/^\.\.\//','',$fil);
+        echo "Importing $file<br>";
+
         if (is_file($fil)) {
           $suf = pathinfo($file,PATHINFO_EXTENSION);
           if ($suf == 'jpg' || $suf == 'jpeg' || $suf == 'png') {
@@ -142,8 +143,10 @@
     echo "<p>\n";
   }
 
+  $Gallery = Gen_Get('Galleries',$Galid);
   echo "<h2>Manage Gallery - $GalName</h2>\n";
   echo "<form method=post action=GallCManage>";
+    Register_AutoUpdate('Galleries',$Galid);
     echo fm_hidden('g',$Galid);
     echo "<h3>Import Photos</h3>Give Name of Directory (All Images will be imported) or Full Prefix (Any File with that Prefix will be imported): ";
     echo fm_textinput('FilePrefix',isset($_POST['FilePrefix'])?$_POST['FilePrefix']:"");
@@ -151,7 +154,14 @@
     echo "</form><p>";
 
   echo "<h3>Current Gallery</h3>\n";
-
+  echo "<table border>";
+  echo "<tr>" . fm_textarea("Description",$Gallery,'Description',6,3);
+  echo "<tr>" . fm_text('Credits',$Gallery,'Credits',4);
+  echo "<tr>" . fm_text('Image Number',$Gallery,'Image') . fm_text('Banner',$Gallery,'Banner') ;
+  echo "<td>" . fm_number('Level',$Gallery,'Level') . fm_text('Gallery Set',$Gallery,'GallerySet');
+  echo "</table>";
+  
+  Cancel_AutoUpdate();  // REst is a different form handled by Updatemany
   $Gal = Get_Gallery_Photos($Galid);
   if (UpdateMany('GallPhotos','Put_Gallery_Photo',$Gal,0)) $Gal = Get_Gallery_Photos($Galid);
 

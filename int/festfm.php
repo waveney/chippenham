@@ -443,6 +443,11 @@ function Register_AutoUpdate($type,$ref) {
   $AutoADD = 1;
 }
 
+function Cancel_AutoUpdate() {
+  global $AutoADD;
+  $AutoADD = 0;
+}
+
 function FestDate($day,$format='M',$Year=0) {
   global $YEARDATA,$YEAR;
   static $Years;
