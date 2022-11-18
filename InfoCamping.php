@@ -18,7 +18,8 @@
   $Mapp = 0;
   
   foreach ($Camps as $C) {
-    if ($C['Props'] != 1) continue; // Remove not in use and restricted
+    if (($C['Props']&1) == 0) continue; // Remove not in use
+    if (!(Access('Steward')) && ($C['Props']&2)) continue;  // Restricted
     echo "<div id=Blob$Blobnum>";
     echo "<h2>" . $C['Name'] . "</h2>";
     if ($C['Image']) echo "<img src=" . $C['Image'] . "</img><br>";

@@ -4,6 +4,7 @@ include_once("fest.php");
 include_once("festfm.php");
 include_once("DanceLib.php");
 include_once("TradeLib.php");
+include_once("VolLib.php");
 
 function Archive_Stack($loc,$pth,$id) {
   if (!file_exists($loc)) return;
@@ -46,6 +47,12 @@ case 'Trade':
     $Data = Get_Trader($id);
     $Put = 'Put_Trader';
   }
+  break;
+  
+case 'Volunteer':
+  $Data = Get_Volunteer($id);
+  $Put = 'Put_Volunteer';
+  $PathCat = 'Volunteers/Photos';
   break;
   
 case 'Venue':

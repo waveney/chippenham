@@ -24,28 +24,28 @@ function Show_Cat($Cat,$Act='UPDATE') {
     echo "<form method=post action=VolCats>";
     echo fm_hidden('id',0);
   }
-  echo "<tr>" . fm_text('Name',$Cat,'Name') . "<td>Full name of volunteer Category\n";
-  echo "<tr>" . fm_text('ShortName',$Cat,'ShortName')  . "<td>Short name of volunteer Category (May be the same)\n";
-  echo "<tr>" . fm_text('Email',$Cat,'Email') . "<td>Email address of category leader can by multiple separated by commas\n";
+  echo "<tr>" . fm_text('Name',$Cat,'Name',2) . "<td>Full name of volunteer Category\n";
+  echo "<tr>" . fm_text('ShortName',$Cat,'ShortName',2)  . "<td>Short name of volunteer Category (May be the same)\n";
+  echo "<tr>" . fm_text('Email',$Cat,'Email',2) . "<td>Email address of category leader can by multiple separated by commas\n";
   echo "<tr>" . fm_hex('Properties',$Cat,'Props');
   echo "<tr>" . fm_number('Relative Importance',$Cat,'Importance');
-  echo "<tr>" . fm_textarea('Short Description',$Cat,'Description',3,3);
+  echo "<tr>" . fm_textarea('Short Description',$Cat,'Description',5,3);
 
-  echo "<tr>" . fm_text('List of When',$Cat,'Listofwhen',2) . "<td>'Before','Week',-2,-1,0,1,2,3,...\n";
-  echo "<tr>" . fm_text('Extra Like text',$Cat,'LExtra',2);
+  echo "<tr>" . fm_text('List of When',$Cat,'Listofwhen',4) . "<td>'Before','Week',-2,-1,0,1,2,3,...\n";
+  echo "<tr>" . fm_text('Extra Like text',$Cat,'LExtra',4);
     echo "<td rowspan=10>";
     if (!empty($Cat['Image'])) echo "<img src='" . $Cat['Image'] . "' width=300>";
-  echo "<tr>" . fm_text('Extra Dislike text',$Cat,'DExtra',2);
-  echo "<tr>" . fm_text('Other Question 1',$Cat,'OtherQ1',2);
-  echo "<tr>" . fm_text('Extra Text 1',$Cat,'Q1Extra',2);
-  echo "<tr>" . fm_text('Other Question 2',$Cat,'OtherQ2',2);
-  echo "<tr>" . fm_text('Extra Text 2',$Cat,'Q2Extra',2);
-  echo "<tr>" . fm_text('Other Question 3',$Cat,'OtherQ3',2); 
-  echo "<tr>" . fm_text('Extra Text 3',$Cat,'Q3Extra',2); 
-  echo "<tr>" . fm_text('Other Question 4',$Cat,'OtherQ4',2); 
-  echo "<tr>" . fm_text('Extra Text 4',$Cat,'Q4Extra',2); 
-  echo "<tr>" . fm_textarea('Long Description',$Cat,'LongDesc',3,3); 
-  echo "<tr>" . fm_text('Image',$Cat,'Image',2); 
+  echo "<tr>" . fm_text('Extra Dislike text',$Cat,'DExtra',4);
+  echo "<tr>" . fm_text('Other Question 1',$Cat,'OtherQ1',4);
+  echo "<tr>" . fm_text('Extra Text 1',$Cat,'Q1Extra',4);
+  echo "<tr>" . fm_text('Other Question 2',$Cat,'OtherQ2',4);
+  echo "<tr>" . fm_text('Extra Text 2',$Cat,'Q2Extra',4);
+  echo "<tr>" . fm_text('Other Question 3',$Cat,'OtherQ3',4); 
+  echo "<tr>" . fm_text('Extra Text 3',$Cat,'Q3Extra',4); 
+  echo "<tr>" . fm_text('Other Question 4',$Cat,'OtherQ4',4); 
+  echo "<tr>" . fm_text('Extra Text 4',$Cat,'Q4Extra',4); 
+  echo "<tr>" . fm_textarea('Long Description<br>This is what apppears on the front volunteers page, encouraging them to join this team',$Cat,'LongDesc',5,3); 
+  echo "<tr>" . fm_text('Image',$Cat,'Image',4); 
   if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
   echo "</table><br>\n";
   if (empty($Cat['id'])) {

@@ -3,6 +3,11 @@
 
   dohead("Folk Festival Software",[],1);
 ?>
+<div class=biodiv>
+<img src=images/ArticleImgs/Richard.jpg  class=bioimg><p>
+Richard at a Folk Festival
+</div>
+
 <h3>BACKGROUND</h3>
 A sophisticated database and website system was developed for Wimborne Minster Folk Festival, using experence and knowledge from providing facilities for many events 
 (Folk Festivals and Science
@@ -37,6 +42,7 @@ ensuring they have breaks, dance when they want and handle performer overlaps
 <li>Finance - invoices, budgets
 <li>User management - different users, with capabilities based on user roles and access level
 <li>News and front page article management - a Content Management System to manage what appears and when
+<li>Volunteers - Categories, questions, management and help
 <li>Galleries - setup, import, crop, caption photos
 <li>Multiyear working - Everything from previous years is stored, forward planning can be made as many years in advance as wanted
 <li>Many other facilities
@@ -50,7 +56,7 @@ This is potentially available as a number of separate packages, dance, music, do
 Realising that what was developed for Wimborne, could be of considerable use for other festivals, some work has been done to generalise it so others could use it.<p>
 
 This is an on going development and some parts are still very Wimborne specific, the intention is that it is licenseable in the future, if you are interested in what has been
-developed so far and would like to be involved, please contact the <a href=mailto:Richard@wavwebs.com>Richard</a>.<p>
+developed so far and would like to be involved, please contact <a href=mailto:Richard@wavwebs.com>Richard</a>.<p>
 
 Note: The intention is to license the system, but (currently) none of the data about individual dance sides, performers etc.<p> 
 

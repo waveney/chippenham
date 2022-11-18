@@ -57,6 +57,8 @@ function Get_Vol_Details(&$vol) {
   $Body .= "Address: " . $vol['Address'] . "<br>\n";
   if (isset($vol['PostCode'])) $Body .= "PostCode: " . $vol['PostCode'] . "<br>\n\n";
   $Body .= "Age: " . $AgeCats[$vol['Over18']] . "<br>\n";
+  $Body .= "Handle Money:" . ($vol['Money']?'Yes':'No') . "<br>\n";
+//  if (Feature('VolPhoto') && !empty($vol['Photo'])) $Body .= "*IMAGE_" . $vol['Photo'] . "*<br>\n\n";
   if (!empty($vol['Disabilities'])) $Body .= "<p>Disabilities: " . $vol['Disabilities'] . "<br>\n\n";
   if (Feature('VolDBS')) {
     $Body .= "<p>DBS: " . (empty($vol['DBS']) ? 'No' : $vol['DBS'] ) . "<p>\n\n";
@@ -174,6 +176,7 @@ function BeforeTeams($term='Before') {
 
 function VolView(&$Vol) {
   echo Get_Vol_Details($Vol);
+  if (!empty($Vol['Photo'])) echo "Photo: <img src='" . $Vol['Photo'] . "' width=200><p>";
   if (Access('Committee','Volunteers'))  echo "<P><h2><a href=Volunteers?ACTION=Show&id=" . $Vol['id'] . ">Edit</a>";
   dotail();
 }
@@ -204,10 +207,16 @@ function VolForm(&$Vol,$Err='',$View=0) {
     echo "<tr>" . fm_text('Phone(s)',$Vol,'Phone',4);
     echo "<tr>" . fm_text('Address',$Vol,'Address',4);
     echo "<tr>" . fm_Radio("Age range",$AgeCats,$Vol,'Over18',"",1). "<td colspan=3>All volunteers need to be over 18, a few roles need over 21.";
-//    echo "<tr><td>" . fm_checkbox("Are you happy to handle Money",$Vol,'Money',"","",1). "<td colspan=3>Needed for some teams";
-    echo "<tr><td>" . fm_checkbox("Keep my records",$Vol,'KeepMe',"","",1). "<td colspan=3>So you don't have to type this in again next year";
-//  echo "<tr>" . fm_text('Date of Birth',$Vol,'Birthday');
-    echo "<tr>" . fm_text('Do you have any disabilities',$Vol,'Disabilities',4);
+    $Photo = Feature('VolPhoto');
+    if ($Photo) echo "<tr rowspan=4 colspan=4 height=80><td>" . ($Photo == 1 ? 'Photo, not essential yet' : 'Photo') .
+        fm_DragonDrop(1,'Photo','Volunteer',$Volid,$Vol,1,'',1,'','Photo');
+    echo "<tr><td>" . fm_checkbox("Are you happy to handle Money",$Vol,'Money',"","",1). "<td colspan=3>Needed for some teams";
+    echo "<tr><td>" . fm_checkbox("Keep my records",$Vol,'KeepMe',"","",1) . 
+         "<td colspan=3>Please uncheck this box if you do not wish the festival to contact you about our future events.<br>" .
+         "If you are happy for us to save your details, they will be available to you when you apply next time!"; 
+
+    echo "<tr>" . fm_text('Do you have any medical conditions, disabilities or accessibility requirements that we need to be aware of? ' .
+                          'Please give any details to enable us to support you',$Vol,'Disabilities',4);
     if (Feature('VolDBS')) {
       echo "<tr><td colspan=5>"; // <h3>Legal</h3>\n";
       echo "Do you have a current DBS certificate? if so please give details (needed for some volunteering roles)<br>" . 
@@ -276,7 +285,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
       if ($cp & VOL_Exp){ 
         $rows++; 
-        $Ctxt .= "\n<tr>" . fm_textarea("Experience", $VCY,'Experience',3,3," class=$cls $Hide",'',"Experience:$Catid:$PLANYEAR") .
+        $Ctxt .= "\n<tr>" . fm_textarea("Please outline your experience with us or other festivals", $VCY,'Experience',3,3," class=$cls $Hide",'',"Experience:$Catid:$PLANYEAR") .
                              $Cat['DExtra']; 
       };
       for ($i=1; $i<5; $i++) {
@@ -321,7 +330,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
      echo "\n<tr><td colspan=5><h3><center>Part 4: Anything else for $PLANYEAR</center></h3>";
     if (Feature('Vol_Children')) {
-      echo "<tr>" . fm_text("Free Childrens tickets (give their ages)",$VYear,'Children',4,'','',"Children::$PLANYEAR");
+      echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their ages)",$VYear,'Children',4,'','',"Children::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
@@ -377,10 +386,12 @@ function Vol_Validate(&$Vol) {
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
   foreach ($VCYs as $VCY) if (isset($VCY['Props']) && $VCY['Props']) {
     $Clss++;
-    
+    if ($VCY['CatId'] == 0) { var_dump($VCY); continue; };
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_NeedDBS) && empty($Vol['DBS'])) return $VolCats[$VCY['CatId']]['Name'] . " requires DBS";
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_Over21) && $Vol['Over18'] <2) return $VolCats[$VCY['CatId']]['Name'] . " requires you to be over 21";
   }
+  if (Feature('VolPhoto') == 2 && empty($Vol['Photo'])) return "Please supply a photo of yourself so we can print personal volunteer badges.";
+
   if ($Clss == 0) return "Please select at least one team";
 
   $Avail=0;
@@ -553,7 +564,7 @@ function Check_Unique() { // Is email Email already registered - if so send new 
 function VolAction($Action) {
   global $PLANYEAR;
 
-  dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js"]);
+  dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
   
 //var_dump($Action);
 //var_dump($_REQUEST);

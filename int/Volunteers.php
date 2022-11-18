@@ -1,7 +1,7 @@
 <?php
   include_once("fest.php");
 
-  dostaffhead("Steward / Volunteer Application",[ "/js/Volunteers.js"]);
+  dostaffhead("Steward / Volunteer Application",["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
 
   include_once("VolLib.php");
  
