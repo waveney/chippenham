@@ -391,7 +391,7 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
   NewSendEmail($Src,$SrcId,$to,$subject,$Mess,$attachments,$embeded,$from);
   
   if ($logfile) {
-    $logf = fopen("LogFiles/$logfile.txt","a");
+    $logf = fopen("LogFiles/$logfile","a");
     fwrite($logf,"\n\nEmail to : " . Pretty_Print_To($to) . "Subject:$subject\n");
     if ($from) fwrite($logf,"From: " . Pretty_Print_To($from));
     fwrite($logf,"\n\n$Mess");

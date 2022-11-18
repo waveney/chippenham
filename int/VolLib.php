@@ -104,7 +104,11 @@ function Get_Vol_Details(&$vol) {
   
   if (isset($VY['Notes']) && $VY['Notes']) $Body .= "<p>Notes: " . $VY['Notes'] . "<p>\n";
   
-  if (isset($VY['id']) && $VY['id']) $Body .= "<p>Status: " . $YearStatus[$VY['Status']] . "<p>\n";
+  if (isset($VY['id']) && $VY['id']) $Body .= "<p>Status: " . $YearStatus[$VY['Status']];
+  if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) $Body .=  " On " . date('d/n/Y',$VY['SubmitDate']);
+  if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate'] != $VY['LastUpdate'] && $VY['LastUpdate']) 
+    $Body .=  " Last updated on " . date('d/n/Y',$VY['LastUpdate']);
+  $Body .= "<p>\n";
   
   if (!empty($VY['Children'])) $Body .= "Children: " . $VY['Children'] . "<p>\n";
 
@@ -194,7 +198,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
   echo fm_hidden('id',$Volid);  
 
 
-    echo "This is in 4 parts.  The first records who you are.  This will be kept year to year, so you should only need to fill this in once.<p>\n";
+    echo "This is in 4 parts.  The first records who you are.  This will normally be kept year to year, so you should only need to fill this in once.<p>\n";
     echo "The second part records which team(s) you would like to be part of, along with any likes, dislikes and team related details.<p>\n";
     echo "The third part records your avaibility this year.<p>\n";
     echo "The last part is anything special this year and the submit button.<p>";
@@ -233,7 +237,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     echo "<tr><td>Relationship:<td>" . fm_select($Relations,$Vol,'Relation');
     if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=4 class=NotSide><textarea id=Debug></textarea>";  
   
-  echo "<tr><td colspan=5><h3><center>Volunteering in $PLANYEAR</center></h3>";
+  echo "<tr><td colspan=5><h2><center>Volunteering in $PLANYEAR</center></h2>";
 
 
     if (isset($Vol['Year']) && $YEAR != $Vol['Year']) {
@@ -292,10 +296,10 @@ function VolForm(&$Vol,$Err='',$View=0) {
         if ($cp & (VOL_Other1 << ($i-1))) {
           $rows++; 
           if ($cp & (VOL_Other1 << ($i+3))) {
-            $Ctxt .= "\n<tr>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i:$Catid:$PLANYEAR",3,3,"class=$cls $Hide");
+            $Ctxt .= "\n<tr>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i",3,3,"class=$cls $Hide","Other$i:$Catid:$PLANYEAR");
           
           } else {
-            $Ctxt .= "\n<tr>" . fm_text1($Cat["OtherQ$i"], $VCY,"OtherQ$i",4,"colspan=4 class=$cls $Hide",'',"Other$i:$Catid:$PLANYEAR") .
+            $Ctxt .= "\n<tr>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",4,"colspan=4 class=$cls $Hide",'',"Other$i:$Catid:$PLANYEAR") .
                               $Cat["Q$i" . "Extra"] ; 
           }
         }
@@ -342,7 +346,10 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
     echo "\n<tr><td><h3>Anything Else /Notes:</h3><td colspan=4>" . fm_basictextarea($VYear,'Notes',3,3,'',"Notes::$PLANYEAR");
     $Stat = empty($VYear['Status'])?0:$VYear['Status'];
-    echo "\n<tr><td>Application Status:<td " . ($Stat?'style=color:Green;font-weight:bold;>': 'style=color:Red;font-weight:bold;>') . $YearStatus[$Stat];
+    echo "\n<tr><td>Application Status:<td colspan=3 " . ($Stat?'style=color:Green;font-weight:bold;>': 'style=color:Red;font-weight:bold;>') . $YearStatus[$Stat];
+    if ($VYear['Status'] == 1 && $VYear['SubmitDate']) echo " On " . date('d/n/Y',$VYear['SubmitDate']);
+    if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate']) echo " Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
+
     
     echo "\n<tr><td><b>Actions:</b><td colspan=4><div class=tablecont><table border=0><tr><td width=33%>";
     echo "<input type=submit hidden name=ACTION value=View>\n";
@@ -386,7 +393,7 @@ function Vol_Validate(&$Vol) {
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
   foreach ($VCYs as $VCY) if (isset($VCY['Props']) && $VCY['Props']) {
     $Clss++;
-    if ($VCY['CatId'] == 0) { var_dump($VCY); continue; };
+    if ($VCY['CatId'] == 0) { /* var_dump($VCY);*/ continue; };
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_NeedDBS) && empty($Vol['DBS'])) return $VolCats[$VCY['CatId']]['Name'] . " requires DBS";
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_Over21) && $Vol['Over18'] <2) return $VolCats[$VCY['CatId']]['Name'] . " requires you to be over 21";
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_Money) && $Vol['Money'] != 1) return $VolCats[$VCY['CatId']]['Name'] . " requires you to be handle money";
@@ -498,6 +505,7 @@ function List_Vols() {
     echo "<td>" . $Vol['Email'];
     echo "<td>" . $Vol['Phone'];
     echo "<td>" . ((isset($VY['id']) && $VY['id']>0)?$YearStatus[$VY['Status']]:'');
+      if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
     echo "<td class=FullD hidden>";
     if (isset($VY['id']) && $VY['id']>0) {
       echo $VY['Year'];
@@ -611,7 +619,17 @@ function VolAction($Action) {
       Put_Volunteer($Vol);
     }
     
-    Vol_Emails($Vol,'Submit');
+    $VY['LastUpdate'] = time();
+
+    if ($VY['SubmitDate']) {
+      Put_Vol_Year($VY);
+      Vol_Emails($Vol,'Update');
+    } else {
+      $VY['SubmitDate'] = time();
+      Put_Vol_Year($VY);
+      Vol_Emails($Vol,'Submit');
+    }
+
     break;
   
   case 'View':
