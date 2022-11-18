@@ -389,6 +389,7 @@ function Vol_Validate(&$Vol) {
     if ($VCY['CatId'] == 0) { var_dump($VCY); continue; };
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_NeedDBS) && empty($Vol['DBS'])) return $VolCats[$VCY['CatId']]['Name'] . " requires DBS";
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_Over21) && $Vol['Over18'] <2) return $VolCats[$VCY['CatId']]['Name'] . " requires you to be over 21";
+    if (($VolCats[$VCY['CatId']]['Props'] & VOL_Money) && $Vol['Money'] != 1) return $VolCats[$VCY['CatId']]['Name'] . " requires you to be handle money";
   }
   if (Feature('VolPhoto') == 2 && empty($Vol['Photo'])) return "Please supply a photo of yourself so we can print personal volunteer badges.";
 

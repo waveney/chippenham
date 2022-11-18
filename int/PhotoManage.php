@@ -287,6 +287,7 @@ if (isset($_FILES['croppedImage'])) {
     echo fm_radio("Photo For",$PhotoCats,$_POST,'PCAT','onclick=PCatSel(event)',0);
     $i=0;
     foreach($Lists as $cat=>$dog) {
+      if (empty($dog)) continue;
       if ($AccessNeeded[$cat]) echo "<span id=MPC_$i " . ($cat == $PhotoCats[$mouse]?'':'hidden') . "> : " . fm_select($dog,$_POST,"WHO$i") . "</span>";
       $i++;
     }
