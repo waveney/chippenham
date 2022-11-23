@@ -18,8 +18,7 @@
   Set_User();
   switch ($USER['AccessLevel']) {
   case $Access_Type['Participant'] : 
-    if ($USER['Subtype'] != 'Perf' && $USER['Subtype'] != 'Side'  && $USER['Subtype'] != 'Act' && $USER['Subtype'] != 'Other') Error_Page("Not accessable to you");  // TODO Side-Other can be deleted in time
-    if ($snum != $USERID) Error_Page("Not accessable to you");
+    if ($USER['Subtype'] != 'Perf' || $snum != $USERID) Error_Page("Not accessable to you");
     break;
 
   case $Access_Type['Upload'] :

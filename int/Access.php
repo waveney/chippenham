@@ -31,13 +31,13 @@
       $Data = Get_Trader($id);
       break;
 
-    case 'w' : // Steward
+    case 'w' : // Steward - OLD CODE
       $Data = Get_Steward($id);
       break;
 
     case 'v' : // Volunteer
       $Data = Get_Volunteer($id);
-      $_REQUEST['A'] = 'View';
+      $_REQUEST['ACTION'] = 'View';
       $_REQUEST['id'] = $id;
       break;
 
