@@ -19,7 +19,7 @@
     elseif ($Trad['AccessKey'] != $_GET['key']) Error_Page("Sorry - This is not the right key");  // No return
 
     $Cake = sprintf("%s:%d:%06d",'Trader',$Access_Type['Participant'],$Tid ); 
-    $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers');
+    $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');
     setcookie('FESTD',$biscuit,0,'/');
     $_COOKIE['FESTD'] = $biscuit;
 
@@ -60,7 +60,7 @@
     if ($Side['AccessKey'] != $_GET['key']) Error_Page("Sorry - This is not the right key");  // No return
 
     $Cake = sprintf("%s:%d:%06d",$Type,$Access_Type['Participant'],$SideId ); 
-    $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers');
+    $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');
     setcookie('FESTD',$biscuit,0,'/');
     $_COOKIE['FESTD'] = $biscuit;
 

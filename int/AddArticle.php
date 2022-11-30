@@ -75,8 +75,8 @@
   echo "<form method=post>";
   if (isset($Art['id'])) Register_AutoUpdate('Articles',$Art['id']);
   echo "<div class=tablecont><table border>\n";
-  echo "<tr>" . fm_text("Title",$Art,'SN');
-    echo fm_text("Usage",$Art,'UsedOn');
+  echo "<tr>" . fm_text("Title",$Art,'SN',4);
+  echo "<tr>" . fm_text("Usage",$Art,'UsedOn');
     echo "<td colspan=2 rowspan=5>";
     if ( isset($Art['Image']) && $Art['Image']) {
       echo "<img src=" . $Art['Image'] . " height=200>";

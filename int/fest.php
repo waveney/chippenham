@@ -83,7 +83,7 @@ function Set_User() {
   $USERID = 0;
   if (isset($_COOKIE['FESTD'])) {
     $biscuit = $_COOKIE['FESTD'];
-    $Cake = openssl_decrypt($biscuit,'aes-128-ctr','Quarterjack',0,'MollySummers');
+    $Cake = openssl_decrypt($biscuit,'aes-128-ctr','Quarterjack',0,'MollySummers1929');
     $crumbs = explode(':',$Cake);
     $USER['Subtype'] = $crumbs[0];
     $USER['AccessLevel'] = $crumbs[1];

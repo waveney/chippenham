@@ -7,7 +7,7 @@
   include_once("PLib.php");
 
 // TODO change for all access types inc participant
-  global $USER,$USERID,$Access_Type;
+  global $USER,$USERID,$Access_Type,$PerfTypes;
   // 2D Access check hard coded here -- if needed anywhere else move to fest
   if (isset($_REQUEST['SideId'])) { $snum = $_REQUEST['SideId']; }
   elseif (isset($_REQUEST['sidenum'])) { $snum = $_REQUEST['sidenum']; }
@@ -29,7 +29,7 @@
   case $Access_Type['Committee'] :
     $capmatch = 0;
     $Side = Get_Side($snum);
-    foreach ($FestTypes as $p=>$d) if ($Side[$d[0]] && $USER[$d[2]]) $capmatch = 1;
+    foreach ($PerfTypes as $p=>$d) if ($Side[$d[0]] && $USER[$d[2]]) $capmatch = 1;
     if (!$capmatch) fm_addall('disabled readonly');    
     break;
 

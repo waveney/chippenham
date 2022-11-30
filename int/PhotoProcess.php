@@ -210,7 +210,7 @@ function Save_PM_Img($CurLoc) {
 }
 
 function Photos_AccessMany($id) { // Multi Images
-  global $Cats,$CatList,$USER,$Pcat;
+  global $Cats,$CatList,$USER,$Pcat,$PerfTypes;
   $Mode = 0;
 
   switch ($USER['AccessLevel']) {
@@ -236,7 +236,7 @@ function Photos_AccessMany($id) { // Multi Images
   case $Access_Type['Committee'] :
     $capmatch = 0;
     $Side = Get_Side($snum);
-    foreach ($FestTypes as $p=>$d) if ($Side[$d[0]] && $USER[$d[2]]) $capmatch = 1;
+    foreach ($PerfTypes as $p=>$d) if ($Side[$d[0]] && $USER[$d[2]]) $capmatch = 1;
     if (!$capmatch) fm_addall('disabled readonly');    
     break;
 
