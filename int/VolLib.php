@@ -11,6 +11,7 @@ $yesno = array('','Yes','No');
 $Relations = array('','Husband','Wife','Partner','Son','Daughter','Mother','Father','Brother','Sister','Grandchild','Grandparent','Guardian','Uncle','Aunty',
                 'Son/Daughter in law', 'Friend','Other');
 $YearStatus = ['Not Submitted','Submitted','Withdrawn','Confirmed','Rejected'];
+$YearColour = ['white','Yellow','white','lightgreen','Pink'];
 $CatStatus = ['No','Applied','Withdrawn','Confirmed','Rejected'];
 $Cat_Status_Short = ['','?','','Y',''];
 $AgeCats = ['Under 18','Over 18','Over 21'];
@@ -135,8 +136,8 @@ function Vol_Details($key,&$vol) {
   case 'VOLTEAM_ACCEPT' :
     $Accept = '';
     foreach ($VolCats as $Cat) {
-      $VCY = Get_Vol_Cat_Year($vol['Id'],$Cat['Id']);
-      if ($VCY['Status'] > 0) $Accept .= $Cat['ShortName'] . " - " . $CatStatus[$VCY['Status']] . "<br>\n";
+      $VCY = Get_Vol_Cat_Year($vol['id'],$Cat['id']);
+      if ($VCY['Status'] > 0) $Accept .= $Cat['Name'] . " - " . $CatStatus[$VCY['Status']] . "<br>\n";
     }
     return $Accept; 
   }
@@ -489,7 +490,7 @@ function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on
 
 
 function List_Vols() {
-  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short;
+  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour;
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Applications</button>" .
        "<button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Curent Aplications</button> ";
 
@@ -498,7 +499,7 @@ function List_Vols() {
   
   echo "Where it says EXPAND under availability, means there is a longer entry - click on the persons name or the expand button to see more info on their availabilty<p>";
   
-  if ($VolMgr ) echo "To reject an application, first click on their name.<p>";
+  if ($VolMgr ) echo "To reject an application or do a partial acceptance, first click on their name.<p>";
   
   $coln = 0;  
   echo "<form method=post>";
@@ -537,7 +538,7 @@ function List_Vols() {
     echo "<td>$link" . $Vol['SN'] . "</a>";
     echo "<td>" . $Vol['Email'];
     echo "<td>" . $Vol['Phone'];
-    echo "<td>" . ((isset($VY['id']) && $VY['id']>0)?$YearStatus[$VY['Status']]:'');
+    echo "<td>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . $YearStatus[$VY['Status']] . "</span>"):'');
       if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
     echo "<td class=FullD hidden>";
     if (isset($VY['id']) && $VY['id']>0) {
@@ -556,10 +557,10 @@ function List_Vols() {
         echo "<td>" . $Cat_Status_Short[$VCY['Status']]; 
         if (($VCY['Status'] == 1) && $VolMgr) {
           if ($Form == 0) {
-            echo "<form method=post action=Volunteers.php?id=" . $VCY['id'] . ">";
+//            echo "<form method=post action=Volunteers.php?id=" . $VCY['id'] . ">";
             $Form = 1;
           }
-          echo "<br>" . fm_checkbox('A',$VCY,"AcceptTeam:" . $Cat['id']);
+//          echo "<br>" . fm_checkbox('A',$VCY,"AcceptTeam:" . $Cat['id']);
         }
       }
     }
@@ -575,7 +576,8 @@ function List_Vols() {
     if ($VolMgr) {
       echo "<td>";
       if ($Form) {
-        echo "<input type=submit name=Accept value=Accept></form>\n";
+        echo "<b><a href=Volunteers?ACTION=Accept&id=$id>Accept</a></b>\n";
+//        echo "<input type=submit name=Accept value=Accept></form>\n";
       }
     }
   }
@@ -623,8 +625,32 @@ function SendCatsToBrowser() {
   echo fm_hidden('VolCatsRaw',base64_encode(json_encode($VolCats)));
 }
 
+function Send_Accepts($Vol) {
+  global $VolCats;
+    
+  $Accepted = $Rejected = $Pending = 0;
+  $VY = Get_Vol_Year($Vol['id']);
+  foreach($VolCats as $Cat) {
+    $VCY = Get_Vol_Cat_Year($Vol['id'],$Cat['id']);
+    if ($VCY['Status'] == 3) { $Accepted++; }
+    elseif ($VCY['Status'] == 4) { $Rejected++; }
+    elseif ($VCY['Status'] == 1) { $Pending++; }
+  }
+  
+  if ($Accepted) {
+    $VY['Status'] = 3;
+    Put_Vol_Year($VY);
+    Email_Volunteer($Vol,"Vol_Accept",$Vol['Email']);
+  } elseif ($Pending) { // no Action
+  } elseif ($Rejected) {
+    $VY['Status'] = 4;
+    Put_Vol_Year($VY);
+    Email_Volunteer($Vol,"Vol_Reject",$Vol['Email']);  
+  }
+}
+
 function VolAction($Action) {
-  global $PLANYEAR;
+  global $PLANYEAR,$VolCats;
 
   dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
   SendCatsToBrowser();
@@ -727,7 +753,7 @@ function VolAction($Action) {
   case 'Remove me from the festival records':
     $Vol = Get_Volunteer($id = $_REQUEST['id']);
     $Vol['Status']=1;
-    Put_Volunteer($Vol);
+//    Put_Volunteer($Vol);
     $VY = Get_Vol_Year($Vol['id'],$PLANYEAR);
     if (!empty($VY['id'])) Vol_Staff_Emails($Vol);
 
@@ -737,13 +763,41 @@ function VolAction($Action) {
     db_delete('Volunteers',$id);  
     break;
 
+  case 'Accept':
+    $Vol = Get_Volunteer($id = $_REQUEST['id']);
+    
+    $Accepted = 0;
+//    $AccList = [];
+    $VY = Get_Vol_Year($Vol['id'],$PLANYEAR);
+    foreach($VolCats as $Cat) {
+      $VCY = Get_Vol_Cat_Year($Vol['id'],$Cat['id'],$PLANYEAR);
+      if ($VCY['Status'] == 1) {
+        $VCY['Status'] = 3; // Accepted
+        Put_Vol_Cat_Year($VCY);
+//        $AccList[] = $Cat['id'];
+        $Accepted++;
+      }
+    }
+    if ($Accepted) {
+      $VY['Status'] = 3; // Accepted at least once
+      Put_Vol_Year($VY);
+      Send_Accepts($Vol);
+    }
+    List_Vols();
+    break;
+
+
   case 'Send Updates':
     $Vol = Get_Volunteer($id = $_REQUEST['id']);
     Send_Accepts($Vol);
+    List_Vols();
     break;
 
 
   }  
+  if (Access('Staff')) List_Vols();
+  echo "<h2>Something has gone wrong...</h2>";
+  dotail();
 }
 
 
