@@ -5,7 +5,7 @@ This is intended for the sysadmin people looking after a festival website, not f
 <h2>Installation and initial setup</h2>
 
 <ul>
-<li>git clone https://github.com/waveney/wmff
+<li>git clone https://github.com/waveney/chippenham
 <li>Make sure the sites document root is in the php_include_path (it wont work without this).  Also make the maximum file uploads at least 16M (highly desirable).
 <li>Set up a mysql or mariadb user (may include a database)
 <li>Run int/Initialise.php (from the web interface) - it will first time run prompt for the database user (above), the database name and its host.  
@@ -111,16 +111,21 @@ Note for very large festivals there is a potential cost if used more than Google
 This controls many features.  Often used to try things out initially, some controls however are ongoing, the list below is only for the ongoing ones, 
 anything else will disappear in time:<p>
 
+Will probably convert to an ini file in time, these are getting rather long now.<p>
+
 Format of controls: Control : Value : Comment<p>
 <table border>
 <tr><td>AutoInvoices<td>Normally 1 now
-<tr><td>CampControl<td>0 - no performer camping, 1 Camping can be enabled by festival for this performer but then they fill in how much, 2 Camping entirely controlled by festival
+<tr><td>CampControl<td>0 - no performer camping,<br>
+1 Camping can be enabled by festival for this performer but then they fill in how much,<br>
+2 Camping entirely controlled by festival
+3 Chippenham style camping
 <tr><td>CopyTradeEmailsName<td>Name of who to copy Trade Emails (if any)
 <tr><td>CopyTradeEmailsTo<td>Email of who to copy Trade Emails (if any) 
 <tr><td>DanceComp<td>Is there a dance competition
 <tr><td>DanceDefaultPerSlot<td>2
 <tr><td>DanceDefaultSlot<td>30 = 30 minute default dance spot, 45 for a 45 minute default.  Gives the default subevent split
-<tr><td>DefaultPitch<td>Trade Deafult Size
+<tr><td>DefaultPitch<td>Trade Default Size
 <tr><td>EmailButtons
 <tr><td>FestBankAccountNum
 <tr><td>FestBankAdr
@@ -133,7 +138,7 @@ Format of controls: Control : Value : Comment<p>
 <tr><td>FooterBit<td>If present displayed in footer before copyright etc - Old Style only
 <tr><td>HeaderPreTools<td>If present displayed before tools - Old Style only
 <tr><td>HeaderPostTools<td>If present displayed after tools - Old Style only
-<tr><td>MultiLim$daynam<td>?
+<tr><td>MultiLimDAY<td>DAY = Fri...Mon Venue multiuse warning for that day (default 1)
 <tr><td>MusicDefaultPerSlot<td>1 (not used yet)
 <tr><td>MusicWristBands
 <tr><td>NewStyle
@@ -146,6 +151,10 @@ Format of controls: Control : Value : Comment<p>
 <tr><td>VatRate<td>VAT% (if any)
 <tr><td>VolDBS<td>If set to 1, enable DBS input for Volunteers
 <tr><td>VolFirstAid<td>As for DBS for First aid training
+<tr><td>VolPhoto<td>0=None, 1= collect, 2=always
+
+<tr><td>Vol_Camping<td>0=None, 1=Ask for
+<tr><td>Vol_Children<td>0=None, 1=Ask for
 <tr><td>NewPhotos<td>Redundant
 <tr><td>EmailButtons<td>For future feature
 <tr><td>TradeInvoicePay<td>Turn on Trade Invoices
@@ -163,6 +172,8 @@ Format of controls: Control : Value : Comment<p>
 <tr><td>MapStartZoom<td>15 to 17 is best
 <tr><td>FestHomeName<td>Name of place wher the festival is
 <tr><td>Procession<td>If present called Procession/Parade/Whatever
+<tr><td>PerfTickets<td>0: None, 1:Wimborne style, 2:Chippenham style
+<tr><td>ProcessDays<td>bitmap 0 = First day etc. So value Fri =1, Sat = 2, Sun=4, mon=8, Sat+Mon=10
 </table><p>
 
 <H3>General Year Data</h3>

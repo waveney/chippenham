@@ -199,11 +199,12 @@
     
   case 'Volunteers':
     if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {        
+var_dump($id, $field, $Value, $mtch);
       $vfld = $mtch[1];
       $Catid = $mtch[2];
       $Year = $mtch[3];
       switch ($vfld) {
-        case 'Props':
+        case 'Status':
         case 'Likes':
         case 'Dislikes':
         case 'Experience':
@@ -214,6 +215,7 @@
           $VCY = Gen_Get_Cond1('VolCatYear'," Volid=$id AND Catid=$Catid AND Year=$Year ");
           if (!$VCY) $VCY = ['Volid'=>$id,'CatId'=>$Catid,'Year'=>$Year, 'Props'=>0];
           $VCY[$vfld] = $Value;
+var_dump($vfld, $VCY);
           return Gen_Put('VolCatYear',$VCY);
         default: 
           $VY = Gen_Get_Cond1('VolYear'," Volid=$id AND Year=$Year ");

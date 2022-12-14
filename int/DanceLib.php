@@ -465,7 +465,7 @@ Contract Signed - Enables listing to public.',
 
 function Default_SY($id=0) { 
   global $YEAR,$USERID;
-  $ans = array('SatDance'=>3,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'Procession'=>1,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0);
+  $ans = array('SatDance'=>3,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'ProcessionSat'=>1,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0);
   if ($id) $ans['SideId'] = $id;
   return $ans;
 }

@@ -10,7 +10,9 @@
 $yesno = array('','Yes','No');
 $Relations = array('','Husband','Wife','Partner','Son','Daughter','Mother','Father','Brother','Sister','Grandchild','Grandparent','Guardian','Uncle','Aunty',
                 'Son/Daughter in law', 'Friend','Other');
-$YearStatus = ['Not Submitted','Submitted','Withdrawn'];
+$YearStatus = ['Not Submitted','Submitted','Withdrawn','Confirmed','Rejected'];
+$CatStatus = ['No','Applied','Withdrawn','Confirmed','Rejected'];
+$Cat_Status_Short = ['','?','','Y',''];
 $AgeCats = ['Under 18','Over 18','Over 21'];
 $CampStatus = ['No','Yes, I am in a group of volunteers, another person is booking the space. e.g. Two people in a tent/van only need one tent/van space'];
 // $CampType = ['','Small Tent','Large Tent','Campervan','Caravan'];
@@ -80,7 +82,7 @@ function Get_Vol_Details(&$vol) {
     if (!($Cat['Props'] & VOL_USE )) continue;
       $cp = $Cat['Props'];
       $VCY = Get_Vol_Cat_Year($Volid,$Catid,$PLANYEAR);
-      if (!empty($VCY['id']) && ($VCY['Props'] & VOL_USE)) {
+      if (!empty($VCY['id']) && ($VCY['Status'] > 0)) {
         $Body .= "<p>Team: " . $Cat['Name'] . "<br>\n";
         if (($cp & VOL_Likes)  && !empty($VCY['Likes'])) $Body .= "Like: " . $VCY['Likes'] . "<br>\n";
         if (($cp & VOL_Dislikes)  && !empty($VCY['Dislikes'])) $Body .= "Dislike: " . $VCY['Dislikes'] . "<br>\n";
@@ -123,13 +125,20 @@ function Get_Vol_Details(&$vol) {
 }
 
 function Vol_Details($key,&$vol) {
-  global $FESTSYS;
+  global $FESTSYS,$VolCats,$CatStatus;
   switch ($key) {
   case 'WHO': return firstword($vol['SN']);
   case 'DETAILS': return Get_Vol_Details($vol);
   case 'LINK' : return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Access?t=v&i=" . $vol['id'] . "&k=" . $vol['AccessKey'] . "'><b>link</b></a>";
   case 'FESTLINK' :
   case 'WMFFLINK' : return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Volunteers?A=View&id=" . $vol['id'] . "'><b>link</b></a>";
+  case 'VOLTEAM_ACCEPT' :
+    $Accept = '';
+    foreach ($VolCats as $Cat) {
+      $VCY = Get_Vol_Cat_Year($vol['Id'],$Cat['Id']);
+      if ($VCY['Status'] > 0) $Accept .= $Cat['ShortName'] . " - " . $CatStatus[$VCY['Status']] . "<br>\n";
+    }
+    return $Accept; 
   }
 }
 
@@ -147,7 +156,7 @@ function Get_Vol_Cat_Year($Volid,$CatId,$Year=0) {
   if ($Year == 0) $Year = $PLANYEAR;
   $VCY = Gen_Get_Cond1('VolCatYear'," Volid=$Volid AND CatId=$CatId AND Year=$Year ");
   if (isset($VCY['id'])) return $VCY;
-  return ['Volid'=>$Volid,'CatId'=>$CatId,'Year'=>$Year,'id'=>0, 'Props'=>0];
+  return ['Volid'=>$Volid,'CatId'=>$CatId,'Year'=>$Year,'id'=>0, 'Status'=>0];
 }
 
 function Put_Vol_Cat_Year(&$VCY) {
@@ -161,7 +170,7 @@ function Get_Vol_Year($Volid,$Year=0) {
 
 //var_dump($VY);
   if (isset($VY['id'])) return $VY;
-  return ['Volid'=>$Volid,'Year'=>$Year,'id'=>0, 'Props'=>0];
+  return ['Volid'=>$Volid,'Year'=>$Year,'id'=>0, 'Status'=>0];
 }
 
 function Put_Vol_Year(&$VY) {
@@ -187,16 +196,21 @@ function VolView(&$Vol) {
 
 
 function VolForm(&$Vol,$Err='',$View=0) {
-  global $VolCats,$YEARDATA,$PLANYEAR,$YEAR,$Relations,$YearStatus,$AgeCats,$CampType;
+  global $VolCats,$YEARDATA,$PLANYEAR,$YEAR,$Relations,$YearStatus,$AgeCats,$CampType,$CatStatus;
   $Volid = $Vol['id'];
 // var_dump($Vol);
 
+  $VolMgr = Access('Committee','Volunteers') && !isset($_REQUEST['FORCE']);
+    
   echo "<h2 class=subtitle>Steward / Volunteer Application Form</h2>\n";
   if (!empty($Err)) echo "<p class=Err>$Err<p>";
   echo "<form method=post action=Volunteers>";  
   Register_AutoUpdate('Volunteers',$Volid);
+  Register_Onload('VolEnables',$Volid,$PLANYEAR);
+  Register_AfterInput('VolEnables',$Volid,$PLANYEAR);
   echo fm_hidden('id',$Volid);  
 
+    if ($VolMgr) echo "If you change any of the team statuses on this page you must click <b>Send Updates</b>, to notify the volunteer (and teams).<p>";
 
     echo "This is in 4 parts.  The first records who you are.  This will normally be kept year to year, so you should only need to fill this in once.<p>\n";
     echo "The second part records which team(s) you would like to be part of, along with any likes, dislikes and team related details.<p>\n";
@@ -254,7 +268,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       $Catid = $Cat['id'];
       $VCY = Get_Vol_Cat_Year($Volid,$Catid);
 
-      $SetShow = ($VCY['Props'] & VOL_USE);
+      $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
       $rows = 1;
       $cp = $Cat['Props'];
@@ -262,7 +276,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       $cls = "SC_$SName";
       if (($cp & VOL_USE) == 0) continue;
 
-      $Hide = (($VCY['Props'] & VOL_USE) ?"":"hidden ");
+      $Hide = (($VCY['Status'] == 0) ?"hidden ":'');
 
       $SplitWhen = explode(',', $Cat['Listofwhen']);
       foreach($SplitWhen as $wh) {
@@ -289,14 +303,14 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
       if ($cp & VOL_Exp){ 
         $rows++; 
-        $Ctxt .= "\n<tr>" . fm_textarea("Please outline your experience with us or other festivals", $VCY,'Experience',3,3," class=$cls $Hide",'',"Experience:$Catid:$PLANYEAR") .
-                             $Cat['DExtra']; 
+        $Ctxt .= "\n<tr>" . fm_textarea("Please outline your experience with us or other festivals", $VCY,'Experience',3,3," class=$cls $Hide",'',
+                            "Experience:$Catid:$PLANYEAR"); 
       };
       for ($i=1; $i<5; $i++) {
         if ($cp & (VOL_Other1 << ($i-1))) {
           $rows++; 
           if ($cp & (VOL_Other1 << ($i+3))) {
-            $Ctxt .= "\n<tr>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i",3,3,"class=$cls $Hide","Other$i:$Catid:$PLANYEAR");
+            $Ctxt .= "\n<tr>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i",3,3,"class=$cls $Hide",'',"Other$i:$Catid:$PLANYEAR");
           
           } else {
             $Ctxt .= "\n<tr>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",4,"colspan=4 class=$cls $Hide",'',"Other$i:$Catid:$PLANYEAR") .
@@ -305,8 +319,19 @@ function VolForm(&$Vol,$Err='',$View=0) {
         }
       }       
 
-      $Ctxt = "\n<tr><td rowspan=$rows>" .  fm_checkbox($Cat['Name'],$VCY,'Props',"onchange=Update_VolCats('$cls',$Catid,$PLANYEAR)","Props:$Catid:$PLANYEAR",0
-              ,'') . "<td  colspan=4>" . $Cat['Description'] . $Ctxt;
+// tabs 0=none, 1 normal, 2 lines between, 3 box before txt
+// function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field2='',$colours=0,$multi=0,$extra3='',$extra4='') {
+      
+      if ($VolMgr) {
+        $Ctxt = "\n<tr><td rowspan=$rows>" . fm_radio("<b>" . $Cat['Name'] . "</b>",$CatStatus,$VCY,'Status',
+                "onchange=Update_VolCats('$cls',$Catid,$PLANYEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",0,'',
+                "Status:$Catid:$PLANYEAR") . "<td  colspan=4>" . $Cat['Description'] . $Ctxt;
+
+      } else {
+        $Ctxt = "\n<tr><td rowspan=$rows>" .  fm_checkbox($Cat['Name'],$VCY,'Status',
+                "onchange=Update_VolCats('$cls',$Catid,$PLANYEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",
+                "Status:$Catid:$PLANYEAR",0,'') . "<td  colspan=4>" . $Cat['Description'] . $Ctxt;
+      }
       echo $Ctxt. "\n"; // $Desc,&$data,$field,$extra='',$field2='',$split=0,$extra2='
 
     }
@@ -339,8 +364,10 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
 //var_dump($camps);exit;
-      echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$PLANYEAR");
-      echo "<tr>" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',1,' colspan=4',"CampType::$PLANYEAR");
+      echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$PLANYEAR",0,0,'',' onchange=CampingVolSet()');
+      echo "<tr id=CampPUB hidden>" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',1,' colspan=4',"CampType::$PLANYEAR");
+      echo "<tr id=CampREST hidden>" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
+                    $VYear,'CampText',4,'',"CampText::$PLANYEAR");
     }
 
 
@@ -354,11 +381,13 @@ function VolForm(&$Vol,$Err='',$View=0) {
     echo "\n<tr><td><b>Actions:</b><td colspan=4><div class=tablecont><table border=0><tr><td width=33%>";
     echo "<input type=submit hidden name=ACTION value=View>\n";
     echo "<input type=submit name=ACTION value='Submit/Update Application'>\n"; 
+    $Width = ($VolMgr ? "24%" : "33%" );
     if ($Vol['id'] > 0) {
-      echo "<td width=33%><input type=submit name=ACTION value='Sorry not this Year'>";
-      echo "<td><input class=floatright type=submit name=ACTION value='Remove me from the festival records' " .
+      echo "<td width=$Width><input type=submit name=ACTION value='Sorry not this Year'>";
+      echo "<td><input class=floatright width=$Width type=submit name=ACTION value='Remove me from the festival records' " .
          "onClick=\"javascript:return confirm('Please confirm delete?');\">";
     }
+    if ($VolMgr) echo "<td width=$Width><input type=submit name=ACTION value='Send Updates'>";
   echo "</table></div>";
 
   echo "</table></div><p>";
@@ -391,7 +420,7 @@ function Vol_Validate(&$Vol) {
 
   $Clss=0;
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
-  foreach ($VCYs as $VCY) if (isset($VCY['Props']) && $VCY['Props']) {
+  foreach ($VCYs as $VCY) if (isset($VCY['Status']) && $VCY['Status']) {
     $Clss++;
     if ($VCY['CatId'] == 0) { /* var_dump($VCY);*/ continue; };
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_NeedDBS) && empty($Vol['DBS'])) return $VolCats[$VCY['CatId']]['Name'] . " requires DBS";
@@ -460,13 +489,16 @@ function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on
 
 
 function List_Vols() {
-  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus;
+  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short;
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Applications</button>" .
        "<button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Curent Aplications</button> ";
 
+  $VolMgr = Access('Committee','Volunteers');
   echo "Click on name for full info<p>";
   
-  echo "Where it says EXPAND under availability, means there is a longer entry - click on the persons name to see more info on their availabilty<p>";
+  echo "Where it says EXPAND under availability, means there is a longer entry - click on the persons name or the expand button to see more info on their availabilty<p>";
+  
+  if ($VolMgr ) echo "To reject an application, first click on their name.<p>";
   
   $coln = 0;  
   echo "<form method=post>";
@@ -489,6 +521,7 @@ function List_Vols() {
   for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>" . FestDate($day,'s') . "</a>\n";
   }
+  if (Access('Committee','Volunteers')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";
   echo "</thead><tbody>";
 
   $res=$db->query("SELECT * FROM Volunteers WHERE Status=0 ORDER BY SN");
@@ -498,7 +531,7 @@ function List_Vols() {
     if (empty($id) || empty($Vol['SN']) || empty($Vol['Email']) ) continue;
     $VY = Get_Vol_Year($id);
 //    var_dump($VY);
-    $link = "<a href=Volunteers?A=View&id=$id>";
+    $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$id>";
     echo "<tr" . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']))?" class=FullD hidden" : "" ) . ">";
     echo "<td>$id";
     echo "<td>$link" . $Vol['SN'] . "</a>";
@@ -516,10 +549,18 @@ function List_Vols() {
         if (!empty($VY['id'])) break;
       }
     }
+    $Form = 0;
     foreach ($VolCats as $Cat) {
       if ($Cat['Props'] & VOL_USE) {
         $VCY = Get_Vol_Cat_Year($Vol['id'],$Cat['id'],$year);
-        echo "<td>" . (($VCY['Props'] & VOL_USE)?'Y':''); 
+        echo "<td>" . $Cat_Status_Short[$VCY['Status']]; 
+        if (($VCY['Status'] == 1) && $VolMgr) {
+          if ($Form == 0) {
+            echo "<form method=post action=Volunteers.php?id=" . $VCY['id'] . ">";
+            $Form = 1;
+          }
+          echo "<br>" . fm_checkbox('A',$VCY,"AcceptTeam:" . $Cat['id']);
+        }
       }
     }
 
@@ -528,7 +569,14 @@ function List_Vols() {
     for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {
       $av = "Avail" . ($day <0 ? "_" . (-$day) : $day);
       echo "<td>";
-      if (isset($VY[$av])) echo (strlen($VY[$av])<12? $VY[$av] : $link. "Expand</a>") . "\n";
+      if (isset($VY[$av])) echo ((strlen($VY[$av])<12)? $VY[$av] : ($link . "Expand</a>")) . "\n";
+    }
+    
+    if ($VolMgr) {
+      echo "<td>";
+      if ($Form) {
+        echo "<input type=submit name=Accept value=Accept></form>\n";
+      }
     }
   }
   echo "</tbody></table></div>\n";
@@ -570,11 +618,16 @@ function Check_Unique() { // Is email Email already registered - if so send new 
   } // else new - full through
 }
 
+function SendCatsToBrowser() {
+  global $VolCats;
+  echo fm_hidden('VolCatsRaw',base64_encode(json_encode($VolCats)));
+}
+
 function VolAction($Action) {
   global $PLANYEAR;
 
   dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
-  
+  SendCatsToBrowser();
 //var_dump($Action);
 //var_dump($_REQUEST);
 
@@ -683,7 +736,13 @@ function VolAction($Action) {
     echo "<h2>Thankyou for Volunteering in the past, you are no longer recorded</h2>";
     db_delete('Volunteers',$id);  
     break;
-    
+
+  case 'Send Updates':
+    $Vol = Get_Volunteer($id = $_REQUEST['id']);
+    Send_Accepts($Vol);
+    break;
+
+
   }  
 }
 

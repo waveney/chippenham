@@ -188,6 +188,7 @@ function fm_select(&$Options,$data,$field,$blank=0,$selopt='',$field2='',$Max=0)
 // tabs 0=none, 1 normal, 2 lines between, 3 box before txt
 function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field2='',$colours=0,$multi=0,$extra3='',$extra4='') {
   global $ADDALL,$AutoADD;
+//var_dump($Desc,$field,$tabs,$extra2,$field2);
   if ($field2 == '') $field2=$field;
   $str = "";
   if ($tabs) $str .= "<td $extra>"; 
@@ -695,6 +696,14 @@ XXX;
   }
   if ($Mess) $str .= "<td class='Result$Type $tdclass' $hid>$Mess";
   return $str;
+}
+
+function Register_Onload($FN,$P1=0,$P2=2) {
+  echo "<script> Register_Onload($FN,$P1,$P2); </script>";
+}
+
+function Register_AfterInput($FN,$P1=0,$P2=2) {
+  echo "<script> Register_AfterInput($FN,$P1,$P2); </script>";
 }
 
 /* TODO

@@ -41,11 +41,17 @@
   if ($datay['Sat']) {
     echo "<tr><td>Sat:<td>Yes ";
     if ($t == 'Side') echo "- Spots " . $datay["SatDance"];
-    if (Feature("Procession") && $datay['Procession']) echo ' ' . Feature("Procession"," Procession");
+    if (Feature("Procession") && $datay['ProcessionSat']) echo ' ' . Feature("Procession"," Procession");
   };
   if ($datay['Sun']) {
     echo "<tr><td>Sun:<td>Yes ";
     if ($t == 'Side') echo "- Spots " . $datay["SunDance"];
+    if (Feature("Procession") && $datay['ProcessionSun']) echo ' ' . Feature("Procession"," Procession");
+  };
+  if ($datay['Mon']) {
+    echo "<tr><td>Mon:<td>Yes ";
+    if ($t == 'Side') echo "- Spots " . $datay["MonDance"];
+    if (Feature("Procession") && $datay['ProcessionMon']) echo ' ' . Feature("Procession"," Procession");
   };
    
   if ($datay['Sat']) {
@@ -56,6 +62,11 @@
   if ($datay['Sun']) {
     if ($datay['SunArrive']) echo "<tr><td>Sun Start<td>" . $datay['SunArrive'];
     if ($datay['SunDepart']) echo "<tr><td>Sun Depart<td>" . $datay['SunDepart'];
+  }
+  
+  if ($datay['Mon']) {
+    if ($datay['MonArrive']) echo "<tr><td>Mon Start<td>" . $datay['MonArrive'];
+    if ($datay['MonDepart']) echo "<tr><td>Mon Depart<td>" . $datay['MonDepart'];
   }
   
   if ($datay['YNotes']) echo "<tr><td>notes<td class=smalltext>" . $datay['YNotes'];

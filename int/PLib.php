@@ -503,7 +503,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       echo "<tr>";
         echo "<td rowspan=2>" . fm_checkbox('Saturday',$Sidey,'Sat','onchange=ComeSwitch(event)');
         echo fm_text1('Daytime &half; hr Spots',$Sidey,'SatDance',0.5,'class=ComeSat');
-        if (Feature("Procession")) echo "<td class=ComeSat>" . fm_checkbox('Plus the ' . Feature("Procession",'Procession'),$Sidey,'Procession');
+        if ((Feature('ProcessDays') & 2) && Feature("Procession")) 
+          echo "<td class=ComeSat>" . fm_checkbox('Plus the ' . Feature("Procession","Procession"),$Sidey,'ProcessionSat');
         if ($YEARDATA['LastDay'] > 1)  echo "<td class=ComeSat>" . fm_checkbox('Dance Saturday Eve?',$Sidey,'SatEve');
         echo "<tr>" .fm_text1('Earliest Spot',$Sidey,'SatArrive',0.5,'class=ComeSat');
         echo fm_text1('End of latest Spot',$Sidey,'SatDepart',0.5,'class=ComeSat');  
@@ -512,6 +513,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       echo "<tr>";
       echo "<td rowspan=2>" . fm_checkbox('Sunday',$Sidey,'Sun','onchange=ComeSwitch(event)');
       echo fm_text1('Daytime &half; hr Spots',$Sidey,'SunDance',0.5,'class=ComeSun');
+      if ((Feature('ProcessDays') & 4) && Feature("Procession")) 
+        echo "<td class=ComeSat>" . fm_checkbox('Plus the ' . Feature("Procession","Procession"),$Sidey,'ProcessionSun');
       if ($YEARDATA['LastDay'] > 2)  echo "<td class=ComeSun>" . fm_checkbox('Dance Sunday Eve?',$Sidey,'SunEve');
       echo "<tr>" .fm_text1('Earliest Spot',$Sidey,'SunArrive',0.5,'class=ComeSun');
       echo fm_text1('End of latest Spot',$Sidey,'SunDepart',0.5,'class=ComeSun');
@@ -520,6 +523,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       echo "<tr>";
       echo "<td rowspan=2>" . fm_checkbox('Monday',$Sidey,'Mon','onchange=ComeSwitch(event)');
       echo fm_text1('Daytime &half; hr Spots',$Sidey,'MonDance',0.5,'class=ComeMon');
+      if ((Feature('ProcessDays') & 8) && Feature("Procession")) 
+        echo "<td class=ComeSat>" . fm_checkbox('Plus the ' . Feature("Procession","Procession"),$Sidey,'ProcessionMon');
       if ($YEARDATA['LastDay'] > 3)  echo "<td class=ComeMon>" . fm_checkbox('Dance Monday Eve?',$Sidey,'MonEve'); // Not Possible yet
       echo "<tr>" .fm_text1('Earliest Spot',$Sidey,'MonArrive',0.5,'class=ComeMon');
       echo fm_text1('End of latest Spot',$Sidey,'MonDepart',0.5,'class=ComeMon');
@@ -627,7 +632,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
 //  }
 
 
-
+  $CampMode = Feature('CampControl');
   // Fees etc  TODO Need to make fee/otherpayment open stuff up and then Important - fee drives bank stuff, either for budget and contracts
   if ($Mode) {
     include_once("BudgetLib.php");
@@ -653,31 +658,74 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       echo "<td colspan=2 class=NotCSide>On arrival report to: " . fm_select($Venues,$Sidey,'ReportTo') .
            "<td class=NotCSide colspan=2 >" . fm_checkbox('Tell about Green Room',$Sidey,'GreenRoom');
 
+    $campxtr = $campxtr2 = '';          
+    switch ($CampMode) {
+    case 0: // None
+      break;
+
+    case 2: // Restricted
+      $campxtr = " class=NotCSide";
+      $campxtr2 = " onchange=CheckContract()"; 
+      echo "<tr><td class=NotSide>" . fm_checkbox("Allow Camping",$Sidey,'EnableCamp','onchange="($(\'.CampDay\').toggle())"');           
+      // Drop through
+      
+    case 1: // All
+      if ($CampMode == 1) echo fm_hidden('EnableCamp',$Sidey['EnableCamp']);
+      echo "<tr><td $campxtr>Camping numbers:" . 
+        fm_number1('Fri',$Sidey,'CampFri', $campxtr,$campxtr2) . 
+        fm_number1('Sat',$Sidey,'CampSat', $campxtr,$campxtr2) . 
+        fm_number1('Sun',$Sidey,'CampSun', $campxtr,$campxtr2);
+      break;
+          
+      break;   
+    case 3: // Chip style
+//      $CampSites = 
+      $CampTypes = Gen_Get_Names('Camptypes');
+      echo "<tr><td>Camping numbers:<br>(of tents, caravans etc not people)";
+      foreach ($CampTypes as $Ci=>$CT) echo fm_number1($CT,$Sidey,"CampType$Ci");
+      break;
+    }
+    
     if (Feature('CampControl')) {
-      $campxtr =  ((Feature('CampControl') ==2 )? " class=NotCSide":'');          
+
       if ($campxtr) {
         echo "<tr><td $campxtr>Camping numbers:" . fm_number1('Fri',$Sidey,'CampFri',$campxtr," onchange=CheckContract()") . 
-                  fm_number1('Sat',$Sidey,'CampSat',$campxtr," onchange=CheckContract()") . fm_number1('Sun',$Sidey,'CampSun',$campxtr," onchange=CheckContract()");
+                  fm_number1('Sat',$Sidey,'CampSat',$campxtr,) . fm_number1('Sun',$Sidey,'CampSun',$campxtr," onchange=CheckContract()");
       } else {
-        echo "<tr><td class=NotSide>" . fm_checkbox("Allow Camping",$Sidey,'EnableCamp','onchange="($(\'.CampDay\').toggle())"'); 
+
         $pcamp = " Class=CampDay " . ((isset($Sidey['EnableCamp']) && $Sidey['EnableCamp'])? '' : ' hidden');         
         echo "<td $pcamp>Camping numbers:" . fm_number1('Fri',$Sidey,'CampFri',$pcamp," onchange=CheckContract()") . 
               fm_number1('Sat',$Sidey,'CampSat',$pcamp," onchange=CheckContract()") . fm_number1('Sun',$Sidey,'CampSun',$pcamp," onchange=CheckContract()");
       }
     }
-  } else if ($Sidey['TotalFee'] || $Sidey['OtherPayment'] || ($Sidey['EnableCamp'] && Feature('CampControl'))) {
-    if ($Sidey['EnableCamp'] && Feature('CampControl')) { 
+  } else if ($CampMode || $Sidey['TotalFee'] || $Sidey['OtherPayment'] || $Sidey['EnableCamp']) {
+    switch ($CampMode) {
+    case 0: // None
+      break;
+      
+    case 1:
       echo fm_hidden('EnableCamp',$Sidey['EnableCamp']);
-      if (Feature('CampControl') == 2 ) {
-        echo "<tr><td>Camping numbers:" . fm_number1('Fri',$Sidey,'CampFri') . fm_number1('Sat',$Sidey,'CampSat') . fm_number1('Sun',$Sidey,'CampSun');
-      } else if ($Sidey['CampFri'] || $Sidey['CampSat'] || $Sidey['CampSun'])  {
+      echo "<tr><td>Camping numbers:" . fm_number1('Fri',$Sidey,'CampFri') . fm_number1('Sat',$Sidey,'CampSat') . fm_number1('Sun',$Sidey,'CampSun');
+      break;
+          
+    case 2:
+      echo fm_hidden('EnableCamp',$Sidey['EnableCamp']);
+      if ($Sidey['CampFri'] || $Sidey['CampSat'] || $Sidey['CampSun'])  {
         echo "<tr><td>Camping numbers:";
         if ($Sidey['CampFri']) echo "<td>Friday: " . $Sidey['CampFri'];
         if ($Sidey['CampSat']) echo "<td>Saturday: " . $Sidey['CampSat'];
         if ($Sidey['CampSun']) echo "<td>Sunday: " . $Sidey['CampSun'];
-      }
+      };
+      break;   
+    case 3: // Chip style
+//      $CampSites = 
+      $CampTypes = Gen_Get_Names('Camptypes');
+      echo "<tr><td>Camping numbers:<br>(of tents, caravans not people)";
+      foreach ($CampTypes as $Ci=>$CT) echo fm_number1($CT,$Sidey,"CampType$Ci");
+      break;
     }
-    echo "<tr><td>Fee:<td>&pound;" . $Sidey['TotalFee'] . fm_hidden('TotalFee',$Sidey['TotalFee']);
+    
+    if ($Sidey['TotalFee']) echo "<tr><td>Fee:<td>&pound;" . $Sidey['TotalFee'] . fm_hidden('TotalFee',$Sidey['TotalFee']);
     if (!$Wide) echo "<tr>";
     if ($Sidey['OtherPayment']) echo fm_text('Other payments',$Sidey,'OtherPayment',1,'disabled readonly');
     if (isset($Sidey['Rider']) && strlen($Sidey['Rider']) > 5)  echo "<tr>" . fm_textarea('Additional Riders',$Sidey,'Rider',2,1,'','disabled') ."\n";

@@ -174,7 +174,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
 
         if (isset($VenuesUsed[$Ven])) {
           $VenuesUsed[$Ven]++;
-          if ($VenuesUsed[$Ven] > Feature("MultiLim$daynam")) {
+          if ($VenuesUsed[$Ven] > Feature("MultiLim$daynam",1)) {
             if ($side['IsASide'] && !$Venues[$Ven]['AllowMult'] && !isset($Complained[$Ven])) {
               $Merr[] = "Performing multiple times at " . SName($Venues[$Ven]) . " on $daynam";
               $MerrC++;
@@ -429,7 +429,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
             $ErrC++;
           };
         }
-        if ($side['Sat'] && $side['Procession'] != $InProcession) {
+        if ($side['Sat'] && $side['ProcessionSat'] != $InProcession) {
           if ($InProcession) { 
             $Err[] = "In the " . Feature("Procession") . ", but don't want to be.";
             $ErrC++;

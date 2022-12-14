@@ -251,6 +251,21 @@ function Set_ColBlobs(Blobs,MaxBlob) {
   }
 }
 
+var AfterInputs = [];
+
+function Register_AfterInput(fun,p1,p2) {
+  AfterInputs.push([fun,p1,p2]);
+}
+
+function DoAfterInputs() {
+//  debugger;
+  if (!AfterInputs) return;
+  for (var f in AfterInputs) {
+    [fun,p1,p2] = AfterInputs[f];
+    fun(p1,p2);
+  }
+}
+
 
 function AutoInput(f,after) {
   debugger;
@@ -273,6 +288,7 @@ function AutoInput(f,after) {
 
     var dbg = document.getElementById('Debug');
     if (dbg) $('#Debug').html( data) ;  
+    DoAfterInputs();
     if (data.match(/FORCERELOAD54321/m)) {
       setTimeout(function(){
 //        var Location = window.location.pathname + "?id=" + refval;  //  window.location.hostname
@@ -306,6 +322,7 @@ function AutoCheckBoxInput(f) {
   } else {
     $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval});
   }
+  DoAfterInputs();
 }
 
 function AutoRadioInput(f,i) {
@@ -315,6 +332,7 @@ function AutoRadioInput(f,i) {
   var typeval = document.getElementById('AutoType').value;
   var refval = document.getElementById('AutoRef').value;
   var dbg = document.getElementById('Debug');
+  DoAfterInputs();
   if (dbg) {
     $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) { $('#Debug').html( data);
     if (data.match(/FORCERELOAD54321/m)) {
@@ -333,9 +351,6 @@ function AutoRadioInput(f,i) {
   }
 
 }
-
-
-
 
 var LoadStack = [];
 

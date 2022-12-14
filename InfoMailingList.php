@@ -3,7 +3,7 @@
 
   dohead("Mailing List",["//cdn-images.mailchimp.com/embedcode/classic-10_7.css", 'css/MailChimp.css'] ,1);
 
-  echo TnC('MailChimp');
+  echo TnC('MailChimp',"This is not yet setup");
   /*
 ?>
 <!-- Begin Mailchimp Signup Form -->
