@@ -268,7 +268,7 @@ function DoAfterInputs() {
 
 
 function AutoInput(f,after) {
-  debugger;
+//  debugger;
   var newval = document.getElementById(f).value;
   var id = f;
   if (document.getElementById(f).newid ) id = document.getElementById(f).newid;
@@ -310,7 +310,7 @@ function AutoInput(f,after) {
 }
 
 function AutoCheckBoxInput(f) {
-  debugger;
+//  debugger;
   var cbval = document.getElementById(f).checked;
   var newval = (cbval?1:0); 
   var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
@@ -326,7 +326,7 @@ function AutoCheckBoxInput(f) {
 }
 
 function AutoRadioInput(f,i) {
-  debugger;
+//  debugger;
   var newval = document.getElementById(f+i).value;
   var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
   var typeval = document.getElementById('AutoType').value;

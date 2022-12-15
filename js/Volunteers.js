@@ -9,7 +9,7 @@ function TeamsSelected() {
 }
 
 function ShowAvails() {
-  debugger;
+//  debugger;
 //  TeamsSelected();
   return;
   var avs = ['Before','Week','_4','_3','_2','_1',0,1,2,3,4,5,6,7,8,9,10,11];
@@ -33,7 +33,7 @@ function Update_VolCats(cls,catid,year) {
 }
 
 $(document).ready(function() {
-  debugger;
+//  debugger;
   var cats1 = $('#VolCatsRaw').val();
   var cats2 = atob(cats1);
   Teams = JSON.parse(cats2);
@@ -44,9 +44,21 @@ $(document).ready(function() {
 
 
 function VolScanTeams() {
-  $("#Props:*").each
+//  $("#Props:*").each
 
 
+}
+
+function CampingVolSet(name) {
+  if (name != 'CampNeed::2023') {
+    debugger;
+  }
+//  var CampVal = $("input[name='CampNeed::2023']:checked").val();
+  var CampVal = $("input[name='" + name + "']:checked").val();
+console.info(CampVal);
+  if (!CampVal || CampVal < 10) { $('#CampPUB').hide(); $('#CampREST').hide(); }
+  else if (CampVal < 20) { $('#CampPUB').show(); $('#CampREST').hide(); }
+  else if (CampVal < 30) { $('#CampPUB').hide(); $('#CampREST').show(); }; 
 }
 
 function VolEnables(volid,year) {

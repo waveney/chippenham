@@ -119,7 +119,9 @@ function Get_Vol_Details(&$vol) {
   
   if (Feature('Vol_Camping')) {
     $Body .= "Camping: " . $camps[$VY['CampNeed']] . "<br>\n";
-    if ($VY['CampNeed'] > 10) $Body .= "Space for: " . $CampType[$VY['CampType']] . "<p>\n";
+    if ($VY['CampNeed'] < 10) { }
+    elseif ($VY['CampNeed'] < 20) $Body .= "Space for: " . $CampType[$VY['CampType']] . "<p>\n";
+    elseif ($VY['CampNeed'] < 30) $Body .= "Space for: " . $VY['CampText'] . "<p>\n";
   }
 
   return $Body;
@@ -207,11 +209,11 @@ function VolForm(&$Vol,$Err='',$View=0) {
   if (!empty($Err)) echo "<p class=Err>$Err<p>";
   echo "<form method=post action=Volunteers>";  
   Register_AutoUpdate('Volunteers',$Volid);
-  Register_Onload('VolEnables',$Volid,$PLANYEAR);
-  Register_AfterInput('VolEnables',$Volid,$PLANYEAR);
+  Register_Onload('CampingVolSet',"'CampNeed::$PLANYEAR'",0);
+//  Register_AfterInput('VolEnables',$Volid,$PLANYEAR);
   echo fm_hidden('id',$Volid);  
 
-    if ($VolMgr) echo "If you change any of the team statuses on this page you must click <b>Send Updates</b>, to notify the volunteer (and teams).<p>";
+    if ($VolMgr) echo "If you change any of the team statuses on this page you must click <b>Send Updates</b>, to notify the volunteer.<p>";
 
     echo "This is in 4 parts.  The first records who you are.  This will normally be kept year to year, so you should only need to fill this in once.<p>\n";
     echo "The second part records which team(s) you would like to be part of, along with any likes, dislikes and team related details.<p>\n";
@@ -365,9 +367,9 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
 //var_dump($camps);exit;
-      echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$PLANYEAR",0,0,'',' onchange=CampingVolSet()');
-      echo "<tr id=CampPUB hidden>" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',1,' colspan=4',"CampType::$PLANYEAR");
-      echo "<tr id=CampREST hidden>" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
+      echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$PLANYEAR",0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
+      echo "<tr id=CampPUB>" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',1,' colspan=4',"CampType::$PLANYEAR");
+      echo "<tr id=CampREST>" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
                     $VYear,'CampText',4,'',"CampText::$PLANYEAR");
     }
 
@@ -533,7 +535,7 @@ function List_Vols() {
     $VY = Get_Vol_Year($id);
 //    var_dump($VY);
     $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$id>";
-    echo "<tr" . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']))?" class=FullD hidden" : "" ) . ">";
+    echo "<tr" . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || ($VY['Status'] == 4))?" class=FullD hidden" : "" ) . ">";
     echo "<td>$id";
     echo "<td>$link" . $Vol['SN'] . "</a>";
     echo "<td>" . $Vol['Email'];
