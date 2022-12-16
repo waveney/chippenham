@@ -50,12 +50,7 @@ function VolScanTeams() {
 }
 
 function CampingVolSet(name) {
-  if (name != 'CampNeed::2023') {
-    debugger;
-  }
-//  var CampVal = $("input[name='CampNeed::2023']:checked").val();
   var CampVal = $("input[name='" + name + "']:checked").val();
-console.info(CampVal);
   if (!CampVal || CampVal < 10) { $('#CampPUB').hide(); $('#CampREST').hide(); }
   else if (CampVal < 20) { $('#CampPUB').show(); $('#CampREST').hide(); }
   else if (CampVal < 30) { $('#CampPUB').hide(); $('#CampREST').show(); }; 

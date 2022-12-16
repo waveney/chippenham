@@ -136,6 +136,8 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
       } else {
         $email->setFrom($from);
       }
+    } else {
+        $email->setFrom(Feature('DefaultFrom','No-Reply'));    
     }
     
     if (is_array($to)) {
