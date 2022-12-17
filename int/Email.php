@@ -137,7 +137,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
         $email->setFrom($from);
       }
     } else {
-        $email->setFrom(Feature('DefaultFrom','No-Reply'));    
+        $email->setFrom(Feature('DefaultFrom','No-Reply@' . $FESTSYS['HostURL']));    
     }
     
     if (is_array($to)) {

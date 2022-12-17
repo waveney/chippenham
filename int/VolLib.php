@@ -567,8 +567,8 @@ function List_Vols() {
       }
     }
 
-    echo "<td>" . (isset($VY['AvailBefore'])?$VY['AvailBefore']:"");
-    echo "<td>" . (isset($VY['AvailWeek'])?$VY['AvailWeek']:"");
+    echo "<td>" . (isset($VY['AvailBefore'])? ((strlen($VY['AvailBefore'])<12)? $VY['AvailBefore'] : ($link . "Expand</a>")):"");
+    echo "<td>" . (isset($VY['AvailWeek'])? ((strlen($VY['AvailWeek'])<12)? $VY['AvailWeek'] : ($link . "Expand</a>")):"");
     for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {
       $av = "Avail" . ($day <0 ? "_" . (-$day) : $day);
       echo "<td>";
