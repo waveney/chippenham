@@ -20,7 +20,7 @@ $Access_Type = array_flip($Access_Levels);
 $Area_Levels = [ 'No','Edit','Edit and Report'];
 $Area_Type = array_flip($Area_Levels);
 $Sections = ['', 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','Other','TLine','Bugs','Photos','Comedy','Family','News','Volunteers','Art',
-   'Tickets','Events']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD
+   'Tickets','Events','Ceilidh']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD
 $Importance = array('None','Some','High','Very High','Even Higher','Highest','The Queen');
 $Book_States = array('None','Declined','Booking','Contract Ready','Contract Signed');
 $Book_Colours = ['white','salmon','yellow','orange','lime'];
@@ -34,12 +34,15 @@ $Cancel_Colours = ['white','orange','green','red','yellow'];
 $EType_States = array('Very Early','Draft','Partial','Provisional','Complete');
 $TicketStates = array('Not Yet','Open','Closed','Remove','Remote');
 $ArticleFormats = ['Large Image','Small Image','Text','Banner Image','Banner Text','Fixed','Left/Right Pairs'];
-$PerfTypes = ['Dance Side'=>['IsASide','Dance','Dance','Dance','D'],
+// Name => [EnableFld, Email@, Capability, ?, Code]
+$PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance','D'],
               'Musical Act'=>['IsAnAct','Music','Music','Music','M'],
               'Comedy'=>['IsFunny','Comedy','Comedy','Comedy','C'],
               'Child Ent'=>['IsFamily','Children','Family','Youth','Y'],
-              'Other'=>['IsOther','Info','Other','','O']];
-$PerfIdx = ['Side'=>0,'Act'=>1,'Comic'=>2,'ChEnt'=>3,'Other'=>4];
+              'Other'=>['IsOther','Info','Other','','O'],
+              'Ceilidh'=>['IsCeilidh','??','Ceilidh','','H'],              
+              ];
+$PerfIdx = ['Side'=>0,'Act'=>1,'Comic'=>2,'ChEnt'=>3,'Other'=>4,'Ceilidh'=>5];
 $SourceTypes = ['None','Perf','Trade','Finance','User','SignUp'];
 
 // Perfname => [field to test, email address for,Capability name,budget,shortCode]

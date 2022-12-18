@@ -23,10 +23,11 @@
     'Public'=> [
       '<Home'=>'',
       'Line-Up'=>[
-        'Dance'=>'LineUp?T=Dance',
+        'Dance Displays'=>'LineUp?T=Dance',
         'Music'=>'LineUp?T=Music', 
 //        'Comedy'=>'LineUp?T=Comedy',
         'Family'=>'LineUp?T=Family',
+        'Ceilidh & Dances'=>'LineUp?T=Ceilidh',
 //        'Traders'=>'int/TradeShow',
 
         ],

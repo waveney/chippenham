@@ -168,6 +168,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       echo fm_hidden('IsFunny',$Side['IsFunny']);
       echo fm_hidden('IsFamily',$Side['IsFamily']);
       echo fm_hidden('IsOther',$Side['IsOther']);
+      echo fm_hidden('IsCeilidh',$Side['IsCeilidh']);
     }
 
 
@@ -583,6 +584,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         case 'C': if ($Side['IsFunny']) $Doit = 1; break;
         case 'F': if ($Side['IsFamily']) $Doit = 1; break;
         case 'O': if ($Side['IsOther']) $Doit = 1; break;
+        case 'H': if ($Side['IsCeilidh']) $Doit = 1; break;
         }
       }
       if (!$Doit) continue;

@@ -212,6 +212,18 @@
     }
     $txt .= "</ul>\n";
   }
+  if ($x = StaffTable('Ceilidh','Ceilidhs and Dances')) {
+    $txt .= $x;
+    $txt .= "<ul>\n";    
+    if (Access('Staff')) {
+      $txt .= "<li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=H>List All Ceilidh Performers in Database</a>\n";
+      $txt .= "<li><a href=ListMusic?SEL=Booking&Y=$YEAR&T=H>List Ceilidh Performers Booking</a>\n";
+    }
+    if (Access('Staff','Ceilidh')) {
+      $txt .= "<li><a href=CreatePerf?T=H&Y=$YEAR>Add Ceilidh Performer to Database</a>";
+    }
+    $txt .= "</ul>\n";
+  }
   if ($x = StaffTable('Family',"Children's Entertainers")) {
     $txt .= $x;
     $txt .= "<ul>\n";    
