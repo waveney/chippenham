@@ -12,11 +12,18 @@
   $YearTab = 'SideYear';
 
   $Type = (isset($_GET['T'])? $_GET['T'] : 'M' );
-  $Perf = ""; 
-  foreach ($PerfTypes as $p=>$d) if ($d[4] == $Type) { $Perf = $p; $PerfD = $d; };
-  $PrevYear = '2021'; // Quick Fudge TODO 
-  $TypeSel = $PerfD[0] . "=1 ";
-  $DiffFld = $PerfD[2] . "Importance";
+  if ($Type == 'Z') {
+    $TypeSel = " IsASide=0 AND IsAnAct=0 AND IsFunny=0 AND IsFamily=0 AND IsCeilidh=0 ";
+    $Perf = "Uncategorised performers";
+    $DiffFld = "Importance";    
+  }  else {
+    $Perf = ""; 
+    foreach ($PerfTypes as $p=>$d) if ($d[4] == $Type) { $Perf = $p; $PerfD = $d; };
+
+    $TypeSel = $PerfD[0] . "=1 ";
+    $DiffFld = $PerfD[2] . "Importance";
+  }
+  
   echo "<div class=content><h2>List $Perf $YEAR</h2>\n";
   
   $Ins_colours = ['red','orange','lime'];

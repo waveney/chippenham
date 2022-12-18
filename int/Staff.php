@@ -234,6 +234,9 @@
     if (Access('Staff','Family')) {
       $txt .= "<li><a href=CreatePerf?T=Y&Y=$YEAR>Add Children's Entertainers to Database</a>";
     }
+    if (Access('SysAdmin')) {
+      $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
+    }
     $txt .= "</ul>\n";
   }
   if ($x = StaffTable('OtherPerf', 'Other Performers')) {
