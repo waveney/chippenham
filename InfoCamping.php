@@ -22,7 +22,7 @@
     if (!(Access('Steward')) && ($C['Props']&2)) continue;  // Restricted
     echo "<div id=Blob$Blobnum>";
     echo "<h2>" . $C['Name'] . "</h2>";
-    if ($C['Image']) echo "<img src=" . $C['Image'] . "</img><br>";
+    if ($C['Image']) echo "<img src=" . $C['Image'] . "><br>";
     echo $C['ShortDesc'] . "<p>";
     if (!empty($C['LongDesc'])) echo $C['LongDesc'] . "<p>";
     if ($Mapp == 0) $Mapp = $C['MapPoint'];

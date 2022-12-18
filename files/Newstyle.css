@@ -1424,13 +1424,16 @@ button {
 }
 
 .TwoCols .OneCol {
-  width:48%;
+  width: 45%;
 }
 .TwoCols .OneCol div {
   margin: 20px 0;
 }
 .TwoCols .OneCol div div {
   margin:0;
+}
+.TwoCols .OneCol img {
+  width:90%;
 }
 
 .PerfProg, .PerfProg td , .PerfProg th {
