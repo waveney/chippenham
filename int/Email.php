@@ -115,6 +115,9 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
   $From = $FESTSYS['SMTPuser'];
   $Atts = [];
   
+  $EmailFrom = Feature('EmailFromAllowed',0);
+  $EmailReplyTo = Feature('EmailReplyTo',0);
+  
   $email = new PhpMailer(true);
   try {
     $email->SMTPDebug = ((Access('SysAdmin') && UserGetPref('EmailDebug'))?2:0);  // 2 general testing, 4 problems...
@@ -130,14 +133,16 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
     $email->SMTPSecure = 'tls';
     $email->Port = 587;
     
-    if ($from) {
-      if (is_array($from)) {
-        $email->setFrom($from[0],$from[1]);
+    if ($EmailFrom) {
+      if ($from) {
+        if (is_array($from)) {
+          $email->setFrom($from[0],$from[1]);
+        } else {
+          $email->setFrom($from);
+        }
       } else {
-        $email->setFrom($from);
+          $email->setFrom(Feature('DefaultFrom','No-Reply@' . $FESTSYS['HostURL']));    
       }
-    } else {
-        $email->setFrom(Feature('DefaultFrom','No-Reply@' . $FESTSYS['HostURL']));    
     }
     
     if (is_array($to)) {
@@ -159,10 +164,13 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
               break;
             case 'replyto':
               $email->addReplyTo($a,$n);
+              $EmailReplyTo = 0;
               break;
             case 'from':
-              $email->setFrom($a,$n);
-              $From = "$n <$a>";
+              if ($EmailFrom) {
+                $email->setFrom($a,$n);
+                $From = "$n <$a>";
+              }
               break;
           } 
         }
@@ -177,6 +185,9 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
     $email->isHTML(true);
     $email->Body = $letter; // HTML format
     $email->AltBody = ConvertHtmlToText($letter); // Text format
+
+    if ($EmailReplyTo) $email->addReplyTo($EmailReplyTo,$FESTSYS['FestName']);
+
 
     if ($attachments) {
       if (is_array($attachments)) {
