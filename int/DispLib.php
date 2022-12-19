@@ -235,20 +235,10 @@ function Count_Perf_Type($type,$Year=0) {
   return $Dsc;
 }
 
-
-function Expand_Special(&$Art) {
-  global $db,$YEAR,$Coming_Type;
-  static $Shown = [];
-  static $EShown = [];
+function Expand_Imp(&$Art,$Isa,$Cometest,$Importance,$lvl) {
   $now = time();
-  
-  $words = explode(' ',$Art['SN']);
-
-  switch ($words[0]) {
-  case '@Dance_Imp':
-    $lvl = (isset($words[1])?$words[1]:0);
-    $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.IsASide=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.Coming=" . $Coming_Type['Y'] .    
-                    " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.DanceImportance>$lvl)) AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
+    $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.$IsA=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND $Cometest " .    
+                    " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.$Importance>$lvl)) AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
     if (!$ans) { $Art = []; return; }  
   
     while ( $Dstuff = $ans->fetch_assoc()) {
@@ -264,9 +254,85 @@ function Expand_Special(&$Art) {
       return;
     }
     $Art = [];
-    break;
+}
+
+function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp) {
+  $now = time();
+  $Art['SN'] = $Name;
+  $Art['Link'] = "/LineUp?T=$LineUp";
+
+    $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.$Isa=1 AND $Cometest " . 
+           " AND y.ReleaseDate<$now");
+    $Dsc = 0;
+    if ($ans) {
+      $res = $ans->fetch_assoc();
+      $Dsc = $res['Total'];
+    }
+    
+    $Art['Text'] = "$Dsc $Generic" . ($Msc == 1?" has":"s have") . " already confirmed for $YEAR.";
+
+
+    $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
+                    "WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND s.$Isa=1 AND $Cometest " . 
+                    " AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
+
+    if (!$ans) return; 
+    while ( $DMany = $ans->fetch_assoc()) {
+      if (in_array($DMany['SideId'],$Shown)) continue;
+      $Shown[] = $DMany['SideId'];
+
+      $Art['Text'] .= "  Including <a href=/int/ShowPerf?id=" . $DMany['SideId'] . ">" . $DMany['SN'] . "</a>";
+      $Art['Image'] = $DMany['Photo'];
+      $Art['ImageWidth'] = (isset($DMany['ImageWidth'])?$DMany['ImageWidth']:100);
+      $Art['ImageHeight'] = (isset($DMany['ImageHeight'])?$DMany['ImageHeight']:100);
+      return;
+    }
+}
+
+function Expand_Special(&$Art) {
+  global $db,$YEAR,$Coming_Type;
+  static $Shown = [];
+  static $EShown = [];
+  $now = time();
+  
+  $words = explode(' ',$Art['SN']);
+
+  switch ($words[0]) {
+  case '@Dance_Imp':
+    Expand_Imp($Art,'IsASide',"y.Coming=" . $Coming_Type['Y'] ,'DanceImportance', (isset($words[1])?$words[1]:0));
+    return;
+    
+  case '@Music_Imp': 
+    Expand_Imp($Art,'IsMusic',"y.YearState>0" ,'MusicImportance', (isset($words[1])?$words[1]:0));
+    return;
+  
+  case '@Family_Imp':
+    Expand_Imp($Art,'IsFamily',"y.YearState>0" ,'FamilyImportance', (isset($words[1])?$words[1]:0));
+    return;
+
+  case '@Ceilidh_Imp':
+    Expand_Imp($Art,'IsCeilidh',"y.YearState>0" ,'CeilidhImportance', (isset($words[1])?$words[1]:0));
+    return;
 
   case '@Dance_Many':
+    Expand_Many($Art,'IsASide',"y.Coming=" . $Coming_Type['Y'], 'Dance Team', 'Dancing','Dance');
+    return;
+    
+  case '@Music_Many':
+    Expand_Many($Art,'IsAnAct',"y.YearState>0", 'Music Act', 'Music','Music');
+    return;
+
+  case '@Family_Many':
+    Expand_Many($Art,'IsFamily',"y.YearState>0", 'Family Entertainer', 'Family Entertainment','Family');
+    return;
+
+  case '@Ceilidh_Many':
+    Expand_Many($Art,'IsCeilidh',"y.YearState>0", 'Ceilidh and Dance', 'Ceilidh and Dance ','Ceilidh');
+    return;
+    
+    
+
+/*
     $Art['SN'] = "Dancing";
     $Art['Link'] = "/LineUp?T=Dance";
 
@@ -279,6 +345,7 @@ function Expand_Special(&$Art) {
     }
     
     $Art['Text'] = "$Dsc Dance team" . ($Dsc == 1?" has":"s have") . " already confirmed for $YEAR.  Many of your favourite teams and some new faces.";
+
 
     $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
                     "WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.Coming=" . 
@@ -297,6 +364,7 @@ function Expand_Special(&$Art) {
     }
     break;
 
+/*
   case '@Music_Imp': 
     $lvl = (isset($words[1])?$words[1]:0);
     $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.IsAnAct=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.YearState>0 " . 
@@ -347,6 +415,7 @@ function Expand_Special(&$Art) {
       return;
     }
     break;
+*/
 
   case '@Perf': // Just this performer
     $id = $words[1];

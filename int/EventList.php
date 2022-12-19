@@ -12,7 +12,7 @@
 //var_dump($_POST);
 //var_dump($Event_Types);
 
-  if (isset($_POST['ACTION']) && Access('Staff','Venues')) {
+  if (isset($_POST['ACTION']) && Access('Staff','Events')) {
     foreach ($_POST as $f=>$v) {
       if (preg_match('/E(\d*)/',$f,$res)) {
         $ev=$res[1];
@@ -126,7 +126,7 @@
       echo "<tr><td>";
       echo "<input type=checkbox name=E$i class=SelectAllAble>";
       echo "<td>$i<td>";
-      if (Access('Staff','Venues') || $evnt['Owner']==$USERID || $evnt['Owner2']==$USERID) echo "<a href=EventAdd?e=$i>";
+      if (Access('Staff','Events') || $evnt['Owner']==$USERID || $evnt['Owner2']==$USERID) echo "<a href=EventAdd?e=$i>";
       if (strlen($evnt['SN']) >2) { echo $evnt['SN'] . "</a>"; } else { echo "Nameless</a>"; };
       echo "<td>" . DayList($evnt['Day']) . "<td>" . timecolon($evnt['Start']) . "<td>";
       if ($se > 0 && $evnt['SubEvent'] < 0) { echo timecolon($evnt['SlotEnd']); } else { echo timecolon($evnt['End']); }; 
@@ -166,7 +166,7 @@
     }
   }
   echo "</tbody></table></div>\n";
-  if (Access('Staff','Venues')) {
+  if (Access('Staff','Events')) {
     $realvens = Get_Real_Venues();
     echo "Selected: <input type=Submit name=ACTION value=Delete " .
         " onClick=\"javascript:return confirm('are you sure you want to delete these?');\">, "; 
@@ -181,7 +181,7 @@
   }
   echo "</form>\n";
 
-  if (Access('Committee','Venues')) {
+  if (Access('Committee','Events')) {
     echo "<h2><a href=EventAdd>Add Event</a>";
 
     if ($se) echo ", <a href=EventList>List Events</a>";

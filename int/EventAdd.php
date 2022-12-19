@@ -248,14 +248,14 @@ A similar feature will appear eventually for music.<p>
     $eid = -1;
     $Event['EventId'] = 0;
     $Event['SubEvent'] = 0;
-    if (Access('Staff','Venues') || $Event['Owner'] == $USERID || $Event['Owner2'] == $USERID) { // Proceed
+    if (Access('Staff','Events') || $Event['Owner'] == $USERID || $Event['Owner2'] == $USERID) { // Proceed
     } else {
       Error_Page("Insufficient Privilages");
     }
   } elseif (isset($_GET['e'])) {
     $eid = $_GET['e'];
     $Event = Get_Event($eid);
-    if (Access('Staff','Venues') || $Event['Owner'] == $USERID || $Event['Owner2'] == $USERID) { // Proceed
+    if (Access('Staff','Events') || $Event['Owner'] == $USERID || $Event['Owner2'] == $USERID) { // Proceed
     } else {
       Error_Page("Insufficient Privilages");
     }
@@ -416,7 +416,7 @@ A similar feature will appear eventually for music.<p>
   
     if ($eid > 0) {
       echo "<Center><input type=Submit name='Update' value='Update'>\n";
-      if (Access('Committee','Venues')) {
+      if (Access('Committee','Events')) {
         echo ", <form method=post action='EventAdd'>\n";
         echo fm_hidden('EventId',$eid);
         if ($se <= 0) {
