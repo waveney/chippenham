@@ -130,6 +130,7 @@ function Get_AllUsers($mode=0) { // 0 return login names, 1 return levels, 2 All
   return [$cache,$AccessC,$Full][$mode];
 }
 
+// DUFF If wanted needs to be rewriten
 function Get_AllUsers4Sect($Sect,$also=-1,$Sect2='@@',$Sect3='@@') { // Sect = Music, Dance etc, include also even if not for sect
   global $db;
   $res = $db->query("SELECT * FROM FestUsers ORDER BY UserId");
@@ -143,15 +144,18 @@ function Get_AllUsers4Sect($Sect,$also=-1,$Sect2='@@',$Sect3='@@') { // Sect = M
 }
 
 function Get_AllUsers4Perf($Sects,$also=-1) { // [Sect] = Music, Dance etc, include also even if not for sect
-  global $db,$PerfTypes;
-  $res = $db->query("SELECT * FROM FestUsers ORDER BY UserId");
+  global $PerfTypes,$Sections;
+  $Users = Get_AllUsers(0);
+  if (Access('SysAdmin')) return $Users;
+  $Caps = Gen_Get_All('UserCap');
   $ans = [];
-  while ($us = $res->fetch_assoc()) {
-    $uid = $us['UserId'];
-    $ulog = $us['Login'];
-    $inc = 0;
-    foreach ($Sects as $sec) if ($us[$sec]) $inc = 1;
-    if (Access('SysAdmin') || $inc || $uid==$also ) $ans[$uid] = $ulog;
+  $SNums = array_flip($Sections);
+
+  foreach($Sects as $S) {
+    if (isset($SNums[$S])) {
+      $Snum = $SNums[$S];
+      foreach ($Caps as $C) if (($C['Capability'] == $Snum) && ($C['Level']>0)) $ans[$C['User']] = $Users[$C['User']];
+    }
   }
   return $ans;
 }

@@ -1,18 +1,23 @@
 <?php
   include_once ("int/fest.php");
+  include_once("int/ProgLib.php");
+  include_once("int/DispLib.php");
+  include_once("int/DanceLib.php");
+  include_once("int/MusicLib.php");
 
   $T = 'Dance';
   
   if (isset($_GET['T'])) $T = $_GET['T'];
   if (strlen($T) > 12 || preg_match('/\W/',$T)) $T = 'Dance';  
 
-  dohead("$T Line-up",[],1);
+  $PerfTs = Get_Perf_Types(1);
+  $PerfD = 0;
+  foreach($PerfTs as $P) if ($P['SN'] == $T) $PerfD = $P;
+  if ($PerfD == 0) Error_Page("No hacking please");
+  
+  dohead($PerfD['FullName'] . " Line-up",[],1);
 
   set_ShowYear();
-  include_once("int/ProgLib.php");
-  include_once("int/DispLib.php");
-  include_once("int/DanceLib.php");
-  include_once("int/MusicLib.php");
 
   global $db,$Coming_Type,$YEAR,$PLANYEAR,$Book_State,$EType_States;
   
@@ -24,8 +29,7 @@
   if ($YEAR != $PLANYEAR) {
     $PState = 1;
   } else {
-    $PState = 0;
-    foreach ($PerfTs as $pt=>$dat) if ($dat['SN'] == $T) $PState = $dat['ListState'];
+    $PState = $PerfD['ListState'];
     
     if ($PState == 0) {
       echo "The line up is not yet public<p>";
@@ -119,6 +123,22 @@
            " AND s.IsOther=1 AND y.ReleaseDate<$now ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
 
     break;
+
+  case 'Ceilidh':
+    $ET['FirstYear'] = 2023;
+    echo "These are performers for Ceilidhs and Folk Dances.<p>";
+    if ($YEAR != $PLANYEAR) {
+      echo "In $YEAR, These other performers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
+    } else {
+      echo "Click on the name of a performer, or their photograph to find out more about them and where they are performing.<p>\n";
+    }
+
+    $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
+           "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
+           " AND s.IsCeilidh=1 AND y.ReleaseDate<$now ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
+
+    break;
+    
     
   default:
     Error_Page('No line up selected');

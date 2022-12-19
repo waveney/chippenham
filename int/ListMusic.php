@@ -13,7 +13,7 @@
 
   $Type = (isset($_GET['T'])? $_GET['T'] : 'M' );
   if ($Type == 'Z') {
-    $TypeSel = " IsASide=0 AND IsAnAct=0 AND IsFunny=0 AND IsFamily=0 AND IsCeilidh=0 ";
+    $TypeSel = " IsASide=0 AND IsAnAct=0 AND IsFunny=0 AND IsFamily=0 AND IsCeilidh=0 AND IsOther=0 ";
     $Perf = "Uncategorised performers";
     $DiffFld = "Importance";    
   }  else {

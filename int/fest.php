@@ -35,12 +35,12 @@ $EType_States = array('Very Early','Draft','Partial','Provisional','Complete');
 $TicketStates = array('Not Yet','Open','Closed','Remove','Remote');
 $ArticleFormats = ['Large Image','Small Image','Text','Banner Image','Banner Text','Fixed','Left/Right Pairs'];
 // Name => [EnableFld, Email@, Capability, ?, Code]
-$PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance','D'],
+$PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance Displays','D'],
               'Musical Act'=>['IsAnAct','Music','Music','Music','M'],
               'Comedy'=>['IsFunny','Comedy','Comedy','Comedy','C'],
-              'Child Ent'=>['IsFamily','Children','Family','Youth','Y'],
-              'Other'=>['IsOther','Info','OtherPerf','','O'],
-              'Ceilidh'=>['IsCeilidh','??','Ceilidh','','H'],              
+              'Child Ent'=>['IsFamily','Children','Family','Family and Community','Y'],
+              'Other'=>['IsOther','Info','OtherPerf','Other Performers','O'],
+              'Ceilidh'=>['IsCeilidh','??','Ceilidh','Ceilidhs and Dances','H'],              
               ];
 $PerfIdx = ['Side'=>0,'Act'=>1,'Comic'=>2,'ChEnt'=>3,'Other'=>4,'Ceilidh'=>5];
 $SourceTypes = ['None','Perf','Trade','Finance','User','SignUp'];
