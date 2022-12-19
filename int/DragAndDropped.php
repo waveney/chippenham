@@ -98,7 +98,7 @@ if (!file_exists($target_dir)) mkdir($target_dir,0775,true);
 
 $suffix = pathinfo($_FILES["Upload"]["name"],PATHINFO_EXTENSION);
 $target_file = "$target_dir/$id.$suffix";
-
+// var_dump($target_file);
 if (!move_uploaded_file($_FILES["Upload"]["tmp_name"], $target_file)) {
   echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);
   exit;
