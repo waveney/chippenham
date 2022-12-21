@@ -465,8 +465,37 @@ Contract Signed - Enables listing to public.',
 
 function Default_SY($id=0) { 
   global $YEAR,$USERID;
-  $ans = array('SatDance'=>3,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'ProcessionSat'=>1,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0);
+  $numprocs = intval(Feature('ProcessDays'));
+  $ans = array('SatDance'=>4,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0);
   if ($id) $ans['SideId'] = $id;
+  switch ($numprocs) {
+  case 0:
+    break;
+  case 2:
+    $ans['ProcessionSat'] = 1; 
+    $ans['SatDance'] = 3;
+    break;
+  case 4:
+    $ans['ProcessionSun'] = 1; 
+    $ans['SunDance'] = 3;
+    break;
+  
+  case 8:
+    $ans['ProcessionMon'] = 1; 
+    $ans['MonDance'] = 3;
+    break;
+  
+  case 10:
+    if (rand() < 0.5) {
+      $ans['ProcessionSat'] = 1; 
+      $ans['SatDance'] = 3;
+    } else {
+      $ans['ProcessionMon'] = 1; 
+      $ans['MonDance'] = 3;
+    }  
+  default:
+  }
+
   return $ans;
 }
 

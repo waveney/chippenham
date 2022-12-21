@@ -226,56 +226,32 @@ function EventPerfSel(e,l,v) {
   }
 }
 
-function AutoInput(f) {
-//  debugger;
-  var newval = document.getElementById(f).value;
-  var id = f;
-  if (document.getElementById(f).newid ) id = document.getElementById(f).newid;
-  var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
-  var typeval = document.getElementById('AutoType').value;
-  var refval = document.getElementById('AutoRef').value;
-  $.post("formfill.php", {'D':typeval, 'F':id, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) {
-    var elem = document.getElementById(f);
-    var m = data.match(/^\s*?@(.*)@/);
-    if (m) {
-      elem.newid = elem.name = m[1];
-    } else if (m = data.match(/^\s*?#(.*)#/)) { // Photo update 
-      m = data.split('#')
-      elem.value = m[1];
-      document.getElementById(m[2]).src = m[3];
-    } else if (m = data.match(/^\s*!(.*)!/)) $('#ErrorMessage').html( m[1] );
-
-    var dbg = document.getElementById('Debug');
-    if (dbg) $('#Debug').html( data) ;  
-  });
-}
-
-function AutoCheckBoxInput(f) {
-//  debugger;
-  var cbval = document.getElementById(f).checked;
-  var newval = (cbval?1:0); 
-  var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
-  var typeval = document.getElementById('AutoType').value;
-  var refval = document.getElementById('AutoRef').value;
-  var dbg = document.getElementById('Debug');
-  if (dbg) {
-    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) { $('#Debug').html( data)});
-  } else {
-    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval});
-  }
-}
-
-function AutoRadioInput(f,i) {
-//  debugger;
-  var newval = document.getElementById(f+i).value;
-  var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
-  var typeval = document.getElementById('AutoType').value;
-  var refval = document.getElementById('AutoRef').value;
-  var dbg = document.getElementById('Debug');
-  if (dbg) {
-    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) { $('#Debug').html( data)});
-  } else {
-    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval});
+function ForceOneProcession(e) {
+  debugger;
+  var fld = e.target.id;
+  var day = (fld.match(/Procession(\w*)/))[1];
+    
+  if ( $("input[name='" + fld + "']:checked").val() ) {
+    if ((fld != 'ProcessionSat') && ($('#ProcessionSat').length)) {
+      $('#ProcessionSat').prop('checked', false);
+      $('#SatDance').val(4);
+      AutoCheckBoxInput('ProcessionSat');
+      AutoInput('SatDance');
+    }
+    if ((fld != 'ProcessionSun') && ($('#ProcessionSun').length)) {
+      $('#ProcessionSun').prop('checked', false);
+      $('#SunDance').val(4);
+      AutoCheckBoxInput('ProcessionSun');
+      AutoInput('SunDance');
+    }
+    if ((fld != 'ProcessionMon') && ($('#ProcessionMon').length)) {
+      $('#ProcessionMon').prop('checked', false);
+      $('#MonDance').val(4);
+      AutoCheckBoxInput('ProcessionMon');      
+      AutoInput('MonDance');
+    }
+    $('#' + day + 'Dance').val(3);
+    AutoInput(day + 'Dance');
   }
 }
 
