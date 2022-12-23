@@ -333,7 +333,11 @@ function Put_SideYear(&$data,$Force=0) {
   if ($Up) $rec .= " WHERE syId='" . $Save['syId'] . "'";
   $Save = $data;
 //var_dump($rec);
-  return $db->query($rec);
+  if ($Up) return $db->query($rec);
+  $insert = $db->query($rec);
+  $snum = $db->insert_id;
+  $data['syId'] = $snum;
+  return $insert;
 }
 
 function isknown($snum,$yr) {

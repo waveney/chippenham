@@ -675,7 +675,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       // Drop through
       
     case 1: // All
-      if ($CampMode == 1) echo fm_hidden('EnableCamp',$Sidey['EnableCamp']);
+//      if ($CampMode == 1) echo fm_hidden('EnableCamp',$Sidey['EnableCamp']);
       echo "<tr><td $campxtr>Camping numbers:" . 
         fm_number1('Fri',$Sidey,'CampFri', $campxtr,$campxtr2) . 
         fm_number1('Sat',$Sidey,'CampSat', $campxtr,$campxtr2) . 
@@ -684,10 +684,20 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
           
       break;   
     case 3: // Chip style
-//      $CampSites = 
-      $CampTypes = Gen_Get_Names('Camptypes');
-      echo "<tr><td>Camping numbers:<br>(of tents, caravans etc not people)";
-      foreach ($CampTypes as $Ci=>$CT) echo fm_number1($CT,$Sidey,"CampType$Ci");
+      $CampSites = Gen_Get_All('Campsites', 'WHERE Props=1');
+      $CampTypes = Gen_Get_All('Camptypes');
+      echo "<tr><td>Camping numbers:<td colspan=4>(numbers of tents, caravans etc not people)";
+      $syid = (isset($Sidey['syId'])?$Sidey['syId']:0);
+      foreach ($CampSites as $CS) {
+        $Csi = $CS['id'];
+        echo "<tr><td>" . $CS['Name'] . (!empty($CS['Comment']) ? (' (' . $CS['Comment'] . ")"):'');
+        foreach($CampTypes as $CT) {
+          $CTi =  $CT['id'];
+          $Cur = Gen_Get_Cond1('CampUse',"CampSite=$Csi AND SideYearId=$syid AND CampType=$CTi");
+          if (!isset($Cur['Number'])) $Cur['Number'] = 0;
+          echo fm_number1($CT['Name'],$Cur,'Number','','',"CampSite:$syid:$Csi:$CTi");
+        }
+      }
       break;
     }
     

@@ -5,7 +5,7 @@
   $id    = $_POST['I'];
   $type  = $_POST['D'];
 
-///  var_dump($_POST);  
+//  var_dump($_POST);  
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
@@ -93,8 +93,31 @@
     } else if (preg_match('/(Sat|Sun)(Arrive|Depart)/',$field)) {
       include_once("DateTime.php");
       $Value = Time_BestGuess($Value);
-    }
+    } else if (preg_match('/(\w*):(\d*):(\d*):(\d*)/',$field,$Mtch )) { //Word + 4 fields
+//var_dump($Mtch);
+      switch($Mtch[1]) {
+      case 'CampSite':
+        if ($Mtch[2]) {
+          $syid = $Mtch[2];
+        } else {
+          $Perfy = Get_SideYear($id);
+          if (empty($Perfy['syId'])) Put_SideYear($Perfy);
+//var_dump($Perfy);
+          $syid = $Perfy['syId'];
+        }
+        $ECS = Gen_Get_Cond1('CampUse',"SideYearId=$syid AND CampSite=" . $Mtch[3] . " AND CampType=" . $Mtch[4]);
+        if ($ECS) {
+          $ECS['Number'] = $Value;
+        } else {
+          $ECS = ['SideYearId'=>$syid, 'CampSite'=>$Mtch[3], 'Number'=>$Value, 'CampType'=>$Mtch[4]];
+        }
+        echo Gen_Put('CampUse',$ECS);
+        return;
+      
+      }
     
+    } 
+echo "Here";    
     // else general cases
     
     $Perf = Get_Side($id);
