@@ -9,6 +9,7 @@ function Get_Budget() {
   $full = [];
   $res = $db->query("SELECT * FROM BudgetAreas WHERE Year='$YEAR' ORDER BY id ");
   if ($res) while ($spon = $res->fetch_assoc()) $full[$spon['id']] = $spon;
+  if (empty($full)) return $full;
   $full[0] = ['id'=>0,'SN'=>'','Year'=>$YEAR,'CommittedSoFar'=>0];
   return $full;  
 }

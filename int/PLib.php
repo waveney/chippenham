@@ -464,9 +464,9 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   // Dance Invites and States
   if ($Side['IsASide']) {
     if ($Mode) {
-      echo "<tr><td class=NotSide>Dancing Invite:<td class=NotSide>" . fm_select($Invite_States,$Sidey,'Invite') . 
-           "<td class=NotSide>Messages:" . Help('Messages') . "<td colspan=3>" . $Sidey['Invited'];
-      if (Access('SysAdmin')) echo "<tr>" . fm_textarea('Messages',$Sidey,'Invited',5,2,'class=NotSide','class=NotSide');
+      echo "<td class=NotSide>Dancing Invite:<td class=NotSide>" . fm_select($Invite_States,$Sidey,'Invite') . 
+           "<td colspan=3 class=NotSide>" . $Sidey['Invited'];
+      if (Access('SysAdmin')) echo "<tr>" . fm_textarea('Messages' . Help('Messages'),$Sidey,'Invited',5,2,'class=NotSide','class=NotSide');
       $Coming_States[0] = 'None';
     }
     echo "<tr>";
@@ -493,6 +493,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   for ($d= $YEARDATA['FirstDay']; $d<= $YEARDATA['LastDay']; $d++) $DayCount++;
 
   // Dance Spots
+  $HereCount = 0;
   if ($Side['IsASide']) {
     $chg = '';
     if ($Mode == 0 && Feature('RestrictOneProcession',0)) $chg = "onchange=ForceOneProcession(event)";
@@ -504,6 +505,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         echo "<td class=ComeFri>" . fm_checkbox('Dance Friday Eve?',$Sidey,'FriEve');
     }
     if ($YEARDATA['FirstDay'] <= 1 && $YEARDATA['LastDay'] > 0) {  
+      if (!empty($Sidey['Sat'])) $HereCount++;
       echo "<tr>";
         echo "<td rowspan=2>" . fm_checkbox('Saturday',$Sidey,'Sat','onchange=ComeSwitch(event)');
         echo fm_text1('Daytime &half; hr Spots',$Sidey,'SatDance',0.5,'class=ComeSat');
@@ -514,6 +516,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         echo fm_text1('End of latest Spot',$Sidey,'SatDepart',0.5,'class=ComeSat');  
     }
     if ($YEARDATA['FirstDay'] <= 2 && $YEARDATA['LastDay'] > 1) {  
+      if (!empty($Sidey['Sun'])) $HereCount++;
       echo "<tr>";
       echo "<td rowspan=2>" . fm_checkbox('Sunday',$Sidey,'Sun','onchange=ComeSwitch(event)');
       echo fm_text1('Daytime &half; hr Spots',$Sidey,'SunDance',0.5,'class=ComeSun');
@@ -524,6 +527,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       echo fm_text1('End of latest Spot',$Sidey,'SunDepart',0.5,'class=ComeSun');
     }
     if ($YEARDATA['FirstDay'] <= 3 && $YEARDATA['LastDay'] > 2) {  
+      if (!empty($Sidey['Mon'])) $HereCount++;
       echo "<tr>";
       echo "<td rowspan=2>" . fm_checkbox('Monday',$Sidey,'Mon','onchange=ComeSwitch(event)');
       echo fm_text1('Daytime &half; hr Spots',$Sidey,'MonDance',0.5,'class=ComeMon');
@@ -625,10 +629,10 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             if ($Mode) {
               if (isset($Sidey['WristbandsSent'])) echo fm_checkbox("Sent",$Sidey,"WristbandsSent"); 
             } else {
-//              if (isset($Sidey['WristbandsSent']) && $Sidey['WristbandsSent']) {
-//                $tmp['Ignored2'] = 1;
-//                echo fm_checkbox('Sent',$tmp,'Ignored2','disabled');
-//              }
+              if (isset($Sidey['WristbandsSent']) && $Sidey['WristbandsSent']) {
+                $tmp['Ignored2'] = 1; // Makes it visible they have ebeen sent
+                echo fm_checkbox('Sent',$tmp,'Ignored2','disabled');
+              }
               if (isset($Sidey['WristbandsSent'])) echo fm_hidden('WristbandsSent',$Sidey['WristbandsSent']);
             }
           } else if (isset($Sidey['Performers']) && $Sidey['Performers']) {
@@ -637,7 +641,11 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
           break;
         
         case 'Chip':
+          if ($Side['IsASide']) {
           
+//            echo "<tr><td colspan=6>Festival Tickets wanted at <span id=TickDiscount></span> - You will be sent a link to purchase these by the festival.";
+//            echo "<tr><td>Adults <span AdultTicket><span>";
+          }
           break;
       }   
                
@@ -665,6 +673,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     }
     $Bud = Budget_List();
     $Venues = Report_To(1);
+// echo "</table>"; var_dump($Bud);
     if ($Bud) {
       echo "<tr class=ContractShow hidden><td class=NotSide>Budget Area:" . help('BudgetArea0') . "<td class=NotSide>" . fm_select($Bud,$Sidey,'BudgetArea');
       echo "<td class=NotSide>Except: " . fm_select($Bud,$Sidey,'BudgetArea2') . fm_number1("Value",$Sidey,'BudgetValue2','class=NotSide','class=NotSide');
