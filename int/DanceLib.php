@@ -807,7 +807,7 @@ function Dance_Email_Details($key,&$data,$att=0) {
       $str .= '<li><b>Mobile phone number</b> so we can contact you in an emergency.<p>';
       $count++;
       }        
-    if (!$Sidey['Insurance']) {
+    if (Feature('PublicLiability') && !$Sidey['Insurance']) {
       $str .= '<Li>Upload your <b>insurance</b> for *PLANYEAR*.<p>';
       $count++;
       }

@@ -187,7 +187,7 @@
           case 'Y':
             // Actions to be added
 //          var_dump($fetch);
-            if ($fetch['Insurance'] && $fetch['Mobile'] &&
+            if ((!Feature('PublicLiability') || $fetch['Insurance']) && $fetch['Mobile'] &&
                   ((($fetch['Performers'] > 0) && $fetch['Address']) || ($fetch['Performers'] < 0)) && 
                   ($fetch['Sat'] || $fetch['Sun'])) {
             } else {

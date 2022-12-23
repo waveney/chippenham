@@ -26,9 +26,10 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $Sidey = ['ContractDate'=>time(),
               'Year'=>$YEAR,
               'TotalFee'=>'<span class=NotSide>100', 'OtherPayment'=>'Bottle of Rum</span>',
-              'CampSat'=>3, 'CampFri' => 0, 'CampSun'=> 0,'Performers'=>0,
+              'CampSat'=>0, 'CampFri' => 0, 'CampSun'=> 0,'Performers'=>0,
               'Rider' => '<span class=NotSide>If there is any riders on the contract they will appear here</span>',
               'ReportTo' => 0, 'GreenRoom'=> 1,
+              'AccomNights' => 1, 'AccomPeople'=> 2,
              ];
     $Booked = Get_User(4);
     $kwd = 'Dummy ';
@@ -121,6 +122,9 @@ services, under the following terms and conditions:<p>\n";
 
   $str .= "Total Fee: &pound;" . $Sidey['TotalFee'];
   if ($Sidey['OtherPayment']) $str .= " plus " . $Sidey['OtherPayment'];
+  if ($Sidey['AccomNights'] && $Sidey['AccomPeople']) $str .= "<br>Plus accommadation for " . 
+    Plural($Sidey['AccomPeople'],'','one person ',$Sidey['AccomPeople'] . " people") . ", for " . 
+    Plural($Sidey['AccomNights'],'','1 night', $Sidey['AccomNights'] . " nights");
   $str .= "<p>\n";
   // Extra for supplied camping
   $camp = [];
@@ -170,7 +174,7 @@ services, under the following terms and conditions:<p>\n";
   if (isset($Sidey['Insurance']) && $Sidey['Insurance']>0) {
     $str .= "Thankyou for uploading your Insurance.<p>\n";
 
-  } else {
+  } else if (Feature('PublicLiability')) {
     $str .= "Please upload your Insurance before the festival.<p>\n";
   }
 

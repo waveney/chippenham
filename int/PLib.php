@@ -618,23 +618,31 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   // Wristbands
 //  if ( $Side['IsASide'] || $Side['IsAnAct']==0 || Feature('MusicWristBands')) {
     echo "<tr>";    
-      if ($Side['IsASide']) {
-        echo fm_text("<span $Imp>How Many Performers Wristbands</span>",$Sidey,'Performers',0.5,'','onchange=updateimps()');
-        if ($Mode) {
-          if (isset($Sidey['WristbandsSent'])) echo fm_checkbox("Sent",$Sidey,"WristbandsSent"); 
-        } else {
-          if (isset($Sidey['WristbandsSent']) && $Sidey['WristbandsSent']) {
-            $tmp['Ignored2'] = 1;
-            echo fm_checkbox('Sent',$tmp,'Ignored2','disabled');
+      switch (Feature('PerformerTickets','Wimb')) {
+        case 'Wimb':
+          if ($Side['IsASide']) {
+            echo fm_text("<span $Imp>How Many Performers Wristbands</span>",$Sidey,'Performers',0.5,'','onchange=updateimps()');
+            if ($Mode) {
+              if (isset($Sidey['WristbandsSent'])) echo fm_checkbox("Sent",$Sidey,"WristbandsSent"); 
+            } else {
+//              if (isset($Sidey['WristbandsSent']) && $Sidey['WristbandsSent']) {
+//                $tmp['Ignored2'] = 1;
+//                echo fm_checkbox('Sent',$tmp,'Ignored2','disabled');
+//              }
+              if (isset($Sidey['WristbandsSent'])) echo fm_hidden('WristbandsSent',$Sidey['WristbandsSent']);
+            }
+          } else if (isset($Sidey['Performers']) && $Sidey['Performers']) {
+            echo fm_text('How Many Performers Wristbands',$Sidey,'Performers',1,'class=NotCSide','class=NotCSide');
           }
-          if (isset($Sidey['WristbandsSent'])) echo fm_hidden('WristbandsSent',$Sidey['WristbandsSent']);
-        }
-      } else if (isset($Sidey['Performers']) && $Sidey['Performers']) {
-        echo fm_text('How Many Performers Wristbands',$Sidey,'Performers',1,'class=NotCSide','class=NotCSide');
-      }
+          break;
+        
+        case 'Chip':
+          
+          break;
+      }   
+               
     echo "<td id=ComeAny hidden colspan=2><span class=Err>Don't forget to click Coming above?</span>";
     echo "<td id=WhatDays hidden colspan=2><span class=Err>What Days?</span>";
-//  }
 
 
   $CampMode = Feature('CampControl');
@@ -644,6 +652,10 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     echo "<tr>". fm_number1('Fee',$Sidey,'TotalFee','class=NotCSide',' onchange=CheckContract()');
     echo fm_text('Other payments',$Sidey,'OtherPayment',2,'class=NotCSide',' onchange=CheckContract()');
     echo fm_number1('Cost of this',$Sidey,'OtherPayCost','class=NotSide colspan=1');
+    echo "<tr>". fm_number('Accommodation People',$Sidey,'AccomPeople','class=NotCSide',' onchange=CheckContract()');
+    echo fm_text('Accommodation Nights',$Sidey,'AccomNights',1,'class=NotCSide',' onchange=CheckContract()');
+    echo fm_number1('Cost of Accom',$Sidey,'AccomCost','class=NotSide colspan=1');
+
     if (!isset($Sidey['BudgetArea']) || $Sidey['BudgetArea']==0) {
       $area = 0;
       foreach ($PerfTypes as $t=>$d) if (Capability("Enable" . $d[2])) {
@@ -857,7 +869,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
 
   // INsurance
   
-  if (!$ShowAvailOnly) echo fm_DragonDrop(1, 'Insurance','Sides',$snum,$Sidey,$Mode,'',(($NotD || $Mstate || $Mode)),$Imp);
+  if (Feature('PublicLiability')) if (!$ShowAvailOnly) echo fm_DragonDrop(1, 'Insurance','Sides',$snum,$Sidey,$Mode,'',(($NotD || $Mstate || $Mode)),$Imp);
   
   $ntxt = 'Notes (Do <b>NOT</b> use this for questions.<br>if not answered by the ';
   if ($Side['IsASide']) {

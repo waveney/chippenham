@@ -706,6 +706,53 @@ function Register_AfterInput($FN,$P1=0,$P2=2) {
   echo "<script> Register_AfterInput($FN,$P1,$P2); </script>";
 }
 
+
+function Plural(&$n,$t0='',$t1='',$t2='') {
+  if (is_array($n)) { $m = count($n); }
+  else { $m = $n; };
+  if ($m == 0) return $t0;
+  if ($m == 1) return $t1;
+  return $t2;
+}
+
+function number2roman($num,$isUpper=true) {
+    $n = intval($num);
+    $res = '';
+
+    /*** roman_numerals array ***/
+    $roman_numerals = array(
+        'M' => 1000,
+        'CM' => 900,
+        'D' => 500,
+        'CD' => 400,
+        'C' => 100,
+        'XC' => 90,
+        'L' => 50,
+        'XL' => 40,
+        'X' => 10,
+        'IX' => 9,
+        'V' => 5,
+        'IV' => 4,
+        'I' => 1
+    );
+
+    foreach ($roman_numerals as $roman => $number)
+    {
+        /*** divide to get matches ***/
+        $matches = intval($n / $number);
+
+        /*** assign the roman char * $matches ***/
+        $res .= str_repeat($roman, $matches);
+
+        /*** substract from the number ***/
+        $n = $n % $number;
+    }
+
+    /*** return the res ***/
+    if($isUpper) return $res;
+    else return strtolower($res);
+}
+
 /* TODO
 --Documents
 --Insurance
