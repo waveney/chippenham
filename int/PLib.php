@@ -145,7 +145,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 //        echo " " . fm_text0("Rel Order",$Side,'RelOrder',1,'class=NotSide','class=NotSide size=4');  // Unused
         echo fm_text1('Where found',$Side,'Pre2017',1,'class=NotSide','class=NotSide'); 
       if (!$Wide) echo "<tr><td class=NotSide>";//<td class=NotSide>";
-        echo "<td class=NotSide colspan=3>";
+        echo "<td class=NotSide colspan=2>";
         echo Help('PerfTypes') . " ";
         foreach ($PerfTypes as $t=>$p) if (Capability("Enable" . $p[2])) echo fm_checkbox($t,$Side,$p[0]) . " ";
         echo "<td class=NotSide>State:" . fm_select($Side_Statuses,$Side,'SideStatus') . "\n";
@@ -464,7 +464,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   // Dance Invites and States
   if ($Side['IsASide']) {
     if ($Mode) {
-      echo "<td class=NotSide>Dancing Invite:<td class=NotSide>" . fm_select($Invite_States,$Sidey,'Invite') . 
+      echo "<td class=NotSide>Dancing Invite:" . fm_select($Invite_States,$Sidey,'Invite') . 
            "<td colspan=3 class=NotSide>" . $Sidey['Invited'];
       if (Access('SysAdmin')) echo "<tr>" . fm_textarea('Messages' . Help('Messages'),$Sidey,'Invited',5,2,'class=NotSide','class=NotSide');
       $Coming_States[0] = 'None';

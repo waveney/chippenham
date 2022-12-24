@@ -87,7 +87,7 @@ function Get_AVenues($type=0,$extra='') { //0 = short, 1 = full
 function &Report_To() { // List of report to locs
   static $List;
   if (isset($List)) return $List;
-  $List = ['Information Point','None'];
+  $List = [Feature('DefaultReport','Information Point'),'None'];
   $Vens = Get_Real_Venues(0);
   $List = array_merge($List,$Vens);
   return $List;
