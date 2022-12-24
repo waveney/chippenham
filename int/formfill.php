@@ -97,7 +97,7 @@
 //var_dump($Mtch);
       switch($Mtch[1]) {
       case 'CampSite':
-        if ($Mtch[2]) {
+        if ($Mtch[2]>0) {
           $syid = $Mtch[2];
         } else {
           $Perfy = Get_SideYear($id);

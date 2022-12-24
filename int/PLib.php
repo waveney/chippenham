@@ -705,20 +705,47 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
           
       break;   
     case 3: // Chip style
-      $CampSites = Gen_Get_All('Campsites', 'WHERE Props=1');
+      $syid = (isset($Sidey['syId'])?$Sidey['syId']:-1);
+      $CampSites = Gen_Get_All('Campsites');
       $CampTypes = Gen_Get_All('Camptypes');
+      $CampUse = Gen_Get_Cond('CampUse',"SideYearId=$syid");
+      $CampU = $Camp = [];
+      foreach ($CampUse as $CU) {
+        $CampU[$CU['CampSite']][$CU['CampType']] = $CU['Number'];
+        $Camp[$CU['CampSite']] = 1;
+      }
+ 
+      echo "<tr><td>Camping numbers:<td colspan=4>(numbers of tents, caravans etc not people)";
+
+      foreach ($CampSites as $CS) {
+        $Add = '';
+        $Csi = $CS['id'];
+        if ($CS['Props'] & 2) {
+          $Add = ' class=NotCSide ';
+          if (($Mode == 0) && empty($Camp[$Csi])) continue;
+        }
+
+        echo "<tr $Add><td $Add>" . $CS['Name'] . (!empty($CS['Comment']) ? (' (' . $CS['Comment'] . ")"):'');
+        foreach($CampTypes as $CT) {
+          $CTi =  $CT['id'];
+          $Cur['Number'] = (isset($CampU[$Csi][$CTi]) ? $CampU[$Csi][$CTi] : 0);
+          echo fm_number1($CT['Name'],$Cur,'Number',$Add,$Add,"CampSite:$syid:$Csi:$CTi");
+        }
+      }
+/*     
       echo "<tr><td>Camping numbers:<td colspan=4>(numbers of tents, caravans etc not people)";
       $syid = (isset($Sidey['syId'])?$Sidey['syId']:0);
       foreach ($CampSites as $CS) {
+        $Add = (($CS['Props'] & 2)?' class=NotCSide ':'');
         $Csi = $CS['id'];
-        echo "<tr><td>" . $CS['Name'] . (!empty($CS['Comment']) ? (' (' . $CS['Comment'] . ")"):'');
+        echo "<tr $Add><td $Add>" . $CS['Name'] . (!empty($CS['Comment']) ? (' (' . $CS['Comment'] . ")"):'');
         foreach($CampTypes as $CT) {
           $CTi =  $CT['id'];
           $Cur = Gen_Get_Cond1('CampUse',"CampSite=$Csi AND SideYearId=$syid AND CampType=$CTi");
           if (!isset($Cur['Number'])) $Cur['Number'] = 0;
-          echo fm_number1($CT['Name'],$Cur,'Number','','',"CampSite:$syid:$Csi:$CTi");
+          echo fm_number1($CT['Name'],$Cur,'Number',$Add,$Add,"CampSite:$syid:$Csi:$CTi");
         }
-      }
+      }*/
       break;
     }
     
