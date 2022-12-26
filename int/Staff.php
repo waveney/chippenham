@@ -376,7 +376,8 @@
 //    $txt .= "<li><a href=LaughView?Y=$YEAR>Show Laugh Out Loud applications</a>";
     if (Access('Committee')) $txt .= "<li><a href=Campsites?Y=$YEAR>Campsites</a>\n"; 
     if (Access('Committee')) $txt .= "<li><a href=CampTypes?Y=$YEAR>Camping Types</a>\n"; 
-    if (Access('SysAdmin')) $txt .= "<li><a href=CampsiteUse?Y=$YEAR>Manage Campsite Use</a>\n"; 
+    if (Access('Committee')) $txt .= "<li><a href=CampUse?Y=$YEAR>Camping Use</a>\n"; 
+    if (Access('SysAdmin')) $txt .= "<li><a href=CampsiteUse?Y=$YEAR>Manage Wimborne Style Campsite Use</a>\n"; 
     if (Access('SysAdmin')) $txt .= "<li><a href=CarerTickets?Y=$YEAR>Manage Carer / Partner Tickets</a>\n"; 
     if (Access('SysAdmin','Sponsors')) $txt .= "<li><a href=TaxiCompanies>Manage Taxi Company List</a>\n"; 
     if (Access('SysAdmin')) $txt .= "<li><a href=ConvertPhotos>Convert Archive Format</a>";

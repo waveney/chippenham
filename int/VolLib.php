@@ -370,7 +370,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$PLANYEAR",0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
       echo "<tr id=CampPUB>" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',1,' colspan=4',"CampType::$PLANYEAR");
       echo "<tr id=CampREST>" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
-                    $VYear,'CampText',4,'',"CampText::$PLANYEAR");
+                    $VYear,'CampText',4,'','',"CampText::$PLANYEAR");
     }
 
 
