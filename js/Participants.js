@@ -103,13 +103,34 @@ function ComeAnyWarning() {
   else { $('#ComeAny').hide(); ; $('#WhatDays').hide() }
 } 
 
+function CheckDiscount() {
+  debugger;
+//  if ($("input[name='FreeAdultTicket']:checked")) return;
+  var Events = 0;
+  
+  ['Sat','Sun','Mon'].forEach((day) => {
+    if ($("[Name=" + day + "]").is(":checked")) {
+      if (s = $('#' + day + 'Dance')) {
+        Events += +s.val();
+      }
+      if (s = $("[Name=Procession" + day +"]").is(":checked")) Events++;
+    }
+  });
+  
+  var Disc=0;
+  if (Events >=3 && Events <= 6) Disc = 25;
+  if (Events >= 7) Disc = 50;
+  
+  $('#TickDiscount').text(Disc + '% discount');
+}
+
 $(document).ready(function() {
   $(".Adv").hide();
 
   if(! $("[Name=Fri]").is(":checked")) $('.ComeFri').hide();
   if(! $("[Name=Sat]").is(":checked")) $('.ComeSat').hide();
   if(! $("[Name=Sun]").is(":checked")) $('.ComeSun').hide();
-  if(! $("[Name=Sun]").is(":checked")) $('.ComeMon').hide();
+  if(! $("[Name=Mon]").is(":checked")) $('.ComeMon').hide();
   if(! $("[Name=MFri]").is(":checked")) $('.ComeMFri').hide();
   if(! $("[Name=MSat]").is(":checked")) $('.ComeMSat').hide();
   if(! $("[Name=MSun]").is(":checked")) $('.ComeMSun').hide();
@@ -117,6 +138,7 @@ $(document).ready(function() {
   AgentChange();
   CheckContract();
   ComeAnyWarning();
+  CheckDiscount();
 } );
 
 function ComeSwitch(ev) {
@@ -128,7 +150,8 @@ function ComeSwitch(ev) {
   } else {
     $(".Come" + day).hide();
   }
-  ComeAnyWarning();  
+  ComeAnyWarning(); 
+  CheckDiscount(); 
 }
 
 function CopyAndSubmit(name) {
@@ -253,6 +276,7 @@ function ForceOneProcession(e) {
     $('#' + day + 'Dance').val(3);
     AutoInput(day + 'Dance');
   }
+  CheckDiscount();
 }
 
 function Trader_Insurance_Upload() {
