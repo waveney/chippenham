@@ -44,6 +44,13 @@
       Update_db_post('Articles',$Art);
       $Art['StopDate'] = time() - 60;
       Put_Article($Art);
+    } elseif ($_REQUEST['ACTION'] == 'COPY') {
+      $id = $_REQUEST['id'];
+      $Art = Get_Article($id);
+      $_POST['StartDate'] = time()+7*24*3600;
+      unset($Art['id']);
+      $_POST['SN'] .= " COPY OF ";
+      $id = Insert_db_post('Articles',$Art);
     } elseif ($_REQUEST['ACTION'] == 'DELETE') {
       $id = $_REQUEST['id'];
       db_delete('Articles',$id);
@@ -68,7 +75,7 @@
   
 //  var_dump($Art);
   echo "To limit when article will appear give a start and/or end date.<p>Do NOT use a facebook image as a link - they are transient.<p>\n";
-  echo "Set Title as @[Dance|Music]_[Imp,Many] to have a random important Performer or a random performer along with a count<p>\n";
+  echo "Set Title as @[Dance|Music| etc]_[Imp,Many] to have a random important Performer or a random performer along with a count<p>\n";
   echo "Set Title as @Perf 23 to do Performer 23, @Event will be used to highlight event - Not Implemented yet<p>\n";
   echo "The Banner formats go across the entire page<p>";
 
@@ -91,7 +98,7 @@
   echo "<tr>" . fm_date("Start Date",$Art,'StartDate') . fm_date("Stop Date",$Art,'StopDate');
   echo "<tr>" . fm_text("Link - may be blank",$Art,'Link') . "<td>";
     if ($id > 0) echo fm_hidden('id',$id) . "id: $id";
-    echo fm_text1("Image",$Art,'Image');
+    echo fm_text1("Image",$Art,'Image') . " Click Update if changed";
   echo "<tr>" . fm_textarea("Text:<br>(some html)", $Art,'Text',6,10);
   echo "</table></div>";
   
@@ -99,7 +106,8 @@
     echo "<input type=submit name=ACTION value=UPDATE>";
     echo "<input type=submit name=ACTION value=STOP>";
     echo "<input type=submit name=ACTION value=DELETE>";
-    
+    echo "<input type=submit name=ACTION value=COPY>";
+        
     if ($Art['StopDate']) {
       echo "<input type=submit name=ACTION value=REOPEN>" . fm_text1('on',$Art,'RestartDate');
     }

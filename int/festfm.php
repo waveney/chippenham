@@ -753,6 +753,13 @@ function number2roman($num,$isUpper=true) {
     else return strtolower($res);
 }
 
+function Ordinal($n) {
+  $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+
+  if (($n %100) >= 11 && ($n%100) <= 13) return 'th';
+  return $ends[$n % 10];
+}
+
 /* TODO
 --Documents
 --Insurance

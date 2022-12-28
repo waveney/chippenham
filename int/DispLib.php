@@ -369,6 +369,11 @@ function Expand_Special(&$Art) {
   }
 }
 
+//
+// REMEMBER IF YOU ADD A FORMAT EDIT HomePage.js AS WELL
+//
+
+
 function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
   if ($future == 0 && !Feature('UseArticles')) return 0;
   include_once("DanceLib.php");
@@ -463,6 +468,7 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] . 
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
+      echo "<br clear=all>";
       break;
           
     case 9: // V Small image to right of heading

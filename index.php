@@ -39,9 +39,10 @@
     $Banner .= "</div>";
 
     if ($YEARDATA['Years2Show'] == 2) {  
-      $Banner .= "<div class=BanDates2>Next Year: $NFrom - $NTo $NMonth $NYear<p><div class=BanNotice></div></div>";
+      $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
+                 "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
     } else {
-      $Banner .= "<a href=/Tickets class=BanDates>$DFrom - $DTo $DMonth $Sy</a>"; //<br>Buy Tickets</a>";  
+      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>"; //<br>Buy Tickets</a>";  
     }
 
     $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
@@ -53,9 +54,10 @@
     $Banner .= "</div>";
 
     if ($YEARDATA['Years2Show'] == 2) {  
-      $Banner .= "<div class=BanDates2>Next Year: $NFrom - $NTo $NMonth $NYear<p><div class=BanNotice></div></div>";
+      $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
+                 "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
     } else {
-      $Banner .= "<a href=/Tickets class=BanDates>$DFrom - $DTo $DMonth $Sy</a>"; //<br>Buy Tickets</a>";  
+      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>"; //<br>Buy Tickets</a>";  
     }
 
     $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
