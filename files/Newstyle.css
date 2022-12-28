@@ -1064,6 +1064,11 @@ textarea {
   padding-right:5px;
 }
 
+.ArtImageVS {
+  float:right;
+  padding-left:5px;
+}
+
 .ArtTextS {}
 
 .ArtFormat2 {}

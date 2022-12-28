@@ -33,7 +33,8 @@ $Cancel_States = ['','Cancel: Sent','Cancel: Avail','Cancel: Not Avail','Cancel:
 $Cancel_Colours = ['white','orange','green','red','yellow'];
 $EType_States = array('Very Early','Draft','Partial','Provisional','Complete');
 $TicketStates = array('Not Yet','Open','Closed','Remove','Remote');
-$ArticleFormats = ['Large Image','Small Image','Text','Banner Image','Banner Text','Fixed','Left/Right Pairs'];
+$ArticleFormats = ['Large Image','Small Image','Text','Banner Image','Banner Text','Fixed','Left/Right Pairs', '2/3rds Banner Image', 'Image below text', 
+ 'V Small image right of heading'];
 // Name => [EnableFld, Email@, Capability, ?, Code]
 $PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance Displays','D'],
               'Musical Act'=>['IsAnAct','Music','Music','Music','M'],

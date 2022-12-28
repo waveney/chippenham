@@ -115,7 +115,7 @@ $(document).ready(function() {
         var newheight = Math.floor(imght*newwidth/imgwd);
         clone = clone.replace(/class="ArtImageS"/,'class="ArtImageS" width=' + newwidth + ' height=' + newheight);
         Col.append(clone); 
-        $('#SArt'+ArtNum).height(newheight+PadWidth/2);
+//        $('#SArt'+ArtNum).height(newheight+PadWidth/2);
         break;
         
       case 2: // text - no actions needed
@@ -141,7 +141,8 @@ $(document).ready(function() {
         var targetht = ActColWidth*500/550;
         if (imgwd/imght < 0.8) { // Portrait 
           // if title, Swap title and image elements over - class becomes FP - scrolls text if needed
-          clone = clone.replace(/(<div class="ArtTitleF" (.*?)>)(<img class="ArtImageF" (.*?)>)/,"<img class=\"ArtImageFP\" $4 width=0 height=0><div class=\"ArtTitleFP\" $2>");
+          clone = clone.replace(/(<div class="ArtTitleF" (.*?)>)(<img class="ArtImageF" (.*?)>)/,
+                                "<img class=\"ArtImageFP\" $4 width=0 height=0><div class=\"ArtTitleFP\" $2>");
           clone = clone.replace(/class="ArtTextF"/,"class=ArtTextFP");
           clone = clone.replace(/clear="all"/,"");
           Col.append(clone); 
@@ -171,6 +172,32 @@ $(document).ready(function() {
         break;
         
       case 6: // Left/Right Pairs fullwidth
+        // TODO
+      
+      case 7: // 2/3rds Banner Image
+        // TODO
+      
+      case 8: // middle image below text
+        var cloneimg = $('#ArtImg' + ArtNum)
+        var imgwd = cloneimg.data('width');
+        var imght = cloneimg.data('height');
+        var newwidth = Math.floor(ActColWidth*.45);
+        var newheight = Math.floor(imght*newwidth/imgwd);
+        clone = clone.replace(/class="ArtImageL"/,'class="ArtImageS" width=' + newwidth + ' height=' + newheight);
+        Col.append(clone); 
+        break;
+      
+      case 9: // V Small image to right of heading
+        var cloneimg = $('#ArtImg' + ArtNum)
+        var imgwd = cloneimg.data('width');
+        var imght = cloneimg.data('height');
+        var newwidth = Math.floor(ActColWidth*.45);
+        var newheight = Math.floor(imght*newwidth/imgwd);
+        clone = clone.replace(/class="ArtImageVS"/,'class="ArtImageVS" width=' + newwidth + ' height=' + newheight);
+        Col.append(clone); 
+//        $('#SArt'+ArtNum).height(newheight+PadWidth/2);
+        break;
+      
       }
       ArtNum++
     }

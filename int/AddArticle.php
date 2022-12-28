@@ -84,6 +84,7 @@
       echo "No Image";
     }
   echo "<tr><td>" . fm_checkbox('Hide Title',$Art,'HideTitle');
+    echo "<td>" . fm_checkbox('Red Title',$Art,'RedTitle');
     echo "<td>Format:<td>" . fm_select($ArticleFormats,$Art,'Format');
   echo "<tr><td>Importance:<td>" . fm_select($Importance,$Art,'Importance');
     echo fm_text("Relative Order",$Art,'RelOrder');    

@@ -330,92 +330,7 @@ function Expand_Special(&$Art) {
     Expand_Many($Art,'IsCeilidh',"y.YearState>0", 'Ceilidh and Dance', 'Ceilidh and Dance ','Ceilidh');
     return;
     
-    
-
-/*
-    $Art['SN'] = "Dancing";
-    $Art['Link'] = "/LineUp?T=Dance";
-
-    $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND y.Coming=" . 
-           $Coming_Type['Y'] . " AND y.ReleaseDate<$now");
-    $Dsc = 0;
-    if ($ans) {
-      $res = $ans->fetch_assoc();
-      $Dsc = $res['Total'];
-    }
-    
-    $Art['Text'] = "$Dsc Dance team" . ($Dsc == 1?" has":"s have") . " already confirmed for $YEAR.  Many of your favourite teams and some new faces.";
-
-
-    $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
-                    "WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.Coming=" . 
-                    $Coming_Type['Y'] . " AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
-
-    if (!$ans) return; 
-    while ( $DMany = $ans->fetch_assoc()) {
-      if (in_array($DMany['SideId'],$Shown)) continue;
-      $Shown[] = $DMany['SideId'];
-
-      $Art['Text'] .= "  Including <a href=/int/ShowPerf?id=" . $DMany['SideId'] . ">" . $DMany['SN'] . "</a>";
-      $Art['Image'] = $DMany['Photo'];
-      $Art['ImageWidth'] = (isset($DMany['ImageWidth'])?$DMany['ImageWidth']:100);
-      $Art['ImageHeight'] = (isset($DMany['ImageHeight'])?$DMany['ImageHeight']:100);
-      return;
-    }
-    break;
-
-/*
-  case '@Music_Imp': 
-    $lvl = (isset($words[1])?$words[1]:0);
-    $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.IsAnAct=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND y.YearState>0 " . 
-                        " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.MusicImportance>$lvl)) AND " .
-                        "y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
-    if (!$ans) { echo "EEK"; $Art = []; return; }  
-  
-    while ( $Mstuff = $ans->fetch_assoc()) {
-      if (in_array($Mstuff['SideId'],$Shown)) continue;
-      $Shown[] = $Mstuff['SideId'];
-
-      $Art['SN'] = $Mstuff['SN'];
-      $Art['Link'] = ('/int/ShowPerf?id=' . $Mstuff['SideId']);
-      $Art['Text'] = $Mstuff['Description'];
-      $Art['Image'] = $Mstuff['Photo'];
-      $Art['ImageWidth'] = (isset($Mstuff['ImageWidth'])?$Mstuff['ImageWidth']:100);
-      $Art['ImageHeight'] = (isset($Mstuff['ImageHeight'])?$Mstuff['ImageHeight']:100);
-      return;
-    }
-    $Art = [];
-    break;
-
-  case '@Music_Many':
-    $Art['SN'] = "Music in $YEAR";
-    $Art['Link'] = "/LineUp?T=Music";
-
-    $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND y.YearState>0 AND y.ReleaseDate<$now");
-    $Msc = 0;
-    if ($ans) {
-      $res = $ans->fetch_assoc();
-      $Msc = $res['Total'];
-    }
-
-    $Art['Text'] = "$Msc Music act" . ($Msc == 1?" has":"s have") . " already confirmed for $YEAR.";
-    
-    $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y WHERE s.IsAnAct=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND " . 
-                        "s.Photo!='' AND y.YearState>0 AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
-    if (!$ans) return;
-      
-    while ( $MMany = $ans->fetch_assoc()) {
-      if (in_array($MMany['SideId'],$Shown)) continue;
-      $Shown[] = $MMany['SideId'];
-
-      $Art['Text'] .= "  Including <a href=/int/ShowPerf?id=" . $MMany['SideId'] . ">" . $MMany['SN'] . "</a>";
-      $Art['Image'] = $MMany['Photo'];
-      $Art['ImageWidth'] = (isset($MMany['ImageWidth'])?$MMany['ImageWidth']:100);
-      $Art['ImageHeight'] = (isset($MMany['ImageHeight'])?$MMany['ImageHeight']:100);
-      return;
-    }
-    break;
-*/
+ 
 
   case '@Perf': // Just this performer
     $id = $words[1];
@@ -480,7 +395,7 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
     case 0: // Large Image
     default:
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] . 
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
@@ -491,21 +406,21 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
         " data-width=" . $Art['ImageWidth'] . ">";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextS\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
           
     case 2: // Text Only
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleT\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleT" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextT\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
       
     case 3: // Banner Image
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
@@ -514,14 +429,14 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
               
     case 4: // Banner Text
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBT\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBT" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextBT\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
       
     case 5: // Fixed Image large box has ratio of 550:500
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleF\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div><br>";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleF" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div><br>";
       if ($Art['Image']) echo "<img class=\"ArtImageF rounded\" id=\"ArtImg$i\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
           " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a><br style='height:0' clear=\"all\">";
@@ -529,17 +444,37 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
       break;
 
     case 6: // Left/Right
+      // Not Written
+      break;
     
     case 7: // 2/3rds Banner Image
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextBI\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
               
-
+    case 8: // image below text
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      echo "<br><span class=\"ArtTextL\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] . 
+         " data-width=" . $Art['ImageWidth'] .">";
+      if ($Art['Link']) echo "</a>";
+      break;
+          
+    case 9: // V Small image to right of heading
+ 
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageVS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+        " data-width=" . $Art['ImageWidth'] . ">";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if ($Art['Link']) echo "</a>";
+      echo "<span class=\"ArtTextS\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
+      break;
+    
 
     }
     echo "</div><br clear=all>\n";          
