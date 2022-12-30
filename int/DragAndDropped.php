@@ -5,6 +5,7 @@ include_once("festfm.php");
 include_once("DanceLib.php");
 include_once("TradeLib.php");
 include_once("VolLib.php");
+include_once("NewsLib.php");
 
 function Archive_Stack($loc,$pth,$id) {
   if (!file_exists($loc)) return;
@@ -53,6 +54,12 @@ case 'Volunteer':
   $Data = Get_Volunteer($id);
   $Put = 'Put_Volunteer';
   $PathCat = 'Volunteers/Photos';
+  break;
+  
+case 'Article':
+  $Data = Get_Article($id);
+  $Put = 'Put_Article';
+  $PathCat = 'ArtImages';
   break;
   
 case 'Venue':
@@ -111,14 +118,25 @@ if (is_numeric($DDd['SetValue'])) {
 } else {
   $Data[$Type] = $DDd['SetValue'];
 }
+
+if (preg_match('/Image|Photo/',$Type,$mtch)) {
+  $stuff = getimagesize($target_file);
+  if ($stuff) {
+    $Data['ImageWidth'] = $stuff[0];
+    $Data['ImageHeight'] = $stuff[1];
+  }
+}
+
+$Mess = ''; 
+// "Here with: " . var_export($Data,1);
 $Put($Data);
 
 if ($files) {
-  $Mess = "The $Name file has been replaced by " . $_FILES["Upload"]["name"];
+  $Mess .= "The $Name file has been replaced by " . $_FILES["Upload"]["name"];
 } else {
-  $Mess = $_FILES["Upload"]["name"] . " has been stored as the $Name file";
+  $Mess .= $_FILES["Upload"]["name"] . " has been stored as the $Name file";
 }
-$Mess .= ".  Refresh the page if you wish to change it.";
+$Mess .= ".<br>Refresh the page if you wish to change it.";
 
 echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,$Mode,$Mess,1,'',$Class);
 

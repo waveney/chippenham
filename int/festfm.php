@@ -590,10 +590,11 @@ $DDdata = [
     'StagePA'  => [ 'UseYear'=>0, 'AddState'=>0, 'Name'=>'PA requirements', 'tr'=>0, 'SetValue'=>'@@FILE@@', 'cols'=>[2,2], 'path'=>'PAspecs' ],
     'Photo'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[2,2], 'path'=>'images', 'Show'=>1 ], 
     'NewPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1, 
-                 'Extra'=>"acceptedFiles: 'image/*',", 'Show'=>1],
+                 'Extra'=>"acceptedFiles: 'image/*',", 'Show'=>1,'Name'=>'Photo'],
     'NewImage' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1, 
-                 'Extra'=>"acceptedFiles: 'image/*',"],
-    'FirstAid' => [],
+                 'Extra'=>"acceptedFiles: 'image/*',",'Name'=>'Image'],
+    'Image'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>1 ], 
+
 ];
 
 
@@ -624,7 +625,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
       if (isset($Data[$Type]) && $Data[$Type]) {
         $str .= "<img id=Thumb$Type src=" . $Data[$Type] . " height=120>";
       } else {
-        $str .= "No Photo Yet";
+        $str .= "No $Name Yet";
       }
       $str .= "<td class='Result$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";
     } else {
@@ -695,6 +696,8 @@ XXX;
     $str .= "<td class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][1] . "><a href=ShowFile?l=$path.$Cursfx>View $Name file</a><br>";  
   }
   if ($Mess) $str .= "<td class='Result$Type $tdclass' $hid>$Mess";
+  
+  if ($Call == 0) $str .= "<script>Refresh_Image_After_Upload('$Type','" . $Data[$Type] . "');</script>";
   return $str;
 }
 

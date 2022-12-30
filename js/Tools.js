@@ -358,6 +358,10 @@ function Register_Onload(fun,p1,p2) {
   LoadStack.push([fun,p1,p2]);
 }
 
+function Refresh_Image_After_Upload(T,V) {
+  if (s=document.getElementById(T)) s.value = V;
+} 
+
 $(document).ready(function() {
 //  debugger;
   if (!LoadStack) return;

@@ -2,7 +2,7 @@
   include_once("fest.php");
   A_Check('Committee','News');
 
-  dostaffhead("Manage Front Page Articles");
+  dostaffhead("Manage Front Page Articles",["js/dropzone.js"]);
   global $Importance,$SHOWYEAR,$ArticleFormats;
 
   include_once("NewsLib.php");
@@ -74,32 +74,35 @@
   }
   
 //  var_dump($Art);
-  echo "To limit when article will appear give a start and/or end date.<p>Do NOT use a facebook image as a link - they are transient.<p>\n";
-  echo "Set Title as @[Dance|Music| etc]_[Imp,Many] to have a random important Performer or a random performer along with a count<p>\n";
+  echo "To limit when article will appear give a start and/or end date.<p>Do NOT use a facebook image as a link - they are transient.<br>\n";
+  echo "Set Title as @[Dance|Music| etc]_[Imp,Many] to have a random important Performer or a random performer along with a count<br>\n";
   echo "Set Title as @Perf 23 to do Performer 23, @Event will be used to highlight event - Not Implemented yet<p>\n";
   echo "The Banner formats go across the entire page<p>";
+  echo "You <b>MUST</b> create an article before you can upload an image.<p>";
 
   echo "<form method=post>";
   if (isset($Art['id'])) Register_AutoUpdate('Articles',$Art['id']);
   echo "<div class=tablecont><table border>\n";
-  echo "<tr>" . fm_text("Title",$Art,'SN',4);
+  echo "<tr>" . fm_text("Title",$Art,'SN',2);
+    echo "<td>" . fm_checkbox('Hide Title',$Art,'HideTitle');
+    echo "<td>" . fm_checkbox('Red Title',$Art,'RedTitle');
   echo "<tr>" . fm_text("Usage",$Art,'UsedOn');
-    echo "<td colspan=2 rowspan=5>";
+/*    echo "<td colspan=2 rowspan=5>";
     if ( isset($Art['Image']) && $Art['Image']) {
       echo "<img src=" . $Art['Image'] . " height=200>";
     } else {
       echo "No Image";
-    }
-  echo "<tr><td>" . fm_checkbox('Hide Title',$Art,'HideTitle');
-    echo "<td>" . fm_checkbox('Red Title',$Art,'RedTitle');
-    echo "<td>Format:<td>" . fm_select($ArticleFormats,$Art,'Format');
+    }*/
+    echo "<td colspan=3 rowspan=4><table border><tr>" . fm_DragonDrop(1, 'Image','Article',$Art['id'],$Art) . "</table>";
+  echo "<tr><td>Format:<td>" . fm_select($ArticleFormats,$Art,'Format');
   echo "<tr><td>Importance:<td>" . fm_select($Importance,$Art,'Importance');
-    echo fm_text("Relative Order",$Art,'RelOrder');    
+  echo "<tr>" , fm_text("Relative Order",$Art,'RelOrder');    
   echo "<tr>" . fm_date("Start Date",$Art,'StartDate') . fm_date("Stop Date",$Art,'StopDate');
   echo "<tr>" . fm_text("Link - may be blank",$Art,'Link') . "<td>";
     if ($id > 0) echo fm_hidden('id',$id) . "id: $id";
     echo fm_text1("Image",$Art,'Image') . " Click Update if changed";
   echo "<tr>" . fm_textarea("Text:<br>(some html)", $Art,'Text',6,10);
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
   echo "</table></div>";
   
   if ($id > 0) {
