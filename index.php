@@ -57,14 +57,14 @@
       $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
                  "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
     } else {
-      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>"; //<br>Buy Tickets</a>";  
+      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>"; //<br>Buy Tickets</a>";
     }
 
     $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
     $Banner .= "</div>";
   }
 
-  dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js"],$Banner );
+  dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner );
 
   if ( !Show_Articles_For("Top",$future)) {
     echo "<center><a href=/Tickets><img align=center src=/images/stuff/Main_Acts_2020t2.jpg class=BrianImg></a></center>";

@@ -63,6 +63,7 @@
       $Art['StartDate'] = (isset($_POST['RestartDate'])?$_POST['RestartDate']:0);
       Put_Article($Art);
     } elseif ($_REQUEST['ACTION'] == 'CREATE') {
+      if (empty($_POST['StartDate'])) $_POST['StartDate'] = time()+7*24*3600;    
       $id = Insert_db_post('Articles',$Art);
     } 
   } elseif (isset($_REQUEST['id'])) {
@@ -100,7 +101,7 @@
   echo "<tr>" . fm_date("Start Date",$Art,'StartDate') . fm_date("Stop Date",$Art,'StopDate');
   echo "<tr>" . fm_text("Link - may be blank",$Art,'Link') . "<td>";
     if ($id > 0) echo fm_hidden('id',$id) . "id: $id";
-    echo fm_text1("Image",$Art,'Image') . " Click Update if changed";
+    echo fm_text1("Image",$Art,'Image') . " Click Update if manually changed";
   echo "<tr>" . fm_textarea("Text:<br>(some html)", $Art,'Text',6,10);
   if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
   echo "</table></div>";
@@ -115,7 +116,7 @@
       echo "<input type=submit name=ACTION value=REOPEN>" . fm_text1('on',$Art,'RestartDate');
     }
   } else {
-    echo "<input type=submit name=ACTION value=CREATE>";
+    echo "<input type=submit name=ACTION value=CREATE> . Create this in the future, check it and only then bring the start date forward or remove it.";
   }
   
   echo "</form><p>\n";

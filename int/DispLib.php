@@ -370,7 +370,7 @@ function Expand_Special(&$Art) {
 }
 
 //
-// REMEMBER IF YOU ADD A FORMAT EDIT HomePage.js AS WELL
+// REMEMBER IF YOU ADD A FORMAT EDIT Articles.js AS WELL
 //
 
 
