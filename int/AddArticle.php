@@ -13,7 +13,7 @@
   $Dates = array('StartDate','StopDate','RestartDate');
   
   if (isset($_REQUEST['ACTION'])) { /* Response to create/update button */
-    Parse_DateInputs($Dates);
+    Parse_DateInputs($Dates,1);
     
     if (isset($_REQUEST['Image']) && $_REQUEST['Image']) {
       $img = $_REQUEST['Image'];

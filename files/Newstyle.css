@@ -1107,6 +1107,16 @@ textarea {
 
 .ArtTextBI {}
 
+.ArtFormat7 {}
+
+.ArtTitleBI23 {}
+
+.ArtImageBI23 {
+  width:67%
+}
+
+.ArtTextBI23 {}
+
 .ArtFormat5 {
   overflow:auto;
 }

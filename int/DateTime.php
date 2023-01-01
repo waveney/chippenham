@@ -8,8 +8,9 @@
 //        If numbers dom = numbers else eom
 //        Find LC Month String - Look for short form only?
 //        returns 0 or best guess date
-function Date_BestGuess($txt) {
+function Date_BestGuess($txt,$All=0) {
   global $PLANYEAR;
+//echo "Best guess t:$txt a:$All<br>";
   if (!$txt) return 0;
   $Months = array('jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec');
   $daysOfM = array(31,28,31,30,31,30,31,31,30,31,30,31);
@@ -20,17 +21,17 @@ function Date_BestGuess($txt) {
     $day = $mtch[1];
     $mnth = $mtch[2];
     if (isset($mtch[3]) && $mtch[3])$yr = $mtch[3];
-    if (isset($mtch[4]) && $mtch[4])$ts = $mtch[3];
+    if (isset($mtch[4]) && $mtch[4])$ts = $mtch[4];
   } else if (preg_match('/(\d+)-(\d+)-(\d+)( +.*)?/',$txt,$mtch)) {
     $day = $mtch[3];
     $mnth = $mtch[2];
     $yr = $mtch[1];
-    if (isset($mtch[4]) && $mtch[4])$ts = $mtch[3];
+    if (isset($mtch[4]) && $mtch[4])$ts = $mtch[4];
   } else if (preg_match('/(\d+) +(\a+) +(\d+)/',$txt,$mtch)) {
     $day = $mtch[1];
     $mnth = array_search(substr(strtolower($mtch[2]),0,3),$Months)+1;
     $yr = $mtch[3];
-    if (isset($mtch[4]) && $mtch[4])$ts = $mtch[3];
+    if (isset($mtch[4]) && $mtch[4])$ts = $mtch[4];
   } else {
     $day = -1;
     if (preg_match('/(\d+)/',$txt,$mtch)) $day = $mtch[1];
@@ -47,10 +48,10 @@ function Date_BestGuess($txt) {
 
   $Toff=0;
   if ($ts) {
-    $Toff = Time_BestGuess($ts,1)*60;
+    $Toff = Time_BestGuess($ts,1,0,$All)*60;
   }
-
-
+//debug_print_backtrace();
+//echo "Toff is $Toff alll is $All ts is $ts<br>";
   if ($yr) {
     if (strlen($yr)<4) $yr+=2000;
     return mktime(0,0,0,$mnth,$day,$yr) + $Toff;
@@ -64,7 +65,7 @@ function Date_BestGuess($txt) {
 //        if MINS==0 Returns time as 2400 format hhmm
 //        if MINS !=0 trying to get N minutes - affects how 2,12 are passed returns ddd mins
 //        morethan an earlier time that this should be more than helps sort out 11 is it 11 am or 11pm
-function Time_BestGuess($txt,$MINS=0,$morethan=0) {
+function Time_BestGuess($txt,$MINS=0,$morethan=0,$All=0) {
 //  echo "Best guess of $txt ";
   $lt = strtolower($txt);
   $lt = preg_replace('/\s+/', '', $lt);
@@ -76,7 +77,7 @@ function Time_BestGuess($txt,$MINS=0,$morethan=0) {
     $min = $mtch[2];
   } else if (preg_match('/(\d+):(\d+)/',$lt,$mtch)) {
     $hr = $mtch[1];
-    if ($hr < 10) $hr+=12;
+    if ($All == 0 && $hr < 10) $hr+=12;
     $min = $mtch[2];
   } else if (preg_match('/(\d+)\.(\d+) *?(\a\a)/',$lt,$mtch)) {
     $hr = $mtch[1];
@@ -84,7 +85,7 @@ function Time_BestGuess($txt,$MINS=0,$morethan=0) {
     $min = $mtch[2];
   } else if (preg_match('/(\d+)\.(\d+)/',$lt,$mtch)) {
     $hr = $mtch[1];
-    if ($hr < 10) $hr+=12;
+    if ($All == 0 && $hr < 10) $hr+=12;
     $min = $mtch[2];
   } else if (preg_match('/(\d\d)(\d\d)/',$lt,$mtch)) {
     $hr = $mtch[1];
@@ -149,7 +150,7 @@ function Time_BestGuess($txt,$MINS=0,$morethan=0) {
       if ($hr*100 < $morethan) $hr+=12;
     } else {
       $hr = $mtch[1];
-      if ($hr < 10) $hr+=12;
+      if ($All == 0 && $hr < 10) $hr+=12;
     }
   } else if (preg_match('/(\D+)/',$lt,$mtch)) {
     $w1 = $mtch[1];
@@ -216,9 +217,9 @@ function Parse_TimeInputs(&$feilds,&$minflds=NULL) {
   }
 }
 
-function Parse_DateInputs(&$feilds) {
+function Parse_DateInputs(&$feilds,$All=0) {
   foreach($feilds as $fld) {
-    if (isset($_POST[$fld])) $_POST[$fld] = Date_BestGuess($_POST[$fld]);
+    if (isset($_POST[$fld])) $_POST[$fld] = Date_BestGuess($_POST[$fld],$All);
   }
 }
 

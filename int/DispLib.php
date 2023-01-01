@@ -454,11 +454,11 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
     
     case 7: // 2/3rds Banner Image
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . "'>";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI23" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI23\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
-      echo "<span class=\"ArtTextBI\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
+      echo "<span class=\"ArtTextBI23\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
               
     case 8: // image below text

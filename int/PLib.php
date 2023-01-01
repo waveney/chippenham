@@ -643,13 +643,13 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         case 'Chip':
           if ($Side['IsASide']) {
             echo "<tr><td colspan=6>Festival Tickets wanted at <span id=TickDiscount>No discount</span> - You will be sent a link to purchase these by the festival.";
-            echo "<tr>" . fm_number1('Adults',$Sidey,'Performers') . fm_number1('Youth (10-15)',$Sidey,'PerformersYouth') .
+            echo "<tr>" . fm_number1('Adults',$Sidey,'Performers') . fm_number1('Youth (10-16)',$Sidey,'PerformersYouth') .
                  fm_number1('Child (under 10)',$Sidey,'PerformersChild');
           } 
           
           if ($Side['IsAnAct'] || $Side['IsFunny'] || $Side['IsFamily'] || $Side['IsCeilidh'] || $Side['IsOther'] ) {
             echo "<tr class=NotCSide><td class=NotCSide>Free Tickets:" . fm_number1('Adults',$Sidey,'FreePerf','class=NotCSide') . 
-                 fm_number1('Youth (10-15)',$Sidey,'FreeYouth','class=NotCSide') .
+                 fm_number1('Youth (10-16)',$Sidey,'FreeYouth','class=NotCSide') .
                  fm_number1('Child (under 10)',$Sidey,'FreeChild','class=NotCSide');
           
           }
