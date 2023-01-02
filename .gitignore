@@ -4,6 +4,7 @@ int/.*.swp
 tickets
 OldStuff/*
 int/Configuration.ini
+files/.*
 images/Sides
 images/Works
 images/Trade

@@ -498,7 +498,7 @@ function List_Vols() {
 
   $VolMgr = Access('Committee','Volunteers');
   echo "Click on name for full info<p>";
-  
+  echo "A <b>?</b> for a team, means they have volunteered for this team, but not yet been accepted.<p>";
   echo "Where it says EXPAND under availability, means there is a longer entry - click on the persons name or the expand button to see more info on their availabilty<p>";
   
   if ($VolMgr ) echo "To reject an application or do a partial acceptance, first click on their name.<p>";

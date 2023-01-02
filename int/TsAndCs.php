@@ -23,6 +23,7 @@
   echo "<tr>" . fm_textarea('Dummy Contract',$TnC,'DummyContract',4,4);
   echo "<tr>" . fm_textarea('Camping General',$TnC,'CampGen',4,4);
   echo "<tr>" . fm_textarea('MailChimp',$TnC,'MailChimp',4,4);  
+  echo "<tr>" . fm_textarea('Ticket Header',$TnC,'TicketHeader',4,4);  
   
   if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
   echo "</table><br>\n";

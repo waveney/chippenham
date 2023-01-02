@@ -14,10 +14,9 @@
   
   // This is a short term kludge
   
-  echo "<center><b>Early Bird Tickets for Chippenham Folk Festival 26th - 29th May 2023 are now on sale<p>";
-  echo "<center>Early Bird Tickets sale ends 31st December!!!<p>";
-  echo "<center><h3>If you would prefer to buy your tickets over the phone,<br>please call our box office on 0121 472 6688 (9am - 9pm)</h3><p></b>";
-  
+
+  echo TnC("Ticket Header");
+    
   echo "<div class=TicketFrame style='max-width:1000px;'>";
   echo '<p><script type="text/javascript" src="https://theticketsellerslive.blob.core.windows.net/webcontent/embed/iframeResizer.min.js"></script><iframe src="https://ww2.theticketsellers.co.uk/embed/10055506" scrolling="no" style="border: 0px; width: 1px; min-width: 100%; max-width: 1100px;" onload="iFrameResize()"></iframe></p>';
   echo "</div>";
