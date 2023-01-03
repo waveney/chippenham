@@ -235,7 +235,8 @@ function Count_Perf_Type($type,$Year=0) {
   return $Dsc;
 }
 
-function Expand_Imp(&$Art,$Isa,$Cometest,$Importance,$lvl) {
+function Expand_Imp(&$Art,$Isa,$Cometest,$Importance,$lvl,$future) {
+  global $db,$YEAR,$Coming_Type;
   $now = time();
     $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.$IsA=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND $Cometest " .    
                     " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.$Importance>$lvl)) AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
@@ -256,7 +257,8 @@ function Expand_Imp(&$Art,$Isa,$Cometest,$Importance,$lvl) {
     $Art = [];
 }
 
-function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp) {
+function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future) {
+  global $db,$YEAR,$Coming_Type;
   $now = time();
   $Art['SN'] = $Name;
   $Art['Link'] = "/LineUp?T=$LineUp";
@@ -269,13 +271,14 @@ function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp) {
       $Dsc = $res['Total'];
     }
     
-    $Art['Text'] = "$Dsc $Generic" . ($Msc == 1?" has":"s have") . " already confirmed for $YEAR.";
+    $Art['Text'] = "$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " already confirmed for $YEAR.";
 
 
     $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
                     "WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND s.$Isa=1 AND $Cometest " . 
                     " AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
 
+    $Shown = [];
     if (!$ans) return; 
     while ( $DMany = $ans->fetch_assoc()) {
       if (in_array($DMany['SideId'],$Shown)) continue;
@@ -289,45 +292,45 @@ function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp) {
     }
 }
 
-function Expand_Special(&$Art) {
+function Expand_Special(&$Art,$future=0) {
   global $db,$YEAR,$Coming_Type;
   static $Shown = [];
   static $EShown = [];
   $now = time();
-  
+//echo "In special 1";  
   $words = explode(' ',$Art['SN']);
-
+//var_dump($words);
   switch ($words[0]) {
   case '@Dance_Imp':
-    Expand_Imp($Art,'IsASide',"y.Coming=" . $Coming_Type['Y'] ,'DanceImportance', (isset($words[1])?$words[1]:0));
+    Expand_Imp($Art,'IsASide',"y.Coming=" . $Coming_Type['Y'] ,'DanceImportance', (isset($words[1])?$words[1]:0),$future);
     return;
     
   case '@Music_Imp': 
-    Expand_Imp($Art,'IsMusic',"y.YearState>0" ,'MusicImportance', (isset($words[1])?$words[1]:0));
+    Expand_Imp($Art,'IsMusic',"y.YearState>0" ,'MusicImportance', (isset($words[1])?$words[1]:0),$future);
     return;
   
   case '@Family_Imp':
-    Expand_Imp($Art,'IsFamily',"y.YearState>0" ,'FamilyImportance', (isset($words[1])?$words[1]:0));
+    Expand_Imp($Art,'IsFamily',"y.YearState>0" ,'FamilyImportance', (isset($words[1])?$words[1]:0),$future);
     return;
 
   case '@Ceilidh_Imp':
-    Expand_Imp($Art,'IsCeilidh',"y.YearState>0" ,'CeilidhImportance', (isset($words[1])?$words[1]:0));
+    Expand_Imp($Art,'IsCeilidh',"y.YearState>0" ,'CeilidhImportance', (isset($words[1])?$words[1]:0),$future);
     return;
 
   case '@Dance_Many':
-    Expand_Many($Art,'IsASide',"y.Coming=" . $Coming_Type['Y'], 'Dance Team', 'Dancing','Dance');
+    Expand_Many($Art,'IsASide',"y.Coming=" . $Coming_Type['Y'], 'Dance Team', 'Dancing','Dance',$future);
     return;
     
   case '@Music_Many':
-    Expand_Many($Art,'IsAnAct',"y.YearState>0", 'Music Act', 'Music','Music');
+    Expand_Many($Art,'IsAnAct',"y.YearState>0", 'Music Act', 'Music','Music',$future);
     return;
 
   case '@Family_Many':
-    Expand_Many($Art,'IsFamily',"y.YearState>0", 'Family Entertainer', 'Family Entertainment','Family');
+    Expand_Many($Art,'IsFamily',"y.YearState>0", 'Family Entertainer', 'Family Entertainment','Family',$future);
     return;
 
   case '@Ceilidh_Many':
-    Expand_Many($Art,'IsCeilidh',"y.YearState>0", 'Ceilidh and Dance', 'Ceilidh and Dance ','Ceilidh');
+    Expand_Many($Art,'IsCeilidh',"y.YearState>0", 'Ceilidh and Dance', 'Ceilidh and Dance ','Ceilidh',$future);
     return;
     
  
@@ -384,12 +387,13 @@ function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
 //  var_dump($Arts);
   echo "<div id=ShowArt data-settings='$datas'></div><p>";
   echo "<div id=OrigArt hidden>";
+//  echo "<div id=OrigArt>";
   foreach ($Arts as $i=>$Art) {
     $fmt = (isset($Art['Format'])?$Art['Format']:0);
     echo "<div id=Art$i data-format=$fmt class=\"Art ArtFormat$fmt\" ";
-    
+// var_dump($Art['SN']);    
     if (substr($Art['SN'],0,1) == '@') { // Special
-      Expand_Special($Art);  // Will Update content of Art
+      Expand_Special($Art,$future);  // Will Update content of Art
     }
     if (count($Art)==0 || (!$Art['Text'] && !$Art['Image'] && (!$Art['SN'] || $Art['HideTitle']))) {
       echo "hidden ></div>";

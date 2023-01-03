@@ -94,7 +94,7 @@
     } else {
       echo "No Image";
     }*/
-    echo "<td colspan=3 rowspan=4><table border><tr>" . fm_DragonDrop(1, 'Image','Article',$Art['id'],$Art) . "</table>";
+    if (isset($Art['id'])) echo "<td colspan=3 rowspan=4><table border><tr>" . fm_DragonDrop(1, 'Image','Article',$Art['id'],$Art) . "</table>";
   echo "<tr><td>Format:<td>" . fm_select($ArticleFormats,$Art,'Format');
   echo "<tr><td>Importance:<td>" . fm_select($Importance,$Art,'Importance');
   echo "<tr>" , fm_text("Relative Order",$Art,'RelOrder');    
