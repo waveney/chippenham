@@ -1,11 +1,12 @@
 <?php
-  include_once ("int/fest.php");
+  include_once("int/fest.php");
   include_once("int/ProgLib.php");
   include_once("int/DispLib.php");
   include_once("int/DanceLib.php");
   include_once("int/MusicLib.php");
 
   $T = 'Dance';
+  $FORCE = isset($_REQUEST['FORCE']);
   
   if (isset($_GET['T'])) $T = $_GET['T'];
   if (strlen($T) > 12 || preg_match('/\W/',$T)) $T = 'Dance';  
@@ -26,7 +27,7 @@
   $ShortDesc = 1;
   
   $PerfTs = Get_Perf_Types(1);
-  if ($YEAR != $PLANYEAR) {
+  if ($YEAR != $PLANYEAR || $FORCE) {
     $PState = 1;
   } else {
     $PState = $PerfD['ListState'];
@@ -51,7 +52,7 @@
   
       if (Feature('DanceComp')) echo "We will also be having a <a href=int/ShowArticles?w=NWDanceComp>Competiton for the best North West Morris Team</a>.<p>";
   
-      echo "<a href=/int/ShowArticles?w=DanceStyles>Find out more about the Dance Styles</a><p>";
+//      echo "<a href=/int/ShowArticles?w=DanceStyles>Find out more about the Dance Styles</a><p>";
     
 //      echo "Click on the name of a team, or their photograph to find out more about them and where they are dancing.<p>\n";
       if ($ET['State'] >=3 ) echo "<b><a href=/int/ShowDanceProg?Cond=1&Pub=1&Y=$YEAR>" . $EType_States[$ET['State']] . 

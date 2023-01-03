@@ -124,7 +124,8 @@
     }
     $txt .= "<li><a href=ShowDanceProg?Y=$YEAR>View Dance Programme</a>";
     $txt .= "<li><a href=/Map?F=3>Dance Location Map</a>";
-
+    $txt .= "<li><a href=/LineUp?T=Dance&FORCE>Dance Lineup</a> (Even if not public)";
+    
     if (Access('SysAdmin')) {
 //      $txt .= "<li><a href=ShowDanceProg?Y=$YEAR>View Dance Programme</a>";
       $txt .= "<p><div class=tablecont><table class=FullWidth><tr><td width=300px>";
