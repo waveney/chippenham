@@ -165,7 +165,7 @@
       $txt .= "<li><a href=ListMusic?SEL=Booking&Y=$YEAR&T=M>List Music Acts Booking</a>\n";
       $txt .= "<li><a href=ListMusic?SEL=BookingLastYear&Y=$YEAR&T=M>List Music Acts Booking Last Year</a>\n";
       $txt .= "<li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=M>List All Music Acts in Database</a>\n";
-
+      $txt .= "<li><a href=/LineUp?T=Music&FORCE>Music Lineup</a> (Even if not public)";
 //      $txt .= "<li>Music Acts Summary"; //<a href=MusicSummary?Y=$YEAR>Music Acts Summary</a>\n";
     }
     if (Access('Staff','Music')) {
@@ -211,6 +211,8 @@
     if (Access('Staff','Comedy')) {
       $txt .= "<li><a href=CreatePerf?T=C&Y=$YEAR>Add Comedy Performer to Database</a>";
     }
+    $txt .= "<li><a href=/LineUp?T=Comedy&FORCE>Comedy Lineup</a> (Even if not public)";
+   
     $txt .= "</ul>\n";
   }
   if ($x = StaffTable('Ceilidh','Ceilidhs and Dances')) {
@@ -223,6 +225,8 @@
     if (Access('Staff','Ceilidh')) {
       $txt .= "<li><a href=CreatePerf?T=H&Y=$YEAR>Add Ceilidh Performer to Database</a>";
     }
+    $txt .= "<li><a href=/LineUp?T=Ceilidh&FORCE>Ceilidh Lineup</a> (Even if not public)";
+    
     $txt .= "</ul>\n";
   }
   if ($x = StaffTable('Family',"Children's Entertainers")) {
@@ -235,6 +239,8 @@
     if (Access('Staff','Family')) {
       $txt .= "<li><a href=CreatePerf?T=Y&Y=$YEAR>Add Children's Entertainers to Database</a>";
     }
+    $txt .= "<li><a href=/LineUp?T=Family&FORCE>Family Lineup</a> (Even if not public)";
+    
     if (Access('SysAdmin')) {
       $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
     }
@@ -250,6 +256,8 @@
     if (Access('Staff','Other')) {
       $txt .= "<li><a href=CreatePerf?T=O&Y=$YEAR>Add Other Performer to Database</a>";
     }
+    $txt .= "<li><a href=/LineUp?T=Other&FORCE>Other Lineup</a> (Even if not public)";
+
     $txt .= "</ul>\n";
   }
     
