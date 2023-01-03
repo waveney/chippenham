@@ -144,9 +144,10 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         if ($PerfTC > 1) echo " " . fm_checkbox("Diff Imp",$Side,'DiffImportance'); 
 //        echo " " . fm_text0("Rel Order",$Side,'RelOrder',1,'class=NotSide','class=NotSide size=4');  // Unused
         echo fm_text1('Where found',$Side,'Pre2017',1,'class=NotSide','class=NotSide'); 
-      if (!$Wide) echo "<tr><td class=NotSide>";//<td class=NotSide>";
-        echo "<td class=NotSide colspan=2>";
+      if (!$Wide) echo "<tr><td class=NotSide>Permormer type:";//<td class=NotSide>";
         echo Help('PerfTypes') . " ";
+        echo "<td class=NotSide colspan=2>";
+
         foreach ($PerfTypes as $t=>$p) if (Capability("Enable" . $p[2])) echo fm_checkbox($t,$Side,$p[0]) . " ";
         echo "<td class=NotSide>State:" . fm_select($Side_Statuses,$Side,'SideStatus') . "\n";
         if ($PerfTC > 1 && $Side['DiffImportance']) {

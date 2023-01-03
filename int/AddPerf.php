@@ -98,7 +98,7 @@
       }
 
       if (isset($_POST{'InviteAct'}) || isset($_POST{'ReminderAct'})) {
-        date_default_timezone_set('GMT');
+
         if (strlen($_POST['Invited'])) $_POST['Invited'] .= ", ";
         $_POST['Invited'] .= date('j/n');
       } elseif (isset($_POST['NewAccessKey'])) {
@@ -109,6 +109,10 @@
         Contract_Save($Side,$Sidey,2,1); 
       } elseif (isset($_POST['Decline'])) { 
         Contract_Decline($Side,$Sidey,2); 
+      } elseif (isset($_POST['Delete'])) { 
+        db_delete('Sides', $snum);
+        echo "<h2>Deleted</h2>";
+        dotail();
       }
 
       Update_db_post('Sides',$Side);
@@ -203,6 +207,7 @@
       echo "<div class=floatright>";
       echo "<input type=Submit id=smallsubmit name='NewAccessKey' class=Button$BUTTON value='New Access Key'>";
       echo "<input type=Submit id=smallsubmit name='Contract2' class=Button$BUTTON value='Confirm Contract'>";
+      echo "<input type=Submit id=smallsubmit name='Delete' class=Button$BUTTON value='Delete'>";
       echo "</div>\n";
     }
     echo "<Center><input type=Submit name='Update' value='Save Changes' class=Button$BUTTON >\n";
