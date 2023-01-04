@@ -23,7 +23,7 @@
     setcookie('FESTD',$biscuit,0,'/');
     $_COOKIE['FESTD'] = $biscuit;
 
-    dostaffhead("Trader", ["/js/Participants.js", "/js/dropzone.js"]);
+    dostaffhead("Trader", ["/js/Participants.js", "/js/dropzone.js","css/dropzone.css"]);
 
     $USER['AccessLevel'] = $Access_Type['Participant'];
     $USER['Subtype'] = 'Trader';
@@ -64,7 +64,7 @@
     setcookie('FESTD',$biscuit,0,'/');
     $_COOKIE['FESTD'] = $biscuit;
 
-    dostaffhead($Type, ["/js/Participants.js", "/js/dropzone.js"]);
+    dostaffhead($Type, ["/js/Participants.js", "/js/dropzone.js","css/dropzone.css"]);
 
     $USER['AccessLevel'] = $Access_Type['Participant'];
     $USER['Subtype'] = $Type;

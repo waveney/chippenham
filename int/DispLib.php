@@ -221,6 +221,10 @@ function Gallery($id,$embed=0) {
   if (!$embed) dotail();
 }
 
+$ShownInArt = $EShownInArt = [];
+global $ShownInArt, $EShownInArt;
+
+
 function Count_Perf_Type($type,$Year=0) {
   global $YEAR,$db,$Coming_Type;
   $now = time();
@@ -236,15 +240,15 @@ function Count_Perf_Type($type,$Year=0) {
 }
 
 function Expand_Imp(&$Art,$Isa,$Cometest,$Importance,$lvl,$future) {
-  global $db,$YEAR,$Coming_Type;
+  global $db,$YEAR,$Coming_Type,$ShownInArt;
   $now = time();
     $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.$IsA=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND $Cometest " .    
                     " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.$Importance>$lvl)) AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
     if (!$ans) { $Art = []; return; }  
   
     while ( $Dstuff = $ans->fetch_assoc()) {
-      if (in_array($Dstuff['SideId'],$Shown)) continue;
-      $Shown[] = $Dstuff['SideId'];
+      if (in_array($Dstuff['SideId'],$ShownInArt)) continue;
+      $ShownInArt[] = $Dstuff['SideId'];
 
       $Art['SN'] = $Dstuff['SN'];
       $Art['Link'] = ('/int/ShowPerf?id=' . $Dstuff['SideId']);
@@ -258,7 +262,7 @@ function Expand_Imp(&$Art,$Isa,$Cometest,$Importance,$lvl,$future) {
 }
 
 function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future) {
-  global $db,$YEAR,$Coming_Type;
+  global $db,$YEAR,$Coming_Type,$ShownInArt;
   $now = time();
   $Art['SN'] = $Name;
   $Art['Link'] = "/LineUp?T=$LineUp";
@@ -278,11 +282,10 @@ function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future) {
                     "WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND s.$Isa=1 AND $Cometest " . 
                     " AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
 
-    $Shown = [];
     if (!$ans) return; 
     while ( $DMany = $ans->fetch_assoc()) {
-      if (in_array($DMany['SideId'],$Shown)) continue;
-      $Shown[] = $DMany['SideId'];
+      if (in_array($DMany['SideId'],$ShownInArt)) continue;
+      $ShownInArt[] = $DMany['SideId'];
 
       $Art['Text'] .= "  Including <a href=/int/ShowPerf?id=" . $DMany['SideId'] . ">" . $DMany['SN'] . "</a>";
       $Art['Image'] = $DMany['Photo'];
@@ -294,8 +297,8 @@ function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future) {
 
 function Expand_Special(&$Art,$future=0) {
   global $db,$YEAR,$Coming_Type;
-  static $Shown = [];
-  static $EShown = [];
+  global $ShownInArt;
+  global $EShownInArt;
   $now = time();
 //echo "In special 1";  
   $words = explode(' ',$Art['SN']);
@@ -306,15 +309,15 @@ function Expand_Special(&$Art,$future=0) {
     return;
     
   case '@Music_Imp': 
-    Expand_Imp($Art,'IsMusic',"y.YearState>0" ,'MusicImportance', (isset($words[1])?$words[1]:0),$future);
+    Expand_Imp($Art,'IsMusic',"y.YearState>1" ,'MusicImportance', (isset($words[1])?$words[1]:0),$future);
     return;
   
   case '@Family_Imp':
-    Expand_Imp($Art,'IsFamily',"y.YearState>0" ,'FamilyImportance', (isset($words[1])?$words[1]:0),$future);
+    Expand_Imp($Art,'IsFamily',"y.YearState>1" ,'FamilyImportance', (isset($words[1])?$words[1]:0),$future);
     return;
 
   case '@Ceilidh_Imp':
-    Expand_Imp($Art,'IsCeilidh',"y.YearState>0" ,'CeilidhImportance', (isset($words[1])?$words[1]:0),$future);
+    Expand_Imp($Art,'IsCeilidh',"y.YearState>1" ,'CeilidhImportance', (isset($words[1])?$words[1]:0),$future);
     return;
 
   case '@Dance_Many':
@@ -322,26 +325,26 @@ function Expand_Special(&$Art,$future=0) {
     return;
     
   case '@Music_Many':
-    Expand_Many($Art,'IsAnAct',"y.YearState>0", 'Music Act', 'Music','Music',$future);
+    Expand_Many($Art,'IsAnAct',"y.YearState>1", 'Music Act', 'Music','Music',$future);
     return;
 
   case '@Family_Many':
-    Expand_Many($Art,'IsFamily',"y.YearState>0", 'Family Entertainer', 'Family Entertainment','Family',$future);
+    Expand_Many($Art,'IsFamily',"y.YearState>1", 'Family Entertainer', 'Family Entertainment','Family',$future);
     return;
 
   case '@Ceilidh_Many':
-    Expand_Many($Art,'IsCeilidh',"y.YearState>0", 'Ceilidh and Dance', 'Ceilidh and Dance ','Ceilidh',$future);
+    Expand_Many($Art,'IsCeilidh',"y.YearState>1", 'Ceilidh and Dance bands and callers', 'Ceilidh and Dance ','Ceilidh',$future);
     return;
     
  
 
   case '@Perf': // Just this performer
     $id = $words[1];
-    if (in_array($id,$Shown)) {
+    if (in_array($id,$ShownInArt)) {
       $Art = [];
       return;
     }
-    $Shown [] = $id;
+    $ShownInArt [] = $id;
     $Perf = Get_Side($id);
     $Art['SN'] = $Perf['SN'];
     $Art['Link'] = '/int/ShowPerf?id=' . $Perf['SideId'];
@@ -354,11 +357,11 @@ function Expand_Special(&$Art,$future=0) {
   case '@Event' : // Just this Event
     include_once("ProgLib.php");
     $id = $words[1];
-    if (in_array($id,$EShown)) {
+    if (in_array($id,$EShownInArt)) {
       $Art = [];
       return;
     }
-    $EShown [] = $id;
+    $EShownInArt [] = $id;
     $E = Get_Event($id);
     $Art['SN'] = $E['SN'];
     $Art['Link'] = '/int/EventShow?e=' . $id;

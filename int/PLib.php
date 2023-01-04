@@ -144,11 +144,18 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         if ($PerfTC > 1) echo " " . fm_checkbox("Diff Imp",$Side,'DiffImportance'); 
 //        echo " " . fm_text0("Rel Order",$Side,'RelOrder',1,'class=NotSide','class=NotSide size=4');  // Unused
         echo fm_text1('Where found',$Side,'Pre2017',1,'class=NotSide','class=NotSide'); 
+        
+      $IsAs = 0;
+      foreach($PerfTypes as $t=>$p) if ($Side[$p[0]]) $IsAs++;
       if (!$Wide) echo "<tr><td class=NotSide>Permormer type:";//<td class=NotSide>";
         echo Help('PerfTypes') . " ";
         echo "<td class=NotSide colspan=2>";
-
-        foreach ($PerfTypes as $t=>$p) if (Capability("Enable" . $p[2])) echo fm_checkbox($t,$Side,$p[0]) . " ";
+        
+        foreach ($PerfTypes as $t=>$p) {
+          if (Capability("Enable" . $p[2])) {
+            echo fm_checkbox($t,$Side,$p[0], (($Side[$p[0]] && ( $IsAs == 1) && ! Access('SysAdmin')) ? 'disabled readonly': ' onchange=location.reload() ')) . " ";
+          }
+        }
         echo "<td class=NotSide>State:" . fm_select($Side_Statuses,$Side,'SideStatus') . "\n";
         if ($PerfTC > 1 && $Side['DiffImportance']) {
           echo "<tr><td class=NotSide>Importances:" . help('Importance');

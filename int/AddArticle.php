@@ -2,7 +2,7 @@
   include_once("fest.php");
   A_Check('Committee','News');
 
-  dostaffhead("Manage Front Page Articles",["js/dropzone.js"]);
+  dostaffhead("Manage Front Page Articles",["js/dropzone.js","css/dropzone.css"]);
   global $Importance,$SHOWYEAR,$ArticleFormats;
 
   include_once("NewsLib.php");
