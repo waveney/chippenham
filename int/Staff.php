@@ -241,9 +241,6 @@
     }
     $txt .= "<li><a href=/LineUp?T=Family&FORCE>Family Lineup</a> (Even if not public)";
     
-    if (Access('SysAdmin')) {
-      $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
-    }
     $txt .= "</ul>\n";
   }
   if ($x = StaffTable('OtherPerf', 'Other Performers')) {
@@ -257,6 +254,9 @@
       $txt .= "<li><a href=CreatePerf?T=O&Y=$YEAR>Add Other Performer to Database</a>";
     }
     $txt .= "<li><a href=/LineUp?T=Other&FORCE>Other Lineup</a> (Even if not public)";
+    if (Access('SysAdmin')) {
+      $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
+    }
 
     $txt .= "</ul>\n";
   }
@@ -459,6 +459,9 @@
       $txt .= "<li><a href=WaterManage>Water Refills</a>\n";
 
 //      $txt .= "<li><a href=ImportOldInvoice>Import Old Invoices</a>\n";  
+    }
+    if (Access('Committee','Finance')) {
+      $txt .= "<li><a href=Payments?Y=$YEAR>List All Performer Payments</a>\n";      
     }
     $txt .= "</ul><p>\n";
   }

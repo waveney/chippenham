@@ -24,6 +24,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     if (($d[0] != 'IsASide') && $Side[$d[0]]) $NotD = 1;
   }
  // if ( isset($Side['Photo']) && ($Side['Photo'])) echo "<img class=floatright id=PerfThumb src=" . $Side['Photo'] . " height=80>\n";
+//  if (Access('SysAdmin')) 
   echo "<input  class=floatright type=Submit name='Update' value='Save Changes' form=mainform>";
   if ($Mode && ((isset($Side['Email']) && strlen($Side['Email']) > 5) || (isset($Side['AltEmail']) && strlen($Side['AltEmail']) > 5)) )  {
     if (Feature('EmailButtons')) {
@@ -145,15 +146,15 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 //        echo " " . fm_text0("Rel Order",$Side,'RelOrder',1,'class=NotSide','class=NotSide size=4');  // Unused
         echo fm_text1('Where found',$Side,'Pre2017',1,'class=NotSide','class=NotSide'); 
         
-      $IsAs = 0;
-      foreach($PerfTypes as $t=>$p) if ($Side[$p[0]]) $IsAs++;
+//      $IsAs = 0;
+//      foreach($PerfTypes as $t=>$p) if ($Side[$p[0]]) $IsAs++;
       if (!$Wide) echo "<tr><td class=NotSide>Permormer type:";//<td class=NotSide>";
         echo Help('PerfTypes') . " ";
         echo "<td class=NotSide colspan=2>";
         
         foreach ($PerfTypes as $t=>$p) {
           if (Capability("Enable" . $p[2])) {
-            echo fm_checkbox($t,$Side,$p[0], (($Side[$p[0]] && ( $IsAs == 1) && ! Access('SysAdmin')) ? 'disabled readonly': ' onchange=location.reload() ')) . " ";
+            echo fm_checkbox($t,$Side,$p[0]);//, (($Side[$p[0]] && ( $PerfTC == 1) /* && ! Access('SysAdmin')*/ ) ? 'disabled readonly': ' onchange=this.form.submit() ')) . " ";
           }
         }
         echo "<td class=NotSide>State:" . fm_select($Side_Statuses,$Side,'SideStatus') . "\n";
@@ -561,7 +562,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     }
   } 
   
-  if ($NotD) {
+  if ($NotD && Feature('PerformerAvail')) {
     if ($YEARDATA['FirstDay'] <= 0) {
       echo "<tr><td rowspan=$DayCount id=Availability>Availability:";
         echo "<td>" . fm_checkbox(FestDate(0,$format='L',$YEAR) ,$Sidey,'MFri');

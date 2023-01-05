@@ -210,6 +210,7 @@
       echo "<input type=Submit id=smallsubmit name='Delete' class=Button$BUTTON value='Delete'>";
       echo "</div>\n";
     }
+//    if (Access('SysAdmin')) {};
     echo "<Center><input type=Submit name='Update' value='Save Changes' class=Button$BUTTON >\n";
     if (Access('Staff','Dance')) {
       if (!isset($Sidey['Coming']) || $Sidey['Coming'] == 0) {

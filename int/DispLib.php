@@ -333,7 +333,7 @@ function Expand_Special(&$Art,$future=0) {
     return;
 
   case '@Ceilidh_Many':
-    Expand_Many($Art,'IsCeilidh',"y.YearState>1", 'Ceilidh and Dance bands and callers', 'Ceilidh and Dance ','Ceilidh',$future);
+    Expand_Many($Art,'IsCeilidh',"y.YearState>1", 'Ceilidh and Dance bands and caller', 'Ceilidh and Dance ','Ceilidh',$future);
     return;
     
  

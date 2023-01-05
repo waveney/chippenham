@@ -122,7 +122,8 @@ function &Part_Come_All() {
   global $db,$YEAR,$Coming_Type;
   $Coming = [];
 
-  $qry = "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideStatus=0 AND s.SideId=y.SideId AND y.Year='$YEAR' AND ( y.Coming=" . $Coming_Type['Y'] . " OR y.YearState>1 ) ORDER BY s.SN" ;
+  $qry = "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideStatus=0 AND s.SideId=y.SideId AND y.Year='$YEAR' AND ( y.Coming=" . 
+         $Coming_Type['Y'] . " OR y.YearState>1 ) ORDER BY s.SN" ;
   $res = $db->query($qry);
   if ($res) while ($row = $res->fetch_assoc()) $Coming[$row['SideId']] = $row; // All Sides, now acts
   return $Coming;  
