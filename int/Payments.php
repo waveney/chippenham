@@ -79,7 +79,7 @@
       
       fputcsv($output,$csvdata);
     } else {
-      echo "<tr><td>" . $payee['SideId'] . "/" . $payee['syId'] . "<td>" . $payee['SN'];
+      echo "<tr><td>" . $payee['SideId'] . "/" . $payee['syId'] . "<td><a href=AddPerf?id=" . $payee['SideId'] . ">" . $payee['SN'] . "</a>";
       echo "<td>" . $payee['TotalFee'];
       echo "<td>" . $payee['SortCode'] . "<td>" . $payee['Account'] . "<td>" . $payee['AccountName'];
     

@@ -149,6 +149,8 @@ function fm_basictextarea(&$data,$field,$cols=1,$rows=1,$extra1='',$field2='') {
 }
 
 function fm_checkbox($Desc,&$data,$field,$extra='',$field2='',$split=0,$extra2='') {
+
+//echo "Desc = $Desc, Field = $field, Data = " . $data[$field] . ", extra=$extra <p>";
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
   if (isset($data[$field])) if ($data[$field]) {

@@ -105,6 +105,7 @@ function Is_SubType($Name) {
   if (empty($Stypes)) {
     $Ttypes = Gen_Get_All('UserCap',"WHERE User=$USERID");
     foreach($Ttypes as $T) $Stypes[$Sections[$T['Capability']]] = $T['Level'];
+//var_dump($Stypes);
   }
   if (isset($Stypes[$Name])) return $Stypes[$Name];
   return 0;

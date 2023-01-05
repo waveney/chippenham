@@ -148,7 +148,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         
 //      $IsAs = 0;
 //      foreach($PerfTypes as $t=>$p) if ($Side[$p[0]]) $IsAs++;
-      if (!$Wide) echo "<tr><td class=NotSide>Permormer type:";//<td class=NotSide>";
+      if (!$Wide) echo "<tr><td class=NotSide>Performer type:";//<td class=NotSide>";
         echo Help('PerfTypes') . " ";
         echo "<td class=NotSide colspan=2>";
         
