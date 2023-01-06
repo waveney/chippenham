@@ -18,30 +18,31 @@ function ImgData() {
     case 2: // Comics
     case 3: // Family
     case 4: // Other
+    case 5: // Ceiidh
       $Data = Get_Side($Who);
       $Field = 'Photo';
       $FinalLoc = "images/Sides/" . $Who;
       $Put_Data = 'Put_Side';
       break;
-    case 5: // Trader
+    case 6: // Trader
       $Data = Get_Trader($Who);
       $Field = 'Photo';
       $FinalLoc = "images/Trade/" . $Who;
       $Put_Data = 'Put_Trader';
       break;
-    case 6: // Sponsor
+    case 7: // Sponsor
       $Data = Get_Sponsor($Who);
       $Field = 'Image';
       $FinalLoc = "images/Sponsors/" . $Who;
       $Put_Data = 'Put_Sponsor';
       break;
-    case 7: // Venue
+    case 8: // Venue
       $Data = Get_Venue($Who);
       $Field = 'Image';
       $FinalLoc = "images/Venues/" . $Who;
       $Put_Data = 'Put_Venue';
       break;
-    case 8: // Venue2
+    case 9: // Venue2
       $Data = Get_Venue($Who);
       $Field = 'Image2';
       $FinalLoc = "images/Venues/" . $Who . "I2";
