@@ -1039,6 +1039,7 @@ textarea {
 
 .ArtImageL {
   padding-bottom:5px;
+/*  max-height:300px;*/
 }
 
 .ArtTextL {

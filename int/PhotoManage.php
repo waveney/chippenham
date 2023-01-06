@@ -176,7 +176,7 @@ if (isset($_FILES['croppedImage'])) {
   } else {
     $_POST['SHAPE'] = $Shape;
   }
-  $PhotoCats = array('Sides','Acts','Comics','Family','Other','Traders','Sponsors','Venues','Venue2');
+  $PhotoCats = array('Sides','Acts','Comics','Family','Other','Ceilidh', 'Traders','Sponsors','Venues','Venue2');
 
   $Lists = array(
         'Sides'=> Perf_Name_List('IsASide'),
@@ -184,7 +184,8 @@ if (isset($_FILES['croppedImage'])) {
         'Comics'=>Perf_Name_List('IsFunny'),
         'Family'=>Perf_Name_List('IsFamily'),
         'Other'=>Perf_Name_List('IsOther'),
-
+        'Ceilidh'=>Perf_Name_List('IsCeilidh'),
+        
         'Traders'=>Get_All_Traders(0),
         'Sponsors'=>Get_Sponsor_Names(),
         'Venues'=>Get_Venues(0),
@@ -197,6 +198,7 @@ if (isset($_FILES['croppedImage'])) {
         'Comics'=>Access('Staff','Comedy'),
         'Family'=>Access('Staff','Family'),
         'Other'=>Access('Staff','Other'),
+        'Ceilidh'=>Access('Staff','Ceilidh'),
 
         'Traders'=>Access('Staff','Trade'),
         'Sponsors'=>Access('Staff','Sponsors'),
