@@ -44,7 +44,7 @@
     $ET = Get_Event_Type_For("Dancing");
     if ($YEAR != $PLANYEAR) {
       echo "In $YEAR, These Dance teams were in $Place.  Click on the name or photograph to find out more and where they were dancing.<p>\n" .
-                          "<b><a href=/int/ShowDanceProg?Cond=1&Pub=1&Y=$YEAR>Dance Programme for " . substr($YEAR,0,4) . "</a></b><p>\n";
+                          "<b><a href=/int/ShowDanceProg?Y=$YEAR>Dance Programme for " . substr($YEAR,0,4) . "</a></b><p>\n";
     } else {
 //      echo "In " . ($YEAR-1) . " we had over " . Count_Perf_Type('IsASide',$YEAR-1) . " teams performing, for $YEAR we already have " .
 //             Count_Perf_Type('IsASide',$YEAR) . " confirmed and lots more to come.<p>";
@@ -153,7 +153,7 @@
   echo "<div style='clear:both;'>";
   $Prev = FestFeature('PrevRealFest',$YEARDATA['PrevFest']);
   if (isset($ET) && $Prev >= $ET['FirstYear']) {
-    if ($T == 'Dance') echo "<b><a href=/int/ShowDanceProg?Cond=1&Pub=1&Y=$Prev>Complete Dance Programme for $Prev</a>, ";
+    if ($T == 'Dance') echo "<b><a href=/int/ShowDanceProg?Y=$Prev>Complete Dance Programme for $Prev</a>, ";
     echo "<br clear=all><a href=/LineUp?t=$T&Y=$Prev>$T Line Up $Prev</a></b><p>";
   }
 

@@ -1,12 +1,12 @@
 CREATE TABLE `Directories` (
-  `DirId` int(11) NOT NULL AUTO_INCREMENT,
+  `DirId` int NOT NULL AUTO_INCREMENT,
   `SN` text NOT NULL,
-  `Created` int(11) NOT NULL,
-  `Who` int(11) NOT NULL,
-  `Parent` int(11) NOT NULL,
-  `State` tinyint(4) NOT NULL DEFAULT '0',
-  `AccessLevel` int(11) NOT NULL,
+  `Created` int NOT NULL,
+  `Who` int NOT NULL,
+  `Parent` int NOT NULL,
+  `State` tinyint NOT NULL DEFAULT '0',
+  `AccessLevel` int NOT NULL,
   `AccessSections` text NOT NULL,
-  `ExtraData` int(11) NOT NULL,
+  `ExtraData` int NOT NULL,
   PRIMARY KEY (`DirId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

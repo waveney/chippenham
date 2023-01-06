@@ -1,7 +1,7 @@
 CREATE TABLE `VenueYear` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `VenueId` int(11) NOT NULL,
-  `Year` int(11) NOT NULL,
-  `Complete` tinyint(4) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `VenueId` int NOT NULL,
+  `Year` int NOT NULL,
+  `Complete` tinyint NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

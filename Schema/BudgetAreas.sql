@@ -1,12 +1,12 @@
 CREATE TABLE `BudgetAreas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `SN` text NOT NULL,
-  `Year` int(11) NOT NULL,
-  `Budget` int(11) NOT NULL,
-  `CommittedSoFar` int(11) NOT NULL,
-  `Who` int(11) NOT NULL,
-  `Who2` int(11) NOT NULL,
-  `Who3` int(11) NOT NULL,
-  `Who4` int(11) NOT NULL,
+  `Year` int NOT NULL,
+  `Budget` int NOT NULL,
+  `CommittedSoFar` int NOT NULL,
+  `Who` int NOT NULL,
+  `Who2` int NOT NULL,
+  `Who3` int NOT NULL,
+  `Who4` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

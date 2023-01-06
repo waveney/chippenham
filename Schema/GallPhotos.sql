@@ -1,11 +1,11 @@
 CREATE TABLE `GallPhotos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `Galid` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Galid` int NOT NULL,
   `Credit` text NOT NULL,
   `File` text NOT NULL,
   `Caption` text NOT NULL,
-  `RelOrder` int(11) NOT NULL,
-  `ImageHeight` int(11) NOT NULL,
-  `ImageWidth` int(11) NOT NULL,
+  `RelOrder` int NOT NULL,
+  `ImageHeight` int NOT NULL,
+  `ImageWidth` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

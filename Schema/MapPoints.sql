@@ -1,14 +1,14 @@
 CREATE TABLE `MapPoints` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `SN` text NOT NULL,
-  `Type` int(11) NOT NULL,
+  `Type` int NOT NULL,
   `Lat` text NOT NULL,
   `Lng` text NOT NULL,
   `MapImp` text NOT NULL,
   `Notes` text NOT NULL,
-  `InUse` tinyint(4) NOT NULL,
+  `InUse` tinyint NOT NULL,
   `Link` text NOT NULL,
-  `AddText` int(11) NOT NULL,
-  `Directions` tinyint(4) NOT NULL,
+  `AddText` int NOT NULL,
+  `Directions` tinyint NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

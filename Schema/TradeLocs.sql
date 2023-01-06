@@ -1,17 +1,17 @@
 CREATE TABLE `TradeLocs` (
-  `TLocId` int(11) NOT NULL AUTO_INCREMENT,
+  `TLocId` int NOT NULL AUTO_INCREMENT,
   `SN` text,
-  `HasPower` tinyint(4) NOT NULL,
-  `Pitches` int(11) NOT NULL,
+  `HasPower` tinyint NOT NULL,
+  `Pitches` int NOT NULL,
   `Notes` text NOT NULL,
-  `InUse` tinyint(4) NOT NULL,
-  `Days` tinyint(4) NOT NULL,
-  `ArtisanMsgs` tinyint(4) NOT NULL,
-  `prefix` tinyint(4) NOT NULL,
-  `InvoiceCode` int(11) NOT NULL,
+  `InUse` tinyint NOT NULL,
+  `Days` tinyint NOT NULL,
+  `ArtisanMsgs` tinyint NOT NULL,
+  `prefix` tinyint NOT NULL,
+  `InvoiceCode` int NOT NULL,
   `MapImage` text NOT NULL,
   `Mapscale` float NOT NULL,
   `Showscale` double NOT NULL,
-  `NoList` tinyint(4) NOT NULL,
+  `NoList` tinyint NOT NULL,
   PRIMARY KEY (`TLocId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

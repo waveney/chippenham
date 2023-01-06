@@ -117,12 +117,12 @@
     if (Access('Staff','Dance')) {
       if ($YEAR == $PLANYEAR) {
         /* $txt .= "<li><a href=DanceProg?Y=$YEAR>Edit Dance Programme</a>"; */
-        $txt .= "<li><a href=NewDanceProg?Y=$YEAR>Edit Dance Programme</a>";
+        $txt .= "<li><a href=NewDanceProg?Cond=1&Pub=0&Y=$YEAR>Edit Dance Programme</a>";
       } else {
-        $txt .= "<li><a href=NewDanceProg?Y=$YEAR&SAND>Edit $YEAR Dance Programme in Sandbox</a>";
+        $txt .= "<li><a href=NewDanceProg?Y=Cond=1&Pub=0&$YEAR&SAND>Edit $YEAR Dance Programme in Sandbox</a>";
       }
     }
-    $txt .= "<li><a href=ShowDanceProg?Y=$YEAR>View Dance Programme</a>";
+    $txt .= "<li><a href=ShowDanceProg?Pub=0&Y=$YEAR>View Dance Programme</a>";
     $txt .= "<li><a href=/Map?F=3>Dance Location Map</a>";
     $txt .= "<li><a href=/LineUp?T=Dance&FORCE>Dance Lineup</a> (Even if not public)";
     
@@ -143,9 +143,9 @@
 //      $txt .= "<li class=smalltext><a href=FixBug3?Y=$YEAR>Create/Copy missing SideYear records after Date Change</a>";
 //      $txt .= "<li class=smalltext><a href=FixBug2?Y=$YEAR>Change order of message records</a>";
       $txt .= "<td width=300px>";
-      $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=0&Pub=1&Head=0&Day=Sat&Y=$YEAR>Dance Programme - Sat - no headers</a>";
-      $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=0&Pub=1&Head=0&Day=Sun&Y=$YEAR>Dance Programme - Sun - no headers</a>";
-      $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=0&Pub=1&Head=0&Day=Mon&Y=$YEAR>Dance Programme - Mon - no headers</a>";
+      $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Day=Sat&Y=$YEAR>Dance Programme - Sat - no headers</a>";
+      $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Day=Sun&Y=$YEAR>Dance Programme - Sun - no headers</a>";
+      $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Day=Mon&Y=$YEAR>Dance Programme - Mon - no headers</a>";
       $txt .= "<li class=smalltext><a href=CheckDuplicates?Y=$YEAR>Check for Duplicate Year Tables Entries</a>";      
 //      $txt .= "<li class=smalltext><a href=ImportDance2>Import Appalachian List</a>"; // Should never be needed again
 //      $txt .= "<li class=smalltext><a href=CheckAccessKeys>Check and fix Blank Access Keys</a>"; 
@@ -375,6 +375,7 @@
     $txt .= "<li><a href=Volunteers?A=New>Volunteering Application Form</a>\n";
     $txt .= "<li><a href=Volunteers?A=List>List Volunteers</a>\n";
     $txt .= "<li><a href=VolCats>Volunteer Categories</a>\n";
+    
     if (Access('Staff','Photos')) {
       $txt .= "<p><li><a href=PhotoUpload>Photo Upload</a>";
       $txt .= "<li><a href=PhotoManage>Photo Manage</a>";
@@ -387,10 +388,10 @@
     if (Access('Committee')) $txt .= "<li><a href=CampTypes?Y=$YEAR>Camping Types</a>\n"; 
     if (Access('Committee')) $txt .= "<li><a href=CampUse?Y=$YEAR>Camping Use</a>\n"; 
     $txt .= "<p>";
-    if (Access('SysAdmin')) $txt .= "<li><a href=CampsiteUse?Y=$YEAR>Manage Wimborne Style Campsite Use</a>\n"; 
-    if (Access('SysAdmin')) $txt .= "<li><a href=CarerTickets?Y=$YEAR>Manage Carer / Partner Tickets</a>\n"; 
-    if (Access('SysAdmin','Sponsors')) $txt .= "<li><a href=TaxiCompanies>Manage Taxi Company List</a>\n"; 
-    if (Access('SysAdmin')) $txt .= "<li><a href=ConvertPhotos>Convert Archive Format</a>";
+//    if (Access('SysAdmin')) $txt .= "<li><a href=CampsiteUse?Y=$YEAR>Manage Wimborne Style Campsite Use</a>\n"; 
+//    if (Access('SysAdmin')) $txt .= "<li><a href=CarerTickets?Y=$YEAR>Manage Carer / Partner Tickets</a>\n"; 
+//    if (Access('SysAdmin','Sponsors')) $txt .= "<li><a href=TaxiCompanies>Manage Taxi Company List</a>\n"; 
+//    if (Access('SysAdmin')) $txt .= "<li><a href=ConvertPhotos>Convert Archive Format</a>";
     $txt .= "</ul>\n";
   }
 

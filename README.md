@@ -1,7 +1,7 @@
 # Chip
-Chippenham Folk festival Website
+Chippenham/Generic Folk festival Website
 
-This is the master data for the website, no data is loaded here (ever)
+This is the master system for the website, no data is loaded here (ever)
 
 Needs php 8
 
@@ -11,7 +11,10 @@ Needs to be at a webspace root, Php needs the Document root in the php include p
 
 Needs ImageMagick installed for some features to work.
 
-Then run int/Initialise.php - this will create appropriate subdirectories and populate the database with appropriate initial tables and values (Warning probably out of date).
+Needs Skeema see https://www.skeema.io for initialise to work and the database updates to be automated.
+
+Then run int/Initialise.php - this will create appropriate subdirectories and populate the database 
+with appropriate initial tables and values (Warning definately out of date).
 
 It will (soon?) track changes to the structure of the database and automatically update as appropriate.
 

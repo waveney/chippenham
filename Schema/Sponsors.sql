@@ -1,13 +1,13 @@
 CREATE TABLE `Sponsors` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `SN` text,
   `Website` text NOT NULL,
   `Description` text NOT NULL,
-  `Year` int(11) NOT NULL,
-  `Importance` int(11) NOT NULL,
+  `Year` int NOT NULL,
+  `Importance` int NOT NULL,
   `Image` text NOT NULL,
-  `ImageHeight` int(11) NOT NULL,
-  `ImageWidth` int(11) NOT NULL,
-  `IandT` tinyint(4) NOT NULL,
+  `ImageHeight` int NOT NULL,
+  `ImageWidth` int NOT NULL,
+  `IandT` tinyint NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

@@ -1,12 +1,12 @@
 CREATE TABLE `VolYear` (
-  `VYid` int(11) NOT NULL AUTO_INCREMENT,
-  `Volid` int(11) NOT NULL,
-  `SC_Stew` tinyint(4) NOT NULL,
-  `SC_Setup` tinyint(4) NOT NULL,
-  `SC_Tech` tinyint(4) NOT NULL,
-  `SC_Art` tinyint(4) NOT NULL,
-  `SC_Media` tinyint(4) NOT NULL,
-  `SC_Other` tinyint(4) NOT NULL,
+  `VYid` int NOT NULL AUTO_INCREMENT,
+  `Volid` int NOT NULL,
+  `SC_Stew` tinyint NOT NULL,
+  `SC_Setup` tinyint NOT NULL,
+  `SC_Tech` tinyint NOT NULL,
+  `SC_Art` tinyint NOT NULL,
+  `SC_Media` tinyint NOT NULL,
+  `SC_Other` tinyint NOT NULL,
   `Stew_Prefer` text NOT NULL,
   `Stew_Dislike` text NOT NULL,
   `Setup_Like` text NOT NULL,
@@ -32,9 +32,9 @@ CREATE TABLE `VolYear` (
   `Avail9` text NOT NULL,
   `Avail10` text NOT NULL,
   `Avail11` text NOT NULL,
-  `Year` int(11) NOT NULL,
+  `Year` int NOT NULL,
   `OtherText` text NOT NULL,
   `Notes` text NOT NULL,
   `Examples` text NOT NULL,
   PRIMARY KEY (`VYid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

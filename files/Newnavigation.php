@@ -153,7 +153,7 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         case 0:
           foreach ($Event_Types_Full as $ET) {
             if ($ET['DontList']) continue;
-            $Bar[$ET['Plural']] = (empty($ET['Sherlock']) || is_numeric($ET['Sherlock'])?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
+            $Bar[$ET['Plural']] = ((empty($ET['Sherlock']) || is_numeric($ET['Sherlock']) || ($ET['State'] < 3))?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
           }
           break;
         case 1:

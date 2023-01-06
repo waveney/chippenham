@@ -16,8 +16,8 @@
   $head = 1;
   if (isset($_GET['Head'])) $head = $_GET['Head'];
 
-  $Public='';
-  if (isset($_GET['Pub'])) $Public=1;
+  $Public=1;
+  if (isset($_GET['Pub'])) $Public=$_GET['Pub'];
 
 //  var_dump($day);
   Prog_Headers($Public,$head);

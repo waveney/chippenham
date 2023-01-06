@@ -86,7 +86,7 @@
     echo "</div></div>";
   }
   echo "</div>\n";
-  echo "<center><table style='table-layout: fixed;width:100%' id=SponDisplay><tr id=SponsorRow></table></center>";
+  echo "<center><table style='table-layout: fixed;width:100%' id=SponDisplay><tr id=SponsorRow height=240></table></center>";
 
   if ($future) {
     echo "<form method=post>";
