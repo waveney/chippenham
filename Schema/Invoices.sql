@@ -27,7 +27,7 @@ CREATE TABLE `Invoices` (
   `Amount3` int NOT NULL,
   `Source` int NOT NULL,
   `History` text NOT NULL,
-  `Year` int NOT NULL,
+  `Year` text NOT NULL,
   `SourceId` int NOT NULL,
   `Reason` text NOT NULL,
   `CNReason` text NOT NULL,

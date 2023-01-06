@@ -4,5 +4,10 @@ CREATE TABLE `Galleries` (
   `Credits` text NOT NULL,
   `Media` tinyint NOT NULL,
   `Banner` text NOT NULL,
+  `MenuBarOrder` int NOT NULL,
+  `Description` text NOT NULL,
+  `GallerySet` text NOT NULL,
+  `Image` int NOT NULL,
+  `Level` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

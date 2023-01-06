@@ -20,6 +20,7 @@ CREATE TABLE `Events` (
   `IsConcert` tinyint NOT NULL,
   `ListDance` tinyint NOT NULL,
   `ListMusic` tinyint NOT NULL,
+  `ListComedy` tinyint NOT NULL,
   `EndDay` tinyint NOT NULL,
   `ExcludeCount` tinyint NOT NULL,
   `IgnoreClash` tinyint NOT NULL,
@@ -75,5 +76,7 @@ CREATE TABLE `Events` (
   `ExcludePA` tinyint NOT NULL,
   `IgnoreMultiUse` tinyint NOT NULL,
   `ShowSubevent` tinyint NOT NULL,
+  `WeirdStuff` tinyint NOT NULL,
+  `SponsoredBy` int NOT NULL,
   PRIMARY KEY (`EventId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

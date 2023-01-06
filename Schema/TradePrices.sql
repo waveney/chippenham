@@ -15,5 +15,6 @@ CREATE TABLE `TradePrices` (
   `TOpen` tinyint NOT NULL,
   `Description` text NOT NULL,
   `SalesCode` int NOT NULL,
+  `DefaultSize` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

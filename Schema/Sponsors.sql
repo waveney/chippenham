@@ -3,7 +3,7 @@ CREATE TABLE `Sponsors` (
   `SN` text,
   `Website` text NOT NULL,
   `Description` text NOT NULL,
-  `Year` int NOT NULL,
+  `Year` text NOT NULL,
   `Importance` int NOT NULL,
   `Image` text NOT NULL,
   `ImageHeight` int NOT NULL,

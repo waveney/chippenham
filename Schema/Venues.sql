@@ -20,6 +20,7 @@ CREATE TABLE `Venues` (
   `MinorFri` tinyint NOT NULL,
   `MinorSat` tinyint NOT NULL,
   `MinorSun` tinyint NOT NULL,
+  `MinorMon` int NOT NULL,
   `Address` text NOT NULL,
   `PostCode` text NOT NULL,
   `Description` text NOT NULL,
@@ -49,6 +50,8 @@ CREATE TABLE `Venues` (
   `AccessKey` text NOT NULL,
   `Complete` int NOT NULL,
   `Banner` text NOT NULL,
+  `SponsoredBy` int NOT NULL,
+  `SponsorYear` int NOT NULL,
   PRIMARY KEY (`VenueId`),
   UNIQUE KEY `VenueId` (`VenueId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

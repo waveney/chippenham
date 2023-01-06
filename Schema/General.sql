@@ -1,5 +1,6 @@
 CREATE TABLE `General` (
-  `Year` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Year` text NOT NULL,
   `Version` text NOT NULL,
   `Freeze` tinyint NOT NULL,
   `DanceProgAvail` tinyint NOT NULL,
@@ -91,5 +92,8 @@ CREATE TABLE `General` (
   `SaturdayText` text NOT NULL,
   `SundayText` text NOT NULL,
   `Years2Show` tinyint NOT NULL,
-  PRIMARY KEY (`Year`)
+  `NextFest` text NOT NULL,
+  `PrevFest` text NOT NULL,
+  `FestFeatures` text NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

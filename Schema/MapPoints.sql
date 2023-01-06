@@ -11,4 +11,4 @@ CREATE TABLE `MapPoints` (
   `AddText` int NOT NULL,
   `Directions` tinyint NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

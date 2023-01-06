@@ -11,8 +11,8 @@ CREATE TABLE `MasterData` (
   `UseArticles` tinyint NOT NULL,
   `UseNews` tinyint NOT NULL,
   `UseGalleries` tinyint NOT NULL,
-  `PlanYear` int NOT NULL,
-  `ShowYear` int NOT NULL,
+  `PlanYear` text NOT NULL,
+  `ShowYear` text NOT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
   `Capabilities` text NOT NULL,
   `Features` text NOT NULL,
@@ -31,5 +31,6 @@ CREATE TABLE `MasterData` (
   `TradeTandC` text NOT NULL,
   `TradeTimes` text NOT NULL,
   `TradeFAQ` text NOT NULL,
+  `FooterText` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

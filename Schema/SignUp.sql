@@ -1,9 +1,9 @@
 CREATE TABLE `SignUp` (
   `id` int NOT NULL AUTO_INCREMENT,
   `SN` text,
-  `Year` int NOT NULL,
+  `Year` text NOT NULL,
   `Activity` int NOT NULL,
-  `State` tinyint NOT NULL,
+  `State` tinyint NOT NULL DEFAULT '0',
   `Contact` text NOT NULL,
   `Address` text NOT NULL,
   `PostCode` text NOT NULL,
@@ -47,5 +47,6 @@ CREATE TABLE `SignUp` (
   `Tickbox5` tinyint NOT NULL,
   `Tickbox6` tinyint NOT NULL,
   `Age` text NOT NULL,
+  `Discount` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

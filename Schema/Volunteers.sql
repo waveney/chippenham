@@ -10,8 +10,16 @@ CREATE TABLE `Volunteers` (
   `ContactName` text NOT NULL,
   `ContactPhone` text NOT NULL,
   `DBS` text NOT NULL,
+  `FirstAid` text NOT NULL,
   `Relation` smallint NOT NULL,
   `AccessKey` text NOT NULL,
   `Status` tinyint NOT NULL,
+  `Disabilities` text NOT NULL,
+  `KeepMe` int NOT NULL,
+  `Photo` text NOT NULL,
+  `DBSupload` text NOT NULL,
+  `FirstAidUpload` text NOT NULL,
+  `OtherUpload` text NOT NULL,
+  `Money` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

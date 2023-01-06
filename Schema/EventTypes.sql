@@ -13,8 +13,11 @@ CREATE TABLE `EventTypes` (
   `IncType` tinyint NOT NULL,
   `NoPart` tinyint NOT NULL,
   `DontList` tinyint NOT NULL,
-  `FirstYear` int NOT NULL,
+  `FirstYear` text NOT NULL,
   `Banner` text NOT NULL,
   `MapFeatNum` int NOT NULL,
+  `IsConcert` tinyint NOT NULL,
+  `Importance` int NOT NULL,
+  `Sherlock` text NOT NULL,
   PRIMARY KEY (`ETypeNo`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

@@ -24,5 +24,8 @@ CREATE TABLE `Trade` (
   `AccessKey` text NOT NULL,
   `PublicHealth` text NOT NULL,
   `SageCode` text NOT NULL,
+  `SortCode` text NOT NULL,
+  `Account` text NOT NULL,
+  `AccountName` text NOT NULL,
   PRIMARY KEY (`Tid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

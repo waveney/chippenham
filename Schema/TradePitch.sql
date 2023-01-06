@@ -1,6 +1,6 @@
 CREATE TABLE `TradePitch` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `Year` int NOT NULL,
+  `Year` text NOT NULL,
   `Loc` int NOT NULL,
   `X` double NOT NULL,
   `Y` double NOT NULL,

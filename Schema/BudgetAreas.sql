@@ -1,7 +1,7 @@
 CREATE TABLE `BudgetAreas` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `SN` text NOT NULL,
-  `Year` int NOT NULL,
+  `SN` text COLLATE latin1_general_ci NOT NULL,
+  `Year` text COLLATE latin1_general_ci NOT NULL,
   `Budget` int NOT NULL,
   `CommittedSoFar` int NOT NULL,
   `Who` int NOT NULL,
@@ -9,4 +9,4 @@ CREATE TABLE `BudgetAreas` (
   `Who3` int NOT NULL,
   `Who4` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

@@ -3,7 +3,7 @@ CREATE TABLE `OtherPayments` (
   `Code` text NOT NULL,
   `Amount` int NOT NULL,
   `State` tinyint NOT NULL,
-  `Year` int NOT NULL,
+  `Year` text NOT NULL,
   `IssueDate` int NOT NULL,
   `Source` int NOT NULL,
   `SourceId` int NOT NULL,

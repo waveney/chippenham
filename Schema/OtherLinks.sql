@@ -4,6 +4,6 @@ CREATE TABLE `OtherLinks` (
   `SN` text,
   `URL` text NOT NULL,
   `Image` text NOT NULL,
-  `Year` int NOT NULL,
+  `Year` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

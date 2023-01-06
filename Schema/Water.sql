@@ -3,7 +3,7 @@ CREATE TABLE `Water` (
   `SN` text NOT NULL,
   `Image` text NOT NULL,
   `Web` text NOT NULL,
-  `Year` int NOT NULL,
+  `Year` text NOT NULL,
   `Test1` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)

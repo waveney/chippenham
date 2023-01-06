@@ -9,7 +9,7 @@ CREATE TABLE `TimeLine` (
   `Start` int NOT NULL,
   `Due` int NOT NULL,
   `Notes` text NOT NULL,
-  `Year` int NOT NULL,
+  `Year` text NOT NULL,
   `NextYearId` int NOT NULL,
   `Progtext` text NOT NULL,
   `History` text NOT NULL,

@@ -1,7 +1,7 @@
 CREATE TABLE `TradeYear` (
   `TYid` int NOT NULL AUTO_INCREMENT,
   `Tid` int NOT NULL,
-  `Year` int NOT NULL,
+  `Year` text NOT NULL,
   `Days` tinyint NOT NULL,
   `Insurance` tinyint NOT NULL,
   `RiskAssessment` tinyint NOT NULL,
@@ -32,5 +32,6 @@ CREATE TABLE `TradeYear` (
   `DepositCode` text NOT NULL,
   `BalanceCode` text NOT NULL,
   `OtherCode` text NOT NULL,
+  `DateChange` int NOT NULL,
   PRIMARY KEY (`TYid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
