@@ -217,7 +217,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
     echo "This is in 4 parts.  The first records who you are.  This will normally be kept year to year, so you should only need to fill this in once.<p>\n";
     echo "The second part records which team(s) you would like to be part of, along with any likes, dislikes and team related details.<p>\n";
-    echo "The third part records your avaibility this year.<p>\n";
+    echo "The third part records your availability this year.<p>\n";
     echo "The last part is anything special this year and the submit button.<p>";
     echo "<div class=tablecont><table border style='table-layout:fixed'>\n";
     echo "<tr><td colspan=5><h3><center>Part 1: The Volunteer</center></h3>";
@@ -295,7 +295,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     
       if ($cp & VOL_Likes)   { 
         $rows++; 
-        $Ctxt .= "\n<tr>" . fm_text1("Prefered " . $Cat['Name'] . " Tasks", $VCY,'Likes',4,"colspan=4 class=$cls $Hide",'',"Likes:$Catid:$PLANYEAR") . 
+        $Ctxt .= "\n<tr>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',4,"colspan=4 class=$cls $Hide",'',"Likes:$Catid:$PLANYEAR") . 
                              $Cat['LExtra']; 
       };
       if ($cp & VOL_Dislikes){ 

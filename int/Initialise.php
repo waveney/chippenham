@@ -197,7 +197,10 @@ function Preload_Data() {
     ['MapPointTypes',5,['SN'=>'Information','Icon'=>'mapinfo.png']],
     ['MapPointTypes',6,['SN'=>'Dance Venue','Icon'=>'DanceIcon.png']],
     ['MapPointTypes',7,['SN'=>'Bicycle Park','Icon'=>'bicycleicom.png']],
-    
+    ['MapPointTypes',8,['SN'=>'Car Charge','Icon'=>'charging.png']],
+    ['MapPointTypes',9,['SN'=>'Camping','Icon'=>'Camping.png']],
+    ['MapPointTypes',10,['SN'=>'Short Term Car Park','Icon'=>'carparkred.png']],
+        
     ['Directories',0,[`SN`=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>0, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
 
   ];
