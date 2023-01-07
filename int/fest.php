@@ -286,7 +286,7 @@ function Get_Years() {
 $YEARDATA = Get_General();
 $PLANYEARDATA = Get_General($PLANYEAR);
 //var_dump($YEARDATA,$PLANYEARDATA);exit;
-if ($PLANYEARDATA['Years2Show'] > 0) $NEXTYEARDATA = Get_General($PLANYEARDATA['NextFest']);
+if (isset($PLANYEARDATA['NextFest']) && $PLANYEARDATA['Years2Show'] > 0 ) $NEXTYEARDATA = Get_General($PLANYEARDATA['NextFest']);
 
 function First_Sent($stuff) {
   $onefifty=substr($stuff,0,150);

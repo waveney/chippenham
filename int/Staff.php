@@ -35,6 +35,7 @@
     return $txt;
   }
 
+
   if (isset($ErrorMessage)) echo "<h2 class=ERR>$ErrorMessage</h2>";
 
 //echo php_ini_loaded_file() . "<P>";

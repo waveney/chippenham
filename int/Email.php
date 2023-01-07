@@ -250,6 +250,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
 
 function Get_Email_Proformas() { 
   global $db;
+  $full = [];
   $res = $db->query("SELECT * FROM EmailProformas ORDER BY SN ");
   if ($res) while ($typ = $res->fetch_assoc()) $full[$typ['id']] = $typ;
   return $full;
@@ -257,6 +258,7 @@ function Get_Email_Proformas() {
 
 function Get_Email_Proformas_By_Name() { 
   global $db;
+  $full = [];
   $res = $db->query("SELECT * FROM EmailProformas ORDER BY SN ");
   if ($res) while ($typ = $res->fetch_assoc()) $full[$typ['SN']] = $typ;
   return $full;
@@ -264,6 +266,7 @@ function Get_Email_Proformas_By_Name() {
 
 function Get_Email_Proforma($id) {
   global $db;
+
   if (is_numeric($id)) {
     $res=$db->query("SELECT * FROM EmailProformas WHERE id=$id");
   } else {

@@ -25,9 +25,9 @@ function Check_PHP_Config() {
 
 function Get_Config() {
   global $CONF;
-  $CONF = parse_ini_file("Configuration.ini");
+  @ $CONF = parse_ini_file("Configuration.ini");
   if ( !$CONF ) {
-    $CONF = ['host'=>'localhost','user'=>'wmff','passwd'=>'','dbase'=>'wmff','testing'=>''];
+    $CONF = ['host'=>'localhost','user'=>'','passwd'=>'','dbase'=>'','testing'=>''];
     return 0;
   }
   return 1;
@@ -162,22 +162,28 @@ user=" . $CONF['user'] . "\n";
     file_put_contents("../Schema/.skeema",$skeema);
 //  }
   
-  chmod("skeema",0755);
-  chdir ("..");
+  $dbg = ''; // '--debug';
+//  chmod("skeema",0755);
+  chdir ("../Schema");
   if (file_exists('/usr/bin/skeema')) { // Use systems own copy if available
-    system("/usr/bin/skeema push"); // push for live  
+    echo "About to call Skeema - system version\n";
+    system("/usr/bin/skeema $dbg push"); // push for live  
   } else { 
-    system("int/skeema push"); // push for live
+    echo "About to call Skeema - local version\n";
+    system("int/skeema $dbg push"); // push for live
   }
-  chdir ("int");
+  chdir ("../int");
   echo "Database tables created.<p>";
 }
 
 // [Table, id, [data]] 
 
 function Preload_Data() {
-  global $db;
+//  include_once("festdb.php");
+  global $db,$PLANYEAR,$YEAR;
+  
   $Year = gmdate('Y');
+  if (empty($PLANYEAR)) $YEAR = $PLANYEAR = $Year;
   // Does not do Email Proformas - see below for them
   $Preloads = [
     ['FestUsers', 1,['Login'=>'system','password'=>'WM/boBz3JdYIA','AccessLevel'=>7,'Roll'=>'Start up']],
@@ -191,8 +197,23 @@ function Preload_Data() {
     ['FestUsers', 9,['Login'=>'reserved']],
     ['FestUsers', 10,['Login'=>'reserved']],
 
-    ['MasterData',1,['FestName'=>'Festival','ShortName'=>'Fest','Version'=>666,'PlanYear'=>$Year, 'ShowYear'=>$Year]],
-    ['General',$Year,[]],
+    ['MasterData',1,['FestName'=>'Festival','ShortName'=>'Fest','Version'=>666,'PlanYear'=>$Year, 'ShowYear'=>$Year,'Cabailities'=> 
+'EnableDocs:1
+EnableTLine:0
+EnableMusic:1
+EnableDance:1
+EnableComedy:0
+EnableCeilidh:1
+EnableFamily:1
+EnableOtherPerf:1
+EnableTrade:0
+EnableEvents:1
+EnableMisc:1
+EnableFinance:0
+EnableAdmin:1
+EnableCraft:0
+EnableVols:1','Features'=>'NewStyle:1']],
+    ['General',$Year,['Year'=>$Year]],
     
     ['MapPointTypes',1,['SN'=>'Text','Icon'=>'Text']],
     ['MapPointTypes',2,['SN'=>'Music Venue','Icon'=>'MusicIcon.png']],
@@ -205,12 +226,14 @@ function Preload_Data() {
     ['MapPointTypes',9,['SN'=>'Camping','Icon'=>'Camping.png']],
     ['MapPointTypes',10,['SN'=>'Short Term Car Park','Icon'=>'carparkred.png']],
         
-    ['Directories',0,[`SN`=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>0, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
+    ['Directories',1,['SN'=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>0, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
 
   ];
 
   // Now call festdb
   include_once("festdb.php");
+  global $db,$TableIndexes;
+// var_dump($TableIndexes);exit;
   foreach($Preloads as $P) {
     $indx = (isset($TableIndexes[$P[0]])? $TableIndexes[$P[0]] : 'id');
     if (db_get($P[0],"$indx=" . $P[1])) continue; // already in - skip
@@ -228,7 +251,7 @@ function Preload_Data() {
   include_once("Email.php"); 
   $Pros=Get_Email_Proformas_By_Name(1);
   
-  $file = fopen('festfiles/EmailProformas.sql','r');
+  $file = fopen('festfiles/EmailDump','r');
   while ($line = fgets($file)) {
     [$key,$value] = explode(',',$line,2);
     if ($key && $value && !isset($Pros[$key])) {
@@ -345,8 +368,9 @@ if (isset($_POST['SETUPSYS'])) {
   Check_Sysadmin();
 }
 
-echo "All done<p>";
-include ("Staff.php"); // no return wanted
+echo "All done<p><h2><a href=Staff.php>Now Login</a></h2>";
+
+//include ("Staff.php"); // no return wanted
 
 /* 
 
