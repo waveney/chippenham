@@ -11,7 +11,7 @@ Needs to be at a webspace root, Php needs the Document root in the php include p
 
 Needs ImageMagick installed for some features to work.
 
-Needs Skeema see https://www.skeema.io for initialise to work and the database updates to be automated.
+Needs Skeema see https://www.skeema.io for initialise to work and the database updates to be automated.  It has an embeded copy that will work on 64 bit Intel/ Ubuntu Linux.
 
 Then run int/Initialise.php - this will create appropriate subdirectories and populate the database 
 with appropriate initial tables and values (Warning definately out of date).

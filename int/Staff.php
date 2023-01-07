@@ -255,7 +255,7 @@
       $txt .= "<li><a href=CreatePerf?T=O&Y=$YEAR>Add Other Performer to Database</a>";
     }
     $txt .= "<li><a href=/LineUp?T=Other&FORCE>Other Lineup</a> (Even if not public)";
-    if (Access('SysAdmin')) {
+    if (Access('Staff','Other')) {
       $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
     }
 

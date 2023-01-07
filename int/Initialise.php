@@ -15,6 +15,7 @@ $CONF = [];
 include_once("festfm.php"); // Not db or main fest
 
 function Check_PHP_Config() {
+  return;
   if (!strstr(get_include_path(),$_SERVER['DOCUMENT_ROOT'])) {
     echo "The document Root is not part of the php include path -:" . get_include_path() . " LOTS of things depend on this<p>";
     exit;
@@ -264,18 +265,30 @@ EnableVols:1','Features'=>'NewStyle:1']],
 }
 
 function Create_htaccess() {
+    $DocRoot = $_SERVER['DOCUMENT_ROOT'];
   if (file_exists("../.htaccess")) {
     // Read ht access, if it does not have rewriteengine on append it, do the same with the rule.  If change write file back
     $htaccess = file_get_contents("../.htaccess");
     $htac_changed = 0;
+    
+    if (!strstr($htaccess,"Options FollowSymLinks")) {
+      $htaccess .= "Options FollowSymLinks\n";
+      $htac_changed = 1;
+    }
     
     if (!strstr($htaccess,"RewriteEngine on")) {
       $htaccess .= "RewriteEngine on\n";
       $htac_changed = 1;
     }
     
-     if (!strstr($htaccess,'RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]')) {
+    if (!strstr($htaccess,'RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]')) {
       $htaccess .= 'RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]' . "\n";
+      $htac_changed = 1;
+    }
+
+
+    if (!strstr($htaccess,'php_value include_path')) {
+      $htaccess .= 'php_value include_path "' . get_include_path() . ":" . $DocRoot . "\"\n";
       $htac_changed = 1;
     }
     
@@ -289,9 +302,10 @@ function Create_htaccess() {
       }
     }
   } else {
-    $htac = 'RewriteEngine on
+    $htac = 'Options FollowSymLinks
+RewriteEngine on
 RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]
-';
+' . 'php_value include_path "' . get_include_path() . ":" . $DocRoot . "\"\n";
     file_put_contents("../.htaccess",$htac);
     echo "htaccess created<p>";
   }
