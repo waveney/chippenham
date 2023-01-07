@@ -16,7 +16,7 @@ include_once("festfm.php"); // Not db or main fest
 
 function Check_PHP_Config() {
   if (!strstr(get_include_path(),$_SERVER['DOCUMENT_ROOT'])) {
-    echo "The document Root is not part of the php include path - LOTS of things depend on this<p>";
+    echo "The document Root is not part of the php include path -:" . get_include_path() . " LOTS of things depend on this<p>";
     exit;
   }
   // Should check for open_basedir and file size eventually
@@ -150,7 +150,7 @@ function Create_Databases() {
 // Modifys name of database for Skeema to run
 function Create_Skeema_local() {
   global $CONF;
-  if (!file_exists("../Schema/.skeema")) {
+//  if (!file_exists("../Schema/.skeema")) {
     $skeema = "schema=" . $CONF['dbase'] . "
 default-character-set=utf8mb4
 default-collation=utf8mb4_general_ci
@@ -160,11 +160,15 @@ port=3306
 user=" . $CONF['user'] . "\n";
     if ($CONF['passwd']) $skeema .= "password='" . $CONF['passwd'] . "'\n"; 
     file_put_contents("../Schema/.skeema",$skeema);
-  }
+//  }
   
   chmod("skeema",0755);
   chdir ("..");
-  system("int/skeema push"); // push for live
+  if (file_exists('/usr/bin/skeema')) { // Use systems own copy if available
+    system("/usr/bin/skeema push"); // push for live  
+  } else { 
+    system("int/skeema push"); // push for live
+  }
   chdir ("int");
   echo "Database tables created.<p>";
 }
