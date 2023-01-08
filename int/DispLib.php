@@ -309,7 +309,7 @@ function Expand_Special(&$Art,$future=0) {
     return;
     
   case '@Music_Imp': 
-    Expand_Imp($Art,'IsMusic',"y.YearState>1" ,'MusicImportance', (isset($words[1])?$words[1]:0),$future);
+    Expand_Imp($Art,'IsAnAct',"y.YearState>1" ,'MusicImportance', (isset($words[1])?$words[1]:0),$future);
     return;
   
   case '@Family_Imp':

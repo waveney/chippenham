@@ -28,6 +28,7 @@
 //        'Comedy'=>'LineUp?T=Comedy',
         'Family'=>'LineUp?T=Family',
         'Ceilidh & Dances'=>'LineUp?T=Ceilidh',
+        'Others'=>'LineUp?T=Other',
 //        'Traders'=>'int/TradeShow',
 
         ],
