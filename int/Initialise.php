@@ -306,8 +306,12 @@ function Create_htaccess() {
 RewriteEngine on
 RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]
 ' . 'php_value include_path "' . get_include_path() . ":" . $DocRoot . "\"\n";
-    file_put_contents("../.htaccess",$htac);
-    echo "htaccess created<p>";
+    if (file_put_contents("../.htaccess",$htac)) {
+      echo "htaccess created<p>";
+    } else {
+      echo "htaccess needs Creation but can't be writen to by Initialise<p>";  
+      return 0;  
+    }
   }
   return 1;
 }
