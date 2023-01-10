@@ -3,7 +3,7 @@
 
 function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank look at data to determine type.  Mode=0 for public, 1 for ctte
   global $YEARDATA,$Side_Statuses,$Importance,$Surfaces,$Surface_Colours,$Noise_Levels,$Noise_Colours,$Share_Spots,$Mess,$Action,$ADDALL,$CALYEAR,$PLANYEAR,$YEAR;
-  global $OlapTypes,$OlapCats,$OlapDays,$PerfTypes,$ShowAvailOnly;
+  global $OlapTypes,$OlapCats,$OlapDays,$PerfTypes,$ShowAvailOnly,$ADDALL;
   if ($CatT == '') {
     $CatT = ($Side['IsASide'] ? 'Side' : ($Side['IsAnAct'] ? 'Act' : 'Other'));
   }
@@ -234,15 +234,18 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 
 // TODO if (isset($Side['SortCode']) && $Side['SortCode'] replace needbank with js test of fee/op
 
-    $bankhide = 1;
-    if ($snum > 0 && ( $Side['SortCode'] || $Side['Account'] || $Side['AccountName'] || $Side['TotalFee'])) $bankhide = 0;
+    if ($ADDALL && !Access('Committee','Finance')) {} // No bank details unless your area or Finance
+    else {
+      $bankhide = 1;
+      if ($snum > 0 && ( $Side['SortCode'] || $Side['Account'] || $Side['AccountName'] || $Side['TotalFee'])) $bankhide = 0;
 //    echo $bankhide . "sc:" . $Side['SortCode'] . "ac:" .$Side['Account']. "an:" .$Side['AccountName'] . "tf" . $Side['TotalFee'];
-    echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail><td rowspan=2>Bank Details:" . help('Bank');
-      echo fm_text('Sort Code',$Side,'SortCode');
-      echo fm_text('Bank Account Number',$Side,'Account');
-    echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail2>";
-      echo fm_text('Account Name',$Side,'AccountName');
-      echo "<td>" . fm_checkbox('Are you VAT registered',$Side,'VATreg');
+      echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail><td rowspan=2>Bank Details:" . help('Bank');
+        echo fm_text('Sort Code',$Side,'SortCode');
+        echo fm_text('Bank Account Number',$Side,'Account');
+      echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail2>";
+        echo fm_text('Account Name',$Side,'AccountName');
+        echo "<td>" . fm_checkbox('Are you VAT registered',$Side,'VATreg');
+    }
 
 // PA 
     echo "<tr " . (($Side['IsASide'] && !$Side['IsAnAct'] && !$Side['IsOther'])?$Adv:"") . ">";

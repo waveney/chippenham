@@ -80,7 +80,9 @@ function Set_Password($user,$msg='') {
     }
  
     if ($msg) echo "<h2 class=ERR>$msg</h2>\n";
-    echo "Min length is 6.<p>";
+    echo "The minimum length is 8.<p>";
+    echo "Password must have a digit, a lower case character, an uppercase and a special character.<p>";
+    
     echo "<form method=post action=Login>";
     echo "<div class=tablecont><table>";
     echo "<tr><td>Password:<td><input type=password Name=password>\n";
@@ -138,30 +140,31 @@ function NewPasswd() {
   global $YEAR,$USER,$USERID,$CALYEAR;
   $user = $_POST['UserId']; 
   if (!$user) $user = $USERID;
-  if ($ans = Get_User($user) ) {
-    if ($ans['AccessKey'] == $ans['AccessKey']) {
-      if ($ans['ChangeSent']+36000 > time()) {
-        if ($_POST['password'] == $_POST['confirm']) {
-          if (strlen($_POST['password']) > 5) { // using crypt rather than password_hash so it works on php 3.3
-            $hash = crypt($_POST['password'],"WM");
-            $ans['password'] = $hash;
-            $ans['Yale'] = rand_string(40);
-            $USER = $ans;
-            $USERID = $user;
-            setcookie('FEST2',$ans['Yale'],($_POST['RememberMe'] ? mktime(0,0,0,1,1,$CALYEAR+1) : 0 ),'/');
-                  Put_User($ans);
-                 include ("Staff.php"); // no return wanted
-            exit;
-          }
-          Set_Password($user,"Password too short");
-        }
-        Set_Password($user,"Password and Confirm did not match");
-      }
-      Login("Link timed out");
-    }
-    Login("Link invalid ");
-  }
-  Login("User not known");
+  if (!($ans = Get_User($user) )) Login("User not known");
+  
+  if ($ans['AccessKey'] != $_POST['AccessKey']) Login("Link invalid ");
+  
+  if ($ans['ChangeSent']+36000 < time()) Login("Link timed out");
+  
+  if ($_POST['password'] != $_POST['confirm']) Set_Password($user,"Password and Confirm did not match");
+  
+  if (strlen($_POST['password']) < 8) Set_Password($user,"Password too short");
+  
+  if (!preg_match('/[0-9]/',$_POST['password']) || 
+      !preg_match('/[a-z]/',$_POST['password']) ||
+      !preg_match('/[A-Z]/',$_POST['password']) ||
+      !preg_match('/\W/',$_POST['password'])) Set_Password($user,"Password must have a digit, a lower case character, an uppercase and a special character");
+
+  // using crypt rather than password_hash so it works on php 3.3
+  $hash = crypt($_POST['password'],"WM");
+  $ans['password'] = $hash;
+  $ans['Yale'] = rand_string(40);
+  $USER = $ans;
+  $USERID = $user;
+  setcookie('FEST2',$ans['Yale'],($_POST['RememberMe'] ? mktime(0,0,0,1,1,$CALYEAR+1) : 0 ),'/');
+  Put_User($ans);
+  include ("Staff.php"); // no return wanted
+  exit;
 }
 
 /* MAIN CODE HERE */

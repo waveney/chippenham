@@ -14,6 +14,11 @@
   }
   if (!is_numeric($id)) Error_page("Not a performer");
   
+  $Side = Get_Side($id);
+  if (!$Side) {
+    Error_page("Not a performer");
+  }
+  
   Show_Side($id,'',1);
 
   dotail();

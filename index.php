@@ -7,7 +7,11 @@
   include_once("int/DispLib.php");
   include_once("int/festfm.php");
   
-  $future = (isset($_REQUEST['F'])?$_REQUEST['F']:0);
+  if (isset($_REQUEST['F']) && Access('Staff') && is_numeric($_REQUEST['F']) ) {
+    $future = $_REQUEST['F'];
+  } else {
+    $future = 0;
+  }
   
 //  set_ShowYear();  
   $DFrom = ($YEARDATA['DateFri']+$YEARDATA['FirstDay']);
