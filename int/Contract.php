@@ -135,7 +135,7 @@ services, under the following terms and conditions:<p>\n";
   if ($camp) {
     $str .= "Camping will be provided for ";
     if ($mode < -1) $str .= "<span class=NotSide>";
-    $str .= FormatList($camp) . " at the <a href=/InfoCamping>Meadows Campsite</a>.<p>\n"; 
+    $str .= FormatList($camp) . " at the <a href=/InfoCamping>Campsite</a>.<p>\n"; 
     if ($mode < -1) $str .= "</span>";
   }
 
@@ -155,6 +155,8 @@ services, under the following terms and conditions:<p>\n";
     }
   }
   
+
+  if ($Sidey['ReportTo']==0) $Sidey['ReportTo'] = Feature('DefaultReportPoint',0);
   if ($Sidey['ReportTo'] == 0 ) {
     $str .= "<b>ON ARRIVAL</b>: Please report to the <b>Information Point in the square. </b>" .
             ($SoundChecks ?"You will need to arrive prior to your soundcheck time to collect wristbands.":"") . "<p>\n";

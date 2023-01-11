@@ -86,10 +86,13 @@ function Get_AVenues($type=0,$extra='') { //0 = short, 1 = full
 
 function &Report_To() { // List of report to locs
   static $List;
+  include_once('MapLib.php');
   if (isset($List)) return $List;
   $List = [Feature('DefaultReport','Information Point'),'None'];
   $Vens = Get_Real_Venues(0);
+  $Pts = Get_Map_Points();
   $List = array_merge($List,$Vens);
+  foreach ($Pts as $P) if ($P['Directions']) $List[-$P['id']] = $P['SN'];
   return $List;
 }
 

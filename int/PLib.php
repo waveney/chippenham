@@ -691,16 +691,17 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       if ($area > 0) $Sidey['BudgetArea'] = $area;
     }
     $Bud = Budget_List();
-    $Venues = Report_To(1);
+    $R2Venues = Report_To(1);
 // echo "</table>"; var_dump($Bud);
     if ($Bud) {
       echo "<tr class=ContractShow hidden><td class=NotSide>Budget Area:" . help('BudgetArea0') . "<td class=NotSide>" . fm_select($Bud,$Sidey,'BudgetArea');
       echo "<td class=NotSide>Except: " . fm_select($Bud,$Sidey,'BudgetArea2') . fm_number1("Value",$Sidey,'BudgetValue2','class=NotSide','class=NotSide');
       echo "<td class=NotSide>" . fm_select($Bud,$Sidey,'BudgetArea3') . fm_number1("Value",$Sidey,'BudgetValue3','class=NotSide','class=NotSide');
     }
+    if (!isset($Sidey['ReportTo']) || $Sidey['ReportTo']==0) $Sidey['ReportTo'] = Feature('DefaultReportPoint',0);
     echo "<tr class='NotCSide ContractShow' hidden>" . fm_textarea('Additional Riders',$Sidey,'Rider',2,1,'class=NotCSide') ."\n";
       if (!$Wide) echo "<tr>";
-      echo "<td colspan=2 class=NotCSide>On arrival report to: " . fm_select($Venues,$Sidey,'ReportTo') .
+      echo "<td colspan=2 class=NotCSide>On arrival report to: " . fm_select($R2Venues,$Sidey,'ReportTo') .
            "<td class=NotCSide colspan=2 >" . fm_checkbox('Tell about Green Room',$Sidey,'GreenRoom');
 
     $campxtr = $campxtr2 = '';          

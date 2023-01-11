@@ -52,12 +52,19 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   if ($NotAllFree && ($things < $ll)) echo "<td rowspan=$rows valign=top>$Price";
 }
 
+
   $V = (isset($_GET['v'])? $_GET['v']: $_POST['v']);
 
   $Mode = (isset($_GET['Mode']) ? $_GET['Mode'] : 0 ) ; // If present show everything
   $Poster = (isset($_GET['Poster']) ? $_GET['Poster'] : 0 ) ; // If present do Poster Mode - No Navigation/Trailer, but add new trailer with web and QR
 
   if (!is_numeric($V)) exit("Invalid Venue Number");
+  if ($V < 0) {
+    $Point = Get_Map_Point(-$V);
+    dohead($Point['SN']);
+    Show_Map_Point(-$V);
+    dotail();
+  }
   $Ven = Get_Venue($V);
 
   if ($Ven['PartVirt'] && !$Poster) {
@@ -146,7 +153,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
       echo "<div id=VenueMap><div id=MapWrap>";
       echo "<div id=DirPaneWrap><div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div></div>";
       echo "<p><div id=map style='min-height:300px; max-height:400px'></div></div><p>";
-      echo "<button class=PurpButton onclick=ShowDirect($V)>Directions</button> (From the Square if it does not know your location)\n";
+      echo "<button class=PurpButton onclick=ShowDirect($V)>Directions</button> (From the " . Feature('DirectionDefault','Square') . " if it does not know your location)\n";
       echo "</div><script>Register_Onload(Set_MinHeight,'.venueimg','.MainContent')</script>\n";
       Init_Map(0,$V,18);
       echo "</div></div><div class=OneCol id=TwoCols2></div></div>";  

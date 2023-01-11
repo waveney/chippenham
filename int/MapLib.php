@@ -109,6 +109,14 @@ function Init_Map($CentType,$Centerid,$Zoom,$Features=1) { // CentType 0=Venue, 
   echo "<script src=/js/Mapping.js?V=$V ></script>";
 }
 
-
+function Show_Map_Point($V) {
+  echo "<div id=VenueMap><div id=MapWrap>";
+  echo "<div id=DirPaneWrap><div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div></div>";
+  echo "<p><div id=map style='min-height:300px; max-height:400px'></div></div><p>";
+  echo "<button class=PurpButton onclick=ShowDirect($V)>Directions</button> (From the " . Feature('DirectionDefault','Square') . " if it does not know your location)\n";
+  echo "</div><script>Register_Onload(Set_MinHeight,'.venueimg','.MainContent')</script>\n";
+  Init_Map(1,$V,18);
+  echo "</div></div>"; 
+}
 
 ?>

@@ -15,7 +15,7 @@
   
   $Feat = 0;
   if (isset($_GET['F'])) $Feat = $_GET['F'];
-//  echo "<button class=PurpButton onclick=ShowDirect()>Directions</button> (From the Square if it does not know your location)\n";
+//  echo "<button class=PurpButton onclick=ShowDirect()>Directions</button> (From the " . Feature('DirectionDefault','Square') . " if it does not know your location)\n";
   Init_Map(-1,0,Feature('MapStartZoom',17),$Feat);
   
   dotail();
