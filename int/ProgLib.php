@@ -368,7 +368,7 @@ function Put_Event_Type(&$now) {
   Update_db('EventTypes',$Cur,$now);
 }
 
-$Event_Types = Get_Event_Types(0);
+$Event_Types = Get_Event_Types(1);
 
 function Get_Event_Type_For($nam) {
   global $Event_Types_Full;

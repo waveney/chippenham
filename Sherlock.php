@@ -2,9 +2,9 @@
   include_once("int/fest.php");
 
   set_ShowYear();
-  $Types = $Type = $_GET['t'];
+  $Type = $_GET['t'];
 
-  if (strlen($Type) > 20) $Types = $Type = 'Dance';
+  if (strlen($Type) > 25) $Type = 1;
 
 
   include_once("int/ProgLib.php");
@@ -12,7 +12,14 @@
   global $db,$YEAR,$PLANYEAR,$SHOWYEAR,$YEARDATA,$DayLongList;
 
   $Ets = Get_Event_Types(1);
-  if (is_numeric($Type)) $Types = $Type = $Ets[$Type];
+  if (is_numeric($Type)) {
+    $Ett = $Type;
+    $Type = $Ets[$Type];
+  } else {
+    $Ett = -1;
+    foreach($Ets as $eti=>$et) if ($et['SN'] == $Type) $Ett = $eti;
+    if ($Ett < 0) $Ett = 1;
+  }
   
   $Vens = Get_Venues(1);
 
@@ -21,8 +28,7 @@
 //  var_dump($Type);
 //  var_dump($Ets);
   //  Need check if year < first
-  $Ett = -1;
-  foreach($Ets as $eti=>$et) if ($et['SN'] == $Type) $Ett = $eti;
+  $Types = $Ets[$Ett]['Plural'];
 
   $xtr = (isset($Extras[$Type]))? $Extras[$Type] : '';
   $Evs = array();

@@ -15,7 +15,7 @@
     if (!$User['Email']) {
       Error_Page('No Email Set up for ' . $User['SN']);
     };
-    $newpwd = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') , 0 , 10 );
+    $newpwd = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!~$&()@*=-+') , 0 , 10 );
     $hash = crypt($newpwd,"WM");
     $User['password'] = $hash;
     Put_User($User);
