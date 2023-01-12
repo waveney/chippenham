@@ -256,11 +256,11 @@ function Check_4Changes(&$Cur,&$now) {
 
   for ($i=1;$i<=4;$i++) {
     if ($tdchange) {
-      if ($Cur["Act$i"] != 0) { Contract_Changed_id($Cur["Act$i"]); }
-      else if ($now["Act$i"] != 0) { Contract_Changed_id($now["Act$i"]); }
-    } else if ($Cur["Act$i"] != $now["Act$i"]) {
-      if ($Cur["Act$i"] != 0) { Contract_Changed_id($Cur["Act$i"]); }
-      if ($now["Act$i"] != 0) { Contract_Changed_id($now["Act$i"]); }
+      if ($Cur["Side$i"] != 0) { Contract_Changed_id($Cur["Side$i"]); }
+      else if ($now["Side$i"] != 0) { Contract_Changed_id($now["Side$i"]); }
+    } else if ($Cur["Side$i"] != $now["Side$i"]) {
+      if ($Cur["Side$i"] != 0) { Contract_Changed_id($Cur["Side$i"]); }
+      if ($now["Side$i"] != 0) { Contract_Changed_id($now["Side$i"]); }
     }
   }
 

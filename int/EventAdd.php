@@ -50,7 +50,8 @@ Then click on <b>Create</b>.<p>
 See if any errors are reported at the top of the event - they currently are a bit cryptic but any event clashes involving this event will be listed 
 - resolve them please.<p>
 If it a simple event, with up to 4 particpants do the following (this can be done later if you have not yet decided): 
-Select the Side, Act or Other participants from the drop down lists.
+Select the Side, Act or Other participants from the drop down lists.<p>
+You can indicate a MC and separate band form callers by the Roll of the performer on the right.  If in doubt leave blank.  Other rolls may be added if required.
 
 <h3>Music, Concerts and similar events</h3>
 Each act in the concert needs a sub event, each sound check (that is not imeadiately before the act) needs another sub event.<p>
@@ -347,7 +348,8 @@ A similar feature will appear eventually for music.<p>
         echo "<td class=NotSide>" . fm_simpletext('Ticket Code',$Event,'TicketCode');
       }
 
-      echo "<tr>" . fm_radio("<b><span class=mday $hidemday>Start </span>Day</b>",$FestDays,$Event,'Day',($se > 0?'class=FullD hidden':''),1,($se > 0?'class=FullD hidden':''));
+      echo "<tr>" . fm_radio("<b><span class=mday $hidemday>Start </span>Day</b>",$FestDays,$Event,'Day',
+                    ($se > 0?'class=FullD hidden':''),1,($se > 0?'class=FullD hidden':''));
       echo "<td colspan=3><b>Times</b>: " . fm_smalltext2('Start:',$Event,'Start');
         echo fm_smalltext2(', End:',$Event,'End');
         echo fm_smalltext2(', Setup Time (mins):',$Event,'Setup') ;
@@ -394,6 +396,7 @@ A similar feature will appear eventually for music.<p>
             }
             $pi++;
           }
+          echo "<td>Roll: " . fm_select($Perf_Rolls, $Event,"Roll$i");
         }
       } else {
         $ovc=0;
