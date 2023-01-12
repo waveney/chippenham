@@ -21,7 +21,7 @@ function EventCheck($checkid=0) {
     while($ev = $res->fetch_assoc()) { // Basic Events against basic events check
       if ($ev['IgnoreClash']) continue;
       $ThisEventEmpty = 1;
-      for ($i=1;$i<5;$i++) if ($ev["Side$i"] || $ev["Act$i"] || $ev["Other$i"]) $ThisEventEmpty = 0;
+      for ($i=1;$i<5;$i++) if ($ev["Side$i"] ) $ThisEventEmpty = 0;
 
       $evlist[] = $ev;
       if ($ev['Venue'] != $LastVenue) { // New Venue
@@ -59,7 +59,7 @@ function EventCheck($checkid=0) {
         $LastEvent = $ev;
       }
       $LastEventEmpty = 1;
-      for ($i=1;$i<5;$i++) if ($ev["Side$i"] || $ev["Act$i"] || $ev["Other$i"]) $LastEventEmpty = 0;
+      for ($i=1;$i<5;$i++) if ($ev["Side$i"]) $LastEventEmpty = 0;
     }   
     // Big Events...
 
