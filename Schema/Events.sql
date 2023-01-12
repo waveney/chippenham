@@ -78,5 +78,6 @@ CREATE TABLE `Events` (
   `ShowSubevent` tinyint NOT NULL,
   `WeirdStuff` tinyint NOT NULL,
   `SponsoredBy` int NOT NULL,
+  `SeasonTicketOnly` tinyint NOT NULL,
   PRIMARY KEY (`EventId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

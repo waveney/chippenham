@@ -2,46 +2,50 @@
   include_once("int/fest.php");
 
   set_ShowYear();
-  $Type = $_GET['t'];
+  $Type = $_REQUEST['t'];
+
+// var_dump($_REQUEST);
 
   if (strlen($Type) > 25) $Type = 1;
 
 
   include_once("int/ProgLib.php");
   include_once("int/DateTime.php");
-  global $db,$YEAR,$PLANYEAR,$SHOWYEAR,$YEARDATA,$DayLongList;
+  global $db,$YEAR,$PLANYEAR,$SHOWYEAR,$YEARDATA,$DayLongList,$Event_Types;
 
-  $Ets = Get_Event_Types(1);
   if (is_numeric($Type)) {
     $Ett = $Type;
-    $Type = $Ets[$Type];
+    $Type = $Event_Types[$Type]['SN'];
   } else {
     $Ett = -1;
-    foreach($Ets as $eti=>$et) if ($et['SN'] == $Type) $Ett = $eti;
+    foreach($Event_Types as $eti=>$et) if ($et['SN'] == $Type) $Ett = $eti;
     if ($Ett < 0) $Ett = 1;
   }
+  
+  $ShowAll = 0;
+  if (Access('Staff') && isset($_REQUEST['SHOWALL'])) $ShowAll = 1;
   
   $Vens = Get_Venues(1);
 
   $Extras = ['Music'=>' OR e.ListMusic=1 ', 'Dance'=>' OR e.ListDance=1 ', 'Comedy'=>' OR e.ListComedy=1 ']; // Need Dance Equiv
 
 //  var_dump($Type);
-//  var_dump($Ets);
+//  var_dump($Event_Types);
   //  Need check if year < first
-  $Types = $Ets[$Ett]['Plural'];
+  $Types = $Event_Types[$Ett]['Plural'];
 
   $xtr = (isset($Extras[$Type]))? $Extras[$Type] : '';
   $Evs = array();
   $Complete = 0;
   $BackStop = 2018;
   
-  if ($YEAR == $PLANYEAR) {
+  if (($YEAR == $PLANYEAR) && ($ShowAll == 0)) {
     $restrict = "AND ( e.Public=1 OR (e.Type=t.ETypeNo AND t.State>1 AND e.Public<2 ))";
   } else {
     $restrict = "";
     $Complete = 4;
   }
-  
+
   $MapFeat = 0;
   $Banner = 1;
   if ($Ett >= 0) { 
@@ -50,11 +54,11 @@
 //    echo "$qry<p>";
     $ans = $db->query($qry); 
     if ($ans) while ($e = $ans->fetch_assoc()) $Evs[] = $e;
-    if (count($Evs) > 1) $Types = $Ets[$Ett]['Plural'];
-    if ($YEAR == $PLANYEAR) $Complete = $Ets[$Ett]['State'];
-    $BackStop = $Ets[$Ett]['FirstYear'];
-    if ($Ets[$Ett]['Banner']) $Banner = $Ets[$Ett]['Banner'];
-    if ($Ets[$Ett]['MapFeatNum']) $MapFeat = $Ets[$Ett]['MapFeatNum'];
+    if (count($Evs) > 1) $Types = $Event_Types[$Ett]['Plural'];
+    if (($YEAR == $PLANYEAR) && ($ShowAll==0)) $Complete = $Event_Types[$Ett]['State'];
+    $BackStop = $Event_Types[$Ett]['FirstYear'];
+    if ($Event_Types[$Ett]['Banner']) $Banner = $Event_Types[$Ett]['Banner'];
+    if ($Event_Types[$Ett]['MapFeatNum']) $MapFeat = $Event_Types[$Ett]['MapFeatNum'];
   } else { // Handle other Sherlock calls
     switch ($Type) {
       case 'Family':
@@ -81,7 +85,7 @@
   }
 
 
-  dohead("Timetable: $Types",[],$Banner);
+  dohead("Timetable: $Types" . ($ShowAll?' (even if not public)':''),[],$Banner);
   
   $yr = substr($YEAR,0,4);
   $Titles = array("", // Not used
@@ -95,7 +99,7 @@
   $DaysUsed = [];
   for ($i=-4;$i<10; $i++) $DaysUsed[$i] = 0;
   foreach($Evs as $e) {
-    if ($e['Price1'] || $e['SpecPrice']) $NotAllFree = 1;
+    if ($e['Price1'] || $e['SpecPrice'] || $e['SeasonTicketOnly']) $NotAllFree = 1;
     $DaysUsed[$e['Day']] = 1;
   }
   $TotalDays = array_sum($DaysUsed);

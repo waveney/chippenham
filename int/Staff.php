@@ -10,12 +10,15 @@
 
   dostaffhead("Staff Pages", ["/js/jquery.typeahead.min.js", "/css/jquery.typeahead.min.css", "/js/Staff.js"]);
 
-  global $YEAR,$PLANYEAR,$YEARDATA;
+  global $YEAR,$PLANYEAR,$YEARDATA,$Event_Types;
   include_once("ProgLib.php");
   include_once("TradeLib.php");
   $Years = Get_Years();
   $Days = array('All','Sat','Sun','Mon');
   $Heads = [];
+  
+  $ETypes = [];
+  foreach($Event_Types as $eti => $ET) $ETypes[$eti] = $ET['SN'];
 
   function StaffTable($Section,$Heading,$cols=1) {
     global $Heads; 
@@ -333,6 +336,12 @@
                 fm_select($Vens,0,'v',0," onchange=this.form.submit()") . 
                 fm_radio('',$Days,$_POST,'DAYS','',0) . fm_checkbox('Pics',$_POST,'Pics') .
                 "</form>\n";
+
+    $txt .= "<li><form method=Post action=../Sherlock?SHOWALL=1 class=staffform>";
+      $txt .= "<input type=submit name=a value='Timetable For' id=Posterid>" . 
+                fm_hidden('Y',$YEAR) .
+                fm_select($ETypes,0,'t',0," onchange=this.form.submit()") . "even if not public" .
+                "</form> \n";
 
     if (Access('Staff','Events')) $txt .= "<li><a href=EventTypes>Event Types</a>\n";
     if (Access('SysAdmin')) $txt .= "<li><a href=TicketEvents?Y=$YEAR>List Ticketed Events</a>\n";

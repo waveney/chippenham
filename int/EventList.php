@@ -3,7 +3,7 @@
   A_Check('Staff');
 
   dostaffhead("List Events");
-  global $db,$Event_Types,$Event_Types_Full,$USERID,$Importance;
+  global $db,$Event_Types,$Event_Types,$USERID,$Importance;
   $yn = array('','Y');
   include_once("ProgLib.php");
   include_once("DocLib.php");
@@ -122,7 +122,7 @@
   if ($res) {
     while ($evnt = $res->fetch_assoc()) {
       $i = $evnt['EventId'];
-      if (!Access('SysAdmin') && $Event_Types_Full[$evnt['Type']]['DontList']) continue;
+      if (!Access('SysAdmin') && $Event_Types[$evnt['Type']]['DontList']) continue;
       echo "<tr><td>";
       echo "<input type=checkbox name=E$i class=SelectAllAble>";
       echo "<td>$i<td>";
@@ -131,18 +131,23 @@
       echo "<td>" . DayList($evnt['Day']) . "<td>" . timecolon($evnt['Start']) . "<td>";
       if ($se > 0 && $evnt['SubEvent'] < 0) { echo timecolon($evnt['SlotEnd']); } else { echo timecolon($evnt['End']); }; 
       echo "<td>" . (isset($Venues[$evnt['Venue']]) ? $Venues[$evnt['Venue']] : "Unknown");
-      echo "<td>" . ($evnt['Status'] == 1 ? "<div class=Cancel>Cancelled</div> " : "") . (isset($Event_Types[$evnt['Type']]) ? $Event_Types[$evnt['Type']] : "?" );
+      echo "<td>" . ($evnt['Status'] == 1 ? "<div class=Cancel>Cancelled</div> " : "") . 
+            (isset($Event_Types[$evnt['Type']]['SN']) ? $Event_Types[$evnt['Type']]['SN'] : "?" );
       echo "<td>" . $Public_Event_Types[$evnt['Public']];
       echo "<td>" ; 
-      if ($evnt['SubEvent'] <= 0 || ($evnt['SpecPrice'])) {
-        if ($evnt['SpecPrice']) {
-          echo $evnt['SpecPrice'];
+        if ($evnt['SeasonTicketOnly']) {
+          echo "ST only";
         } else {
-          if ($evnt['Price1']) { echo Print_Pound($evnt['Price1']); } else echo "Free";
-          if ($evnt['Price2']) echo " /" . Print_Pound($evnt['Price2']); 
-          if ($evnt['DoorPrice']) echo " /" . Print_Pound($evnt['DoorPrice']); 
+          if ($evnt['SubEvent'] <= 0 || ($evnt['SpecPrice'])) {
+            if ($evnt['SpecPrice']) {
+              echo $evnt['SpecPrice'];
+            } else {
+              if ($evnt['Price1']) { echo Print_Pound($evnt['Price1']); } else echo "Free";
+              if ($evnt['Price2']) echo " /" . Print_Pound($evnt['Price2']); 
+              if ($evnt['DoorPrice']) echo " /" . Print_Pound($evnt['DoorPrice']); 
+            }
+          }
         }
-      }
       echo "<td>" .($evnt['NeedSteward'] ? "Y" : "" );
         if ($evnt['StewardTasks']) echo " Stew";
         if ($evnt['SetupTasks']) echo " Set";        

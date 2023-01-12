@@ -9,7 +9,7 @@
   include_once("int/DanceLib.php");
   include_once("int/MusicLib.php");
 
-  global $db,$YEAR,$SHOWYEAR,$YEARDATA,$DayList,$DayLongList,$Event_Types_Full ;
+  global $db,$YEAR,$SHOWYEAR,$YEARDATA,$DayList,$DayLongList,$Event_Types ;
 
   $Vens = Get_Venues(1);
 

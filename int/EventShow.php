@@ -7,7 +7,7 @@
   include_once("DispLib.php");
   include_once("MusicLib.php");
   include_once("DanceLib.php");
-  global $YEARDATA,$Importance,$DayLongList,$YEAR,$PerfTypes,$Event_Types_Full;
+  global $YEARDATA,$Importance,$DayLongList,$YEAR,$PerfTypes,$Event_Types;
 /*
   Have different formats for different types of events, concerts, ceidihs, workshop
 */
@@ -145,13 +145,13 @@ function Print_Participants($e,$when=0,$thresh=0) {
     echo "<tr><td>Starting at:<td>" . timecolon($Ev['Start']) . "\n";
     echo "<tr><td>Finishing at:<td>" . timecolon($Ev['End']) . "\n";
   }
-  if ($Ev['Price1'] || $Ev['SpecPrice']) {
+  if ($Ev['Price1'] || $Ev['SpecPrice'] ) {
     echo "<tr><td>Price:<td>";
     if ($Ev['SpecPrice']) {
       echo $Ev['SpecPrice'];
     } else {
       echo Price_Show($Ev,1);
-      if (!$Ev['ExcludePass']) { echo ", or by Weekend ticket";
+      if (!$Ev['ExcludePass']) { echo ", or by " . Feature('SeasonName','Weekend Ticket');
         if (!$Ev['ExcludeDay'] && $YEARDATA[$DayLongList[$Ev['Day']] . "Pass"]) echo " or " . $DayLongList[$Ev['Day']] . " ticket\n";
       }
     }
@@ -161,6 +161,8 @@ function Print_Participants($e,$when=0,$thresh=0) {
     } else if ($Ev['SpecPriceLink']) {
       echo " -  <strong><a href=" . $Ev['SpecPriceLink'] . " target=_blank>Buy Now</a></strong>\n";
     }
+  } else if ($Ev['SeasonTicketOnly']) {
+    echo "<tr><td>Entry by:<td>" . Feature('SeasonName','Weekend Ticket') . " only";
   } else {
     echo "<tr><td>Price:<td>Free\n";
   }
@@ -237,7 +239,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   if ($Ev['Blurb']) echo "<div style='width:800px;'>" . $Ev['Blurb'] . "</div><P>";
   if ($Ev['Website']) echo "<h3>" . weblink($Ev['Website'],'Website for this event') . "</h3><p>\n";
 
-  if ($Ev['IsConcert'] || ($Event_Types_Full[$Ev['Type']]['IsConcert']) ) { // Concert Formating
+  if ($Ev['IsConcert'] || ($Event_Types[$Ev['Type']]['IsConcert']) ) { // Concert Formating
     echo "<div class=tablecont><table class=lemontab border>\n";
     foreach(array_reverse($ks) as $i) {
       if (isset($imps[$i])) {
@@ -272,7 +274,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   }
   if ($lemons) echo "</table></div>";
   if ($Ev['LongEvent']) {
-  } else {
+  } else if ($Se) {
     echo "<p>Ending at: " . $Ev['End'];
   }
    

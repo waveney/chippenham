@@ -96,7 +96,7 @@ global $MainBar,$HoverBar,$HoverBar2;
 $MainBar = $HoverBar = $HoverBar2 = '';
 
 function Show_Bar(&$Bar,$level=0,$Pval=1) { 
-  global $USERID,$host,$PerfTypes,$MainBar,$HoverBar,$HoverBar2,$YEARDATA,$Event_Types_Full;
+  global $USERID,$host,$PerfTypes,$MainBar,$HoverBar,$HoverBar2,$YEARDATA,$Event_Types;
   $host= "https://" . $_SERVER['HTTP_HOST'];
 //  echo "<ul class=MenuLevel$level>";
   $P=$Pval*100;
@@ -152,7 +152,7 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
       case '@' :
         switch ($link) {
         case 0:
-          foreach ($Event_Types_Full as $ET) {
+          foreach ($Event_Types as $ET) {
             if ($ET['DontList']) continue;
             $Bar[$ET['Plural']] = ((empty($ET['Sherlock']) || is_numeric($ET['Sherlock']) || ($ET['State'] < 3))?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
           }

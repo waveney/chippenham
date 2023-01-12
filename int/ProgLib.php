@@ -300,12 +300,12 @@ function Get_All_Events_For($what,$wnum,$All=0) {// what is not used
 }
 
 function Get_All_Public_Subevents_For($Eid) {
-  global $db,$YEAR,$Event_Types_Full;
+  global $db,$YEAR,$Event_Types;
   $evs = [];
   $res=$db->query("SELECT * FROM Events WHERE SubEvent=$Eid ORDER BY Day, Start, Type");  
   if ($res) {
     while($ev = $res->fetch_assoc()) {
-      if (( $Event_Types_Full[$ev['Type']]['Public']) && ($Event_Types_Full[$ev['Type']]['State'] >= 2) && ($ev['Public'] < 2)) {
+      if (( $Event_Types[$ev['Type']]['Public']) && ($Event_Types[$ev['Type']]['State'] >= 2) && ($ev['Public'] < 2)) {
         $evs[$ev['EventId']] = $ev;
       }
     }
@@ -358,8 +358,8 @@ function &Select_All_Other() {
 }
 
 function Get_Event_Type($id) {
-  global $Event_Types_Full;
-  return $Event_Types_Full[$id];
+  global $Event_Types;
+  return $Event_Types[$id];
 }
 
 function Put_Event_Type(&$now) {
@@ -371,8 +371,8 @@ function Put_Event_Type(&$now) {
 $Event_Types = Get_Event_Types(1);
 
 function Get_Event_Type_For($nam) {
-  global $Event_Types_Full;
-  foreach ($Event_Types_Full as $ET) if ($ET['SN'] == $nam) return $ET;
+  global $Event_Types;
+  foreach ($Event_Types as $ET) if ($ET['SN'] == $nam) return $ET;
   return null;
 }
 
@@ -412,7 +412,7 @@ function ListLinksNew(&$Perfs,$idx,$single,$plural,$size,$mult) {
 
 // Get Participants, Order by Importance/Time, if l>0 give part links as well
 function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
-  global $db,$Event_Types_Full,$YEAR,$PerfTypes,$SHOWYEAR;
+  global $db,$Event_Types,$YEAR,$PerfTypes,$SHOWYEAR;
 
   include_once "DanceLib.php";
   include_once "MusicLib.php";
@@ -466,7 +466,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
       }
     }
 
-    switch ($Event_Types_Full[$MainEv['Type']]['SN']) {
+    switch ($Event_Types[$MainEv['Type']]['SN']) {
     case 'Ceilidh':
     
       if ($PerfCount < 2) {
@@ -509,7 +509,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
     }
     if ($ans) return "$prefix$ans";
   }
-  if ($Event_Types_Full[$MainEv['Type']]['NoPart'] == 0 && $MainEv['NoPart']==0) return $prefix . "Details to follow";
+  if ($Event_Types[$MainEv['Type']]['NoPart'] == 0 && $MainEv['NoPart']==0) return $prefix . "Details to follow";
   return "";
 }
 
@@ -656,7 +656,8 @@ function DayTable($d,$Types,$xtr='',$xtra2='',$xtra3='') {
 
 function &Get_Active_Venues($All=0) {
   global $db,$YEAR;
-  $res = $db->query("SELECT DISTINCT v.* FROM Venues v, Events e, EventTypes t WHERE ( v.VenueId=e.Venue AND (e.Public=1 OR ( e.Public=0 AND e.Type=t.ETypeNo AND t.State>1 ) AND " .
+  $res = $db->query("SELECT DISTINCT v.* FROM Venues v, Events e, EventTypes t WHERE " .
+         "( v.VenueId=e.Venue AND (e.Public=1 OR ( e.Public=0 AND e.Type=t.ETypeNo AND t.State>1 ) AND " .
                     " e.Year='$YEAR' AND v.PartVirt=0)) OR ( v.IsVirtual=1 ) ORDER BY v.SN"); // v.IsVirtual needs to work for virt venues TODO
   if ($res) while($ven = $res->fetch_assoc()) {
     if ($ven['IsVirtual']) {
@@ -672,11 +673,11 @@ function &Get_Active_Venues($All=0) {
 
 
 function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for email
-    global $db;
+    global $db,$Event_Types;
     $str = '';
     include_once("DanceLib.php");
     $Evs = Get_All_Events_For($type,$id,$all);
-    $ETs = Get_Event_Types(1);
+
     $side = Get_Side($id);
 //echo "Type: $type, $id<p>";
 //var_dump($Evs);
@@ -697,10 +698,10 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
       $UsedNotPub = 0;
       foreach ($Evs as $e) {
         $cls = ($e['Public']<2?'':' class=NotCSide ');
-        if ($all || $ETs[$e['Type']]['State'] > 1 || ($ETs[$e['Type']]['State'] == 1 && Access('Participant',$type,$id))) {
-          if (!$all && $ETs[$e['Type']]['Public'] == 0) continue;
+        if ($all || $Event_Types[$e['Type']]['State'] > 1 || ($Event_Types[$e['Type']]['State'] == 1 && Access('Participant',$type,$id))) {
+          if (!$all && $Event_Types[$e['Type']]['Public'] == 0) continue;
           $evc++;
-           $Worst = min($ETs[$e['Type']]['State'],$Worst);
+           $Worst = min($Event_Types[$e['Type']]['State'],$Worst);
           if ($e['BigEvent']) { // Big Event
             $Others = Get_Other_Things_For($e['EventId']);
             $VenC=0;
@@ -778,7 +779,7 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
             $str .= "\n";
           }
         } else { // Debug Code
-//          echo "State: " . $ETs[$e['Type']]['State'] ."<p>";
+//          echo "State: " . $Event_Types[$e['Type']]['State'] ."<p>";
         }
         if ($cls) $UsedNotPub = 1;
       }

@@ -32,9 +32,11 @@ function CopyDiv(cpid) {
 }
 
 function Copy2Div(outerdiv,innerdiv) {
+debugger;
   var e = document.getElementById(outerdiv);
   var stuff = e.innerHTML;
   e.innerHTML = urldecode(stuff);
-  clipboard.copy(document.getElementById(innerdiv));
+  var f = document.getElementById(innerdiv);
+  clipboard.copy(f);
   e.innerHTML = stuff;
 }

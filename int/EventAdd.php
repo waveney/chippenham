@@ -23,6 +23,8 @@ function Parse_Perf_Selection() {
   }  
 }
 
+  $ETNames = [];
+  foreach($Event_Types as $E) $ETNames[$E['ETypeNo']] = $E['SN'];
   $Venues = Get_Real_Venues(0);
   $Skip = 0;
 
@@ -238,6 +240,7 @@ A similar feature will appear eventually for music.<p>
       
       Parse_Perf_Selection();
       $_POST['Year'] = $YEAR;
+//var_dump($_POST);
       $eid = Insert_db_post('Events',$Event,$proc); //
       $empty = array();
       Check_4Changes($empty,$Event);
@@ -328,7 +331,7 @@ A similar feature will appear eventually for music.<p>
       echo "<td class='NotSide FullD' hidden>Importance: " . fm_select($Importance,$Event,'Importance',0,'','',3);
 
       echo "<tr>" . fm_text('<b>Name</b>', $Event,'SN',1,($se>0?" class=FullD hidden":"") );
-        echo "<td><b>Event Type</b>:" . fm_select($Event_Types,$Event,'Type');
+        echo "<td><b>Event Type</b>:" . fm_select($ETNames,$Event,'Type');
         if ($se == 0) { echo "<td>No Sub Events"; }
         elseif ($se < 0) { echo "<td><a href=EventList?se=$eid>Has Sub Events</a>"; }
         else { echo "<td><a href=EventList?se=$se>Is a Sub Event</a>"; };
@@ -351,6 +354,7 @@ A similar feature will appear eventually for music.<p>
         echo "<div class=FullD hidden>" . fm_smalltext2(', Duration:',$Event,'Duration') . "&nbsp;(mins)";
         if ($se < 0) echo fm_smalltext2(', Slot End:',$Event,'SlotEnd');
         echo fm_smalltext2(', Doors:',$Event,'DoorsOpen') . "</div>";
+      echo "<td>" . fm_checkbox("Season Ticket Only",$Event,'SeasonTicketOnly');
       if ($se <= 0) echo "<tr class=mday $hidemday>" . fm_radio('End Day',$FestDays,$Event,'EndDay') . 
                 "<td colspan=3>Set up a sub event for each day after first, times are for first day";
       echo "<tr" . ($se>0?" class=FullD hidden":"") . "><td><b>Venue</b>:<td>" . fm_select($Venues,$Event,'Venue',1);

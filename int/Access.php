@@ -37,7 +37,7 @@
 
     case 'v' : // Volunteer
       $Data = Get_Volunteer($id);
-      $_REQUEST['ACTION'] = 'View';
+      $_REQUEST['ACTION'] = 'Show';
       $_REQUEST['id'] = $id;
       break;
 

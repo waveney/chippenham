@@ -69,10 +69,10 @@ function formatLineups(&$perfs,$link,&$Sizes,$sdisp=1) {
 
 // Check ET to see if imps should be found
 function Get_Imps(&$e,&$imps,$clear=1,$all=0) {
-  global $Event_Types_Full,$YEAR,$PerfTypes;
-  $ETs = Get_Event_Types(1);
-  $ets = $ETs[$e['Type']]['State']; 
-  $useimp = ($Event_Types_Full[$e['Type']]['UseImp'] && ($e['BigEvent']==0));
+  global $Event_Types,$YEAR,$PerfTypes;
+
+  $ets = $Event_Types[$e['Type']]['State']; 
+  $useimp = ($Event_Types[$e['Type']]['UseImp'] && ($e['BigEvent']==0));
   $now=time();
   if ($clear) $imps = array();
   for($i=1;$i<5;$i++) {

@@ -193,6 +193,7 @@ function Insert_db($table, &$from, &$data=0, $proced=1) {
     }
   }
   if ($proced) {
+// var_dump($newrec);exit;
     $insert = $db->query($newrec);
     if ($insert) {
       $UpdateLog .= $newrec . "\n";

@@ -21,7 +21,7 @@
 include_once("DanceLib.php");
 
 function CheckDance($level) { // 0 = None, 1 =Major, 2= All
-  global $db,$YEAR, $Surfaces, $Share_Type,$Procession,$Event_Types_Full;
+  global $db,$YEAR, $Surfaces, $Share_Type,$Procession,$Event_Types;
 
 // GRAB LOTS OF DATA
   echo "<div id=ChechedDance>";
@@ -185,14 +185,14 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
           $VenuesUsed[$Ven] = 1;
         }
         if (isset($Venues[$Ven]["Minor$daynam"]) && ($Venues[$Ven]["Minor$daynam"])) {
-          if ($side['IsASide'] && $Event_Types_Full[$Events[$e]['Type']]['SN'] == 'Dancing') {
+          if ($side['IsASide'] && $Event_Types[$Events[$e]['Type']]['SN'] == 'Dancing') {
             if( $minorspots++) {
               $Merr[] = "Performing $minorspots times at minor spots on $daynam";
               $MerrC++;
             }
           }
         }
-        if ($side['IsASide'] && $surfs && $Event_Types_Full[$Events[$e]['Type']]['SN'] == 'Dancing') {
+        if ($side['IsASide'] && $surfs && $Event_Types[$Events[$e]['Type']]['SN'] == 'Dancing') {
 //if (!$Surfaces[$Venues[$Ven]['SurfaceType1']]) { echo "Surface - $Ven ..."; }
           if (($Surfaces[$Venues[$Ven]['SurfaceType1']] != '' && $side["Surface_" . $Surfaces[$Venues[$Ven]['SurfaceType1']]]) || 
               ($Surfaces[$Venues[$Ven]['SurfaceType2']] != '' && $side["Surface_" . $Surfaces[$Venues[$Ven]['SurfaceType2']]])) { // Good
@@ -205,7 +205,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
           }
         }
 
-        if ($side['IsASide'] && !$Events[$e]['BigEvent'] && $Event_Types_Full[$Events[$e]['Type']]['SN'] == 'Dancing') { // Sharing Checks
+        if ($side['IsASide'] && !$Events[$e]['BigEvent'] && $Event_Types[$Events[$e]['Type']]['SN'] == 'Dancing') { // Sharing Checks
           $ns = 0;
           for ($j=1; $j<5; $j++) if ($Events[$e]["Side$j"]>0) $ns++;
           if ($ns == 1) {

@@ -4,19 +4,17 @@
 
   dostaffhead("Event Summary");
   include_once("ProgLib.php");
-  global $Event_Types_Full;
+  global $Event_Types;
 
   echo "<div class=content><h2>Event Summary $YEAR</h2>\n";
-
-  $Types = Get_Event_Types(1);
 
   echo "<div class=tablecont><table class=TueTab><tr><td>Event type<td>Number";
 
   $tot = $sp = $fam = 0;
-  foreach ($Types as $t) {
+  foreach ($Event_Types as $t) {
     $c = 0;
     $Ett = $t['ETypeNo'];
-    if ($Event_Types_Full[$Ett]['DontList']) continue;
+    if ($Event_Types[$Ett]['DontList']) continue;
     $ans = $db->query("SELECT * FROM Events WHERE Year='$YEAR' AND Type=$Ett");
     if ($ans) while ($e = $ans->fetch_assoc()) { 
       $Evs[] = $e; 

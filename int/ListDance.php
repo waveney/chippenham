@@ -3,7 +3,7 @@
   A_Check('Staff');
 
   dostaffhead("List Dance", ["/js/clipboard.min.js","/js/emailclick.js", "/js/InviteThings.js"] );
-  global $YEAR,$PLANYEAR,$Dance_Comp,$Dance_Comp_Colours,$Event_Types_Full,$YEARDATA;
+  global $YEAR,$PLANYEAR,$Dance_Comp,$Dance_Comp_Colours,$Event_Types,$YEARDATA;
   include_once("DanceLib.php"); 
   include_once("ProgLib.php");
   include_once("DateTime.php");
@@ -25,8 +25,7 @@
   $col5 = $col6 = $col7 = $col7 = $col8 = $col9 = $col9a = $col9b = $col9c = $col10 = '';
   echo "Click on column header to sort by column.  Click on Side's name for more detail and programme when available,<p>\n";
 
-  $DanceState = 0;
-  foreach( $Event_Types_Full  as $ET) if ($ET['SN'] == 'Dancing') $DanceState = $ET['State'];
+  $DanceState = $Event_Types[1]['State'];
   $Days2Festival = Days2Festival();
   
 //  echo "Days to fest: $Days2Festival<p>";

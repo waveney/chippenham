@@ -47,10 +47,11 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         if ($Side['Email']) echo " or ";
         echo linkemailhtml($Side,$CatT,'Alt');
       }
-      echo ", press control-V afterwards to paste the standard link"; //<button type=button onclick=Copy2Div('Email$snum','SideLink$snum')>standard link</button>";
-
+//      echo ", press control-V afterwards to paste the <button type=button onclick=Copy2Div('Email$snum','SideLink$snum')>standard link</button>";
+//      echo ", press control-V afterwards to paste the <button type=button onclick=CopyDiv('Email$snum')>standard link</button>";
+      
 // ADD CODE TO ONLY PROVIDE PROGRAMME WHEN AVAIL - Dance only?
-      if ($Side['IsASide']) echo " and programme"; // <button type=button onclick=Copy2Div('Email$snum','SideProg$snum')>programme</button> into message.";
+//      if ($Side['IsASide']) echo " and programme <button type=button onclick=Copy2Div('Email$snum','SideProg$snum')>programme</button> into message.";
     }
     echo "<p>\n";
   }
@@ -824,7 +825,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
 //var_dump($Evs);
     if ($Evs) {
       $Venues = Get_Real_Venues(1);
-      $ETs = Get_Event_Types();
+//      $ETs = Get_Event_Types(0);
       echo "<tr class=ContractShow hidden><td colspan=5>Click on the Event Names below for more detailed information.";
       if ($Mode==2) echo "Direct editing of some fields will be possible soon"; //TODO
       echo "<tr class=ContractShow hidden><td>Event Name<td>Date<td>On Stage at<td>Start<td>Duration (mins)<td colspan=3>Where\n";

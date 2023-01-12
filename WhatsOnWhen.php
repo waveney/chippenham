@@ -10,7 +10,7 @@
   include_once("int/DanceLib.php");
   include_once("int/MusicLib.php");
 
-  global $db,$YEAR,$PLANYEAR,$YEARDATA,$SHOWYEAR,$DayList,$DayLongList,$Event_Types_Full ;
+  global $db,$YEAR,$PLANYEAR,$YEARDATA,$SHOWYEAR,$DayList,$DayLongList,$Event_Types ;
 
   $Vens = Get_Venues(1);
 
@@ -20,7 +20,7 @@
      More to come from event states and general
   */
   $More = 0; 
-  foreach ($Event_Types_Full as $et) if ($et['State'] != 4 && $et['Public']) $More++;
+  foreach ($Event_Types as $et) if ($et['State'] != 4 && $et['Public']) $More++;
   if ($YEARDATA['FamilyState'] != 4) $More++;
   if ($YEARDATA['SpecialState'] != 4) $More++;
   if ($YEAR < $PLANYEAR) $More = 0;
