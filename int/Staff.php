@@ -18,7 +18,7 @@
   $Heads = [];
   
   $ETypes = [];
-  foreach($Event_Types as $eti => $ET) $ETypes[$eti] = $ET['SN'];
+  foreach($Event_Types as $eti => $ET) $ETypes[$eti] = $ET['Plural'];
 
   function StaffTable($Section,$Heading,$cols=1) {
     global $Heads; 
