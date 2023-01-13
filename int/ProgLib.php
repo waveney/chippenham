@@ -212,7 +212,8 @@ Set Use Notes to fmt to use the Big Event programming Notes to describe types of
         'ShowSubevent'=>'Set this in the rare case when a sub event should be show on top level listings',
         'IsConcert'=>'Select this if it has a ticketed entry to a whole - multi act event - used in formatting event descriptions - Not needed for event type Concert',
         'WeirdStuff'=>'Set this to have events before the start and after the end.  After setting save and reload',
-        
+        'Roll'=>'To highlight band/callers for Ceilidhs and Folk Dances and MCs for concerts',
+        'SeasonTicketOnly'=>'Event is only open to people with season tickets, no non ticket admission',    
   );
   Set_Help_Table($t);
 }
@@ -426,6 +427,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
   if ($res) {
     $imps=[];
     $Perfs=[];
+    $PerfRolls=[];
     while ($e = $res->fetch_assoc()) {
       if ($e['EventId'] == $Ev) $MainEv = $e;
       if ($e['BigEvent']) {
@@ -457,6 +459,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
                     }
                     $imps[$Imp2Use][] = $s; 
                     $Perfs[$e["PerfType$i"]][$Imp2Use][] = $s; 
+                    $PerfRolls[$e["Roll$i"]][] = $s;
                     $PerfCount++;
                   }
                   $found[$ee]=1;
@@ -470,7 +473,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
     switch ($Event_Types[$MainEv['Type']]['SN']) {
     case 'Ceilidh':
     
-      if ($PerfCount < 2) {
+/*      if (($PerfCount < 2) || ($PerfCount == count($PrefRolls[0]))) {
         // Drop through
       } else {
         $ans .= (isset($Perfs[1])?ListLinksNew($Perfs,1,'Music by','Music by',$size,$mult):"Music to be announced");
@@ -481,7 +484,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
         if ($ans) $ans .= "<p>";
         break;
       }
-
+*/
 
     default: // Do default treatment below
       $ks = array_keys($imps);
@@ -798,6 +801,11 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
 //var_dump($str);
 
   return $str;
+}
+
+function Venue_Parents(&$Vens,$vid) {
+  if (($par = $Vens[$vid]['PartVirt']) == 0) return '';
+  return (Vens[$Par]['SN'] . ": ");
 }
 
 

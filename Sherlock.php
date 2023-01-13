@@ -145,11 +145,13 @@
       echo "<td>"; 
         echo timecolon($E['Start']) . " to " . timecolon($E['End']);
       echo "<td><strong><a href=/int/EventShow?e=$eid>" . $E['SN'] . "</a></strong>"; 
-      echo "<td><a href=/int/VenueShow?v=" . $E['Venue'] . ">" . $Vens[$E['Venue']]['SN'] . "</a>";
+      echo "<td>" . (Venue_Parents($Vens,$E['Venue']) . "<a href=/int/VenueShow?v=" . $E['Venue'] . ">" . $Vens[$E['Venue']]['SN'] . "</a>";
       if ($E['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
         foreach ($Others as $i=>$o) {
-          if ($o['Type'] == 'Venue') echo ", <a href=/int/VenueShow?v=" . $o['Identifier'] . ">" . $Vens[$o['Identifier']]['SN'] . "</a>";
+          if ($o['Type'] == 'Venue') {
+            echo ", " . (Venue_Parents($Vens,$E['Venue']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" . $Vens[$o['Identifier']]['SN'] . "</a>";
+          }
         }
       }
       echo "<td>";

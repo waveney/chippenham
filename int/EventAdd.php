@@ -321,7 +321,8 @@ A similar feature will appear eventually for music.<p>
 
       echo "<tr class=FullD hidden><td class=NotSide>" . fm_checkbox('Multiday Event',$Event,'LongEvent','onchange=$(".mday").show()');
       $hidemday =  (isset($Event['LongEvent']) && $Event['LongEvent'])?'':'hidden ';
-      echo "<td class=NotSide>" . fm_checkbox('Big Event',$Event,'BigEvent') . " " . fm_checkbox('No Order',$Event,'NoOrder') . fm_checkbox('Use Notes to fmt',$Event,'UseBEnotes');
+      echo "<td class=NotSide>" . fm_checkbox('Big Event',$Event,'BigEvent') . " " . fm_checkbox('No Order',$Event,'NoOrder') . 
+           fm_checkbox('Use Notes to fmt',$Event,'UseBEnotes');
       echo "<td>" . fm_checkbox('Also Dance',$Event,'ListDance') . " ". fm_checkbox('Also Music',$Event,'ListMusic') . " ". fm_checkbox('Also Comedy',$Event,'ListComedy');
       echo "<td class=NotSide>" . fm_checkbox('No Part',$Event,'NoPart');
       echo "<td class=NotSide>" . fm_checkbox('Concert',$Event,'IsConcert');
@@ -396,7 +397,7 @@ A similar feature will appear eventually for music.<p>
             }
             $pi++;
           }
-          echo "<td>Roll: " . fm_select($Perf_Rolls, $Event,"Roll$i");
+          echo "<td>Roll: " . fm_select($Perf_Rolls, $Event,"Roll$i") . help('Roll');
         }
       } else {
         $ovc=0;
