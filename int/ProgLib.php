@@ -805,7 +805,7 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
 
 function Venue_Parents(&$Vens,$vid) {
   if (($par = $Vens[$vid]['PartVirt']) == 0) return '';
-  return (Vens[$Par]['SN'] . ": ");
+  return ($Vens[$Par]['SN'] . ": ");
 }
 
 
