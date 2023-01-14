@@ -460,6 +460,7 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
 // Update Year State if appapropriate
 function Contract_Changed(&$Sidey) {
   global $Book_State,$YEAR;
+  if (empty($Sidey['SideId'])) return 0;
   $snum = $Sidey['SideId'];
   if ($Sidey['YearState'] == $Book_State['Contract Signed']) {
     $chk = Contract_Check($snum);
@@ -485,7 +486,7 @@ function Contract_Changed(&$Sidey) {
 }
 
 function Contract_Changed_id($id) {
-  $Sidey = Get_SideYear($snum);
+  $Sidey = Get_SideYear($id);
   return Contract_Changed($Sidey);
 }
 

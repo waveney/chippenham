@@ -217,7 +217,7 @@ A similar feature will appear eventually for music.<p>
             }
           }
         }
-        if ($err==0 && $_POST['NEWVEN'] > 0) { // Add venue
+        if ($err==0 && isset($_POST['NEWVEN']) && $_POST['NEWVEN'] > 0) { // Add venue
           if ($Other) foreach ($Other as $i=>$ov) if ($ov['Type'] == 'Venue' && $ov['Identifier'] == $_POST['NEWVEN']) $err++;
           if ($err == 0 && $Event['Venue'] == $_POST['NEWVEN']) $err++; 
           if ($err == 0) {
@@ -293,7 +293,7 @@ A similar feature will appear eventually for music.<p>
   }
 //var_dump($Event);
   if (isset($Err)) echo "<h2 class=ERR>$Err</h2>\n";
-  echo "<span class=NotSide>Fields marked should be only set by Richard</span>";
+  echo "<span class='NotSide FullD' hidden>Fields marked should be only set by Richard</span>";
   Register_AutoUpdate('Event',$eid);
   if (!$Skip) {
 //    $adv = (isset($Event['SubEvent']) ?(($Event['SubEvent']>0?"class=Adv":"")) : ""); 
@@ -343,21 +343,23 @@ A similar feature will appear eventually for music.<p>
       if ($se <= 0) {
         echo "<tr class='NotSide FullD' hidden>";
         echo "<td class=NotSide>" . fm_simpletext('Price &pound;',$Event,'Price1') . Help("Price");
-        if ($YEARDATA['PriceChange1']) echo "<td class=NotSide>" . fm_simpletext('Price after ' . date('j M Y',$YEARDATA['PriceChange1']) . ' (if diff) &pound;',$Event,'Price2');
-        if ($YEARDATA['PriceChange2']) echo "<td class=NotSide>" . fm_simpletext('Price after ' . date('j M Y',$YEARDATA['PriceChange2']) . ' (if diff) &pound;',$Event,'Price3');
+        if ($YEARDATA['PriceChange1']) 
+          echo "<td class=NotSide>" . fm_simpletext('Price after ' . date('j M Y',$YEARDATA['PriceChange1']) . ' (if diff) &pound;',$Event,'Price2');
+        if ($YEARDATA['PriceChange2']) 
+          echo "<td class=NotSide>" . fm_simpletext('Price after ' . date('j M Y',$YEARDATA['PriceChange2']) . ' (if diff) &pound;',$Event,'Price3');
         echo "<td class=NotSide>" . fm_simpletext('Door Price (if different) &pound;',$Event,'DoorPrice');
         echo "<td class=NotSide>" . fm_simpletext('Ticket Code',$Event,'TicketCode');
       }
 
       echo "<tr>" . fm_radio("<b><span class=mday $hidemday>Start </span>Day</b>",$FestDays,$Event,'Day',
                     ($se > 0?'class=FullD hidden':''),1,($se > 0?'class=FullD hidden':''));
-      echo "<td colspan=3><b>Times</b>: " . fm_smalltext2('Start:',$Event,'Start');
+      echo "<td colspan=2><b>Times</b>: " . fm_smalltext2('Start:',$Event,'Start');
         echo fm_smalltext2(', End:',$Event,'End');
         echo fm_smalltext2(', Setup Time (mins):',$Event,'Setup') ;
         echo "<div class=FullD hidden>" . fm_smalltext2(', Duration:',$Event,'Duration') . "&nbsp;(mins)";
         if ($se < 0) echo fm_smalltext2(', Slot End:',$Event,'SlotEnd');
         echo fm_smalltext2(', Doors:',$Event,'DoorsOpen') . "</div>";
-      echo "<td>" . fm_checkbox("Season Ticket Only",$Event,'SeasonTicketOnly');
+        if ($se <= 0) echo "<td>" . fm_checkbox("Season Ticket Only",$Event,'SeasonTicketOnly');
       if ($se <= 0) echo "<tr class=mday $hidemday>" . fm_radio('End Day',$FestDays,$Event,'EndDay') . 
                 "<td colspan=3>Set up a sub event for each day after first, times are for first day";
       echo "<tr" . ($se>0?" class=FullD hidden":"") . "><td><b>Venue</b>:<td>" . fm_select($Venues,$Event,'Venue',1);
@@ -397,7 +399,7 @@ A similar feature will appear eventually for music.<p>
             }
             $pi++;
           }
-          echo "<td>Role: " . fm_select($Perf_Rolls, $Event,"Roll$i") . help('Roll');
+          echo "<td" . (($se > 0) ?' class=FullD hidden' :'') . ">Role: " . fm_select($Perf_Rolls, $Event,"Roll$i") . help('Roll');
         }
       } else {
         $ovc=0;

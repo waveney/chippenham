@@ -91,12 +91,12 @@ function Side_List($extra='',$extra2='') {
   echo "<div class=SideListWrapper>";
   
   $PTypes = [];
-  foreach ($PerfTypes as $p=>$d) $PTypes[] = $p;
+  foreach ($PerfTypes as $pi=>$p) if (Capability("Enable" . $p[2])) $PTypes[] = $pi;
   $stuff["PerfType0"] = 0;
   echo fm_radio('',$PTypes,$stuff,"PerfType0","onchange=EventPerfSel(event,###F,###V)",0);
 
   echo "<div class=SideListContainer>";
-  foreach ($PTypes as $pi=>$p) {
+  foreach ($PTypes as $pi=>$p) {    
     echo "<table border id=Perf$pi" . "_Side0 " . ($pi?"hidden":"") . ">";
     echo "<tr><th>" . $PTypes[$pi] . "<th>i";
 //    if (!$Event['ExcludeCount']) echo "<th>W<th>H";
