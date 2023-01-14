@@ -397,7 +397,7 @@ A similar feature will appear eventually for music.<p>
             }
             $pi++;
           }
-          echo "<td>Roll: " . fm_select($Perf_Rolls, $Event,"Roll$i") . help('Roll');
+          echo "<td>Role: " . fm_select($Perf_Rolls, $Event,"Roll$i") . help('Roll');
         }
       } else {
         $ovc=0;
