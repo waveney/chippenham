@@ -16,6 +16,7 @@
 
   $Arts = [];
   foreach ($Vol_Cats as $Cat) {
+    if (($Cat['Props'] & VOL_USE)==0) continue;
     if (isset($Cat['Image']) && $Cat['Image']) {
       if (isset($Cat['ImageWidth']) && $Cat['ImageWidth'] != 0) {
         // No Action
