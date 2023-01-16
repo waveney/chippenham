@@ -20,5 +20,7 @@ CREATE TABLE `VolCats` (
   `LongDesc` text NOT NULL,
   `Importance` int NOT NULL,
   `VolName` text NOT NULL,
+  `ImageHeight` int NOT NULL,
+  `ImageWidth` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

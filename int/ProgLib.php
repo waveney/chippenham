@@ -168,11 +168,11 @@ function Get_VenueYears($y=0) {
 
 function Set_Event_Help() {
   static $t = array(
-        'Start'=>'Use 24hr clock for all times eg 1030, 1330',
+        'Start'=>'It is recommended to use 24hr clock for all times eg 1030, 1330.  But it can handle most formats',
         'Sides'=>'Do not use this tool for dance programming use the tool under Dance, once the events have been created',
         'SN'=>'Needed for now, need not be unique',
         'Type'=>'Broad event category, if in doubt ask Richard',
-        'Description'=>'Brief description of event for website and programme book, max 150 chars',
+        'Description'=>'Brief description of event for website and programme book, max 150 chars.  Recommended for Workshops and particpartory events.',
         'Blurb'=>'Longer blurb if wanted, that will follow the description when this particular events is being looked at online',
         'Setup'=>'IF the event has setup prior to the start time, set it here in minutes to block out the venue',
         'Duration'=>'Duration in minutes of the event, this will normally be calculated from the End time',

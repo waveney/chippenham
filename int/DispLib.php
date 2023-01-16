@@ -380,11 +380,15 @@ function Expand_Special(&$Art,$future=0) {
 //
 
 
-function Show_Articles_For($page='',$future=0,$datas='400,700,20,3') {
+function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
   if ($future == 0 && !Feature('UseArticles')) return 0;
   include_once("DanceLib.php");
   
-  $Arts = Get_All_Articles(0,$page,$future);
+  if (is_array($page)) {
+    $Arts = &$page;
+  } else {
+    $Arts = Get_All_Articles(0,$page,$future);
+  }
   
   if (!$Arts) return 0;
 //  var_dump($Arts);

@@ -1,9 +1,10 @@
 <?php
   include_once("int/fest.php");
   include_once("int/VolLib.php");
+  include_once("int/DispLib.php");
   global $FESTSYS,$PLANYEAR,$YEARDATA;
   
-  dohead("Get Involved",[],1);
+  dohead("Get Involved",["/js/Articles.js"],1);
 
   echo "The festival is entirely reliant on a dedicated army of brilliant volunteers all who give up their time and provide their " .
        "skills and expertise to the event free of charge. $PLANYEAR's event runs from " . FestDate($YEARDATA['FirstDay'],'Y') . " to " . 
@@ -12,6 +13,67 @@
 
 
   $Vol_Cats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
+
+  $Arts = [];
+  foreach ($Vol_Cats as $Cat) {
+    if (isset($Cat['Image']) && $Cat['Image']) {
+      if (isset($Cat['ImageWidth']) && $Cat['ImageWidth'] != 0) {
+        // No Action
+      } else {
+        $img = $Cat['Image'];
+        if (preg_match('/^https?:\/\//i',$img)) {
+          $stuff = getimagesize($img);
+        } else if (preg_match('/^\/(.*)/',$img,$mtch)) {
+          if (file_exists($mtch[1])) {
+            $stuff = getimagesize($mtch[1]);
+          } else {
+            $stuff = [0,0];
+          }
+        } else {
+          $stuff = getimagesize($img);
+        }
+        if ($stuff) {
+          $Cat['ImageWidth'] = $stuff[0];
+          $Cat['ImageHeight'] = $stuff[1];
+        }
+        Gen_Put('VolCats',$Cat);
+      }
+    } else {
+        $Cat['ImageWidth'] = 0;
+        $Cat['ImageHeight'] = 0;    
+    }
+
+    $Arts[] = ['SN' => $Cat['Name'],'Type'=>0, 'Link'=>'int/Volunteers?A=New', 'HideTitle'=>0, 'RedTitle'=>0,
+               'Image'=>$Cat['Image'], 'ImageHeight'=>$Cat['ImageHeight'] , 'ImageWidth'=>$Cat['ImageWidth'],'Format'=>0,
+               'Text'=> ($Cat['Description'] . "<p>" . $Cat['LongDesc'] . 
+                 "<a href=int/Volunteers?A=New><div class=VolButtonWrap><div class=VolButton>Please Volunteer for " . $Cat['Name'] . "</a></div></div>") ];
+  }
+  
+//  var_dump($Arts);
+   
+  Show_Articles_For($Arts,0,'400,700,20,3');
+  
+/*  
+  foreach ($Vol_Cats as $Cat) {
+    $Id = $Cat['id'];
+    echo "<div class=LineupFit2Wrapper>";
+
+    echo "<div class='LineupFit2 LineUpBase' onmouseover=AddLineUpHighlight($Id) onmouseout=RemoveLineUpHighlight($Id) id=LineUp$Id>";
+    echo "<a href=int/Volunteers?A=New>";
+
+    echo "<div class=LineUpFitTitle style='font-size:24px'>" . $Cat['Name'] . "</div>";
+    if ($Cat['Image']) echo "<img class=Rounded src=" . $Cat['Image'] . ">";
+    if ($Cat['Description']) echo "<div class=LineUptxt>" . $Cat['Description'] . "</div>";
+    if ($Cat['LongDesc']) echo "<div class=LineUpSmalltxt>" . $Cat['LongDesc'] . "</div>";       
+
+    echo "<div class=LUCenter>Please Volunteer for " . $Cat['Name'] . "</div>";
+    
+    echo "</a></div>";
+  }
+  echo "</div><br clear=all></div>";
+
+  
+/*  
   $Shown = 0;
   echo "<table width=95%>";
   foreach ($Vol_Cats as $Cat) {
@@ -36,7 +98,7 @@
     $Shown++;
   }
   echo "</table>";
-   
+*/   
   dotail();  
 /*
 Please volunteer at Chippenham Folk Festival<p>

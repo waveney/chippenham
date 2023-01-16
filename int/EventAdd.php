@@ -366,7 +366,7 @@ A similar feature will appear eventually for music.<p>
         echo fm_textarea('Notes', $Event,'Notes',4,2);
       $et = 'Mixed';
       if (isset($Event['Type'])) $et = $Event_Types[$Event['Type']];
-      echo "<tr class='FullD' hidden>" . fm_textarea('Description <span id=DescSize></span>',$Event,'Description',5,2,'',
+      echo "<tr>" . fm_textarea('Description <span id=DescSize></span>',$Event,'Description',5,2,'',
                         'maxlength=150 oninput=SetDSize("DescSize",150,"ShortBlurb") id=ShortBlurb'); 
       echo "<tr class='FullD' hidden>" . fm_textarea('Blurb',$Event,'Blurb',5,2,'','maxlength=2000');
       echo "<tr class='FullD' hidden><td>If the Venue doesn't normally have a Bar or Food<td>" . fm_checkbox('Bar',$Event,'Bar') . 

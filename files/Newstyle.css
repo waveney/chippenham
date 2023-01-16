@@ -52,7 +52,7 @@ h2 {
 .button
     {
     padding:2.5px 10px 2.5px 10px;
-    background-color:#var(--main-col-dark);
+    background-color:var(--main-col-dark);
     margin:5px 0 0 0;
     transition:background 1s, color 1s;
     color:#FFFFFF;
@@ -74,7 +74,7 @@ h2 {
 .navbutton
     {
     padding:9.5px 10px;
-    background-color:#var(--main-col-dark);
+    background-color:var(--main-col-dark);
     font-size:18px;
     margin:0px;
     transition:background 1s, color 1s;
@@ -93,7 +93,7 @@ h2 {
     }
 .navbuttondrop:hover
     {
-    background-color:#var(--main-col-dark);
+    background-color:var(--main-col-dark);
     }
 .staffnavbutton
     {
@@ -104,7 +104,7 @@ h2 {
     transition:background 1s, color 1s;
     }
 .staffnavbutton:hover {
-  background-color:#var(--main-col-dark);
+  background-color:var(--main-col-dark);
 }
 .content, .contentlim {
   min-height:650px;
@@ -143,12 +143,12 @@ sup {
     min-width:250px;
     max-width:300px;
     min-height:250px;
-    background-color:#var(--main-col-dark);
+    background-color:var(--main-col-dark);
     width:100%;
     text-align:center;
     }
 .biodiv p {
-    background-color:#var(--main-col-dark);
+    background-color:var(--main-col-dark);
     max-width:100%;
     text-align:center;
     }
@@ -172,7 +172,7 @@ sup {
     min-width:150px;
     max-width:200px;
     min-height:150px;
-    background-color:#var(--main-col-dark);
+    background-color:var(--main-col-dark);
     width:100%;
     text-align:center;
     color:#FFFFFF;
@@ -251,7 +251,7 @@ sup {
     {
     margin:0 0 0 0;
     font-size:40px;
-    color:#var(--main-col-dark);
+    color:var(--main-col-dark);
     }
 .footersubtitle {
     margin:0 0 0 0;
@@ -270,7 +270,7 @@ sup {
     {
     margin:0 0 0 0;
     font-size:30px;
-    color:#var(--main-col-dark);
+    color:var(--main-col-dark);
     }
 p {
   text-align:justify;
@@ -358,7 +358,7 @@ input
     }
 input:Focus
     {
-    border:solid 2px #var(--main-col-dark);
+    border:solid 2px var(--main-col-dark);
     color:#000000;
     }
 select
@@ -371,7 +371,7 @@ select
     }
 select:Focus
     {
-    border:solid 2px #var(--main-col-dark);
+    border:solid 2px var(--main-col-dark);
     color:#000000;
     }
 textarea
@@ -385,7 +385,7 @@ textarea
     }
 textarea:Focus
     {
-    border:solid 2px #var(--main-col-dark);
+    border:solid 2px var(--main-col-dark);
     color:#000000;
     }
 
@@ -570,7 +570,7 @@ textarea:Focus
     display: inline-block;
     margin-bottom:25px;
     background-color:#FFFFFF;
-    border:solid 4px #var(--main-col-dark);
+    border:solid 4px var(--main-col-dark);
     border-radius:15px;
     }
 .adminarticlettl {
@@ -579,7 +579,7 @@ textarea:Focus
     text-align:center;
     font-size:30px;
     color:#FFFFFF;
-    background-color:#var(--main-col-dark);
+    background-color:var(--main-col-dark);
     }
 .adminarticletxt {
     max-width:100%;
@@ -1099,7 +1099,7 @@ textarea {
 
 .ArtTextBT {
   text-align:center;
-  color: #var(--main-col-dark);
+  color: var(--main-col-dark);
   font-weight:normal;
   font-size:24px;
 }
@@ -1195,7 +1195,7 @@ button {
 
 .LineupBase {
   background:#f6f6f6;
-  color: #var(--main-col-dark);
+  color: var(--main-col-dark);
 }
 
 .LineupFit1 {
@@ -1233,8 +1233,17 @@ button {
   margin:10px;
 }
 
-.LineupFit1 img, .LineupFit2 img, .LineupFit3 img, .LineupFit4 img, .LineupFit5 img {
-  width:100%;
+.LineupVFit2 {
+  min-width:450px;
+  max-width:900px;
+  flex-grow:1;
+  margin:20px;
+}
+
+
+
+.LineupFit1 img, .LineupFit2 img, .LineupFit3 img, .LineupFit4 img, .LineupFit5 img .LineupVFit2 img {
+  max-width:100%;
   max-height: 310px;
   object-fit: cover;
   border-bottom: 1px solid #dedede;
@@ -1245,16 +1254,17 @@ button {
   margin-bottom:2px;
   padding:5px;
   text-align: center;
-  color: #var(--main-col-dark);
+  color: var(--main-col-dark);
 }
 
 .LUHighlight a .LineUpFitTitle {
   color:white;
+  font-size:24px;
 }
 
 .LUHighlight, .LUHighlight a, .LUHighlight a:visited {
   background-color:var(--main-col);
-  color:white;
+  color: var(--main-col-dark);
   animation-name: pbpop;  
   animation-duration: 0.3s;
   animation-timing-function: linear;
@@ -1267,6 +1277,19 @@ button {
   margin-top:5px;
   padding:5px;
   background:white;
+}
+
+.LineUpSmalltxt, .LineUpSmalltxt a {
+  font-size:14pt;
+  color:black;
+  margin-top:5px;
+  padding:5px;
+  background:white;
+}
+
+
+.LUCenter {
+  text-align: center;
 }
 
 @keyframes pbpop {
@@ -1298,7 +1321,7 @@ button {
 
 .TradeFlexCont h2 {
   background:#f6f6f6;
-  color:#var(--main-col-dark);
+  color:var(--main-col-dark);
   margin-bottom:2px;
   padding:5px;
   padding-left:10px;
@@ -1306,7 +1329,7 @@ button {
 }
 
 .TradeFlexCont:hover h2 {
-  background-color:#var(--main-col);
+  background-color:var(--main-col);
   color:white;
 }
 
@@ -1340,7 +1363,7 @@ button {
 }
 
 .VenueFlexCont a {
-  color:#var(--main-col-dark);
+  color:var(--main-col-dark);
 }
 
 .VenueFlexCont:hover {
@@ -1373,7 +1396,7 @@ button {
 }
 
 .GalleryFlexCont a {
-  color:#var(--main-col-dark);
+  color:var(--main-col-dark);
 }
 
 .GalleryFlexCont img {
@@ -1381,7 +1404,7 @@ button {
 }
 
 .GalleryFlexCont:hover {
-  color:#var(--main-col-dark);
+  color:var(--main-col-dark);
 /*  font-size:24px;
   color:white;
   background: var(--main-col);/*
@@ -1512,7 +1535,7 @@ button {
   transition:opacity .5s, filter .5s;
   font-weight:bold;
   background:#f0f0f0;
-  color:#var(--main-col-dark);
+  color:var(--main-col-dark);
   margin-bottom:2px;
   padding:5px;
   padding-left:10px;
@@ -1597,3 +1620,28 @@ button {
   display:inline;
   padding-left:10px;
 }
+
+.VolButtonWrap {
+  background:var(--main-col);
+  text-align:center;
+  margin:10px;
+  padding:5px;
+}
+
+.VolButton, .VolButton a, .VolButton visited {
+  text-align:center;
+  background:var(--main-col);
+  margin:10px;
+  margin-top:2px;
+  margin-bottom:2px;
+  color:var(--main-col-dark);
+  font-size:20px;
+}
+
+.VolButton a:hover{
+  background:var(--main-col);
+  color: black;
+  transition: all ease-in-out 0.4s;
+  transition:opacity .5s, filter .5s;
+}
+
