@@ -58,7 +58,11 @@ function fm_text($Name,&$data,$field,$cols=1,$extra1='',$extra2='',$field2='',$e
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
   if ($extra3 == '') $extra3 = $extra1;
-  $str = "<td $extra3>$Name" . ($Name?':':'') . help($field) . "<td colspan=$cols $extra1><input type=text name=$field2 id=$field2 $extra2 size=" . $cols*16; 
+  if ($cols >0) {
+    $str = "<td $extra3>$Name" . ($Name?':':'') . help($field) . "<td colspan=$cols $extra1><input type=text name=$field2 id=$field2 $extra2 size=" . $cols*16; 
+  } else {
+    $str = "<td $extra3>$Name" . ($Name?':':'') . help($field) . "<br><input type=text name=$field2 id=$field2 $extra2 size=" . abs($cols)*16;   
+  }
   if (isset($data[$field])) $str .= " value=\"" . htmlspec($data[$field]) ."\"";
   if ($AutoADD) $str .=  " oninput=AutoInput('$field2') ";
   return $str . " $ADDALL>";
@@ -193,10 +197,11 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
 //var_dump($Desc,$field,$tabs,$extra2,$field2);
   if ($field2 == '') $field2=$field;
   $str = "";
-  if ($tabs) $str .= "<td $extra>"; 
+  if ($tabs > 0) $str .= "<td $extra>"; 
   if ($Desc) $str .= "$Desc:";
   $str .= help($field) . "&nbsp;";
-  if ($tabs) $str .= "<td $extra2>"; 
+  if ($tabs > 0) $str .= "<td $extra2>"; 
+  if ($tabs < 0 ) $str .= "<br>";
   $done = 0;
   foreach($defn as $i=>$d) {
     if (!$d) continue;
@@ -662,7 +667,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
       if ($Mode) formData.append('Mode',"$Mode" ); 
       if ('$tdclass' != '') formData.append('Class',"$tdclass" );  
     },
-    dictDefaultMessage: "Drop $Name here to upload"
+    dictDefaultMessage: "Drop $Name here to upload or click to browse"
   };
 XXX;
     $str .= "</script>";
