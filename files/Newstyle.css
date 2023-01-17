@@ -1,4 +1,4 @@
-:root{
+:root {
   --main-col:#fcb900;
   --main-col-dark:#993300;
   --main-contrast(:black);
@@ -1242,8 +1242,8 @@ button {
 
 
 
-.LineupFit1 img, .LineupFit2 img, .LineupFit3 img, .LineupFit4 img, .LineupFit5 img .LineupVFit2 img {
-  max-width:100%;
+.LineupFit1 img, .LineupFit2 img, .LineupFit3 img, .LineupFit4 img, .LineupFit5 img, .LineupVFit2 img {
+  width:100%;
   max-height: 310px;
   object-fit: cover;
   border-bottom: 1px solid #dedede;
@@ -1645,3 +1645,7 @@ button {
   transition:opacity .5s, filter .5s;
 }
 
+VolWrapper {
+  width:99%;
+  overflow-x:scroll;
+}

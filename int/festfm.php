@@ -137,9 +137,14 @@ function fm_hidden($field,$value,$extra='') {
 function fm_textarea($Name,&$data,$field,$cols=1,$rows=1,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
-  $str = "<td $extra1>$Name:" . help($field) . "<td colspan=$cols $extra1><textarea name=$field2 id=$field2 $ADDALL ";
+  if ($rows > 0) {
+    $str = "<td $extra1>$Name:" . help($field) . "<td colspan=$cols $extra1><textarea name=$field2 id=$field2 $ADDALL ";
+  } else {
+    $str = "<td $extra1>$Name:" . help($field) . "<br><textarea name=$field2 id=$field2 $ADDALL ";
+  }
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
-  $str .= " $extra2 rows=$rows>" ;
+  $str .= " $extra2 rows=" . abs($rows) . ">" ;  
+ 
   return $str . (isset($data[$field])?        htmlspec($data[$field]) : '' ) . "</textarea>\n";
 }
 
@@ -205,10 +210,10 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
   $done = 0;
   foreach($defn as $i=>$d) {
     if (!$d) continue;
-    $str.= (($done && $tabs >= 2) ? "<br>" : " ");
+    $str.= (($done && abs($tabs) >= 2) ? "<br>" : " ");
     $done = 1;
     if ($colours) $str .= "<span style='background:" . $colours[$i] . ";padding:4; white-space: nowrap;'>";
-    if ($tabs < 3) {
+    if (abs($tabs) < 3) {
       $str .= "<label for=$field2$i $extra3>$d:</label>";
     } 
     $ex = $extra;
@@ -226,7 +231,7 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
       if (isset($data[$field]) && ($data[$field] == $i)) $str .= " checked";
     }
     $str .= ">\n";
-    if ($tabs == 3) {
+    if (abs($tabs) == 3) {
       $str .= " <label for=$field2$i $extra3>$d</label>";
     } 
 
@@ -601,6 +606,8 @@ $DDdata = [
     'NewImage' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1, 
                  'Extra'=>"acceptedFiles: 'image/*',",'Name'=>'Image'],
     'Image'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>1 ], 
+    'MobPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>2,
+                 'Name'=>'Photo', 'NotTable'=>1 ], 
 
 ];
 
@@ -616,6 +623,8 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
   $Name = $Type;
   $hid = ($hide?' hidden ':'');
   if (isset($DDd['Name'])) $Name = $DDd['Name'];
+  $Table = "td";
+  if (isset($DDd['NotTable'])) $Table = "div";  
     
   if ($Call || isset($DDd['Show'])) {  
     if ($DDd['tr']) {
@@ -628,15 +637,22 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
   
     $Padding = time();  
     if (isset($DDd['Show'])) {
-      $str .= "<td class=Drop$Type >";
-      if (isset($Data[$Type]) && $Data[$Type]) {
-        $str .= "<img id=Thumb$Type src=" . $Data[$Type] . " height=120>";
+
+      $str .= "<$Table class=Drop$Type >";
+      if (isset($Data[$Name]) && $Data[$Name]) {
+        $str .= "<img id=Thumb$Type src=" . $Data[$Name] . " height=120>";
       } else {
         $str .= "No $Name Yet";
       }
-      $str .= "<td class='Result$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";
+      $str .= "</$Table>";
+
+//      if ($DDd['Show']== 1) {
+        $str .= "<$Table class='Result$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";
+//      } else if ($DDd['Show']== 2) {
+//        $str .= "<br class='Drop$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";      
+//      }
     } else {
-      $str .= "<td class='Drop$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";
+      $str .= "<$Table class='Drop$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";
     }
 
 
@@ -654,7 +670,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
         console.log(r);
         if ($replace) { 
           document.open(); document.write(r); document.close();
-        } else {
+        } else {1
           $('.Result$Type').remove(); 
           $('.Drop$Type').replaceWith(r)
         }
@@ -670,7 +686,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
     dictDefaultMessage: "Drop $Name here to upload or click to browse"
   };
 XXX;
-    $str .= "</script>";
+    $str .= "</script></$Table>";
   }
 //      init: function() {
 //        this.on("success", function(e,r) { document.open(); document.write(r); document.close(); });
@@ -686,25 +702,25 @@ XXX;
  
   if ($Mode) {
     if ($DDd['AddState']) {
-      $str .= "<td class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][0] . ">";
-      $str .= "<div class=NotCSide>" . fm_radio($Type,$InsuranceStates,$Data,$Type,'',0) . "</div>";
+      $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][0] . ">";
+      $str .= "<div class=NotCSide>" . fm_radio($Type,$InsuranceStates,$Data,$Type,'',0) . "</div></$Table>";
     }
   } elseif ($DDd['AddState']) {
     $ddat = (isset($Data[$Type])?$Data[$Type]:'');
-    $str .= "<td class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][0] . ">";
+    $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][0] . ">";
     $tmp['Ignored'] = $ddat;
     $str .= fm_checkbox("$Type Uploaded",$tmp,'Ignored','disabled');
-    $str .= fm_hidden($Type,$ddat);   
+    $str .= fm_hidden($Type,$ddat) . "</$Table>";   
   }
   
   if ($files) {
     $Current = $files[0];
     $Cursfx = pathinfo($Current,PATHINFO_EXTENSION );
-    $str .= "<td class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][1] . "><a href=ShowFile?l=$path.$Cursfx>View $Name file</a><br>";  
+    $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][1] . "><a href=ShowFile?l=$path.$Cursfx>View $Name file</a></$Table>";  
   }
-  if ($Mess) $str .= "<td class='Result$Type $tdclass' $hid>$Mess";
+  if ($Mess) $str .= "<$Table class='Result$Type $tdclass' $hid>$Mess</$Table>";
   
-  if ($Call == 0) $str .= "<script>Refresh_Image_After_Upload('$Type','" . $Data[$Type] . "');</script>";
+  if ($Call == 0) $str .= "<script>Refresh_Image_After_Upload('$Type','" . $Data[$Name] . "');</script>";
   return $str;
 }
 

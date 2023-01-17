@@ -88,7 +88,7 @@ if (isset($DDd['path'])) {
     $pdir = $DDd['path'];
   }
 } else {
-  $pdir = ($DDd['UseYear']?"$Type/$YEAR/$Cat":$Type);
+  $pdir = ($DDd['UseYear']?"$Type/$YEAR/$Cat":$Name);
 }
 $path = "$pdir/$id";
 
@@ -96,6 +96,7 @@ $files = glob("$path.*");
 if ($files) {
   Archive_Stack($files[0],$pdir,$id );
 }
+
 
 // New file
 
@@ -112,11 +113,11 @@ if (!move_uploaded_file($_FILES["Upload"]["tmp_name"], $target_file)) {
 }
 
 if (is_numeric($DDd['SetValue'])) {
-  $Data[$Type] = $DDd['SetValue']; //TODO PAspec fix DDd
+  $Data[$Name] = $DDd['SetValue']; //TODO PAspec fix DDd
 } elseif ($DDd['SetValue'] == 'URL') {
-  $Data[$Type] = "/" . $target_file . "?" . time();
+  $Data[$Name] = "/" . $target_file . "?" . time();
 } else {
-  $Data[$Type] = $DDd['SetValue'];
+  $Data[$Name] = $DDd['SetValue'];
 }
 
 if (preg_match('/Image|Photo/',$Type,$mtch)) {

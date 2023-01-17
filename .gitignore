@@ -12,6 +12,7 @@ images/Venues
 images/Gallery
 images/TradeMaps
 images/ArtImages
+images/Volunteers
 int/ArchiveImages
 int/Store
 int/OldStore
@@ -28,4 +29,5 @@ int/Invoices/OldInvoices
 devtools
 cache
 Schema/.skeema
-
+fred
+*/fred

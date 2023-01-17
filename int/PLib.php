@@ -47,7 +47,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         if ($Side['Email']) echo " or ";
         echo linkemailhtml($Side,$CatT,'Alt');
       }
-//      echo ", press control-V afterwards to paste the <button type=button onclick=Copy2Div('Email$snum','SideLink$snum')>standard link</button>";
+      echo ", press control-V afterwards to paste the <button type=button onclick=Copy2Div('Email$snum','SideLink$snum')>standard link</button>";
 //      echo ", press control-V afterwards to paste the <button type=button onclick=CopyDiv('Email$snum')>standard link</button>";
       
 // ADD CODE TO ONLY PROVIDE PROGRAMME WHEN AVAIL - Dance only?

@@ -28,6 +28,7 @@ function Show_Cat($Cat,$Act='UPDATE') {
   echo "<tr>" . fm_text('ShortName',$Cat,'ShortName',2)  . "<td>Short name of volunteer Category (May be the same)\n";
   echo "<tr>" . fm_text('Email',$Cat,'Email',2) . "<td>Email address of category leader can by multiple separated by commas\n";
   echo "<tr>" . fm_hex('Properties',$Cat,'Props');
+  echo          fm_text('Background Colour',$Cat,'Colour'); 
   echo "<tr>" . fm_number('Relative Importance',$Cat,'Importance');
   echo "<tr>" . fm_textarea('Short Description',$Cat,'Description',5,3);
 
@@ -68,12 +69,14 @@ function ListCats() {
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>InUse</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Importance</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Colour</a>\n";
   echo "</thead><tbody>";
 
   foreach($Cats as $C) {
     $Cid = $C['id'];
     echo "<tr><td><a href=VolCats?ACTION=SHOW&id=$Cid>$Cid</a><td><a href=VolCats?ACTION=SHOW&id=$Cid>" . $C['Name'] . "</a><td>";
     echo ['No','Yes'][($C['Props'] & VOL_USE)] . "<td>" . $C['Email'] . "<td>" . $C['Importance'] . "\n";
+    if (isset($C['Colour'])) echo "<td style='background: " . $C['Colour'] . "'>" .  $C['Colour'];
   }
   echo "</table></div>\n";
         

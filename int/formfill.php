@@ -117,7 +117,7 @@
       }
     
     } 
-echo "Here";    
+//echo "Here";    
     // else general cases
     
     $Perf = Get_Side($id);
@@ -271,10 +271,12 @@ var_dump($vfld, $VCY);
   default:
     break;
   }
+//echo "AAAAA";
   global $TableIndexes;
   $idx = (isset($TableIndexes[$type])?$TableIndexes[$type]:'id');
   $N = Gen_Get($type,$id,$idx);
   $N[$field] = $Value;
+//var_dump($N);
   return Gen_Put($type,$N,$idx);
  
   exit;
