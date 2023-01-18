@@ -1645,7 +1645,10 @@ button {
   transition:opacity .5s, filter .5s;
 }
 
-VolWrapper {
+.VolWrapper {
   width:99%;
   overflow-x:scroll;
 }
+
+    
+

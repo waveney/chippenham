@@ -205,7 +205,10 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
   $VolMgr = Access('Committee','Volunteers') && !isset($_REQUEST['FORCE']);
     
-  echo "<h3><a href=Volunteers?id=$Volid" . (isset($_REQUEST['A'])?'&A=' . $_REQUEST['A']:'') . "&M>Switch to: Mobile Friendly Version</a></h3>";  
+  echo "<form method=post action=Volunteers?M>";
+    foreach ($_REQUEST as $K=>$V) if ($K != 'M') echo fm_hidden($K,$V);
+    echo "<input type=submit style='font-size:12pt' value='Switch to: Mobile Friendly Version'>";
+  echo "</form>";
     
   echo "<h2 class=subtitle>Steward / Volunteer Application Form</h2>\n";
   if (!empty($Err)) echo "<p class=Err>$Err<p>";
@@ -230,7 +233,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     echo "<tr>" . fm_text('Name',$Vol,'SN',4,'');
     echo "<tr>" . fm_text('Email',$Vol,'Email',4);
     echo "<tr>" . fm_text('Phone(s)',$Vol,'Phone',4);
-    echo "<tr>" . fm_text('Address',$Vol,'Address',4);
+    echo "<tr>" . fm_textarea("Address", $Vol,'Address',3,3);
     echo "<tr>" . fm_Radio("Age range",$AgeCats,$Vol,'Over18',"",1). "<td colspan=3>All volunteers need to be over 18, a few roles need over 21.";
     $Photo = Feature('VolPhoto');
     if ($Photo) echo "<tr rowspan=4 colspan=4 height=80><td>" . ($Photo == 1 ? 'Photo, not essential yet' : 'Photo') .
@@ -331,13 +334,13 @@ function VolForm(&$Vol,$Err='',$View=0) {
       
       if ($VolMgr) {
         $Ctxt = "\n<tr $Colour><td rowspan=$rows $Colour>" . fm_radio("<b>" . $Cat['Name'] . "</b>",$CatStatus,$VCY,'Status',
-                "onchange=Update_VolCats('$cls',$Catid,$PLANYEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",0,'',
-                "Status:$Catid:$PLANYEAR") . "<td  colspan=4>" . $Cat['Description'] . $Ctxt;
+                "onchange=Update_VolMgrCats(event,'$cls',$Catid,$PLANYEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",-3,'',
+                "Status:$Catid:$PLANYEAR") . "<td  colspan=4 $Colour>" . $Cat['Description'] . $Ctxt;
 
       } else {
         $Ctxt = "\n<tr $Colour><td rowspan=$rows $Colour>" .  fm_checkbox($Cat['Name'],$VCY,'Status',
                 "onchange=Update_VolCats('$cls',$Catid,$PLANYEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",
-                "Status:$Catid:$PLANYEAR",0,'') . "<td  colspan=4>" . $Cat['Description'] . $Ctxt;
+                "Status:$Catid:$PLANYEAR",0,'') . "<td  colspan=4 $Colour>" . $Cat['Description'] . $Ctxt;
       }
       echo $Ctxt. "\n"; // $Desc,&$data,$field,$extra='',$field2='',$split=0,$extra2='
 
@@ -417,7 +420,10 @@ function VolFormM(&$Vol,$Err='',$View=0) {
 
   $VolMgr = Access('Committee','Volunteers') && !isset($_REQUEST['FORCE']);
 
-  echo "<h3><a href=Volunteers?id=$Volid" . (isset($_REQUEST['A'])?'&A=' . $_REQUEST['A']:'') . ">Switch to: Computer Friendly Version</a></h3>";  
+  echo "<form method=post action=Volunteers>";
+    foreach ($_REQUEST as $K=>$V) if ($K != 'M') echo fm_hidden($K,$V);
+    echo "<input type=submit style='font-size:12pt' value='Switch to: Computer Friendly Version'>";
+  echo "</form>";
     
   echo "<h2 class=subtitle>Steward / Volunteer Application Form</h2>\n";
   if (!empty($Err)) echo "<p class=Err>$Err<p>";
@@ -444,7 +450,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
     echo "<tr>" . fm_text('Name',$Vol,'SN',-2);
     echo "<tr>" . fm_text('Email',$Vol,'Email',-2);
     echo "<tr>" . fm_text('Phone(s)',$Vol,'Phone',-2);
-    echo "<tr>" . fm_text('Address',$Vol,'Address',-2);
+    echo "<tr>" . fm_textarea("Address", $Vol,'Address',3,-3); //fm_text('Address',$Vol,'Address',-2);
 
     echo "<tr><td>" . fm_radio("Age range",$AgeCats,$Vol,'Over18','',-1) . "<br>All volunteers need to be over 18, a few roles need over 21.";
     $Photo = Feature('VolPhoto');
@@ -533,11 +539,11 @@ function VolFormM(&$Vol,$Err='',$View=0) {
         if ($cp & (VOL_Other1 << ($i-1))) {
           $rows++; 
           if ($cp & (VOL_Other1 << ($i+3))) {
-            $Ctxt .= "\n<tr class=$cls $Hide $Colour><td>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i"
+            $Ctxt .= "\n<tr class=$cls $Hide $Colour>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i"
                      ,3,-3,"class=$cls $Hide $Colour",'',"Other$i:$Catid:$PLANYEAR");
           
           } else {
-            $Ctxt .= "\n<tr class=$cls $Hide $Colour><td $Colour>" . fm_text($Cat["OtherQ$i"], $VCY,"Other$i",-2,"colspan=4 class=$cls $Hide $Colour",
+            $Ctxt .= "\n<tr class=$cls $Hide $Colour>" . fm_text($Cat["OtherQ$i"], $VCY,"Other$i",-2,"colspan=4 class=$cls $Hide $Colour",
                      '',"Other$i:$Catid:$PLANYEAR") . $Cat["Q$i" . "Extra"] ; 
           }
         }
@@ -548,7 +554,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
       
       if ($VolMgr) {
         $Ctxt = "\n<tr $Colour><td $Colour>" . fm_radio("<b>" . $Cat['Name'] . "</b>",$CatStatus,$VCY,'Status',
-                "onchange=Update_VolCats('$cls',$Catid,$PLANYEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",0,'',
+                "onchange=Update_VolMgrCats(event,'$cls',$Catid,$PLANYEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",-3,'',
                 "Status:$Catid:$PLANYEAR") . "<br>" . $Cat['Description'] . $Ctxt;
 
       } else {

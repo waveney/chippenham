@@ -29,7 +29,16 @@ function ShowAvails() {
 
 function Update_VolCats(cls,catid,year) {
   $('.'+cls).toggle();
-  ShowAvails();
+}
+
+function Update_VolMgrCats(e,cls,catid,year) {
+//debugger;
+  var Val = + e.target.value;
+  if (Val) {
+    $('.'+cls).show();
+  } else {  
+    $('.'+cls).hide();   
+  }
 }
 
 $(document).ready(function() {
@@ -38,7 +47,7 @@ $(document).ready(function() {
   var cats2 = atob(cats1);
   Teams = JSON.parse(cats2);
   
-  ShowAvails();
+//  ShowAvails();
 } );
 
 

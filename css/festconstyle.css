@@ -86,7 +86,7 @@ input[type=submit] .Button3 {
   background-color:var(--main-col-dark);/*#8234C6;*/
 }
 
-#smallsubmit {
+.SmallSubmit {
   font-size:14px;
 }
 
