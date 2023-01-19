@@ -39,7 +39,7 @@ function isHidden(el) {
 }
 
 function updateimps() {
-  debugger;
+//  debugger;
   if (document.getElementById('ImpC') == undefined) return; 
   var imps=0;
   var impt=2;
@@ -49,8 +49,10 @@ function updateimps() {
     if (document.getElementsByName('Address')[0].value.length > 12) imps++;
   }
   if (document.getElementsByName('Performers')[0] != undefined) {
-    impt++;
-    if (document.getElementsByName('Performers')[0].value > 0) imps++;
+    if (document.getElementsByName('Performers')[0].classList.contains('imp')) {
+      impt++;
+      if (document.getElementsByName('Performers')[0].value > 0) imps++;
+    }
   }
   if (document.getElementsByName('Ignored')[0] != undefined) if (document.getElementsByName('Ignored')[0].checked) imps++; // Insurance TODO Check
   if (0 && !isHidden(document.getElementById('BankDetail'))) {
@@ -131,6 +133,22 @@ function CheckDiscount() {
   $('#TickDiscount').text(Disc + '% discount');
 }
 
+function CheckIfTickets() {
+//debugger;
+  var tot = 0;
+  var l;
+  if (l = document.getElementById('Performers')) tot += +l.value;
+  if (l = document.getElementById('PerformersYouth')) tot += +l.value;
+  if (l = document.getElementById('PerformersChild')) tot += +l.value;
+  if (l) {
+    if (tot) { 
+      $('.NOPerfTickets').hide(); 
+    } else {
+      $('.NOPerfTickets').show();  
+    };
+  }
+}
+
 $(document).ready(function() {
   $(".Adv").hide();
 
@@ -147,6 +165,7 @@ $(document).ready(function() {
   ComeAnyWarning();
   CheckDiscount();
   updateimps();
+  CheckIfTickets();
 } );
 
 function ComeSwitch(ev) {
