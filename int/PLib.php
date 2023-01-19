@@ -67,7 +67,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     $Adv = ''; // 'class=Adv'; // NEEDS MODING FOR NON DANCE
     if ($Mstate && $Side['IsASide'] && isset($Sidey['Coming']) && $Sidey['Coming']==2 ) {
       echo "<h2 class=floatright id=AllImpsDone>You have <span id=ImpC>0</span> of <span id=ImpT>4</span> <span class=red>Most Important</span> things filled in </h2>";
-      $Imp = 'class=imp';
+      $Imp = 'class=Imp';
     }
     echo "Please keep this information up to date, even if you are not coming so we can invite you in the future.";
   }
@@ -200,8 +200,8 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       echo fm_text1('Email',$Side,'Email',2);
       if (!$Wide) echo "<tr>";
       echo fm_text('Phone',$Side,'Phone');
-      echo fm_text('Mobile',$Side,'Mobile',1,$Imp,'onchange=updateimps()') . "\n";
-      echo "<tr>" . fm_text('Address',$Side,'Address',3,$Imp,'onchange=updateimps()');
+      echo fm_text('Mobile',$Side,'Mobile',1,'','onchange=updateimps()','',$Imp) . "\n";
+      echo "<tr>" . fm_text('Address',$Side,'Address',3,(Feature('DanceNeedAddress')?$Imp:''),(Feature('DanceNeedAddress')?'onchange=updateimps()':''));
       if (!$Wide) echo "<tr>";
       echo fm_text('Post Code',$Side,'PostCode')."\n";
     echo "<tr $Adv>" . fm_text('Alt Contact',$Side,'AltContact',1,'','','',($Wide?'':' rowspan=2 '));
@@ -401,7 +401,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   $Imp = '';
   if (!$Mode) { // TODO
     $Adv = 'class=Adv';
-    if ($Mstate) $Imp = 'class=imp';
+    if ($Mstate) $Imp = 'class=Imp';
   }
 //echo "HERE";
   $Self = ($Mode ? $_SERVER['PHP_SELF'] : "AddPerf"); // TODO

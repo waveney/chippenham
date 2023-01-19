@@ -39,13 +39,19 @@ function isHidden(el) {
 }
 
 function updateimps() {
-//  debugger;
+  debugger;
   if (document.getElementById('ImpC') == undefined) return; 
   var imps=0;
-  var impt=4;
+  var impt=2;
   if (document.getElementsByName('Mobile')[0].value.length > 8) imps++;
-  if (document.getElementsByName('Address')[0].value.length > 12) imps++;
-  if (document.getElementsByName('Performers')[0] != undefined) if (document.getElementsByName('Performers')[0].value > 0) imps++;
+  if (document.getElementsByName('Address')[0].classList.contains('imp')) {
+    impt++;
+    if (document.getElementsByName('Address')[0].value.length > 12) imps++;
+  }
+  if (document.getElementsByName('Performers')[0] != undefined) {
+    impt++;
+    if (document.getElementsByName('Performers')[0].value > 0) imps++;
+  }
   if (document.getElementsByName('Ignored')[0] != undefined) if (document.getElementsByName('Ignored')[0].checked) imps++; // Insurance TODO Check
   if (0 && !isHidden(document.getElementById('BankDetail'))) {
     $impt++;
@@ -53,9 +59,10 @@ function updateimps() {
          (document.getElementsByName('AccountName')[0].value.length >= 6)) imps++;
   }
 
+  var impreq = $('.Imp').length;
   document.getElementById('ImpC').innerHTML = imps;
-  document.getElementById('ImpT').innerHTML = impt;
-  if (imps == impt) { 
+  document.getElementById('ImpT').innerHTML = impreq;
+  if (imps == impreq) { 
     $('#AllImpsDone').hide();
     $('.Imp').css('color','Black');
   } else {
@@ -104,7 +111,7 @@ function ComeAnyWarning() {
 } 
 
 function CheckDiscount() {
-  debugger;
+//  debugger;
 //  if ($("input[name='FreeAdultTicket']:checked")) return;
   var Events = 0;
   
@@ -139,6 +146,7 @@ $(document).ready(function() {
   CheckContract();
   ComeAnyWarning();
   CheckDiscount();
+  updateimps();
 } );
 
 function ComeSwitch(ev) {
@@ -250,7 +258,7 @@ function EventPerfSel(e,l,v) {
 }
 
 function ForceOneProcession(e) {
-  debugger;
+//  debugger;
   var fld = e.target.id;
   var day = (fld.match(/Procession(\w*)/))[1];
     
