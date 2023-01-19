@@ -53,7 +53,9 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 // ADD CODE TO ONLY PROVIDE PROGRAMME WHEN AVAIL - Dance only?
 //      if ($Side['IsASide']) echo " and programme <button type=button onclick=Copy2Div('Email$snum','SideProg$snum')>programme</button> into message.";
     }
-    echo "<p>\n";
+    echo "<div class=NotSide>Link for this performer: <b>https://" . $_SERVER['HTTP_HOST'] . "/int/Direct?t=Perf&id=$snum&key=" . 
+          $Side['AccessKey'] . "&Y=$YEAR</b></div>\n";
+
   }
 ///echo "XX6";  
   $Adv = '';
@@ -809,9 +811,9 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       break;
     }
     
-    if ($Sidey['TotalFee']) echo "<tr><td>Fee:<td>&pound;" . $Sidey['TotalFee'] . fm_hidden('TotalFee',$Sidey['TotalFee']);
+    if (!empty($Sidey['TotalFee'])) echo "<tr><td>Fee:<td>&pound;" . $Sidey['TotalFee'] . fm_hidden('TotalFee',$Sidey['TotalFee']);
     if (!$Wide) echo "<tr>";
-    if ($Sidey['OtherPayment']) echo fm_text('Other payments',$Sidey,'OtherPayment',1,'disabled readonly');
+    if (!empty($Sidey['OtherPayment'])) echo fm_text('Other payments',$Sidey,'OtherPayment',1,'disabled readonly');
     if (isset($Sidey['Rider']) && strlen($Sidey['Rider']) > 5)  echo "<tr>" . fm_textarea('Additional Riders',$Sidey,'Rider',2,1,'','disabled') ."\n";
   }
 

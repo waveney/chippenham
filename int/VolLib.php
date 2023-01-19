@@ -387,6 +387,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if ($VYear['Status'] == 1 && $VYear['SubmitDate']) echo " On " . date('d/n/Y',$VYear['SubmitDate']);
     if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate']) echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
 
+    if (Access('SysAdmin')) echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$PLANYEAR");
   echo "</table></div><p>";    
  
     echo "<H3>Actions:</h3>";
@@ -727,6 +728,8 @@ function List_Vols() {
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Applications</button>" .
        "<button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Curent Aplications</button> ";
 
+//var_dump($VolCats);
+
   foreach ($VolCats as &$Cat) $Cat['Total'] = 0;
   $VolMgr = Access('Committee','Volunteers');
   echo "Click on name for full info<p>";
@@ -736,7 +739,7 @@ function List_Vols() {
   if ($VolMgr ) echo "To reject an application or do a partial acceptance, first click on their name.<p>";
   
   $coln = 0;
-  
+// var_dump($VolCats);  
   echo "<form method=post>";
   echo "<div class=tablecont><table id=indextable border>\n";
   echo "<thead><tr>";
@@ -747,7 +750,8 @@ function List_Vols() {
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
   echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Year</a>\n";
-  foreach ($VolCats as $Cat) {
+  foreach ($VolCats as &$Cat) {
+// var_dump($Cat);
     if ($Cat['Props'] & VOL_USE) {
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>" . ($Cat['ShortName']?$Cat['ShortName']:$Cat['Name']) . "</a>\n";
     }
@@ -773,11 +777,12 @@ function List_Vols() {
     echo "<td>$link" . $Vol['SN'] . "</a>";
     echo "<td>" . $Vol['Email'];
     echo "<td>" . $Vol['Phone'];
-    echo "<td>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . $YearStatus[$VY['Status']] . "</span>"):'');
-      if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
-    echo "<td class=FullD hidden>";
+    
+    $Accepted = 0;
+    $Form = 0;
+    $str = '';
+
     if (isset($VY['id']) && $VY['id']>0) {
-      echo $VY['Year'];
       $year = $PLANYEAR;
     } else {
       for ($year=$PLANYEAR-1; $year>($PLANYEAR-6); $year--) {
@@ -785,16 +790,29 @@ function List_Vols() {
         if (!empty($VY['id'])) break;
       }
     }
-    $Form = 0;
+
     foreach ($VolCats as &$Cat) {
       if ($Cat['Props'] & VOL_USE) {
         $VCY = Get_Vol_Cat_Year($Vol['id'],$Cat['id'],$year);
-        echo "<td>" . $Cat_Status_Short[$VCY['Status']]; 
+        $str .= "<td>" . $Cat_Status_Short[$VCY['Status']]; 
         if (($CatStatus[$VCY['Status']] == 'Applied') && $VolMgr) $Form = 1;
-        if ( $CatStatus[$VCY['Status']] == 'Confirmed') $Cat['Total']++;
+        if ( $CatStatus[$VCY['Status']] == 'Confirmed') {
+          $Cat['Total']++;
+          $Accepted++;
+        }
       }
     }
-
+    
+    if ($Accepted && ($YearStatus[$VY['Status']] != 'Confirmed')) {
+      $VY['Status'] = 3;
+      Put_Vol_Year($VY);
+    }
+    
+    echo "<td>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . $YearStatus[$VY['Status']] . "</span>"):'');
+      if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
+    echo "<td class=FullD hidden>$year";
+    echo $str;
+    
     echo "<td>" . (isset($VY['AvailBefore'])? ((strlen($VY['AvailBefore'])<12)? $VY['AvailBefore'] : ($link . "Expand</a>")):"");
     echo "<td>" . (isset($VY['AvailWeek'])? ((strlen($VY['AvailWeek'])<12)? $VY['AvailWeek'] : ($link . "Expand</a>")):"");
     for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {

@@ -154,7 +154,7 @@ function Show_Side($snum,$Message='',$price=0) {
       if (strlen($side['Description']) > strlen($side['Blurb'])) echo $side['Description'] . "<p>";
     }
 
-    if (isset($syear)) {
+    if (isset($syear) && isset($syear['Coming'])) {
       switch ($syear['Coming']) {
         case $Coming_Type['N']:
         case $Coming_Type['NY']:

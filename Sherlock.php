@@ -167,7 +167,7 @@
     echo "</table></div><p>";
 
   } else {
-    echo "<h3>Sorry there are currently no announced $Types for " . substr($YEAR,0,4) . ", please check back later</h3>";
+    echo "<h3>" . Feature('NoEventsPre','Sorry there are currently no announced') . " $Types" . Feature('NoEventsPost', 'please check back later') . "</h3>";
   }
   
   if ($YEAR > $BackStop) {

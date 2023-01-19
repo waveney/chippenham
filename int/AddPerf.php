@@ -16,6 +16,8 @@
   else { $snum = 0; }
   
   Set_User();
+//  if (!isset($USER['AccessLevel'])) Error_Page("Not accessable to you - Please use the corect link");
+  
   switch ($USER['AccessLevel']) {
   case $Access_Type['Participant'] : 
     if ($USER['Subtype'] != 'Perf' || $snum != $USERID) Error_Page("Not accessable to you");

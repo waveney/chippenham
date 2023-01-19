@@ -27,11 +27,12 @@
 
   $DanceState = $Event_Types[1]['State'];
   $Days2Festival = Days2Festival();
+  $Totals['Fri'] = $Totals['Sat'] = $Totals['Sun'] = $Totals['Mon'] = 0;
   
 //  echo "Days to fest: $Days2Festival<p>";
 
   echo "If you click on the email link, press control-V afterwards to paste the standard link into message.<p>";
-  $col9 = $col8 = $col7 = '';
+  $col9 = $col8 = $col7 = $col7a = '';
   $Types = Get_Dance_Types(1);
   foreach ($Types as $i=>$ty) $Colour[strtolower($ty['SN'])] = $ty['Colour'];
   
@@ -62,6 +63,7 @@
     $col5 = "Fri";
     $col6 = "Sat";
     $col7 = "Sun";
+    $col7a = "Mon";
     $col8 = "Missing";
     if (Feature('DanceComp')) { 
       $col9 = "Dance Comp";
@@ -79,6 +81,7 @@
     $col5 = "Fri";
     $col6 = "Sat";
     $col7 = "Sun";
+    $col7a = "Mon";
   }
 
   if (!$SideQ || $SideQ->num_rows==0) {
@@ -99,6 +102,7 @@
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col5</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col6</a>\n";
     if ($col7) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col7</a>\n";
+    if ($col7a) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col7a</a>\n";
     if ($col8) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col8</a>\n";
     if ($col9) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col9</a>\n";
     if ($col9a) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col9a</a>\n";
@@ -163,12 +167,15 @@
         }
       } else {
         $fri = "";
-        if ($fetch['Fri']) $fri= "y";
+        if ($fetch['Fri']) { $fri= "y"; $Totals['Fri']++; };
         $sat = "";
-        if ($fetch['Sat']) $sat= "y";
+        if ($fetch['Sat']) { $sat= "y"; $Totals['Sat']++; };
         $sun = "";
-        if ($fetch['Sun']) $sun= "y";
-        echo "<td>$fri<td>$sat<td>$sun\n";
+        if ($fetch['Sun']) { $sun= "y"; $Totals['Sun']++; };
+        $mon = "";
+        if ($fetch['Mon']) { $mon= "y"; $Totals['Mon']++; };
+
+        echo "<td>$fri<td>$sat<td>$sun<td>$mon\n";
       }
       if ($col7 == 'Wshp') {
         echo "<td>";
@@ -179,16 +186,16 @@
         echo "<td>";
         if ((!Feature('PublicLiability') || $fetch['Insurance']) && $fetch['Mobile'] &&
                 ((($fetch['Performers'] > 0) && $fetch['Address']) || ($fetch['Performers'] < 0)) && 
-                ($fetch['Sat'] || $fetch['Sun'])) { 
+                ($fetch['Sat'] || $fetch['Sun'] || $fetch['Mon'] )) { 
           echo "None"; 
           $Comp++;
           $IsComp = 1;
         } else {
-          if (!$fetch['Insurance']) echo "I"; 
-          if ($fetch['Performers'] == 0) echo "P"; 
-          if ($fetch['Address'] == '' && $fetch['Performers'] >= 0) echo "A"; 
-          if (!$fetch['Mobile']) echo "M"; 
-          if (!$fetch['Sat'] && !$fetch['Sun'] ) echo "D"; 
+          if (Feature('DanceNeedInsurance') && !$fetch['Insurance']) echo "I"; 
+          if (Feature('DanceNeedPerformers') && $fetch['Performers'] == 0) echo "P"; 
+          if (Feature('DanceNeedAddress') && $fetch['Address'] == '' && $fetch['Performers'] >= 0) echo "A"; 
+          if (Feature('DanceNeedMobile') && !$fetch['Mobile']) echo "M"; 
+          if (Feature('DanceNeedDays') && !$fetch['Sat'] && !$fetch['Sun'] && !$fetch['Mon']) echo "D"; 
         }
         if ($fetch['Insurance'] == 1) echo " (Check)";
       }
@@ -259,6 +266,11 @@
 //      for($i=1;$i<5;$i++) {
 //        echo "<td>" . ($fetch["SentEmail$i"]?"Y":"");
 //      }
+    }
+    if ($Totals['Sat']) {
+      echo "<tr><td><td>Totals:<td><td><td><td><td>" . 
+           $Totals['Fri'] . "<td>" . $Totals['Sat'] . "<td>" . $Totals['Sun'] . "<td>" . $Totals['Mon'] . 
+           "<td><td><td><td><td>";
     }
     echo "</tbody></table></div>\n";
     

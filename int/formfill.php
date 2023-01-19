@@ -222,7 +222,7 @@
     
   case 'Volunteers':
     if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {        
-var_dump($id, $field, $Value, $mtch);
+//var_dump($id, $field, $Value, $mtch);
       $vfld = $mtch[1];
       $Catid = $mtch[2];
       $Year = $mtch[3];
@@ -238,8 +238,13 @@ var_dump($id, $field, $Value, $mtch);
           $VCY = Gen_Get_Cond1('VolCatYear'," Volid=$id AND Catid=$Catid AND Year=$Year ");
           if (!$VCY) $VCY = ['Volid'=>$id,'CatId'=>$Catid,'Year'=>$Year, 'Props'=>0];
           $VCY[$vfld] = $Value;
-var_dump($vfld, $VCY);
           return Gen_Put('VolCatYear',$VCY);
+        case 'YStatus':
+          $VY = Gen_Get_Cond1('VolYear'," Volid=$id AND Year=$Year ");
+          if (!$VY) $VY = ['Volid'=>$id, 'Year'=>$Year];
+          $VY['Status'] = $Value;
+          return Gen_Put('VolYear',$VY);
+
         default: 
           $VY = Gen_Get_Cond1('VolYear'," Volid=$id AND Year=$Year ");
 //echo "<br>A:"; var_dump($VY);
