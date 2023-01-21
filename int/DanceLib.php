@@ -16,7 +16,7 @@ $Dance_Comp = ['Don\'t Know','Yes','No'];
 $Dance_Comp_Colours = ['white','lime','salmon'];
 $Surfaces = ['','Tarmac','Flagstones','Grass','Stage','Brick','Wood','Carpet','Astroturf'];// Last 3 Sysadmin only
 $Surface_Colours = ['','grey','Khaki','lightgreen','Peru','salmon','Peru','Teal','lime'];
-$Side_Statuses = array("Alive","Folded");
+$Side_Statuses = array("Alive","Folded",'Banned');
 $Share_Spots = array('Prefered','Always','Never','Sometimes');
 $Share_Type = array_flip($Share_Spots);
 
@@ -401,7 +401,7 @@ function Set_Side_Help() {
         'Mobile'=>'As an emergency contact number, this is important',
         'NoiseLevel'=>'Loud PAs are noisy, a single violin or flute is quiet',
         'Surfaces'=>'What surfaces can be danced on, if none are set all is assumed.',
-        'SideStatus'=>'If the act/side/performer is disbanded mark as dead',
+        'SideStatus'=>'If the act/side/performer is disbanded mark as dead.  Mark as banned to prevent from automatic acceptence of known sides.',
         'StagePA'=>'Give PA Requirments (if any) as simple text, or upload a file',
         'DataCheck'=>'Not yet working',
         'MorrisAnimal'=>'If the side has a morris animal - what kind is it',
@@ -622,7 +622,7 @@ function Side_ShortName($si) {
 }
 
 // Ignore case and -> &, ommit | add 'The'
-function Find_Perf_Similar($name) {
+function Find_Perf_Similar($name,$isa='') {
   global $db;
   $name = strtolower(trim($name));
   $name = preg_replace('/^the /','',$name);
@@ -630,9 +630,10 @@ function Find_Perf_Similar($name) {
   $name = preg_replace('/ band/',' ',$name);
   $name = preg_replace('/ and /',' ',$name);
   $name = preg_replace('/ & /',' ',$name);
+  $name = preg_replace('/[,.!]/',' ',$name);
   $name = trim($name);
 
-  $res = $db->query("SELECT * FROM Sides WHERE SN LIKE '%$name%'");
+  $res = $db->query("SELECT * FROM Sides WHERE SN LIKE '%$name%' $isa");
   if (!$res) return [];
   $sims = [];
   while ($rec = $res->fetch_assoc()) $sims[] = $rec;

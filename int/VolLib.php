@@ -132,7 +132,12 @@ function Vol_Details($key,&$vol) {
   switch ($key) {
   case 'WHO': return firstword($vol['SN']);
   case 'DETAILS': return Get_Vol_Details($vol);
-  case 'LINK' : return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Access?t=v&i=" . $vol['id'] . "&k=" . $vol['AccessKey'] . "'><b>link</b></a>";
+  case 'LINK' : 
+    if (empty($vol['AccessKey'])) {
+      $vol['AccessKey'] = rand_string(40);
+      Put_Volunteer($vol);
+    }
+    return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Access?t=v&i=" . $vol['id'] . "&k=" . $vol['AccessKey'] . "'><b>link</b></a>";
   case 'FESTLINK' :
   case 'WMFFLINK' : return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Volunteers?A=View&id=" . $vol['id'] . "'><b>link</b></a>";
   case 'VOLTEAM_ACCEPT' :
@@ -387,7 +392,10 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if ($VYear['Status'] == 1 && $VYear['SubmitDate']) echo " On " . date('d/n/Y',$VYear['SubmitDate']);
     if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate']) echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
 
-    if (Access('SysAdmin')) echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$PLANYEAR");
+    if (Access('SysAdmin')) {
+      echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$PLANYEAR");
+      echo "<tr><td>Link:<td colspan=4>" . htmlspec(Vol_Details('LINK',$Vol)) . "<br>" . Vol_Details('LINK',$Vol);
+    }
   echo "</table></div><p>";    
  
     echo "<H3>Actions:</h3>";
@@ -646,10 +654,10 @@ function VolFormM(&$Vol,$Err='',$View=0) {
 function Vol_Validate(&$Vol) {
   global $YEARDATA,$VolCats,$YEAR;
 
-  if (strlen($Vol['SN']) < 2) return "Please give your name";
-  if (strlen($Vol['Email']) < 6) return "Please give your Email";
-  if (strlen($Vol['Phone']) < 6) return "Please give your Phone number(s)";
-  if (strlen($Vol['Address']) < 10) return "Please give your Address";
+  if (($l = strlen($Vol['SN'])) < 2 || $l > 40) return "Please give your name";
+  if (($l = strlen($Vol['Email'])) < 6 || $l > 40) return "Please give your Email";
+  if (($l = strlen($Vol['Phone'])) < 6 || $l > 40) return "Please give your Phone number(s)";
+  if (($l = strlen($Vol['Address'])) < 10 || $l > 100) return "Please give your Address";
   if (!isset($Vol['Over18']) || !$Vol['Over18']) return "Please confirm you are over 18";
 //  if (strlen($Vol['Birthday']) < 2) return "Please give your age";
 
@@ -924,7 +932,7 @@ function VolAction($Action) {
     Check_Unique(); // Deliberate drop through
 
   case 'Form': // New stage 2
-    $Vol = ['Year'=>$PLANYEAR, 'SN'=>$_POST['SN'], 'Email'=>$_POST['Email'], 'KeepMe'=>1];
+    $Vol = ['Year'=>$PLANYEAR, 'SN'=>$_POST['SN'], 'Email'=>$_POST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40)];
     $Volid = Gen_Put('Volunteers',$Vol);
     $M($Vol);
     break;

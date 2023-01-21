@@ -14,8 +14,51 @@
   $Perf = 0; 
   foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) if ($d[4] == $T || $d[2] == $T) { $Perf = $p; $Type = $d[2]; };
 //var_dump($Type);
-  A_Check('Staff',$Type);
 
+
+  if (isset($_REQUEST['ACTION'])) {
+    switch ($_REQUEST['ACTION']) {
+      case 'Check':
+        $Sname = Sanitise($_REQUEST['SN'],40);
+        $Email = Sanitise($_REQUEST['Email'],40);
+        $Contact = Sanitise($_REQUEST['Contact'],40);
+        $Sides = Find_Perf_Similar($Sname,'AND IsASide=1');
+        if ($Sides) {
+          foreach ($Sides as $S) {
+            if ($Email == $S['Email']) {
+              Send_Link2($S);
+              echo "An email has been sent to you with a link, if you don't see it, please check your Spam folder.";
+              dotail();
+            }
+            if ($Email == $S['AltEmail']) {
+              Send_Link2($S,'Alt');
+              echo "An email has been sent to you with a link, if you don't see it, please check your Spam folder.";
+              dotail();
+            }
+          }
+         
+      
+    
+    
+    }
+  }
+  
+  dohead("Registering", ["/js/Participants.js"]);  
+  
+  echo "<h1>This is for Dance sides to register an interest in taking part in Chippenham</h1>";
+  echo "The first check is to see if you are already in our database.  If so a link will be provided to enable you to update your records.<p>";
+  echo "If not, you will be asked to provide some information so we can check you are a real dance side, not an imposter.  Be patient please.<p>";
+  
+  echo "<form method=post action=Register>";
+  echo "<table border><tr>" . fm_text('Your Name',$_POST,'Contact');
+  echo "<tr>" . fm_text('Name of Dance Side',$_POST,'SN');
+  echo "<tr>" . fm_text('Email Address',$_POST,'Email');
+  echo "<tr><td><input type=submit name=ACTION value='Check')";
+  echo "</table>";
+  
+  dotail();
+  
+  
   if (isset($_POST['SN'])) {
     if (strlen($_POST['SN']) < 3) {
       $Mess = "Name too short";
