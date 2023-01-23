@@ -1040,7 +1040,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   
   $Action = 0; 
   $Mess = '';
-  if (isset($_POST{'Action'})) {
+  if (isset($_POST['Action'])) {
     include_once("Uploading.php");
     $Action = $_POST['Action'];
     switch ($Action) {
@@ -1082,7 +1082,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
     if (!$Orgs) {
       if (Feature("TradePower")) for ($i=0;$i<3;$i++) if ($_POST["PowerType$i"]==1) $_POST["Power$i"] = -1;
       Clean_Email($_POST['Email']);
-//    Clean_Email($_POST{'AltEmail'});
+//    Clean_Email($_POST['AltEmail']);
       $proc = Validate_Trade($Mode);
     }
 
@@ -1098,7 +1098,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
         echo "<h2 class=ERR>Could not find Trader $Tid</h2>\n";
       }
 
-      if (isset($_POST{'NewAccessKey'})) $_POST['AccessKey'] = rand_string(40);
+      if (isset($_POST['NewAccessKey'])) $_POST['AccessKey'] = rand_string(40);
 
       Update_db_post('Trade',$Trad);
       Report_Log('Trade');

@@ -59,14 +59,14 @@
   }
 
   $Venues = Get_Real_Venues();
-  if (isset($_POST{'V'})) {
+  if (isset($_POST['V'])) {
     $se = 0;
     $V = $_POST['V'];
     $Ven = Get_Venue($V);
     $SubE = " SubEvent<=0 AND Year='$YEAR' AND Venue=$V";
     echo "<h2>List Events at " . $Ven['SN'] . "</h2>";
 
-  } else if (isset($_POST{'LIST'})) {
+  } else if (isset($_POST['LIST'])) {
     $se = 0;
     $SubE = " Year='$YEAR' ";
     echo "<h2>List All Events</h2>";
@@ -126,7 +126,8 @@
       echo "<tr><td>";
       echo "<input type=checkbox name=E$i class=SelectAllAble>";
       echo "<td>$i<td>";
-      if (Access('Staff','Events') || $evnt['Owner']==$USERID || $evnt['Owner2']==$USERID) echo "<a href=EventAdd?e=$i>";
+//      if (Access('Staff','Events') || $evnt['Owner']==$USERID || $evnt['Owner2']==$USERID) 
+      echo "<a href=EventAdd?e=$i>";
       if (strlen($evnt['SN']) >2) { echo $evnt['SN'] . "</a>"; } else { echo "Nameless</a>"; };
       echo "<td>" . DayList($evnt['Day']) . "<td>" . timecolon($evnt['Start']) . "<td>";
       if ($se > 0 && $evnt['SubEvent'] < 0) { echo timecolon($evnt['SlotEnd']); } else { echo timecolon($evnt['End']); }; 

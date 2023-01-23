@@ -338,7 +338,7 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
 
 //var_dump($_REQUEST);
 //return;
-  if (isset($_POST{'Update'})) {
+  if (isset($_POST['Update'])) {
     if ($data) foreach($data as $t) {
       $i = $t[$indxname];
       if ($i) {

@@ -225,7 +225,8 @@ function Put_User(&$data,$Save_User=0) {
 }
 
 function Error_Page ($message) {
-  global $Access_Type,$USER,$USERID;
+  global $Access_Type,$USER,$USERID,$CONF;
+  if (!empty($CONF['TitlePrefix']))  debug_print_backtrace();
   set_user();
   if (isset($USER['AccessLevel'])) { $type = $USER['AccessLevel']; } else { $type = 0; }
 //  var_dump($USER);

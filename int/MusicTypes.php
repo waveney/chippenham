@@ -7,7 +7,7 @@
 
   $Types=Get_Music_Types(1);
 
-  if (isset($_POST{'Update'})) {
+  if (isset($_POST['Update'])) {
     foreach($Types as $i=>$t) {
       if ($_POST["SN$i"] != $t['SN'] || $_POST["Imp$i"] != $t['Importance'] ) {
         if ($_POST["SN$i"] == '') {

@@ -20,7 +20,7 @@
     $Trade_Type_Colours[$i] = $tt['Colour']; 
   };
 
-  if (!isset($_POST{'SEND'})) {
+  if (!isset($_POST['SEND'])) {
     // Basic message text
     // Select (BID &/ TC), Previous (not BID/TC), All
     // Select list?

@@ -3,7 +3,6 @@
   A_Check('Staff');
 
   dostaffhead("Add/Change Event",[ "/js/Participants.js"]);
-//Access is for anyone with Venue to edit all, otherwise can Create and edit own only 
 
   include_once("ProgLib.php");
   include_once("DocLib.php");
@@ -261,7 +260,7 @@ A similar feature will appear eventually for music.<p>
     $Event = Get_Event($eid);
     if (Access('Staff','Events') || $Event['Owner'] == $USERID || $Event['Owner2'] == $USERID) { // Proceed
     } else {
-      Error_Page("Insufficient Privilages");
+      fm_addall('disabled readonly'); 
     }
   } else {
     $eid = -1;

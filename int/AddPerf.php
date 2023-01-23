@@ -32,7 +32,7 @@
     $capmatch = 0;
     $Side = Get_Side($snum);
     foreach ($PerfTypes as $p=>$d) if ($Side[$d[0]] && Is_SubType($d[2])) $capmatch = 1;
-    if (!$capmatch) fm_addall('disabled readonly');    
+    if (!$capmatch) fm_addall('disabled readonly');
     break;
 
   case $Access_Type['Internal'] : 
@@ -99,7 +99,7 @@
         echo "<h2 class=ERR>Could not find Performer $snum</h2>\n";
       }
 
-      if (isset($_POST{'InviteAct'}) || isset($_POST{'ReminderAct'})) {
+      if (isset($_POST['InviteAct']) || isset($_POST['ReminderAct'])) {
 
         if (strlen($_POST['Invited'])) $_POST['Invited'] .= ", ";
         $_POST['Invited'] .= date('j/n');
