@@ -1,5 +1,6 @@
 <?php
   include_once("fest.php");
+  include_once("VolLib.php");
 
   $csv = 0;
   if (isset($_GET['F'])) $csv = $_GET['F'];
@@ -11,8 +12,6 @@
   } else {
     dostaffhead("Steward / Volunteer Application",["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
   }
-
-  include_once("VolLib.php");
  
   global $USER,$USERID,$db,$PLANYEAR,$StewClasses,$Relations,$Days;
 //echo "HERE";

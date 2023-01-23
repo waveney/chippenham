@@ -731,7 +731,49 @@ function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on
 }
 
 
-function List_Vols($csv) {
+function CSV_Vols() {
+  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus;
+  
+  $output = fopen('php://output', 'w');
+  $heads = ['Name','Email','Phone(s)','Status'];
+  foreach ($VolCats as &$Cat) {
+    if ($Cat['Props'] & VOL_USE) $heads[] = $Cat['Name'];
+  }
+  $heads[] = 'Months Before';
+  $heads[] = 'Week Before';
+  for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) $heads[] = FestDate($day,'s');
+  fputcsv($output, $heads,',','"');
+
+  $res=$db->query("SELECT * FROM Volunteers WHERE Status=0 ORDER BY SN");
+  
+  if ($res) while ($Vol = $res->fetch_assoc()) {
+    $id = $Vol['id'];
+    if (empty($id) || empty($Vol['SN']) || empty($Vol['Email']) ) continue;
+    $VY = Get_Vol_Year($id);
+
+    if (empty($VY['id'])) continue;
+    $csvdat = [$Vol['SN'], $Vol['Email'], $Vol['Phone'], $YearStatus[$VY['Status']]];
+    
+    foreach ($VolCats as &$Cat) {
+      if ($Cat['Props'] & VOL_USE) {
+        $VCY = Get_Vol_Cat_Year($Vol['id'],$Cat['id']);
+        $csvdat[] = $Cat_Status_Short[$VCY['Status']]; 
+      }
+    }
+    $csvdat[] = $VY['AvailBefore'];
+    $csvdat[] =  $VY['AvailWeek'];
+    for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {    
+      $av = "Avail" . ($day <0 ? "_" . (-$day) : $day);
+      $csvdat[] = $VY[$av];
+    }
+    fputcsv($output,$csvdat);    
+  }
+  fclose($output);
+  exit;
+}
+
+
+function List_Vols() {
   global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus;
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Applications</button>" .
        "<button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Curent Aplications</button> ";
@@ -740,7 +782,6 @@ function List_Vols($csv) {
 
 //var_dump($VolCats);
     // create a file pointer connected to the output stream
-  if ($csv) $output = fopen('php://output', 'w');
 
   $ShowCats = ['All'];
   $ShowCols = ['white'];
@@ -866,9 +907,10 @@ function List_Vols($csv) {
   echo "</tbody></table></div>\n";
 
   echo "<h2><a href=Volunteers?A=New>Add a Volunteer</a></h2>";
-  echo "<h2><a href=Volunteers?A=List&F=CSV>Volunteer list as a CSV</a></h2>";  
+  echo "<h2><a href=Volunteers?A=CSV&F=CSV>Volunteer list as a CSV</a></h2>";  
   dotail();
 }
+
 
 function Email_Form_Only($Vol,$mess='') {
   $coln = 0;
@@ -935,8 +977,10 @@ function Send_Accepts($Vol) {
 function VolAction($Action,$csv=0) {
   global $PLANYEAR,$VolCats,$M;
 
-  dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
-  SendCatsToBrowser();
+  if ($csv == 0) {
+    dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
+    SendCatsToBrowser();
+  }
 //var_dump($Action);
 //var_dump($_REQUEST);
 
@@ -959,9 +1003,11 @@ function VolAction($Action,$csv=0) {
     break;
     
   case 'List': // List Volunteers
-    List_Vols($csv);
+    List_Vols();
     break;
   
+  case 'CSV': // List Volunteers as CSV
+    CSV_Vols();
     break;
     
   case 'Create': // Volunteer hass clicked 'Submit', store and email staff
