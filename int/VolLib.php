@@ -731,12 +731,25 @@ function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on
 }
 
 
-function List_Vols() {
+function List_Vols($csv) {
   global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus;
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Applications</button>" .
        "<button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Curent Aplications</button> ";
+  echo "<button class='floatright AvailD' onclick=\"($('.AvailD').toggle())\">Hide Availability</button>" .
+       "<button class='floatright AvailD' hidden onclick=\"($('.AvailD').toggle())\">Show Availability</button> ";
 
 //var_dump($VolCats);
+    // create a file pointer connected to the output stream
+  if ($csv) $output = fopen('php://output', 'w');
+
+  $ShowCats = ['All'];
+  $ShowCols = ['white'];
+  foreach ($VolCats as &$Cat) {
+    if ($Cat['Props'] & VOL_USE) {
+      $ShowCats[$Cat['id']] = $Cat['Name'];
+      $ShowCols[$Cat['id']] = $Cat['Colour'];
+    }
+  }
 
   foreach ($VolCats as &$Cat) $Cat['Total'] = 0;
   $VolMgr = Access('Committee','Volunteers');
@@ -745,6 +758,9 @@ function List_Vols() {
   echo "Where it says EXPAND under availability, means there is a longer entry - click on the persons name or the expand button to see more info on their availabilty<p>";
   
   if ($VolMgr ) echo "To reject an application or do a partial acceptance, first click on their name.<p>";
+
+  $Show['ThingShow'] = 0;
+  echo "<div class=floatright ><b>" . fm_radio("Show",$ShowCats,$Show,'ThingShow',' onchange=VolListFilter()',1,'','',$ShowCols)  . "</b></div>";
   
   $coln = 0;
 // var_dump($VolCats);  
@@ -764,10 +780,10 @@ function List_Vols() {
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>" . ($Cat['ShortName']?$Cat['ShortName']:$Cat['Name']) . "</a>\n";
     }
   }
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Months Before</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Week Before</a>\n";
+  echo "<th class=AvailD><a href=javascript:SortTable(" . $coln++ . ",'T')>Months Before</a>\n";
+  echo "<th class=AvailD><a href=javascript:SortTable(" . $coln++ . ",'T')>Week Before</a>\n";
   for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>" . FestDate($day,'s') . "</a>\n";
+    echo "<th class=AvailD><a href=javascript:SortTable(" . $coln++ . ",'T')>" . FestDate($day,'s') . "</a>\n";
   }
   if (Access('Committee','Volunteers')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";
   echo "</thead><tbody>";
@@ -778,17 +794,11 @@ function List_Vols() {
     $id = $Vol['id'];
     if (empty($id) || empty($Vol['SN']) || empty($Vol['Email']) ) continue;
     $VY = Get_Vol_Year($id);
-//    var_dump($VY);
-    $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$id>";
-    echo "<tr" . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || ($VY['Status'] == 4))?" class=FullD hidden" : "" ) . ">";
-    echo "<td>$id";
-    echo "<td>$link" . $Vol['SN'] . "</a>";
-    echo "<td>" . $Vol['Email'];
-    echo "<td>" . $Vol['Phone'];
-    
+
     $Accepted = 0;
     $Form = 0;
     $str = '';
+    $VClass = 'Volunteer ';
 
     if (isset($VY['id']) && $VY['id']>0) {
       $year = $PLANYEAR;
@@ -808,8 +818,18 @@ function List_Vols() {
           $Cat['Total']++;
           $Accepted++;
         }
+        
+        if ($Cat_Status_Short[$VCY['Status']]) $VClass .= " VolCat" . $Cat['id'];
       }
     }
+
+//    var_dump($VY);
+    $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$id>";
+    echo "<tr class='$VClass " . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || ($VY['Status'] == 4))?" FullD' hidden" : "'" ) . ">";
+    echo "<td>$id";
+    echo "<td>$link" . $Vol['SN'] . "</a>";
+    echo "<td>" . $Vol['Email'];
+    echo "<td>" . $Vol['Phone'];
     
     if ($Accepted && ($YearStatus[$VY['Status']] != 'Confirmed')) {
       $VY['Status'] = 3;
@@ -821,11 +841,11 @@ function List_Vols() {
     echo "<td class=FullD hidden>$year";
     echo $str;
     
-    echo "<td>" . (isset($VY['AvailBefore'])? ((strlen($VY['AvailBefore'])<12)? $VY['AvailBefore'] : ($link . "Expand</a>")):"");
-    echo "<td>" . (isset($VY['AvailWeek'])? ((strlen($VY['AvailWeek'])<12)? $VY['AvailWeek'] : ($link . "Expand</a>")):"");
+    echo "<td class=AvailD>" . (isset($VY['AvailBefore'])? ((strlen($VY['AvailBefore'])<12)? $VY['AvailBefore'] : ($link . "Expand</a>")):"");
+    echo "<td class=AvailD>" . (isset($VY['AvailWeek'])? ((strlen($VY['AvailWeek'])<12)? $VY['AvailWeek'] : ($link . "Expand</a>")):"");
     for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {
       $av = "Avail" . ($day <0 ? "_" . (-$day) : $day);
-      echo "<td>";
+      echo "<td class=AvailD>";
       if (isset($VY[$av])) echo ((strlen($VY[$av])<12)? $VY[$av] : ($link . "Expand</a>")) . "\n";
     }
     
@@ -846,6 +866,7 @@ function List_Vols() {
   echo "</tbody></table></div>\n";
 
   echo "<h2><a href=Volunteers?A=New>Add a Volunteer</a></h2>";
+  echo "<h2><a href=Volunteers?A=List&F=CSV>Volunteer list as a CSV</a></h2>";  
   dotail();
 }
 
@@ -911,7 +932,7 @@ function Send_Accepts($Vol) {
   }
 }
 
-function VolAction($Action) {
+function VolAction($Action,$csv=0) {
   global $PLANYEAR,$VolCats,$M;
 
   dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
@@ -938,7 +959,9 @@ function VolAction($Action) {
     break;
     
   case 'List': // List Volunteers
-    List_Vols();
+    List_Vols($csv);
+    break;
+  
     break;
     
   case 'Create': // Volunteer hass clicked 'Submit', store and email staff

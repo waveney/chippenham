@@ -76,3 +76,16 @@ function VolEnables(volid,year) {
 // Sort out camping display
 
 }
+
+function VolListFilter() {
+// debugger;
+  var Show = $("input[name=ThingShow]:checked").val();
+  var dbg = document.getElementById('Debug');
+  $(".Volunteer").each(function() {
+    if (Show == 0) $(this).show();
+    if (Show > 0) {
+      if ($(this).hasClass("VolCat" + Show)) { $(this).show() } else { $(this).hide() };
+    }
+  })
+}
+
