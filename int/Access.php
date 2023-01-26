@@ -19,7 +19,8 @@
 
 // Hacking prevention
   if (strlen($id)>6 || strlen($key)!=40 || strlen($t)>6 || preg_match('/[^A-Z]/',$key) || !is_numeric($id) ) {
-    Error_Page("Invalid Access link." . (empty($key)?' The link you are using does not have a key.',''));
+    Error_Page("Invalid Access link." . (empty($key)?' The link you are using does not have a key.':''));
+    }
 //var_dump($_REQUEST);
   switch ($t) {
     case 's' : // Side

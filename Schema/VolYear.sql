@@ -23,6 +23,7 @@ CREATE TABLE `VolYear` (
   `Notes` text NOT NULL,
   `Status` int NOT NULL,
   `Children` text NOT NULL,
+  `Youth` text NOT NULL,
   `CampNeed` int NOT NULL,
   `CampType` int NOT NULL,
   `SubmitDate` int NOT NULL,
