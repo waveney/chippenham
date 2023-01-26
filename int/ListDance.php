@@ -227,16 +227,18 @@
 
       if ($col10 == "Proforma Emails") {
         echo "<td>"; 
+
+        if ($mess = Feature('DanceSpecialMessage')) {
+          $Mname = preg_replace('/ /', '',$mess);
+          echo "<button type=button id=$Mname$snum class=ProfButton onclick=ProformaSend('Dance_$Mname',$snum,'$Mname','SendProfEmail')" . 
+                 Proforma_Background('ProgChk') . ">$mess</button>"; 
+        }
+        
         if ($fetch['Email']) {
           if (!$IsComp && ($_GET['SEL'] == 'Coming')) {
             echo "<button type=button id=Detail$snum class=ProfButton onclick=ProformaSend('Dance_Details',$snum,'Details','SendProfEmail')" . 
                  Proforma_Background('Details') . ">Details!</button>"; 
-          }
-       
-       
-        echo "<button type=button id=Camping$snum class=ProfButton onclick=ProformaSend('Dance_Camping',$snum,'Camping','SendProfEmail')" . 
-                 Proforma_Background('ProgChk') . ">Camping!</button>"; 
-      
+          }    
        
        
           if ($DanceState >= 1 && !$fetch['TotalFee']) {

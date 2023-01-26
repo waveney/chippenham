@@ -800,7 +800,7 @@ function Dance_Email_Details($key,&$data,$att=0) {
   case 'PROG': return Show_Prog('Perf',$snum,1);
   case 'MISSING': $str = "Please could you <span style='background:pink'><B>click</B> on the *LINK*</span> and add the following:<ol>\n"; 
     $count = 0;
-    if ($Sidey['Sat'] == 0 && $Sidey['Sun'] == 0) {
+    if ($Sidey['Sat'] == 0 && $Sidey['Sun'] == 0 && $Sidey['Mon'] == 0) {
       $str .= '<li><b>Days</b> What days you will be dancing.  It is also very helpful if you tell us: ' .
               'your earliest start and latest finish times, the deafults are 10am to 5pm.<p>';
       $count++;
@@ -813,18 +813,20 @@ function Dance_Email_Details($key,&$data,$att=0) {
       $str .= '<Li>Upload your <b>insurance</b> for *PLANYEAR*.<p>';
       $count++;
       }
-    if ($Sidey['Performers'] == 0) {
+    if (Feature('PerformerTickets') && $Sidey['Performers'] == 0) {
       $str .= '<li><b>Performer Numbers</b> which is the number of performers wristbands you require.  If none of your team want to go to any of the paid events, ' .
-              'then put -1 (which means none are required).  You can edit this number at any time until the wristbands are mailed, which is about 2 weeks before the festival.<p>';
+              'then put -1 (which means none are required).<p>';
+              // '  You can edit this number at any time until the wristbands are mailed, which is about 2 weeks before the festival.<p>';
       $count++;
       }
-    if ($Sidey['Performers']>=0 && !$Side['Address']) {
+    if (Feature('DanceNeedAddress') && $Sidey['Performers']>=0 && !$Side['Address']) {
       $str .= '<li>An <b>Address</b> so we can post your performer wristbands - not needed if you do not require any wristbands.<p>';
       $count++;
       }
 
     return ($count? "$str</ol><p>\n" : "");
   case 'SIDE': return $Side['SN'];
+  case 'DANCEORG': return Feature('DanceOrg','Richard Proctor');
   case (preg_match('/TICKBOX(.*)/',$key,$mtch)?true:false):
     $bits = preg_split('/:/',$mtch[1],3);
     $box = 1;

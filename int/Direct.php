@@ -13,10 +13,7 @@
     if (!is_numeric($Tid)) Error_Page("Invalid Identifier");
     $Trad = Get_Trader($Tid);
 
-    if ($_GET['key'] == '') {
-
-    } 
-    elseif ($Trad['AccessKey'] != $_GET['key']) Error_Page("Sorry - This is not the right key");  // No return
+    if ($Trad['AccessKey'] != $_GET['key']) Error_Page("Sorry - This is not the right key");  // No return
 
     $Cake = sprintf("%s:%d:%06d",'Trader',$Access_Type['Participant'],$Tid ); 
     $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');

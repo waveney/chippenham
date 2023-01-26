@@ -469,6 +469,7 @@ function Replace_Help($Area='',$Right=0) {
   ['*PAYDAYS*','Days to pay an Invoice','Trade,Invoices'],
   ['*PAIDSOFAR*','Total Money Actually paid so far: Deposit and Balance','Trade'],
   ['*URL:URL:Text*','URL (https:// is prepended, TEXT - To be displayed (NO SPACES - any _ will appear as spaces)','All'],
+  ['*DANCEORG*','Sign of for dance messages','Dance'],
   ];
 
   echo "<span " . ($Right?' class=floatright':'') . " id=largeredsubmit onclick=($('.HelpDiv').toggle()) >Click to toggle Standard Replacements Help</span>";

@@ -15,8 +15,10 @@
   elseif (isset($_REQUEST['i'])) { $snum = $_REQUEST['i'];} 
   else { $snum = 0; }
   
+  if (!is_numeric($snum)) $snum=0;
   Set_User();
-//  if (!isset($USER['AccessLevel'])) Error_Page("Not accessable to you - Please use the corect link");
+
+  if (!isset($USER['AccessLevel'])) Error_Page("Not accessable to you - Please use the corect link");
   
   switch ($USER['AccessLevel']) {
   case $Access_Type['Participant'] : 
