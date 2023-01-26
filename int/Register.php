@@ -20,7 +20,7 @@
     switch ($_REQUEST['ACTION']) {
       case 'Check':
         $Sname = Sanitise($_REQUEST['SN'],40);
-        $Email = Sanitise($_REQUEST['Email'],40);
+        $Email = Sanitise($_REQUEST['Email'],40,'email');
         $Contact = Sanitise($_REQUEST['Contact'],40);
         $Sides = Find_Perf_Similar($Sname,'AND IsASide=1');
         if ($Sides) {

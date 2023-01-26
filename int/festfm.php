@@ -792,13 +792,13 @@ function Sanitise($txt,$len=40,$cat='') {
   if ($len && strlen($txt) > $len) $txt = substr($txt,$len);
   switch ($cat) {
   case 'num':
-    $txt = preg_replace('/[^0-9]',$txt,'');  
+    $txt = preg_replace('/[^0-9]/','',$txt);  
     return $txt;  
   case 'email':
-    $txt = preg_replace('/[^a-zA-Z0-9@_.]',$txt,'');  
+    $txt = preg_replace('/[^a-zA-Z0-9@_.]/','',$txt);  
     return $txt;
   default:
-    $txt = preg_replace('/[^a-zA-Z0-9_ ,.\']',$txt,'');
+    $txt = preg_replace('/[^a-zA-Z0-9_ ,.\']/','',$txt);
     return $txt;
   }
 }

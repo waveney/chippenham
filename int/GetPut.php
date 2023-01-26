@@ -39,6 +39,7 @@ function Gen_Get_Names($Table, $extra='') {
 function Gen_Get_Cond($Table,$Cond) {
   global $db;
   $Ts = [];
+//  var_dump($Cond);
   $res = $db->query("SELECT * FROM $Table WHERE $Cond");
   if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans['id']] = $ans;
   return $Ts;

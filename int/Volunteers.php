@@ -20,9 +20,11 @@
   } else if (isset($_REQUEST['Delete'])) {
     VolAction('Delete');
   } else if (isset($_REQUEST['ACTION'])) {
-    VolAction($_REQUEST['ACTION']);
+    VolAction($_REQUEST['ACTION'],$csv);
   } else if (isset($_REQUEST['A'])) {
     VolAction($_REQUEST['A'],$csv);
+  } else if (isset($_REQUEST['SELECT'])) {
+    VolAction('Select',$csv);
   } else {
     VolAction('New');
   }

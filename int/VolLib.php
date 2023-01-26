@@ -114,7 +114,8 @@ function Get_Vol_Details(&$vol) {
   $Body .= "<p>\n";
   
   if (!empty($VY['Children'])) $Body .= "Children: " . $VY['Children'] . "<p>\n";
-
+  if (!empty($VY['Youth'])) $Body .= "Youth: " . $VY['Youth'] . "<p>\n";
+  
   $camps = Get_Campsites(1);
   
   if (Feature('Vol_Camping')) {
@@ -202,6 +203,9 @@ function VolView(&$Vol) {
   dotail();
 }
 
+function OtherVols(&$Vol) {
+  return Gen_Get_Cond('Volunteers',"Email='" . $Vol['Email'] . "' AND id!=" . $Vol['id']);
+}
 
 function VolForm(&$Vol,$Err='',$View=0) {
   global $VolCats,$YEARDATA,$PLANYEAR,$YEAR,$Relations,$YearStatus,$AgeCats,$CampType,$CatStatus;
@@ -214,13 +218,25 @@ function VolForm(&$Vol,$Err='',$View=0) {
     foreach ($_REQUEST as $K=>$V) if ($K != 'M') echo fm_hidden($K,$V);
     echo "<input type=submit style='font-size:12pt' value='Switch to: Mobile Friendly Version'>";
   echo "</form>";
+  
+  $OVols = OtherVols($Vol);
+  if ($OVols) {
+    echo "<h2>This page is for " . $Vol['SN'] . "</h2>\n";
+    $Ovlst = [];
+    foreach ($OVols as $V) $Ovlst[$V['id']] = $V['SN'];
     
+    echo "<form method=post action=Volunteers>";
+    echo fm_hidden('ACTION',($View ?'View':'Show'));
+    echo fm_radio("Switch to",$Ovlst, $_REQUEST,'id','onchange=this.form.submit()',-3);
+    echo "</form>";
+  }
+  
   echo "<h2 class=subtitle>Steward / Volunteer Application Form</h2>\n";
   if (!empty($Err)) echo "<p class=Err>$Err<p>";
   echo "<form method=post action=Volunteers>";  
   Register_AutoUpdate('Volunteers',$Volid);
   Register_Onload('CampingVolSet',"'CampNeed::$PLANYEAR'",0);
-//  Register_AfterInput('VolEnables',$Volid,$PLANYEAR);
+
   echo fm_hidden('id',$Volid);  
 
 
@@ -375,6 +391,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
      echo "\n<tr><td colspan=5><h3><center>Part 4: Anything else for $PLANYEAR</center></h3>";
     if (Feature('Vol_Children')) {
       echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their ages)",$VYear,'Children',4,'','',"Children::$PLANYEAR");
+      echo "<tr>" . fm_text("Free Youth tickets (11 to 15 - please give their ages)",$VYear,'Youth',4,'','',"Youth::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
@@ -408,8 +425,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     }
     if ($VolMgr) echo "<input type=submit name=ACTION value='Send Updates'>";
 
-
-
+  echo "<input type=submit name=ACTION value='Register another volunteer with the same email address'>\n";
 
   $Mess = TnC("VolTnC");
   Parse_Proforma($Mess);
@@ -433,7 +449,19 @@ function VolFormM(&$Vol,$Err='',$View=0) {
     foreach ($_REQUEST as $K=>$V) if ($K != 'M') echo fm_hidden($K,$V);
     echo "<input type=submit style='font-size:12pt' value='Switch to: Computer Friendly Version'>";
   echo "</form>";
+
+  $OVols = OtherVols($Vol);
+  if ($OVols) {
+    echo "<h2>This page is for " . $Vol['SN'] . "</h2>\n";
+    $Ovlst = [];
+    foreach ($OVols as $V) $Ovlst[$V['id']] = $V['SN'];
     
+    echo "<form method=post action=Volunteers?M>";
+    echo fm_hidden('ACTION',($View ?'View':'Show'));
+    echo fm_radio("Switch to",$Ovlst, $_REQUEST,'id','onchange=this.form.submit()',-3);
+    echo "</form>";
+  }
+
   echo "<h2 class=subtitle>Steward / Volunteer Application Form</h2>\n";
   if (!empty($Err)) echo "<p class=Err>$Err<p>";
   echo "<div class=VolWrapper>";
@@ -558,9 +586,6 @@ function VolFormM(&$Vol,$Err='',$View=0) {
         }
       }       
 
-// tabs 0=none, 1 normal, 2 lines between, 3 box before txt
-// function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field2='',$colours=0,$multi=0,$extra3='',$extra4='') {
-      
       if ($VolMgr) {
         $Ctxt = "\n<tr $Colour><td $Colour>" . fm_radio("<b>" . $Cat['Name'] . "</b>",$CatStatus,$VCY,'Status',
                 "onchange=Update_VolMgrCats(event,'$cls',$Catid,$PLANYEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",-3,'',
@@ -571,15 +596,11 @@ function VolFormM(&$Vol,$Err='',$View=0) {
                 "onchange=Update_VolCats('$cls',$Catid,$PLANYEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",
                 "Status:$Catid:$PLANYEAR",0,'') . "<br>" . $Cat['Description'] . $Ctxt;
       }
-      echo $Ctxt. "\n"; // $Desc,&$data,$field,$extra='',$field2='',$split=0,$extra2='
-
+      echo $Ctxt. "\n"; 
     }
 
-//echo "<tr><td colspan=4>"; var_dump($DayTeams);
 
     $VYear = Get_Vol_Year($Volid);
-//    $DayCats = ['Before','Week'];
-//    for ($day = $YEARDATA['FirstDay']-1; $day<=$YEARDATA['LastDay']+1; $day++) $DayCats[]= $day;
 
   echo "</table>";
 
@@ -609,6 +630,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
      echo "\n<tr><td><h3><center>Part 4: Anything else for $PLANYEAR</center></h3>";
     if (Feature('Vol_Children')) {
       echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their ages)",$VYear,'Children',-2,'','',"Children::$PLANYEAR");
+      echo "<tr>" . fm_text("Free Youth tickets (11 to 15 - please give their ages)",$VYear,'Youth',4,'','',"Youth::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
@@ -639,6 +661,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
     }
     if ($VolMgr) echo "<input type=submit name=ACTION value='Send Updates'>";
 
+  echo "<input type=submit name=ACTION value='Register another volunteer with the same email address'>\n";
 
   $Mess = TnC("VolTnC");
   Parse_Proforma($Mess);
@@ -912,12 +935,16 @@ function List_Vols() {
 }
 
 
-function Email_Form_Only($Vol,$mess='') {
+function Email_Form_Only($Vol,$mess='',$xtra='') {
   $coln = 0;
   echo "<h2>Stage 1 - Who are you?</h2>";
   if ($mess) echo "<h2 class=Err>$mess</h2>";
   echo "<form method=post>";
   echo "<div class=tablecont><table border>";
+  if ($xtra) { 
+    echo fm_hidden('Second',$xtra);
+    echo fm_hidden('Address',$Vol['Address']);
+  }
   echo "<tr>" . fm_text('Name',$Vol,'SN',2);
   echo "<tr>" . fm_text('Email',$Vol,'Email',2);
   echo fm_hidden('A','NewStage2');
@@ -926,13 +953,42 @@ function Email_Form_Only($Vol,$mess='') {
 }
 
 function Check_Unique() { // Is email Email already registered - if so send new email back with link to update
-  global $db,$M;
-  $adr = trim($_POST['Email']);
+  global $M;
+  $adr = Sanitise($_REQUEST['Email'],40,'email');
   if (!filter_var($adr,FILTER_VALIDATE_EMAIL)) Email_Form_Only($_POST,"Please give an email address");
-  $res = $db->query("SELECT * FROM Volunteers WHERE Email LIKE '%$adr%'");
+  $EVols = Gen_Get_Cond('Volunteers',"Email LIKE '%$adr%'");
+
+  if (!$EVols) return;
+  
+  $Name = Sanitise($_REQUEST['SN']);
+  
+  foreach($EVols as $Vol) {
+    if ($Name == $Vol['SN']) {
+      Email_Volunteer($Vol,"Vol_Link_Message",$Vol['Email']);
+      echo "<h2>You are already recorded as a Volunteer</h2>";
+      echo "An email has been sent to you with a link to your record, only information about this years volunteering is now needed.<p>";
+      dotail();
+    }
+  }
+  
+  echo "<form method=post action=Volunteers?ACTION=Select>";
+  echo "<H2>Are you?</h2>";
+  echo fm_hidden('Email',$adr);
+  $lst = $sel = [];
+  foreach($EVols as $Vol) {  
+    $lst[$Vol['id']] = $Vol['SN'];
+  }
+  $lst[-$Vol['id']] = 'New Volunteer on same email address';
+
+// tabs 0=none, 1 normal, 2 lines between, 3 box before txt
+  echo fm_radio('',$lst,$sel,'id',' onchange=this.form.submit()',-3);
+  echo "</form>";
+  dotail();
+  
+/*
   if ($res && $res->num_rows) {
     $Vol = $res->fetch_assoc();
-    if (!Access('Staff')) {
+    if (1 ||!Access('Staff')) {
       Email_Volunteer($Vol,"Vol_Link_Message",$Vol['Email']);
       echo "<h2>You are already recorded as a Volunteer</h2>";
       echo "An email has been sent to you with a link to your record, only information about this years volunteering is now needed.<p>";
@@ -942,7 +998,7 @@ function Check_Unique() { // Is email Email already registered - if so send new 
 //    $id = $Vol['id'];
 //    $Vol = array_merge($Vol, Get_Vol_Year($id));
     $M($Vol);
-  } // else new - full through
+  } // else new - full through*/
 }
 
 function SendCatsToBrowser() {
@@ -994,6 +1050,19 @@ function VolAction($Action,$csv=0) {
     break;
 
   case 'NewStage2': 
+    if (isset($_REQUEST['Second'])) {
+      $Os = ['Email'=>$_POST['Email'], 'id'=> -1 ];
+      $OVs = OtherVols($Os);
+      $Name = Sanitise($_POST['SN']);
+      if ($OVs) foreach($OVs as $OV) if ($OV['SN'] == $Name) {
+        echo "<span class=Err>$Name is already in the system</span><br>";
+        $Vol = $OV;
+        $M($Vol);     
+      }
+      $Vol = ['Year'=>$PLANYEAR, 'SN'=>$Name, 'Email'=>$_POST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40), 'Address'=>$_POST['Address'] ];
+      $Volid = Gen_Put('Volunteers',$Vol);
+      $M($Vol);
+    }
     Check_Unique(); // Deliberate drop through
 
   case 'Form': // New stage 2
@@ -1126,6 +1195,31 @@ function VolAction($Action,$csv=0) {
     List_Vols();
     break;
 
+  case 'Register another volunteer with the same email address':
+    $OldVol = Get_Volunteer($id = $_REQUEST['id']);
+    $Vol = ['Email'=>$OldVol['Email'], 'Address'=>$OldVol['Address'],'id'=>-1, 'Year'=>$PLANYEAR,'KeepMe'=>1,'Over18'=>0,];
+    Email_Form_Only($Vol,'',1); // WRONG
+    
+  case 'Select':
+    $id = $_REQUEST['id'];
+    if ($id > 0) {
+      $Vol = Get_Volunteer($id);
+      if (1 ||!Access('Staff')) {
+        Email_Volunteer($Vol,"Vol_Link_Message",$Vol['Email']);
+//        echo "<h2>You are already recorded as a Volunteer</h2>";
+        echo "An email has been sent to you with a link to your record, only information about this years volunteering is now needed.<p>";
+        dotail();
+      }
+      $M($Vol);
+    }
+    if (1 ||!Access('Staff')) {
+      $Vol = Get_Volunteer(-$id);
+      Email_Volunteer($Vol,"Vol_Link_Message",$Vol['Email']);
+        echo "An email has been sent to you with a link to the existing record, scroll to the bottom and then click on " .
+             "<b>Register another volunteer with the same email address</b>.<p>";
+        dotail();
+      }
+    $M($Vol);
 
   }  
   if (Access('Staff')) List_Vols();
