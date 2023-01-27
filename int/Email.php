@@ -62,9 +62,9 @@ function ConvertHtmlToText(&$body) {
 function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embeded=0,$from='') { 
   global $FESTSYS,$CONF;
   
-//  echo "Debug: " .( UserGetPref('EmailDebug')?2:0) . "<p>";
+//  echo "Debug: XXX" .( UserGetPref('EmailDebug')?2:0) . "<p>";
   $Send = 1;
-  if (@ $CONF['testing']){
+  if (!empty($CONF['testing'])){
     if (strstr($CONF['testing'],'@')) { 
       $to = $CONF['testing'];
     } else {    
