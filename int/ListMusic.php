@@ -40,13 +40,13 @@
   }
 
   if ($_GET['SEL'] == 'ALL') {
-    $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.year='$YEAR' WHERE $TypeSel AND s.SideStatus=0 ORDER BY SN");
+    $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.Year='$YEAR' WHERE $TypeSel AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
     if (substr($YEAR,0,4) == '2020') $col10 = 'Change';
   } else if ($_GET['SEL'] == 'INV') {
     $LastYear = $PLANYEAR-1;
-    $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.year='$PLANYEAR' WHERE $TypeSel AND s.SideStatus=0 ORDER BY SN");
+    $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.Year='$PLANYEAR' WHERE $TypeSel AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Invited $LastYear";
     $col6 = "Coming $LastYear";
     $col7 = "Invite $PLANYEAR";
@@ -54,11 +54,11 @@
     $col9 = "Coming $PLANYEAR";
   } else if ($_GET['SEL'] == 'Coming') {
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.$DiffFld,s.Importance) AS EffectiveImportance FROM Sides AS s, $YearTab as y " .
-                "WHERE $TypeSel AND s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState=" . 
+                "WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND y.YearState=" . 
                 $Book_State['Contract Signed'] . " ORDER BY EffectiveImportance DESC, SN"); 
     $col5 = "Complete?";
   } else if ($_GET['SEL'] == 'Booking') {
-    $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.year='$YEAR' AND ( y.YearState>0 || y.TickBox4>0)" . 
+    $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND ( y.YearState>0 || y.TickBox4>0)" . 
                 " AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
@@ -69,7 +69,7 @@
     echo "Under <b>Actions</b> various errors are reported, the most significant error is indicated.  Please fix these before issuing the contracts.<p>\n";
     echo "Missing: P - Needs Phone, E Needs Email, T Needs Tech Spec, B Needs Bank (Only if fees), I Insurance.<p>";
   } else if ($_GET['SEL'] == 'Avail') {
-    $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.year='$YEAR' AND s.SideStatus=0 ORDER BY SN");
+    $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
     $col7 = "Importance";
@@ -80,7 +80,7 @@
 
     $PrevYear = '2021'; // TODO fix fudge
     echo "<div class=content><h2>List $Perf $PrevYear</h2>\n";
-    $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.year='$PrevYear' AND ( y.YearState>0 || y.TickBox4>0)" . 
+    $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$PrevYear' AND ( y.YearState>0 || y.TickBox4>0)" . 
                 " AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
@@ -89,7 +89,7 @@
     if (substr($YEAR,0,4) == '2020') $col10 = 'Change';
   } else { // general public list
     $SideQ = $db->query("SELECT y.*, s.*, IF(s.DiffImportance=1,s.$DiffFld,s.Importance) AS EffectiveImportance  FROM Sides AS s, $YearTab as y " .
-                "WHERE $TypeSel AND s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState=" . 
+                "WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND y.YearState=" . 
                 $Book_State['Contract Signed'] . " ORDER BY EffectiveImportance DESC SN");
   }
 
@@ -131,6 +131,7 @@
 
       $State = $fetch['YearState'];
       if (isset($State)) {
+//echo "</table><br>"; var_dump($fetch);exit;
         Contract_State_Check($fetch,0); 
         $State = $fetch['YearState'];
       } else {

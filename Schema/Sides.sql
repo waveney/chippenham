@@ -66,7 +66,7 @@ CREATE TABLE `Sides` (
   `MinStage` text NOT NULL,
   `Overlaps` text NOT NULL,
   `AccessKey` text NOT NULL,
-  `Party Tricks` text NOT NULL,
+  `PartyTricks` text NOT NULL,
   `Pre2017` text NOT NULL,
   `Share` tinyint NOT NULL,
   `NeedBank` tinyint NOT NULL,

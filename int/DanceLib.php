@@ -333,7 +333,7 @@ function Put_SideYear(&$data,$Force=0) {
   if (!$fcnt) return 0;
   if ($Up) $rec .= " WHERE syId='" . $Save['syId'] . "'";
   $Save = $data;
-//var_dump($rec);
+//echo "</table><br>";var_dump($rec);exit;
   if ($Up) return $db->query($rec);
   $insert = $db->query($rec);
   $snum = $db->insert_id;

@@ -492,6 +492,7 @@ function Contract_Changed_id($id) {
 
 function Contract_State_Check(&$Sidey,$chkba=1) {
   global $Book_State;
+//echo "</table><br>";  debug_print_backtrace();exit;
   if (!isset($Sidey['SideId'])) return 0;
   $snum = $Sidey['SideId'];
   $Evs = Get_Events4Act($snum,$Sidey['Year']);
@@ -525,7 +526,8 @@ function Contract_State_Check(&$Sidey,$chkba=1) {
   }
   if ($ys != $Sidey['YearState']) {
     $Sidey['YearState'] = $ys;
-    Put_SideYear($Sidey);
+// echo "</table><br>"; var_dump($Sidey);
+    Put_SideYear($Sidey,1);
     return 1;
   }
 }
