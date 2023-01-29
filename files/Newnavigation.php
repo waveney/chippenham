@@ -51,6 +51,7 @@
       '-Get Involved'=>[
         'Volunteer'=>'InfoStewards',
         'Sponsorship'=>'InfoSponsors',
+        'New Dance Side Registration'=>'int/Register',
 //        'Trade Stand Applications'=>'InfoTrade', 
 //        'Art Show Application' => 'int/ArtForm',
 //        '*Live and Loud'=>'LiveNLoud',

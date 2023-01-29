@@ -15,10 +15,10 @@ $To = $Side['Email'];
 if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
   $To = $Side[$_REQUEST['E']];
 }
-//var_dump($_REQUEST);
-$too = [['to',$To,$Side['Contact']],
-        ['from','Dance@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' Dance'],
-        ['replyto','Dance@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' Dance']];
+    $DanceEmailsFrom = Feature('DanceEmailsFrom','Dance');
+    $too = [['to',$To,$Side['Contact']],
+            ['from',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom],
+            ['replyto',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom]];
 //$to = $Side['Email']; // Temp value
 echo Email_Proforma(1,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],$logfile='Dance');
 

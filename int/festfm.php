@@ -802,6 +802,16 @@ function Sanitise($txt,$len=40,$cat='') {
     return $txt;
   }
 }
+
+function SanitiseAll($Rules) {
+  foreach($Rules as $R) {
+    $flds = explode(':',$R);
+    if (isset($_REQUEST[$flds[0]])) {
+      $_REQUEST[$flds[0]] = Sanitise($_REQUEST[$flds[0]],(empty($flds[1])?40:$flds[1]),(empty($flds[2])?'':$flds[2]));
+    }
+  }
+}
+
 /* TODO
 --Documents
 --Insurance
