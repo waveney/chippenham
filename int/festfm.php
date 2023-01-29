@@ -140,7 +140,7 @@ function fm_textarea($Name,&$data,$field,$cols=1,$rows=1,$extra1='',$extra2='',$
   if ($rows > 0) {
     $str = "<td $extra1>$Name:" . help($field) . "<td colspan=$cols $extra1><textarea name=$field2 id=$field2 $ADDALL ";
   } else {
-    $str = "<td $extra1>$Name:" . help($field) . "<br><textarea name=$field2 id=$field2 $ADDALL ";
+    $str = ($Name?"<br $extra1>$Name:" . help($field) . "<br>":"") . "<textarea name=$field2 id=$field2 $ADDALL ";
   }
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
   $str .= " $extra2 rows=" . abs($rows) . ">" ;  
