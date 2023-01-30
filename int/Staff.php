@@ -129,7 +129,8 @@
     $txt .= "<li><a href=ShowDanceProg?Pub=0&Y=$YEAR>View Dance Programme</a>";
     $txt .= "<li><a href=/Map?F=3>Dance Location Map</a>";
     $txt .= "<li><a href=/LineUp?T=Dance&FORCE>Dance Lineup</a> (Even if not public)";
-    
+    if (Access('Staff','Dance')) $txt .= "<li><a href=Register?ACTION=List>Side Registrations</a>";
+        
     if (Access('SysAdmin')) {
 //      $txt .= "<li><a href=ShowDanceProg?Y=$YEAR>View Dance Programme</a>";
       $txt .= "<p><div class=tablecont><table class=FullWidth><tr><td width=300px>";

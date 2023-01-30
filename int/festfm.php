@@ -449,10 +449,11 @@ function DurationFormat($mins) { // Show N mins as N <=90, x hr ymins
   return (int)($mins/60) . " hours " . (($mins%60) ? (($mins%60) . " minutes") : "");
 }
 
-function Register_AutoUpdate($type,$ref) {
+function Register_AutoUpdate($type,$ref,$Store='') {
   global $AutoADD;
   echo fm_hidden('AutoType',$type);
   echo fm_hidden('AutoRef',$ref);
+  if ($Store) echo fm_hidden($Store,$ref);
   $AutoADD = 1;
 }
 
