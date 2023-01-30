@@ -152,10 +152,11 @@ function EditReg($id) {
   if ($Reg['YouTube']) echo "<tr>" . fm_text('YouTube',$Reg,'YouTube',2) . "<td><a href=" . videolink($Reg['YouTube']) . " target=_blanks>Use in new tab</a>";
   if ($Reg['Description']) echo "<tr>" . fm_textarea('Description',$Reg, 'Description',5,3);
   if ($Reg['VerifyReason']) echo "<tr>" . fm_textarea('Reason to Verify',$Reg,'VerifyReason',5,3);
+  if (Access('SysAdmin')) echo "<tr>" . fm_textarea('History',$Reg,'History',5,3);
   echo "<tr>" . fm_textarea('Reject Reason',$Reg,'Reason',5,2);
   echo "<tr><td>Submitted on:<td>" . date($Reg['DateSubmitted']);
   echo "</table>";
-
+  if (Access('SysAdmin')) echo "<input type=submit name=ACTION value=Delete><br>\n";
   echo "</form>";
   echo "<h2><a href=Register?ACTION=View&id=$id>Back to View and Actions</a></h2>";
   dotail();
@@ -163,12 +164,41 @@ function EditReg($id) {
 
 
 function ListReg() {
+  global $RegStates;
 
+  echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Applications</button>" .
+       "<button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Curent Aplications</button> ";
+  
+  echo "<h2>List of Outstanding Registrations</h2>";
+  $Regs = Gen_Get_All('SideRegister');
+  
+  if ($Regs) {
+ 
+    $coln = 0;
+    echo "<form method=post action=Register?ACTION=View>";
+    echo "<div class=tablecont><table id=indextable border>\n";
+    echo "<thead><tr>";
 
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contact</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Side</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>State</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'D')>Date</a>\n";
+    echo "</thead><tbody>";
+    
+    foreach($Regs as $id=>$R) {
+      echo "<tr " . ($R['State'] < 11?'':'class=FullD') . "<td>$id<a href=Register?ACTION=View&id=$id>" . $R['Contact'] . 
+           "</a><td><a href=Register?ACTION=View&id=$id>" . $R['SN'] . "</a><td>" . $RegStates[$R['State']] . "<td>" . $R['Email'] . "<td>" . date($R['DateSubmitted']);
+    }
+  } else {
+    echo "None are stored at present.";
+  }
+  dotail();
 }
 
 function Confirm($id) {
-  global $RegStates;
+  global $RegStates,$USER;
   $Reg = Gen_Get('SideRegister',$id);
   if (empty($Reg['id'])) {
     echo "Entry $id Not found";
@@ -190,6 +220,7 @@ function Confirm($id) {
       $Side['AccessKey'] = rand_string(40);
       $Reg['SideId'] = $Side['SideId'] = Insert_db('Sides',$Side);
       $Reg['State'] = $Reg['State']+10;
+      $Reg['History'] .= "Confirmed by " . $USER['Login'] . " on " . date() . "\n";
       Gen_Put('SideRegister',$Reg);
       Send_DanceMessage($Side,'Dance_Welcome',$Side['Email']);
       echo $Side['SN'] . " is now in the database as a side and an email confirmation has been sent to" . $Side['Contact'] . ".<p>";
@@ -202,6 +233,7 @@ function Confirm($id) {
       $Side['Email'] = $Reg['Email'];
       Put_Side($Side);
       $Reg['State'] = $Reg['State']+10;
+      $Reg['History'] .= "Confirmed by " . $USER['Login'] . " on " . date() . "\n";
       Gen_Put('SideRegister',$Reg);            
       Send_DanceMessage($Side,'Dance_Welcome',$Side['Email']);
       echo $Side['SN'] . " has an email and contact set up. An email confirmation has been sent to" . $Side['Contact'] . ".<p>";
@@ -214,10 +246,11 @@ function Confirm($id) {
       $Side['Email'] = $Reg['Email'];
       Put_Side($Side);
       $Reg['State'] = $Reg['State']+10;
+      $Reg['History'] .= "Confirmed by " . $USER['Login'] . " on " . date() . "\n";
       Gen_Put('SideRegister',$Reg);            
       Send_DanceMessage($Side,'Dance_Welcome',$Side['Email']);
       echo $Side['SN'] . " has the contact changed. An email confirmation has been sent to" . $Side['Contact'] . ".<p>";
-      break
+      break;
     
     case 4: // Replace Alt Contact
       $Side = Get_Side($Reg['SideId']);
@@ -225,6 +258,7 @@ function Confirm($id) {
       $Side['AltEmail'] = $Reg['Email'];
       Put_Side($Side);
       $Reg['State'] = $Reg['State']+10;
+      $Reg['History'] .= "Confirmed by " . $USER['Login'] . " on " . date() . "\n";
       Gen_Put('SideRegister',$Reg);            
       Send_DanceMessage($Side,'Dance_Welcome',$Side['AltEmail']);
       echo $Side['SN'] . " has the alternative contact set up. An email confirmation has been sent to" . $Reg['Contact'] . ".<p>";
@@ -250,6 +284,7 @@ function Reject($id) {
   }
 
   $Reg['State'] = $Reg['State']+10;
+  $Reg['History'] .= "Rejected by " . $USER['Login'] . " on " . date() . "\n";
   Gen_Put('SideRegister',$Reg);
   Send_DanceMessage($Reg,'Dance_Rejected',$Reg['Email']);
   echo $Reg['SN'] . " was rejected and an email message has been sent to" . $Reg['Contact'] . ".<p>";
@@ -272,6 +307,7 @@ function Ignore($id) {
   }
 
   $Reg['State'] = $Reg['State']+10;
+  $Reg['History'] .= "Ignored by " . $USER['Login'] . " on " . date() . "\n";
   Gen_Put('SideRegister',$Reg);
   echo $Reg['SN'] . " is now silently ignored.<p>";
  
@@ -443,20 +479,25 @@ function Ignore($id) {
             
     case 'Reject' :
         A_Check('Staff','Dance');
+        Reject($_REQUEST['id']);            
+        dotail();
             
-    
     case 'Ignore' :
         A_Check('Staff','Dance');
+        Ignore($_REQUEST['id']);                        
+        dotail();
             
-    
     case 'Confirm after all':
         A_Check('Staff','Dance');
+        Confirm($_REQUEST['id']);            
+        dotail();
             
-    
     case 'Delete' :
         A_Check('Staff','Dance');
-            
-    
+        db_delete('SideRegister',$_REQUEST['id']);
+        echo "Entry Deleted from records.<p>";
+        RegList();            
+        dotail();    
     }
   }
   
