@@ -5,6 +5,10 @@
   include_once("DateTime.php");
   include_once("Email.php");
 
+$RegStates = ['','New Side','No Email','Now Me','Alt Now Me',
+                 11=>'New Side - Confirmed',12=>'No Email - Confirmed',13=>'Now Me - Confirmed',14=>'Alt Now Me - Confirmed',
+                 21=>'New Side - Rejected',22=>'No Email - Rejected',23=>'Now Me - Rejected',24=>'Alt Now Me - Rejected'];
+                 
 function Disguise($txt) {
   [$User,$Domain] = explode('@',$txt,2);
   $DUser = preg_replace('/(.)./','$1*',$User);
@@ -29,6 +33,7 @@ function Register_Email_Details($key,&$data,$att=0) {
   case 'SIDENAME': return $Reg['SN'];
   case 'MGRMSG' : return $MgrMsg;
   case 'DANCEORG': return Feature('DanceOrg','Richard Proctor');
+  case 'REJECTREASON': return (empty($Reg['Reason'])?'':"Because: " . $Reg['Reason']);
   }
 }
 
@@ -44,7 +49,7 @@ function Send_MgrMessage(&$Reg,$Msg) {
 function Send_DanceMessage($Side,$Mess,$To='') {
   global $FESTSYS;
   $DanceEmailsFrom = Feature('DanceEmailsFrom','Dance');
-  $too = [['to', $To, $Side['Contact']],
+  $too = [['to', $To, ((!empty($Side['AltEmail'])) && ($To == $Side['AltEmail'])?$Side['AltContact'] : $Side['Contact'])],
           ['from',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom],
           ['replyto',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom]];
 
@@ -76,15 +81,202 @@ function WhoYouAre($Mess='') {
 }
 
 function ViewReg($id) {
+  global $RegStates;
+  $Reg = Gen_Get('SideRegister',$id);
+  if (empty($Reg['id'])) {
+    echo "Entry $id Not found";
+    dotail();
+  }
+  
+  echo "<form method=post action=Register>";
+  Register_AutoUpdate('SideRegister',$id);
+  echo "<table border>";
+  echo "<tr><td>Id:$id<tr><td>Contact:<td>" . $Reg['Contact'];
+  echo "<tr><td>Email:<td>" . $Reg['Email'];
+  echo "<tr><td>State: " . fm_select($RegStates,$Reg,'State');
+  if ($Reg['SN']) {
+    echo "<tr><td>Side Name<td>" . $Reg['SN'];
+    if (!empty($Reg['SideId'])) echo "<td><a href=AddPerf?id=" . $Reg['SideId'] . " target=_blank>View in new tab</a>";
+  }
+  if ($Reg['Type']) echo "<tr><td>Type:<td>" . $Reg['Type'];
+  if ($Reg['Mobile']) echo "<tr><td>Mobile:<td>" . $Reg['Mobile'];  
+  if ($Reg['Phone']) echo "<tr><td>Phone:<td>" . $Reg['Phone'];  
+  if ($Reg['Website']) echo "<tr><td>Website:<td>" . $Reg['Website'] . "<td>" . weblinksimple($Reg['Website']) . "Use in a new tab</a>";
+  if ($Reg['YouTube']) echo "<tr><td>YouTube:<td>" . $Reg['YouTube'] . "<td><a href=" . videolink($Reg['YouTube']) . " target=_blanks>Use in new tab</a>";
+  if ($Reg['Description']) echo "<tr><td colspan=5>Description:<br>" . $Reg['Description'];
+  if ($Reg['VerifyReason']) echo "<tr><td colspan=5>Reasons to Verify:<br>" . $Reg['VerifyReason'];
+  echo "<tr>" . fm_textarea('Reject Reason',$Reg,'Reason',5,2);
+  echo "<tr><td>Submitted on:<td>" . date($Reg['DateSubmitted']);
+  echo "</table>";
+  
+  if ($Reg['State'] < 10) {
+    echo "<input type=submit name=ACTION value='Confirm'>";
+    echo "<input type=submit name=ACTION value='Reject'>";
+    echo "<input type=submit name=ACTION value='Ignore'>";
+  } else if ($Reg['State'] > 10) {
+    echo "<input type=submit name=ACTION value='Confirm after all'>";
+  }
 
 //show details
 
 // Action buttons
+
+  echo "</form>";
+  echo "<h2><a href=Register?ACTION=Edit&id=$id>Edit</a></h2>";
+
+  dotail();
 }
+
+function EditReg($id) {
+  global $RegStates;
+  $Reg = Gen_Get('SideRegister',$id);
+  if (empty($Reg['id'])) {
+    echo "Entry $id Not found";
+    dotail();
+  }
+  
+  echo "<form method=post action=Register>";
+  Register_AutoUpdate('SideRegister',$id);
+  echo "<table border>";
+  echo "<tr><td>Id:$id<tr>" . fm_text('Contact',$Reg,'Contact');
+  echo "<tr>" . fm_text('Email',$Reg,'Email');
+  echo "<tr><td>State: " . fm_select($RegStates,$Reg,'State');
+  if ($Reg['SN']) {
+    echo "<tr>" . fm_text('Side Name',$Reg,'SN',4);
+    if (!empty($Reg['SideId'])) echo "<td><a href=AddPerf?id=" . $Reg['SideId'] . " target=_blank>View in new tab</a>";
+  }
+  if ($Reg['Type']) echo "<tr>" . fm_text('Type',$Reg,'Type',2);
+  if ($Reg['Mobile']) echo "<tr>" . fm_text('Mobile',$Reg,'Mobile',2);  
+  if ($Reg['Phone']) echo "<tr>" . fm_text('Phone',$Reg,'Phone',2);  
+  if ($Reg['Website']) echo "<tr>" . fm_text('Website',$Reg,'Website',2) . "<td>" . weblinksimple($Reg['Website']) . "Use in a new tab</a>";
+  if ($Reg['YouTube']) echo "<tr>" . fm_text('YouTube',$Reg,'YouTube',2) . "<td><a href=" . videolink($Reg['YouTube']) . " target=_blanks>Use in new tab</a>";
+  if ($Reg['Description']) echo "<tr>" . fm_textarea('Description',$Reg, 'Description',5,3);
+  if ($Reg['VerifyReason']) echo "<tr>" . fm_textarea('Reason to Verify',$Reg,'VerifyReason',5,3);
+  echo "<tr>" . fm_textarea('Reject Reason',$Reg,'Reason',5,2);
+  echo "<tr><td>Submitted on:<td>" . date($Reg['DateSubmitted']);
+  echo "</table>";
+
+  echo "</form>";
+  echo "<h2><a href=Register?ACTION=View&id=$id>Back to View and Actions</a></h2>";
+  dotail();
+}
+
 
 function ListReg() {
 
 
+}
+
+function Confirm($id) {
+  global $RegStates;
+  $Reg = Gen_Get('SideRegister',$id);
+  if (empty($Reg['id'])) {
+    echo "Entry $id Not found";
+    dotail();
+  }
+  if ($Reg['State']>10) {
+    echo "<h2>This request is in state: " . $RegStates[$Reg['State']] . "</h2>";
+    echo "<h2><a href=Register?ACTION=View&id=$id>View and Actions</a></h2>";
+    dotail();  
+  }
+  switch ($Reg['State']) {
+    case 1: // New Side
+      $Side = $Reg;
+      unset($Side['id']);
+      if (strlen($Reg['Description']) > 150) {
+        $Side['Blurb'] = $Reg['Description'];
+        $Side['Description'] = '';
+      }
+      $Side['AccessKey'] = rand_string(40);
+      $Reg['SideId'] = $Side['SideId'] = Insert_db('Sides',$Side);
+      $Reg['State'] = $Reg['State']+10;
+      Gen_Put('SideRegister',$Reg);
+      Send_DanceMessage($Side,'Dance_Welcome',$Side['Email']);
+      echo $Side['SN'] . " is now in the database as a side and an email confirmation has been sent to" . $Side['Contact'] . ".<p>";
+      break;
+        
+    case 2: // No Email
+      $Side = Get_Side($Reg['SideId']);
+      $Side['AccessKey'] = rand_string(40);
+      $Side['Contact'] = $Reg['Contact'];
+      $Side['Email'] = $Reg['Email'];
+      Put_Side($Side);
+      $Reg['State'] = $Reg['State']+10;
+      Gen_Put('SideRegister',$Reg);            
+      Send_DanceMessage($Side,'Dance_Welcome',$Side['Email']);
+      echo $Side['SN'] . " has an email and contact set up. An email confirmation has been sent to" . $Side['Contact'] . ".<p>";
+      break;
+
+    case 3: // Replace Contact
+      $Side = Get_Side($Reg['SideId']);
+      $Side['AccessKey'] = rand_string(40);
+      $Side['Contact'] = $Reg['Contact'];
+      $Side['Email'] = $Reg['Email'];
+      Put_Side($Side);
+      $Reg['State'] = $Reg['State']+10;
+      Gen_Put('SideRegister',$Reg);            
+      Send_DanceMessage($Side,'Dance_Welcome',$Side['Email']);
+      echo $Side['SN'] . " has the contact changed. An email confirmation has been sent to" . $Side['Contact'] . ".<p>";
+      break
+    
+    case 4: // Replace Alt Contact
+      $Side = Get_Side($Reg['SideId']);
+      $Side['AltContact'] = $Reg['Contact'];
+      $Side['AltEmail'] = $Reg['Email'];
+      Put_Side($Side);
+      $Reg['State'] = $Reg['State']+10;
+      Gen_Put('SideRegister',$Reg);            
+      Send_DanceMessage($Side,'Dance_Welcome',$Side['AltEmail']);
+      echo $Side['SN'] . " has the alternative contact set up. An email confirmation has been sent to" . $Reg['Contact'] . ".<p>";
+      break;
+
+    default:
+  }
+  echo "<h2><a href=Register?ACTION=List>List other Registrations</a></h2>";  
+  dotail();
+}
+
+function Reject($id) {
+  global $RegStates;
+  $Reg = Gen_Get('SideRegister',$id);
+  if (empty($Reg['id'])) {
+    echo "Entry $id Not found";
+    dotail();
+  }
+  if ($Reg['State']>10) {
+    echo "<h2>This request is in state: " . $RegStates[$Reg['State']] . "</h2>";
+    echo "<h2><a href=Register?ACTION=View&id=$id>View and Actions</a></h2>";
+    dotail();  
+  }
+
+  $Reg['State'] = $Reg['State']+10;
+  Gen_Put('SideRegister',$Reg);
+  Send_DanceMessage($Reg,'Dance_Rejected',$Reg['Email']);
+  echo $Reg['SN'] . " was rejected and an email message has been sent to" . $Reg['Contact'] . ".<p>";
+ 
+   echo "<h2><a href=Register?ACTION=List>List other Registrations</a></h2>";  
+  dotail();
+}
+
+function Ignore($id) {
+  global $RegStates;
+  $Reg = Gen_Get('SideRegister',$id);
+  if (empty($Reg['id'])) {
+    echo "Entry $id Not found";
+    dotail();
+  }
+  if ($Reg['State']>10) {
+    echo "<h2>This request is in state: " . $RegStates[$Reg['State']] . "</h2>";
+    echo "<h2><a href=Register?ACTION=View&id=$id>View and Actions</a></h2>";
+    dotail();  
+  }
+
+  $Reg['State'] = $Reg['State']+10;
+  Gen_Put('SideRegister',$Reg);
+  echo $Reg['SN'] . " is now silently ignored.<p>";
+ 
+   echo "<h2><a href=Register?ACTION=List>List other Registrations</a></h2>";  
+  dotail();
 }
 
 // **********************************************************************
@@ -188,8 +380,8 @@ function ListReg() {
         if (empty($_REQUEST['YouTube']) || strlen($_REQUEST['YouTube']) < 10 ) WhoYouAre('We need a Video');
         if (empty($_REQUEST['Mobile']) || strlen($_REQUEST['Mobile']) < 11) WhoYouAre('We need a Mobile Phone number');
          
-        $_REQUEST['State'] = 1;
-        $_REQUEST['SubmitDate'] = time();
+        $_POST['State'] = 1;
+        $_POST['SubmitDate'] = time();
         $id = Insert_db_post('SideRegister',$Reg);
         Send_MgrMessage($Reg,"Potential new side");
         Thankyou();
@@ -228,13 +420,42 @@ function ListReg() {
         Thankyou();
     
     case 'View':
+        A_Check('Staff','Dance');
         $Regid = $_REQUEST['id'];
         ViewReg($Regid);
         dotail();
     
+    case 'Edit':
+        A_Check('Staff','Dance');
+        $Regid = $_REQUEST['id'];
+        EditReg($Regid);
+        dotail();
+    
     case 'List':
+        A_Check('Staff','Dance');
         RegList();
         dotail();
+    
+    case 'Confirm':
+        A_Check('Staff','Dance');
+        Confirm($_REQUEST['id']);
+        dotail();
+            
+    case 'Reject' :
+        A_Check('Staff','Dance');
+            
+    
+    case 'Ignore' :
+        A_Check('Staff','Dance');
+            
+    
+    case 'Confirm after all':
+        A_Check('Staff','Dance');
+            
+    
+    case 'Delete' :
+        A_Check('Staff','Dance');
+            
     
     }
   }

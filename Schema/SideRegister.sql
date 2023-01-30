@@ -11,8 +11,9 @@ CREATE TABLE `SideRegister` (
   `YouTube` text NOT NULL,
   `Phone` text NOT NULL,
   `Mobile` text NOT NULL,
-  `DateSubMitted` int NOT NULL,
+  `DateSubmitted` int NOT NULL,
   `History` text NOT NULL,
   `SideId` int NOT NULL,
+  `Reason` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
