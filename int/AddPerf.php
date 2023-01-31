@@ -22,7 +22,8 @@
   
   switch ($USER['AccessLevel']) {
   case $Access_Type['Participant'] : 
-    if ($USER['Subtype'] != 'Perf' || $snum != $USERID) Error_Page("Not accessable to you");
+    if (($USER['Subtype'] == 'Perf' || $USER['Subtype'] == 'Side') && ($snum == $USERID)) break;
+    Error_Page("Not accessable to you");
     break;
 
   case $Access_Type['Upload'] :

@@ -206,7 +206,7 @@ function Show_Side($snum,$Message='',$price=0) {
 
     if ($side['Website'] || $side['Facebook'] || $side['Twitter'] || $side['Instagram']) {
       echo "<div id=Blob4>";
-      if ( $side['Website'] ) echo "<img src=/images/icons/web.svg width=24> " . weblink($side['Website'],"<b>" . $side['SN'] . "'s website</b>") . "<br>";
+      if ( $side['Website'] ) echo "<img src=/images/icons/web.svg width=24 class=Limited> " . weblink($side['Website'],"<b>" . $side['SN'] . "'s website</b>") . "<br>";
       $follow = "Follow " . $side['SN'] . " on ";
       echo  Social_Link($side,'Facebook',1,$follow);
       echo  Social_Link($side,'Twitter',1,$follow);
