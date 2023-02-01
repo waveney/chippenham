@@ -53,10 +53,10 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 // ADD CODE TO ONLY PROVIDE PROGRAMME WHEN AVAIL - Dance only?
 //      if ($Side['IsASide']) echo " and programme <button type=button onclick=Copy2Div('Email$snum','SideProg$snum')>programme</button> into message.";
     }
+  }
     echo "<div class=NotSide>Link for this performer: <b>https://" . $_SERVER['HTTP_HOST'] . "/int/Direct?t=Perf&id=$snum&key=" . 
           $Side['AccessKey'] . "&Y=$YEAR</b></div>\n";
 
-  }
 ///echo "XX6";  
   $Adv = '';
   $Imp = '';
