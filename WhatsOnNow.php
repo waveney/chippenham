@@ -105,12 +105,13 @@
     $With = ($e['BigEvent'] ? Get_Other_Participants($Others,0,$Link,15,1,'',$e) : Get_Event_Participants($eid,0,$Link,15));
     if ($e['Description']) echo "<br>" . $e['Description'];
     if ($Poster) echo "<br>With: $With";
-    echo "<td>" . ($Poster? $Vens[$e['Venue']]['SN'] : "<a href=/int/VenueShow?v=" . $e['Venue'] . ">" . $Vens[$e['Venue']]['SN'] . "</a>");
+    echo "<td>" . ($Poster? $Vens[$e['Venue']]['SN'] : Venue_Parents($Vens,$e['Venue']) . "<a href=/int/VenueShow?v=" . $e['Venue'] . ">" . $Vens[$e['Venue']]['SN'] . "</a>");
     if ($e['BigEvent']) {
       $Others = Get_Other_Things_For($eid);
       foreach ($Others as $i=>$o) {
         if ($o['Type'] == 'Venue') {
-          echo ", " . ($Poster? $Vens[$o['Identifier']]['SN'] : "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" . $Vens[$o['Identifier']]['SN'] . "</a>");
+          echo ", " . ($Poster? $Vens[$o['Identifier']]['SN'] : Venue_Parents($Vens,$o['Identifier']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" .
+               $Vens[$o['Identifier']]['SN'] . "</a>");
         }
       }
     }

@@ -95,7 +95,7 @@ services, under the following terms and conditions:<p>\n";
       if ($e['Venue']) {
         if (isset($Venues[$e['Venue']])) {
           $v = $Venues[$e['Venue']];
-          $str .= "<a href=http://" . $_SERVER['HTTP_HOST'] . "/int/VenueShow?v=" . $v['VenueId'] . ">" . $v['SN'] . "</a><br>";
+          $str .= Venue_Parents($Venues, $v['VenueId']) . "<a href=http://" . $_SERVER['HTTP_HOST'] . "/int/VenueShow?v=" . $v['VenueId'] . ">" . $v['SN'] . "</a><br>";
           if ($v['Address']) $str .= $v['Address'] . "<br>" . $v['PostCode'] ."<br>";
           if ($v['MusicRider']) $riders[$v] = 1;
           if ($v['Parking']) {
@@ -163,7 +163,8 @@ services, under the following terms and conditions:<p>\n";
   } else if ($Sidey['ReportTo'] == 1 ) { // None
   } else {
     $Reporttos = Report_To();
-    $str .= "<b>ON ARRIVAL</b>: Please report to <a href='https://" .  $_SERVER['HTTP_HOST'] . "/int/VenueShow?v=" . $Sidey['ReportTo'] . "'><b>" .
+    $str .= "<b>ON ARRIVAL</b>: Please report to " . Venue_Parents($Venues, $Sidey['ReportTo']) . "<a href='https://" .  $_SERVER['HTTP_HOST'] . 
+             "/int/VenueShow?v=" . $Sidey['ReportTo'] . "'><b>" .
              $Reporttos[$Sidey['ReportTo']] . "</b></a> (click for map and directions)<p>\n";
   }
 

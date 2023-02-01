@@ -94,6 +94,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   $Ven = Get_Venue($Ev['Venue']);
   $ETs = Get_Event_Types(1);
   $OtherPart = $OtherVenues = $OtherNotes = [];
+  $OVens = Get_Real_Venues();
 
   $Se = $Ev['SubEvent'];
   $Subs = array();
@@ -168,8 +169,8 @@ function Print_Participants($e,$when=0,$thresh=0) {
   }
   echo "<tr><td>";
     if (isset($OtherVenues[0])) {
-      $OVens = Get_Real_Venues();
-      echo "Starting Location:<td><a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
+
+      echo "Starting Location:<td>" . Venue_Parents($OVens,$E['Venue']) . "<a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
 //      echo "<div class=floatright><a onclick=ShowDirect(" . $Ven['VenueId'] . ")>Directions</a></div>\n";
       if ($Ven['Address']) echo " - " . $Ven['Address'] . $Ven['PostCode'] ."\n";
       if ($Ven['Description']) echo "<br>" . $Ven['Description'] . "\n";
@@ -178,10 +179,10 @@ function Print_Participants($e,$when=0,$thresh=0) {
       foreach ($OtherVenues as $Ov) {
         $OVi = $Ov['Identifier'];
         if ($ct++) echo ", ";
-        echo "<a href=VenueShow?v=$OVi>" . $OVens[$OVi] . "</a>";
+        echo Venue_Parents($OVens,$OVi) . "<a href=VenueShow?v=$OVi>" . $OVens[$OVi] . "</a>";
       }
     } else if ($Ven['VenueId']) {
-      echo "Where:<td><a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
+      echo "Where:<td>" . Venue_Parents($OVens, $Ven['VenueId']) . "<a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
 //      echo "<div class=floatright><a onclick=ShowDirect(" . $Ven['VenueId'] . ")>Directions</a></div>\n";
       if ($Ven['Address']) echo " - " . $Ven['Address'] . $Ven['PostCode'] ."\n";
       if ($Ven['Description']) echo "<br>" . $Ven['Description'] . "\n";

@@ -53,14 +53,15 @@
       echo "<td><a href=/int/EventShow?e=$eid>" . $e['SN'] . "</a>";
 
       if (isset($Vens[$e['Venue']]['SN'])) {
-        echo "<td><a href=/int/VenueShow?v=" . $e['Venue'] . ">" . $Vens[$e['Venue']]['SN'] . "</a>";
+        echo "<td>" . Venue_Parents($Vens,$e['Venue']) . "<a href=/int/VenueShow?v=" . $e['Venue'] . ">" . $Vens[$e['Venue']]['SN'] . "</a>";
       } else {
         echo "<td>Unknown";
       }
       if ($e['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
         foreach ($Others as $i=>$o) {
-          if ($o['Type'] == 'Venue') echo ", <a href=/int/VenueShow?v=" . $o['Identifier'] . ">" . $Vens[$o['Identifier']]['SN'] . "</a>";
+          if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($Vens,$o['Identifier']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" . 
+            $Vens[$o['Identifier']]['SN'] . "</a>";
         }
       }
       echo "<td>";

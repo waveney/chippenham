@@ -138,7 +138,7 @@
       echo Price_Show($E);
     echo "<td>" . FestDate($E['Day'],'L') . "<br>";
       if ($E['Venue']) {
-        echo "At: <a href=/int/VenueShow?v=" . $E['Venue'] . ">" . VenName($Vens[$E['Venue']]) . "</a><br>";
+        echo "At: " . Venue_Parents($Vens,$E['Venue']) . "<a href=/int/VenueShow?v=" . $E['Venue'] . ">" . VenName($Vens[$E['Venue']]) . "</a><br>";
       } else {
         echo "At: </b>Venue not yet known</b><br>";
       }

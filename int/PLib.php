@@ -844,7 +844,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         echo "<td>" . ($e['Start']? ( timecolon(timeadd2($e['Start'],- $e['Setup']) )) : "TBD" ) ;
         echo "<td>" . ($e['Start']?timecolon($e['Start']):"TBD");
         echo "<td>" . ($e['Duration']?$e['Duration']:"TBD"); 
-        echo "<td colspan=3>" . ($vv?("<a href=VenueShow?v=$vv>" . SName($Venues[$vv]) . "</a>"):"TBD") . "\n";
+        echo "<td colspan=3>" . ($vv?(Venue_Parents($Venues,$vv) . "<a href=VenueShow?v=$vv>" . SName($Venues[$vv]) . "</a>"):"TBD") . "\n";
         if ($vv && $Venues[$vv]['Parking']) {
           if (!isset($ParkedLocs[$vv])) {
             if ($HasPark) $HasPark .= ", ";
