@@ -1,7 +1,7 @@
 :root {
   --main-col:#fcb900;
   --main-col-dark:#993300;
-  --main-contrast(:black);
+  --main-contrast:#1a0000;
 }
 
 img {

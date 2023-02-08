@@ -9,7 +9,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
   global $Mess,$Action,$YEARDATA,$Cat_Type,$YEAR,$PLANYEAR,$DayLongList, $Event_Types,$ContractMethods,$USERID,$ReportTo,$FESTSYS;
 
   $str = "<div class=content900>\n";
-  $Venues = Get_Real_Venues(1);
+  $Venues = Get_Venues(1);
     
   if ($mode > -1) {  
     $Side = Get_Side($snum);
@@ -51,7 +51,7 @@ services, under the following terms and conditions:<p>\n";
 
   $str .= "This agreement for performance services is entered into by the performers(s) known as:<br>";
 
-  $str .= "<b>" . $Booked['SN'] . "</b> for and on behalf of " . $FESTSYS['FestName'] . " (now referred to as Employer) and \n";
+  $str .= "<b>" . (empty($Booked['SN']) ?'' : $Booked['SN']) . "</b> for and on behalf of " . $FESTSYS['FestName'] . " (now referred to as Employer) and \n";
   $str .= "<b>" . $Side['SN'] . " </b>(now referred to as Artist)<p>";
 
   $str .= "Performances:<p>";

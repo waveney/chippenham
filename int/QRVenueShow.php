@@ -53,10 +53,11 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 }
 
 
-  $V = (isset($_GET['v'])? $_GET['v']: $_POST['v']);
+  $V = (isset($_REQUEST['v'])? $_REQUEST['v']: 0);
 
-  $Mode = (isset($_GET['Mode']) ? $_GET['Mode'] : 0 ) ; // If present show everything
-  $Poster = (isset($_GET['Poster']) ? $_GET['Poster'] : 0 ) ; // If present do Poster Mode - No Navigation/Trailer, but add new trailer with web and QR
+  $Mode = (isset($_REQUEST['Mode']) ? $_REQUEST['Mode'] : 0 ) ; // If present show everything
+  $Poster = (isset($_REQUEST['Poster']) ? $_REQUEST['Poster'] : 0 ) ; // If present do Poster Mode - No Navigation/Trailer, but add new trailer with web and QR
+  $Together = isset($_REQUEST['Together']);
 
   if (!is_numeric($V)) exit("Invalid Venue Number");
   if ($V < 0) {
@@ -67,7 +68,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   }
   $Ven = Get_Venue($V);
 
-  if ($Ven['PartVirt'] && !$Poster) {
+  if ($Ven['PartVirt'] && !$Poster && $Together) {
     $V = $Ven['PartVirt'];
     $Ven = Get_Venue($V);
   }
@@ -77,7 +78,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     $VenName = $Ven['SN'];
     $VenList = array();
     $VenNames = array();
-    $Vens = Get_Real_Venues(1);  
+    $Vens = Get_Venues(1);  
     foreach($Vens as $vi=>$ov) if ($ov['PartVirt'] == $V) {
       $VenList[] = $vi;
       $VenNames[$ov['VenueId']] = preg_replace('/' . $VenName . '/','',$ov['SN']);

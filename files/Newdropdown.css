@@ -14,8 +14,11 @@
 
 .main-header a, .main-header a:link, .main-header a:visited  {
   color:#404040;
+/*  color: #ff4000; */
 }
-
+/*
+@media (prefers-color-scheme: dark ) {  .main-header a, .main-header a:link, .main-header a:visited { color: #ff4000;  }}
+/**/
 .main-header:hover, .fixedheader {
   background: #fff;
   box-shadow: 0 0 40px rgba(0,0,0,0.7);
