@@ -348,7 +348,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
             }
             continue;
           }
-        } else { // Generate other loc info
+        } else { // Generate other loc infoZZ
           if ($line == 0) {
             if ($OtherInUse[$v]) {
               continue;
@@ -483,7 +483,7 @@ function Controls($level=0,$condense=0) {
   echo fm_hidden('Cond',$condense);
   echo "<table><tr><td>";
   echo "<td>";
-  $classFri = $classSat = $classSun = '';
+  $classFri = $classSat = $classSun = $classMon = '';
   $n = "class$DAY";
   $$n = "id=ProgDayHL";
   if ($Sand) echo fm_hidden('SAND',$Sand);

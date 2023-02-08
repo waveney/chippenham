@@ -20,7 +20,7 @@
   if (!isset($_GET['EInfo'])) $_GET['EInfo'] = 0;
   $extra = $extra2 = '';
   if (Feature("Procession") && (preg_match('/' . Feature("Procession") . '/',$Event['SN']))) {
-    $extra = " AND y.Procession=1 AND y.$Day=1";
+    $extra = " AND y.Procession$Day=1 AND y.$Day=1";
   }
 
   foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $SelectPerf[$p] = ($d[0] == 'IsASide'? Select_Come_All($extra): Select_Perf_Come_All($d[0],$extra2)); 

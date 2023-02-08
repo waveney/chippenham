@@ -107,7 +107,7 @@
     echo "<td>" . fm_simpletext("Music Importance",$Venue,'MusicImportance','size=4');
     echo "<td>" . fm_simpletext("Other Importance",$Venue,'OtherImportance','size=4');
     echo "<tr><td colspan=2>Treat as Minor for Dance on:" . help('Minor') . "<td>" . fm_checkbox('Sat',$Venue,'MinorFri') . "<td>" . fm_checkbox('Sat',$Venue,'MinorSat') ;
-    echo "<td>" . fm_checkbox('Sun',$Venue,'MinorSun') . "<td>" . fm_checkbox('Sat',$Venue,'MinorMon');
+    echo "<td>" . fm_checkbox('Sun',$Venue,'MinorSun') . "<td>" . fm_checkbox('Mon',$Venue,'MinorMon');
     echo "<tr><td>Surfaces:<td>" . fm_select($Surfaces,$Venue,'SurfaceType1',0);
     echo "<td>" . fm_select($Surfaces,$Venue,'SurfaceType2',0) . "\n";
     echo "<tr>" . fm_text('Dance Rider',$Venue,'DanceRider',5);
