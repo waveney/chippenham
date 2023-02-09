@@ -25,12 +25,14 @@ function Grab_Data($day='',$Media='Dance') {
   $VenueUse = array();
   $evs = array();
   $Sand = 0;
+  $UsedTimes = [];
   if (isset($_REQUES['SAND'])) $Sand = 1;
 
   if ($day) { $DAY=$day;
   } else if (isset($_GET['d'])) { $DAY = $_GET['d']; } else { $DAY='Sat'; }
 
   if (!isset($_GET['EInfo'])) $_GET['EInfo'] = 0;
+/*
   for ($t=9;$t<($Media=='Dance'?18:24);$t++) { // TODO fix for non 30 minute slots TODO Start and end from Master
     $Times[] = $t*100;
     if ($Media != 'Dance') $Times[] = $t*100+15;
@@ -39,6 +41,7 @@ function Grab_Data($day='',$Media='Dance') {
   }
 
   $Back_Times = array_reverse($Times);
+*/
   if ($Media == 'Dance') {
     $Sides = Select_Come_Day($DAY);
     $Round = 30;
@@ -54,10 +57,15 @@ function Grab_Data($day='',$Media='Dance') {
   $evs = Get_Events_For($Media,$DAY);
 //var_dump($evs);
   if ($evs) foreach ($evs as $ei=>$ev) {
+    $UsedTimes[]= $ev['Start'];
+    $UsedTimes[]= $et;
     $eid = $ev['EventId'];
     $v = $ev['Venue'];
     if ($ev['SubEvent'] < 0) { $et = $ev['SlotEnd']; } else { $et = $ev['End']; };
     if ($et == 0 || $ev['Start']==0) continue; // Skip events with undefined times
+    $UsedTimes[]= $ev['Start'];
+    $UsedTimes[]= $et;
+
     $duration = timereal($et) - timereal($ev['Start']);
     $t = timeround($ev['Start'],$Round);
       
@@ -135,7 +143,9 @@ function Grab_Data($day='',$Media='Dance') {
 
     }
   }
-
+  $Times = array_unique($UsedTimes);
+  asort($Times);
+  $Back_Times = array_reverse($Times);
 //var_dump($lineLimit);exit;
 }
 
