@@ -97,7 +97,7 @@ function Side_List($extra='',$extra2='') {
 
   echo "<div class=SideListContainer>";
   foreach ($PTypes as $pi=>$p) {    
-    echo "<table border id=Perf$pi" . "_Side0 " . ($pi?"hidden":"") . ">";
+    echo "<table border id=Perf$pi" . "_Side0 " . ($pi?"style='Display: none;' ":"") . ">";
     echo "<tr><th>" . $PTypes[$pi] . "<th>i";
 //    if (!$Event['ExcludeCount']) echo "<th>W<th>H";
     echo "<th>P\n";
@@ -117,7 +117,7 @@ function Side_List($extra='',$extra2='') {
     }
     echo "</table>";
   }
-  echo "</div></div>\n";
+  echo "</div></div>"; //<script type='text/javascript'>EventPerfSel(0,'###F','###V');</script>\n";
 }
 
 function Controls() {
