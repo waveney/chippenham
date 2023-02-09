@@ -28,6 +28,7 @@
   $DanceState = $Event_Types[1]['State'];
   $Days2Festival = Days2Festival();
   $Totals['Fri'] = $Totals['Sat'] = $Totals['Sun'] = $Totals['Mon'] = 0;
+  $Totals['FriP'] = $Totals['SatP'] = $Totals['SunP'] = $Totals['MonP'] = 0;
   
 //  echo "Days to fest: $Days2Festival<p>";
 
@@ -115,6 +116,7 @@
 
     echo "</thead><tbody>";
 
+    $ProcDays = intval(Feature('ProcessDays'));
     $Dance_Comp[0] = '';
     while ($fetch = $SideQ->fetch_assoc()) {
       $IsComp = 0;
@@ -167,14 +169,45 @@
         }
       } else {
         $fri = "";
-        if ($fetch['Fri']) { $fri= "y"; $Totals['Fri']++; };
+        if ($fetch['Fri']) { 
+          $fri= "y"; 
+          $Totals['Fri']++;
+          if (($ProcDays & 1) && $fetch["ProcessionFri"]) {
+            $fri .= "+P";
+            $Totals['FriP']++;
+          }
+        }
         $sat = "";
-        if ($fetch['Sat']) { $sat= "y"; $Totals['Sat']++; };
-        $sun = "";
-        if ($fetch['Sun']) { $sun= "y"; $Totals['Sun']++; };
-        $mon = "";
-        if ($fetch['Mon']) { $mon= "y"; $Totals['Mon']++; };
+        if ($fetch['Sat']) { 
+          $sat= "y"; 
+          $Totals['Sat']++;
+          if (($ProcDays & 2) && $fetch["ProcessionSat"]) {
+            $sat .= "+P";
+            $Totals['SatP']++;
+          }
 
+        }
+        $sun = "";
+        if ($fetch['Sun']) { 
+          $sun= "y"; 
+          $Totals['Sun']++;
+          if (($ProcDays & 4) && $fetch["ProcessionSun"]) {
+            $sun .= "+P";
+            $Totals['SunP']++;
+          }
+
+        }
+        $mon = "";
+        if ($fetch['Mon']) { 
+          $mon= "y"; 
+          $Totals['Mon']++;
+          if (($ProcDays & 8) && $fetch["ProcessionMon"]) {
+            $mon .= "+P";
+            $Totals['MonP']++;
+          }
+
+        }
+        
         echo "<td>$fri<td>$sat<td>$sun<td>$mon\n";
       }
       if ($col7 == 'Wshp') {
@@ -271,7 +304,11 @@
     }
     if ($Totals['Sat']) {
       echo "<tr><td><td>Totals:<td><td><td><td><td>" . 
-           $Totals['Fri'] . "<td>" . $Totals['Sat'] . "<td>" . $Totals['Sun'] . "<td>" . $Totals['Mon'] . 
+           $Totals['Fri'] . ($Totals['FriP']? " (+ " . $Totals['FriP'] . ")":'') . "<td>" .
+           $Totals['Sat'] . ($Totals['SatP']? " (+ " . $Totals['SatP'] . ")":'') . "<td>" .          
+           $Totals['Sun'] . ($Totals['SunP']? " (+ " . $Totals['SunP'] . ")":'') . "<td>" .            
+           $Totals['Mon'] . ($Totals['MonP']? " (+ " . $Totals['MonP'] . ")":'') . "<td>" .            
+
            "<td><td><td><td><td>";
     }
     echo "</tbody></table></div>\n";
