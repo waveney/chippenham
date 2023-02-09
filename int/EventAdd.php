@@ -310,6 +310,7 @@ A similar feature will appear eventually for music.<p>
 //      echo "<td class=NotSide>Participant Visibility:" . fm_select($VisParts,$Event,'InvisiblePart');
       echo "<td class=NotSide>Originator:" . fm_select($AllActive,$Event,'Owner',1);
       echo "<td class=NotSide>" . fm_checkbox('Enable Weird Stuff',$Event,'WeirdStuff');
+      echo "<td class=NotSide>" . fm_checkbox('Name on Dance Grid',$Event,'ShowNameOnGrid');
       echo "<tr class=FullD hidden>";
       echo "<td class=NotSide>" . fm_checkbox('Exclude From Spot Counts',$Event,'ExcludeCount');
       echo "<td class=NotSide>" . fm_checkbox('Ignore Clashes',$Event,'IgnoreClash');

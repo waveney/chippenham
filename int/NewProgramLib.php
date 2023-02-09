@@ -65,7 +65,7 @@ function Grab_Data($day='',$Media='Dance') {
     $EV[$v][$t]['d'] = $duration;
 
     $plim=4;
-    if ($ev['Type'] != 1) { //$ev['SN'] && $ev['SN'] != 'Dancing') {
+    if ($ev['Type'] != 1 || $ev['ShowNameOnGrid']) { //$ev['SN'] && $ev['SN'] != 'Dancing') {
       $EV[$v][$t]['n'] = $ev['SN'];
       $plim =3;
     }
