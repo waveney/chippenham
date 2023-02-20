@@ -235,6 +235,12 @@ A similar feature will appear eventually for music.<p>
         $Event = $_POST;
         $proc = 0;
       }
+      if (empty($_POST['Venue'])) { 
+        echo "<h2 class=ERR>NO VENUE GIVEN</h2>\n";
+        $Event = $_POST;
+        $proc = 0;
+      }
+
       if ($_POST['Owner'] == 0) $_POST['Owner'] = $USERID;
       Parse_TimeInputs($EventTimeFields,$EventTimeMinFields);
       

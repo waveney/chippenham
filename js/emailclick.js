@@ -2,6 +2,21 @@ function urldecode(url) {
   return decodeURIComponent(url.replace(/\+/g, ' '));
 }
 
+
+function CopyToClipboard(id){
+    var r = document.createRange();
+    r.selectNode(document.getElementById(id));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);
+    try {
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        console.log('Successfully copy text: hello world ' + r);
+    } catch (err) {
+        console.log('Unable to copy!');
+    }
+}
+
 function newemailclk(id,type,xtra) {
   $.getJSON("emaillink.php",{id: id, t: type, x:xtra}).done(function(data) {
     debugger;
@@ -36,7 +51,8 @@ debugger;
   var e = document.getElementById(outerdiv);
   var stuff = e.innerHTML;
   e.innerHTML = urldecode(stuff);
-  var f = document.getElementById(innerdiv);
-  clipboard.copy(f);
+  CopyToClipboard(innerdiv);
+//  var f = document.getElementById(innerdiv);
+//  navigator.clipboard.writeText(f.value);
   e.innerHTML = stuff;
 }

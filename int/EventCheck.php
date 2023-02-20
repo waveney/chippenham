@@ -19,6 +19,30 @@ function EventCheck($checkid=0) {
   $res=$db->query("SELECT * FROM Events WHERE Year='$YEAR' AND Status=0 ORDER BY Venue, Day, Start");
   if ($res) {
     while($ev = $res->fetch_assoc()) { // Basic Events against basic events check
+      if (empty($ev['SN'])) {
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['id'] . ")</a>  does not have a Name.";
+              $errors++;
+        continue;
+      }        
+
+      if (empty($ev['Venue'])) {
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a Venue.";
+              $errors++;
+        continue;
+      }        
+      if (empty($ev['Start'])) {
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a start time.";
+              $errors++;
+        continue;
+      }        
+      if (empty($ev['End'])) {
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have an end time.";
+              $errors++;
+        continue;
+      }        
+
+
+        
       if ($ev['IgnoreClash']) continue;
       $ThisEventEmpty = 1;
       for ($i=1;$i<5;$i++) if ($ev["Side$i"] ) $ThisEventEmpty = 0;

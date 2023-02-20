@@ -397,7 +397,7 @@ function SAO_Report($i) {
 
 function SName(&$What) {
   if (isset($What['ShortName'])) if ($What['ShortName']) return $What['ShortName'];
-  return $What['SN'];
+  return (empty($What['SN'])?'NAMELESS' : $What['SN']);
 }
 
 function Social_Link(&$data,$site,$mode=0,$text='') { // mode:0 Return Site as text, mode 1: return blank/icon
@@ -581,7 +581,7 @@ function linkemailhtml(&$data,$type="Side",$xtr='',$ButtonExtra='') {
               "You can update information at any time, until the programme goes to print. " .
               "(You'll also be able to view your programme times, once we've done the programme)<p>" .
               "<div id=SideProg$id>$ProgInfo</div><p>" .
-              "Regards " . $USER['SN'] . "<p>"); 
+              "Regards " . $USER['SN'] . "<p></div>"); 
     } else {
       include_once("MusicLib.php");
       $Content = MusicMail($data,$name,$id,$direct);
