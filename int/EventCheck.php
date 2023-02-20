@@ -20,23 +20,23 @@ function EventCheck($checkid=0) {
   if ($res) {
     while($ev = $res->fetch_assoc()) { // Basic Events against basic events check
       if (empty($ev['SN'])) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['id'] . ")</a>  does not have a Name.";
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['id'] . ")</a>  does not have a Name.<p>";
               $errors++;
         continue;
       }        
 
       if (empty($ev['Venue'])) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a Venue.";
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a Venue.<p>";
               $errors++;
         continue;
       }        
       if (empty($ev['Start'])) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a start time.";
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a start time.<p>";
               $errors++;
         continue;
       }        
       if (empty($ev['End'])) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have an end time.";
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have an end time.<p>";
               $errors++;
         continue;
       }        
