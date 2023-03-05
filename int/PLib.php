@@ -3,7 +3,7 @@
 
 function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank look at data to determine type.  Mode=0 for public, 1 for ctte
   global $YEARDATA,$Side_Statuses,$Importance,$Surfaces,$Surface_Colours,$Noise_Levels,$Noise_Colours,$Share_Spots,$Mess,$Action,$ADDALL,$CALYEAR,$PLANYEAR,$YEAR;
-  global $OlapTypes,$OlapCats,$OlapDays,$PerfTypes,$ShowAvailOnly,$ADDALL;
+  global $OlapTypes,$OlapCats,$OlapDays,$PerfTypes,$ShowAvailOnly,$ADDALL,$PayTypes;
   if ($CatT == '') {
     $CatT = ($Side['IsASide'] ? 'Side' : ($Side['IsAnAct'] ? 'Act' : 'Other'));
   }
@@ -190,11 +190,12 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     }
 
     echo "<tr class=AgentDetail $AgentTxt>";
-      echo fm_text('<span id=AgentLabel>Agent</span>',$Side,'AgentName',1,'','','',($Wide?'':' rowspan=2 '));
+      echo fm_text('<span id=AgentLabel>Agent</span>',$Side,'AgentName',1,'','','',($Wide?'':' rowspan=3 '));
       echo fm_text1('Email',$Side,'AgentEmail',2);
     if (!$Wide) echo "<tr class=AgentDetail $AgentTxt>";
       echo fm_text('Phone',$Side,'AgentPhone');
       echo fm_text('Mobile',$Side,'AgentMobile');
+      echo "<tr class=AgentDetail $AgentTxt>" . fm_text('Address',$Side,'AgentAddress',3) . fm_text('Post Code',$Side,'AgentPostCode');;
 
     echo "<tr>" . fm_text('<span id=ContactLabel>Contact</span>',$Side,'Contact',1,'','','',($Wide?' rowspan=2':' rowspan=4 '));
       echo fm_text1('Email',$Side,'Email',2);
@@ -236,17 +237,24 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     }
 
 // TODO if (isset($Side['SortCode']) && $Side['SortCode'] replace needbank with js test of fee/op
-
     if ($ADDALL && !Access('Committee','Finance')) {} // No bank details unless your area or Finance
     else {
       $bankhide = 1;
-      if ($snum > 0 && ( $Side['SortCode'] || $Side['Account'] || $Side['AccountName'] || $Side['TotalFee'])) $bankhide = 0;
+      if ($snum > 0 && ( $Side['SortCode'] || $Side['Account'] || $Side['AccountName'] || $Side['TotalFee'] || $Side['TotalFee'])) $bankhide = 0;
+      $Bacs = Feature('PayByCheque'); // 0=BACS only, 1=BACS+cheque, 2= LAST Cheque
 //    echo $bankhide . "sc:" . $Side['SortCode'] . "ac:" .$Side['Account']. "an:" .$Side['AccountName'] . "tf" . $Side['TotalFee'];
-      echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail><td rowspan=2>Bank Details:" . help('Bank');
+      if ($Bacs > 0) {
+        $PayTypes = ['BACS','Cheque'];
+        echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail0>";
+        echo fm_radio('Payment Type',$PayTypes,$Side,'WantCheque',"onchange=PayTypeSel(event,###F,###V)");
+        if ($Bacs > 1) echo "<td colspan=3>Note this the last year when payment by Cheque is an option.";
+      }
+      echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail>";
+        echo "<td rowspan=2>Bank Details:" . help('Bank');
         echo fm_text('Sort Code',$Side,'SortCode');
         echo fm_text('Bank Account Number',$Side,'Account');
       echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail2>";
-        echo fm_text('Account Name',$Side,'AccountName');
+        echo fm_text('Account Name',$Side,'AccountName',2);
         echo "<td>" . fm_checkbox('Are you VAT registered',$Side,'VATreg');
     }
 
@@ -806,10 +814,33 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       };
       break;   
     case 3: // Chip style
-//      $CampSites = 
-      $CampTypes = Gen_Get_Names('Camptypes');
-      echo "<tr><td>Camping numbers:<br>(of tents, caravans not people)";
-      foreach ($CampTypes as $Ci=>$CT) echo fm_number1($CT,$Sidey,"CampType$Ci");
+      $syid = (isset($Sidey['syId'])?$Sidey['syId']:-1);
+      $CampSites = Gen_Get_All('Campsites');
+      $CampTypes = Gen_Get_All('Camptypes');
+      $CampUse = Gen_Get_Cond('CampUse',"SideYearId=$syid");
+      $CampU = $Camp = [];
+      foreach ($CampUse as $CU) {
+        $CampU[$CU['CampSite']][$CU['CampType']] = $CU['Number'];
+        $Camp[$CU['CampSite']] = 1;
+      }
+ 
+      echo "<tr><td>Camping numbers:<td colspan=4>(numbers of tents, caravans etc not people)";
+
+      foreach ($CampSites as $CS) {
+        $Add = '';
+        $Csi = $CS['id'];
+        if ($CS['Props'] & 2) {
+          $Add = ' class=NotCSide ';
+          if (($Mode == 0) && empty($Camp[$Csi])) continue;
+        }
+
+        echo "<tr $Add><td $Add>" . $CS['Name'] . (!empty($CS['Comment']) ? (' (' . $CS['Comment'] . ")"):'');
+        foreach($CampTypes as $CT) {
+          $CTi =  $CT['id'];
+          $Cur['Number'] = (isset($CampU[$Csi][$CTi]) ? $CampU[$Csi][$CTi] : 0);
+          echo fm_number1($CT['Name'],$Cur,'Number',$Add,$Add,"CampSite:$syid:$Csi:$CTi");
+        }
+      }
       break;
     }
     

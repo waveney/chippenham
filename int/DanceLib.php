@@ -3,6 +3,7 @@
 
 global $Noise_Levels, $Noise_Colours, $Coming_States, $Coming_Colours, $Coming_idx, $Coming_Type, $Invite_States, $Invite_Type, $Dance_Comp, $Dance_Comp_Colours;
 global $Surfaces, $Surface_Colours, $Side_Statuses, $Share_Spots, $Share_Type, $Dance_TimeFeilds, $OlapTypes, $OlapDays, $OlapCats, $Proforma_Colours, $TickBoxes;
+global $PayTypes;
 
 $Noise_Levels = array("Middling","Quiet","Noisy");
 $Noise_Colours = ['lightgreen','yellow','Orange'];
@@ -19,6 +20,7 @@ $Surface_Colours = ['','grey','Khaki','lightgreen','Peru','salmon','Peru','Teal'
 $Side_Statuses = array("Alive","Folded",'Banned');
 $Share_Spots = array('Prefered','Always','Never','Sometimes');
 $Share_Type = array_flip($Share_Spots);
+$PayTypes = ['BACS','Cheque'];
 
 $Dance_TimeFeilds = array('SatArrive','SatDepart','SunArrive','SunDepart');
 $OlapTypes = array('Dancer','Musician','Avoid');
