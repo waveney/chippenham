@@ -11,11 +11,29 @@ Dance
 2.  Dance Spots
 3.  Processions
 
+On stage at
+
 Tim
 1.  Staging/dev builds
 2.  Database skeema, updating automatically on new builds
 3.  Left/Right Articles
 4.
 
+Sponsor
+1. Venues
+2. Events
+3. Performers
+
+SponsorYear
+SponsoredBy
++ve id = Sponsor
+-1 Many sponsors - use sponsor/year records to find multiple - order by Importance
+
+Changes after printing
+Ceilidh calling styles
+Venues
+Event displays
+QR Codes
 
 
+28*5, 27

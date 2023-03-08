@@ -6,7 +6,7 @@
   include_once("Email.php");
   
 function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 proposed, 1 freeze reason - see contractConfirm, ctype 0=Side,1=act,2=other
-  global $Mess,$Action,$YEARDATA,$Cat_Type,$YEAR,$PLANYEAR,$DayLongList, $Event_Types,$ContractMethods,$USERID,$ReportTo,$FESTSYS;
+  global $Mess,$Action,$YEARDATA,$Cat_Type,$YEAR,$PLANYEAR,$DayLongList, $Event_Types,$ContractMethods,$USERID,$ReportTo,$FESTSYS,$PLANYEARDATA,$Months;
 
   $str = "<div class=content900>\n";
   $Venues = Get_Venues(1);
@@ -21,7 +21,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     
     $Side = ['SN' => '<span class=NotSide>Dummy Performer</span>','StagePA'=>'Just a Mike', 
              'SortCode'=>'<span class=NotSide>99 99 99</span>', 'Account'=>'<span class=NotSide>12345678</span>', 
-             'AccountName' => '<span class=NotSide>Mystery Products</span>',
+             'AccountName' => '<span class=NotSide>Mystery Products</span>', 'HasAgent'=>0, 'WantCheque'=>0,
             ];
     $Sidey = ['ContractDate'=>time(),
               'Year'=>$YEAR,
@@ -36,6 +36,167 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     foreach($Venues as $i=>$v) { $Ven = $i; break;};
     $Evs = [['SN' => 'Concert','Type' => 5, 'Day'=> 1, 'Start'=>1900, 'End'=>2000, 'Setup' => 10, 'Venue'=>$Ven, 'SubEvent' => 0, 'Duration'=>60]];
   }
+
+// Performances
+
+  if ($mode > -1) {  
+    $Evs = Get_Events4Act($snum,$YEAR);
+  } else {
+//    $str .= "<span class=NotSide>";  
+  }
+  
+  $ETs = Get_Event_Types(1);
+  $evc = $evd = $evv = 0;
+  $riders = array();
+  $evday = $pkday = [-3=>0,-2=>0,-1=>0,0=>0,1=>0,2=>0,3=>0,4=>0];
+  $pkvens = array();
+  $SoundChecks = 0;
+  $pking = "";
+  if (!$Evs) return "No Contract Yet";  // With no events there is no conract, not even a draft
+
+    $Evstr = "<div class=tablecont><table border>";
+    if ($ctype == 1) { 
+      $Evstr .= "<tr><td>Number<td>Event Name<td>Date<td>Setup From<td>Start<td>Duration<td colspan=3>Where\n";
+    } else {
+      $Evstr .= "<tr><td>Number<td>Event Name<td>Date<td>Start<td>Duration<td colspan=3>Where\n";
+    }
+    foreach($Evs as $e) {
+      if ($ETs[$e['Type']]['Public'] == 0 || $ETs[$e['Type']]['DontList'] == 1) $SoundChecks = 1;
+      $evc++;
+      if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; };
+      if (($e['Start'] != 0) && ($End != 0) && ($e['Duration'] == 0)) $e['Duration'] = timeadd2real($End, - $e['Start']);
+      $Evstr .= "<tr><td>$evc<td>" . $e['SN'] . "<td>" . FestDate($e['Day'],'L');
+      if ($ctype == 1 ) $Evstr .= "<td>" . ($e['Start']? ( timecolon(timeadd2($e['Start'],- $e['Setup']) )) : "TBD" ) ;
+      $Evstr .= "<td>" . ($e['Start']?timecolon($e['Start']):"TBD");
+      $Evstr .= "<td>" . ($e['Duration']? DurationFormat($e['Duration']) :"TBD"); 
+      $evd += $e['Duration'];
+      if ($e['Duration'] == 0) $evv = 1;
+      $Evstr .= "<td>";
+      $evday[$e['Day']]++;
+      if ($e['Venue']) {
+        if (isset($Venues[$e['Venue']])) {
+          $v = $Venues[$e['Venue']];
+          $Evstr .= Venue_Parents($Venues, $v['VenueId']) . "<a href=http://" . $_SERVER['HTTP_HOST'] . "/int/VenueShow?v=" . $v['VenueId'] . ">" . $v['SN'] . "</a><br>";
+          if ($v['Address']) $Evstr .= $v['Address'] . "<br>" . $v['PostCode'] ."<br>";
+          if ($v['MusicRider']) $riders[$v] = 1;
+          if ($v['Parking']) {
+            $pkday[$e['Day']]++;
+            if (!isset($pkvens[$v['VenueId']])) {
+              $pkvens[$v['VenueId']] = 1;
+              if ($pking) $pking .= ", ";
+              $pking .= $v['SN'];
+            }
+          }
+        } else {
+          $Evstr .= "Venue Unknown";
+        }
+      } else {
+        $Evstr .= "TBD";
+      }
+    } 
+    $Evstr .= "</table></div>\n";
+
+//  if ($mode < -1) $str .= "</span>";
+
+
+
+  $ContractFormat = Feature('ContractType');
+  
+  switch ($ContractFormat) {
+  
+  case 'Chip2023':
+    $DFrom = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['FirstDay']);
+    $DTo = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['LastDay']);
+    $DMonth = $Months[$PLANYEARDATA['MonthFri']];
+
+    $str .= "<center>This Document forms the Agreement between<p>";
+    
+    $str .= "<h2>Chippenham Folk Festival CIC</h2>(Known as <i>The Festival</i>)<br>and<br>";
+    $str .= "<h2>" .$Side['SN'] . "</h2>(known as <i>The Artist</i>)<p>";
+  
+    $str .= "<i>The Festival</i> and <i>The Artist</i> are to performances and associated sound checks at the Festival in<br>$DFrom - $DTo $DMonth $PLANYEAR inclusive" . 
+            "(known as <i>The Booking</i>)<p>";
+            
+    $str .= "In respect of <i>The Booking<i>, <i>The Festival</i> agrees to pay <i>The Artist</i> the sum of<p>";
+    
+    $str .= "&pound;" . $Sidey['TotalFee'];
+    if ($Sidey['OtherPayment']) $str .= " plus " . $Sidey['OtherPayment'];
+    if ($Sidey['AccomNights'] && $Sidey['AccomPeople']) $str .= "<br>Plus accommadation for " . 
+      Plural($Sidey['AccomPeople'],'','one person ',$Sidey['AccomPeople'] . " people") . ", for " . 
+      Plural($Sidey['AccomNights'],'','1 night', $Sidey['AccomNights'] . " nights");
+  
+    $str .= "<p>No further costs or expenses will be paid unless agreed as a variation to this contract.<p>";
+    
+    if ($Side['StagePA'] == 'None') {
+      $str .= "If you have any PA/Technical requirements, please fill in the relevant section on your online records.<p>\n";
+    } else {
+      $str .= "Thankyou for filling in your PA/Technical requirements.<p>\n";
+    }
+  
+    $str .= "</center><p><h1>Specific &amp; Detailed Information</h1>";
+    $str .= "<table border><tr><td><b>Artist Details</b><td>" . $Side['SN'];
+    if (!empty($Side['Contact'])) $str .= "<td>Contact:<td>" . $Side['Contact'];
+    if (!empty($Side['Address'])) $str .= "<td>Address:<td>" . $Side['Address'] . "<br>" . $Side['PostCode'];
+    if (!empty($Side['Phone'])) $str .= "<td>Phone:<td>" . $Side['Phone'];    
+    if (!empty($Side['Mobile'])) $str .= "<td>Mobile:<td>" . $Side['Mobile'];    
+    
+    if ($Side['HasAgent']) {
+      $str .= "<tr><td><b>Agent:</b>" . $Side['Agent'];
+      if (!empty($Side['AgentAddress'])) $str .= "<td>Address:<td>" . $Side['AgentAddress'] . "<br>" . $Side['AgentPostCode'];
+      if (!empty($Side['AgentPhone'])) $str .= "<td>Phone:<td>" . $Side['AgentPhone'];    
+      if (!empty($Side['AgentMobile'])) $str .= "<td>Mobile:<td>" . $Side['AgentMobile'];
+    }
+  
+    $str .= "<tr><td><b>Festival Details</b>";
+    $str .= "<tr><td>Name:<td>" . Feature("FestLegalName");
+    $str .= "<tr><td>Address:<td>";
+    for($i=1; $i<10; $i++) {
+      $A = Feature("FestLegalAddr$i");
+      if (!$A) break;
+      $str .= $A . "<br>";
+    }
+    $str .= "<tr><td>Telephone:<td>" . Feature("FestPhone");
+    $str .= "<tr><td>Email:<td>" . Feature("FestContractEmail");    
+  
+    $str .= "<tr><td><b>Expected Performance Duration</b><td>" . 
+      "$evc performance" . ($evc>1?'s':'') . ", with a total duration of " . ($evv?"at least ":"") . DurationFormat($evd) . "<p>\n";
+    $str .= "<tr><td>Known Times<td>" . $Evstr;
+
+    $PayTypes = ['BACS','Cheque'];
+    if (!Feature('PayByCheque')) $Side['WantCheque'] = 0;
+    $str .= "<tr><td><b>Payment by</b><td>" . $PayTypes[$Side['WantCheque']];
+    if ($Side['WantCheque']) {
+      $str .= "<br>Payable to: " . $Side['AccountName'] . "<p>\n";        
+    } else {
+      $str .= "<br>Sort Code: " . $Side['SortCode'] . " Account Number: " . $Side['Account'] . "<br>Account Name : " . $Side['AccountName'] . "<p>\n";    
+    }
+
+    $str .= "</table><p>";
+    
+    $faq = TnC('PerfTnC');
+    Parse_Proforma($faq);
+
+    $str .= $faq;
+
+    if ($mode > 0) {
+      $str .= "This contract was " . $ContractMethods[$mode] . " on " . date('d/m/y',$Sidey['ContractDate']) . "<P>\n";
+    }
+
+/*
+    if ($mode < -1) {
+      $str .= "<p><span class=NotSide>NOTE: A parking statement inserted prior to the changes statement " .
+               "to say there is free parking near the venue(s), if appropriate.</span><p>";
+      $str .= "<p><span class=NotSide>NOTE2: Additional clause(s) can be added for a particular venue, if appropriate.</span><p>";
+    }
+*/
+
+    $str .= "</div>";  
+
+    return $str;  
+    break;
+    
+  case 'Wimborne':
+  default:
 
   $str .= "<h2>" . $FESTSYS['FestName'] . " - $kwd Contract</h2>\n";
   if ($kwd) $str .= "<em><b>$kwd contract:</b></em><p>\n";
@@ -55,66 +216,8 @@ services, under the following terms and conditions:<p>\n";
   $str .= "<b>" . $Side['SN'] . " </b>(now referred to as Artist)<p>";
 
   $str .= "Performances:<p>";
-
-  if ($mode > -1) {  
-    $Evs = Get_Events4Act($snum,$YEAR);
-  } else {
-//    $str .= "<span class=NotSide>";  
-  }
-  
-  $ETs = Get_Event_Types(1);
-  $evc = $evd = $evv = 0;
-  $riders = array();
-  $evday = $pkday = [-3=>0,-2=>0,-1=>0,0=>0,1=>0,2=>0,3=>0];
-  $pkvens = array();
-  $SoundChecks = 0;
-  $pking = "";
-  if (!$Evs) {
-    return "No Contract Yet";  // With no events there is no conract, not even a draft
-  } else {
-
-    $str .= "<div class=tablecont><table border>";
-    if ($ctype == 1) { 
-      $str .= "<tr><td>Number<td>Event Name<td>Date<td>On Stage at<td>Start<td>Duration<td colspan=3>Where\n";
-    } else {
-      $str .= "<tr><td>Number<td>Event Name<td>Date<td>Start<td>Duration<td colspan=3>Where\n";
-    }
-    foreach($Evs as $e) {
-      if ($ETs[$e['Type']]['Public'] == 0 || $ETs[$e['Type']]['DontList'] == 1) $SoundChecks = 1;
-      $evc++;
-      if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; };
-      if (($e['Start'] != 0) && ($End != 0) && ($e['Duration'] == 0)) $e['Duration'] = timeadd2real($End, - $e['Start']);
-      $str .= "<tr><td>$evc<td>" . $e['SN'] . "<td>" . FestDate($e['Day'],'L');
-      if ($ctype == 1 ) $str .= "<td>" . ($e['Start']? ( timecolon(timeadd2($e['Start'],- $e['Setup']) )) : "TBD" ) ;
-      $str .= "<td>" . ($e['Start']?timecolon($e['Start']):"TBD");
-      $str .= "<td>" . ($e['Duration']? DurationFormat($e['Duration']) :"TBD"); 
-      $evd += $e['Duration'];
-      if ($e['Duration'] == 0) $evv = 1;
-      $str .= "<td>";
-      $evday[$e['Day']]++;
-      if ($e['Venue']) {
-        if (isset($Venues[$e['Venue']])) {
-          $v = $Venues[$e['Venue']];
-          $str .= Venue_Parents($Venues, $v['VenueId']) . "<a href=http://" . $_SERVER['HTTP_HOST'] . "/int/VenueShow?v=" . $v['VenueId'] . ">" . $v['SN'] . "</a><br>";
-          if ($v['Address']) $str .= $v['Address'] . "<br>" . $v['PostCode'] ."<br>";
-          if ($v['MusicRider']) $riders[$v] = 1;
-          if ($v['Parking']) {
-            $pkday[$e['Day']]++;
-            if (!isset($pkvens[$v['VenueId']])) {
-              $pkvens[$v['VenueId']] = 1;
-              if ($pking) $pking .= ", ";
-              $pking .= $v['SN'];
-            }
-          }
-        } else {
-          $str .= "Venue Unknown";
-        }
-      } else {
-        $str .= "TBD";
-      }
-    } 
-    $str .= "</table></div>\n";
-  } 
+    
+  $str .= $Evstr;
 
 //  if ($mode < -1) $str .= "</span>";
 
@@ -255,6 +358,7 @@ services, under the following terms and conditions:<p>\n";
 
   $str .= "</div>";  
   return $str;
+  }
 }
 
 ?>
