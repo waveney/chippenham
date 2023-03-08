@@ -391,7 +391,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
      echo "\n<tr><td colspan=5><h3><center>Part 4: Anything else for $PLANYEAR</center></h3>";
     if (Feature('Vol_Children')) {
       echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their ages)",$VYear,'Children',4,'','',"Children::$PLANYEAR");
-      echo "<tr>" . fm_text("Free Youth tickets (11 to 15 - please give their ages)",$VYear,'Youth',4,'','',"Youth::$PLANYEAR");
+      echo "<tr>" . fm_text("Free Youth tickets (11 to 17 - please give their ages)",$VYear,'Youth',4,'','',"Youth::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
