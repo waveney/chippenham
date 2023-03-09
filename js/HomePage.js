@@ -12,6 +12,7 @@ $(document).ready(function() {
   var Spons;
   var maxi;
   var recent = -1;
+  var ChangeTime = +$('#ChangeTime').val();
 
   function SetupSpons() {
     Spons = $('.SponsorsIds');
@@ -42,7 +43,7 @@ $(document).ready(function() {
     SponUse[elem] = pos+1; 
     var pn = '#SponPos' + pos;
     document.getElementById(pn).innerHTML = Spons[elem].innerHTML;
-    setTimeout(UpdateSpon,1000);  
+    setTimeout(UpdateSpon,ChangeTime);  
     recent = pos;
   }
 
@@ -53,7 +54,7 @@ $(document).ready(function() {
 
   if (SetupSpons()) {
     window.addEventListener('resize',Resize);
-    setTimeout(UpdateSpon,1000);  
+    setTimeout(UpdateSpon,ChangeTime);  
   }
 });
 

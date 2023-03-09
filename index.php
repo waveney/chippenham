@@ -78,10 +78,10 @@
 
   echo "<div style=margin:10>";
   echo '<center><h2>Sponsors & Supporters</h2></center>';
-  echo "<center>" . $FESTSYS['FestName'] . " would not be possible without the amazing help and generosity of the following companies and organisations:<p>";
+  echo "<center>Our festival would not be possible without the amazing help and generosity of many organisations including the following major sponsors<p>";
   echo "</center>";
   $Spons = Get_Sponsors();
-  echo "<div hidden>";
+  echo "<div hidden>" . fm_hidden('ChangeTime',2000); // IN msec
   foreach ($Spons as $s) {
     echo "<li class=SponsorsIds id=" .$s['id'] . "><div class=sponcontainer><div class=sponContent>";
     if ($s['Website']) echo weblinksimple($s['Website']);
