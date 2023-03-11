@@ -1,7 +1,7 @@
 <?php
 // For the future
 
-$ContractMethods = array('','By Clicking Online','By Email Confirmation');
+$ContractMethods = array('','By the performer Clicking Online','By Email Confirmation');
 
 // Additive over side helps
 function Add_Act_Help() {
@@ -389,6 +389,7 @@ function Contract_Save($Side,$Sidey,$Reason,$exist=0) {
     $_POST['YearState'] = $Book_State['Contract Signed'];
     if (!file_exists("Contracts/$PLANYEAR")) mkdir("Contracts/$PLANYEAR",0775,true);
     file_put_contents("Contracts/$PLANYEAR/$snum.$IssNum.html",$Cont);
+    exec("html2pdf Contracts/$PLANYEAR/$snum.$IssNum.html Contracts/$PLANYEAR/$snum.$IssNum.pdf");
     return 1;
   }
 }

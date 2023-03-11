@@ -284,7 +284,7 @@ function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future) {
 
     if (!$ans) return; 
     while ( $DMany = $ans->fetch_assoc()) {
-      if (in_array($DMany['SideId'],$ShownInArt)) continue;
+      if (empty($DMany['SideId']) || in_array($DMany['SideId'],$ShownInArt)) continue;
       $ShownInArt[] = $DMany['SideId'];
 
       $Art['Text'] .= "  Including <a href=/int/ShowPerf?id=" . $DMany['SideId'] . ">" . $DMany['SN'] . "</a>";
