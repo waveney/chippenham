@@ -3,6 +3,7 @@
 function ViewFile($file,$read=1,$targetname='',$Single=1) {
 global $USERID;
 global $FESTSYS;
+global $head_done;
   
   $path = pathinfo($file );
   $Dir = $path['dirname'];
@@ -25,10 +26,11 @@ if (!file_exists($file)) Error_Page("Could not find file $file");
 
 if ($read) { // Attempt to read rather than download
 
+
   switch (strtolower($sfx)) {
   case 'pdf':
 
-   if ($Single) {
+   if ($Single && !$head_done) {
       header('Content-Description: File Transfer');
       header('Content-Type: application/pdf');
       header("Content-Disposition: inline; filename='$BName'");
@@ -44,7 +46,7 @@ if ($read) { // Attempt to read rather than download
       return;
     } else { 
       copy($file,"Temp/$tf"); // No $onload as it does not work...
-      echo "<iframe id=$id src='/js/ViewerJS/#/int/Temp/$tf' width=100%  height=" . ($Single?"800":"100%") . " ></iframe>";
+      echo "<iframe id=$id src='/js/ViewerJS/index.html#/int/Temp/$tf' width=100%  height=" . ($Single?"800":"100%") . " ></iframe>";
       return;
     }
 /*    

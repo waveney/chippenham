@@ -254,22 +254,12 @@ function Get_Side($who) {
 
 function Put_Side(&$data) {
   global $db;
+
   global $Save_Sides;
+  
   if (!isset($Save_Sides[$data['SideId']])) Get_Side($data['SideId']);
   $Save = &$Save_Sides[$data['SideId']];
-  $fcnt = 0;
-  $rec = "UPDATE Sides SET ";
-  foreach ($data as $fld=>$val) {
-    if ($val != $Save[$fld]) {
-      if ($fcnt++) $rec .= ", ";
-      $rec .= "$fld='" . $val . "'";
-    }
-  }
-  if (!$fcnt) return 0;
-  $rec .= " WHERE SideId='" . $Save['SideId'] . "'";
-//var_dump($rec);
-  $Save_Sides[$data['SideId']] = $data;
-  return $db->query($rec);
+  return Update_db('Sides',$Save,$data);
 }
 
 $Save_SideYears = array('');
