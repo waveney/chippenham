@@ -55,7 +55,7 @@
 //      echo "<a href=/int/ShowArticles?w=DanceStyles>Find out more about the Dance Styles</a><p>";
     
 //      echo "Click on the name of a team, or their photograph to find out more about them and where they are dancing.<p>\n";
-      if ($ET['State'] >=3 ) echo "<b><a href=/int/ShowDanceProg?Cond=1&Pub=1&Y=$YEAR>" . $EType_States[$ET['State']] . 
+      if (isset($ET['State']) && ($ET['State'] >=3 )) echo "<b><a href=/int/ShowDanceProg?Cond=1&Pub=1&Y=$YEAR>" . $EType_States[$ET['State']] . 
            " Dance Programme for " . substr($YEAR,0,4) . "</a></b><p>\n";
     }
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.DanceImportance,s.Importance) AS EffectiveImportance " .
