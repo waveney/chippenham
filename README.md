@@ -8,6 +8,8 @@ Needs php 8
 Installation:
 
 Needs to be at a webspace root, Php needs the Document root in the php include path.
+php settings (Other than Default): max_execution_time=120, max_input_time=120, post_max_size=16M, upload_max_filesize=16M,
+              pm.max_children=20, max_input_vars = 4000
 
 Needs ImageMagick installed for some features to work.
 

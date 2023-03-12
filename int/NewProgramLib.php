@@ -387,9 +387,9 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
           }
         } else if ($line >= $lineLimit[$t]) {
           echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
-        } else if ($G['h']) {
+        } else if (!empty($G['h'])) {
           echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
-        } else if ($G['d'] > $Round) {
+        } else if (!empty($G['d']) && $G['d'] > $Round) {
           if ($line == 0) {
             $rows = intval(ceil($G['d']/$Round))*4;
             // Need to create a wrapped event - not editble here currently
@@ -427,10 +427,10 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
           echo $G['n'];
           if ($links) echo "</a>";
           echo "<br>";
-        } else if ($line != 0 && $G['w']) {
+        } else if ($line != 0 && !empty($G['w'])) {
           echo "$OtherLoc<td id=$id $DRAG $dev hidden class=$class>&nbsp;";
           echo $G['n'];
-        } else if ($G["S" . ($line+($G['n']?0:1))]) {
+        } else if (!empty($G["S" . ($line+($G['n']?0:1))])) {
           $si = $G["S" . ($line + ($G['n']?0:1))];
           if (!isset($Sides[$si])) {
             $Sidessi = Get_Side($si);
