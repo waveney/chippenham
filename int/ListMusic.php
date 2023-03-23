@@ -2,13 +2,15 @@
   include_once("fest.php");
   A_Check('Steward');
 
-  dostaffhead("List Music", ["/js/clipboard.min.js", "/js/emailclick.js"]);
+  dostaffhead("List Music", ["/js/clipboard.min.js", "/js/emailclick.js", "/js/InviteThings.js"]);
 
-  global $YEAR,$PLANYEAR,$Book_Colours,$Book_States,$Book_Actions,$Book_ActionExtras,$Importance,$InsuranceStates,$PerfTypes,$Cancel_Colours,$Cancel_States;
+  global $YEAR,$PLANYEAR,$Book_Colours,$Book_States,$Book_Actions,$Book_ActionExtras,$Importance,$InsuranceStates,$PerfTypes,$Cancel_Colours,$Cancel_States,$Book_ActionColours;
   include_once("DanceLib.php"); 
   include_once("MusicLib.php"); 
   include_once("Email.php"); 
   
+
+  echo fm_hidden('Year',$YEAR);
   $YearTab = 'SideYear';
 
   $Type = (isset($_GET['T'])? $_GET['T'] : 'M' );
@@ -24,6 +26,15 @@
     $DiffFld = $PerfD[2] . "Importance";
   }
   
+  if (Access('Staff',$PerfD[2])) echo "<div class=floatright style=text-align:right><div class=Bespoke>" .
+       "Sending:<button class=BigSwitchSelected id=BespokeM onclick=Add_Bespoke()>Generic Messages</button><br>" .  
+       "Switch to: <button class=BigSwitch id=GenericM onclick=Add_Bespoke()>Bespoke Messages</button></div>" .
+       "<div class=Bespoke hidden id=BespokeMess>" .
+       "Sending:<button class=BigSwitchSelected id=GenericM1 onclick=Remove_Bespoke()>Bespoke Messages</button><br>" .  
+       "Switch to: <button class=BigSwitch id=BespokeM1 onclick=Remove_Bespoke()>Generic Messages</button></div>" .
+       "</div>";
+       
+
   echo "<div class=content><h2>List $Perf $YEAR</h2>\n";
   
   $Ins_colours = ['red','orange','lime'];
@@ -62,18 +73,20 @@
                 " AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
-    $col7 = "Importance";
+    $col7 = "Imp";
     $col8 = "Insurance";
     $col9 = "Missing";
-    if (substr($YEAR,0,4) == '2020') $col10 = 'Change';
+    $col10 = 'Messages';
+    if (substr($YEAR,0,4) == '2020') $col11 = 'Change';
     echo "Under <b>Actions</b> various errors are reported, the most significant error is indicated.  Please fix these before issuing the contracts.<p>\n";
     echo "Missing: P - Needs Phone, E Needs Email, T Needs Tech Spec, B Needs Bank (Only if fees), I Insurance.<p>";
   } else if ($_GET['SEL'] == 'Avail') {
     $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
-    $col7 = "Importance";
+    $col7 = "Imp";
     $col8 = "Availability";
+    $col9 = 'Messages';
 //    $col9 = "Prev Fest State";
  
   } else if ($_GET['SEL'] == 'BookingLastYear') {
@@ -84,8 +97,9 @@
                 " AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
-    $col7 = "Importance";
+    $col7 = "Imp";
     $col8 = "Next Year Avail";
+    $col9 = 'Messages';
     if (substr($YEAR,0,4) == '2020') $col10 = 'Change';
   } else { // general public list
     $SideQ = $db->query("SELECT y.*, s.*, IF(s.DiffImportance=1,s.$DiffFld,s.Importance) AS EffectiveImportance  FROM Sides AS s, $YearTab as y " .
@@ -112,13 +126,20 @@
     if ($col8) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col8</a>\n";
     if ($col9) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col9</a>\n";
     if ($col10) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col10</a>\n";
+    if ($col11) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$col11</a>\n";
 //    for($i=1;$i<5;$i++) {
 //      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>EM$i</a>\n";
 //    }
 
     echo "</thead><tbody>";
+
+  if (Access('SysAdmin')) {
+    echo "<tr><td>Debug:<td colspan=8><span id=DebugPane></span>"; 
+  }
+  
     while ($fetch = $SideQ->fetch_assoc()) {
-      echo "<tr><td><a href=AddPerf?sidenum=" . $fetch['SideId'] . "&Y=$YEAR>" . $fetch['SN'] . "</a>";
+      $snum = $fetch['SideId'];
+      echo "<tr><td><a href=AddPerf?sidenum=$snum&Y=$YEAR>" . $fetch['SN'] . "</a>";
       if ($fetch['SideStatus']) {
         echo "<td>DEAD";
       } else {
@@ -145,22 +166,24 @@
           if (!isset($State)) $State = 0;
           if ($fetch['TickBox4']) {
             $CState = $fetch['TickBox4'];
-            echo "<td style='background-color:" . $Cancel_Colours[$CState] . "'>" . $Cancel_States[$CState];
+            echo "<td style='background-color:" . $Cancel_Colours[$CState] . "' id=BookState$snum >" . $Cancel_States[$CState];
           } else {
-            echo "<td style='background-color:" . $Book_Colours[$State] . "'>" . $Book_States[$State];
+            echo "<td style='background-color:" . $Book_Colours[$State] . "' id=BookState$snum >" . $Book_States[$State];
           }
           break;
 
         case 'Confirmed':
-          echo "<td>" . ($fetch['ContractConfirm']?'Yes':'');
+          echo "<td  id=BookConfirm$Snum >" . ($fetch['ContractConfirm']?'Yes':'');
           break;
 
         case 'Actions':
           echo "<td>";
+          if (!Access('Staff',$PerfD[2])) break;  // Not your area
           $acts = $Book_Actions[$Book_States[$State]];
           if ($acts) {
-            $acts = preg_split('/,/',$acts); 
-            echo "<form>" . fm_Hidden('SEL',$_GET['SEL']) . fm_hidden('SideId',$fetch['SideId']) . (isset($_GET['t'])? fm_hidden('t',$_GET['t']) : '') . fm_hidden('Y',$YEAR);;
+            $acts = array_reverse(preg_split('/,/',$acts) );
+//            echo "<form method=Post Action=PerformerActions>" . fm_Hidden('SEL',$_GET['SEL']) . fm_hidden('SideId',$fetch['SideId']) . fm_hidden('T',$Type) . 
+//                  fm_hidden('Y',$YEAR). fm_hidden('SideId',$fetch['SideId']);
             foreach($acts as $ac) {
               switch ($ac) {
                 case 'Contract':
@@ -177,12 +200,18 @@
                   if (!FestFeature('EnableCancelMsg')) continue 2;
                   break;
               }
-              echo "<button class=floatright name=ACTION value='$ac' type=submit " . $Book_ActionExtras[$ac] . " >$ac</button>";
+                echo "<button type=button id=$ac$snum class=ProfButton onclick=MProformaSend('Music_$ac',$snum,'$ac','SendPerfEmail')" . 
+                     Music_Proforma_Background($ac) . ">$ac</button>"; 
+
+
+
+//              echo "<button class=floatright name=ACTION value='$ac' type=submit " . $Book_ActionExtras[$ac] . 
+//                   " style='background:" . $Book_ActionColours[$ac] . ";'>$ac</button>";
             }
             echo "</form>";
           } 
           break;
-        case 'Importance':
+        case 'Imp':
           echo "<td>" . $Importance[($fetch['DiffImportance']?$fetch[$DiffFld]:$fetch['Importance'])];
           break;
         case 'Insurance':
@@ -249,6 +278,13 @@
             }  
           }  
                     
+          break;
+          
+        case 'Messages':
+          echo "<td width=250 height=38 style='max-width:200;max-height:38;'>";
+          echo "<div id=Vited$snum class=scrollableY>";
+          if (isset($fetch['Invited'])) echo $fetch['Invited'];
+          echo "</div>";
           break;
           
         default:

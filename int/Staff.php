@@ -477,6 +477,10 @@
     if (Access('Committee','Finance')) {
       $txt .= "<li><a href=Payments?Y=$YEAR>List All Performer Payments</a>\n";      
     }
+    if (Access('Committee','Finance')) {
+      $txt .= "<li><a href=ListTrade?ORGS>Businesses and Organistaions List</a>\n"; 
+      $txt .= "<li><a href=Trade?ORGS>New Business or Organistaion</a>\n";  
+    }
     $txt .= "</ul><p>\n";
   }
 

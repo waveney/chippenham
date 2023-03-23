@@ -139,6 +139,8 @@ function Vol_Details($key,&$vol) {
       Put_Volunteer($vol);
     }
     return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Access?t=v&i=" . $vol['id'] . "&k=" . $vol['AccessKey'] . "'><b>link</b></a>";
+  case 'INNERLINK': return "https://" . $_SERVER['HTTP_HOST'] . "/int/Access?t=v&i=" . $vol['id'] . "&k=" . $vol['AccessKey'];
+  
   case 'FESTLINK' :
   case 'WMFFLINK' : return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Volunteers?A=View&id=" . $vol['id'] . "'><b>link</b></a>";
   case 'VOLTEAM_ACCEPT' :
@@ -411,7 +413,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
     if (Access('SysAdmin')) {
       echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$PLANYEAR");
-      echo "<tr><td>Link:<td colspan=4>" . htmlspec(Vol_Details('LINK',$Vol)) . "<br>" . Vol_Details('LINK',$Vol);
+      echo "<tr><td>Link:<td colspan=4>" . htmlspec(Vol_Details('INNERLINK',$Vol)) . "<br>" . Vol_Details('LINK',$Vol);
     }
   echo "</table></div><p>";    
  

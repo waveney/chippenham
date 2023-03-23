@@ -380,7 +380,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
         if ($line == 0 && $G) $dev = 'data-e=' . $G['e']. ':' . $G['d'];
         if (!$G || ($v<0 && !($G['S1'] || !$G['S2'] || $G['n']))) {
           if ($v > 0 && $condense==0) $class = "DPGridGrey";
-          if ($line >= $lineLimit[$t]) {
+          if (!isset($lineLimit[$t]) || $line >= $lineLimit[$t]) {
             echo "$OtherLoc<td id=$id class=$class hidden $DRAG data-d=X>&nbsp;";
           } else if (!isset($OtherInUse[-$v])) {
             echo "$OtherLoc<td id=$id class=$class $DRAG data-d=X>&nbsp;";

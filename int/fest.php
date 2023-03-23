@@ -22,13 +22,18 @@ $Area_Type = array_flip($Area_Levels);
 $Sections = ['', 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','Other','TLine','Bugs','Photos','Comedy','Family','News','Volunteers','Art',
    'Tickets','Events','Ceilidh']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD
 $Importance = array('None','Some','High','Very High','Even Higher','Highest','The Queen');
-$Book_States = array('None','Declined','Booking','Contract Ready','Contract Signed');
-$Book_Colours = ['white','salmon','yellow','orange','lime'];
+$Book_States = array('None','Declined','Booking','Contract Ready','Contract Signed','Contract Sent');
+$Book_Colours = ['white','salmon','yellow','orange','lime','Magenta'];
 $Book_State = array_flip($Book_States);
 $InsuranceStates = array('None','Uploaded','Checked');
-$Book_Actions = array('None'=>'Book','Declined'=>'Book,Contract','Booking'=>'Contract,Decline,Cancel,Dates,FestC','Contract Ready'=>'Confirm,Decline,Cancel,Dates,FestC',
-                'Contract Signed'=>'Cancel,Decline,Dates,FestC');
+$Book_Actions = ['None'=>'Book',
+  'Declined'=>'Book,Contract',
+  'Booking'=>'Cancel,Dates,FestC',
+  'Contract Ready'=>'Contract,Cancel,Dates,FestC', 
+  'Contract Signed'=>'Cancel,Decline,Dates,FestC',
+  'Contract Sent'=>'Contract,Cancel,Decline,Confirm'];
 $Book_ActionExtras = array('Book'=>'', 'Contract'=>'', 'Decline'=>'', 'Cancel'=>'', 'Confirm'=>'', 'Dates'=>'', 'FestC'=>'');
+$Book_ActionColours = ['Book'=>'DarkGrey', 'Contract'=>'Yellow', 'Decline'=>'Coral', 'Cancel'=>'Red', 'Confirm'=>'lime', 'Dates'=>'', 'FestC'=>''];
 $Cancel_States = ['','Cancel: Sent','Cancel: Avail','Cancel: Not Avail','Cancel: Dont Know'];
 $Cancel_Colours = ['white','orange','green','red','yellow'];
 $EType_States = array('Very Early','Draft','Partial','Provisional','Complete');
@@ -39,9 +44,9 @@ $ArticleFormats = ['Large Image','Small Image','Text','Banner Image','Banner Tex
 $PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance Displays','D'],
               'Musical Act'=>['IsAnAct','Music','Music','Music','M'],
               'Comedy'=>['IsFunny','Comedy','Comedy','Comedy','C'],
-              'Child Ent'=>['IsFamily','Children','Family','Family and Community','Y'],
-              'Other'=>['IsOther','Info','OtherPerf','Other Performers','O'],
-              'Ceilidh'=>['IsCeilidh','??','Ceilidh','Ceilidhs and Dances','H'],              
+              'Child Ent'=>['IsFamily','Family.Festival','Family','Family and Community','Y'],
+              'Other'=>['IsOther','Other','OtherPerf','Other Performers','O'],
+              'Ceilidh'=>['IsCeilidh','Ceilidh','Ceilidh','Ceilidhs and Dances','H'],              
               ];
 $PerfIdx = ['Side'=>0,'Act'=>1,'Comic'=>2,'ChEnt'=>3,'Other'=>4,'Ceilidh'=>5];
 $SourceTypes = ['None','Perf','Trade','Finance','User','SignUp'];

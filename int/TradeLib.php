@@ -359,8 +359,8 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
   $Adv = '';
   $Imp = '';
   if ($Mode ==1) {
-    echo "<span class=NotSide>Fields marked are not visible to Trader.</span>";
-    echo "  <span class=NotCSide>Marked are visible if set, but not changeable by Trader.</span>";
+    echo "<span class=NotSide>Fields marked are not visible to Business.</span>";
+    echo "  <span class=NotCSide>Marked are visible if set, but not changeable by Business.</span>";
   } else {
     $Adv = 'class=Adv';
   }
@@ -370,7 +370,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
   if (!isset($Trad['TradeType']) || ($Trad['TradeType'] == 0)) $Trad['TradeType'] = 1;
 
   echo "<form method=post id=mainform enctype='multipart/form-data' action=$Form>";
-  Register_AutoUpdate('Trader',$Tid);
+  if ($Tid>0) Register_AutoUpdate('Trader',$Tid);
   if (isset($_REQUEST['ORGS'])) echo fm_hidden('ORGS',1);
   echo "<div class=tablecont><table width=90% border class=SideTable>\n";
     echo "<tr><th colspan=8><b>Public Information</b>" . Help('PublicInfo');

@@ -28,7 +28,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
   echo "<input  class=floatright type=Submit name='Update' value='Save Changes' form=mainform>";
   if ($Mode && ((isset($Side['Email']) && strlen($Side['Email']) > 5) || (isset($Side['AltEmail']) && strlen($Side['AltEmail']) > 5)) )  {
     if (Feature('EmailButtons')) {
-      if (isset($Side['HasAgent']) && $Side['HasAgent'] && $Side['AgentEmail']) {
+      if (isset($Side['HasAgent']) && $Side['HasAgent'] && $Side['AgentEmail'] && !$Side['BookDirect']) {
         echo " <button type=button id=Email$snum onclick=ProformaSend('Dance_Blank',$snum,'Email','SendProfEmail',1,'AgentEmail','Invited')>Email Agent</button>"; 
       }
       if ($Side['Email']) echo "<button type=button id=Email$snum onclick=ProformaSend('Dance_Blank',$snum,'Email','SendProfEmail',1,'Email','Invited')>Email</button>"; 
@@ -37,7 +37,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     } else {
 //echo "XX5";  
       echo "If you click on the ";
-      if (isset($Side['HasAgent']) && $Side['HasAgent']) {
+      if (isset($Side['HasAgent']) && $Side['HasAgent'] && !$Side['BookDirect']) {
         echo linkemailhtml($Side,$CatT,'Agent','Agents');
         if (isset($Side['Email'])) echo " or contacts " . linkemailhtml($Side,$CatT,'!!');
       } else {
@@ -104,7 +104,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     echo "<tr>" . fm_textarea('Blurb for web',$Side,'Blurb',5,2,'','size=2000' ) . "\n";
     echo "<tr>";
       if (isset($Side['Website']) && strlen($Side['Website'])>1) {
-        echo fm_text(weblink($Side['Website']),$Side,'Website');
+        echo fm_text(weblink(trim($Side['Website'])),$Side,'Website');
       } else {
         echo fm_text('Website',$Side,'Website');
       };
@@ -186,7 +186,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 
     $AgentTxt = (isset($Side['HasAgent']) && $Side['HasAgent']?"":"hidden");
     if ($NotD) { 
-      echo "<tr><td>" . fm_checkbox("Has Agent",$Side,'HasAgent','onchange=AgentChange(event)');
+      echo "<tr><td>" . fm_checkbox("Has Agent",$Side,'HasAgent','onchange=AgentChange(event)') . "<td class=AgentDetail>" . fm_checkbox('Book Directly',$Side,'BookDirect');
     }
 
     echo "<tr class=AgentDetail $AgentTxt>";
@@ -240,14 +240,14 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     if ($ADDALL && !Access('Committee','Finance')) {} // No bank details unless your area or Finance
     else {
       $bankhide = 1;
-      if ($snum > 0 && ( $Side['SortCode'] || $Side['Account'] || $Side['AccountName'] || $Side['TotalFee'] || $Side['TotalFee'])) $bankhide = 0;
+      if ($snum > 0 && ( $Side['SortCode'] || $Side['Account'] || $Side['AccountName'] || $Side['TotalFee'] )) $bankhide = 0;
       $Bacs = Feature('PayByCheque'); // 0=BACS only, 1=BACS+cheque, 2= LAST Cheque
 //    echo $bankhide . "sc:" . $Side['SortCode'] . "ac:" .$Side['Account']. "an:" .$Side['AccountName'] . "tf" . $Side['TotalFee'];
       if ($Bacs > 0) {
         $PayTypes = ['BACS','Cheque'];
         echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail0>";
-        echo fm_radio('Payment Type',$PayTypes,$Side,'WantCheque',"onchange=PayTypeSel(event,###F,###V)");
-        if ($Bacs > 1) echo "<td colspan=3>Note this the last year when payment by Cheque is an option.";
+        echo fm_radio('Payment Type',$PayTypes,$Side,'WantCheque',"onchange=PayTypeSel()");
+        if ($Bacs > 1) echo "<td id=ChequeNote colspan=3>Note this the last year when payment by Cheque is an option.";
       }
       echo "<tr" . ($bankhide?" class='ContractShow' hidden":'') . " id=BankDetail>";
         echo "<td rowspan=2>Bank Details:" . help('Bank');
@@ -863,7 +863,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
 //      $ETs = Get_Event_Types(0);
       echo "<tr class=ContractShow hidden><td colspan=5>Click on the Event Names below for more detailed information.";
       if ($Mode==2) echo "Direct editing of some fields will be possible soon"; //TODO
-      echo "<tr class=ContractShow hidden><td>Event Name<td>Date<td>On Stage at<td>Start<td>Duration (mins)<td colspan=3>Where\n";
+      echo "<tr class=ContractShow hidden><td>Event Name<td>Date<td>Set up from<td>Start<td>Duration (mins)<td colspan=3>Where\n";
       foreach($Evs as $e) {
         $Detail = ($Mode?"EventAdd":"EventShow");
         $vv = $e['Venue'];
@@ -900,8 +900,9 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     if (!isset($Sidey['Contracts'])) $Sidey['Contracts']=0;
     switch ($Sidey['YearState']) {
       case $Book_State['Contract Signed']:
-        echo "<tr class=ContractShow hidden><td><a href=ViewContract?sidenum=$snum&Y=$YEAR>View Contract</a>";
         if ($Sidey['Contracts'] >= 1) $old = $Sidey['Contracts'];
+        echo "<tr class=ContractShow hidden><td><a href=ViewContract?sidenum=$snum&Y=$YEAR&I=$old>View Contract</a>";
+
         break;
       case $Book_State['Contract Ready']:
         echo "<tr class=ContractShow hidden><td><a href=ViewContract?sidenum=$snum&Y=$YEAR>View Proposed Contract</a>";

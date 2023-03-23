@@ -420,6 +420,7 @@ IF you wish to remove a performer type tell Richard - there are many small chang
         'OneBlurb'=>'Select this to surpress showing the Short Blurb and the Long Blurb at the same time',
         'DiffImportance'=>'IF needs to have different Importances for performer types, select this and SAVE CHANGES',
         'EmailLog'=>'View the system email log to (and from) this performer - if there is one',
+        'BookDirect'=>'Tick this to bypass the agent and email the performer drectly',
   );
   Set_Help_Table($t);
 }
@@ -778,8 +779,8 @@ function Extended_Prog($type,$id,$all=0) {
 }
 
 
-function Dance_Email_Details($key,&$data,$att=0) {
-  global $Trade_Days,$TradeLocData,$TradeTypeData,$YEAR,$PLANYEAR;
+function Dance_Email_Details($key,&$data,&$att=0) {
+  global $Trade_Days,$TradeLocData,$TradeTypeData,$YEAR,$PLANYEAR,$Book_State;
   include_once("ProgLib.php");
   $Side = &$data[0];
   if (isset($data[1])) $Sidey = &$data[1];
@@ -827,6 +828,38 @@ function Dance_Email_Details($key,&$data,$att=0) {
     if (isset($bits[2])) { $txt = $bits[2]; $txt = preg_replace('/_/',' ',$txt); }
     return "<a href='$host/int/Access?t=s&i=$snum&TB=$box&k=" . $Side['AccessKey'] . "&Y=$PLANYEAR'><b>$txt</b></a>\n";
 
+  case 'CONTRACT': 
+    if (isset($Sidey['YearState']) && $Sidey['YearState']) {
+      if ($Sidey['YearState'] == $Book_State['Contract Signed']) { 
+        $p = 1; 
+        $AddC = 1;
+      } else {
+        $ConAns = Contract_Check($snum,1,1);
+        switch ($ConAns) {
+          case 0: // Ready
+            // Please Sign msg
+            $Msg = '<b>Please confirm your contract by following *LINK* and clicking on the "Confirm" button on the page.</b><p>';
+            $p = 0;
+            $AddC = 1;
+            break;
+          case 2: // Ok apart from bank account
+            $Msg = 'Please follow *LINK*, fill in your bank account details (so we can pay you), then click "Save Changes".<p> ' .
+                  'Then you will be able to view and confirm your contract, ' .
+                  'by clicking on the "Confirm" button. (The button will only appear once you have input your bank account details ).<p>';
+            $p = 0;
+            $AddC = 1;
+            break;
+          case 3: // No Cont
+            break;
+          default: // Add draft for info
+            $AddC = 1;
+        }
+      }
+//    if ($AddC) $att[] = ??;
+//    if ($AddC) $Msg .= "<div id=SideProg$id>" . Show_Contract($id,$p) . "</div><p>\n";
+    return $Msg;
+    }
+  return '';
   }
 }
 

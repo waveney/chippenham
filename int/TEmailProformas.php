@@ -8,14 +8,14 @@
   echo "<div class='content'><h2>Manage Email Proformas</h2>\n";
   
   $prefixes = ['BB'=>Capability("EnableMisc"),'Dance'=>Capability('EnableDance'),'Finance'=>Capability('EnableFinance'),'LNL'=>Capability("EnableMisc"),'Login'=>1,
-               'Trade'=>Capability("EnableTrade"),'lol'=>Capability("EnableMisc"), 'Stew'=>Capability("EnableVols"),'Vol'=>Capability("EnableVols"),
-               'Invoice'=>Capability('EnableFinance') || Capability('EnableTrade'), 'ART'=>Capability('EnableArt')];
+               'Trade'=>Capability("EnableTrade"),'lol'=>Capability("EnableMisc"), 'Stew'=>Capability("EnableOldVols"),'Vol'=>Capability("EnableVols"),
+               'Invoice'=>Capability('EnableFinance') || Capability('EnableTrade'), 'ART'=>Capability('EnableArt'), 'Music'=>Capability('EnableMusic')];
   
   if (Access('SysAdmin')) {
     $Edit = 1;
     echo "The Prefix of a name (the bit before the first _) has to have set values, do not introduce new ones without consulting Richard<p>";
   } else {
-    echo "These are the proforma messages.  You cannot change them, email changes to Richard/SysAdmin.<p>";
+    echo "These are the proforma messages.  You cannot change them (too many problems in the past), email changes to Richard/SysAdmin.<p>";
     fm_addall('disabled readonly');
     $Edit = 0;
   }

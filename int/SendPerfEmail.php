@@ -1,12 +1,12 @@
 <?php 
-// Send Bespoke email bassed on a proforma email initially Dance only
+// Set fields in data
 include_once("fest.php");
 include_once("DanceLib.php");
+include_once("MusicLib.php");
 include_once("Email.php");
-global $FESTSYS,$PLANYEAR,$USERID;
+global $FESTSYS,$PLANYEAR,$USER,$USERID,$PerfTypes;
 
-A_Check("Staff","Dance");
-
+A_Check("Staff");
 
 if (isset($_REQUEST['REEDIT'])) {
   system("rm Temp/$USERID.*");
@@ -37,7 +37,7 @@ if (isset($_REQUEST['REEDIT'])) {
   
 } else {
 
-  $id = $_REQUEST['id'];
+  $id = $_REQUEST['I'];
   $proforma = (isset($_REQUEST['N'])?$_REQUEST['N']:'');
   $label = (isset($_REQUEST['L'])?$_REQUEST['L']:"");
   $Atts = (isset($_REQUEST['ATTS'])?json_decode($_REQUEST['ATTS'],true):0);
@@ -55,10 +55,43 @@ if (isset($_REQUEST['REEDIT'])) {
   if (isset($_POST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
 
   if (isset($_POST['SEND'])) {
-    $DanceEmailsFrom = Feature('DanceEmailsFrom','Dance');
+
+    $From = '';
+
+    $IsAC = 0;
+    set_user();
+
+    foreach ($PerfTypes as $t=>$p) {
+      if ($Side[$p[0]]) {
+        $IsAC++;
+        $EmailsFrom = Feature($p[1] . 'EmailsFrom','');
+        if ($IsAC > 1) break;
+        if ($EmailsFrom == 'USER') { $IsAC+=2; break; }
+        if (!empty($EmailsFrom)) $From = $EmailsFrom;
+      }
+    }
+
+    if (empty($Sidey['BookedBy'])) {
+      $From = $USER['FestEmail'];
+    } else if ($IsAC > 1 || empty($From)) {
+      if ($USERID == $Sidey['BookedBy']) {
+        if (!empty($USER['FestEmail'])) $From = $USER['FestEmail'];
+      } else {
+        $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
+        $From = $User['FestEmail'];
+      }
+    }
+  
+
+    if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
+      $To = $Side[$_REQUEST['E']];
+    }
+
     $too = [['to',$To,$Side['Contact']],
-            ['from',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom],
-            ['replyto',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom]];
+            ['from',$From . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $From],
+            ['replyto',$From . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $From]];
+
+
     if ($_POST['CCs']) {
       $CCs = explode("\n",$_POST['CCs']);
       foreach ($CCs as $CC) {
@@ -132,3 +165,4 @@ echo "</form>";
 //echo fm_DragonDrop(, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$tddata1='',$tdclass='',$hide=0) {
 
 ?>
+

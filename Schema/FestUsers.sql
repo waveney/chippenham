@@ -29,11 +29,12 @@ CREATE TABLE `FestUsers` (
   `LastAccess` int NOT NULL,
   `Yale` text NOT NULL,
   `Image` text NOT NULL,
-  `WMFFemail` text NOT NULL,
+  `FestEmail` text NOT NULL,
   `Contacts` tinyint NOT NULL,
   `NoTasks` tinyint NOT NULL,
   `Prefs` text NOT NULL,
   `LogUse` tinyint NOT NULL,
   `RelOrder` int NOT NULL,
+  `ClassEmail` text NOT NULL,
   PRIMARY KEY (`UserId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

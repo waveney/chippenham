@@ -31,7 +31,7 @@
         case 'Remove Access' :
           $User['AccessLevel'] = 0;
           $User['password'] = 'impossible2guess'; // that is not a valid password
-          $User['WMFFemail'] = '';
+          $User['FestEmail'] = '';
           $User['Roll'] = 'No Access' . date(' j/m/Y');
           $User['Contacts'] = 0;
           foreach ($Sections as $sec) $User[$sec] = 0;
@@ -78,9 +78,10 @@
       }
     echo "<tr>" . fm_text('Name', $User,'SN',3,'','autocomplete=off');
     echo "<tr>" . fm_text('Abrev', $User,'Abrev',1,'','autocomplete=off');
-    echo "<tr>" . fm_text('Email',$User,'Email',3,'','autocomplete=off');
+    echo "<tr>" . fm_text('Personal Email',$User,'Email',3,'','autocomplete=off');
+//    echo "<tr>" . fm_text('ClassEmail',$User,'ClassEmail',3,'','autocomplete=off') . "<td>Festival level email to send replies to if booking";
     echo "<tr>" . fm_text('Phone',$User,'Phone',1,'','autocomplete=off');
-    echo "<tr>" . fm_text($FESTSYS['ShortName'] . " Email",$User,'WMFFemail',1,'','autocomplete=off');
+    echo "<tr>" . fm_text($FESTSYS['ShortName'] . " Email",$User,'FestEmail',1,'','autocomplete=off');
     echo "<tr>" . fm_text('Login',$User,'Login');
     echo "<tr>" . fm_text('Roll',$User,'Roll',3);
     echo "<tr>" . fm_text('Relative Order',$User,'RelOrder',3);

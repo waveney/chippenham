@@ -48,6 +48,24 @@ function ProformaSend(name,snum,label,link,AlwaysBespoke=0,AltEmail='',UpdateId=
 //  ProformasSent++;
 }
 
+function MProformaSend(name,snum,label,link,AlwaysBespoke=0,AltEmail='',UpdateId='') {
+  var year = $("#Year").val();
+  if (UpdateId == '') UpdateId = "Vited" + snum;
+  
+  if ($('#BespokeM').is(':visible') && (AlwaysBespoke == 0)) {
+    $("#DebugPane").load("SendPerfEmail.php", "I=" + snum + "&N=" + name +"&E=" +AltEmail);
+    $("#" + UpdateId).load("setfields.php", "I=" + snum + "&O=I&Y=" + year + "&L=" + label); //, function() {$("#Vited" + snum).scrollTop(1E6+ProformasSent*100)});
+  } else {
+    var newwin = window.open((link + "?I=" + snum + "&N=" + name + "&L=" + label + "&E=" + AltEmail),"Bespoke Message " + snum);
+    newwin.onbeforeunload = function(){
+      setTimeout(function(){$("#" + UpdateId).load("setfields.php", "I=" + snum + "&O=R"); // , function() {
+//       $("#" + UpdateId).scrollTop(1E6+ProformasSent*100)}
+      },500)
+    }
+  }
+
+//  ProformasSent++;
+}
 function Add_Bespoke() {
   $('.ProfButton').addClass('BespokeBorder');
   $('.ProfSmallButton').addClass('BespokeBorder');

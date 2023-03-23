@@ -5,6 +5,7 @@
   include_once("DateTime.php");
   include_once("ProgLib.php");
   include_once("PLib.php");
+  include_once("Email.php");
 
 // TODO change for all access types inc participant
   global $USER,$USERID,$Access_Type,$PerfTypes;
@@ -40,6 +41,7 @@
 
   case $Access_Type['Internal'] : 
   case $Access_Type['SysAdmin'] : 
+    $capmatch = 1;
     break;
   }  
 
@@ -54,9 +56,9 @@
 // TODO Change this to not do changes at a distance and needing global things
   $Action = ''; 
   $Mess = '';
-  if (isset($_POST['Action'])) {
+  if (isset($_REQUEST['Action'])) {
     include_once("Uploading.php");
-    $Action = $_POST['Action'];
+    $Action = $_REQUEST['Action'];
     switch ($Action) {
     case 'PASpecUpload':
       $Mess = Upload_PASpec();
@@ -79,6 +81,12 @@
     case 'TICKBOX':
 
       break; // Action is taken later after loading
+      
+    case 'Send Generic Contract':
+      SendProfEmail();
+ //   'Dance_Final_Info',$snum,'FinalInfo','SendProfEmail')
+    
+    case 'Send Bespoke Contract':
     
     default:
       $Mess = "!!!";
@@ -225,7 +233,13 @@
 //          echo " <input type=submit name=ReminderAct value=Reminder class=Button$BUTTON > ";
         }
       }
-    } 
+    }
+
+    if (($Book_States[$Sidey['YearState']] == 'Contract Ready') && Access('Staff') && $capmatch) {
+      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Generic Contract'>";
+      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Bespoke Contract'>";  
+    }
+
     echo "</center>\n";
   } else { 
     echo "<Center><input type=Submit name=Create value='Create' class=Button$BUTTON ></center>\n";

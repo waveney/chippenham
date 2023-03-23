@@ -30,7 +30,7 @@
     echo Show_Contract($snum,1);
     break;
   default:
-    ViewFile("Contracts/$YEAR/$snum.$IssNum.html");
+    ViewFile("Contracts/$YEAR/$snum.$IssNum.pdf");
     break;
   }
 

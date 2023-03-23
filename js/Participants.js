@@ -166,6 +166,7 @@ $(document).ready(function() {
   CheckDiscount();
   updateimps();
   CheckIfTickets();
+  PayTypeSel();
 } );
 
 function ComeSwitch(ev) {
@@ -267,7 +268,7 @@ function EventPerfSel(e,l,v) {
   var lmtch = l.match(/.*(\d+)/);
   var i = lmtch[1];
   
-  for (var p=0;p<5;p++) { // 5 needs to be number of perftypes
+  for (var p=0;p<6;p++) { // 5 needs to be number of perftypes
     if (p == v) { 
       $('#Perf' + p + '_Side' + i).show();
     } else {
@@ -309,5 +310,24 @@ function ForceOneProcession(e) {
 function Trader_Insurance_Upload() {
   $('#Insurance').val(1);
   document.getElementById('InsuranceButton').click();
+}
+
+function PayTypeSel() {
+debugger;
+  if (!document.getElementById('WantCheque')) return;
+  var PayT = +document.querySelector('input[name="WantCheque"]:checked').value;
+  switch (PayT) {
+    case 0:
+      $('#BankDetail').show();
+      $('#BankDetail2').show();
+      $('#ChequeNote').removeClass('Err');
+      break;
+  
+    case 1:
+      $('#BankDetail').hide();
+      $('#BankDetail2').show();
+      $('#ChequeNote').addClass('Err');
+      break;
+  }
 }
 

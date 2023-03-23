@@ -666,5 +666,13 @@ function Music_Email_Too(&$data) {
           ['replyto','Music@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' Music']];
   return $too;
 }
+
+function Music_Proforma_Background($name) {
+  global $Book_ActionColours;
+  if (isset($Book_ActionColours[$name])) return " Style=Background:" . $Book_ActionColours[$name] . " ";
+  return "";
+}
+
+
 ?>
 

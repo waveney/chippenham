@@ -149,7 +149,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
       if (is_array($to[0])) {
         foreach ($to as $i=>$too) {
           if (!isset($too[0])) continue;
-          $a = $too[1];
+          $a = str_replace(' ','',$too[1]);
           $n = (isset($too[2])?$too[2]:'');
           switch ($too[0]) {
             case 'to':
@@ -286,7 +286,7 @@ function Put_Email_Proforma(&$now) {
 }
 
 function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments=0,&$embeded=[]) {
-  global $PLANYEAR,$YEARDATA,$FESTSYS,$USERID;
+  global $PLANYEAR,$YEARDATA,$FESTSYS,$USERID,$USER;
   static $attnum = 0;
   $Reps = [];
   $Limit = 0;
@@ -369,6 +369,9 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
           case (preg_match('/COPY_(.*)/',$key,$mtch)?true:false):
             $Prof = Get_Email_Proforma($mtch[1]);
             $rep = ($Prof?$Prof:("Unknown Email Proforma " . $mtch[1] . "<p>"));
+            break;
+          case 'SENDER':
+            $rep = (empty($USER['SN'])?"The *FESTNAME*":$USER['SN']);
             break;
 
           default:
@@ -456,7 +459,7 @@ function Replace_Help($Area='',$Right=0) {
   ['*WEB:*/*WEB:URL:TEXT*','Website for Festival, URL - to follow website, TEXT - To be displayed (NO SPACES - any _ will appear as spaces)','All'],
   ['*WEBINT:URL:TEXT*','Website for the festival back end, URL/TEXT as above.  WEB is the same when they are part of the same server','All'],
   ['*MISSING*','Important information missing from a dance side','Dance'],
-  ['*SIDE*','Name of side','Dance'],
+  ['*SIDE*','Name of side','Dance,Music'],
   ['*TICKBOX:b:TEXT*','Direct link to click a box, b=num(1-4)|Rec(eived)|..., TEXT to be displayed (NO SPACES - any _ will appear as spaces)','Dance,Music,Trade'],
   ['*TRADEMAP*','Trade location and Map info','Trade'],
   ['*WEBSITESTUFF*','Traders photo and product description prompt','Trade'],
@@ -470,6 +473,7 @@ function Replace_Help($Area='',$Right=0) {
   ['*PAIDSOFAR*','Total Money Actually paid so far: Deposit and Balance','Trade'],
   ['*URL:URL:Text*','URL (https:// is prepended, TEXT - To be displayed (NO SPACES - any _ will appear as spaces)','All'],
   ['*DANCEORG*','Sign of for dance messages','Dance'],
+  ['*SENDER*','Name of sender - person clicking the email','All'],
   ];
 
   echo "<span " . ($Right?' class=floatright':'') . " id=largeredsubmit onclick=($('.HelpDiv').toggle()) >Click to toggle Standard Replacements Help</span>";

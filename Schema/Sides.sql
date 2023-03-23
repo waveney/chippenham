@@ -19,6 +19,7 @@ CREATE TABLE `Sides` (
   `CeilidhImportance` tinyint NOT NULL,
   `Type` text NOT NULL,
   `HasAgent` tinyint NOT NULL,
+  `BookDirect` tinyint NOT NULL,
   `AgentName` text NOT NULL,
   `AgentEmail` text NOT NULL,
   `AgentPhone` text NOT NULL,

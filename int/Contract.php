@@ -115,7 +115,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $str .= "<h2>" .$Side['SN'] . "</h2>(known as <i>The Artist</i>)<p>";
   
     $str .= "<i>The Festival</i> and <i>The Artist</i> are to performances and associated sound checks at the Festival in<br>$DFrom - $DTo $DMonth $PLANYEAR inclusive" . 
-            "(known as <i>The Booking</i>)<p>";
+            " (known as <i>The Booking</i>)<p>";
             
     $str .= "In respect of <i>The Booking<i>, <i>The Festival</i> agrees to pay <i>The Artist</i> the sum of<p>";
     
@@ -135,16 +135,16 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
   
     $str .= "</center><p><h1>Specific &amp; Detailed Information</h1>";
     $str .= "<table border><tr><td><b>Artist Details</b><td>" . $Side['SN'];
-    if (!empty($Side['Contact'])) $str .= "<td>Contact:<td>" . $Side['Contact'];
-    if (!empty($Side['Address'])) $str .= "<td>Address:<td>" . $Side['Address'] . "<br>" . $Side['PostCode'];
-    if (!empty($Side['Phone'])) $str .= "<td>Phone:<td>" . $Side['Phone'];    
-    if (!empty($Side['Mobile'])) $str .= "<td>Mobile:<td>" . $Side['Mobile'];    
+    if (!empty($Side['Contact'])) $str .= "<tr><td>Contact:<td>" . $Side['Contact'];
+    if (!empty($Side['Address'])) $str .= "<tr><td>Address:<td>" . $Side['Address'] . "<br>" . $Side['PostCode'];
+    if (!empty($Side['Phone'])) $str .= "<tr><td>Phone:<td>" . $Side['Phone'];    
+    if (!empty($Side['Mobile'])) $str .= "<tr><td>Mobile:<td>" . $Side['Mobile'];    
     
     if ($Side['HasAgent']) {
       $str .= "<tr><td><b>Agent:</b>" . $Side['Agent'];
-      if (!empty($Side['AgentAddress'])) $str .= "<td>Address:<td>" . $Side['AgentAddress'] . "<br>" . $Side['AgentPostCode'];
-      if (!empty($Side['AgentPhone'])) $str .= "<td>Phone:<td>" . $Side['AgentPhone'];    
-      if (!empty($Side['AgentMobile'])) $str .= "<td>Mobile:<td>" . $Side['AgentMobile'];
+      if (!empty($Side['AgentAddress'])) $str .= "<tr><td>Address:<td>" . $Side['AgentAddress'] . "<br>" . $Side['AgentPostCode'];
+      if (!empty($Side['AgentPhone'])) $str .= "<tr><td>Phone:<td>" . $Side['AgentPhone'];    
+      if (!empty($Side['AgentMobile'])) $str .= "<tr><td>Mobile:<td>" . $Side['AgentMobile'];
     }
   
     $str .= "<tr><td><b>Festival Details</b>";
@@ -156,11 +156,20 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
       $str .= $A . "<br>";
     }
     $str .= "<tr><td>Telephone:<td>" . Feature("FestPhone");
-    $str .= "<tr><td>Email:<td>" . Feature("FestContractEmail");    
-  
+    $str .= "<tr><td>Email:<td>" . Feature("FestContractEmail");
+    
+    if ($Sidey['ReportTo']==0) $Sidey['ReportTo'] = Feature('DefaultReportPoint',0);
+    if ($Sidey['ReportTo'] == 1 ) { // No actions
+    } else if ($Sidey['ReportTo'] != 0 ) {
+      $Reporttos = Report_To();
+      $str .= "<tr><td><b>ON ARRIVAL</b>: Please report to:<td>" . Venue_Parents($Venues, $Sidey['ReportTo']) . "<a href='https://" .  $_SERVER['HTTP_HOST'] . 
+             "/int/VenueShow?v=" . $Sidey['ReportTo'] . "'><b>" .
+             $Reporttos[$Sidey['ReportTo']] . "</b></a> (click for map and directions)<p>\n";
+    }
+
     $str .= "<tr><td><b>Expected Performance Duration</b><td>" . 
       "$evc performance" . ($evc>1?'s':'') . ", with a total duration of " . ($evv?"at least ":"") . DurationFormat($evd) . "<p>\n";
-    $str .= "<tr><td>Known Times<td>" . $Evstr;
+    $str .= "<tr><td>Known Times<br>See the festival website and/or festival information for more<td>" . $Evstr;
 
     $PayTypes = ['BACS','Cheque'];
     if (!Feature('PayByCheque')) $Side['WantCheque'] = 0;
@@ -179,7 +188,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $str .= $faq;
 
     if ($mode > 0) {
-      $str .= "This contract was " . $ContractMethods[$mode] . " on " . date('d/m/y',$Sidey['ContractDate']) . "<P>\n";
+      $str .= "This contract was confirmed " . $ContractMethods[$mode] . " on " . date('d/m/y H:i:s',$Sidey['ContractDate']) . "<P>\n";
     }
 
 /*
@@ -347,7 +356,7 @@ services, under the following terms and conditions:<p>\n";
   $str .= $faq;
 
   if ($mode > 0) {
-    $str .= "This contract was " . $ContractMethods[$mode] . " on " . date('d/m/y',$Sidey['ContractDate']) . "<P>\n";
+    $str .= "This contract was confirmed " . $ContractMethods[$mode] . " on " . date('d/m/y at h:m',$Sidey['ContractDate']) . "<P>\n";
   }
 
   if ($mode < -1) {
