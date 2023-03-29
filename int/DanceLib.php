@@ -838,14 +838,14 @@ function Dance_Email_Details($key,&$data,&$att=0) {
         switch ($ConAns) {
           case 0: // Ready
             // Please Sign msg
-            $Msg = '<b>Please confirm your contract by following *LINK* and clicking on the "Confirm" button on the page.</b><p>';
+            $Msg = '<b>Please confirm your contract by following *LINK* and clicking on the "Green Confirm" button near the bottom of the page.</b><p>';
             $p = 0;
             $AddC = 1;
             break;
           case 2: // Ok apart from bank account
             $Msg = 'Please follow *LINK*, fill in your bank account details (so we can pay you), then click "Save Changes".<p> ' .
                   'Then you will be able to view and confirm your contract, ' .
-                  'by clicking on the "Confirm" button. (The button will only appear once you have input your bank account details ).<p>';
+                  'by clicking on the "Green Confirm" button. (The button will only appear once you have input your bank account details ).<p>';
             $p = 0;
             $AddC = 1;
             break;

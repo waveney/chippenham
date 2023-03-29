@@ -494,13 +494,12 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   if ($Side['IsASide']) {
     if ($Mode) {
       echo "<td class=NotSide>Dancing Invite:" . fm_select($Invite_States,$Sidey,'Invite');
-          // "<td colspan=3 class=NotSide>" . $Sidey['Invited'];
-      if (Access('SysAdmin')) echo "<tr>" . fm_textarea('Messages' . Help('Messages'),$Sidey,'Invited',5,2,'class=NotSide','class=NotSide');
       $Coming_States[0] = 'None';
     }
     echo "<tr>";
     echo fm_radio('Dancing Status',$Coming_States ,$Sidey,'Coming','',1,'colspan=4 id=Coming_states','',$Coming_Colours,0,'',' onchange=ComeAnyWarning()'); 
   }
+  if (Access('SysAdmin')) echo "<tr>" . fm_textarea('Messages' . Help('Messages'),$Sidey,'Invited',5,2,'class=NotSide','class=NotSide');
 
   // Performers booking states
   if ($Mode) {

@@ -55,6 +55,7 @@ if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
 
   $prefix = '';
 
+  
     if ($proforma) $prefix .= "<span " . Music_Proforma_Background($proforma) . ">$proforma:";
     $prefix .= date('j/n/y');
     if ($proforma) $prefix .= "</span>";
