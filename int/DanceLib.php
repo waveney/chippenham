@@ -138,7 +138,7 @@ function Show_Side($snum,$Message='',$price=0) {
     $syear = Get_SideYear($snum,$YEAR);
 
     $Banner = 1;
-    if ($side['Photo']) $Banner = $side['Photo'];
+    if ($side['Photo'] && Feature('PerformerBanners')) $Banner = $side['Photo'];
     dohead($side['SN'],[],$Banner);
     if ($Message) echo "<h2 class=ERR>$Message</h2>"; 
 
