@@ -145,7 +145,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     if (!empty($Side['Email'])) $str .= "<tr><td>Email:<td>" . $Side['Email'];    
     
     if ($Side['HasAgent']) {
-      $str .= "<tr><td><b>Agent:</b>" . $Side['Agent'];
+      $str .= "<tr><td><b>Agent:</b>" . $Side['AgentName'];
       if (!empty($Side['AgentAddress'])) $str .= "<tr><td>Address:<td>" . $Side['AgentAddress'] . "<br>" . $Side['AgentPostCode'];
       if (!empty($Side['AgentPhone'])) $str .= "<tr><td>Phone:<td>" . $Side['AgentPhone'];    
       if (!empty($Side['AgentMobile'])) $str .= "<tr><td>Mobile:<td>" . $Side['AgentMobile'];
