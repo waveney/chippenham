@@ -35,9 +35,35 @@ case 'J': // Dont Save
   echo $Sidey['Invited'];
   break;
   
-case 'R': // Read
+case 'K': // Same as I/J but for Music data not dance data
+case 'L': // Dont Save
+  include_once("MusicLib.php");
   $Sidey = Get_SideYear($id);
+  if (!$Sidey) $Sidey = Default_SY($id);
+  $prefix = '';
+  $label = (isset($_GET['L'])?$_GET['L']:'');
+  
+  if ($label) $prefix .= "<span " . Music_Proforma_Background($label) . ">$label:";
+  $prefix .= date('j/n/y');
+  if ($label) $prefix .= "</span>";
+  if (strlen($Sidey['Invited'])) {
+    $Sidey['Invited'] = $prefix . "XX, " . $Sidey['Invited'];
+  } else {
+    $Sidey['Invited'] = $prefix;  
+  }
+  
+  if ($Opt == 'K') {
+    if ($label == 'Contract') {
+      $Sidey['YearState'] = $Book_State['Contract Sent'];
+    }
+    Put_SideYear($Sidey);
+  }
   echo $Sidey['Invited'];
+  break;
+  
+case 'R': // Read SideYear
+  $Sidey = Get_SideYear($id);
+  echo $Sidey[$_GET['F']];
   break;  
   
 case 'Y':
@@ -55,6 +81,13 @@ case 'TP':
     $tl['Completed'] = time();
   };
   Put_TLent($tl);
+  break;
+  
+case 'Z':
+  $Sidey = Get_SideYear($id);
+  if (!$Sidey) $Sidey = Default_SY($id);
+  $State = $Sidey['YearState'];
+  echo "<td style='background-color:" . $Book_Colours[$State] . "' id=BookState$id >" . $Book_States[$State];
   break;
   
 default:

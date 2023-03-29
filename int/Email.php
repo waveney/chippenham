@@ -63,6 +63,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
   global $FESTSYS,$CONF;
   
 //  echo "Debug: XXX" .( UserGetPref('EmailDebug')?2:0) . "<p>";
+//var_dump($sub,$attachments,$to);
   $Send = 1;
   if (!empty($CONF['testing'])){
     if (strstr($CONF['testing'],'@')) { 
@@ -408,6 +409,14 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
   Parse_Proforma($Mess,$helper,$helperdata,0,$attachments,$embeded);
   
   NewSendEmail($Src,$SrcId,$to,$subject,$Mess,$attachments,$embeded,$from);
+
+  if (isset($Prof)) {
+    $Callback = $helper . "_Callback";
+//    echo "Got Here";
+    if (function_exists($Callback)) {
+      $Callback($mescat,$helperdata);
+    }
+  }
   
   if ($logfile) {
     $logf = fopen("LogFiles/$logfile","a");

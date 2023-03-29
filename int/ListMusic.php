@@ -134,6 +134,13 @@
     echo "</thead><tbody>";
 
   if (Access('SysAdmin')) {
+    echo "Debug: <span id=DebugPane></span><p>"; 
+  } else {
+    echo "<div hidden><tr><td>Debug:<td colspan=8><span id=DebugPane></span><p></div>"; 
+  }
+
+
+  if (Access('SysAdmin')) {
     echo "<tr><td>Debug:<td colspan=8><span id=DebugPane></span>"; 
   }
   
@@ -200,7 +207,7 @@
                   if (!FestFeature('EnableCancelMsg')) continue 2;
                   break;
               }
-                echo "<button type=button id=$ac$snum class=ProfButton onclick=MProformaSend('Music_$ac',$snum,'$ac','SendPerfEmail')" . 
+                echo "<button type=button id=$ac$snum class=ProfButton onclick=MList_ProformaSend('Music_$ac',$snum,'$ac','SendPerfEmail')" . 
                      Music_Proforma_Background($ac) . ">$ac</button>"; 
 
 

@@ -377,21 +377,23 @@ function &Other_All() {
   return $All;
 }
 
-function Contract_Save($Side,$Sidey,$Reason,$exist=0) {
+function Contract_Save(&$Side,&$Sidey,$Reason,$exist=0) {
   global $PLANYEAR,$Book_State;
   include_once("Contract.php");
   $snum = $Side['SideId'];
   $Cont = Show_Contract($snum,$Reason);
   if (!Contract_Check($snum)) {
     $IssNum = abs($Sidey['Contracts'])+ ($exist?0:1);
+    if ($Reason < 0) $IssNum .= "D";
     $_POST['Contracts'] = $IssNum;
     $_POST['ContractDate'] = time();
     $_POST['YearState'] = $Book_State['Contract Signed'];
     if (!file_exists("Contracts/$PLANYEAR")) mkdir("Contracts/$PLANYEAR",0775,true);
     file_put_contents("Contracts/$PLANYEAR/$snum.$IssNum.html",$Cont);
     exec("html2pdf Contracts/$PLANYEAR/$snum.$IssNum.html Contracts/$PLANYEAR/$snum.$IssNum.pdf");
-    return 1;
+    return "Contracts/$PLANYEAR/$snum.$IssNum.pdf";
   }
+  return '';
 }
 
 function Contract_Decline($Side,$Sidey,$Reason) {
@@ -523,6 +525,9 @@ function Contract_State_Check(&$Sidey,$chkba=1) {
       break;
 
     case $Book_State['Contract Signed']:
+      break;
+    
+    case $Book_State['Contract Sent']:
       break;
   }
   if ($ys != $Sidey['YearState']) {

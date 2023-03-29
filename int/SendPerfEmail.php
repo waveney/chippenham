@@ -4,7 +4,7 @@ include_once("fest.php");
 include_once("DanceLib.php");
 include_once("MusicLib.php");
 include_once("Email.php");
-global $FESTSYS,$PLANYEAR,$USER,$USERID,$PerfTypes;
+global $FESTSYS,$PLANYEAR,$USER,$USERID,$PerfTypes,$CONF;
 
 A_Check("Staff");
 
@@ -40,7 +40,7 @@ if (isset($_REQUEST['REEDIT'])) {
   $id = $_REQUEST['I'];
   $proforma = (isset($_REQUEST['N'])?$_REQUEST['N']:'');
   $label = (isset($_REQUEST['L'])?$_REQUEST['L']:"");
-  $Atts = (isset($_REQUEST['ATTS'])?json_decode($_REQUEST['ATTS'],true):0);
+  $Atts = (isset($_REQUEST['ATTS'])?json_decode($_REQUEST['ATTS'],true):[]);
 
 //  var_dump($Atts);
   $Side = Get_Side($id);
@@ -52,9 +52,9 @@ if (isset($_REQUEST['REEDIT'])) {
     $To = $Side[$_REQUEST['E']];
   }
 
-  if (isset($_POST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
+  if (isset($_REQUEST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
 
-  if (isset($_POST['SEND'])) {
+  if (isset($_REQUEST['SEND'])) {
 
     $From = '';
 
@@ -102,13 +102,14 @@ if (isset($_REQUEST['REEDIT'])) {
     }
   
 //  var_dump($too); exit;  
+//var_dump($Atts);
   echo Email_Proforma(1,$id,$too,$Mess,$subject,'Dance_Email_Details',[$Side,$Sidey],$logfile='Dance',$Atts);
   
+  Dance_Email_Details_Callback($proforma,[$Side,$Sidey]);
   // Log to "Invited field"
   $prefix = '';
 
-    if (strlen($Sidey['Invited'])) $Sidey['Invited'] .= ", ";
-    if ($label) $prefix .= "<span " . Proforma_Background($label) . ">$label:";
+    if ($label) $prefix .= "<span " . Music_Proforma_Background($label) . ">$label:";
     $prefix .= date('j/n/y');
     if ($label) $prefix .= "</span>";
     if (strlen($Sidey['Invited'])) {
@@ -122,6 +123,8 @@ if (isset($_REQUEST['REEDIT'])) {
     if ($label == 'Change' || $label == 'Reinvite') {
       Dance_Record_Change($id, $prefix);
     }
+//var_dump($Atts);
+//    if (empty($CONF['testing'])) 
     echo "<script>window.close()</script>"; 
     exit;
   }
@@ -141,7 +144,7 @@ if (isset($_POST['PREVIEW'])) {
 echo "<h3>Edit the message below, then click Preview, Send or Cancel</h3>";
 echo "Put &lt;p&gt; for paras, &lt;br&gt; for line break, &lt;b&gt;<b>Bold</b>&lt;/b&gt;, &amp;amp; for &amp;, &amp;pound; for &pound; <p> ";
 
-echo "<form method=post>" . fm_hidden('id',$id) . fm_hidden('L',$label);
+echo "<form method=post>" . fm_hidden('id',$id) . fm_hidden('L',$label) . fm_hidden('N',$proforma);
 echo fm_textarea("CC",$_POST,'CCs',6,1); 
 if (isset($Atts) && $Atts) {
   echo " Attached: ";

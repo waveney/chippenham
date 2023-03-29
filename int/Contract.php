@@ -22,6 +22,8 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $Side = ['SN' => '<span class=NotSide>Dummy Performer</span>','StagePA'=>'Just a Mike', 
              'SortCode'=>'<span class=NotSide>99 99 99</span>', 'Account'=>'<span class=NotSide>12345678</span>', 
              'AccountName' => '<span class=NotSide>Mystery Products</span>', 'HasAgent'=>0, 'WantCheque'=>0,
+             'Contact' => '<span class=NotSide>Freeda Bloggs</span>', 'Email' => '<span class=NotSide>Junk@Spam.net</span>', 
+             'Mobile' => '<span class=NotSide>0987 6543 210</span>', 'Address' => '<span class=NotSide>No fixed abode</span>'
             ];
     $Sidey = ['ContractDate'=>time(),
               'Year'=>$YEAR,
@@ -136,15 +138,18 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $str .= "</center><p><h1>Specific &amp; Detailed Information</h1>";
     $str .= "<table border><tr><td><b>Artist Details</b><td>" . $Side['SN'];
     if (!empty($Side['Contact'])) $str .= "<tr><td>Contact:<td>" . $Side['Contact'];
-    if (!empty($Side['Address'])) $str .= "<tr><td>Address:<td>" . $Side['Address'] . "<br>" . $Side['PostCode'];
+    if (!empty($Side['Address'])) $str .= "<tr><td>Address:<td>" . $Side['Address'];
+    if (!empty($Side['PostCode'])) $str .= "<br>" . $Side['PostCode'];
     if (!empty($Side['Phone'])) $str .= "<tr><td>Phone:<td>" . $Side['Phone'];    
     if (!empty($Side['Mobile'])) $str .= "<tr><td>Mobile:<td>" . $Side['Mobile'];    
+    if (!empty($Side['Email'])) $str .= "<tr><td>Email:<td>" . $Side['Email'];    
     
     if ($Side['HasAgent']) {
       $str .= "<tr><td><b>Agent:</b>" . $Side['Agent'];
       if (!empty($Side['AgentAddress'])) $str .= "<tr><td>Address:<td>" . $Side['AgentAddress'] . "<br>" . $Side['AgentPostCode'];
       if (!empty($Side['AgentPhone'])) $str .= "<tr><td>Phone:<td>" . $Side['AgentPhone'];    
       if (!empty($Side['AgentMobile'])) $str .= "<tr><td>Mobile:<td>" . $Side['AgentMobile'];
+      if (!empty($Side['AgentEmail'])) $str .= "<tr><td>Email:<td>" . $Side['AgentEmail'];    
     }
   
     $str .= "<tr><td><b>Festival Details</b>";

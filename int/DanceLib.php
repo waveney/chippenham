@@ -320,7 +320,7 @@ function Put_SideYear(&$data,$Force=0) {
       $rec .= "$fld='" . $val . "'";
     }
   }
-//var_dump($rec);
+//return var_export($fcnt);
 //var_dump($data);
   if (!$fcnt) return 0;
   if ($Up) $rec .= " WHERE syId='" . $Save['syId'] . "'";
@@ -855,13 +855,40 @@ function Dance_Email_Details($key,&$data,&$att=0) {
             $AddC = 1;
         }
       }
-//    if ($AddC) $att[] = ??;
+      
+    if (is_array($att) && $AddC) {
+//      var_dump($att);
+      $att[] = Contract_Save($Side,$Sidey,($Sidey['YearState'] == $Book_State['Contract Ready']?-1:1),1);
+    }
 //    if ($AddC) $Msg .= "<div id=SideProg$id>" . Show_Contract($id,$p) . "</div><p>\n";
     return $Msg;
     }
   return '';
   }
 }
+
+function Dance_Email_Details_Callback($mescat,$data) {
+  global $Trade_Days,$TradeLocData,$TradeTypeData,$YEAR,$PLANYEAR,$Book_State;
+// $str = "In Callback - $mescat<p>";
+  switch ($mescat) {
+  case 'Music_Contract':
+//    $str .= " Got to contract ";
+    $Side = &$data[0];
+    if (isset($data[1])) $Sidey = &$data[1];
+    $snum = $Side['SideId'];
+    if (isset($Sidey)) {
+      $Sidey['YearState'] = $Book_State['Contract Sent'];
+//      $str .= var_export($Sidey);
+      Put_SideYear($Sidey);
+//      $str .= "Updated State to " . $Sidey['YearState'];
+    }
+  
+    return;
+  default:
+    return;
+  }
+}
+
 
 function Dance_Record_Change($id,$prefix) { // Mark Change on old record if not set, create new record if needed, add message and set invited appropriately
   global $YEAR,$SHOWYEAR,$PLANYEAR,$YEARDATA;

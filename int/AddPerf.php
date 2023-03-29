@@ -236,8 +236,15 @@
     }
 
     if (($Book_States[$Sidey['YearState']] == 'Contract Ready') && Access('Staff') && $capmatch) {
-      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Generic Contract'>";
-      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Bespoke Contract'>";  
+      echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',1,'','Invited')" . 
+                     Music_Proforma_Background('Contract') . ">Email Generic Contract</button>"; 
+      echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',2,'','Invited')" . 
+                     Music_Proforma_Background('Contract') . ">Email Bespoke Contract</button>"; 
+
+//      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Generic Contract'>";
+//      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Bespoke Contract'>";  
+    } else {
+//      var_dump( $Book_States[$Sidey['YearState']] , $capmatch);
     }
 
     echo "</center>\n";

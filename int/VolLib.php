@@ -481,7 +481,11 @@ function VolFormM(&$Vol,$Err='',$View=0) {
   echo "<li>Which <b>team(s)</B>. you would like to be part of, along with any likes, dislikes and team related details.\n";
   echo "<li>Your <b>availability</b> this year.\n";
   echo "<li>Anything special this year and the <b>submit</b> button.<p>";
-  echo "</ol><div><table border>\n";
+  echo "</ol><div>\n";
+  
+  echo "Volunteers get free festival tickets (and camping if they want it).<p>";
+  
+  echo "<table border>\n";
   echo "<tr><td><h3><center>Part 1: The Volunteer</center></h3>";
   
   if (Access('SysAdmin')) echo "<tr><td>id: $Volid";

@@ -377,7 +377,13 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       echo "<td class=NotSide><button type=submit formaction='ViewEmailLog?Src=1&id=$snum'>View Email Log</button>" . help('EmailLog');
       
     }
-  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";
+  if (Access('SysAdmin')) {
+    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+//    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p>" ; //<span id=DebugPane></span>";
+  } else {
+//    echo "<div hidden><tr><td class=NotSide>Debug:<td colspan=5 class=NotSide><span id=DebugPane></span><p></div>"; 
+  }
+
 
   echo "</table></div>\n";
 }
@@ -476,7 +482,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     include_once('BudgetLib.php');
     Contract_State_Check($Sidey,0);
          
-    echo "<tr>";
+    echo "<tr><td class=NotSide>id: " . $Sidey['syId'];
       $Perfs = [];
       foreach ($PerfTypes as $t=>$d) if (Capability("Enable" . $d[2])) if ($Side[$d[0]]) $Perfs[] = $d[2];
       $AllMU = Get_AllUsers4Perf($Perfs,$Sidey['BookedBy']);
@@ -487,8 +493,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   // Dance Invites and States
   if ($Side['IsASide']) {
     if ($Mode) {
-      echo "<td class=NotSide>Dancing Invite:" . fm_select($Invite_States,$Sidey,'Invite') . 
-           "<td colspan=3 class=NotSide>" . $Sidey['Invited'];
+      echo "<td class=NotSide>Dancing Invite:" . fm_select($Invite_States,$Sidey,'Invite');
+          // "<td colspan=3 class=NotSide>" . $Sidey['Invited'];
       if (Access('SysAdmin')) echo "<tr>" . fm_textarea('Messages' . Help('Messages'),$Sidey,'Invited',5,2,'class=NotSide','class=NotSide');
       $Coming_States[0] = 'None';
     }
@@ -905,6 +911,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
 
         break;
       case $Book_State['Contract Ready']:
+      case $Book_State['Contract Sent']:
         echo "<tr class=ContractShow hidden><td><a href=ViewContract?sidenum=$snum&Y=$YEAR>View Proposed Contract</a>";
         if ($Sidey['Contracts'] >= 1) $old = $Sidey['Contracts'];
         break;
@@ -912,6 +919,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         echo "<tr class=ContractShow hidden><td><a href=ViewContract?sidenum=$snum&Y=$YEAR>View DRAFT Contract</a>";
         if ($Sidey['Contracts'] >= 1) $old = $Sidey['Contracts'];
         break;
+        
       default:
         break;
       }
@@ -926,6 +934,23 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         echo "<td>Contract Confirmed " .$ContractMethods[$Sidey['ContractConfirm']] . " on " . date('d/m/y',$Sidey['ContractDate']) . "\n";
         break;
       case $Book_State['Contract Ready']:
+        $CMess = Contract_Check($snum);
+        if ($CMess == '') {
+          if ($Mode) {
+            echo "<td colspan=2>The Contract is ready to be sent";
+          } else {
+            echo "<td colspan=2>The Contract is ready to be sent";
+          }
+        } else {
+          echo "<td colspan=3>";
+          if ($CMess && $Mode) { 
+            echo "<span class=red>" . $CMess . "</span>"; 
+          } else { 
+            echo "The contract is not yet ready.";
+          };
+        }
+        break;
+      case $Book_State['Contract Sent']:
         $CMess = Contract_Check($snum);
         if ($CMess == '') {
           if ($Mode) {

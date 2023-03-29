@@ -20,6 +20,8 @@
        
   if (Access('SysAdmin')) {
     echo "Debug: <span id=DebugPane></span><p>"; 
+  } else {
+    echo "<div hidden>Debug: <span id=DebugPane></span><p></div>"; 
   }
 
   $col5 = $col6 = $col7 = $col7 = $col8 = $col9 = $col9a = $col9b = $col9c = $col10 = '';

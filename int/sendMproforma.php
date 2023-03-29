@@ -50,6 +50,19 @@ if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
             ['from',$From . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $From],
             ['replyto',$From . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $From]];
 
-echo Email_Proforma(1,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],$logfile='Perf');
+  Email_Proforma(1,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],$logfile='Perf');
+  Dance_Email_Details_Callback($proforma,[$Side,$Sidey]);
 
+  $prefix = '';
+
+    if ($proforma) $prefix .= "<span " . Music_Proforma_Background($proforma) . ">$proforma:";
+    $prefix .= date('j/n/y');
+    if ($proforma) $prefix .= "</span>";
+    if (strlen($Sidey['Invited'])) {
+      $Sidey['Invited'] = $prefix . ", " . $Sidey['Invited'];
+    } else {
+      $Sidey['Invited'] = $prefix;  
+    }
+    Put_SideYear($Sidey);
+//echo $Res;
 ?>

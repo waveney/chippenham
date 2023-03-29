@@ -3,7 +3,7 @@
 include_once("fest.php");
 include_once("DanceLib.php");
 include_once("Email.php");
-global $FESTSYS,$PLANYEAR,$USERID;
+global $FESTSYS,$PLANYEAR,$USERID,$CONF;
 
 A_Check("Staff","Dance");
 

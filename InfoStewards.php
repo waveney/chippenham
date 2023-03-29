@@ -10,6 +10,8 @@
        "skills and expertise to the event free of charge. $PLANYEAR's event runs from " . FestDate($YEARDATA['FirstDay'],'Y') . " to " . 
        FestDate($YEARDATA['LastDay'],'Y') . ", there are many different ways in which you can get involved...<p>" .
        "When you get to the form you can select more than one team.<p>";
+       
+  echo "Volunteers get free tickets and camping.<p>";
 
 
   $Vol_Cats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
