@@ -13,7 +13,7 @@ function Gen_Put($Table, &$now, $idx='id') {
   if (isset($now[$idx])) {
     $e=$now[$idx];
     $Cur = Gen_Get($Table,$e,$idx);
-//echo "Updating $Table with ";var_dump($now);debug_print_backtrace(); echo "<P>";
+
     return Update_db($Table,$Cur,$now);
   } else {
     return $now[$idx] = Insert_db ($Table, $now );

@@ -144,7 +144,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     if (!empty($Side['Mobile'])) $str .= "<tr><td>Mobile:<td>" . $Side['Mobile'];    
     if (!empty($Side['Email'])) $str .= "<tr><td>Email:<td>" . $Side['Email'];    
     
-    if ($Side['HasAgent']) {
+    if ($Side['HasAgent'] && $Side['AgentName']) {
       $str .= "<tr><td><b>Agent:</b>" . $Side['AgentName'];
       if (!empty($Side['AgentAddress'])) $str .= "<tr><td>Address:<td>" . $Side['AgentAddress'] . "<br>" . $Side['AgentPostCode'];
       if (!empty($Side['AgentPhone'])) $str .= "<tr><td>Phone:<td>" . $Side['AgentPhone'];    
@@ -167,14 +167,14 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     if ($Sidey['ReportTo'] == 1 ) { // No actions
     } else if ($Sidey['ReportTo'] != 0 ) {
       $Reporttos = Report_To();
-      $str .= "<tr><td><b>ON ARRIVAL</b>: Please report to:<td>" . Venue_Parents($Venues, $Sidey['ReportTo']) . "<a href='https://" .  $_SERVER['HTTP_HOST'] . 
+      $str .= "<tr><td><b>ON ARRIVAL</b> Please report to:<td>" . Venue_Parents($Venues, $Sidey['ReportTo']) . "<a href='https://" .  $_SERVER['HTTP_HOST'] . 
              "/int/VenueShow?v=" . $Sidey['ReportTo'] . "'><b>" .
              $Reporttos[$Sidey['ReportTo']] . "</b></a> (click for map and directions)<p>\n";
     }
 
     $str .= "<tr><td><b>Expected Performance Duration</b><td>" . 
       "$evc performance" . ($evc>1?'s':'') . ", with a total duration of " . ($evv?"at least ":"") . DurationFormat($evd) . "<p>\n";
-    $str .= "<tr><td>Known Times<br>See the festival website and/or festival information for more<td>" . $Evstr;
+    $str .= "<tr><td>Current known times<br>See the festival website and/or festival information for more<td>" . $Evstr;
 
     $PayTypes = ['BACS','Cheque'];
     if (!Feature('PayByCheque')) $Side['WantCheque'] = 0;

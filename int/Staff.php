@@ -505,7 +505,8 @@
 //      $txt .= "<li><a href=BannerManage>Manage Banners</a> \n";
       $txt .= "<li><a href=DonateTypes?Y=$YEAR>Donation Buttons Setup</a> \n";
       $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
-      $txt .= "<li><a href=TsAndCs?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
+      $txt .= "<li><a href=TsAndCs?Y=$YEAR>Old Terms, Conditions, FAQs etc</a> \n";
+      $txt .= "<li><a href=TsAndCs2?Y=$YEAR>New Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";
       $txt .= "<li><a href=MasterData>Festival System Data Settings</a> \n";
     }
