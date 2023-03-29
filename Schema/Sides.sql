@@ -80,6 +80,7 @@ CREATE TABLE `Sides` (
   `DocDirNum` int NOT NULL,
   `RelOrder` int NOT NULL,
   `OneBlurb` tinyint NOT NULL,
+  `ContractAnyway` tinyint NOT NULL,
   PRIMARY KEY (`SideId`),
   KEY `SideNum` (`SideId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

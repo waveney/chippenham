@@ -670,7 +670,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         
         case 'Chip':
           if ($Side['IsASide']) {
-            echo "<tr><td colspan=6>Festival Tickets wanted at <span id=TickDiscount>No discount</span> - You will be sent a link to purchase these by the festival." .
+            echo "<tr><td colspan=6>Festival Tickets wanted at <span id=TickDiscount>No discount</span> - You will be sent a link to purchase these by the festival. " .
                  "Set Adults to -1 if you don't want any";
             echo "<tr>" . fm_number1('Adults',$Sidey,'Performers','',' onchange=CheckIfTickets() ') . 
                  fm_number1('Youth (10-16)',$Sidey,'PerformersYouth','',' onchange=CheckIfTickets() ') .
@@ -720,7 +720,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     echo "<tr class='NotCSide ContractShow' hidden>" . fm_textarea('Additional Riders',$Sidey,'Rider',2,1,'class=NotCSide') ."\n";
       if (!$Wide) echo "<tr>";
       echo "<td colspan=2 class=NotCSide>On arrival report to: " . fm_select($R2Venues,$Sidey,'ReportTo') .
-           "<td class=NotCSide colspan=2 >" . fm_checkbox('Tell about Green Room',$Sidey,'GreenRoom');
+           "<td class=NotCSide>" . fm_checkbox('Tell about Green Room',$Sidey,'GreenRoom');
+      if (empty($Sidey['TotalFee'])) echo "<td class=NotCSide>" . fm_checkbox('Need a contract even if no fee',$Sidey,'ContractAnyway');
 
     $campxtr = $campxtr2 = '';          
     switch ($CampMode) {

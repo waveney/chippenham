@@ -456,6 +456,7 @@ Contract Signed - Enables listing to public.',
         'ReportTo' => 'For the arrival statement in contract.  Most will report to the Infomation Point, None means no statement in contract, Green Room will say report to Green Room',
         'Coming' => 'Please indicate you have got the invite and then update when you have made a decision',
         'Messages' => 'To Edit ask Richard (for now)',
+        'ContractAnyway' => 'Forces contract even if none are needed',
 
   );
   Set_Help_Table($t);
