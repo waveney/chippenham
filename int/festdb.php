@@ -305,6 +305,11 @@ function Capability($Name,$default='') {  // Return value of Capability if set f
 }
 
 function TnC($Name,$default='') {  // Return value of T and C if set from TsAndCs
+  $Res = Gen_Get_Cond1('TsAndCs2',"Name='$Name'");
+  return $Res['Content'];
+}
+
+function OldTnC($Name,$default='') {  // Return value of T and C if set from TsAndCs
   static $TsAndCs;
   if (!$TsAndCs) $TsAndCs = Gen_Get("TsAndCs",1);
   if (!empty($TsAndCs[$Name])) return $TsAndCs[$Name];

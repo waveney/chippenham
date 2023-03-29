@@ -188,6 +188,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $str .= "</table><p>";
     
     $faq = TnC('PerfTnC');
+//var_dump($faq);
     Parse_Proforma($faq);
 
     $str .= $faq;
