@@ -104,7 +104,11 @@
   }
   $TotalDays = array_sum($DaysUsed);
   
-
+  $Header = TnC("Sherlock_$Type");
+  if (!empty($Header)) {
+    echo $Header;
+    echo "<p>";
+  }
   if ($Evs && $Complete) {
     if ($Complete <4 || $YEAR!=$SHOWYEAR) echo "<h2>" . $Titles[$Complete] . "</h2>";
     
@@ -118,6 +122,7 @@
       Init_Map(-1,0,17,$MapFeat);
       echo "</div>";    
     }
+    
     
 //var_dump($TotalDays,$DaysUsed);
     if ($TotalDays > 1) {
