@@ -835,7 +835,7 @@ function List_Vols() {
   $coln = 0;
 // var_dump($VolCats);  
   echo "<form method=post>";
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=tablecont><table id=indextable border class=altcolours>\n";
   echo "<thead><tr>";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
@@ -895,7 +895,7 @@ function List_Vols() {
 
 //    var_dump($VY);
     $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$id>";
-    echo "<tr class='$VClass " . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || ($VY['Status'] == 4))?" FullD' hidden" : "'" ) . ">";
+    echo "<tr class='altcolours $VClass " . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || ($VY['Status'] == 4))?" FullD' hidden" : "'" ) . ">";
     echo "<td>$id";
     echo "<td>$link" . $Vol['SN'] . "</a>";
     echo "<td>" . $Vol['Email'];

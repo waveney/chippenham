@@ -1673,3 +1673,6 @@ ol ol > li:before {
 .smalltext {
   font-size:8pt;
 }
+
+.altcolours tr:nth-child(even) {background-color: #CCC;}
+.altcolours tr:nth-child(odd) {background-color: #FFF;}

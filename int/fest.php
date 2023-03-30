@@ -46,9 +46,10 @@ $PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance Displays','D'],
               'Comedy'=>['IsFunny','Comedy','Comedy','Comedy','C'],
               'Child Ent'=>['IsFamily','Family.Festival','Family','Family and Community','Y'],
               'Other'=>['IsOther','Other','OtherPerf','Other Performers','O'],
-              'Ceilidh'=>['IsCeilidh','Ceilidh','Ceilidh','Ceilidhs and Dances','H'],              
+              'Ceilidh'=>['IsCeilidh','Ceilidh','Ceilidh','Ceilidhs and Dances','H'], 
+              'Not Perf'=>['IsNonPerf','','NonPerf','','X'],             
               ];
-$PerfIdx = ['Side'=>0,'Act'=>1,'Comic'=>2,'ChEnt'=>3,'Other'=>4,'Ceilidh'=>5];
+$PerfIdx = ['Side'=>0,'Act'=>1,'Comic'=>2,'ChEnt'=>3,'Other'=>4,'Ceilidh'=>5,'NonPerf'=>6];
 $SourceTypes = ['None','Perf','Trade','Finance','User','SignUp'];
 
 // Perfname => [field to test, email address for,Capability name,budget,shortCode]

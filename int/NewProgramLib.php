@@ -595,10 +595,10 @@ function Grab_Music_Data($day='') {
         $EV[$v][$t]['n'] = $ev['SN'];
         $ll = 1;
       }
-      if ($ev["Act1"]) { $EV[$v][$t]['S1'] = $ev["Act1"]; } 
-      if ($ev["Act2"]) { $lineLimit[$t] = max($lineLimit[$t],2+$ll); $EV[$v][$t]['S2'] = $ev["Act2"]; }
-      if ($ev["Act3"]) { $lineLimit[$t] = max($lineLimit[$t],3+$ll); $EV[$v][$t]['S3'] = $ev["Act3"]; }
-      if ($ev["Act4"]) { $lineLimit[$t] = max($lineLimit[$t],4+$ll); $EV[$v][$t]['S4'] = $ev["Act4"]; }
+      if ($ev["Side1"]) { $EV[$v][$t]['S1'] = $ev["Side1"]; } 
+      if ($ev["Side2"]) { $lineLimit[$t] = max($lineLimit[$t],2+$ll); $EV[$v][$t]['S2'] = $ev["Side2"]; }
+      if ($ev["Side3"]) { $lineLimit[$t] = max($lineLimit[$t],3+$ll); $EV[$v][$t]['S3'] = $ev["Side3"]; }
+      if ($ev["Side4"]) { $lineLimit[$t] = max($lineLimit[$t],4+$ll); $EV[$v][$t]['S4'] = $ev["Side4"]; }
     } else { // No Handling of BEs yet
     }
   }

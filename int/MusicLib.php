@@ -454,8 +454,8 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
   if ($ret) return $InValid;  
   if ($InValid == 0) {
     $act = Get_Side($snum);
-//    if (!$act['Description']) return "No Short Blurb";
-    if (!$act['Photo']) return "No Photo";
+    if (Feature('NeedShortBlurb') && !$act['Description']) return "No Short Blurb";
+    if (Feature('NeedPhoto') && !$act['Photo']) return "No Photo";
   }
   return $Check_Fails[$InValid];
 }
@@ -465,9 +465,15 @@ function Contract_Changed(&$Sidey) {
   global $Book_State,$YEAR;
   if (empty($Sidey['SideId'])) return 0;
   $snum = $Sidey['SideId'];
+
   if ($Sidey['YearState'] == $Book_State['Contract Signed']) {
     $chk = Contract_Check($snum);
     $Sidey['YearState'] = ($chk == ''? $Book_State['Contract Ready'] : ($chk == 'Start Time'? $Book_State['Confirmed'] : $Book_State['Booking']));
+    Put_SideYear($Sidey);
+    return 1;
+  } else if ($Sidey['YearState'] == $Book_State['Contract Sent']) {
+    $chk = Contract_Check($snum);
+    $Sidey['YearState'] = ($chk == ''? $Book_State['Contract Ready'] : ($chk == 'Start Time'? $Book_State['Contract Sent'] : $Book_State['Booking']));
     Put_SideYear($Sidey);
     return 1;
   } else if (!Contract_Check($snum)) {
@@ -599,6 +605,7 @@ function Music_Actions($Act,&$side,&$Sidey) { // Note Sidey MAY have other recor
   }
 }
 
+// OLD CODE
 function MusicMail($data,$name,$id,$direct) {
   include_once("Contract.php");
   global $USER,$Book_State;
@@ -649,7 +656,7 @@ function Music_Email_Too(&$data) {
   global $FESTSYS,$YEAR;
   $em = $name = '';
   
-  if (isset($data['HasAgent']) && ($data['HasAgent']) && isset($data["AgentEmail"])) {
+  if (isset($data['HasAgent']) && ($data['HasAgent']) && isset($data["AgentEmail"]) && !isset($data['BookDirect'])) {
     $em = $data['AgentEmail'];
     $name = firstword($data['AgentName']);
   } else if ($data['Email']) {

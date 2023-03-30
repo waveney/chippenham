@@ -271,7 +271,7 @@ A similar feature will appear eventually for music.<p>
   } else {
     $eid = -1;
     $Event = array();
-    if (isset($_GET['Act'])) $Event['Act1'] = $_GET['Act'];
+    if (isset($_GET['Act'])) $Event['Side1'] = $_GET['Act'];
   }
 
 // $Event_Types = array('Dance','Music','Workshop','Craft','Mixed','Other');

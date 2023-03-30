@@ -170,7 +170,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   echo "<tr><td>";
     if (isset($OtherVenues[0])) {
 
-      echo "Starting Location:<td>" . Venue_Parents($OVens,$E['Venue']) . "<a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
+      echo "Starting Location:<td>" . Venue_Parents($OVens,$Ev['Venue']) . "<a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
 //      echo "<div class=floatright><a onclick=ShowDirect(" . $Ven['VenueId'] . ")>Directions</a></div>\n";
       if ($Ven['Address']) echo " - " . $Ven['Address'] . $Ven['PostCode'] ."\n";
       if ($Ven['Description']) echo "<br>" . $Ven['Description'] . "\n";

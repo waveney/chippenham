@@ -9,6 +9,7 @@ CREATE TABLE `Sides` (
   `IsFunny` tinyint NOT NULL,
   `IsFamily` tinyint NOT NULL,
   `IsCeilidh` tinyint NOT NULL,
+  `IsNonPerf` tinyint NOT NULL,
   `Importance` int NOT NULL,
   `DiffImportance` tinyint NOT NULL,
   `DanceImportance` tinyint NOT NULL,
