@@ -17,7 +17,7 @@ if (isset($YEAR)) {
 
 $Access_Levels = ['','Participant','Upload','Steward','Staff','Committee','SysAdmin','Internal'];// Sound Engineers will be Stewards, Upload not used yet
 $Access_Type = array_flip($Access_Levels);
-$Area_Levels = [ 'No','Edit','Edit and Report'];
+$Area_Levels = [ 'No','Edit']; //,'Edit and Report'];
 $Area_Type = array_flip($Area_Levels);
 $Sections = ['', 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','Other','TLine','Bugs','Photos','Comedy','Family','News','Volunteers','Art',
    'Tickets','Events','Ceilidh']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD

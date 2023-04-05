@@ -56,10 +56,11 @@ if (isset($_REQUEST['REEDIT'])) {
 
   if (isset($_REQUEST['SEND'])) {
 
-    $From = '';
-
+    $ReplyTo = '';
+    $ReplyName = '';
     $IsAC = 0;
     set_user();
+
 
     foreach ($PerfTypes as $t=>$p) {
       if ($Side[$p[0]]) {
@@ -67,29 +68,32 @@ if (isset($_REQUEST['REEDIT'])) {
         $EmailsFrom = Feature($p[1] . 'EmailsFrom','');
         if ($IsAC > 1) break;
         if ($EmailsFrom == 'USER') { $IsAC+=2; break; }
-        if (!empty($EmailsFrom)) $From = $EmailsFrom;
+        if (!empty($EmailsFrom)) $ReplyTo = $EmailsFrom;
       }
     }
 
     if (empty($Sidey['BookedBy'])) {
-      $From = $USER['FestEmail'];
-    } else if ($IsAC > 1 || empty($From)) {
+      $ReplyTo = $USER['FestEmail'];
+    } else if ($IsAC > 1 || empty($ReplyTo)) {
       if ($USERID == $Sidey['BookedBy']) {
-        if (!empty($USER['FestEmail'])) $From = $USER['FestEmail'];
+        if (!empty($USER['FestEmail'])) {
+          $ReplyTo = $USER['FestEmail'];
+          if (!strstr($ReplyTo,'@')) $ReplyTo .= $FESTSYS['HostURL'];
+        }
       } else {
         $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
-        $From = $User['FestEmail'];
+        $ReplyTo = $User['FestEmail'];
+        if (!strstr($ReplyTo,'@')) $ReplyTo .= $FESTSYS['HostURL'];
       }
     }
-  
 
     if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
       $To = $Side[$_REQUEST['E']];
     }
 
     $too = [['to',$To,$Side['Contact']],
-            ['from',$From . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $From],
-            ['replyto',$From . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $From]];
+//            ['from',$ReplyTo,$FESTSYS['ShortName']], // WRONG ANYWAY
+            ['replyto',$ReplyTo,$FESTSYS['ShortName']]];
 
 
     if ($_POST['CCs']) {
@@ -103,7 +107,7 @@ if (isset($_REQUEST['REEDIT'])) {
   
 //  var_dump($too); exit;  
 //var_dump($Atts);
-  echo Email_Proforma(1,$id,$too,$Mess,$subject,'Dance_Email_Details',[$Side,$Sidey],$logfile='Dance',$Atts);
+  echo Email_Proforma(1,$id,$too,$Mess,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer',$Atts);
   
   Dance_Email_Details_Callback($proforma,[$Side,$Sidey]);
   // Log to "Invited field"

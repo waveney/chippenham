@@ -420,7 +420,7 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
   
   if ($logfile) {
     $logf = fopen("LogFiles/$logfile","a");
-    fwrite($logf,"\n\nEmail to : " . Pretty_Print_To($to) . "Subject:$subject\n");
+    fwrite($logf,"\n\nOn:" . date('j M Y  H:i:s') . "\nEmail to : " . Pretty_Print_To($to) . "Subject:$subject\n");
     if ($from) fwrite($logf,"From: " . Pretty_Print_To($from));
     fwrite($logf,"\n\n$Mess");
 

@@ -69,7 +69,7 @@ if (isset($_REQUEST['REEDIT'])) {
     }
   
 //  var_dump($too); exit;  
-  echo Email_Proforma(1,$id,$too,$Mess,$subject,'Dance_Email_Details',[$Side,$Sidey],$logfile='Dance',$Atts);
+  echo Email_Proforma(1,$id,$too,$Mess,$subject,'Dance_Email_Details',[$Side,$Sidey],'Dance',$Atts);
   
   // Log to "Invited field"
   $prefix = '';
