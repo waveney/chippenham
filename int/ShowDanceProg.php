@@ -29,10 +29,14 @@
   Init_Map(-1,0,17,3);
   echo "</div>";
   
+  if ($day == 'All') {
+    echo "<h2>Jump to: <a href=#Sunday>Sunday</a> <a href=#Monday>Monday</a></h2>";
+  }
+  
   if ($day == 'All' || $day == 'Sat') {
     Grab_Data('Sat');
     Scan_Data($Cond);
-    if ($Public) echo "<p><h2>Saturday Dance</h2><p>\n";
+    if ($Public) echo "<p id=Saturday><h2>Saturday Dance</h2><p>\n";
 //    echo "This will be easier to use on a small screen soon.<p>";
     echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
     Create_Grid($Cond);
@@ -42,7 +46,7 @@
     if ($Public) {
       Grab_Data("Sun");
       Scan_Data($Cond);
-      echo "<p><h2>Sunday Dance</h2></p>\n";
+      echo "<p id=Sunday><h2>Sunday Dance</h2></p>\n";
 //      echo "This will be easier to use on a small screen soon.<p>";
       echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
       Create_Grid($Cond);
@@ -57,7 +61,7 @@
     if ($Public) {
       Grab_Data("Mon");
       Scan_Data($Cond);
-      echo "<p><h2>Monday Dance</h2></p>\n";
+      echo "<p id=Monday><h2>Monday Dance</h2></p>\n";
 //      echo "This will be easier to use on a small screen soon.<p>";
       echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
       Create_Grid($Cond);
