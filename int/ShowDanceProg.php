@@ -47,7 +47,6 @@
       echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
       Create_Grid($Cond);
       Print_Grid(0,0,$Cond,$Public);
-      dotail();
     } else {
       Controls(0,$Cond);
       ErrorPane(0);

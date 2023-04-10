@@ -62,6 +62,7 @@ function EventCheck($checkid=0) {
           if ($Venues[$ev['Venue']]['SetupOverlap']) {
             if ($end <= $ev['Start'] && $EVENT_Types[$LastEvent['Type']]['HasDance'] ) { // No error
             } else if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$LastEvent['EventId']) {
+//              if (
               echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> at " . SName($Venues[$ev['Venue']]) . " starting at " .
                    $ev['Start'] . " on (A)" . DayList($ev['Day']) . " clashes with <a href=EventAdd?e=" . 
                    $LastEvent['EventId'] . ">this event (" . $LastEvent['SN'] . ")</a><p>\n";

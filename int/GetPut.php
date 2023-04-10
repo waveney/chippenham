@@ -20,32 +20,32 @@ function Gen_Put($Table, &$now, $idx='id') {
   }
 }
 
-function Gen_Get_All($Table, $extra='') {
+function Gen_Get_All($Table, $extra='', $idx='id') {
   global $db;
   $Ts = [];
   $res = $db->query("SELECT * FROM $Table $extra");
-  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans['id']] = $ans;
+  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans[$idx]] = $ans;
   return $Ts;
 }
 
-function Gen_Get_Names($Table, $extra='') {
+function Gen_Get_Names($Table, $extra='', $idx='id') {
   global $db;
   $Ts = [];
   $res = $db->query("SELECT * FROM $Table $extra");
-  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans['id']] = $ans['Name'];
+  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans[$idx]] = $ans['Name'];
   return $Ts;
 }
 
-function Gen_Get_Cond($Table,$Cond) {
+function Gen_Get_Cond($Table,$Cond, $idx='id') {
   global $db;
   $Ts = [];
 //  var_dump($Cond);
   $res = $db->query("SELECT * FROM $Table WHERE $Cond");
-  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans['id']] = $ans;
+  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans[$idx]] = $ans;
   return $Ts;
 }
 
-function Gen_Get_Cond1($Table,$Cond) {
+function Gen_Get_Cond1($Table,$Cond, $idx='id') {
   global $db;
 //  $Q = "SELECT * FROM $Table WHERE $Cond";var_dump("Q=",$Q);
   $res = $db->query("SELECT * FROM $Table WHERE $Cond LIMIT 1");
