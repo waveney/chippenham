@@ -426,14 +426,14 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
 
     if ($attachments) {
       if (is_array($attachments)) {
-        foreach ($attachments as $i=>$att) fwrite($logf," With attachment: " . $att[0] . " as " . $att[1] . "\n\n");
+        foreach ($attachments as $i=>$att) fwrite($logf," With attachment: " . $att[0] . " as " . (empty($att[1])?"Unknown Attachment":$att[1]) . "\n\n");
       } else {
         fwrite($logf," With attachment $attachments\n\n");       
       }
     }
     if ($embeded) {
       if (is_array($embeded)) {
-        foreach ($embeded as $i=>$att) fwrite($logf," With embeded: " . $att[0] . " as " . $att[1] . "\n\n");
+        foreach ($embeded as $i=>$att) fwrite($logf," With embeded: " . $att[0] . " as " . (empty($att[1])?"Unknown embeded":$att[1]) . "\n\n");
       } else {
         fwrite($logf," With embeded $embeded\n\n");       
       }
