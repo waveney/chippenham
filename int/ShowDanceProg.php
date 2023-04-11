@@ -5,6 +5,8 @@
   global $DAY;
   include_once("NewProgramLib.php");
   include_once("MapLib.php");
+  include_once("ProgLib.php");
+  global $Event_Types;
 
   $Cond = 0;
   if (isset($_GET['Cond'])) $Cond = $_GET['Cond'];
@@ -36,7 +38,7 @@
   if ($day == 'All' || $day == 'Sat') {
     Grab_Data('Sat');
     Scan_Data($Cond);
-    if ($Public) echo "<p id=Saturday><h2>Saturday Dance</h2><p>\n";
+    if ($Public) echo "<p id=Saturday><h2>Saturday " . $Event_Types[1]['Plural'] . "</h2><p>\n";
 //    echo "This will be easier to use on a small screen soon.<p>";
     echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
     Create_Grid($Cond);
@@ -46,7 +48,7 @@
     if ($Public) {
       Grab_Data("Sun");
       Scan_Data($Cond);
-      echo "<p id=Sunday><h2>Sunday Dance</h2></p>\n";
+      echo "<p id=Sunday><h2>Sunday " . $Event_Types[1]['Plural'] . "</h2></p>\n";
 //      echo "This will be easier to use on a small screen soon.<p>";
       echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
       Create_Grid($Cond);
@@ -61,7 +63,7 @@
     if ($Public) {
       Grab_Data("Mon");
       Scan_Data($Cond);
-      echo "<p id=Monday><h2>Monday Dance</h2></p>\n";
+      echo "<p id=Monday><h2>Monday " . $Event_Types[1]['Plural'] . "</h2></p>\n";
 //      echo "This will be easier to use on a small screen soon.<p>";
       echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
       Create_Grid($Cond);
