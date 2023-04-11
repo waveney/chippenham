@@ -303,12 +303,12 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
 
 //var_dump($Earliest,$Latest);
   $links = $condense && !$types;
-  if ($Media == 'Dance') {
+  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
     $Round = 30;
     $DefLineLimit = 2;
   } else {
     $Round = 15;
-    $DefLineLimit = 1;
+    $DefLineLimit = (($Media == 'Dance')?2:1);
   }
 
   echo "<div class=GridWrapper$format><div class=GridContainer$format>";
