@@ -158,12 +158,12 @@ function Grab_Data($day='',$Media='Dance') {
 function Scan_Data($condense=0,$Media='Dance') {
   global $DAY,$Times,$Back_Times,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$SlotSize;
   
-  if ($Media == 'Dance') {
+  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
     $Round = 30;
     $DefLineLimit = 2;
   } else {
     $Round = 15;
-    $DefLineLimit = 1;
+    $DefLineLimit = (($Media == 'Dance')?2:1);
   }
 
   $Venues = Get_Venues_For($Media);
@@ -219,12 +219,12 @@ function Scan_Data($condense=0,$Media='Dance') {
 function Create_Grid($condense=0,$Media='Dance') { 
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList,$SlotSize;
 
-  if ($Media == 'Dance') {
+  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
     $Round = 30;
     $DefLineLimit = 2;
   } else {
     $Round = 15;
-    $DefLineLimit = 1;
+    $DefLineLimit = (($Media == 'Dance')?2:1);
   }
 
   $ForwardUse = array();
