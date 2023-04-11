@@ -293,8 +293,12 @@ function Get_SideYears($snum) {
 function Put_SideYear(&$data,$Force=0) {
   global $db;
   global $Save_SideYears,$YEAR;
-  
-//echo "<P>" . $data['SideId'] . " - " . $data['Year'] . "<p>";
+/*  
+echo "<P>" . $data['SideId'] . " - " . $data['Year'] . " - " . $data['YearState'] . "<p>";
+if ($data['YearState'] != 5) {
+  debug_print_backtrace();
+  var_dump($data);
+}*/
   if (!$data) return;
   if ($Force) {
     $Save = Get_SideYear($data['SideId']);
@@ -883,9 +887,10 @@ function Dance_Email_Details_Callback($mescat,$data) {
       Put_SideYear($Sidey);
 //      $str .= "Updated State to " . $Sidey['YearState'];
     }
-  
+//echo $str;  
     return;
   default:
+//echo $str;  
     return;
   }
 }

@@ -112,7 +112,7 @@ if (isset($_REQUEST['REEDIT'])) {
   Dance_Email_Details_Callback($proforma,[$Side,$Sidey]);
   // Log to "Invited field"
   $prefix = '';
-
+  $Sidey = Get_SideYear($id); // Need to refetch as callback has overwritten it
     if ($label) $prefix .= "<span " . Music_Proforma_Background($label) . ">$label:";
     $prefix .= date('j/n/y');
     if ($label) $prefix .= "</span>";

@@ -64,9 +64,11 @@ function MList_ProformaSend(name,snum,label,link,AlwaysBespoke=0,AltEmail='',Upd
   } else {
   
     $("#DebugPane").load("sendMproforma.php", "I=" + snum + "&N=" + name +"&E=" +AltEmail); // the callback should change YearState
-    $("#" + UpdateId).load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by sendMproforma
+    setTimeout(function(){
+      $("#" + UpdateId).load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by sendMproforma
 //    $.get("setfields.php", "I=" + snum + "&O=Z&Y=" + year, function(data) { $("#BookState" + snum).replaceWith(data);});
-    $("#BookState" + snum).load("setfields.php", "I=" + snum + "&O=Z&Y=" + year); // needs to change what it loads into
+      $("#BookState" + snum).load("setfields.php", "I=" + snum + "&O=Z&Y=" + year); // needs to change what it loads into
+    },500);
   }
 }
 

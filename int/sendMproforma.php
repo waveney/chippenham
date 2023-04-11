@@ -55,6 +55,7 @@ if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
   Email_Proforma(1,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer');
   Dance_Email_Details_Callback($proforma,[$Side,$Sidey]);
 
+  $Sidey = Get_SideYear($id); // Need to refetch as callback has overwritten it
   $prefix = '';
 
   

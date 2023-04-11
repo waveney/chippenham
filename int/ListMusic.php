@@ -207,7 +207,7 @@
                   if (!FestFeature('EnableCancelMsg')) continue 2;
                   break;
               }
-                echo "<button type=button id=$ac$snum class=ProfButton onclick=MList_ProformaSend('Music_$ac',$snum,'$ac','SendPerfEmail')" . 
+              echo "<button type=button id=$ac$snum class=ProfButton onclick=MList_ProformaSend('Music_$ac',$snum,'$ac','SendPerfEmail')" . 
                      Music_Proforma_Background($ac) . ">$ac</button>"; 
 
 
