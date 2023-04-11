@@ -64,7 +64,6 @@ function Grab_Data($day='',$Media='Dance') {
   $evs = Get_Events_For($Media,$DAY);
 //var_dump($evs);
   if ($evs) foreach ($evs as $ei=>$ev) {
-    if ($ev
     $eid = $ev['EventId'];
     $v = $ev['Venue'];
     if ($ev['SubEvent'] < 0) { $et = $ev['SlotEnd']; } else { $et = $ev['End']; };
