@@ -8,7 +8,7 @@
   include_once("ProgLib.php");
   global $Event_Types;
 
-  $Cond = 0;
+  $Cond = 1;
   if (isset($_GET['Cond'])) $Cond = $_GET['Cond'];
   if (isset($_POST['Cond'])) $Cond = $_POST['Cond'];
 

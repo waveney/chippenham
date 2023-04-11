@@ -42,21 +42,29 @@ function Grab_Data($day='',$Media='Dance') {
 
   $Back_Times = array_reverse($Times);
 */
+  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
+    $Round = 30;
+    $DefLineLimit = 2;
+  } else {
+    $Round = 15;
+    $DefLineLimit = (($Media == 'Dance')?2:1);
+  }
+
   if ($Media == 'Dance') {
     $Sides = Select_Come_Day($DAY);
-    $Round = 30;
     $DefLineLim = Feature('DanceDefaultPerSlot',2);
   } else {
     $Sides = Select_Act_Come($DAY);
-    $Round = 15;
     $DefLineLim = Feature('MusicDefaultPerSlot',1);
   }
+  
   if ($Sides) foreach ($Sides as $i=>$s) { $SideCounts[$i]=0; }
   foreach ($Times as $t) $lineLimit[$t]=$DefLineLim;
 
   $evs = Get_Events_For($Media,$DAY);
 //var_dump($evs);
   if ($evs) foreach ($evs as $ei=>$ev) {
+    if ($ev
     $eid = $ev['EventId'];
     $v = $ev['Venue'];
     if ($ev['SubEvent'] < 0) { $et = $ev['SlotEnd']; } else { $et = $ev['End']; };
