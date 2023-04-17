@@ -55,17 +55,8 @@
   if ($vid > 0) Register_Autoupdate('Venues',$vid);
   $RealSites = Get_Real_Venues(0);
   $VirtSites = Get_Virtual_Venues();
-
-  if (isset($Venue['Image']) && $Venue['Image']) {
-    echo "<div class=floatright><img src=" . $Venue['Image'] . " width=400><br>";
-    if (isset($Venue['Caption']) && $Venue['Caption']) echo $Venue['Caption'] . "<br>"; 
-    if (isset($Venue['Image2']) && ($Venue['Image2'])) {
-      echo "<img src=" . $Venue['Image2'] . " width=400><br>";
-      if (isset($Venue['Caption2']) && $Venue['Caption2']) echo $Venue['Caption2'] . "<br>"; 
-    }    
-    echo "</div>";
-  }
-  echo "<div class=tablecont><table style='width:70%' border>\n";
+  
+  echo "<div class=tablecont  style='width:70%;float:left;'><table border>\n";
     if (isset($vid) && $vid > 0) {
       echo "<tr><td>Venue Id:<td>";
       echo $vid . fm_hidden('VenueId',$vid);
@@ -83,12 +74,14 @@
     echo          fm_text('MapImp',$Venue,'MapImp',1);
     echo "<tr>" . fm_text('Image',$Venue,'Image',1);
     echo          fm_text('Caption',$Venue,'Caption',1);
-    echo          fm_text('Image2',$Venue,'Image2',1);
+    echo "<tr>" . fm_text('Image2',$Venue,'Image2',1);
     echo          fm_text('Caption2',$Venue,'Caption2',1);
     echo "<tr>" . fm_text('Website',$Venue,'Website',1);
     echo     "<td>" . fm_checkbox('Supress Free',$Venue,'SupressFree');
     echo          fm_text('Banner',$Venue,'Banner',1);
     echo "<tr><td>" . fm_checkbox('Bar',$Venue,'Bar') . "<td>" . fm_checkbox('Food',$Venue,'Food') . fm_text('Food/Bar text',$Venue,'BarFoodText') . "\n";
+    echo "<td>" . fm_checkbox("Parking",$Venue,'Parking');
+    
     echo "<tr>" . fm_text('Notes',$Venue,'Notes',3);
     echo "<td colspan=2>Do NOT use if:" . fm_select($RealSites,$Venue,'DontUseIf',1) . " In use";
     echo "<tr><td>Status<td>" . fm_select($Venue_Status,$Venue,'Status');
@@ -102,7 +95,7 @@
     echo fm_checkbox('Craft',$Venue,'Craft');
     echo fm_checkbox('Other',$Venue,'Other');
     echo "<td colspan=2>" . fm_checkbox('Ignore Multiple Use Warning',$Venue,'AllowMult');
-    echo "<td>" . fm_checkbox("Parking",$Venue,'Parking');
+
     echo "<tr><td>" . fm_simpletext("Dance Importance",$Venue,'DanceImportance','size=4');
     echo "<td>" . fm_simpletext("Music Importance",$Venue,'MusicImportance','size=4');
     echo "<td>" . fm_simpletext("Other Importance",$Venue,'OtherImportance','size=4');
@@ -116,6 +109,21 @@
     echo "<tr>" . fm_text('Disability Statement',$Venue,'DisabilityStat',5);
     if (isset($Venue['AccessKey']) && Access('SysAdmin')) echo "<tr><td>Access Key:<td colspan=5>" . $Venue['AccessKey'];
     echo "</table></div>\n";
+  if (isset($Venue['Image']) && $Venue['Image']) {
+    echo "<div style='width:25%;float:left;'><img src=" . $Venue['Image'] . " width=400><br>";
+    if (!empty($Venue['Caption'])) echo $Venue['Caption'] . "<br>"; 
+    if (isset($Venue['Image2']) && ($Venue['Image2'])) {
+      echo "<img src=" . $Venue['Image2'] . " width=400><br>";
+      if (!empty($Venue['Caption2'])) echo $Venue['Caption2'] . "<br>"; 
+    }    
+    if (!empty($Venue['Banner']) ) {
+      echo "<img src=" . $Venue['Banner'] . " width=400><br>Banner Image<br>";
+    }    
+    echo "</div>";
+  }
+
+
+  echo "<br clear=all><div >";
 
   if ($vid > 0) {
     echo "<Center><input type=Submit name='Update' value='Update'>\n";
@@ -130,6 +138,7 @@
     if (Access('SysAdmin')) echo "<a href=AddVenue?Delete=$vid>Delete Venue</a>, \n";
     echo "<a href=VenueShow?v=$vid&Mode=1>Show Venue</a></h2>";
 
+  echo "</div>";
   dotail();
 ?>
 
