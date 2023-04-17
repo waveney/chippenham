@@ -10,7 +10,7 @@ $Who = $Pcat = 0;
 function ImgData() {
   global $Who,$Pcat;
   $Pcat = $_POST['PCAT'];
-  $Who = (isset($_POST['WHO']) && strlen($_POST['WHO']) ? $_POST['WHO'] : $_POST["WHO$Pcat"]);
+  $Who = (isset($_POST['WHO']) && strlen($_POST['WHO']) ? $_POST['WHO'] : (isset($_POST["WHO$Pcat"]) ? $_POST["WHO$Pcat"] : 0));
 
   switch ($Pcat) {
     case 0: // Sides
@@ -290,9 +290,9 @@ if (isset($_FILES['croppedImage'])) {
     echo fm_radio("Photo For",$PhotoCats,$_POST,'PCAT','onclick=PCatSel(event)',0);
     $i=0;
     foreach($Lists as $cat=>$dog) {
+      $i++;
       if (empty($dog)) continue;
       if ($AccessNeeded[$cat]) echo "<span id=MPC_$i " . ($cat == $PhotoCats[$mouse]?'':'hidden') . "> : " . fm_select($dog,$_POST,"WHO$i") . "</span>";
-      $i++;
     }
     echo "<input type=submit name=Edit value=Edit><p>\n";
     echo "</form>\n";
