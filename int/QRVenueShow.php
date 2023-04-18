@@ -259,7 +259,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   if (!$Poster) {
     echo "<h2 class=subtitle>" . ($AllDone?'':" CURRENT ") . "PROGRAMME OF EVENTS" . ($AllDone?'':" (Others may follow)") . "</h2></center>";
     echo "Click on the event name or time to get more detail.<p>";
-    if (!$NotAllFree && $Ven['SupressFree']==0) echo "All events here are Free.<p>\n";
+    if (!$NotAllFree && $Ven['SupressFree']==0) echo "All events here are" . Feature('FreeText','Free') . ".<p>\n";
 
     $DaysUsed = [];
     for ($i=-4;$i<10; $i++) $DaysUsed[$i] = 0;

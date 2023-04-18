@@ -165,7 +165,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   } else if ($Ev['SeasonTicketOnly']) {
     echo "<tr><td>Entry by:<td>" . Feature('SeasonName','Weekend Ticket') . " only";
   } else {
-    echo "<tr><td>Price:<td>Free\n";
+    echo "<tr><td>Price:<td>" . Feature('FreeText','Free');
   }
   echo "<tr><td>";
     if (isset($OtherVenues[0])) {

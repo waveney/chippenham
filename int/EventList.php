@@ -143,7 +143,7 @@
             if ($evnt['SpecPrice']) {
               echo $evnt['SpecPrice'];
             } else {
-              if ($evnt['Price1']) { echo Print_Pound($evnt['Price1']); } else echo "Free";
+              if ($evnt['Price1']) { echo Print_Pound($evnt['Price1']); } else echo Feature('FreeText',"Free");
               if ($evnt['Price2']) echo " /" . Print_Pound($evnt['Price2']); 
               if ($evnt['DoorPrice']) echo " /" . Print_Pound($evnt['DoorPrice']); 
             }

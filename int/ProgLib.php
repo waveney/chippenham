@@ -597,7 +597,7 @@ function Price_Show(&$Ev,$Buy=0) {
   $once = 0;
   $Cpri = $Ev['Price1'];
   if ($Ev['SeasonTicketOnly']) return "Season Ticket Only";
-  if (!$Cpri) return 'Free';
+  if (!$Cpri) return Feature('FreeText','Free');
 
   if ($Buy) {
     if ($Ev['TicketCode']) {

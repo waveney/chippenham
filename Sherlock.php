@@ -135,7 +135,7 @@
     
     echo "<div class='FullWidth WhenTable'>";
 
-    if ($NotAllFree == 0) echo "All $Types are free.<p>";
+    if ($NotAllFree == 0) echo "All $Types are " . Feature('FreeText','Free') . ".<p>";
 
     echo "Click on the event name for more information.<p>";
 
