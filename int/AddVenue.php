@@ -73,9 +73,9 @@
     echo          fm_text('Long',$Venue,'Lng',1);
     echo          fm_text('MapImp',$Venue,'MapImp',1);
     echo "<tr>" . fm_text('Image',$Venue,'Image',1);
-    echo          fm_text('Caption',$Venue,'Caption',1);
+    echo          fm_text('Caption',$Venue,'Caption',3);
     echo "<tr>" . fm_text('Image2',$Venue,'Image2',1);
-    echo          fm_text('Caption2',$Venue,'Caption2',1);
+    echo          fm_text('Caption2',$Venue,'Caption2',3);
     echo "<tr>" . fm_text('Website',$Venue,'Website',1);
     echo     "<td>" . fm_checkbox('Supress Free',$Venue,'SupressFree');
     echo          fm_text('Banner',$Venue,'Banner',1);

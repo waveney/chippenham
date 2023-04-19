@@ -177,6 +177,17 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
                 "( e.Venue=v.VenueId AND v.PartVirt=$V )) $xtr ORDER BY Day, Start");
     $parts = $db->query("SELECT VenueId FROM Venues v WHERE v.PartVirt=$V");
     while ($part = $parts->fetch_assoc()) $VenList[] = $part['VenueId'];
+    
+    echo "<h3>" . $Ven['SN'] . " comprises of:<h3>";
+    
+    echo "<div id=flex5>\n";
+    foreach ($Parts as $ven) {
+      if ($ven == $V) continue;
+      $VVen = Get_Venue($ven);
+      echo "<div class=VenueFlexCont><a href=/int/VenueShow?v=" . $ven['VenueId'] . "&Y=$YEAR>" . $VVen['SN'] . "</a></div>";
+    }
+    echo "</div><br>";
+    
   } else {
     $res = $db->query("SELECT DISTINCT e.* FROM Events e, EventTypes t WHERE e.Year='$YEAR' AND (e.Venue=$V OR e.BigEvent=1) $xtr " .
                 " ORDER BY Day, Start");
