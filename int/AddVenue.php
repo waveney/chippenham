@@ -107,6 +107,7 @@
     echo "<tr>" . fm_text('Music Rider',$Venue,'MusicRider',5);
     echo "<tr>" . fm_text('Other Rider',$Venue,'OtherRider',5);
     echo "<tr>" . fm_text('Disability Statement',$Venue,'DisabilityStat',5);
+    echo "<tr>" . fm_text('What Three Words',$Venue,'3Words',5);
     if (isset($Venue['AccessKey']) && Access('SysAdmin')) echo "<tr><td>Access Key:<td colspan=5>" . $Venue['AccessKey'];
     echo "</table></div>\n";
   if (isset($Venue['Image']) && $Venue['Image']) {

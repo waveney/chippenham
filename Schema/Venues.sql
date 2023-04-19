@@ -52,6 +52,7 @@ CREATE TABLE `Venues` (
   `Banner` text NOT NULL,
   `SponsoredBy` int NOT NULL,
   `SponsorYear` int NOT NULL,
+  `3Words` text NOT NULL,
   PRIMARY KEY (`VenueId`),
   UNIQUE KEY `VenueId` (`VenueId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
