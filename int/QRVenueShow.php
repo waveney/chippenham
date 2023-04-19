@@ -178,8 +178,8 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
                 "( e.Venue=v.VenueId AND v.PartVirt=$V )) $xtr ORDER BY Day, Start");
     $parts = $db->query("SELECT VenueId,SN FROM Venues WHERE PartVirt=$V AND Status=0");
     while ($part = $parts->fetch_assoc()) {
-      $VenList[] = $part[0];
-      $PartList[$part[0]] = $part[1];
+      $VenList[] = $part['VenueId'];
+      $PartList[$part['VenueId']] = $part['SN'];
     }
     
     echo "<h3>" . $Ven['SN'] . " comprises of:<h3>";
