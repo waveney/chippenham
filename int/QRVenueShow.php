@@ -136,14 +136,14 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
       $Img = 0;
       if ($Ven['Image']) {
         echo "<div id=Blob1>";
-        echo "<img width=100% src=" . $Ven['Image'] . "><br>";
+        echo "<img width=100% style='max-height:400px;' src=" . $Ven['Image'] . "><br>";
         if ($Ven['Caption']) echo $Ven['Caption'] . "<br>";
         $Img = 1;
         echo "</div>";
       }
       if ($Ven['Image2']) {
         echo "<div id=Blob2>";
-        echo "<img width=100% src=" . $Ven['Image2'] . "><br>";
+        echo "<img width=100% style='max-height:400px;' src=" . $Ven['Image2'] . "><br>";
         if ($Ven['Caption2']) echo $Ven['Caption2'] . "<br>";
         $Img = 1;
         echo "</div>";
