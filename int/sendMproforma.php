@@ -33,12 +33,12 @@ if (empty($Sidey['BookedBy'])) {
   if ($USERID == $Sidey['BookedBy']) {
     if (!empty($USER['FestEmail'])) {
       $ReplyTo = $USER['FestEmail'];
-      if (!strstr($ReplyTo,'@')) $ReplyTo .= $FESTSYS['HostURL'];
+      if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . $FESTSYS['HostURL'];
     }
   } else {
     $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
     $ReplyTo = $User['FestEmail'];
-    if (!strstr($ReplyTo,'@')) $ReplyTo .= $FESTSYS['HostURL'];
+    if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . $FESTSYS['HostURL'];
   }
 }
 
@@ -51,8 +51,10 @@ if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
     $too = [['to',$To,$Side['Contact']],
 //            ['from',$ReplyTo,$FESTSYS['ShortName']], // WRONG ANYWAY
             ['replyto',$ReplyTo,$FESTSYS['ShortName']]];
+            
+  $Atts = [];
 
-  Email_Proforma(1,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer');
+  Email_Proforma(1,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer',$Atts);
   Dance_Email_Details_Callback($proforma,[$Side,$Sidey]);
 
   $Sidey = Get_SideYear($id); // Need to refetch as callback has overwritten it

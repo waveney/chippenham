@@ -78,12 +78,12 @@ if (isset($_REQUEST['REEDIT'])) {
       if ($USERID == $Sidey['BookedBy']) {
         if (!empty($USER['FestEmail'])) {
           $ReplyTo = $USER['FestEmail'];
-          if (!strstr($ReplyTo,'@')) $ReplyTo .= $FESTSYS['HostURL'];
+          if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . $FESTSYS['HostURL'];
         }
       } else {
         $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
         $ReplyTo = $User['FestEmail'];
-        if (!strstr($ReplyTo,'@')) $ReplyTo .= $FESTSYS['HostURL'];
+        if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . $FESTSYS['HostURL'];
       }
     }
 
@@ -105,10 +105,11 @@ if (isset($_REQUEST['REEDIT'])) {
       }
     }
   
-//  var_dump($too); exit;  
+//  var_dump($too);  
 //var_dump($Atts);
   echo Email_Proforma(1,$id,$too,$Mess,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer',$Atts);
-  
+//echo "<p>Afeter Proforma:";
+//var_dump($Atts);  
   Dance_Email_Details_Callback($proforma,[$Side,$Sidey]);
   // Log to "Invited field"
   $prefix = '';

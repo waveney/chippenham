@@ -800,7 +800,7 @@ function Dance_Email_Details($key,&$data,&$att=0) {
     $count = 0;
     if ($Sidey['Sat'] == 0 && $Sidey['Sun'] == 0 && $Sidey['Mon'] == 0) {
       $str .= '<li><b>Days</b> What days you will be dancing.  It is also very helpful if you tell us: ' .
-              'your earliest start and latest finish times, the deafults are 10am to 5pm.<p>';
+              'your earliest start and latest finish times, the defaults are 10am to 5pm.<p>';
       $count++;
       }
     if (!$Side['Mobile']) {
@@ -851,19 +851,24 @@ function Dance_Email_Details($key,&$data,&$att=0) {
             $Msg = 'Please follow *LINK*, fill in your bank account details (so we can pay you), then click "Save Changes".<p> ' .
                   'Then you will be able to view and confirm your contract, ' .
                   'by clicking on the "Green Confirm" button. (The button will only appear once you have input your bank account details ).<p>';
+//      $Msg .= var_export($att,1);
+//      $Msg .= "\n\nHERE<p>\n";
             $p = 0;
-            $AddC = 1;
+            $AddC = 2;
             break;
           case 3: // No Cont
             break;
           default: // Add draft for info
-            $AddC = 1;
+            $AddC = 2;
         }
       }
       
     if (is_array($att) && $AddC) {
-//      var_dump($att);
+//      $Msg .= var_export($att,1);
+//      $Msg .= "\n\nHERE<p>\n";
       $att[] = Contract_Save($Side,$Sidey,($Sidey['YearState'] == $Book_State['Contract Ready']?-1:1),1);
+    } else {
+//      $Msg .= var_export($att,1);    
     }
 //    if ($AddC) $Msg .= "<div id=SideProg$id>" . Show_Contract($id,$p) . "</div><p>\n";
     return $Msg;

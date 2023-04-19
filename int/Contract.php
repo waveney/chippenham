@@ -11,7 +11,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
   $str = "<div class=content900>\n";
   $Venues = Get_Venues(1);
     
-  if ($mode > -1) {  
+  if ($mode >= -1) {  
     $Side = Get_Side($snum);
     $Sidey = Get_SideYear($snum,$YEAR);
     $Booked = Get_User($Sidey['BookedBy']);
@@ -41,7 +41,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
 
 // Performances
 
-  if ($mode > -1) {  
+  if ($mode >= -1) {  
     $Evs = Get_Events4Act($snum,$YEAR);
   } else {
 //    $str .= "<span class=NotSide>";  

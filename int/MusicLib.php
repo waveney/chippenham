@@ -378,12 +378,17 @@ function &Other_All() {
 }
 
 function Contract_Save(&$Side,&$Sidey,$Reason,$exist=0) {
+//echo "Contract Save:$Reason<p>";
   global $PLANYEAR,$Book_State;
   include_once("Contract.php");
   $snum = $Side['SideId'];
+//  $S = $Reason;
+  $Ret = Contract_Check($snum);
+  if (!empty($Ret)) $Reason = -1; // Forces draft if incomplete
+//  $R = $Reason;
   $Cont = Show_Contract($snum,$Reason);
-  if (!Contract_Check($snum)) {
-    $IssNum = abs($Sidey['Contracts'])+ ($exist?0:1);
+  if (!empty($Cont)) {
+    $IssNum = abs($Sidey['Contracts'])+ ($exist?0:1);// . "x$S.$Ret.$R.$Reason";
     if ($Reason < 0) $IssNum .= "D";
     $_POST['Contracts'] = $IssNum;
     $_POST['ContractDate'] = time();
@@ -409,8 +414,8 @@ function Contract_Decline($Side,$Sidey,$Reason) {
 function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result number, otherwise string
   global $YEAR;
 //echo "check $snum $YEAR<br>";
-  $Check_Fails = array('',"Start Time","Bank Details missing","No Events","Venue Unknown","Duration not yet known","Events Clash"); // Least to most critical
-// 0=ok, 1 - lack times, 2 - no bank details, 3 - no events, 4 - no Ven, 5 - no dur, 6 - clash
+  $Check_Fails = array('',"Start Time","Bank Details missing",'Not Booked',"No Events","Venue Unknown","Duration not yet known","Events Clash"); // Least to most critical
+// 0=ok, 1 - lack times, 2 - no bank details, 3 - Not Booked, 4 - no events, 5 - no Ven, 6 - no dur,7 - clash
   include_once('ProgLib.php');
 // All Events have - Venue, Start, Duration, Type - Start & End/Duration can be TBD if event-type has a not critical flag set
   $InValid = 3;
@@ -425,25 +430,27 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
         if ($LastEv['SubEvent'] < 0) { $End = $LastEv['SlotEnd']; } else { $End = $LastEv['End']; };
         if ($LastEv['BigEvent']) $End -=30; // Fudge for procession
         if (($End > 0) && !$LastEv['IgnoreClash'] && !$e['IgnoreClash']) {
-          if ($End > $e['Start']) $InValid = 6;
-          if ($InValid < 5 && $End == $e['Start'] && $LastEv['Venue'] != $e['Venue']) $InValid = 6;
+          if ($End > $e['Start']) $InValid = 7;
+          if ($InValid < 5 && $End == $e['Start'] && $LastEv['Venue'] != $e['Venue']) $InValid = 7;
         }
       }
     }
         
     $et = $types[$e['Type']];
-    if ($InValid < 4 && ($e['Venue']==0) || !isset($Vens[$e['Venue']])) $InValid = 4;
+    if ($InValid < 4 && ($e['Venue']==0) || !isset($Vens[$e['Venue']])) $InValid = 5;
     if (!$et['NotCrit']) {
       if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; };
       if ($InValid == 0 && $e['Start'] == 0) $InValid = 1;
       if (($e['Start'] != 0) && ($End != 0) && ($e['Duration'] == 0)) $e['Duration'] = timeadd2($End, - $e['Start']);
-      if ($InValid < 5 && ($End == 0) && ($e['Duration'] == 0)) $InValid = 5; 
+      if ($InValid < 6 && ($End == 0) && ($e['Duration'] == 0)) $InValid = 6; 
     }    
     $LastEv = $e;
   }  
 
+  $ActY = Get_SideYear($snum);
+  if ($InValid && $ActY['YearState'] < 2) $InValid = 3;
   if ($InValid == 0 && $chkba) { // Check Bank Account if fee
-    $ActY = Get_SideYear($snum);
+
     if ($ActY['TotalFee']) {
       $Side = Get_Side($snum);
       if ( (strlen($Side['SortCode'])<6 ) || ( strlen($Side['Account']) < 8) || (strlen($Side['AccountName']) < 6)) $InValid = 2;

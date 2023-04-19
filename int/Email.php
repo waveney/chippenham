@@ -75,13 +75,14 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
     
       echo "Text: " . ConvertHtmlToText($letter);
       if ($attachments) {
+        if (!empty($CONF['testing'])) echo var_export($attachments);
         if (is_array($attachments)) {
           foreach ($attachments as $i=>$att) {
             if (is_array($att)) {
               if (isset($att[0])) {
                 echo "Would attach " . $att[0] . " as " . $att[1] . "<p>";
               } else {
-                echo "Would attach " . $att['AttFileName'] . "<p>";              
+                echo "Would attach " . $att . "<p>";              
               }
             } else {
               echo "Would Attach " . $att . "<p>";
@@ -92,13 +93,14 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
         }
       }
       if ($embeded) {
+        if (!empty($CONF['testing'])) echo var_export($embeded);
         if (is_array($embeded)) {
           foreach ($embeded as $i=>$att) {
             if (is_array($att)) {
               if (isset($att[0])) {
                 echo "Would embed " . $att[0] . " as " . $att[1] . "<p>";
               } else {
-                echo "Would embed " . $att['AttFileName'] . "<p>";
+                echo "Would embed " . $att . "<p>";
               }
             } else {
                 echo "Would embed " . $att . "<p>";            
@@ -197,9 +199,12 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
             if (isset($att[0])) {
               $email->addAttachment($att[0],$att[1]);
               $Atts[] = [$att[0],$att[1],0];
-            } else {
+            } elseif (isset($att['AttFileName'])) {
               $email->addAttachment($att['AttFileName']);
               $Atts[] = ["",$att['AttFileName'],0];
+            } else {
+              $email->addAttachment($att);
+              $Atts[] = ["",$att,0];
             }
           } else {  
             $email->addAttachment($att);
@@ -397,7 +402,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
 
 
 // helper is a function that takes (THING,helperdata,atts) to return THING - not needed for generic fields typical THINGs are DETAILS, DEPOSIT...
-// if mescat > 30 chars it is assumed to be the proforma itself
+// if mescat > 40 chars it is assumed to be the proforma itself
 function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=0,$logfile='',&$attachments=0,$embeded=0,$from='') {
   global $PLANYEAR,$YEARDATA,$FESTSYS;
   if (strlen($mescat) < 40) {
@@ -407,9 +412,9 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
     $Mess = $mescat;
   }
   Parse_Proforma($Mess,$helper,$helperdata,0,$attachments,$embeded);
-  
+//echo "<p>After Pass:"; var_dump($attachments);  
   NewSendEmail($Src,$SrcId,$to,$subject,$Mess,$attachments,$embeded,$from);
-
+//echo "<p>After Send:"; var_dump($attachments);  
   if (isset($Prof)) {
     $Callback = $helper . "_Callback";
 //    echo "Got Here";
@@ -425,13 +430,23 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
     fwrite($logf,"\n\n$Mess");
 
     if ($attachments) {
+      fwrite($logf,"\n\nAttachments:\n\n");
+      fwrite($logf, var_export($attachments));
       if (is_array($attachments)) {
-        foreach ($attachments as $i=>$att) fwrite($logf," With attachment: " . $att[0] . " as " . (empty($att[1])?"Unknown Attachment":$att[1]) . "\n\n");
+        foreach ($attachments as $i=>$att) {
+          if (is_array($att)) {
+            fwrite($logf," With attachment: " . $att[0] . " as " . (empty($att[1])?"Unknown Attachment":$att[1]) . "\n\n");
+          } else {
+            fwrite($logf," With attachment: " . $att . "\n\n");          
+          }
+        }
       } else {
         fwrite($logf," With attachment $attachments\n\n");       
       }
     }
     if ($embeded) {
+      fwrite($logf,"\n\Embeded:\n\n");
+      fwrite($logf, var_export($embeded));
       if (is_array($embeded)) {
         foreach ($embeded as $i=>$att) fwrite($logf," With embeded: " . $att[0] . " as " . (empty($att[1])?"Unknown embeded":$att[1]) . "\n\n");
       } else {
