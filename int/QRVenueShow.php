@@ -173,18 +173,21 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 
   $VenList[] = $V;
   if ($Ven['IsVirtual']) {
+    $PartList = [];
     $res = $db->query("SELECT DISTINCT e.* FROM Events e, Venues v, EventTypes t WHERE e.Year='$YEAR' AND (e.Venue=$V OR e.BigEvent=1 OR " .
                 "( e.Venue=v.VenueId AND v.PartVirt=$V )) $xtr ORDER BY Day, Start");
-    $parts = $db->query("SELECT VenueId FROM Venues v WHERE v.PartVirt=$V");
-    while ($part = $parts->fetch_assoc()) $VenList[] = $part['VenueId'];
+    $parts = $db->query("SELECT VenueId,SN FROM Venues WHERE PartVirt=$V AND Status=0");
+    while ($part = $parts->fetch_assoc()) {
+      $VenList[] = $part[0];
+      $PartList[$part[0]] = $part[1];
+    }
     
     echo "<h3>" . $Ven['SN'] . " comprises of:<h3>";
     
     echo "<div id=flex5>\n";
-    foreach ($Parts as $ven) {
-      if ($ven == $V) continue;
-      $VVen = Get_Venue($ven);
-      echo "<div class=VenueFlexCont><a href=/int/VenueShow?v=" . $ven['VenueId'] . "&Y=$YEAR>" . $VVen['SN'] . "</a></div>";
+    foreach ($PartList as $Vid=>$ven) {
+      if ($Vid == $V) continue;
+      echo "<div class=VenueFlexCont><a href=/int/VenueShow?v=$Vid&Y=$YEAR>$ven</a></div>";
     }
     echo "</div><br>";
     
