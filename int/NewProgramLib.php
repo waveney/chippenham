@@ -72,7 +72,7 @@ function Grab_Data($day='',$Media='Dance') {
     $UsedTimes[]= $et;
 
     $duration = timereal($et) - timereal($ev['Start']);
-    $t = timeround($ev['Start'],$Round);
+    $t = $ev['Start']; //timeround($ev['Start'],$Round); FUDGE 2023
       
     $EV[$v][$t]['e'] = $ei;
     $EV[$v][$t]['d'] = $duration;
@@ -196,7 +196,7 @@ function Scan_Data($condense=0,$Media='Dance') {
           for ($i=1;$i<5;$i++) if (isset($EV[$v][$time]["S$i"]) && $EV[$v][$time]["S$i"] ) $inuse = 1;
           if ($inuse) {
             $ThisO++;
-            if ($EV[$v][$time]['d'] != $Round) {
+            if (0 && $EV[$v][$time]['d'] != $Round) { // Fudge for 2023
               $slots = intval(ceil(timereal($EV[$v][$time]['d'])/$Round));
               $i=0; 
               while(isset($OtherLocUse[$i]['t']) && $OtherLocUse[$i]['t']>0) $i++;
