@@ -138,7 +138,7 @@
         } else echo "None";
       }
     } else {
-      echo "<tr><td>" . timecolon($e['Start'] - $e['Setup']) . "-" . timecolon($e['End']) . "<td>" .  $e['SN'] . "<td><td>None";
+      echo "<tr><td>" . timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>" .  $e['SN'] . "<td><td>None";
     }
   }
   echo "</table>\n";

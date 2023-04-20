@@ -61,12 +61,13 @@ function EventCheck($checkid=0) {
         } else {
           if ($Venues[$ev['Venue']]['SetupOverlap']) {
             if ($end <= $ev['Start'] && $EVENT_Types[$LastEvent['Type']]['HasDance'] ) { // No error
-            } else if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$LastEvent['EventId']) {
-//              if (
-              echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> at " . SName($Venues[$ev['Venue']]) . " starting at " .
+            } else if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$LastEvent['EventId'] ) {
+              if ($ev['SubEvent'] != $LastEvent['EventId'] ) {
+                echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> at " . SName($Venues[$ev['Venue']]) . " starting at " .
                    $ev['Start'] . " on (A)" . DayList($ev['Day']) . " clashes with <a href=EventAdd?e=" . 
                    $LastEvent['EventId'] . ">this event (" . $LastEvent['SN'] . ")</a><p>\n";
-              $errors++;
+                $errors++;
+              }
             }
           } else {
             if ($ev['SubEvent'] == $LastEvent['EventId'] && $LastEventEmpty) { // No Error
@@ -74,10 +75,12 @@ function EventCheck($checkid=0) {
             } else if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$LastEvent['EventId']) {
 // var_dump($ev['SubEvent'], $LastEvent['EventId'],$LastEventEmpty);           
 // var_dump($ev['EventId'], $LastEvent['SubEvent'],$ThisEventEmpty);           
-              echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> at " . SName($Venues[$ev['Venue']]) . " starting at " .
+              if ($ev['SubEvent'] != $LastEvent['EventId'] ) {
+                echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> at " . SName($Venues[$ev['Venue']]) . " starting at " .
                    $ev['Start'] . " on (B) " . DayList($ev['Day']) . " clashes with <a href=EventAdd?e=" . 
                    $LastEvent['EventId'] . ">this event (" . $LastEvent['SN'] . ")</a><p>\n";
-              $errors++;
+                $errors++;
+              }
             }
           }
         }
@@ -103,10 +106,12 @@ function EventCheck($checkid=0) {
                   $chkend = timereal($ce['SubEvent']<0 ? $ce['SlotEnd'] : $ce['End']);
                   if (($chkstart >= $realstart && $chkstart < $realend) || ($chkend > $realstart && $chkend <= $realend)) {
                     if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$ce['EventId']) {
-                      echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Big Event (" . $ev['SN'] . ")</a> at " . $Venues[$ce['Venue']]['SN'] . " starting at " .
+                      if ($ev['SubEvent'] != $ce['EventId'] ) {
+                        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Big Event (" . $ev['SN'] . ")</a> at " . $Venues[$ce['Venue']]['SN'] . " starting at " .
                            $ev['Start'] . " on (C) " . DayList($ev['Day']) . " clashes with <a href=EventAdd?e=" . 
                            $ce['EventId'] . ">this event (" . $ce['SN'] . ")</a><p>\n";
-                      $errors++;
+                        $errors++;
+                      }
                     }
                   }
                 }
@@ -126,10 +131,12 @@ function EventCheck($checkid=0) {
                   foreach($Other as $oi=>$oe) {
                     if ($oe['Type'] == 'Venue' && $coe['Identifier'] == $oe['Identifier']) { // Clash
                       if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$ce['EventId']) {
-                        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Big Event (" . $ev['SN'] . ")</a>  starting at " .
+                        if ($ev['SubEvent'] != $oe['EventId'] ) {
+                          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Big Event (" . $ev['SN'] . ")</a>  starting at " .
                              $ev['Start'] . " on (D) " . DayList($ev['Day']) . " clashes with <a href=EventAdd?e=" . 
                              $ce['EventId'] . ">this big event (" . $ce['SN'] . ")</a> on use of " . SName($Venues[$oe['Identifier']]) . "<p>\n";
-                        $errors++;
+                          $errors++;
+                        }
                       }
                     }
                   }
