@@ -346,13 +346,19 @@
 
     if (Access('Staff','Events')) $txt .= "<li><a href=EventTypes>Event Types</a>\n";
     if (Access('SysAdmin')) $txt .= "<li><a href=TicketEvents?Y=$YEAR>List Ticketed Events</a>\n";
-    if (Access('Staff')) $txt .= "<li><a href=StewList?Y=$YEAR>List Stewarding Events</a>\n";
+    $txt .= "<li><a href=StewList?Y=$YEAR>List Stewarding Events</a>\n";
     $txt .= "<li><a href=EventSummary?Y=$YEAR>Event Summary</a>\n";
     $txt .= "<li><form method=Post action=PAShow class=staffform>";
       $txt .= "<input type=submit name=a value='PA Requirements for' id=staffformid>" . 
                 fm_hidden('Y',$YEAR) .
                 fm_select($Vens,0,'pa4v',0," onchange=this.form.submit()") . "</form>\n";
-
+                
+    if (Access('SysAdmin')) {
+      $txt .= "<li><form method=Post action=StewardShow class=staffform>";
+        $txt .= "<input type=submit name=a value='Event Sheets for' id=staffformid>" . 
+                fm_hidden('Y',$YEAR) .
+                fm_select($Vens,0,'pa4v',0," onchange=this.form.submit()") . "</form>\n";
+    }
 //    if (Access('SysAdmin')) $txt .= "<li><a href=BusTimes>Fetch and Cache Bus Times</a>\n";
 //    if (Access('SysAdmin')) $txt .= "<li><a href=ConvertEvents>Convert Old Format Events to New Format Events</a>\n";
     $txt .= "<li><form method=Post action=/WhatsOnNow class=staffform>";
