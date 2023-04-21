@@ -274,7 +274,7 @@ function Create_Grid($condense=0,$Media='Dance') {
         }
 
         $s = (empty($ev['S1'])?0:$ev['S1']);
-        if ($s && $Sides[$s]['Share'] == 2 && $things==1) $grid[$v][$t]['w'] = 1; // Set Wrap if no share
+        if ($s && !empty($Sides[$s]) && $Sides[$s]['Share'] == 2 && $things==1) $grid[$v][$t]['w'] = 1; // Set Wrap if no share
       }
     }
   }
@@ -393,6 +393,8 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
           } else if (!isset($OtherInUse[-$v])) {
             echo "$OtherLoc<td id=$id class=$class $DRAG data-d=X>&nbsp;";
           }
+        } else if (empty($lineLimit[$t])) {
+          echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
         } else if ($line >= $lineLimit[$t]) {
           echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
         } else if (!empty($G['h'])) {
@@ -437,7 +439,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
           echo "<br>";
         } else if ($line != 0 && !empty($G['w'])) {
           echo "$OtherLoc<td id=$id $DRAG $dev hidden class=$class>&nbsp;";
-          echo $G['n'];
+          if (!empty($G['n'])) echo $G['n'];
         } else if (!empty($G['n']) && !empty($G["S" . ($line+($G['n']?0:1))])) {
           $si = $G["S" . ($line + ($G['n']?0:1))];
           if (!isset($Sides[$si])) {
