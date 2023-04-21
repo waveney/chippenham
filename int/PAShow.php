@@ -157,7 +157,7 @@
     echo "<br clear=all><div id=qrcode></div>";
     echo '<script type="text/javascript">
       var qrcode = new QRCode(document.getElementById("qrcode"), {
-        text: ' . $host . "/int/Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'] . '",
+        text: "' . $host . "/int/Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'] . '",
         width: 205,
         height: 205,
       });
