@@ -18,7 +18,7 @@
   if (isset($_REQUEST['HeaderFree'])) $ShowMode = 'HeaderFree';
   
   if ($ShowMode == 'HeaderFree') {
-    dominimalhead("PA Requirements for " . $Ven['SN'],['js/Tools.js','files/Newstyle.css','css/festconstyle.css',"js/qrcode.js"]);
+    dominimalhead("PA Requirements for " . $Ven['SN'],['files/Newstyle.css','css/festconstyle.css',"js/qrcode.js"]);
   } else {
     dostaffhead("PA Requirements for " . $Ven['SN'],["js/qrcode.js"]);
   }
