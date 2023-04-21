@@ -251,7 +251,7 @@ function Create_Grid($condense=0,$Media='Dance') {
       if (!empty($ForwardUse[$v])) {
         if ($ev) {
           // find original forward point and mark overlap
-          foreach($Back_Times as $bt) if (($bt < $t) && ($grid[$v][$t]['c'] > 1)) { $grid[$v][$t]['err'] = 1; break; };
+          foreach($Back_Times as $bt) if (($bt < $t) && !empty($grid[$v][$t]) && ($grid[$v][$t]['c'] > 1)) { $grid[$v][$t]['err'] = 1; break; };
         }
         $ForwardUse[$v] = max(0,$ForwardUse[$v]-$Round);
         $grid[$v][$t]['h'] = 1;
@@ -425,7 +425,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
                 echo $txt;
                   if ($links) echo "</a>";
                 echo "<br></span>";
-                if (!$evs[$G['e']]['ExcludeCount']) $SideCounts[$si]++;
+                if (!$evs[$G['e']]['ExcludeCount'] && isset($SideCounts[$si]) ) $SideCounts[$si]++;
               }
             }
           } else {
