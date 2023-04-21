@@ -431,17 +431,17 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
           } else {
             echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
           }
-        } else if ($line == 0 && !empty($G['n'])) {
+        } else if ($line == 0)) {
           echo "$OtherLoc<td id=$id $DRAG $dev data-d='N' class=DPNamed>";
           if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
-          echo $G['n'];
+          if (!empty($G['n']) ) echo $G['n'];
           if ($links) echo "</a>";
           echo "<br>";
         } else if ($line != 0 && !empty($G['w'])) {
           echo "$OtherLoc<td id=$id $DRAG $dev hidden class=$class>&nbsp;";
           if (!empty($G['n'])) echo $G['n'];
-        } else if (!empty($G['n']) && !empty($G["S" . ($line+($G['n']?0:1))])) {
-          $si = $G["S" . ($line + ($G['n']?0:1))];
+        } else if (!empty($G["S" . ($line+(empty($G['n'])?0:1))])) {
+          $si = $G["S" . ($line + (empty($G['n'])?0:1))];
           if (!isset($Sides[$si])) {
             $Sidessi = Get_Side($si);
             $Sidessi['ERROR'] = 1;
