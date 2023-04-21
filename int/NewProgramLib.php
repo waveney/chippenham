@@ -273,7 +273,7 @@ function Create_Grid($condense=0,$Media='Dance') {
           }
         }
 
-        $s = $ev['S1'];
+        $s = (empty($ev['S1'])?0:$ev['S1']);
         if ($s && $Sides[$s]['Share'] == 2 && $things==1) $grid[$v][$t]['w'] = 1; // Set Wrap if no share
       }
     }
@@ -411,7 +411,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
             }
             echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
             for($i=1; $i<5;$i++) {
-              if ($G["S$i"]) {
+              if (!empty($G["S$i"])) {
                 $si = $G["S$i"];
                 if (!isset($Sides[$si])) {
                   $Sides[$si] = Get_Side($si);
