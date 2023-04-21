@@ -385,7 +385,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
         $id = "G:$v:$t:$line"; // Note the ids will be meaningless in condensed mode, but as they will should not be used, so not a problem
         $class = 'DPGridDisp';
         $dev = '';
-        if ($line == 0 && $G) $dev = 'data-e=' . $G['e']. ':' . $G['d'];
+        if ($line == 0 && $G) $dev = 'data-e=' . $G['e']. ':' . (empty($G['d'])?0:$G['d']);
         if (!$G || ($v<0 && !($G['S1'] || !$G['S2'] || $G['n']))) {
           if ($v > 0 && $condense==0) $class = "DPGridGrey";
           if (!isset($lineLimit[$t]) || $line >= $lineLimit[$t]) {
@@ -403,7 +403,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
             // Need to create a wrapped event - not editble here currently
             $cls = (empty($G['n'])?'':'class=DPNamed ');
             echo "$OtherLoc<td id=$id $WDRAG $dev $cls rowspan=$rows valign=top data-d=W>";
-            if ($G['n']) {
+            if (!empty($G['n'])) {
               if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
               echo $G['n'];
               if ($links) echo "</a>";
