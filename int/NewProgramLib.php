@@ -431,7 +431,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
           } else {
             echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
           }
-        } else if ($line == 0)) {
+        } else if ($line == 0) {
           echo "$OtherLoc<td id=$id $DRAG $dev data-d='N' class=DPNamed>";
           if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
           if (!empty($G['n']) ) echo $G['n'];
