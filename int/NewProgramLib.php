@@ -385,7 +385,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
         $id = "G:$v:$t:$line"; // Note the ids will be meaningless in condensed mode, but as they will should not be used, so not a problem
         $class = 'DPGridDisp';
         $dev = '';
-        if ($line == 0 && $G) $dev = 'data-e=' . $G['e']. ':' . (empty($G['d'])?0:$G['d']);
+        if ($line == 0 && $G) $dev = 'data-e=' . (empty($G['e'])?0:$G['e']) . ':' . (empty($G['d'])?0:$G['d']);
         if (!$G || ($v<0 && !($G['S1'] || !$G['S2'] || $G['n']))) {
           if ($v > 0 && $condense==0) $class = "DPGridGrey";
           if (!isset($lineLimit[$t]) || $line >= $lineLimit[$t]) {
@@ -438,7 +438,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
         } else if ($line != 0 && !empty($G['w'])) {
           echo "$OtherLoc<td id=$id $DRAG $dev hidden class=$class>&nbsp;";
           echo $G['n'];
-        } else if (!empty($G["S" . ($line+($G['n']?0:1))])) {
+        } else if (!empty($G['n']) && !empty($G["S" . ($line+($G['n']?0:1))])) {
           $si = $G["S" . ($line + ($G['n']?0:1))];
           if (!isset($Sides[$si])) {
             $Sidessi = Get_Side($si);
@@ -452,7 +452,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
             if (!$condense) $txt = "<span class=Cancel>ERR (" . Side_ShortName($si) . ")</span>";
           }
           $class .= " Side$si";
-          $rows = ($G['w']?('rowspan=' . (4-$line)):'');
+          $rows = (empty($G['w'])?'':('rowspan=' . (4-$line)));
           echo "$OtherLoc<td id=$id $DRAG $dev data-d=$si $rows class='$class'>";
           if ($links) echo "<a href=/int/ShowPerf?id=$si>";
           echo $txt;
