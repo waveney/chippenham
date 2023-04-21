@@ -52,6 +52,11 @@
       $_REQUEST['pa4v'] = $id;
       break;
 
+    case 'm' : // Venue Managers/Stewards
+      $Data = Get_Venue($id);
+      $_REQUEST['pa4v'] = $id;
+      break;
+
     case 'c' : // Staff - not yet
       $Data = Get_User($id);
       break;
@@ -66,10 +71,11 @@
 
   if ($Data['AccessKey'] != $key) Error_Page("Sorry - This is not the right key");
 
-  $CakeTypes = ['s'=>'Side','a'=>'Act','o'=>'Other','t'=>'Trader','w'=>'Steward','v'=>'Volunteer','u'=>'SignUp','c'=>'Staff','p'=>'Venue','ART'=>'SignUp'];// Not Sure on staff
+  $CakeTypes = ['s'=>'Side','a'=>'Act','o'=>'Other','t'=>'Trader','w'=>'Steward','v'=>'Volunteer','u'=>'SignUp','c'=>'Staff','p'=>'Venue','ART'=>'SignUp','m'=>'Venue'];
+    // Not Sure on staff
   $includes = ['s'=>'AddPerf.php','a'=>'AddPerf.php','o'=>'AddPerf.php','t'=>'TraderPage.php','w'=>'ViewStew.php',
-               'v'=>'Volunteers.php','u'=>'SignUp','c'=>'Staff','p'=>'PAShow.php','ART'=>'ArtForm.php'];  
-  $DoHead = ['s'=>1,'a'=>1,'o'=>1,'t'=>1,'w'=>1,'v'=>0,'u'=>1,'c'=>1,'p'=>1,'ART'=>1];
+               'v'=>'Volunteers.php','u'=>'SignUp','c'=>'Staff','p'=>'PAShow.php','ART'=>'ArtForm.php','m'=>'StewardShow.php'];  
+  $DoHead = ['s'=>1,'a'=>1,'o'=>1,'t'=>1,'w'=>1,'v'=>0,'u'=>1,'c'=>1,'p'=>1,'ART'=>1,'m'=>1];
 
   $Cake = sprintf("%s:%d:%06d",$CakeTypes[$t],$Access_Type['Participant'],$id ); 
   $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');
