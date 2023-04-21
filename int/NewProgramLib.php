@@ -401,7 +401,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
           if ($line == 0) {
             $rows = intval(ceil($G['d']/$Round))*4;
             // Need to create a wrapped event - not editble here currently
-            $cls = ($G['n']?'class=DPNamed ':'');
+            $cls = (empty($G['n'])?'':'class=DPNamed ');
             echo "$OtherLoc<td id=$id $WDRAG $dev $cls rowspan=$rows valign=top data-d=W>";
             if ($G['n']) {
               if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
