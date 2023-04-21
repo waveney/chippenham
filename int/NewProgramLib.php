@@ -263,11 +263,11 @@ function Create_Grid($condense=0,$Media='Dance') {
           $ForwardUse[$v] = $ev['d'] - $Round;
         }
         $grid[$v][$t]['e'] = $ev['e'];
-        if ($ev['n']) $grid[$v][$t]['n'] = $ev['n'];
+        if (!empty($ev['n'])) $grid[$v][$t]['n'] = $ev['n'];
 
         $things = 0;
         for ($i=1;$i<5;$i++) {
-          if ($ev["S$i"]) {
+          if (!empty($ev["S$i"])) {
             $grid[$v][$t]["S$i"] = $ev["S$i"];
             $things++;
           }
