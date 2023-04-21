@@ -79,7 +79,7 @@ CREATE TABLE `Events` (
   `WeirdStuff` tinyint NOT NULL,
   `SponsoredBy` int NOT NULL,
   `SeasonTicketOnly` tinyint NOT NULL,
-  `HowMany` int NOT NULL,
+  `HowMany` text NOT NULL,
   `HowWent` text NOT NULL,
   `ShowNameOnGrid` tinyint NOT NULL,
   PRIMARY KEY (`EventId`)

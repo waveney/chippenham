@@ -83,7 +83,8 @@ function Grab_Data($day='',$Media='Dance') {
       $plim =3;
     }
 
-    $lineLimit[$t] = max(2,$lineLimit[$t]); // Min value
+    
+    $lineLimit[$t] = (isset($lineLimit[$t]) ? max(2,$lineLimit[$t]) : 2); // Min value
 
     if (!$ev['BigEvent']) {
       $VenueUse[$v] = 1;
@@ -247,7 +248,7 @@ function Create_Grid($condense=0,$Media='Dance') {
         $ev = 0;
       }
 
-      if ($ForwardUse[$v]) {
+      if (!empty($ForwardUse[$v])) {
         if ($ev) {
           // find original forward point and mark overlap
           foreach($Back_Times as $bt) if (($bt < $t) && ($grid[$v][$t]['c'] > 1)) { $grid[$v][$t]['err'] = 1; break; };
