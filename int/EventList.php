@@ -9,6 +9,9 @@
   include_once("DocLib.php");
   include_once("EventCheck.php");
 
+  $ETNames = [];
+  foreach($Event_Types as $E) $ETNames[$E['ETypeNo']] = $E['SN'];
+
 //var_dump($_POST);
 //var_dump($Event_Types);
 
@@ -50,6 +53,10 @@
 
         case 'Concert':
           $Event['IsConcert'] = 1;
+          break;
+          
+        case 'Set Event Type to' :
+          $Event['Type'] = $_REQUEST['Type'];
           break;
         }
 //        var_dump($Event);
@@ -183,7 +190,8 @@
     if (Access('SysAdmin')) echo "<input type=Submit name=ACTION value='Chown to'> " . fm_select($AllActive,0,'W') . ",";
     echo "<input type=Submit name=LIST value='Show All'>\n";
     echo "<input type=Submit name=ACTION value='Public'>\n";
-    echo "<input type=Submit name=ACTION value='Concert'><br>\n";
+    echo ", <input type=Submit name=ACTION value='Set Event Type to'> " . fm_select($ETNames,0,'Type');
+//    echo "<input type=Submit name=ACTION value='Concert'><br>\n";
   }
   echo "</form>\n";
 
