@@ -21,7 +21,7 @@ $Area_Levels = [ 'No','Edit','Edit and Report'];
 $Area_Type = array_flip($Area_Levels);
 $Sections = ['', 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','Other','TLine','Bugs','Photos','Comedy','Family','News','Volunteers','Art',
    'Tickets','Events','Ceilidh']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD
-$Importance = array('None','Some','High','Very High','Even Higher','Highest','The Queen');
+$Importance = array('None','Some','High','Very High','Even Higher','Highest','The King');
 $Book_States = array('None','Declined','Booking','Contract Ready','Contract Signed','Contract Sent');
 $Book_Colours = ['white','salmon','yellow','orange','lime','Magenta'];
 $Book_State = array_flip($Book_States);

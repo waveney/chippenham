@@ -389,10 +389,11 @@ function UpperFirstChr($stuff) {
 }
 
 function SAO_Report($i,$r='',$se=0) {
+  global $Perf_Rolls;
   $OSide = Get_Side( $i ); 
   $str = "<a href=/int/ShowPerf?id=$i>" . $OSide['SN'];
   if ($r && $se <= 0) {
-    $str .= " ($r)";
+    $str .= " (" . $Perf_Rolls[$r] . ")";
   } elseif ($OSide['Type']) $str .= " (" . trim($OSide['Type']) . ")";
   return $str . "</a>";
 }
