@@ -431,17 +431,17 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
           } else {
             echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
           }
-        } else if ($line == 0  && !empty($G['n']) {
+        } else if ($line == 0  && !empty($G['n'])) {
           echo "$OtherLoc<td id=$id $DRAG $dev data-d='N' class=DPNamed>";
           if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
           if (!empty($G['n']) ) echo $G['n'];
           if ($links) echo "</a>";
           echo "<br>";
-        } else if ($line != 0 && !empty($G['w'])) {
+        } else if ($line != 0 && isset($G['w'])) {
           echo "$OtherLoc<td id=$id $DRAG $dev hidden class=$class>&nbsp;";
-          if (!empty($G['n'])) echo $G['n'];
-        } else if (!empty($G["S" . ($line+(empty($G['n'])?0:1))])) {
-          $si = $G["S" . ($line + (empty($G['n'])?0:1))];
+          if (isset($G['n'])) echo $G['n'];
+        } else if (isset($G["S" . ($line+(isset($G['n'])?0:1))])) {
+          $si = $G["S" . ($line + (isset($G['n'])?0:1))];
           if (!isset($Sides[$si])) {
             $Sidessi = Get_Side($si);
             $Sidessi['ERROR'] = 1;

@@ -7,7 +7,7 @@
   include_once("ProgLib.php");
   include_once("DanceLib.php");
   include_once("ViewLib.php");
-  global $YEAR,$FESTSYS;
+  global $YEAR,$FESTSYS,$USERID,$USER, $Access_Type;
     
   $Ven = Get_Venue($V);
   $host = "https://" . $_SERVER['HTTP_HOST'];
@@ -22,7 +22,7 @@
   } else {
     dostaffhead("PA Requirements for " . $Ven['SN'],["js/qrcode.js"]);
   }
-
+  echo "<div style='background:white;'>";
 
  $VenList[] = $V;
   if ($Ven['IsVirtual']) {
@@ -96,25 +96,34 @@
   }
 
   $lastevent = -99;
+  
+  echo "<form method=post action=StewardShow?V=$V>";
+  Register_AutoUpdate('VenueManager',($USER['AccessLevel'] == $Access_Type['Participant']? - rand(1,1000000): $USERID));
+  
   foreach ($EVs as $ei=>$e) {
     $eid = $e['EventId'];
-    if (DayTable($e['Day'],"PA Requirements for " . $Ven['SN'] ,'','style=font-size:24;')) {
-      echo "<tr><td>Time<td >What<td>Who<td>PA Reqs";
+    if (DayTable($e['Day'],"Event Sheet for " . $Ven['SN'] ,'','style=font-size:24;')) {
+      echo "<tr><td>Time<td>What<td colspan=3>Detail";
       $lastevent = -99;
     }
 
-    $rows = 0;
-    if (isset($e['With'])) $rows += count($e['With']);
-    if ($e['StagePA']) $rows++;
+    $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>" . ($e['SubEvent']<1?$e['SN']:"") ;
     
-    if ($rows) {
-      echo "<tr><td rowspan=$rows>". timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td rowspan=$rows>" . ($e['SubEvent']<1?$e['SN']:"") ;
-      $tr = 0;
-      if ($e['StagePA']) { echo "<td><td>" . $e['StagePA']; $tr=1;}
+    $rows = 4;
+    if ($e['NeedSteward']) { $str .= "<tr><td>Stewards<td colspan=3>" . $e['StewardTasks']; $rows++;}
+    if ($e['SetupTasks']) { $str .= "<tr><td>Setup<td colspan=3>" . $e['SetupTasks']; $rows++;}
+    $str .= "<tr><td>Price:<td>" . Price_Show($e,1);
+    if ($e['StagePA']) { $str .= "<tr><td>Stage PA<td colspan=3>" . $e['StagePA']; $rows++;}
+    $str .= "<tr>" . fm_text('Attendance',$e,'HowMany',3,'',"HowMany:$eid"); // Need to think how to do these so multiple people can enter it
+    $str .= "<tr>" . fm_text('Comments',$e,'HowWent',3,'',"HowWent:$eid");
+
+    if (isset($e['With'])) {
+    
+      $rows += count($e['With']);
+    
       if (isset($e['With'])) foreach ($e['With'] as $snum) {
-        if ($tr++) echo "<tr>";
         $side = Get_Side($snum);
-        echo "<td>" . $side['SN'] . "<td>";
+        $str .= "<tr><td>" . $side['SN'] . "<td colspan=3>";
         if ($side['StagePA'] == '@@FILE@@') {
           $files = glob("PAspecs/$snum.*");
           if ($files) {
@@ -123,23 +132,23 @@
             if (file_exists("PAspecs/$snum.$Cursfx")) {
               if ($ShowMode) {
                 $AtEnd[$snum] = "PAspecs/$snum.$Cursfx";
-                echo "See Below";
+                $str .= "See Below";
               } else {
-                echo "<a href=ShowFile?l=PAspecs/$snum.$Cursfx>View File</a>";
+                $str .= "<a href=ShowFile?l=PAspecs/$snum.$Cursfx>View File</a>";
               }
             } else {
-              echo "None";
+              $str .= "None";
             }
           } else {
-            echo "None";          
+            $str .= "None";          
           }
         } else if ($side['StagePA']) {
-          echo $side['StagePA'];
-        } else echo "None";
+          $str .= $side['StagePA'];
+        } else $str .= "None";
       }
-    } else {
-      echo "<tr><td>" . timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>" .  $e['SN'] . "<td><td>None";
     }
+    
+    echo "<tr><td rowspan=$rows>" . $str;
   }
   echo "</table>\n";
   
@@ -157,7 +166,7 @@
     echo "<br clear=all><div id=qrcode></div>";
     echo '<script type="text/javascript">
       var qrcode = new QRCode(document.getElementById("qrcode"), {
-        text: "' . $host . "/int/Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'] . '",
+        text: "' . $host . "/int/Access?Y=$YEAR&t=m&i=$V&k=" . $Ven['AccessKey'] . '",
         width: 205,
         height: 205,
       });
@@ -168,10 +177,11 @@
   
   if (Access('Staff')) {
 
-    echo "<h3>Link to send to Engineer: $host/int/Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'];
+    echo "<h3>Link to send to Manager/Steward: $host/int/Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'];
     if (Access('SysAdmin')) echo "<a href='Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'] . "'> Use\n";
     echo "</h3>\n";
   }
+  echo "</div>";
   dotail();
 
 ?>

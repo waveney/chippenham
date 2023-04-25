@@ -93,6 +93,7 @@ CREATE TABLE `SideYear` (
   `AccomPeople` int NOT NULL,
   `AccomNights` int NOT NULL,
   `AccomCost` int NOT NULL,
+  `NoEvents` tinyint NOT NULL,
   PRIMARY KEY (`syId`),
   UNIQUE KEY `syId` (`syId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

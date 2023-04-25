@@ -19,10 +19,11 @@
   
   if ($ShowMode == 'HeaderFree') {
     dominimalhead("PA Requirements for " . $Ven['SN'],['files/Newstyle.css','css/festconstyle.css',"js/qrcode.js"]);
+
   } else {
     dostaffhead("PA Requirements for " . $Ven['SN'],["js/qrcode.js"]);
   }
-
+  echo "<div style='background:white;'>";
 
  $VenList[] = $V;
   if ($Ven['IsVirtual']) {
@@ -172,6 +173,8 @@
     if (Access('SysAdmin')) echo "<a href='Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'] . "'> Use\n";
     echo "</h3>\n";
   }
+
+    echo "</div>";
   dotail();
 
 ?>
