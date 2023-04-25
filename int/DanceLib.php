@@ -746,15 +746,7 @@ function Extended_Prog($type,$id,$all=0) {
               for ($i=1;$i<5;$i++) {
                 if ($e["Side$i"] > 0 && $e["Side$i"] != $id && $type == 'Side') { 
                   if ($withc++) $str .= ", "; 
-                  $str .= SAO_Report($e["Side$i"]);
-                }
-                if ($e["Act$i"] > 0 && $e["Act$i"] != $id && $type == 'Act') { 
-                  if ($withc++) $str .= ", ";
-                  $str .= SAO_Report($e["Act$i"]);
-                }
-                if ($e["Other$i"] > 0 && $e["Other$i"] != $id && $type == 'Other') { 
-                  if ($withc++) $str .= ", ";
-                  $str .= SAO_Report($e["Other$i"]);
+                  $str .= SAO_Report($e["Side$i"],$e["Role$i"],$e['SubEvent']);
                 }
               }
             }

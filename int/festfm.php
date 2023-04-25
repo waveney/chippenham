@@ -388,10 +388,12 @@ function UpperFirstChr($stuff) {
   return strtoupper(substr($stuff,0,1)) . strtolower(substr($stuff,1));
 }
 
-function SAO_Report($i) {
+function SAO_Report($i,$r='',$se=0) {
   $OSide = Get_Side( $i ); 
   $str = "<a href=/int/ShowPerf?id=$i>" . $OSide['SN'];
-  if ($OSide['Type']) $str .= " (" . trim($OSide['Type']) . ")";
+  if ($r && $se <= 0) {
+    $str .= " ($r)";
+  } elseif ($OSide['Type']) $str .= " (" . trim($OSide['Type']) . ")";
   return $str . "</a>";
 }
 
