@@ -760,7 +760,7 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
             while ($ev = $res->fetch_assoc()) {
               for ($i=1;$i<5;$i++) {
                 if ($ev["Side$i"] > 0 && $ev["Side$i"] != $id) { 
-                  $with[] = SAO_Report($ev["Side$i"],$e["Role$i"],$e['SubEvent']);
+                  $with[] = SAO_Report($ev["Side$i"],$e["Roll$i"],$e['SubEvent']);
                 }
               }
             }
@@ -780,7 +780,7 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
               for ($i=1;$i<5;$i++) {
                 if ($e["Side$i"] > 0 && $e["Side$i"] != $id) { 
                   if ($withc++) $str .= ", "; 
-                  $str .= SAO_Report($e["Side$i"],$e["Role$i"],$e['SubEvent']);
+                  $str .= SAO_Report($e["Side$i"],$e["Roll$i"],$e['SubEvent']);
                 }
               }
             }
