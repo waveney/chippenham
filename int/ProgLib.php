@@ -13,7 +13,7 @@ $Public_Event_Types = array('As Global','Yes', 'Not yet','Never');
 $Day_Type = ['Thur'=>-1,'Fri'=>0,'Sat'=>1,'Sun'=>2,'Mon'=>3,'Tue'=>4]; 
 $Info_Type = array_flip($InfoLevels);
 $Public_Event_Type = array_flip($Public_Event_Types);
-$Perf_Rolls = ['','Band','Caller','MC','Sound','Support','Dance Spot'];
+
 include_once("DateTime.php");
 
 function DayList($d) {

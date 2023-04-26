@@ -51,6 +51,7 @@ $PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance Displays','D'],
               ];
 $PerfIdx = ['Side'=>0,'Act'=>1,'Comic'=>2,'ChEnt'=>3,'Other'=>4,'Ceilidh'=>5,'NonPerf'=>6];
 $SourceTypes = ['None','Perf','Trade','Finance','User','SignUp'];
+$Perf_Rolls = ['','Band','Caller','MC','Sound','Support','Dance Spot'];
 
 // Perfname => [field to test, email address for,Capability name,budget,shortCode]
 $Months = ['','Jan','Feb','Mar','Apr','May','June','July','Aug','Sep','Oct','Nov','Dec'];
