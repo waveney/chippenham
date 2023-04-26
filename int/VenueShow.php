@@ -11,7 +11,7 @@
 
 function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   global $ll,$SpecialImage,$Pictures,$FESTSYS;
-  
+  global $Perf_Rolls;  
   $things = 0;
 //var_dump($imps);
   if ($ImpC) {
