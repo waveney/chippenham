@@ -241,7 +241,11 @@ function Print_Participants($e,$when=0,$thresh=0) {
   }
 
   if ($Ev['Image']) echo "<img src=" . $Ev['Image'] . ">";
-  if ($Ev['Blurb']) echo "<div style='width:800px;'>" . $Ev['Blurb'] . "</div><P>";
+  if ($Ev['Blurb']) {
+    echo "<div style='width:800px;'>" . $Ev['Blurb'] . "</div><P>";
+  } elseif ($Ev['Description']) {
+    echo "<div style='width:800px;'>" . $Ev['Description'] . "</div><P>";
+  }
   if ($Ev['Website']) echo "<h3>" . weblink($Ev['Website'],'Website for this event') . "</h3><p>\n";
 
   if ($Ev['IsConcert'] || ($Event_Types[$Ev['Type']]['IsConcert']) ) { // Concert Formating

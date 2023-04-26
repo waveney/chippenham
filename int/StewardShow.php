@@ -107,7 +107,7 @@
       $lastevent = -99;
     }
 
-    $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>" . ($e['SubEvent']<1?$e['SN']:"") ;
+    $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>Name<td>" . ($e['SubEvent']<1? $e['SN']:"") ;
     
     $rows = 4;
     if ($e['NeedSteward']) { $str .= "<tr><td>Stewards<td colspan=3>" . $e['StewardTasks']; $rows++;}
@@ -156,14 +156,6 @@
   }
   echo "</table>\n";
   
-  if ($AtEnd) {
-    foreach($AtEnd as $snum=>$IncFile) {
-      $side = Get_Side($snum);
-      echo "<h2>" . $side['SN'] . "</h2>";
-      ViewFile($IncFile,1,'',0);
-    }
-  }
- 
   if ($ShowMode == 'HeaderFree') {
 
     echo "<h3> To find out more scan this:</h3>"; // pixels should be multiple of 41
@@ -175,7 +167,18 @@
         height: 205,
       });
       </script>';
+  }
 
+
+  if ($AtEnd) {
+    foreach($AtEnd as $snum=>$IncFile) {
+      $side = Get_Side($snum);
+      echo "<h2>" . $side['SN'] . "</h2>";
+      ViewFile($IncFile,1,'',0);
+    }
+  }
+ 
+  if ($ShowMode == 'HeaderFree') {
     exit;
   }
   
