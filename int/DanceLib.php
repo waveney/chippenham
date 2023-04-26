@@ -462,6 +462,7 @@ Contract Signed - Enables listing to public.',
         'Coming' => 'Please indicate you have got the invite and then update when you have made a decision',
         'Messages' => 'To Edit ask Richard (for now)',
         'ContractAnyway' => 'Forces contract even if none are needed',
+        'NoEvents' => 'Set this if you are issuing a contract even without any events',
 
   );
   Set_Help_Table($t);
