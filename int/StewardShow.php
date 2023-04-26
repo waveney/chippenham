@@ -110,7 +110,7 @@
     $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>Name<td>" . ($e['SubEvent']<1? $e['SN']:"") ;
     
     $rows = 4;
-    if ($e['NeedSteward']) { $str .= "<tr><td>Stewards<td colspan=3>" . $e['StewardTasks']; $rows++;}
+    if ($e['NeedSteward'] && $e['StewardTasks']) { $str .= "<tr><td>Stewards<td colspan=3>" . $e['StewardTasks']; $rows++;}
     if ($e['SetupTasks']) { $str .= "<tr><td>Setup<td colspan=3>" . $e['SetupTasks']; $rows++;}
     $str .= "<tr><td>Price:<td>" . Price_Show($e,1);
     if ($e['StagePA']) { $str .= "<tr><td>Stage PA<td colspan=3>" . $e['StagePA']; $rows++;}
@@ -171,6 +171,7 @@
 
 
   if ($AtEnd) {
+    echo "<br clear=all><p>";
     foreach($AtEnd as $snum=>$IncFile) {
       $side = Get_Side($snum);
       echo "<h2>" . $side['SN'] . "</h2>";
