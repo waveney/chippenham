@@ -511,7 +511,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     }
     if ($Mode || Access('SysAdmin')) {
       echo fm_radio("Contract State",$Book_States,$Sidey,'YearState','class=NotSide',1,'colspan=3 class=NotSide','',$Book_Colours);
-      echo fm_checkbox('No Events',$Sidey,'NoEvents');
+      echo "<td>" . fm_checkbox('No Events',$Sidey,'NoEvents');
     } else {
       echo "<td class=NotSide>Booking State:" . help('YearState') . "<td class=NotSide>" . $Book_States[$Sidey['YearState']];
     }

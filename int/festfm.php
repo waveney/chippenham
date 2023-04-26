@@ -319,16 +319,16 @@ function weblink($dest,$text='Website',$alink='',$all=0) {
     $ans = '';
     foreach($sites as $site) {
       $ans .= "<a $alink target=_blank href='";
-      if (!preg_match("/^https?/",$site)) $ans .= 'http://';
+      if (!preg_match("/^https?/i",$site)) $ans .= 'http://';
       $ans .= "$site'>";
-      preg_match("/^(https?:\/\/)?(.*?)(\/|$)/",$site,$m);
+      preg_match("/^(https?:\/\/)?(.*?)(\/|$)/i",$site,$m);
       $ans .= $m[2];
       $ans .= "</a> ";
       if ($all==0) break;
     }
     return $ans;      
   } else {
-    if (preg_match("/^http/",$dest)) return "<a href='$dest' $alink target=_blank>$text</a>";
+    if (preg_match("/^http/i",$dest)) return "<a href='$dest' $alink target=_blank>$text</a>";
     return "<a href='http://$dest' $alink target=_blank>$text</a>";
   }
 }
