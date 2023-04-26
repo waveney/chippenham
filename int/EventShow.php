@@ -14,6 +14,8 @@
 
 function Print_Thing($thing,$right=0) {
   global $YEAR,$SHOWYEAR,$PerfTypes;
+  global $Perf_Rolls;
+
   echo "<div class=EventMini id=" . AlphaNumeric($thing['SN']) . ">";
   if (( $thing['Coming'] != 2) && ( $thing['YearState'] < 2) && ($YEAR >= $SHOWYEAR)) {
     echo "<a href=/int/ShowPerf?id=" . $thing['SideId'] . ">" . NoBreak($thing['SN'],3) . "</a>";
@@ -28,7 +30,9 @@ function Print_Thing($thing,$right=0) {
     }
     echo "<h2 class=EventMinittl style='font-size:" . (27+ $iimp) . "px;'>"; 
     echo $thing['SN'];  
-    if (isset($thing['Type']) && $thing['Type']) echo " (" . $thing['Type'] . ") ";
+    if (!empty($thing['Roll'])) {
+      echo " (" . $Perf_Rolls[$thing['Roll']] . ")";
+    } else if (isset($thing['Type']) && $thing['Type']) echo " (" . $thing['Type'] . ") ";
     echo "</a></h2>";
     if ($thing['Description']) echo "<p class=EventMinitxt>" . $thing['Description'] . "</p>";
   }
@@ -211,7 +215,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
       $imps=array();
       $sublst = array($Ev);
       $sublst = array_merge($sublst,$Subs);
-      foreach ($sublst as $e) Get_imps($e,$imps,0);
+      foreach ($sublst as $e) Get_Imps($e,$imps,0);
       $HighImp = 0;
       foreach ($imps as $i=>$v) if ($i > 0 && isset($imps[$i])) $HighImp = $i;
       if ($HighImp) {

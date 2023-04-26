@@ -82,6 +82,7 @@ function Get_Imps(&$e,&$imps,$clear=1,$all=0) {
         if ($si) {
           $y = Get_SideYear($ee,$YEAR);
           $s = array_merge($si, munge_array($y)); 
+          $s['Roll'] = (($e['SubEvent'] <= 0)?$e["Roll$i"]:'');
           if ($s && ($all || ((( $s['Coming'] == 2) || ($s['YearState'] >= 2)) && ($ets >1 || ($ets==1 && Access('Participant','Side',$s))) && $s['ReleaseDate'] < $now))) {
             if (!$useimp) {
               $imps[0][] = $s;
