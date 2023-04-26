@@ -420,32 +420,38 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
 // All Events have - Venue, Start, Duration, Type - Start & End/Duration can be TBD if event-type has a not critical flag set
   $InValid = 3;
   $Evs = Get_Events4Act($snum,$YEAR);
-  $types = Get_Event_Types(1);
-  $Vens = Get_Real_Venues(1);
-  $LastEv = 0;
-  if ($Evs) foreach ($Evs as $e) {
-    if ($InValid == 3) $InValid = 0;
-    if ($LastEv) {
-      if (($e['Day'] == $LastEv['Day']) && ($e['Start'] > 0) && ($e['Venue'] >0)) {
-        if ($LastEv['SubEvent'] < 0) { $End = $LastEv['SlotEnd']; } else { $End = $LastEv['End']; };
-        if ($LastEv['BigEvent']) $End -=30; // Fudge for procession
-        if (($End > 0) && !$LastEv['IgnoreClash'] && !$e['IgnoreClash']) {
-          if ($End > $e['Start']) $InValid = 7;
-          if ($InValid < 5 && $End == $e['Start'] && $LastEv['Venue'] != $e['Venue']) $InValid = 7;
+  if ($Evs) {
+    $types = Get_Event_Types(1);
+    $Vens = Get_Real_Venues(1);
+    $LastEv = 0;
+
+    foreach ($Evs as $e) {
+      if ($InValid == 3) $InValid = 0;
+      if ($LastEv) {
+        if (($e['Day'] == $LastEv['Day']) && ($e['Start'] > 0) && ($e['Venue'] >0)) {
+          if ($LastEv['SubEvent'] < 0) { $End = $LastEv['SlotEnd']; } else { $End = $LastEv['End']; };
+          if ($LastEv['BigEvent']) $End -=30; // Fudge for procession
+          if (($End > 0) && !$LastEv['IgnoreClash'] && !$e['IgnoreClash']) {
+            if ($End > $e['Start']) $InValid = 7;
+            if ($InValid < 5 && $End == $e['Start'] && $LastEv['Venue'] != $e['Venue']) $InValid = 7;
+          }
         }
       }
-    }
         
-    $et = $types[$e['Type']];
-    if ($InValid < 4 && ($e['Venue']==0) || !isset($Vens[$e['Venue']])) $InValid = 5;
-    if (!$et['NotCrit']) {
-      if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; };
-      if ($InValid == 0 && $e['Start'] == 0) $InValid = 1;
-      if (($e['Start'] != 0) && ($End != 0) && ($e['Duration'] == 0)) $e['Duration'] = timeadd2($End, - $e['Start']);
-      if ($InValid < 6 && ($End == 0) && ($e['Duration'] == 0)) $InValid = 6; 
-    }    
-    $LastEv = $e;
-  }  
+      $et = $types[$e['Type']];
+      if ($InValid < 4 && ($e['Venue']==0) || !isset($Vens[$e['Venue']])) $InValid = 5;
+      if (!$et['NotCrit']) {
+        if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; };
+        if ($InValid == 0 && $e['Start'] == 0) $InValid = 1;
+        if (($e['Start'] != 0) && ($End != 0) && ($e['Duration'] == 0)) $e['Duration'] = timeadd2($End, - $e['Start']);
+        if ($InValid < 6 && ($End == 0) && ($e['Duration'] == 0)) $InValid = 6; 
+      }    
+      $LastEv = $e;
+    }  
+  } else {
+    $Sy = Get_SideYear($snum,$YEAR);
+    if ($Sy['NoEvents']) $InValid = 0;  
+  }
 
   $ActY = Get_SideYear($snum);
   if ($InValid && $ActY['YearState'] < 2) $InValid = 3;
