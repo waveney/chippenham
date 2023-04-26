@@ -161,6 +161,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
           }
         }
         echo "<td class=NotSide>State:" . fm_select($Side_Statuses,$Side,'SideStatus') . "\n";
+        echo "<td class=NotSide>" . fm_checkbox('Not a Performer',$Side,'NotPerformer') . "\n";
         if ($PerfTC > 1 && $Side['DiffImportance']) {
           echo "<tr><td class=NotSide>Importances:" . help('Importance');
           foreach ($PerfTypes as $p=>$d) {

@@ -272,6 +272,17 @@
     $N = Gen_Get($type,$id);
     $N[$field] = hexdec($Value);
     return Gen_Put($type,$N);
+    
+  case 'VenueManager' : // WRONG
+    $RandWho = $id;
+    if (preg_match('/($w*):(\d*)/',$field,$mtch)?true:false) {
+      $Eid = $mtch[2];
+      $Efld = $mtch[1];
+      $E = Get_Event($Eid);
+      $E[$field] = $Value;
+      return Put_Event(E);
+    }
+    break;
      
   default:
     break;

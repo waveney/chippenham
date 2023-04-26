@@ -186,7 +186,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
         echo Venue_Parents($OVens,$OVi) . "<a href=VenueShow?v=$OVi>" . $OVens[$OVi] . "</a>";
       }
     } else if ($Ven['VenueId']) {
-      echo "Where:<td>" . Venue_Parents($OVens, $Ven['VenueId']) . "<a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
+      echo "Where:<td width=750>" . Venue_Parents($OVens, $Ven['VenueId']) . "<a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
 //      echo "<div class=floatright><a onclick=ShowDirect(" . $Ven['VenueId'] . ")>Directions</a></div>\n";
       if ($Ven['Address']) echo " - " . $Ven['Address'] . $Ven['PostCode'] ."\n";
       if ($Ven['Description']) echo "<br>" . $Ven['Description'] . "\n";

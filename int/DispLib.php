@@ -42,6 +42,7 @@ function formatLineups(&$perfs,$link,&$Sizes,$sdisp=1) {
   $LastSize = -1;
   
   foreach ($perfs as $perf) {
+    if ($perf['NotPerformer'] ) continue;
     $Imp = $perf['EffectiveImportance'];
     $Id = $perf['SideId'];
     if ($Sizes[$Imp] != $LastSize) {

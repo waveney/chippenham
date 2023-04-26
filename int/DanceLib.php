@@ -425,6 +425,7 @@ IF you wish to remove a performer type tell Richard - there are many small chang
         'DiffImportance'=>'IF needs to have different Importances for performer types, select this and SAVE CHANGES',
         'EmailLog'=>'View the system email log to (and from) this performer - if there is one',
         'BookDirect'=>'Tick this to bypass the agent and email the performer drectly',
+        'NotPerformer'=>'People in the database that are not performing and should not appear in lists of performers',
   );
   Set_Help_Table($t);
 }

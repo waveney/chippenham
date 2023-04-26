@@ -60,7 +60,7 @@
     }
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.DanceImportance,s.Importance) AS EffectiveImportance " .
              "FROM Sides AS s, SideYear AS y WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.Coming=" . $Coming_Type['Y'] . 
-             " AND s.IsASide=1 AND y.ReleaseDate<$now ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
+             " AND s.IsASide=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
     $Sizes = [3,3,3,2,2,1,1];
     $ShortDesc = Feature('LinupShortDesc_Dance');
     break;
@@ -75,7 +75,7 @@
 
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.MusicImportance,s.Importance) AS EffectiveImportance FROM Sides AS s, SideYear AS y " .
            "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-           " AND s.IsAnAct=1 AND y.ReleaseDate<$now ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
+           " AND s.IsAnAct=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
 
     $ShortDesc = Feature('LinupShortDesc_Music');
     break;
@@ -90,7 +90,7 @@
 
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.ComedyImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
            "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-           " AND s.IsFunny=1 AND y.ReleaseDate<$now ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
+           " AND s.IsFunny=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
 
     $ShortDesc = Feature('LinupShortDesc_Comedy');
     break;
@@ -106,7 +106,7 @@
 
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.FamilyImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
            "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-           " AND s.IsFamily=1 AND y.ReleaseDate<$now ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
+           " AND s.IsFamily=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
     $ShortDesc = Feature('LinupShortDesc_Family');
     break;
 
@@ -122,7 +122,7 @@
 
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
            "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-           " AND s.IsOther=1 AND y.ReleaseDate<$now ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
+           " AND s.IsOther=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
     $ShortDesc = Feature('LinupShortDesc_Other');
     break;
 
@@ -137,7 +137,7 @@
 
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
            "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-           " AND s.IsCeilidh=1 AND y.ReleaseDate<$now ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
+           " AND s.IsCeilidh=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
     $ShortDesc = Feature('LinupShortDesc_Ceilidh');
     break;
     
