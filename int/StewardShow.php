@@ -98,7 +98,7 @@
   $lastevent = -99;
   
   echo "<form method=post action=StewardShow?V=$V>";
-  Register_AutoUpdate('VenueManager',($USER['AccessLevel'] == $Access_Type['Participant']? - rand(1,1000000): $USERID));
+  Register_AutoUpdate('EventSteward',rand(1,1000000)); //($USER['AccessLevel'] == $Access_Type['Participant']? - rand(1,1000000): $USERID));
   
   foreach ($EVs as $ei=>$e) {
     $eid = $e['EventId'];
@@ -114,8 +114,9 @@
     if ($e['SetupTasks']) { $str .= "<tr><td>Setup<td colspan=3>" . $e['SetupTasks']; $rows++;}
     $str .= "<tr><td>Price:<td>" . Price_Show($e,1);
     if ($e['StagePA']) { $str .= "<tr><td>Stage PA<td colspan=3>" . $e['StagePA']; $rows++;}
-    $str .= "<tr>" . fm_text('Attendance',$e,'HowMany',3,'',"HowMany:$eid"); // Need to think how to do these so multiple people can enter it
-    $str .= "<tr>" . fm_text('Comments',$e,'HowWent',3,'',"HowWent:$eid");
+    $Gash = ['HowMany'=>'','HowWent'=>''];
+    $str .= "<tr>" . fm_number('Attendance',$Gash,'HowMany','','',"HowMany:$eid"); // Need to think how to do these so multiple people can enter it
+    $str .= "<tr>" . fm_text('Comments',$Gash,'HowWent',3,'','',"HowWent:$eid");
 
     if (isset($e['With'])) {
     
@@ -149,6 +150,9 @@
     }
     
     echo "<tr><td rowspan=$rows>" . $str;
+  }
+  if (Access('SysAdmin')) {
+    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
   }
   echo "</table>\n";
   

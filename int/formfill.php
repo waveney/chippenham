@@ -5,7 +5,9 @@
   $id    = $_POST['I'];
   $type  = $_POST['D'];
 
-//  var_dump($_POST);  
+  global $PLANYEAR;
+
+//var_dump($PLANYEAR,$_POST);  
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
@@ -223,6 +225,22 @@
     // SHOULD never get here...    
     exit;  
     
+  case 'EventSteward':
+    $RandWho = $id;
+    if (preg_match('/(\w*):(\d*)/',$field,$mtch)?true:false) {
+      $Eid = $mtch[2];
+      $Efld = $mtch[1];
+      $ES = Gen_Get_Cond1('EventSteward',"RandId=$id AND EventId=$Eid AND Year='$PLANYEAR'");
+            
+      if (!isset($ES['id'])) {
+        $ES = ['RandId'=>$id, 'EventId'=>$Eid, 'HowMany'=>0, 'HowWent'=>'','Name'=>'', 'Year'=>$PLANYEAR];
+      }
+      $ES[$Efld] = $Value;
+      return Gen_Put('EventSteward',$ES);
+    }
+//    echo "Didn't Match!";
+    break;
+
   case 'Volunteers':
     if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {        
 //var_dump($id, $field, $Value, $mtch);
@@ -275,16 +293,6 @@
     $N = Gen_Get($type,$id);
     $N[$field] = hexdec($Value);
     return Gen_Put($type,$N);
-    
-  case 'VenueManager' : // WRONG
-    $RandWho = $id;
-    if (preg_match('/($w*):(\d*)/',$field,$mtch)?true:false) {
-      $Eid = $mtch[2];
-      $Efld = $mtch[1];
-      $E = Get_Event($Eid);
-      $E[$field] = $Value;
-      return Put_Event(E);
-    }
     break;
      
   default:

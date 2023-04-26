@@ -356,7 +356,7 @@
     $txt .= "<li><form method=Post action=StewardShow class=staffform>";
         $txt .= "<input type=submit name=a value='Event Sheets for' id=staffformid>" . 
                 fm_hidden('Y',$YEAR) .
-                fm_select($Vens,0,'pa4v',0," onchange=this.form.submit()") . " - Not yet ready for use.  </form>\n";
+                fm_select($Vens,0,'pa4v',0," onchange=this.form.submit()") . "</form>\n";
 
 //    if (Access('SysAdmin')) $txt .= "<li><a href=BusTimes>Fetch and Cache Bus Times</a>\n";
 //    if (Access('SysAdmin')) $txt .= "<li><a href=ConvertEvents>Convert Old Format Events to New Format Events</a>\n";
