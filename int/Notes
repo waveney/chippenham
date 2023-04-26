@@ -1,3 +1,26 @@
+1) Stewarding Event Sheets
+2) Dance Layout less wrong
+3) Out of running order events - Stick & Bucket etc
+4) EventShow - Tiles
+5) Dance Ticket Freeze/Notify Laura
+6) Print Material
+7) VenueShow - Mcs and where the ticket is shown
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Volunteers
 
 1.  Volunteers - camping tweaks
@@ -37,3 +60,30 @@ QR Codes
 
 dxhpqt59pyhs
 28*5, 27
+
+https://chippfolk.co.uk/images/Venues/78.jpg?1681713476636
+https://photos.google.com/u/1/share/AF1QipMFERHYkzkgV02yPUI7pdDMwzdJ9l-scjtGxn1RmuuQ71_sks6ZP8IUWqdrEe41Yw/photo/AF1QipOilzrTo8iJ3nIn5GLr58Q_d6MK1N-nPeKPpvhd?key=N2JDbV9HWThqdTA0Z1czYkljSTZFemxzU2R2cXdn
+
+          if (!empty($G['n'])) echo $G['n'];
+        } else if (!empty($G["S" . ($line+($G['n']?0:1))])) {
+          $si = $G["S" . ($line + ($G['n']?0:1))];
+//          if (!empty($G['n'])) echo $G['n'];
+//        } else if (!empty($G["S" . ($line+(empty($G['n'])?0:1))])) {
+//          $si = $G["S" . ($line + (empty($G['n'])?0:1))];
+
+Line 455 NPL
+
+Why I dropped:
+
+I had done nothing in three sessions, but one roll of dice for something that was not even used.
+
+I have no empathy with either the setting or the totally unrealistic characters.
+
+I was very sceptical that this would be for me when we started, but was persuded to give it a go.  I am happy with Fantasy or real world / hard science, Scion is in the uncomfortable spot.
+
+
+
+
+
+
+

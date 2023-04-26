@@ -59,7 +59,8 @@
     $col8 = "Invited $PLANYEAR";
     $col9 = "Coming $PLANYEAR";
   } else if ($_GET['SEL'] == 'Coming') {
-    echo "In the Missing Col: A=Address, D=Days, I=Insurance, M=Mobile, P=Performers Nos<p>\n";
+    echo "In the Missing Col: A=Address, D=Days, I=Insurance, M=Mobile, P=Performers Nos<br>\n";
+    echo "A <b>P</b> in the Notes Col, indicates the performer numbers have changed<p>\n";
   
     $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, SideYear as y WHERE s.IsASide=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND y.Coming=" . 
                 $Coming_Type['Y'] . " ORDER BY SN");
@@ -158,6 +159,7 @@
           $Htext = htmlspec($fetch['Notes'] . "\n" . $fetch['YNotes'] . "\n" . $fetch['PrivNotes'] . "\n" . $fetch['Likes']	);
           echo "<img src=images/icons/LetterN.jpeg width=20 title=\"$Htext\">";
         }
+        if (($_GET['SEL'] == 'Coming') && $fetch['PerfNumChange']) echo " <b>P</b>";
 
       } 
       if ($col5 == "Invite") {

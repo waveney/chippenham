@@ -119,7 +119,7 @@
     } 
 //echo "Here";    
     // else general cases
-    
+
     $Perf = Get_Side($id);
     if (isset($Perf[$field])) {
       $Perf[$field] = $Value;
@@ -133,12 +133,15 @@
         if (isset($flds[$field])) {
           $Perfy = Default_SY($id);
           $Perfy[$field] = $Value;
+          
           echo Put_SideYear($Perfy);
           exit;
         }
       }
       if (isset($Perfy[$field])) {
         $Perfy[$field] = $Value;
+
+        if ((1 || !Access('Staff')) && strstr($field,'Performers')) $Perfy['PerfNumChange'] = 1;
 //        var_dump($Perfy);
         echo Put_SideYear($Perfy);
         exit;

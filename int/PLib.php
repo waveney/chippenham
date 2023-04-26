@@ -677,7 +677,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             echo "<tr>" . fm_number1('Adults',$Sidey,'Performers','',' onchange=CheckIfTickets() ') . 
                  fm_number1('Youth (10-16)',$Sidey,'PerformersYouth','',' onchange=CheckIfTickets() ') .
                  fm_number1('Child (under 10)',$Sidey,'PerformersChild','',' onchange=CheckIfTickets() ');
-            echo "<td class=NOPerfTickets><b>No Tickets Wanted</b>";         
+            echo "<td class=NOPerfTickets><b>No Tickets Wanted</b>";  
+            if ($Mode) echo "<td class=NotSide>" . fm_checkbox('These have changed',$Sidey,'PerfNumChange');
           } 
           
           if ($Side['IsAnAct'] || $Side['IsFunny'] || $Side['IsFamily'] || $Side['IsCeilidh'] || $Side['IsOther'] ) {
