@@ -7,7 +7,7 @@
   include_once("MusicLib.php");
   include_once("DispLib.php");
   
-  global $db, $YEAR,$ll,$SpecialImage,$Pictures,$PerfTypes,$DayLongList;
+  global $db, $YEAR,$ll,$SpecialImage,$Pictures,$PerfTypes,$DayLongList,$FESTSYS;
 
 function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   global $ll,$SpecialImage,$Pictures,$FESTSYS;
@@ -96,7 +96,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     echo "<div id=Poster>"; 
     echo "<center>";
     echo "<h2 class=subtitle id=Postertitle>";
-    echo "<img src=/images/icons/Long-Banner-Logo.png height=100><br>";
+    echo "<img src=" . $FESTSYS['WebSiteBanner'] . " height=100><br>";
     $namlen = strlen($Ven['SN']);
     if ($namlen > 20) {
       $siz = 60 - floor(($namlen-16)/2);
@@ -183,16 +183,17 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
       $VenList[] = $part['VenueId'];
       $PartList[$part['VenueId']] = $part['SN'];
     }
+ 
+    if (!$Poster) {   
+      echo "<h3>" . $Ven['SN'] . " comprises of:<h3>";
     
-    echo "<h3>" . $Ven['SN'] . " comprises of:<h3>";
-    
-    echo "<div id=flex5>\n";
-    foreach ($PartList as $Vid=>$ven) {
-      if ($Vid == $V) continue;
-      echo "<div class=VenueFlexCont><a href=/int/VenueShow?v=$Vid&Y=$YEAR>$ven</a></div>";
+      echo "<div id=flex5>\n";
+      foreach ($PartList as $Vid=>$ven) {
+        if ($Vid == $V) continue;
+        echo "<div class=VenueFlexCont><a href=/int/VenueShow?v=$Vid&Y=$YEAR>$ven</a></div>";
+      }
+      echo "</div><br>";
     }
-    echo "</div><br>";
-    
   } else {
     $res = $db->query("SELECT DISTINCT e.* FROM Events e, EventTypes t WHERE e.Year='$YEAR' AND (e.Venue=$V OR e.BigEvent=1) $xtr " .
                 " ORDER BY Day, Start");
