@@ -133,7 +133,7 @@
     
     } else {
       $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']);
-      $rows = 2;    
+      $rows = 3;    
     }
     
 
