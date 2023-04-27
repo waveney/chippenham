@@ -24,7 +24,8 @@
   }
   echo "<div style='background:white;'>";
 
- $VenList[] = $V;
+  $Gash = ['HowMany'=>'','HowWent'=>''];
+  $VenList[] = $V;
   if ($Ven['IsVirtual']) {
     $res = $db->query("SELECT DISTINCT e.* FROM Events e, Venues v, EventTypes t WHERE e.Year='$YEAR' AND (e.Venue=$V OR e.BigEvent=1 OR " .
                 "( e.Venue=v.VenueId AND v.PartVirt=$V )) ORDER BY Day, Start");
@@ -102,29 +103,41 @@
   
   foreach ($EVs as $ei=>$e) {
     $eid = $e['EventId'];
-    if (DayTable($e['Day'],"Event Sheet for " . $Ven['SN'] ,'','style=font-size:24;')) {
-      echo "<tr><td>Time<td>What<td colspan=3>Detail";
+    if (DayTable($e['Day'],"Event Sheet for: " . $Ven['SN'] ,'','style=font-size:24;')) {
+      echo "<tr><td class=ES_Time>Time<td class=ES_What>What<td class=ES_Detail>Detail";
       $lastevent = -99;
     }
 
-    $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>Name<td>" . ($e['SubEvent']<1? $e['SN']:"") ;
-    
-    $rows = 4;
-    if ($e['NeedSteward'] && $e['StewardTasks']) { $str .= "<tr><td>Stewards<td colspan=3>" . $e['StewardTasks']; $rows++;}
-    if ($e['SetupTasks']) { $str .= "<tr><td>Setup<td colspan=3>" . $e['SetupTasks']; $rows++;}
-    $str .= "<tr><td>Price:<td>" . Price_Show($e,1);
-    if ($e['StagePA']) { $str .= "<tr><td>Stage PA<td colspan=3>" . $e['StagePA']; $rows++;}
-    $Gash = ['HowMany'=>'','HowWent'=>''];
-    $str .= "<tr>" . fm_number('Attendance',$Gash,'HowMany','','',"HowMany:$eid"); // Need to think how to do these so multiple people can enter it
-    $str .= "<tr>" . fm_text('Comments',$Gash,'HowWent',3,'','',"HowWent:$eid");
+    if ($e['SubEvent'] == 0) {
+      $rows = 4;
+      $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td class=ES_What>Event Name:<td>" . $e['SN'] ;
+      $str .= "<tr><td>Price:<td>" . Price_Show($e,1);
 
+    } else if ($e['SubEvent'] < 0) {
+      $rows = 4;
+      $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['SlotEnd']) . "<td class=ES_What>Event Name:<td>" . $e['SN'] ;
+      $str .= "<tr><td>Price:<td>" . Price_Show($e,1);
+    
+    } else {
+      $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']);
+      $rows = 2;    
+    }
+    
+
+//    $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon(($e['SubEvent']<0)?$e['SlotEnd']:$e['End']) . "<td>" . ($e['SubEvent']<1? $e['SN']:"") ;
+    
+//    if ($e['SubEvent']<1) $str .= "<tr><td class=ES_What>Price:<td class=ES_Detail>" . Price_Show($e,1);
+    
+    if ($e['NeedSteward'] && $e['StewardTasks']) { $str .= "<tr><td class=ES_What>Stewards<td class=ES_Detail>" . $e['StewardTasks']; $rows++;}
+    if ($e['SetupTasks']) { $str .= "<tr><td class=ES_What>Setup<td class=ES_Detail>" . $e['SetupTasks']; $rows++;}
+    if ($e['StagePA']) { $str .= "<tr><td class=ES_What>Stage PA<td class=ES_Detail>" . $e['StagePA']; $rows++;}
     if (isset($e['With'])) {
     
       $rows += count($e['With']);
     
       if (isset($e['With'])) foreach ($e['With'] as $snum) {
         $side = Get_Side($snum);
-        $str .= "<tr><td>" . $side['SN'] . "<td colspan=3>";
+        $str .= "<tr><td class=ES_What>" . $side['SN'] . "<td class=ES_Detail>";
         if ($side['StagePA'] == '@@FILE@@') {
           $files = glob("PAspecs/$snum.*");
           if ($files) {
@@ -148,8 +161,11 @@
         } else $str .= "None";
       }
     }
+
+    $str .= "<tr>" . fm_number('Attendance',$Gash,'HowMany','','',"HowMany:$eid"); // Need to think how to do these so multiple people can enter it
+    $str .= "<tr>" . fm_textarea('Comments',$Gash,'HowWent',1,1,'','',"HowWent:$eid");
     
-    echo "<tr><td rowspan=$rows>" . $str;
+    echo "<tr><td class=ES_Time rowspan=$rows>" . $str;
   }
   if (Access('SysAdmin')) {
     echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";

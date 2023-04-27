@@ -1676,3 +1676,16 @@ ol ol > li:before {
 
 .altcolours tr:nth-child(even) {background-color: #CCC;}
 .altcolours tr:nth-child(odd) {background-color: #FFF;}
+
+.ES_Time {
+  width:4%;
+}
+
+.ES_What {
+ Width:21%;
+}
+
+.ES_Detail {
+ width:75%;
+}
+
