@@ -7,7 +7,7 @@
   include_once("ProgLib.php");
   include_once("DanceLib.php");
   include_once("ViewLib.php");
-  global $YEAR,$FESTSYS,$USERID,$USER, $Access_Type;
+  global $YEAR,$FESTSYS,$USERID,$USER, $Access_Type, $Event_Types;
     
   $Ven = Get_Venue($V);
   $host = "https://" . $_SERVER['HTTP_HOST'];
@@ -26,6 +26,7 @@
 
   $Gash = ['HowMany'=>'','HowWent'=>''];
   $VenList[] = $V;
+  
   if ($Ven['IsVirtual']) {
     $res = $db->query("SELECT DISTINCT e.* FROM Events e, Venues v, EventTypes t WHERE e.Year='$YEAR' AND (e.Venue=$V OR e.BigEvent=1 OR " .
                 "( e.Venue=v.VenueId AND v.PartVirt=$V )) ORDER BY Day, Start");
@@ -41,6 +42,8 @@
     dotail();
     exit;
   }
+  
+  $SaveStew = $SaveSet = '';
   
   $LastDay = -99;
   while ($e = $res->fetch_assoc()) {
@@ -110,13 +113,23 @@
 
     if ($e['SubEvent'] == 0) {
       $rows = 4;
-      $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td class=ES_What>Event Name:<td>" . $e['SN'] ;
-      $str .= "<tr><td>Price:<td>" . Price_Show($e,1);
+      $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . 
+        "<td class=ES_What>" . $Event_Types[$e['Type']]['SN'] . ":<td><a href=EventShow?e=" . $e['EventId'] . ">" . $e['SN'] . "</a>";
+      if ($Event_Types[$e['Type']]['Public']) {
+        $str .= "<tr><td class=ES_What>Price:<td class=ES_Detail>" . Price_Show($e,1);
+      } else {
+        $str .= "<tr><td class=ES_What><b>NOT PUBLIC</b><td class=ES_Detail>";
+      }
 
     } else if ($e['SubEvent'] < 0) {
       $rows = 4;
-      $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['SlotEnd']) . "<td class=ES_What>Event Name:<td>" . $e['SN'] ;
-      $str .= "<tr><td>Price:<td>" . Price_Show($e,1);
+      $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['SlotEnd']) . 
+        "<td class=ES_What>" . $Event_Types[$e['Type']]['SN'] . ":<td><a href=EventShow?e=" . $e['EventId'] . ">" . $e['SN'] . "</a>";
+      if ($Event_Types[$e['Type']]['Public']) {
+        $str .= "<tr><td class=ES_What>Price:<td class=ES_Detail>" . Price_Show($e,1);
+      } else {
+        $str .= "<tr><td class=ES_What><b>NOT PUBLIC</b><td class=ES_Detail>";
+      }
     
     } else {
       $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']);
@@ -128,8 +141,20 @@
     
 //    if ($e['SubEvent']<1) $str .= "<tr><td class=ES_What>Price:<td class=ES_Detail>" . Price_Show($e,1);
     
-    if ($e['NeedSteward'] && $e['StewardTasks']) { $str .= "<tr><td class=ES_What>Stewards<td class=ES_Detail>" . $e['StewardTasks']; $rows++;}
-    if ($e['SetupTasks']) { $str .= "<tr><td class=ES_What>Setup<td class=ES_Detail>" . $e['SetupTasks']; $rows++;}
+    if ($e['NeedSteward'] && $e['StewardTasks']) {
+      if ($e['SubEvent'] < 1 || $SaveStew != $e['StewardTasks']) {
+        $rows++;
+        $SaveStew = $e['StewardTasks'];
+        $str .= "<tr><td class=ES_What>Stewards<td class=ES_Detail>$SaveStew";
+      }
+    }
+    if ($e['SetupTasks']) { 
+      if ($e['SubEvent'] < 1 || $SaveSet != $e['StewardTasks']) {
+        $rows++;
+        $SaveSet = $e['SetupTasks'];
+        $str .= "<tr><td class=ES_What>Setup<td class=ES_Detail>$SaveSet";
+      }
+    }
     if ($e['StagePA']) { $str .= "<tr><td class=ES_What>Stage PA<td class=ES_Detail>" . $e['StagePA']; $rows++;}
     if (isset($e['With'])) {
     
@@ -137,7 +162,7 @@
     
       if (isset($e['With'])) foreach ($e['With'] as $snum) {
         $side = Get_Side($snum);
-        $str .= "<tr><td class=ES_What>" . $side['SN'] . "<td class=ES_Detail>";
+        $str .= "<tr><td class=ES_What><a href=ShowPerf?sidenum=$snum>" . $side['SN'] . "</a><td class=ES_Detail>";
         if ($side['StagePA'] == '@@FILE@@') {
           $files = glob("PAspecs/$snum.*");
           if ($files) {
