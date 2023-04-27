@@ -14,7 +14,7 @@ function Prog_Headers($Public='',$headers=1,$What='Dance') {
 }
 
 function Grab_Data($day='',$Media='Dance') {
-  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$SlotSize;
+  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$SlotSize,$OffGrid;
 
 //  $cats = ['Side','Act','Comedy','Ch Ent','Other'];
   $Times = array();
@@ -64,6 +64,10 @@ function Grab_Data($day='',$Media='Dance') {
   $evs = Get_Events_For($Media,$DAY);
 //var_dump($evs);
   if ($evs) foreach ($evs as $ei=>$ev) {
+    if ($ev['ListOffGrid']) {
+      $OffGrid[] = $ev;
+      continue;
+    }
     $eid = $ev['EventId'];
     $v = $ev['Venue'];
     if ($ev['SubEvent'] < 0) { $et = $ev['SlotEnd']; } else { $et = $ev['End']; };
@@ -164,7 +168,7 @@ function Grab_Data($day='',$Media='Dance') {
 */
 
 function Scan_Data($condense=0,$Media='Dance') {
-  global $DAY,$Times,$Back_Times,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$SlotSize;
+  global $DAY,$Times,$Back_Times,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$SlotSize,$OffGrid;
   
   if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
     $Round = 30;
@@ -225,7 +229,7 @@ function Scan_Data($condense=0,$Media='Dance') {
 */
 // Creates Raw Grid
 function Create_Grid($condense=0,$Media='Dance') { 
-  global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList,$SlotSize;
+  global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$OffGrid,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList,$SlotSize;
 
   if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
     $Round = 30;
@@ -284,7 +288,7 @@ function Create_Grid($condense=0,$Media='Dance') {
 }
 
 function Test_Dump() { // far far from complete
-  global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$SlotSize;
+  global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$SlotSize,$OffGrid;
 
   echo "<div class=GridWrapper$format><div class=GridContainer$format>";
   echo "<table border id=Grid><thead><tr><th id=DayId width=60>$DAY";
@@ -307,7 +311,7 @@ function Test_Dump() { // far far from complete
 
 function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList;
-  global $Earliest,$Latest,$SlotSize;
+  global $Earliest,$Latest,$SlotSize,$OffGrid;
 
 //var_dump($Earliest,$Latest);
   $links = $condense && !$types;
@@ -470,10 +474,14 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
   }
   echo "</tbody></table>";
   echo "</div></div>\n";
+  
+  if ($condense==1 && $format==1 && $OffGrid) {
+    echo "Also OffGrid to be printed here";
+  } 
 }
 
 function Side_List() {
-  global $DAY,$Sides,$SideCounts,$Sand,$SlotSize;
+  global $DAY,$Sides,$SideCounts,$Sand,$SlotSize,$OffGrid;
   echo "<div class=SideListWrapper><div class=SideListContainer>";
   echo "<table border id=SideList>";
 //  echo "<thead><tr><th>Side<th>i<th>W<th>H</thead><tbody>\n";
@@ -495,7 +503,7 @@ function Side_List() {
 }
 
 function Controls($level=0,$condense=0) {
-  global $InfoLevels,$DAY,$Sand,$YEAR,$SlotSize;
+  global $InfoLevels,$DAY,$Sand,$YEAR,$SlotSize,$OffGrid;
   if (!isset($_GET['EInfo'])) $_GET['EInfo'] = $level;
   echo "<div class=DPControls><center>";
   echo "Programming Controls";

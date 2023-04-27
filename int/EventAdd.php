@@ -315,8 +315,9 @@ A similar feature will appear eventually for music.<p>
       echo "<td class=NotSide>Public:" . fm_select($Public_Event_Types,$Event,'Public');
 //      echo "<td class=NotSide>Participant Visibility:" . fm_select($VisParts,$Event,'InvisiblePart');
       echo "<td class=NotSide>Originator:" . fm_select($AllActive,$Event,'Owner',1);
-      echo "<td class=NotSide>" . fm_checkbox('Enable Weird Stuff',$Event,'WeirdStuff');
-      echo "<td class=NotSide>" . fm_checkbox('Name on Dance Grid',$Event,'ShowNameOnGrid');
+      echo "<td class=NotSide colspan=2>" . fm_checkbox('Enable Weird Stuff',$Event,'WeirdStuff');
+        echo fm_checkbox('Name on Dance Grid',$Event,'ShowNameOnGrid');
+        echo fm_checkbox('List Off Dance Grid',$Event,'ListOffGrid');
       echo "<tr class=FullD hidden>";
       echo "<td class=NotSide>" . fm_checkbox('Exclude From Spot Counts',$Event,'ExcludeCount');
       echo "<td class=NotSide>" . fm_checkbox('Ignore Clashes',$Event,'IgnoreClash');
@@ -329,7 +330,9 @@ A similar feature will appear eventually for music.<p>
       $hidemday =  (isset($Event['LongEvent']) && $Event['LongEvent'])?'':'hidden ';
       echo "<td class=NotSide>" . fm_checkbox('Big Event',$Event,'BigEvent') . " " . fm_checkbox('No Order',$Event,'NoOrder') . 
            fm_checkbox('Use Notes to fmt',$Event,'UseBEnotes');
-      echo "<td>" . fm_checkbox('Also Dance',$Event,'ListDance') . " ". fm_checkbox('Also Music',$Event,'ListMusic') . " ". fm_checkbox('Also Comedy',$Event,'ListComedy');
+      echo "<td>" . fm_checkbox('Also Dance',$Event,'ListDance') . " ". fm_checkbox('Also Music',$Event,'ListMusic') . " ". 
+            fm_checkbox('Also Comedy',$Event,'ListComedy') . " " .fm_checkbox('Also Workshop',$Event,'ListWorkshop');
+      
       echo "<td class=NotSide>" . fm_checkbox('No Part',$Event,'NoPart');
       echo "<td class=NotSide>" . fm_checkbox('Concert',$Event,'IsConcert');
       echo "<tr" . ($se>0?" class=FullD hidden":"") . "><td class=FullD hidden>" . fm_checkbox('Special Event',$Event,'Special');

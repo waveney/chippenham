@@ -1,0 +1,20 @@
+CREATE TABLE `FoodAndDrink` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Name` text NOT NULL,
+  `Website` text NOT NULL,
+  `PostCode` text NOT NULL,
+  `Phone` text NOT NULL,
+  `Image` text NOT NULL,
+  `Lat` text NOT NULL,
+  `Lng` text NOT NULL,
+  `Description` text NOT NULL,
+  `Address` text NOT NULL,
+  `Vegan` tinyint NOT NULL,
+  `Year` text NOT NULL,
+  `Vegetarian` tinyint NOT NULL,
+  `Food` tinyint NOT NULL,
+  `Drink` tinyint NOT NULL,
+  `Notes` text NOT NULL,
+  `Importance` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

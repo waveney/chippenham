@@ -134,7 +134,14 @@ function Print_Participants($e,$when=0,$thresh=0) {
   }
 
   $xtra = '';
-  if (($ETs[$Ev['Type']]['IncType']) && !strpos(strtolower($Ev['SN']),strtolower($ETs[$Ev['Type']]['SN']))) $xtra = " (" . $ETs[$Ev['Type']]['SN'] . ")";
+  if (($ETs[$Ev['Type']]['IncType']) && !strpos(strtolower($Ev['SN']),strtolower($ETs[$Ev['Type']]['SN']))) {
+    $xtra = " (" . $ETs[$Ev['Type']]['SN'];
+    if ($Ev['ListDance']) $xtra .= " / " . $ETs[1]['SN'];
+    if ($Ev['ListMusic']) $xtra .= " / " . $ETs[14]['SN'];    
+    if ($Ev['ListComedy']) $xtra .= " / " . $ETs[17]['SN'];    
+    if ($Ev['ListWorkshop']) $xtra .= " / " . $ETs[5]['SN'];    
+    $xtra .= ")";
+  }
   dohead($Ev['SN'] . $xtra,[],1); // TODO Event specific banners
   
   if ($Ev['NonFest']) echo "This event is not run by the folk festival, but is shown here for your information.<p>\n";
