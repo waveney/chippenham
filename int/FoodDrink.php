@@ -28,7 +28,7 @@ function List_All() {
   if ($food) foreach($food as $f) {
     $i = $f['id'];
     echo "<tr><td>$i<td><a href=FoodDrink?ACTION=Edit&i=$i>" . $f['Name'] . "</a><td>" . $f['Year'] . 
-         "<td>" . ($f['Website']? "<a href=" . website($f['Website'] . ">" . $f['Website'];
+         "<td>" . ($f['Website']? "<a href=" . website($f['Website']) . ">" . $f['Website'] . "</a>" : "") ;
     echo "<td>" . $f['Phone'] . "<td>" . $f['Description'] . "<td>" . ($f['Vegetarian']?'Y':'') . "<td>" . ($f['Vegan']?'Y':'') . "<td>" . $f['Importance'];
     echo "\n";
   }
@@ -50,7 +50,7 @@ function Edit_Food($i,$e=1) {
   echo "<div class=tablecont><table border>\n";
   
   echo "<tr><td>Id:$i" . fm_text('Buisness Name',$f,'Name',2);
-  echo 
+
 
   echo "</table></div>\n";
   if (!e) {
@@ -67,7 +67,7 @@ function Edit_Food($i,$e=1) {
   if (isset($_REQUEST['ACTION'])) {
     switch ($_REQUEST['ACTION']) {
       case 'Edit':
-        Edit_Food($_REQUEST['i'];
+        Edit_Food($_REQUEST['i']);
         break;
       case 'Add':
         break;

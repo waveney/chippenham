@@ -198,7 +198,7 @@ if (isset($_FILES['croppedImage'])) {
         'Acts'=>Access('Staff','Music'),
         'Comics'=>Access('Staff','Comedy'),
         'Family'=>Access('Staff','Family'),
-        'Other'=>Access('Staff','Other'),
+        'Other'=>Access('Staff','OtherPerf'),
         'Ceilidh'=>Access('Staff','Ceilidh'),
 
         'Traders'=>Access('Staff','Trade'),

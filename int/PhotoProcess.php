@@ -58,7 +58,7 @@ $Photo_Data = [
               'Put_Data' => 'Put_Side', 
               'ListFn' => 'Perf_Name_List', 
               'ListData' => 'IsOther', 
-              'Allow' => Access('Staff','Other'),
+              'Allow' => Access('Staff','OtherPerf'),
              ],
     'Trade'=> ['Data'=>'Get_Trader',
               'Field' => 'Photo', 
@@ -720,7 +720,7 @@ $Shape = 0;
         'Acts'=>Access('Staff','Music'),
         'Comics'=>Access('Staff','Comedy'),
         'Family'=>Access('Staff','Family'),
-        'Other'=>Access('Staff','Other'),
+        'Other'=>Access('Staff','OtherPerf'),
         'Ceilidh'=>Access('Staff','Ceilidh'),
 
         'Traders'=>Access('Staff','Trade'),

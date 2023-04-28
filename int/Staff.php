@@ -39,7 +39,7 @@
   }
 
 
-  if (isset($ErrorMessage)) echo "<h2 class=ERR>$ErrorMessage</h2>";
+  if (!empty($ErrorMessage)) echo "<h2 class=ERR>$ErrorMessage</h2>";
 
 //echo php_ini_loaded_file() . "<P>";
 
@@ -255,11 +255,11 @@
       $txt .= "<li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=O>List All Other Performers in Database</a>\n";
       $txt .= "<li><a href=ListMusic?SEL=Booking&Y=$YEAR&T=O>List Other Performers Booking</a>\n";
     }
-    if (Access('Staff','Other')) {
+    if (Access('Staff','OtherPerf')) {
       $txt .= "<li><a href=CreatePerf?T=O&Y=$YEAR>Add Other Performer to Database</a>";
     }
     $txt .= "<li><a href=/LineUp?T=Other&FORCE>Other Lineup</a> (Even if not public)";
-    if (Access('Staff','Other')) {
+    if (Access('Staff','OtherPerf')) {
       $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
     }
 

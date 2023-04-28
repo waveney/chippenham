@@ -1,6 +1,6 @@
 <?php
   include_once("fest.php");
-  A_Check('Staff','Other');
+  A_Check('Staff','News');
 
   dostaffhead("Manage News");
   global $SHOWYEAR;

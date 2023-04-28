@@ -19,7 +19,7 @@ $Access_Levels = ['','Participant','Upload','Steward','Staff','Committee','SysAd
 $Access_Type = array_flip($Access_Levels);
 $Area_Levels = [ 'No','Edit','Edit and Report'];
 $Area_Type = array_flip($Area_Levels);
-$Sections = ['', 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','Other','TLine','Bugs','Photos','Comedy','Family','News','Volunteers','Art',
+$Sections = ['', 'Docs','Dance','Trade','Users','Venues','Music','Sponsors','Finance','Craft','OtherPerf','TLine','Bugs','Photos','Comedy','Family','News','Volunteers','Art',
    'Tickets','Events','Ceilidh']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD
 $Importance = array('None','Some','High','Very High','Even Higher','Highest','The King');
 $Book_States = array('None','Declined','Booking','Contract Ready','Contract Signed','Contract Sent');
@@ -231,8 +231,10 @@ function Put_User(&$data,$Save_User=0) {
   Update_db('FestUsers',$Save_User,$data);
 }
 
+$ErrorMessage = '';
+
 function Error_Page ($message) {
-  global $Access_Type,$USER,$USERID,$CONF;
+  global $Access_Type,$USER,$USERID,$CONF,$ErrorMessage;
   if (!empty($CONF['TitlePrefix']))  debug_print_backtrace();
   set_user();
   if (isset($USER['AccessLevel'])) { $type = $USER['AccessLevel']; } else { $type = 0; }
@@ -241,6 +243,7 @@ function Error_Page ($message) {
   switch ($type) {
   case $Access_Type['Participant'] :
     switch ( $USER['Subtype']) {
+    case 'Perf' :
     case 'Side' :
     case 'Act' :
       include_once('int/MusicLib.php');
@@ -259,7 +262,7 @@ function Error_Page ($message) {
   case $Access_Type['Steward'] :
   case $Access_Type['Staff'] :
   case $Access_Type['Upload'] :
-//    $ErrorMessage = $message;
+    $ErrorMessage = $message;
 //    var_dump($message);
     include_once('int/Staff.php');  // Should be good
     exit;                        // Just in case

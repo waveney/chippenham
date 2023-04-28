@@ -118,7 +118,7 @@ function Grab_Data($day='',$Media='Dance') {
       $bes = $bev = array();
       foreach($Other as $i=>$o) {
         if ($o['Type'] == 'Venue') $bev[] = $o['Identifier'];
-        if ($o['Type'] == 'Side' |$o['Type'] == 'Act' || $o['Type'] == 'Other' ) $bes[] = $o['Identifier'];
+        if ($o['Type'] == 'Side' || $o['Type'] == 'Perf' || $o['Type'] == 'Act' || $o['Type'] == 'Other' ) $bes[] = $o['Identifier'];
         if (!$ev['ExcludeCount']) if ($o['Type'] == 'Side') $SideCounts[$o['Identifier']]++;
       }
 

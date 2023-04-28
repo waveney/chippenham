@@ -5,7 +5,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
   global $YEARDATA,$Side_Statuses,$Importance,$Surfaces,$Surface_Colours,$Noise_Levels,$Noise_Colours,$Share_Spots,$Mess,$Action,$ADDALL,$CALYEAR,$PLANYEAR,$YEAR;
   global $OlapTypes,$OlapCats,$OlapDays,$PerfTypes,$ShowAvailOnly,$ADDALL,$PayTypes;
   if ($CatT == '') {
-    $CatT = ($Side['IsASide'] ? 'Side' : ($Side['IsAnAct'] ? 'Act' : 'Other'));
+    $CatT = ($Side['IsASide'] ? 'Side' : ($Side['IsAnAct'] ? 'Act' : 'Other')); // Probably needs adding other cats
   }
 
   $Mstate = ($PLANYEAR == $CALYEAR && $PLANYEAR == $YEAR);
@@ -483,7 +483,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     include_once('BudgetLib.php');
     Contract_State_Check($Sidey,0);
          
-    echo "<tr><td class=NotSide>id: " . $Sidey['syId'];
+    echo "<tr><td class=NotSide>id: " . (isset($Sidey['syId'])?$Sidey['syId']:-1);
       $Perfs = [];
       foreach ($PerfTypes as $t=>$d) if (Capability("Enable" . $d[2])) if ($Side[$d[0]]) $Perfs[] = $d[2];
       $AllMU = Get_AllUsers4Perf($Perfs,$Sidey['BookedBy']);

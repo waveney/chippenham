@@ -14,7 +14,11 @@
   $id = $_REQUEST['id'];
   $Side = Get_Side($id);
 
-  $UpdateValid = ($Side['IsASide'] && Access('Staff','Dance') || ($Side['IsAnAct'] && Access('Staff','Music')) || ($Side['IsOther'] && Access('Staff','Other')));
+  $UpdateValid = (($Side['IsASide'] && Access('Staff','Dance')) || 
+                  ($Side['IsAnAct'] && Access('Staff','Music')) || 
+                  ($Side['IsOther'] && Access('Staff','OtherPerf')) ||
+                  ($Side['IsCeilidh'] && Access('Staff','Ceilidh')) 
+                  );
   
   echo '<h2>Performer Files For ' . $Side['SN'] . '</h2>';
   switch ($_REQUEST['ACTION']) {
