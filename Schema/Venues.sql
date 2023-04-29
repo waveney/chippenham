@@ -10,6 +10,7 @@ CREATE TABLE `Venues` (
   `Music` tinyint NOT NULL,
   `Comedy` tinyint NOT NULL,
   `Child` tinyint NOT NULL,
+  `Ceilidh` tinyint NOT NULL,
   `Craft` tinyint NOT NULL,
   `Other` tinyint NOT NULL,
   `DanceImportance` int NOT NULL,

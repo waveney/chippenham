@@ -110,9 +110,10 @@ function initMap() {
       if ((MapFeatures == 3) && (!data.usage || !data.usage.match(/^D/))) return;
       if ((MapFeatures == 4) && (data.icon != 3) && (data.icon != 5) && (data.icon != 10)) return; // Car Parks
       if ((MapFeatures == 5) && (!data.usage || !data.usage.match(/^.M/))) return;
-      if ((MapFeatures == 6) && (!data.usage || !data.usage.match(/^...C/))) return;
+      if ((MapFeatures == 6) && (!data.usage || !data.usage.match(/^....C/))) return;
       if ((MapFeatures == 7) && (!data.usage || !data.usage.match(/^..F/))) return;
-      if ((MapFeatures == 8) && (!data.usage || !data.usage.match(/^.....Y/))) return;
+      if ((MapFeatures == 8) && (!data.usage || !data.usage.match(/^.......Y/))) return;
+      if ((MapFeatures == 10) && (!data.usage || !data.usage.match(/^...H/))) return;
       if ((MapFeatures == 9) && (data.icon != 9) && (data.icon != 5)) return; // Camp Sites
       if (data.icon != 1) { // text
         var marker = new google.maps.Marker({

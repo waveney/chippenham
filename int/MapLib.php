@@ -50,8 +50,14 @@ function Update_MapPoints() {
   $data = array();
   $res = $db->query("SELECT * FROM Venues WHERE Status=0 AND Lat!='' AND MapImp>=0 ");// Normal Code
   if ($res) while($ven = $res->fetch_assoc()) {
-    $usage = (($ven['Dance']?'D':'_').($ven['Music']?'M':'_').($ven['Child']?'F':'_').($ven['Craft']?'C':'_').($ven['Other']?'O':'_').($ven['Comedy']?'Y':'_'));
-    if ($usage == '______' || $usage == '____O_' ) {
+    $usage = (($ven['Dance']?'D':'_').
+              ($ven['Music']?'M':'_').
+              ($ven['Child']?'F':'_').
+              ($ven['Ceilidh']?'H':'_').
+              ($ven['Craft']?'C':'_').
+              ($ven['Other']?'O':'_').
+              ($ven['Comedy']?'Y':'_'));
+    if ($usage == '________' || $usage == '______O_' ) {
       $used4 = 'Many things';
     } else {
       $lst = [];
@@ -59,6 +65,7 @@ function Update_MapPoints() {
       if ($ven['Music']) $lst[] = 'Music';    
       if ($ven['Comedy']) $lst[] = 'Comedy';    
       if ($ven['Child']) $lst[] = 'Family';
+      if ($ven['Ceilidh']) $lst[] = 'Ceilidh';
       if ($ven['Craft']) $lst[] = 'Craft';    
       if ($ven['Other']) $lst[] = 'Other things';
       $used4 = FormatList($lst);  
@@ -80,6 +87,7 @@ function Update_MapPoints() {
 }
 
 // Features 1= normal, 0 none, 2 no venues, 3=Dance only, 4 = CarParks, 5 = Music only, 6=Craft, 7=Family, 8=Comedy, 9=Campsites
+// 10=Ceilidh, 11=Food&Drink (Not yet)
 
 function Init_Map($CentType,$Centerid,$Zoom,$Features=1) { // CentType 0=Venue, 1=Mappoint, -1= Festival home
   global $FESTSYS;  
