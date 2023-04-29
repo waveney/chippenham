@@ -8,18 +8,7 @@
   $x = (isset($_GET['x']) ? $_GET['x'] : '');
   $t = (isset($_GET['t']) ? $_GET['t'] : 'Side');
 
-  switch ($t) {
-  case 'Side':
-  default:
-    $data = Get_Side($id);
-    break;
-  case 'Act':
-    $data = Get_Act($id);
-    break;
-  case 'Other':
-    $data = Get_Other($id);
-    break;
-  }
+  $data = Get_Side($id);
 
   global $YEAR;
   if (!isset($data[$xtr . "Email"])) exit;

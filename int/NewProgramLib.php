@@ -26,6 +26,7 @@ function Grab_Data($day='',$Media='Dance') {
   $evs = array();
   $Sand = 0;
   $UsedTimes = [];
+  $OffGrid = [];
   if (isset($_REQUES['SAND'])) $Sand = 1;
 
   if ($day) { $DAY=$day;
@@ -476,7 +477,17 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
   echo "</div></div>\n";
   
   if ($condense==1 && $format==1 && $OffGrid) {
-    echo "Also OffGrid to be printed here";
+    echo "<br>Also:<br>";
+    foreach ($OffGrid as $Off) {
+      $V = $Off['Venue'];
+      echo "From " . $Off['Start'] . " at " . Venue_Parents($Vens,$e['Venue']) . "<a href=/int/VenueShow?v=" . $e['Venue'] . ">" . $Vens[$e['Venue']]['SN'] . "</a>";
+           "<a href=EventShow?e=" . $Off['EventId'] . ">" . $Off['SN'] . "</a> -" . $Off['Description'];
+      if (!$Off['NoPart']) {
+        echo " with ";
+
+        echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,1,15,1,'',$e) : Get_Event_Participants($eid,0,1,15)) . "<br>";
+      }
+    }
   } 
 }
 
