@@ -495,7 +495,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
         if (!$e['NoPart']) echo " with ". Get_Other_Participants($Others,0,1,15,1,'',$e);
       } else {
         echo " - <a href=EventShow?e=" . $e['EventId'] . ">" . $e['SN'] . "</a> - " . $e['Description'];
-        if (!$e['NoPart']) echo " with ". Get_Event_Participants($eid,0,1,15)) . "<br>";
+        if (!$e['NoPart']) echo " with ". Get_Event_Participants($eid,0,1,15) . "<br>";
       }
     }
   } 
