@@ -117,6 +117,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         echo fm_text('Recent Video',$Side,'Video',1,$Adv);
       };
       echo fm_text(Social_Link($Side,'Facebook' ),$Side,'Facebook');
+      if (Access('SysAdmin')) echo fm_text1('Photo Link',$Side,'Photo',1,'class=NotSide','class=NotSide');
     if (!$Wide) echo "<tr>";
       echo fm_text(Social_Link($Side,'Twitter'  ),$Side,'Twitter');
       echo fm_text(Social_Link($Side,'Instagram'),$Side,'Instagram');

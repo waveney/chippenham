@@ -478,14 +478,24 @@ function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
   
   if ($condense==1 && $format==1 && $OffGrid) {
     echo "<br>Also:<br>";
-    foreach ($OffGrid as $Off) {
-      $V = $Off['Venue'];
-      echo "From " . $Off['Start'] . " at " . Venue_Parents($Vens,$e['Venue']) . "<a href=/int/VenueShow?v=" . $e['Venue'] . ">" . $Vens[$e['Venue']]['SN'] . "</a>";
-           "<a href=EventShow?e=" . $Off['EventId'] . ">" . $Off['SN'] . "</a> -" . $Off['Description'];
-      if (!$Off['NoPart']) {
-        echo " with ";
+    foreach ($OffGrid as $e) {
+      $V = $e['Venue'];
+      $eid = $e['EventId'];
+      echo "From " . timecolon($e['Start']) . " - " . timecolon($e['End']) . " at ";
 
-        echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,1,15,1,'',$e) : Get_Event_Participants($eid,0,1,15)) . "<br>";
+      echo Venue_Parents($VenueInfo,$e['Venue']) . "<a href=/int/VenueShow?v=$V>" . $VenueInfo[$e['Venue']]['SN'] . "</a>";      
+
+      if ($e['BigEvent']) {
+        $Others = Get_Other_Things_For($eid);
+        foreach ($Others as $i=>$o) {
+          if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($VenueInfo,$o['Identifier']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" . 
+            $Vens[$o['Identifier']]['SN'] . "</a>";
+        }
+        echo " - <a href=EventShow?e=" . $e['EventId'] . ">" . $e['SN'] . "</a> - " . $e['Description'];
+        if (!$e['NoPart']) echo " with ". Get_Other_Participants($Others,0,1,15,1,'',$e);
+      } else {
+        echo " - <a href=EventShow?e=" . $e['EventId'] . ">" . $e['SN'] . "</a> - " . $e['Description'];
+        if (!$e['NoPart']) echo " with ". Get_Event_Participants($eid,0,1,15)) . "<br>";
       }
     }
   } 

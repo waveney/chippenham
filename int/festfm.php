@@ -687,7 +687,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
       if ($Mode) formData.append('Mode',"$Mode" ); 
       if ('$tdclass' != '') formData.append('Class',"$tdclass" );  
     },
-    dictDefaultMessage: "Drop $Name here to upload or click to browse"
+    dictDefaultMessage: "Drop $Name here to upload or click to browse<br>jpeg/jpg/png ONLY"
   };
 XXX;
     $str .= "</script></$Table>";
