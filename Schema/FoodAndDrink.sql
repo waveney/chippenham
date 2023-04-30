@@ -16,5 +16,8 @@ CREATE TABLE `FoodAndDrink` (
   `Drink` tinyint NOT NULL,
   `Notes` text NOT NULL,
   `Importance` int NOT NULL,
+  `MapImp` int NOT NULL,
+  `Directions` text NOT NULL,
+  `Type` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -382,7 +382,7 @@
     if (Access('SysAdmin')) $txt .= "<li><a href=AddVenue?NEWACCESS onClick=\"javascript:return confirm('are you sure you update these?');\">" .
                                     "Generate New Access Keys for Venues</a>\n";
     if ($YEAR == $PLANYEAR && Access('Staff')) $txt .= "<li><a href=VenueActive>Refresh Active Venue List</a>\n";
-    
+    if (Access('SysAdmin')) $txt .= "<li><a href=FoodDrink>Food and Drink</a>\n";    
     $txt .= "</ul>\n";
   }
 

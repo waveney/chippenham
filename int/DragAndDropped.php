@@ -62,6 +62,12 @@ case 'Article':
   $PathCat = 'ArtImages';
   break;
   
+case 'FoodAndDrink':
+  $Data = Gen_Get($Cat,$id);
+  $Put = 'Gen_Put';
+  $PathCat = $Cat;
+  break;
+  
 case 'Venue':
 case 'Venue2':
 case 'Sponsor':
@@ -105,11 +111,20 @@ umask(0);
 if (!file_exists($target_dir)) mkdir($target_dir,0775,true);
 
 $suffix = pathinfo($_FILES["Upload"]["name"],PATHINFO_EXTENSION);
-$target_file = "$target_dir/$id.$suffix";
+
+if ($suffix == 'heic' || $suffix =='heif') {
+  $target_file = "$target_dir/$id.jpg";
+  if (!exec("heif-convert -q 90 " . $_FILES["Upload"]["tmp_name"] . " $target_file")) {
+    echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);    
+    exit;
+  }
+} else {
+  $target_file = "$target_dir/$id.$suffix";
 // var_dump($target_file);
-if (!move_uploaded_file($_FILES["Upload"]["tmp_name"], $target_file)) {
-  echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);
-  exit;
+  if (!move_uploaded_file($_FILES["Upload"]["tmp_name"], $target_file)) {
+    echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);
+    exit;
+  }
 }
 
 if (is_numeric($DDd['SetValue'])) {
@@ -130,7 +145,11 @@ if (preg_match('/Image|Photo/',$Type,$mtch)) {
 
 $Mess = ''; 
 // "Here with: " . var_export($Data,1);
-$Put($Data);
+if ($Put == 'Gen_Put') {
+  Gen_Put($Cat,$Data);
+} else {
+  $Put($Data);
+}
 
 if ($files) {
   $Mess .= "The $Name file has been replaced by " . $_FILES["Upload"]["name"];

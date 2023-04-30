@@ -13,6 +13,8 @@ php settings (Other than Default): max_execution_time=120, max_input_time=120, p
 
 Needs ImageMagick installed for some features to work.
 
+Needs libheif-examples installed to handle heic/heif image formats.
+
 Needs Skeema see https://www.skeema.io for initialise to work and the database updates to be automated.  It has an embeded copy that will work on 64 bit Intel/ Ubuntu Linux.
 
 Needs wkhtmltopdf to convert html to pdfs (to freeze contracts etc)

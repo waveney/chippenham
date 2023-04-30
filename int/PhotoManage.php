@@ -177,7 +177,7 @@ if (isset($_FILES['croppedImage'])) {
   } else {
     $_POST['SHAPE'] = $Shape;
   }
-  $PhotoCats = array('Sides','Acts','Comics','Family','Other','Ceilidh', 'Traders','Sponsors','Venues','Venue2');
+  $PhotoCats = array('Sides','Acts','Comics','Family','Other','Ceilidh', 'Traders','Sponsors','Venues','Venue2','Food');
 
   $Lists = array(
         'Sides'=> Perf_Name_List('IsASide'),
@@ -191,6 +191,7 @@ if (isset($_FILES['croppedImage'])) {
         'Sponsors'=>Get_Sponsor_Names(),
         'Venues'=>Get_Venues(0),
         'Venue2'=>Get_Venues(0),
+        'Food'=>Gen_Get_Table('FoodAndDrink'),
         );
 
   $AccessNeeded = [
@@ -205,6 +206,7 @@ if (isset($_FILES['croppedImage'])) {
         'Sponsors'=>Access('Staff','Sponsors'),
         'Venues'=>Access('Staff','Venues'),
         'Venue2'=>Access('Staff','Venues'),
+        'Food'=>Access('Sysadmin'), // For now
         ]
   
 ?>
@@ -452,6 +454,15 @@ d  mkdir
   Darken/Lighten
   Archive stack, use on change , also upload, new url
   Access to stack
+
+
+if ($suffix == 'heic' || $suffix =='heif') {
+  $target_file = "$target_dir/$id.jpg";
+  if (!exec("heif-convert -q 100 " . $_FILES["Upload"]["tmp_name"] . " $target_file")) {
+    echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);    
+    exit;
+  }
+} else {
 
 
 */

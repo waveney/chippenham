@@ -42,7 +42,7 @@ function Put_Map_Point(&$now) {
 
 // Call this after any mappoint or venue update
 function Update_MapPoints() {
-  global $db;
+  global $db,$PLANYEAR;
 
   $types = Get_Map_Point_Types();
   file_put_contents("cache/mapptypes.json",json_encode($types)); 
@@ -83,7 +83,15 @@ function Update_MapPoints() {
         'imp'=>$mp['MapImp'],'icon'=>$mp['Type'],'atxt'=>$mp['AddText'],'direct'=>$mp['Directions'],'link'=>$mp['Link']);
   }
 
+  $res = Gen_Get_Cond('FoodAndDrink',"Year=$PLANYEAR");
+  foreach ($res as $mp) {
+    $data[] = array('id'=>(2000000+$mp['id']), 'name'=>$mp['Name'], 'lat'=>$mp['Lat'], 'long'=>$mp['Lng'],
+        'imp'=>$mp['MapImp'],'icon'=>$mp['Type'],'atxt'=>$mp['Description'],'direct'=>$mp['Directions'],'link'=>$mp['Website']);
+  }
+
+
   return file_put_contents("cache/mappoints.json",json_encode($data));
+
 }
 
 // Features 1= normal, 0 none, 2 no venues, 3=Dance only, 4 = CarParks, 5 = Music only, 6=Craft, 7=Family, 8=Comedy, 9=Campsites
