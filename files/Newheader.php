@@ -20,4 +20,6 @@
   echo "<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat%3A300%2C400%2C600%2C700' type='text/css' media='all'>";
   echo "<script src=/js/tablesort.js?V=$V></script>\n";
   echo "<script src=/js/Tools.js?V=$V></script>\n";
+  echo '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">';
+
 ?>
