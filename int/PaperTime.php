@@ -60,7 +60,7 @@
       echo "<td><span style='font-size:12'>";
       if ($e['Description']) {
         $Desc = $e['Description'];
-        $Desc = preg_replace('/<a href=(.*?)>.*?<\/a>/i','$1',$Desc);
+        $Desc = preg_replace('/<a href=(.*?)[ >].*?<\/a>/i','$1',$Desc);
         echo "$Desc<br>";
       }
       echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,-1,15,1,'',$e) : Get_Event_Participants($eid,0,-1,15));
