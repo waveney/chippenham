@@ -87,7 +87,7 @@
     echo "<tr><td>Status<td>" . fm_select($Venue_Status,$Venue,'Status');
     echo "<td>" . fm_checkbox('Dance Setup Overlap',$Venue,'SetupOverlap');
     echo "<td>" . fm_checkbox('Is Virtual',$Venue,'IsVirtual');
-    echo "<td colspan=2>Part of:" . fm_select($VirtSites,$Venue,'PartVirt',1);
+    echo "<td colspan=2>Part of:" . fm_select($VirtSites,$Venue,'PartVirt',1) . fm_checkbox('Suppress Parent',$Venue,'SuppressParent');
     echo "<tr><td>Venue For:<td colspan=3>" . fm_checkbox('Dance',$Venue,'Dance');
     echo fm_checkbox('Music',$Venue,'Music');
     echo fm_checkbox('Comedy',$Venue,'Comedy');

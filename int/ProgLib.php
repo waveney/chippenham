@@ -46,7 +46,7 @@ function Set_Venue_Help() {
         'SupressFree'=>'If the venue has an entry change set this',
         'Minor'=>'Treatment of venue in final dance grid',
         'DisabilityStat'=>'A Statement about disabled access for the venue',
-        
+        'SuppressParent'=>'Set to Suppress showing Parent venue',
   );
   Set_Help_Table($t);
 }
@@ -811,7 +811,7 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
 }
 
 function Venue_Parents(&$Vens,$vid) {
-  if (empty($Vens[$vid]['PartVirt']) || ($Parent = $Vens[$vid]['PartVirt']) == 0) return '';
+  if (empty($Vens[$vid]['PartVirt']) || ($Parent = $Vens[$vid]['PartVirt']) == 0 || $Vens[$vid]['SupressParent']) return '';
   $Pven = Get_Venue($Parent);
   return ($Pven['SN'] . ": ");
 }
