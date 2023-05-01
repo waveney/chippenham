@@ -266,11 +266,10 @@
     $txt .= "<p>";
     $txt .= "<li><a href=PaperProg>Lineups for Printed Program</a> (Even if not public)";    
     $txt .= "<li><a href=PaperTime>Events for Printed Program</a> (Even if not public)";    
-    $txt .= "<li><a href=PaperGrid>Dance Grid for Printed Program</a> (Even if not public)";    
+    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1>Dance Grid for Printed Program</a> (Even if not public)";    
     $txt .= "</ul>\n";
   }
     
-
 // *********************** STALLS   ****************************************************
   if ($x = StaffTable('Trade','Trade')) {
     $txt .= $x;

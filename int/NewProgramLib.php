@@ -316,6 +316,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
 
 //var_dump($Earliest,$Latest);
   $links = $condense && !$types && $Links;
+//var_dump($links, $condense, $types ,$Links);
   if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
     $Round = 30;
     $DefLineLimit = 2;
@@ -483,19 +484,19 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
       $eid = $e['EventId'];
       echo "From " . timecolon($e['Start']) . " - " . timecolon($e['End']) . " at ";
 
-      echo Venue_Parents($VenueInfo,$e['Venue']) . "<a href=/int/VenueShow?v=$V>" . $VenueInfo[$e['Venue']]['SN'] . "</a>";      
+      echo Venue_Parents($VenueInfo,$e['Venue']) . ($links?"<a href=/int/VenueShow?v=$V>":'') . $VenueInfo[$e['Venue']]['SN'] . ($links?"</a>":'');      
 
       if ($e['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
         foreach ($Others as $i=>$o) {
-          if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($VenueInfo,$o['Identifier']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" . 
-            $Vens[$o['Identifier']]['SN'] . "</a>";
+          if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($VenueInfo,$o['Identifier']) . ($links?"<a href=/int/VenueShow?v=" . $o['Identifier'] . ">":'') . 
+            $Vens[$o['Identifier']]['SN'] . ($links?"</a>":'');
         }
-        echo " - <a href=EventShow?e=" . $e['EventId'] . ">" . $e['SN'] . "</a> - " . $e['Description'];
-        if (!$e['NoPart']) echo " with ". Get_Other_Participants($Others,0,1,15,1,'',$e);
+        echo " - " . ($links?"<a href=EventShow?e=" . $e['EventId'] . ">":'') . $e['SN'] . "</a> - " . $e['Description'];
+        if (!$e['NoPart']) echo " with ". Get_Other_Participants($Others,0,($links?1:-1),15,1,'',$e);
       } else {
-        echo " - <a href=EventShow?e=" . $e['EventId'] . ">" . $e['SN'] . "</a> - " . $e['Description'];
-        if (!$e['NoPart']) echo " with ". Get_Event_Participants($eid,0,1,15) . "<br>";
+        echo " - " . ($links?"<a href=EventShow?e=" . $e['EventId'] . ">":'') . $e['SN'] . "</a> - " . $e['Description'];
+        if (!$e['NoPart']) echo " with ". Get_Event_Participants($eid,0,($links?1:-1),15) . "<br>";
       }
     }
   } 
