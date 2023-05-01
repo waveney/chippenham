@@ -57,7 +57,7 @@
           if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
         }
       }
-      echo "<td><span style='font-size:10'>";
+      echo "<td><span style='font-size:12'>";
       if ($e['Description']) {
         $Desc = $e['Description'];
         $Desc = preg_replace('/<a href=(.*?)>.*?<\/a>/i','$1',$Desc);
