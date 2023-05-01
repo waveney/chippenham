@@ -34,7 +34,7 @@ function List_All() {
   echo "</thead><tbody>";
   if ($food) foreach($food as $f) {
     $i = $f['id'];
-    echo "<tr><td>$i<td><a href=FoodDrink?ACTION=Edit&i=$i>" . $f['Name'] . "</a><td>" . $f['Year'] . 
+    echo "<tr><td>$i<td><a href=FoodDrink?ACTION=Edit&i=$i>" . $f['SN'] . "</a><td>" . $f['Year'] . 
          "<td>" . ($f['Website']? "<a href=" . weblink($f['Website']) . ">" . $f['Website'] . "</a>" : "") ;
     echo "<td>" . $f['Phone'] . "<td>" . $f['Description'] . "<td>" . ($f['Vegetarian']?'Y':'') . "<td>" . ($f['Vegan']?'Y':'') . "<td>" . $f['Importance'];
     echo "\n";
@@ -57,7 +57,7 @@ function Edit_Food($i,$e=1) {
   echo "<div class=tablecont><table border>\n";
   
   echo "<tr><td>Id:<td>$i";
-  echo "<tr>" . fm_text('Buisness Name',$f,'Name',2);
+  echo "<tr>" . fm_text('Buisness Name',$f,'SN',2);
     echo "<td>Icon:<td>" . fm_select($Icons,$f,'Type');
   echo "<tr>" . fm_number('Importance',$f,'Importance') . fm_number('Map Importance (16-20)',$f,'MapImp') . "<td colspan=2>Importance just affects order of list if not alpha";
   echo "<tr>" . fm_text('Website',$f,'Website',2);
@@ -71,7 +71,7 @@ function Edit_Food($i,$e=1) {
   echo "<tr><td colspan=2>" . fm_checkbox('Vegetarian',$f,'Vegetarian') . fm_checkbox('Vegan',$f,'Vegan') . 
        "<td colspan=2>Only if the have a proper choice with more than just veg curry";
   echo "<tr>" . fm_textarea('Notes',$f,'Notes',3,3);
-  echo "<tr><td>Image:" . fm_DragonDrop(1, 'Image','FoodAndDrink',$i,$f,1,'',1,'','Image');
+  echo "<tr><td>Image:" . fm_DragonDrop(1, 'Photo','FoodAndDrink',$i,$f,1,'',1,'','Photo');
   echo "<tr>" . fm_textarea('Directions',$f,'Directions',3,1) . "<td colspan=2>to follow Google directions if necessary";;
   if (Access('SysAdmin')) {
     echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
@@ -99,7 +99,7 @@ function Edit_Food($i,$e=1) {
         Edit_Food(0,0);
         break;
       case 'Create':
-        if (empty($_REQUEST['Name'])) $_REQUEST['Name'] = 'Nameless';
+        if (empty($_REQUEST['SN'])) $_REQUEST['SN'] = 'Nameless';
         Insert_db_post('FoodAndDrink', $Food);
         Update_MapPoints();
         break;
@@ -126,7 +126,7 @@ function Edit_Food($i,$e=1) {
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Year</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Website</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Image URL</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Photo URL</a>\n";
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Both</a>\n";
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Description</a>\n";
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Importance</a>\n";
@@ -136,7 +136,7 @@ function Edit_Food($i,$e=1) {
     echo "<tr><td>$i" . fm_text1("",$t,'SN',1,'','',"SN$i");
     echo fm_number1('',$t,'Year','','',"Year$i");
     echo fm_text1("",$t,'Web',1,'','',"Web$i");
-    echo fm_text1("",$t,'Image',1,'','',"Image$i");
+    echo fm_text1("",$t,'Photo',1,'','',"Photo$i");
 //    echo "<td>" . fm_checkbox('',$t,'IandT','',"IandT$i");
 //    echo "<td>" . fm_basictextarea($t,'Description',2,2,'',"Description$i");
 //    echo fm_number1('',$t,'Importance','','',"Importance$i");
@@ -145,7 +145,7 @@ function Edit_Food($i,$e=1) {
   echo "<tr><td><td><input type=text name=SN0 >";
   echo "<td><input type=number name=Year0 value=$PLANYEAR>";
   echo "<td><input type=text name=Web0>";
-  echo "<td><input type=text name=Image0>";
+  echo "<td><input type=text name=Photo0>";
 //  echo "<td><input type=checkbox name=IandT0>";
 //  echo "<td><textarea name=Description0 rows=2 cols=40></textarea>";
 //  echo "<td><input type=number name=Importance0>";

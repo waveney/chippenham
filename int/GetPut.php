@@ -28,11 +28,11 @@ function Gen_Get_All($Table, $extra='', $idx='id') {
   return $Ts;
 }
 
-function Gen_Get_Names($Table, $extra='', $idx='id') {
+function Gen_Get_Names($Table, $extra='', $idx='id', $Name='Name') {
   global $db;
   $Ts = [];
   $res = $db->query("SELECT * FROM $Table $extra");
-  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans[$idx]] = $ans['Name'];
+  if ($res) while ($ans = $res->fetch_assoc()) $Ts[$ans[$idx]] = $ans[$Name];
   return $Ts;
 }
 

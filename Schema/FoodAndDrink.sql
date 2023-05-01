@@ -1,10 +1,10 @@
 CREATE TABLE `FoodAndDrink` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `Name` text NOT NULL,
+  `SN` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Website` text NOT NULL,
   `PostCode` text NOT NULL,
   `Phone` text NOT NULL,
-  `Image` text NOT NULL,
+  `Photo` text NOT NULL,
   `Lat` text NOT NULL,
   `Lng` text NOT NULL,
   `Description` text NOT NULL,

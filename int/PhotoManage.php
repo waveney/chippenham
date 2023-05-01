@@ -191,7 +191,7 @@ if (isset($_FILES['croppedImage'])) {
         'Sponsors'=>Get_Sponsor_Names(),
         'Venues'=>Get_Venues(0),
         'Venue2'=>Get_Venues(0),
-        'Food'=>Gen_Get_Table('FoodAndDrink'),
+        'Food'=>Gen_Get_Names('FoodAndDrink','','id','SN'),
         );
 
   $AccessNeeded = [
@@ -206,7 +206,7 @@ if (isset($_FILES['croppedImage'])) {
         'Sponsors'=>Access('Staff','Sponsors'),
         'Venues'=>Access('Staff','Venues'),
         'Venue2'=>Access('Staff','Venues'),
-        'Food'=>Access('Sysadmin'), // For now
+        'Food'=>Access('SysAdmin'), // For now
         ]
   
 ?>
@@ -292,7 +292,7 @@ if (isset($_FILES['croppedImage'])) {
     echo fm_radio("Photo For",$PhotoCats,$_POST,'PCAT','onclick=PCatSel(event)',0);
     $i=0;
     foreach($Lists as $cat=>$dog) {
-
+//if ($cat == 'Food') var_dump($dog);
       if (!empty($dog)) {
         if ($AccessNeeded[$cat]) echo "<span id=MPC_$i " . ($cat == $PhotoCats[$mouse]?'':'hidden') . "> : " . fm_select($dog,$_POST,"WHO$i") . "</span>";
       }
