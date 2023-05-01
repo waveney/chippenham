@@ -99,7 +99,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     if ($Side['IsASide']) echo "<tr>" . fm_textarea('Costume Description <span id=CostSize></span>',$Side,'CostumeDesc',5,1,
                         "maxlength=150 oninput=SetDSize('CostSize',150,'CostumeDesc')"); 
     echo "<tr>" . fm_textarea('Short Blurb <span id=DescSize></span>',$Side,'Description',5,1,
-                        "maxlength=150 oninput=SetDSize('DescSize',150,'Description')"); 
+                        "maxlength=200 oninput=SetDSize('DescSize',200,'Description')"); 
 //      echo "<td>" . fm_checkbox("Show One Blurb",$Side,'OneBlurb');
     echo "<tr>" . fm_textarea('Blurb for web',$Side,'Blurb',5,2,'','size=2000' ) . "\n";
     echo "<tr>";
