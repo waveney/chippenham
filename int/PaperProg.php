@@ -34,7 +34,7 @@
   echo "<div class=PaperP>";
   foreach ($Perf_Cats as $Title=>$fetch) {
     echo "<h2><center>$Title</center></h2>";
-    
+    $Slist = [];
     $perfQ = $db->query($fetch);
     if ($perfQ) while($side = $perfQ->fetch_assoc()) $Slist[] = $side;
 
