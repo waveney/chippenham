@@ -63,8 +63,8 @@
         $Desc = preg_replace('/<a href=(.*?)[ >].*?<\/a>/i','$1',$Desc);
         echo "$Desc<br>";
       }
-      echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,-1,15,1,'',$e) : Get_Event_Participants($eid,0,-1,15));
-      echo "</span><td>" . Price_Show($e,1);   
+      echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,-1,12,1,'',$e) : Get_Event_Participants($eid,0,-1,12));
+      echo "</span><td><span style='font-size:12'>" . Price_Show($e,1) . "</span>";   
     }
     echo "</table></div>\n";
   
