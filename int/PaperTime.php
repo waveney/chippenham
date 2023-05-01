@@ -38,13 +38,13 @@
 
       $dname = $DayLongList[$e['Day']];
 
-      if (DayTable($e['Day'],"Events",'','class=DayHead',)) {
+      if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%')) {
         echo "<tr class=Day$dname ><td>Time<td >What<td>Where<td>With and/or Description<td>Price";
       }
         
       Get_Imps($e,$imps,1,(Access('Staff')?1:0));
       echo "<tr class=Day$dname ><td>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
-      echo "<td><a href=/int/EventShow?e=$eid>" . $e['SN'] . "</a>";
+      echo "<td>" . $e['SN'] ;
 
       if (isset($Vens[$e['Venue']]['SN'])) {
         echo "<td>" . Venue_Parents($Vens,$e['Venue']) . $Vens[$e['Venue']]['SN'];
@@ -58,8 +58,12 @@
         }
       }
       echo "<td>";
-      if ($e['Description']) echo $e['Description'] . "<br>";
-      echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,0,15,1,'',$e) : Get_Event_Participants($eid,0,0,15));
+      if ($e['Description']) {
+        $Desc = $e['Description'];
+        $Desc = preg_replace('/<a href=(.*?)>.*?<\/a>/i','$1',$Desc);
+        echo "$Desc<br>";
+      }
+      echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,-1,15,1,'',$e) : Get_Event_Participants($eid,0,-1,15));
       echo "<td>" . Price_Show($e,1);   
     }
     echo "</table></div>\n";

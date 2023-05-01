@@ -414,7 +414,7 @@ function ListLinksNew(&$Perfs,$idx,$single,$plural,$size,$mult) {
   return $ans . " and " . $think[$things-1];
 }
 
-// Get Participants, Order by Importance/Time, if l>0 give part links as well
+// Get Participants, Order by Importance/Time, if l>0 give part links as well, if l<0 names in bold
 function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
   global $db,$Event_Types,$YEAR,$PerfTypes,$SHOWYEAR;
 
@@ -500,11 +500,11 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
           if ($thing['NotComing']) {
             $ans .= "<del>" . NoBreak($thing['SN']) . "</del>";
           } else {
-            if ($thing['Photo'] || $thing['Description'] || $thing['Blurb'] || $thing['Website']) $link=$l;
+            if ($l > 0 && ($thing['Photo'] || $thing['Description'] || $thing['Blurb'] || $thing['Website'])) $link=$l;
             if ($link) {
               $ans .= "<a href='/int/ShowPerf?id=" . $thing['SideId'] . "'>";
             }
-            $ans .= NoBreak($thing['SN']);
+            $ans .= ($l<0?'<b>':'') . NoBreak($thing['SN']) . ($l<0?'</b>':'') ;
             if (isset($thing['Type']) && $thing['Type']) $ans .= NoBreak(" (" . $thing['Type'] . ")");
             if ($link) $ans .= "</a>";
           }
@@ -569,7 +569,7 @@ function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='
         } else {
           if ($things++) $ans .= ", ";
         } 
-        if ($thing['Photo'] || $thing['Description'] || $thing['Blurb'] || $thing['Website']) $link=$l;
+        if ($l > 0 && ($thing['Photo'] || $thing['Description'] || $thing['Blurb'] || $thing['Website'])) $link=$l;
         if ($link) {
           if ($link ==1) {
             $ans .= "<a href='/int/ShowPerf?id=" . $thing['SideId'] . "'>";
@@ -577,7 +577,7 @@ function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='
             $ans .= "<a href='/int/AddPerf?sidenum=" . $thing['SideId'] . "'>";           
           }
         }
-        $ans .= NoBreak($thing['SN']);
+        $ans .= ($l<0?'<b>':'') . NoBreak($thing['SN']) . ($l<0?'</b>':'') ;
         if (isset($thing['Type']) && $thing['Type']) $ans .= NoBreak(" (" . $thing['Type'] . ")");
         if ($link) $ans .= "</a>";
        }
