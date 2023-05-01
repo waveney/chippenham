@@ -8,10 +8,14 @@
   include_once("DanceLib.php");
   include_once("MusicLib.php");
   dominimalhead("All Event by Time", ['css/PrintPage.css']);
-
+  include_once("files/Newheader.php");
+//  include_once("festcon.php");
+    
   set_ShowYear();
  
   global $db,$YEAR,$PLANYEAR,$YEARDATA,$SHOWYEAR,$DayList,$DayLongList,$Event_Types ;
+
+  echo "<div style='background:white'><div class=PaperP>";
 
   $Vens = Get_Venues(1);
 
@@ -34,8 +38,8 @@
 
       $dname = $DayLongList[$e['Day']];
 
-      if (DayTable($e['Day'],"Events")) {
-        echo "<tr class=Day$dname hidden><td>Time<td >What<td>Where<td>With and/or Description<td>Price";
+      if (DayTable($e['Day'],"Events",'','class=DayHead',)) {
+        echo "<tr class=Day$dname ><td>Time<td >What<td>Where<td>With and/or Description<td>Price";
       }
         
       Get_Imps($e,$imps,1,(Access('Staff')?1:0));
@@ -60,6 +64,6 @@
     }
     echo "</table></div>\n";
   
-  
+  echo "</div></div>";  
   exit;
 ?>
