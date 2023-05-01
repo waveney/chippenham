@@ -263,6 +263,10 @@
       $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
     }
 
+    $txt .= "<p>";
+    $txt .= "<li><a href=PrintProg>Lineups for Printed Program</a> (Even if not public)";    
+    $txt .= "<li><a href=PrintTime>Events for Printed Program</a> (Even if not public)";    
+    $txt .= "<li><a href=PrintGrid>Dance Grid for Printed Program</a> (Even if not public)";    
     $txt .= "</ul>\n";
   }
     

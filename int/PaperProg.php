@@ -1,7 +1,7 @@
 <?php
   include_once("fest.php");
 
-  A_Check('SysAdmin');
+  A_Check('Staff');
   
   include_once("int/fest.php");
   include_once("int/ProgLib.php");
@@ -31,6 +31,7 @@
                       " AND s.IsOther=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN"
             ];
   
+  $Displayed = [];
   echo "<div class=PaperP>";
   foreach ($Perf_Cats as $Title=>$fetch) {
     echo "<h2><center>$Title</center></h2>";
@@ -42,6 +43,8 @@
     $Pair = 0;
     foreach ($Slist as $perf) {
       if ($perf['NotPerformer'] ) continue;
+      if (isset($Displayed[$perf['SideId']])) continue;
+      $Displayed[$perf['SideId']] = 1;
       $Imp = $perf['EffectiveImportance'];
       if ($Pair == 0) echo "<tr>";
 //      if ($Pair == 0) echo "<div class=PPair>";
