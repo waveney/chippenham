@@ -505,7 +505,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
               $ans .= "<a href='/int/ShowPerf?id=" . $thing['SideId'] . "'>";
             }
             $ans .= ($l<0?'<b>':'') . NoBreak($thing['SN']) . ($l<0?'</b>':'') ;
-            if (isset($thing['Type']) && $thing['Type']) $ans .= NoBreak(" (" . $thing['Type'] . ")");
+            if (isset($thing['Type']) && $thing['Type']) $ans .= ' ' . NoBreak("(" . $thing['Type'] . ")");
             if ($link) $ans .= "</a>";
           }
         }
@@ -578,7 +578,7 @@ function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='
           }
         }
         $ans .= ($l<0?'<b>':'') . NoBreak($thing['SN']) . ($l<0?'</b>':'') ;
-        if (isset($thing['Type']) && $thing['Type']) $ans .= NoBreak(" (" . $thing['Type'] . ")");
+        if (isset($thing['Type']) && $thing['Type']) $ans .= ' ' . NoBreak("(" . $thing['Type'] . ")");
         if ($link) $ans .= "</a>";
        }
       if ($imp) $ans .= "</span>";

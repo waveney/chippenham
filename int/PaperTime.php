@@ -57,14 +57,14 @@
           if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
         }
       }
-      echo "<td>";
+      echo "<td><span style='font-size:10'>";
       if ($e['Description']) {
         $Desc = $e['Description'];
         $Desc = preg_replace('/<a href=(.*?)>.*?<\/a>/i','$1',$Desc);
         echo "$Desc<br>";
       }
       echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,-1,15,1,'',$e) : Get_Event_Participants($eid,0,-1,15));
-      echo "<td>" . Price_Show($e,1);   
+      echo "</span><td>" . Price_Show($e,1);   
     }
     echo "</table></div>\n";
   
