@@ -264,9 +264,9 @@
     }
 
     $txt .= "<p>";
-    $txt .= "<li><a href=PrintProg>Lineups for Printed Program</a> (Even if not public)";    
-    $txt .= "<li><a href=PrintTime>Events for Printed Program</a> (Even if not public)";    
-    $txt .= "<li><a href=PrintGrid>Dance Grid for Printed Program</a> (Even if not public)";    
+    $txt .= "<li><a href=PaperProg>Lineups for Printed Program</a> (Even if not public)";    
+    $txt .= "<li><a href=PaperTime>Events for Printed Program</a> (Even if not public)";    
+    $txt .= "<li><a href=PaperGrid>Dance Grid for Printed Program</a> (Even if not public)";    
     $txt .= "</ul>\n";
   }
     
