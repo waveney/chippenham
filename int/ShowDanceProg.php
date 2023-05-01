@@ -21,6 +21,9 @@
   $Public=1;
   if (isset($_GET['Pub'])) $Public=$_GET['Pub'];
 
+  $Links=1;
+  if (isset($_GET['Links'])) $Links=$_GET['Links'];
+
 //  var_dump($day);
   Prog_Headers($Public,$head);
   echo "<h2 class='DanceMap Fakelink' onclick=$('.DanceMap').toggle()>Show Dance Locations</h2>";
@@ -42,7 +45,7 @@
 //    echo "This will be easier to use on a small screen soon.<p>";
     echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
     Create_Grid($Cond);
-    Print_Grid(0,0,$Cond,$Public);
+    Print_Grid(0,0,$Cond,$Public,$Links);
   }
   if ($day == 'All' || $day == 'Sun') {
     if ($Public) {
@@ -52,7 +55,7 @@
 //      echo "This will be easier to use on a small screen soon.<p>";
       echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
       Create_Grid($Cond);
-      Print_Grid(0,0,$Cond,$Public);
+      Print_Grid(0,0,$Cond,$Public,$Links);
     } else {
       Controls(0,$Cond);
       ErrorPane(0);
@@ -67,7 +70,7 @@
 //      echo "This will be easier to use on a small screen soon.<p>";
       echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
       Create_Grid($Cond);
-      Print_Grid(0,0,$Cond,$Public);
+      Print_Grid(0,0,$Cond,$Public,$Links);
     }
     dotail();
   } else {

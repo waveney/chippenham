@@ -310,12 +310,12 @@ function Test_Dump() { // far far from complete
   ? = special
 */
 
-function Print_Grid($drag=1,$types=1,$condense=0,$format='',$Media='Dance') {
+function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dance') {
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList;
   global $Earliest,$Latest,$SlotSize,$OffGrid;
 
 //var_dump($Earliest,$Latest);
-  $links = $condense && !$types;
+  $links = $condense && !$types && $Links;
   if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
     $Round = 30;
     $DefLineLimit = 2;
