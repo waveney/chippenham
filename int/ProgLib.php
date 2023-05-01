@@ -811,7 +811,7 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
 }
 
 function Venue_Parents(&$Vens,$vid) {
-  if (empty($Vens[$vid]['PartVirt']) || ($Parent = $Vens[$vid]['PartVirt']) == 0 || $Vens[$vid]['SupressParent']) return '';
+  if (empty($Vens[$vid]['PartVirt']) || ($Parent = $Vens[$vid]['PartVirt']) == 0 || $Vens[$vid]['SuppressParent']) return '';
   $Pven = Get_Venue($Parent);
   return ($Pven['SN'] . ": ");
 }
