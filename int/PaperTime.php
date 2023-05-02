@@ -39,11 +39,11 @@
       $dname = $DayLongList[$e['Day']];
 
       if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%')) {
-        echo "<tr class=Day$dname ><td>Time<td >What<td>Where<td>With and/or Description<td>Price";
+        echo "<tr class=Day$dname ><td style='max-width:70;width:70;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
       }
         
       Get_Imps($e,$imps,1,(Access('Staff')?1:0));
-      echo "<tr class=Day$dname ><td>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
+      echo "<tr class=Day$dname ><td style='max-width:70;width:70;'>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
       echo "<td>" . $e['SN'] ;
 
       if (isset($Vens[$e['Venue']]['SN'])) {
@@ -61,12 +61,12 @@
       if ($e['Description']) {
         $Desc = $e['Description'];
         $Desc = preg_replace('/<a href=(.*?)[ >].*?<\/a>/i','$1',$Desc);
-        echo "$Desc<br>";
+        echo "$Desc";
       }
       if ($e['BigEvent']) {
         echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
-      } elseif ($e['SN'] == $Event_Types[1]['SN']) {
-        echo "See the Dance Grid for details";
+      } elseif ($e['SN'] == $Event_Types[1]['Plural']) {
+        echo "<span style='font-size:14'>See the Dance Grid for details</span>";
       } else {
         echo Get_Event_Participants($eid,0,-1,12);
       }
