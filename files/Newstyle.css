@@ -1045,6 +1045,7 @@ textarea {
 
 .ArtImageL {
   padding-bottom:5px;
+  height:auto;
 /*  max-height:300px;*/
 }
 
@@ -1069,11 +1070,13 @@ textarea {
 .ArtImageS {
   float:left;
   padding-right:5px;
+  height:auto;
 }
 
 .ArtImageVS {
   float:right;
   padding-left:5px;
+  height:auto;
 }
 
 .ArtTextS {}
