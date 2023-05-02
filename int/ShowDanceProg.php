@@ -37,8 +37,8 @@
     echo "</div>";
   }
   
-  if ($Links) {
-    echo "<h2>Jump to: <a href=#Sunday>Sunday</a> <a href=#Monday>Monday</a></h2>";
+  if ($Links && $day == 'All') {
+    echo "<h2>Jump to: <a href=#Sunday>Sunday</a>, <a href=#Monday>Monday</a></h2>";
   }
 
   if ($day == 'All' || $day == 'Sat') {

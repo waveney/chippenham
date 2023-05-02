@@ -15,7 +15,7 @@
  
   global $db,$YEAR,$PLANYEAR,$YEARDATA,$SHOWYEAR,$DayList,$DayLongList,$Event_Types ;
 
-  echo "<div style='background:white'><div class=PaperP>";
+  echo "<div style='background:white'><div class=PaperL>";
 
   $Vens = Get_Venues(1);
 

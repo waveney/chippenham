@@ -227,7 +227,7 @@ EnableVols:1','Features'=>'NewStyle:1']],
     ['MapPointTypes',9,['SN'=>'Camping','Icon'=>'Camping.png']],
     ['MapPointTypes',10,['SN'=>'Short Term Car Park','Icon'=>'carparkred.png']],
         
-    ['Directories',1,['SN'=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>0, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
+    ['Directories',0,['SN'=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>0, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
     ['BigEvents',1,['Event'=>-1,'Type'=>'Blank', 'Identifier'=>1,'EventOrder'=>0,'Notes'=>'']],
 
   ];
