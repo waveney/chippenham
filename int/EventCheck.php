@@ -41,6 +41,11 @@ function EventCheck($checkid=0) {
         continue;
       }        
 
+      if ($ev['End']<=$ev['Start']) {
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts after it Ends.<p>";
+              $errors++;
+        continue;
+      }        
 
         
       if ($ev['IgnoreClash']) continue;

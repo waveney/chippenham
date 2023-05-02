@@ -44,6 +44,7 @@
     foreach ($Slist as $perf) {
       if ($perf['NotPerformer'] ) continue;
       if (isset($Displayed[$perf['SideId']])) continue;
+      if (empty($perf['Description']) && Feature('OmitEmptyDescriptions')) continue;
       $Displayed[$perf['SideId']] = 1;
       $Imp = $perf['EffectiveImportance'];
       if ($Pair == 0) echo "<tr>";
