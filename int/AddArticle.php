@@ -44,6 +44,12 @@
       Update_db_post('Articles',$Art);
       $Art['StopDate'] = time() - 60;
       Put_Article($Art);
+    } elseif ($_REQUEST['ACTION'] == 'START') {
+      $id = $_REQUEST['id'];
+      $Art = Get_Article($id);
+      Update_db_post('Articles',$Art);
+      $Art['StartDate'] = time();
+      Put_Article($Art);
     } elseif ($_REQUEST['ACTION'] == 'COPY') {
       $id = $_REQUEST['id'];
       $Art = Get_Article($id);
@@ -111,6 +117,7 @@
     echo "<input type=submit name=ACTION value=STOP>";
     echo "<input type=submit name=ACTION value=DELETE>";
     echo "<input type=submit name=ACTION value=COPY>";
+    echo "<input type=submit name=ACTION value=START>";
         
     if ($Art['StopDate']) {
       echo "<input type=submit name=ACTION value=REOPEN>" . fm_text1('on',$Art,'RestartDate');

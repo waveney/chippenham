@@ -15,5 +15,6 @@ CREATE TABLE `Articles` (
   `HideTitle` tinyint NOT NULL,
   `RedTitle` tinyint NOT NULL,
   `RelOrder` int NOT NULL,
+  `ExternalLink` tinyint NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
