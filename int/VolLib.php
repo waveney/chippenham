@@ -118,7 +118,7 @@ function Get_Vol_Details(&$vol) {
   
   $camps = Get_Campsites(1);
   
-  if (Feature('Vol_Camping')) {
+  if (Feature('Vol_Camping') && !empty($VY['CampNeed'])) {
     $Body .= "Camping: " . $camps[$VY['CampNeed']] . "<br>\n";
     if ($VY['CampNeed'] < 10) { }
     elseif ($VY['CampNeed'] < 20) $Body .= "Space for: " . $CampType[$VY['CampType']] . "<p>\n";
