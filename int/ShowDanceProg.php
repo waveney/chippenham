@@ -26,6 +26,8 @@
 // var_dump($Cond,$day,$head,$Public,$Links);
 //  var_dump($day);
   Prog_Headers($Public,$head);
+
+  if (isset($_REQUEST['NoBackground']) echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script>";
   
   if ($Public && $Links) {
     echo "<h2 class='DanceMap Fakelink' onclick=$('.DanceMap').toggle()>Show Dance Locations</h2>";

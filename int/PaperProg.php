@@ -32,7 +32,7 @@
             ];
   
   $Displayed = [];
-  echo "<div class=PaperP>";
+  echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script><div class=PaperP>";
   foreach ($Perf_Cats as $Title=>$fetch) {
     echo "<h2><center>$Title</center></h2>";
     $Slist = [];

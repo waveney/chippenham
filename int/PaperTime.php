@@ -15,7 +15,7 @@
  
   global $db,$YEAR,$PLANYEAR,$YEARDATA,$SHOWYEAR,$DayList,$DayLongList,$Event_Types ;
 
-  echo "<div style='background:white'><div class=PaperL>";
+  echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script><div class=PaperL>";
 
   $Vens = Get_Venues(1);
 
