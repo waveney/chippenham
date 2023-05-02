@@ -105,7 +105,7 @@
   echo "<tr><td>Importance:<td>" . fm_select($Importance,$Art,'Importance');
   echo "<tr>" , fm_text("Relative Order",$Art,'RelOrder');    
   echo "<tr>" . fm_date("Start Date",$Art,'StartDate') . fm_date("Stop Date",$Art,'StopDate');
-  echo "<tr>" . fm_text("Link - may be blank",$Art,'Link') . "<td>";
+  echo "<tr>" . fm_text("Link - may be blank",$Art,'Link') . "<td>" . fm_checkbox('Remote Link',$Art,'ExternalLink') . "<td>";
     if ($id > 0) echo fm_hidden('id',$id) . "id: $id";
     echo fm_text1("Image",$Art,'Image') . " Click Update if manually changed";
   echo "<tr>" . fm_textarea("Text:<br>(some html)", $Art,'Text',6,10);
