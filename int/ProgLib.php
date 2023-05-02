@@ -654,7 +654,7 @@ function DayTable($d,$Types,$xtr='',$xtra2='',$xtra3='') {
   if ($d != $lastday) {
     if ($lastday != -99) echo "</table></div><p>\n";
     $lastday = $d;
-    echo '<p><div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
+    echo '<div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
     echo "<tr><th colspan=99 $xtra2>$Types on " . FestDate($d,'L') . " $xtr</th>\n";
     return 1;
   }

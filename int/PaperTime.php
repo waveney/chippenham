@@ -61,7 +61,7 @@
       if ($e['Description']) {
         $Desc = $e['Description'];
         $Desc = preg_replace('/<a href=(.*?)[ >].*?<\/a>/i','$1',$Desc);
-        echo "$Desc";
+        echo "$Desc ";
       }
       if ($e['BigEvent']) {
         echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
