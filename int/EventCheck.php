@@ -1,6 +1,6 @@
 <?php
   include_once("ProgLib.php");
-
+  include_once("DanceLib.php");
 /* Read all events for each venue order by start check end of one /start of next / allow for setup (sometimes)
  * Repeat including subevents?  Or do sub events as part of main check?
  *
