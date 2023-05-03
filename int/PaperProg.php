@@ -13,7 +13,7 @@
   global $db,$Coming_Type,$YEAR,$PLANYEAR,$Book_State,$EType_States;  
 
   $Order = "EffectiveImportance DESC, s.RelOrder DESC, s.SN";
-  if (isset($_REQUEST['Alpha'])) $Order = "EffectiveImportance DESC, s.RelOrder DESC, s.SN"
+  if (isset($_REQUEST['ALPHA'])) $Order = "EffectiveImportance DESC, s.RelOrder DESC, s.SN";
   $now = time();
   $Perf_Cats = [
    'Music'=>"SELECT s.*, y.*, IF(s.DiffImportance=1,s.MusicImportance,s.Importance) AS EffectiveImportance FROM Sides AS s, SideYear AS y " .
