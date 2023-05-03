@@ -187,6 +187,7 @@ function EventCheck($checkid=0) {
     // Check Performer clashes
     // perfs[SideId][events[eid,day,start,end,ignoreC]]
     
+    if(0)
     foreach ($evlist as $e=>$ev) { 
       if ($ev['BigEvent']) {
       } else {

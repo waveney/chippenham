@@ -12,23 +12,25 @@
 
   global $db,$Coming_Type,$YEAR,$PLANYEAR,$Book_State,$EType_States;  
 
+  $Order = "EffectiveImportance DESC, s.RelOrder DESC, s.SN";
+  if (isset($_REQUEST['Alpha'])) $Order = "EffectiveImportance DESC, s.RelOrder DESC, s.SN"
   $now = time();
   $Perf_Cats = [
    'Music'=>"SELECT s.*, y.*, IF(s.DiffImportance=1,s.MusicImportance,s.Importance) AS EffectiveImportance FROM Sides AS s, SideYear AS y " .
                       "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-                      " AND s.IsAnAct=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN",
+                      " AND s.IsAnAct=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
              'Dance Displays'=>"SELECT s.*, y.*, IF(s.DiffImportance=1,s.DanceImportance,s.Importance) AS EffectiveImportance " .
                       "FROM Sides AS s, SideYear AS y WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.Coming=" . $Coming_Type['Y'] . 
-                      " AND s.IsASide=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN",
+                      " AND s.IsASide=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
              'Ceilidhs and Folk Dance'=> "SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
                       "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-                      " AND s.IsCeilidh=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN",
+                      " AND s.IsCeilidh=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
              'Family and Community' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.FamilyImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
                       "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-                      " AND s.IsFamily=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN",
+                      " AND s.IsFamily=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
              'Other Performers' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
                       "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-                      " AND s.IsOther=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN"
+                      " AND s.IsOther=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order"
             ];
   
   $Displayed = [];
