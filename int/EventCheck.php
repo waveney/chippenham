@@ -41,13 +41,19 @@ function EventCheck($checkid=0) {
         continue;
       }        
 
-      if ($ev['End']<=$ev['Start']) {
+      if ($ev['End']<$ev['Start']) {
         echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts after it Ends.<p>";
               $errors++;
         continue;
       }        
 
         
+      if ($ev['End'] == $ev['Start']) {
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts and Ends at the same time.<p>";
+              $errors++;
+        continue;
+      }        
+
       if ($ev['IgnoreClash']) continue;
       $ThisEventEmpty = 1;
       for ($i=1;$i<5;$i++) if ($ev["Side$i"] ) $ThisEventEmpty = 0;

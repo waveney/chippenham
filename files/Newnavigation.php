@@ -80,8 +80,9 @@
       'Edit Your Data'=>"int/AddPerf?sidenum=$USERID",
       '-Public view'=>"int/ShowDance?sidenum=$USERID",
       '?Dance Loc Map'=>'/Map?F=3',
-      '?Dance FAQ'=>'int/DanceFAQ',
-      '#Performer T&amp;Cs'=>'int/MusicFAQ',    
+//      '?Dance FAQ'=>'int/DanceFAQ',
+//      '#Performer T&amp;Cs'=>'int/MusicFAQ',    
+      "Logout"=>'int/Login?ACTION=LOGOUT',
       ],
     'Trade'=>[
       'Edit Trader Info'=>"int/TraderPage?id=$USERID",

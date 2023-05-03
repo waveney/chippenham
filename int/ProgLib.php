@@ -382,7 +382,7 @@ function Get_Event_Type_For($nam) {
 
 function Event_Has_Parts($e) {
   for ($i=1;$i<5;$i++) {
-    if ($e["Side$i"] || $e["Act$i"] || $e["Other$i"]) return 1;
+    if ($e["Side$i"]) return 1;
   }
   return 0;
 }
