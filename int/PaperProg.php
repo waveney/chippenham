@@ -11,9 +11,10 @@
   dominimalhead("Performer Print Pages", ['css/PrintPage.css']);
 
   global $db,$Coming_Type,$YEAR,$PLANYEAR,$Book_State,$EType_States;  
-
+  $Set = 0;
   $Order = "EffectiveImportance DESC, s.RelOrder DESC, s.SN";
   if (isset($_REQUEST['ALPHA'])) $Order = "s.SN";
+  if (isset($_REQUEST['Set'])) $Set = $_REQUEST['Set'];
   $now = time();
   $Perf_Cats = [
    'Music'=>"SELECT s.*, y.*, IF(s.DiffImportance=1,s.MusicImportance,s.Importance) AS EffectiveImportance FROM Sides AS s, SideYear AS y " .
@@ -34,8 +35,10 @@
             ];
   
   $Displayed = [];
+  $SetNum = 1;
   echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script><div class=PaperP>";
   foreach ($Perf_Cats as $Title=>$fetch) {
+    if ($Set && $Set++ != $SetNum) continue;
     echo "<h2><center>$Title</center></h2>";
     $Slist = [];
     $perfQ = $db->query($fetch);
@@ -62,7 +65,7 @@
 //      if ($Pair == 1) echo "</div><br>";
       $Pair = ($Pair+1)%2;
     }
-    echo "</table><br>";
+    echo "</table>";
 //    if ($Pair == 1) echo "</div>";
 //    echo "<br clear=all>";
   }
