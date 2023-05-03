@@ -17,6 +17,8 @@ function EventCheck($checkid=0) {
   $LastEventEmpty = 1;
   $errors = 0;
   $res=$db->query("SELECT * FROM Events WHERE Year='$YEAR' AND Status=0 ORDER BY Venue, Day, Start");
+  
+  $Perfs = [];
   if ($res) {
     while($ev = $res->fetch_assoc()) { // Basic Events against basic events check
       if (empty($ev['SN'])) {
@@ -181,7 +183,38 @@ function EventCheck($checkid=0) {
         }
       }
     }
-
+    
+    // Check Performer clashes
+    // perfs[SideId][events[eid,day,start,end,ignoreC]]
+    
+    foreach ($evlist as $e=>$ev) { 
+      if ($ev['BigEvent']) {
+      } else {
+        for($i=1;$i<5;$i++) {
+          if (($sid = $ev["Side$i"]) != 0) {
+            $day = $ev['Day'];
+            $estrt = timereal($ev['Start']) - $ev['Setup'];
+            $eend = timereal($ev['SubEvent']<0 ? $ev['SlotEnd'] : $ev['End']);
+            
+            if (isset($perfs[$sid])) {
+              foreach($perfs[$sid] as $pd) {
+                if (($pd[1] == $day) && !$pd[4] && !$ev['IgnoreClash']) {
+                  if ((($pd[2] > $estrt) && (($pd[3] > $estrt) || (($pd[3] == $estrt) && ($ev['Venue'] != $evlist[$pd[0]]['Venue'])))) ||
+                       (($pd[2] <= $estrt) && (($eend > $pd[2]) || (($eend == $pd[2]) && ($ev['Venue'] != $evlist[$pd[0]]['Venue']))))) {
+                    $Side = Get_Side[$sid];
+                    echo "<a href=AddPerf?sidenum=$sid>" . $Side['SN'] . " has an Event clash between <a href=EventAdd?e=" . $ev['EventId'] . ">This Event</a>" .
+                         " and <a href=EventAdd?e=" . $evlist[$pd]['EventId'] . ">This Event</a>.<p>\n";
+                  }
+                }
+              }
+              $perfs[$sid][] = [$e,$day,$estrt,$eend,$ev['IgnoreClash']];
+            } else {
+              $perfs[$sid] = [[$e,$day,$estrt,$eend,$ev['IgnoreClash']]];
+            }
+          }
+        }
+      }
+    }
     if ($errors == 0 && $checkid == 0) echo "No errors found<p>\n";
   } else {
     echo "No events have been found...<p>\n";

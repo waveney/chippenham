@@ -270,11 +270,19 @@ function Check_4Changes(&$Cur,&$now) {
 // Will Probably need same code for "Other"
 }
 
+function RecordEventChanges(&$now,&$Cur,$new) {
+  global $PLANYEAR;
+//  $Rec = [
+
+}
+
 function Put_Event(&$now,$new=0) {
   $e=$now['EventId'];
   $Cur = Get_Event($e,$new);
   Update_db('Events',$Cur,$now);
   Check_4Changes($Cur,$now);
+  
+  if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
 }
 
 function Get_Events_For($what,$Day) {

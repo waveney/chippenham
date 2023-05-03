@@ -512,7 +512,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     }
     if ($Mode || Access('SysAdmin')) {
       echo fm_radio("Contract State",$Book_States,$Sidey,'YearState','class=NotSide',1,'colspan=3 class=NotSide','',$Book_Colours);
-      echo "<td>" . fm_checkbox('No Events',$Sidey,'NoEvents');
+      echo "<td class=NotSide>" . fm_checkbox('No Events',$Sidey,'NoEvents');
     } else {
       echo "<td class=NotSide>Booking State:" . help('YearState') . "<td class=NotSide>" . $Book_States[$Sidey['YearState']];
     }
@@ -860,7 +860,10 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     if (isset($Sidey['Rider']) && strlen($Sidey['Rider']) > 5)  echo "<tr>" . fm_textarea('Additional Riders',$Sidey,'Rider',2,1,'','disabled') ."\n";
   }
 
-  if (isset($Sidey['TotalFee']) && $Sidey['TotalFee'] || isset($Sidey['OtherPayment']) && $Sidey['OtherPayment']) { // Contract if there is a fee
+  if ((isset($Sidey['TotalFee']) && $Sidey['TotalFee']) || 
+      (isset($Sidey['OtherPayment']) && $Sidey['OtherPayment']) || 
+      ($Sidey['YearState'] == $Book_State['Contract Sent']) ||
+      (isset($Sidey['ContractAnyway']) && $Sidey['ContractAnyway'])) { // Contract if there is a fee
 
 // Events - RO to Act, RW to ctte
 

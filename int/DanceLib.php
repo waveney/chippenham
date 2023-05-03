@@ -290,6 +290,10 @@ function Get_SideYears($snum) {
   return $Save_SideYears[$snum];
 }
 
+function RecordPerfChanges(&$date,&$Save,$Up) {
+
+}
+
 function Put_SideYear(&$data,$Force=0) {
   global $db;
   global $Save_SideYears,$YEAR;
@@ -328,6 +332,9 @@ if ($data['YearState'] != 5) {
 //var_dump($data);
   if (!$fcnt) return 0;
   if ($Up) $rec .= " WHERE syId='" . $Save['syId'] . "'";
+  
+  if (Feature('RecordPerfChanges')) RecordPerfChanges($date,$Save,$Up);
+  
   $Save = $data;
 //var_dump($rec);
   if ($Up) return $db->query($rec);
