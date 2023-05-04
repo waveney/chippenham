@@ -20,9 +20,9 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
     $lastday = $d;
     if ($PageBreak) {
       if ($Mismatch) {
-        echo '<div class="tablecont pagebreak"><table class=' . DayList($d) . "tab $xtra3>";
-      } else {
         echo '<div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
+      } else {
+        echo '<div class=pagebreak></div><div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
       }
     } else {
       echo '<div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
