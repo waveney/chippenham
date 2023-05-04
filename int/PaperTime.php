@@ -46,11 +46,11 @@
         $LastDay = $e['Day'];
         $dname = $DayLongList[$e['Day']];
         if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {
-          echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
+          if ($Page == 0) echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
         }      
       } else if ($Count >= $Splits[$Page] || ($Page == 0 && $Count==0)) {
         $dname = $DayLongList[$e['Day']];
-        if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {
+        if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2)),1) {
           echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
         }
         $Page++;

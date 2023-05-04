@@ -2,6 +2,13 @@ body {
   background:white;
 }
 
+@media print {
+    .pagebreak {
+        clear: both;
+        page-break-after: always;
+    }
+}
+
 .PaperP {
   width:800px;
   max-width:800px;
