@@ -10,7 +10,32 @@
   dominimalhead("All Event by Time", ['css/PrintPage.css']);
   include_once("files/Newheader.php");
 //  include_once("festcon.php");
+
+function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBreak=0) {
+  global $DayLongList,$YEAR,$YEARDATA;
+  static $lastday = -99;
+  if (($Mismatch = ($d != $lastday)) || $ForceNew) {
     
+    if ($lastday != -99) echo "</table></div><p>\n";
+    $lastday = $d;
+    if ($PageBreak) {
+      if ($Mismatch) {
+        echo '<div class="tablecont pagebreak"><table class=' . DayList($d) . "tab $xtra3>";
+      } else {
+        echo '<div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
+      }
+    } else {
+      echo '<div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
+    }
+    if ($Mismatch || ($ForceNew<2)) {
+      echo "<tr><th colspan=99 $xtra2>$Types on " . FestDate($d,'L') . " $xtr</th>\n";
+      return 1;
+    }
+  }
+  return 0;
+}
+
+
   set_ShowYear();
  
   global $db,$YEAR,$PLANYEAR,$YEARDATA,$SHOWYEAR,$DayList,$DayLongList,$Event_Types ;
@@ -33,7 +58,7 @@
 //  echo "<script src=/js/WhatsWhen.js></script>";
   $xtr = (isset($_GET['Mode']) || $YEAR<$PLANYEAR)?'':"AND ( e.Public=1 OR (e.Type=t.ETypeNo AND t.State>1 AND e.Public<2 ))";
 
-  $Count = 1;
+  $Count = 0;
   $Page = 0;
   $TimeWidth = 65;
   $LastDay = -99;
@@ -45,12 +70,13 @@
       if ($LastDay != $e['Day']) {
         $LastDay = $e['Day'];
         $dname = $DayLongList[$e['Day']];
-        if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {
+        if (PaperDayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {
           if ($Page == 0) echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
         }      
-      } else if ($Count >= $Splits[$Page] || ($Page == 0 && $Count==0)) {
+        $Count++;
+      } else if ($Count >= $Splits[$Page]) {
         $dname = $DayLongList[$e['Day']];
-        if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2)),1) {
+        if (PaperDayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2),1)) {
           echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
         }
         $Page++;

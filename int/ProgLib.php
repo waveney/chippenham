@@ -663,7 +663,7 @@ function DayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBreak=0
     
     if ($lastday != -99) echo "</table></div><p>\n";
     $lastday = $d;
-    echo '<div class="tablecont"' . ($PageBreak && !$Mismatch)?' pagebreak':'') . '"><table class=' . DayList($d) . "tab $xtra3>";
+    echo '<div class="tablecont' . (($PageBreak && !$Mismatch)?' pagebreak':'') . '"><table class=' . DayList($d) . "tab $xtra3>";
     if ($Mismatch || ($ForceNew<2)) {
       echo "<tr><th colspan=99 $xtra2>$Types on " . FestDate($d,'L') . " $xtr</th>\n";
       return 1;
