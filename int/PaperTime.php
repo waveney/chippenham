@@ -33,20 +33,26 @@
 //  echo "<script src=/js/WhatsWhen.js></script>";
   $xtr = (isset($_GET['Mode']) || $YEAR<$PLANYEAR)?'':"AND ( e.Public=1 OR (e.Type=t.ETypeNo AND t.State>1 AND e.Public<2 ))";
 
-  $Count = 0;
+  $Count = 1;
   $Page = 0;
   $TimeWidth = 65;
+  $LastDay = -99;
   $res = $db->query("SELECT DISTINCT e.* FROM Events e, EventTypes t WHERE e.Year='$YEAR' AND (e.SubEvent<=0 OR e.LongEvent=1) AND t.Public=1 $xtr ORDER BY Day, Start");
 
     while( $e = $res->fetch_assoc()) {
       $eid = $e['EventId'];
 
-      if ($Count >= $Splits[$Page] || ($Page == 0 && $Count==0)) {
+      if ($LastDay != $e['Day']) {
         $dname = $DayLongList[$e['Day']];
-        if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + $Page%2))) {
+        if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {
+          echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
+        }      
+      } else if ($Count >= $Splits[$Page] || ($Page == 0 && $Count==0)) {
+        $dname = $DayLongList[$e['Day']];
+        if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {
           echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
         }
-        if ($Count > 0) $Page++;
+        $Page++;
         $Count = 1;
 
       } else {
