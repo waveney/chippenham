@@ -43,6 +43,7 @@
       $eid = $e['EventId'];
 
       if ($LastDay != $e['Day']) {
+        $LastDay = $e['Day'];
         $dname = $DayLongList[$e['Day']];
         if (DayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {
           echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
