@@ -140,6 +140,15 @@ if (preg_match('/Image|Photo/',$Type,$mtch)) {
   if ($stuff) {
     $Data['ImageWidth'] = $stuff[0];
     $Data['ImageHeight'] = $stuff[1];
+    
+    if ($stuff[0] > 800) {
+      exec("convert -resize 800x $target_file $target_file");
+      $stuff = getimagesize($target_file);
+      if ($stuff) {
+        $Data['ImageWidth'] = $stuff[0];
+        $Data['ImageHeight'] = $stuff[1];
+      }
+    }
   }
 }
 
