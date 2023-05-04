@@ -454,7 +454,7 @@ function Resize_Photo($type='Current') {
     if ($_POST['Action'] == 'Change') New_Image();
     if ($_POST['Action'] == 'Rotate') Rotate_Image();
     Edit_Photo('Current');
-  } else if (isset($_POST['Shrink']) {
+  } else if (isset($_POST['Shrink'])) {
     Resize_Photo();
   }
 

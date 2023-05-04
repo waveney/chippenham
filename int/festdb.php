@@ -309,13 +309,6 @@ function TnC($Name,$default='') {  // Return value of T and C if set from TsAndC
   return (empty($Res['Content'])?'':$Res['Content']);
 }
 
-function OldTnC($Name,$default='') {  // Return value of T and C if set from TsAndCs
-  static $TsAndCs;
-  if (!$TsAndCs) $TsAndCs = Gen_Get("TsAndCs",1);
-  if (!empty($TsAndCs[$Name])) return $TsAndCs[$Name];
-  return $default;
-}
-
 function set_ShowYear($last=0) { // Overrides default above if not set by a Y argument
   global $YEAR,$SHOWYEAR,$YEARDATA,$NEXTYEARDATA,$PLANYEAR;
   if ($last == 0 && !isset($_REQUEST['Y'])) {
