@@ -26,9 +26,9 @@
         'Dance Displays'=>'LineUp?T=Dance',
         'Music'=>'LineUp?T=Music', 
 //        'Comedy'=>'LineUp?T=Comedy',
-        'Family'=>'LineUp?T=Family',
-        'Ceilidh & Dances'=>'LineUp?T=Ceilidh',
-        'Others'=>'LineUp?T=Other',
+        'Family and Community'=>'LineUp?T=Family',
+        'Ceilidh and Dances'=>'LineUp?T=Ceilidh',
+        'Story and Spoken Word'=>'LineUp?T=Other',
 //        'Traders'=>'int/TradeShow',
 
         ],

@@ -38,8 +38,8 @@
   $SetNum = 1;
   echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script><div class=PaperP>";
   foreach ($Perf_Cats as $Title=>$fetch) {
-    if ($Set && $Set++ != $SetNum) continue;
-    echo "<h2><center>$Title</center></h2>";
+    if ($Set && ($Set != $SetNum++)) continue;
+    echo "<div style='text-align:center;font-size:24;font-weight:bold;margin:10;'>$Title</div>";
     $Slist = [];
     $perfQ = $db->query($fetch);
     if ($perfQ) while($side = $perfQ->fetch_assoc()) $Slist[] = $side;

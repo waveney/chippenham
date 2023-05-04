@@ -101,7 +101,7 @@
     if ($YEAR != $PLANYEAR) {
       echo "In $YEAR, These Children's Entertainers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
     } else {
-      echo "Click on the name of a Children's Entertainer, or their photograph to find out more about them and where they are performing.<p>\n";
+      echo "Click on the name of a Family and Community Entertainer, or their photograph to find out more about them and where they are performing.<p>\n";
     }
 
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.FamilyImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
@@ -113,9 +113,9 @@
   
   case 'Other':
     $ET['FirstYear'] = 2019; // FUDGE TODO make better
-    echo "These are performers who don't fit into any of the other categories.<p>";
+    echo "These are Story and Spoken Word performers who don't fit into any of the other categories.<p>";
     if ($YEAR != $PLANYEAR) {
-      echo "In $YEAR, These other performers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
+      echo "In $YEAR, These performers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
     } else {
       echo "Click on the name of a performer, or their photograph to find out more about them and where they are performing.<p>\n";
     }
@@ -130,7 +130,7 @@
     $ET['FirstYear'] = 2023;
     echo "These are performers for Ceilidhs and Folk Dances.<p>";
     if ($YEAR != $PLANYEAR) {
-      echo "In $YEAR, These other performers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
+      echo "In $YEAR, These performers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
     } else {
       echo "Click on the name of a performer, or their photograph to find out more about them and where they are performing.<p>\n";
     }

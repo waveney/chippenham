@@ -4,6 +4,7 @@
   include_once("MusicLib.php");
   include_once("TradeLib.php");
   include_once("ProgLib.php");
+  include_once("ImageLib.php");
 
 $Who = $Pcat = 0;
 
@@ -299,6 +300,7 @@ if (isset($_FILES['croppedImage'])) {
       $i++;
     }
     echo "<input type=submit name=Edit value=Edit><p>\n";
+//    echo "<input type=submit name=Shrink value=Shrink><p>\n";
     echo "</form>\n";
   }
 
@@ -423,6 +425,24 @@ function Rotate_Image() {
   Change_Rand($dat);
 }
 
+function Resize_Photo($type='Current') {
+    global $Who,$Pcat;
+    global $Shapes,$Shape, $Lists,$PhotoCats;
+//var_dump($_POST);
+    $dat = ImgData();
+
+    $Name = $dat['Data']['SN'];
+    $PhotoURL = $dat['Data'][$dat['Field']];
+    $FinalLoc = $dat['FinalLoc'];
+    $ArcLoc = $dat['ArcLoc'];
+
+    $suffix = $dat['Suf'];
+    $FinalLoc .= ".$suffix";
+    $ExtLoc = "/" . $FinalLoc;
+    
+    // Lots more to do
+}
+
 // var_dump($_POST);
   if (isset($_POST['Edit']) || isset($_POST['Current'])) {
     if (isset($_POST['WHO'])) unset($_POST['WHO']);
@@ -434,6 +454,8 @@ function Rotate_Image() {
     if ($_POST['Action'] == 'Change') New_Image();
     if ($_POST['Action'] == 'Rotate') Rotate_Image();
     Edit_Photo('Current');
+  } else if (isset($_POST['Shrink']) {
+    Resize_Photo();
   }
 
   Select_Photos();
