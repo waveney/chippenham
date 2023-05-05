@@ -91,13 +91,15 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
       echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
       echo "<td>" . $e['SN'] ;
 
-      if (!empty($e['VenuePaper'])) {
+      if (empty($e['VenuePaper'])) {
         if (isset($Vens[$e['Venue']]['SN'])) {
           echo "<td>" . Venue_Parents($Vens,$e['Venue']) . $Vens[$e['Venue']]['SN'];
         } else {
           echo "<td>Unknown";
         }
-      } echo "<td>" . $e['VenuePaper'];
+      } else {
+        echo "<td>" . $e['VenuePaper'];
+      }
       
       if ($e['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
