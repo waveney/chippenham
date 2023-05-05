@@ -133,6 +133,9 @@
       }
     }
     
+    $Extra = TnC("Sherlock$Types");
+    if ($Extra) echo $Extra;
+    
     echo "<div class='FullWidth WhenTable'>";
 
     if ($NotAllFree == 0) echo "All $Types are " . Feature('FreeText','Free') . ".<p>";

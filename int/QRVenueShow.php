@@ -345,7 +345,14 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
       $parname = $e['SN'];
       if ($Poster) $rows = 1; // Only ever show first row
       echo "<tr><td rowspan=$rows $colwid valign=top><a href=EventShow?e=$eid valign=top>" . timecolon($e['Start']) . " - " . timecolon($e['End']) . "</a>";
-      if ($VirtVen) echo "<br>" . $VenNames[$e['Venue']];
+      if ($VirtVen) {
+        if (empty($VenNames[$e['Venue']])) {
+          $VVen = Get_Venue($e['Venue']);
+          echo "<br>" . $VVen['SN'];
+        } else {
+          echo "<br>" . $VenNames[$e['Venue']];
+        }
+      }
       echo "<td rowspan=$rows  valign=top><a href=EventShow?e=$eid>" . $parname . "</a>";
       if ($e['Status'] == 1) echo "<br><div class=Cancel>CANCELLED</div>";
       if ($e['Description']) echo "<br>" . $e['Description'];
