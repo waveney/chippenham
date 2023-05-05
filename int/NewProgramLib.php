@@ -451,7 +451,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           if (!isset($Sides[$si])) {
             $Sidessi = Get_Side($si);
             $Sidessi['ERROR'] = 1;
-            if ($Sidesi['IsASide'] == 0 ) $Sides[$si] = $Sidessi;
+            if ($Sidessi['IsASide'] == 0 ) $Sides[$si] = $Sidessi;
           }
 
           $s = &$Sides[$si];

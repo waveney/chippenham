@@ -697,8 +697,6 @@ function Extended_Prog($type,$id,$all=0) {
       foreach ($Evs as $e) {
         if ($e["BigEvent"]) { $With = 1; break; }
         for ($i = 1; $i<5;$i++) if ($e["Side$i"] && $e["Side$i"] != $id) { $With = 1; break 2; }
-        for ($i = 1; $i<5;$i++) if ($e["Act$i"] && $e["Act$i"] != $id) { $With = 1; break 2; }
-        for ($i = 1; $i<5;$i++) if ($e["Other$i"] && $e["Other$i"] != $id) { $With = 1; break 2; }
       }
         
       $UsedNotPub = 0;

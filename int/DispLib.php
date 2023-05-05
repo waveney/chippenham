@@ -414,7 +414,7 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
     switch ($fmt) {
     case 0: // Large Image
     default:
-      if ($Art['Link']) echo "<a href='" . $Art['Link'] . ($Art['ExternalLink']?"' target=_blank":"'") . ">";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] . 
          " data-width=" . $Art['ImageWidth'] .">";
@@ -423,7 +423,7 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
       break;
           
     case 1: // Small Image (to left of title and text)
-      if ($Art['Link']) echo "<a href='" . $Art['Link'] . ($Art['ExternalLink']?"' target=_blank":"'") . ">";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
         " data-width=" . $Art['ImageWidth'] . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
@@ -432,14 +432,14 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
       break;
           
     case 2: // Text Only
-      if ($Art['Link']) echo "<a href='" . $Art['Link'] . ($Art['ExternalLink']?"' target=_blank":"'") . ">";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleT" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextT\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
       
     case 3: // Banner Image
-      if ($Art['Link']) echo "<a href='" . $Art['Link'] . ($Art['ExternalLink']?"' target=_blank":"'") . ">";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
          " data-width=" . $Art['ImageWidth'] .">";
@@ -448,14 +448,14 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
       break;
               
     case 4: // Banner Text
-      if ($Art['Link']) echo "<a href='" . $Art['Link'] . ($Art['ExternalLink']?'target=_blank':'') . "'>";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . "'>";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBT" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextBT\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
       
     case 5: // Fixed Image large box has ratio of 550:500
-      if ($Art['Link']) echo "<a href='" . $Art['Link'] . ($Art['ExternalLink']?"' target=_blank":"'") . ">";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleF" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div><br>";
       if ($Art['Image']) echo "<img class=\"ArtImageF rounded\" id=\"ArtImg$i\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
           " data-width=" . $Art['ImageWidth'] .">";
@@ -468,7 +468,7 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
       break;
     
     case 7: // 2/3rds Banner Image
-      if ($Art['Link']) echo "<a href='" . $Art['Link'] . ($Art['ExternalLink']?"' target=_blank":"'") . ">";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI23" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI23\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
          " data-width=" . $Art['ImageWidth'] .">";
@@ -477,7 +477,7 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
       break;
               
     case 8: // image below text
-      if ($Art['Link']) echo "<a href='" . $Art['Link'] . ($Art['ExternalLink']?"' target=_blank":"'") . ">";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       echo "<br><span class=\"ArtTextL\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] . 
@@ -488,7 +488,7 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
           
     case 9: // V Small image to right of heading
  
-      if ($Art['Link']) echo "<a href='" . $Art['Link'] . ($Art['ExternalLink']?"' target=_blank":"'") . ">";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageVS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
         " data-width=" . $Art['ImageWidth'] . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";

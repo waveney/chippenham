@@ -266,9 +266,9 @@
     $txt .= "<p>";
     $txt .= "<li><a href=PaperProg?ALPHA=1>Lineups for Printed Program</a> (Even if not public)";    
     $txt .= "<li><a href=PaperTime>Events for Printed Program</a> (Even if not public)";    
-    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=1>Sat Dance Grid for Printed Program</a>";    
-    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=2>Sun Dance Grid for Printed Program</a>";    
-    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=3>Mon Dance Grid for Printed Program</a>";    
+    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat>Sat Dance Grid for Printed Program</a>";    
+    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun>Sun Dance Grid for Printed Program</a>";    
+    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon>Mon Dance Grid for Printed Program</a>";    
     $txt .= "</ul>\n";
   }
     
