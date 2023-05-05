@@ -333,12 +333,12 @@ A similar feature will appear eventually for music.<p>
       echo "<td>" . fm_checkbox('Also Dance',$Event,'ListDance') . " ". fm_checkbox('Also Music',$Event,'ListMusic') . " ". 
             fm_checkbox('Also Comedy',$Event,'ListComedy') . " " .fm_checkbox('Also Workshop',$Event,'ListWorkshop');
       
-      echo "<td class=NotSide>" . fm_checkbox('No Part',$Event,'NoPart');
+      echo "<td class=NotSide>" . fm_checkbox('No Part',$Event,'NoPart') . "<br>" . fm_checkbox('Omit Performers on Paper',$Event,'NoPerfsPaper');
       echo "<td class=NotSide>" . fm_checkbox('Concert',$Event,'IsConcert');
       echo "<tr" . ($se>0?" class=FullD hidden":"") . "><td class=FullD hidden>" . fm_checkbox('Special Event',$Event,'Special');
       echo "<td>" . fm_checkbox('Family Event',$Event,'Family');
       echo "<td class=FullD hidden>" . fm_checkbox('Non Fest',$Event,'NonFest');
-      echo "<td class=FullD hidden>Alt Edit:" . fm_select($AllActive,$Event,'Owner2',1);
+      echo "<td class='NotSide FullD' hidden>Alt Edit:" . fm_select($AllActive,$Event,'Owner2',1);
       echo "<td class='NotSide FullD' hidden>Importance: " . fm_select($Importance,$Event,'Importance',0,'','',3);
 
       echo "<tr>" . fm_text('<b>Name</b>', $Event,'SN',1,($se>0?" class=FullD hidden":"") );
@@ -372,7 +372,8 @@ A similar feature will appear eventually for music.<p>
       if ($se <= 0) echo "<tr class=mday $hidemday>" . fm_radio('End Day',$FestDays,$Event,'EndDay') . 
                 "<td colspan=3>Set up a sub event for each day after first, times are for first day";
       echo "<tr" . ($se>0?" class=FullD hidden":"") . "><td><b>Venue</b>:<td>" . fm_select($Venues,$Event,'Venue',1);
-        echo fm_textarea('Notes', $Event,'Notes',4,2);
+        echo fm_text('Special Printed Venue Text:',$Event,'VenuePaper',3,"class='NotSide FullD' hidden");
+      echo "<tr class='FullD' hidden>" . fm_textarea('Notes', $Event,'Notes',4,2);
       $et = 'Mixed';
       if (isset($Event['Type'])) $et = $Event_Types[$Event['Type']];
       echo "<tr>" . fm_textarea('Description <span id=DescSize></span>',$Event,'Description',5,2,'',

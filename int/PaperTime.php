@@ -91,15 +91,20 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
       echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
       echo "<td>" . $e['SN'] ;
 
-      if (isset($Vens[$e['Venue']]['SN'])) {
-        echo "<td>" . Venue_Parents($Vens,$e['Venue']) . $Vens[$e['Venue']]['SN'];
-      } else {
-        echo "<td>Unknown";
-      }
+      if (!empty($e['VenuePaper'])) {
+        if (isset($Vens[$e['Venue']]['SN'])) {
+          echo "<td>" . Venue_Parents($Vens,$e['Venue']) . $Vens[$e['Venue']]['SN'];
+        } else {
+          echo "<td>Unknown";
+        }
+      } echo "<td>" . $e['VenuePaper'];
+      
       if ($e['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
-        foreach ($Others as $i=>$o) {
-          if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
+        if (empty($e['VenuePaper'])) {
+          foreach ($Others as $i=>$o) {
+            if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
+          }
         }
       }
       echo "<td><span style='font-size:12'>";
@@ -109,7 +114,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
         echo "$Desc ";
       }
       if ($e['BigEvent']) {
-        echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
+        if (!$e['NoPerfsPaper']) echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
       } elseif ($e['SN'] == $Event_Types[1]['Plural']) {
         echo "<span style='font-size:14'>See the Dance Grid for details</span>";
       } else {

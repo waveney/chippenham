@@ -148,6 +148,20 @@ function fm_textarea($Name,&$data,$field,$cols=1,$rows=1,$extra1='',$extra2='',$
   return $str . (isset($data[$field])?        htmlspec($data[$field]) : '' ) . "</textarea>\n";
 }
 
+function fm_textarea1($Name,&$data,$field,$cols=1,$rows=1,$extra1='',$extra2='',$field2='') {
+  global $ADDALL,$AutoADD;
+  if ($field2 == '') $field2=$field;
+  if ($rows > 0) {
+    $str = "<td $extra1 colspan=$cols>$Name:" . help($field) . "<textarea name=$field2 id=$field2 $ADDALL ";
+  } else {
+    $str = ($Name?"<br $extra1>$Name:" . help($field) . "<br>":"") . "<textarea name=$field2 id=$field2 $ADDALL ";
+  }
+  if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
+  $str .= " $extra2 rows=" . abs($rows) . ">" ;  
+ 
+  return $str . (isset($data[$field])?        htmlspec($data[$field]) : '' ) . "</textarea>\n";
+}
+
 function fm_basictextarea(&$data,$field,$cols=1,$rows=1,$extra1='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
