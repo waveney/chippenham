@@ -103,9 +103,11 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
       
       if ($e['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
+        $PerfC = 0;
         if (empty($e['VenuePaper'])) {
           foreach ($Others as $i=>$o) {
             if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
+            if ($o['Type'] == 'Perf') $PerfC++;
           }
         }
       }
@@ -116,7 +118,12 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
         echo "$Desc ";
       }
       if ($e['BigEvent']) {
-        if (!$e['NoPerfsPaper']) echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
+        if ($e['NoPerfsPaper']) {
+          echo "For the fill list of $PerfC see the website";
+          
+        } else {
+          echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
+        }
       } elseif ($e['SN'] == $Event_Types[1]['Plural']) {
         echo "<span style='font-size:14'>See the Dance Grid for details</span>";
       } else {
