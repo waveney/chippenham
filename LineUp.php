@@ -113,7 +113,7 @@
   
   case 'Other':
     $ET['FirstYear'] = 2019; // FUDGE TODO make better
-    echo "These are Story and Spoken Word performers who don't fit into any of the other categories.<p>";
+    echo "These are Story and Spoken Word performers, and anyone who doesn't fit into any of the other categories.<p>";
     if ($YEAR != $PLANYEAR) {
       echo "In $YEAR, These performers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
     } else {
