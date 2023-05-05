@@ -104,11 +104,9 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
       if ($e['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
         $PerfC = 0;
-        if (empty($e['VenuePaper'])) {
-          foreach ($Others as $i=>$o) {
-            if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
-            if ($o['Type'] == 'Perf') $PerfC++;
-          }
+        foreach ($Others as $i=>$o) {
+          if (empty($e['VenuePaper'])) && ($o['Type'] == 'Venue')) echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
+          if ($o['Type'] == 'Perf') $PerfC++;
         }
       }
       echo "<td><span style='font-size:12'>";
@@ -119,7 +117,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
       }
       if ($e['BigEvent']) {
         if ($e['NoPerfsPaper']) {
-          echo "For the fill list of $PerfC see the website";
+          echo "<span style='font-size:14'>For the fill list of $PerfC see the website<span>";
           
         } else {
           echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
