@@ -40,12 +40,12 @@ function Get_DirInfo($d,$new=0) {
   $res = $db->query($qry);
   if (!$res) return $Dir_cache[$d] = 0; 
   $rec = $res->fetch_assoc();
-  if ($rec['Who'] == $USERID || $rec['AccessLevel'] > $USER['AccessLevel']) { // Not restricted
+  if ($rec['Who'] == $USERID || $rec['AccessLevel'] < $USER['AccessLevel']) { // Not restricted
     } else if ($rec['AccessLevel'] == $USER['AccessLevel'] && $rec['AccessSections'] !='') {
 
     $sects = explode(',',$rec['AccessSections']);
     $valid = 0;
-    foreach($sects as $sect) if (isset($USER[$sect]) && $USER[$sect]>0) $valid=1;
+    foreach($sects as $sect) if (Is_SubType($Sect)) { $valid=1; break; }
     if (!$valid) return $Dir_cache[$d] = 0;
   }  
 
