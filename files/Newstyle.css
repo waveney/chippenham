@@ -799,11 +799,16 @@ textarea:Focus
   border-color:peru;
 }
 
+.BlackDayTab {
+  background-color:black;
+  border-color:black;
+
+}
 
 .lemontab {
 }
 .Tuetab, .Tuetab td, .Wedtab, .Wedtab td, .Thurtab, .Thurtab td, .Fritab td, .Fritab, .Sattab td, .Sattab, .Suntab td, .Suntab, .Montab, .Montab td, 
-.lemontab, .lemontab td {
+.lemontab, .lemontab td,.BlackDayTab, .BlackDayTab td {
   padding:5px;
   border-spacing:5px;
   max-width:99%;
@@ -811,7 +816,7 @@ textarea:Focus
 }
 
 .Tuetab tr:hover td, .Wedtab tr:hover td, .Thurtab tr:hover td, .Fritab tr:hover td, .Sattab tr:hover td, .Suntab tr:hover td, .Montab tr:hover td, .lemontab tr:hover td,
-.InfoTable tr:hover td {
+.InfoTable tr:hover td, .BlackDayTab tr:hover td {
   background: #f4f4f4;
 }
 

@@ -15,17 +15,17 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
   global $DayLongList,$YEAR,$YEARDATA;
   static $lastday = -99;
   if (($Mismatch = ($d != $lastday)) || $ForceNew) {
-    
+    $Class = Feature('PaperColouredEvents',DayList($d) . "tab");
     if ($lastday != -99) echo "</table></div><p>\n";
     $lastday = $d;
     if ($PageBreak) {
       if ($Mismatch) {
-        echo '<div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
+        echo "<div class=tablecont><table class=$Class $xtra3>";
       } else {
-        echo '<div class=pagebreak></div><div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
+        echo "<div class=pagebreak></div><div class=tablecont><table class=$Class $xtra3>";
       }
     } else {
-      echo '<div class=tablecont><table class=' . DayList($d) . "tab $xtra3>";
+      echo "<div class=tablecont><table class=$Class $xtra3>";
     }
     if ($Mismatch || ($ForceNew<2)) {
       echo "<tr><th colspan=99 $xtra2>$Types on " . FestDate($d,'L') . " $xtr</th>\n";
@@ -105,7 +105,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
         $Others = Get_Other_Things_For($eid);
         $PerfC = 0;
         foreach ($Others as $i=>$o) {
-          if (empty($e['VenuePaper'])) && ($o['Type'] == 'Venue')) echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
+          if (empty($e['VenuePaper']) && ($o['Type'] == 'Venue')) echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
           if ($o['Type'] == 'Perf') $PerfC++;
         }
       }
@@ -117,7 +117,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
       }
       if ($e['BigEvent']) {
         if ($e['NoPerfsPaper']) {
-          echo "<span style='font-size:14'>For the fill list of $PerfC see the website<span>";
+          echo "<span style='font-size:14'>For the full list of $PerfC teams see the website<span>";
           
         } else {
           echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
