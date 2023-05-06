@@ -343,7 +343,7 @@ A similar feature will appear eventually for music.<p>
 
       echo "<tr>" . fm_text('<b>Name</b>', $Event,'SN',1,($se>0?" class=FullD hidden":"") );
         echo "<td><b>Event Type</b>:" . fm_select($ETNames,$Event,'Type');
-        if ($Event['BigEvent']) {
+        if (!empty($Event['BigEvent'])) {
           echo "<td><a href=BigEventProg?e=$eid>Big Event</a>";
         } else if ($se == 0) { echo "<td>No Sub Events"; }
         else if ($se < 0) { echo "<td><a href=EventList?se=$eid>Has Sub Events</a>"; }
