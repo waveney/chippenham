@@ -158,16 +158,19 @@
         }
       echo "<td>" .($evnt['NeedSteward'] ? "Y" : "" );
         if ($evnt['StewardTasks']) echo " Stew";
-        if ($evnt['SetupTasks']) echo " Set";        
-      if ($se == 0) {
-        if ($evnt['SubEvent'] == 0) { echo "<td>No\n"; }
-        else { echo "<td><a href=EventList?se=$i>Yes</a>\n"; }
-      }
-      if ($se != 0) {
-        echo "<td>";
-        if ($evnt['SubEvent']>0) {
-          echo Get_Event_Participants($i,1,2) ;
-        } else {
+        if ($evnt['SetupTasks']) echo " Set";  
+      if ($evnt['BigEvent']) { echo "<td>BIG\n"; }      
+      else {
+        if ($se == 0) {
+          if ($evnt['SubEvent'] == 0) { echo "<td>No\n"; }
+          else { echo "<td><a href=EventList?se=$i>Yes</a>\n"; }
+        }
+        if ($se != 0) {
+          echo "<td>";
+          if ($evnt['SubEvent']>0) {
+            echo Get_Event_Participants($i,1,2) ;
+          } else {
+          }
         }
       }
       if ($se > 0 && $evnt['SubEvent'] < 0) echo " Full end: " . $evnt['End'] . " PARENT";
