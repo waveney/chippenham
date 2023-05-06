@@ -94,6 +94,11 @@ function Print_Participants($e,$when=0,$thresh=0) {
   $Eid = $_GET['e'];
   if (!is_numeric($Eid)) exit("Invalid Event Number");
   $Ev = Get_Event($Eid);  
+  if (empty($Ev['EventId'])) {
+    dohead('Unknown Event',[],1); // TODO Event specific banners
+    echo "<h1>This Event is not known</h1>";
+    dotail();
+  }
   $YEAR = $Ev['Year'];
   $Ven = Get_Venue($Ev['Venue']);
   $ETs = Get_Event_Types(1);
