@@ -271,19 +271,49 @@ function Check_4Changes(&$Cur,&$now) {
 // Will Probably need same code for "Other"
 }
 
+function RecordPerfEventChange($id) {
+  global $PLANYEAR;
+  $Rec = Gen_Get_Cond1('PerfChanges',"SideId=$id AND Year=$PLANYEAR AND Field='Perform'");
+  if (!$Rec) {
+    $Rec = ['SideId'=>$id, 'Year'=>$PLANYEAR, 'syId'=>-1, 'Year'=>$PLANYEAR, 'Field'=>'Perform', 'Changes'=>'' ];
+    Gen_Put('PerfChanges',$Rec);
+  }
+}
+
 function RecordEventChanges(&$now,&$Cur,$new) {
   global $PLANYEAR;
-//  $Rec = [
+  $Fields = ['Start','End','Day','SN','Side1','Side2','Side3','Side4','Status'];
+  $Check = 0;
+  foreach ($Fields as $f) if ($now[$f] != $Cur[$f]) {
+    $Check = 1;
+    $Rec = Gen_Get_Cond1('EventChanges',"( EventId=" . $now['EventId'] . " AND Field='$f' )");
+    if (isset($Rec['id'])) {
+      $Rec['Changes'] = $now[$f];
+      Gen_Put('EventChanges',$Rec);
+    } else {
+      $Rec = ['EventId'=>$now['EventId'], 'Year'=>$PLANYEAR, 'Changes'=>$now[$f], 'Field'=>$f ];
+      Gen_Put('EventChanges',$Rec);
+    }
+    
+  }
+       
+  if ($Check) {
+    for($i=1;$i<5;$i++) {
+      if ($now["Side$i"] != $Cur["Side$i"]) {
+        if ($Cur["Side$i"]) RecordPerfEventChange($Cur["Side$i"]);
+        if ($now["Side$i"]) RecordPerfEventChange($now["Side$i"]);
+      }
+    }
+  }
 
 }
 
 function Put_Event(&$now,$new=0) {
   $e=$now['EventId'];
   $Cur = Get_Event($e,$new);
+  if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
   Update_db('Events',$Cur,$now);
   Check_4Changes($Cur,$now);
-  
-  if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
 }
 
 function Get_Events_For($what,$Day) {

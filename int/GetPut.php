@@ -47,6 +47,7 @@ function Gen_Get_Cond($Table,$Cond, $idx='id') {
 
 function Gen_Get_Cond1($Table,$Cond, $idx='id') {
   global $db;
+//  var_dump($Cond);
 //  $Q = "SELECT * FROM $Table WHERE $Cond";var_dump("Q=",$Q);
   $res = $db->query("SELECT * FROM $Table WHERE $Cond LIMIT 1");
   if ($res) if ($ans = $res->fetch_assoc()) return $ans;

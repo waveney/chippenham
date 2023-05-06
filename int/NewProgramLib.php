@@ -243,6 +243,7 @@ function Create_Grid($condense=0,$Media='Dance') {
   $ForwardUse = array();
   $grid = array();
   $VenueList = array();
+  $AllTimes = Feature('AllDanceTimes');
 
   foreach ($Venues as $v) {
     if (!isset($VenueUse[$v])) continue;
@@ -263,9 +264,9 @@ function Create_Grid($condense=0,$Media='Dance') {
       } else if (!$ev) {
         // No action I think
       } else {
-        if ($ev['d'] > $Round) { // Blockout ahead and wrap this event
+        if ($AllTimes || $ev['d'] > $Round) { // Blockout ahead and wrap this event
           $grid[$v][$t]['d'] = $ev['d'];
-          $ForwardUse[$v] = $ev['d'] - $Round;
+          $ForwardUse[$v] = $ev['d'] - $Round; // Wrong
         }
         $grid[$v][$t]['e'] = $ev['e'];
         if (!empty($ev['n'])) $grid[$v][$t]['n'] = $ev['n'];
@@ -314,6 +315,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList;
   global $Earliest,$Latest,$SlotSize,$OffGrid;
 
+//var_dump($grid);
 //var_dump($Earliest,$Latest);
   $links = $condense && !$types && $Links;
 //var_dump($links, $condense, $types ,$Links);
@@ -356,6 +358,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
       $OtherLoc = '';
       foreach ($VenueList as $v) {
         $G = &$grid[$v][$t];
+        var_dump($G);
         if ($v > 0) { // Search oluse for free entry, mark as used for n slots - at end of time loop decrement any used
           if ($condense && $VenueInfo[$v]["Minor$DAY"]) {
             if ($evs[$G['e']]['BigEvent']) continue;
@@ -390,6 +393,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
         }
         $id = "G:$v:$t:$line"; // Note the ids will be meaningless in condensed mode, but as they will should not be used, so not a problem
         $class = 'DPGridDisp';
+
         $dev = '';
         if ($line == 0 && $G) $dev = 'data-e=' . (empty($G['e'])?0:$G['e']) . ':' . (empty($G['d'])?0:$G['d']);
         if (!$G || ($v<0 && !($G['S1'] || !$G['S2'] || $G['n']))) {
@@ -438,6 +442,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
             echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
           }
         } else if ($line == 0  && !empty($G['n'])) {
+//          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
           echo "$OtherLoc<td id=$id $DRAG $dev data-d='N' class=DPNamed>";
           if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
           if (!empty($G['n']) ) echo $G['n'];
@@ -447,6 +452,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           echo "$OtherLoc<td id=$id $DRAG $dev hidden class=$class>&nbsp;";
           if (isset($G['n'])) echo $G['n'];
         } else if (isset($G["S" . ($line+(isset($G['n'])?0:1))])) {
+//          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
           $si = $G["S" . ($line + (isset($G['n'])?0:1))];
           if (!isset($Sides[$si])) {
             $Sidessi = Get_Side($si);

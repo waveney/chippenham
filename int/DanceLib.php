@@ -290,8 +290,22 @@ function Get_SideYears($snum) {
   return $Save_SideYears[$snum];
 }
 
-function RecordPerfChanges(&$date,&$Save,$Up) {
+function RecordPerfChanges(&$now,&$Cur,$Up) {
+  global $PLANYEAR;
+  $Fields = ['Coming','Sat','Sun','Mon','YearState'];
 
+//var_dump("HERE");
+  foreach ($Fields as $f) if ($now[$f] != $Cur[$f]) {
+    $Rec = Gen_Get_Cond1('PerfChanges',"( SideId=" . $now['SideId'] . " AND Field='$f' )");
+    if (isset($Rec['id'])) {
+      $Rec['Changes'] = $now[$f];
+      Gen_Put('PerfChanges',$Rec);
+    } else {
+      $Rec = ['SideId'=>$now['SideId'], 'Year'=>$PLANYEAR, 'Changes'=>$now[$f], 'Field'=>$f ];
+      Gen_Put('PerfChanges',$Rec);
+    }
+    
+  }
 }
 
 function Put_SideYear(&$data,$Force=0) {
@@ -333,7 +347,7 @@ if ($data['YearState'] != 5) {
   if (!$fcnt) return 0;
   if ($Up) $rec .= " WHERE syId='" . $Save['syId'] . "'";
   
-  if (Feature('RecordPerfChanges')) RecordPerfChanges($date,$Save,$Up);
+  if (Feature('RecordPerfChanges')) RecordPerfChanges($data,$Save,$Up);
   
   $Save = $data;
 //var_dump($rec);
