@@ -343,8 +343,10 @@ A similar feature will appear eventually for music.<p>
 
       echo "<tr>" . fm_text('<b>Name</b>', $Event,'SN',1,($se>0?" class=FullD hidden":"") );
         echo "<td><b>Event Type</b>:" . fm_select($ETNames,$Event,'Type');
-        if ($se == 0) { echo "<td>No Sub Events"; }
-        elseif ($se < 0) { echo "<td><a href=EventList?se=$eid>Has Sub Events</a>"; }
+        if ($Event['BigEvent']) {
+          echo "<td><a href=BigEventProg?e=$eid>Big Event</a>";
+        } else if ($se == 0) { echo "<td>No Sub Events"; }
+        else if ($se < 0) { echo "<td><a href=EventList?se=$eid>Has Sub Events</a>"; }
         else { echo "<td><a href=EventList?se=$se>Is a Sub Event</a>"; };
         echo "<td" . ($se>0?" class=FullD hidden":"") . ">" .fm_checkbox('Needs Stewards',$Event,'NeedSteward');
 
