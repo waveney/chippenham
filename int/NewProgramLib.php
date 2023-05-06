@@ -358,7 +358,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
       $OtherLoc = '';
       foreach ($VenueList as $v) {
         $G = &$grid[$v][$t];
-        var_dump($G);
+//        var_dump($G);
         if ($v > 0) { // Search oluse for free entry, mark as used for n slots - at end of time loop decrement any used
           if ($condense && $VenueInfo[$v]["Minor$DAY"]) {
             if ($evs[$G['e']]['BigEvent']) continue;
