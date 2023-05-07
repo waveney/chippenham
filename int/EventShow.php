@@ -122,13 +122,13 @@ function Print_Participants($e,$when=0,$thresh=0) {
     foreach ($Others as $o) {
       switch ($o['Type']) {
         case 'Venue': 
-          $OtherVenues[] = $o; 
+          if ($o['Identifier']) $OtherVenues[] = $o; 
           break;
         case 'Act':
         case 'Perf':
         case 'Side':
         case 'Other':
-          $OtherPart[] = $o;
+          if ($o['Identifier']) $OtherPart[] = $o;
           break;
         case 'Note':
           $OtherNotes[count($OtherPart)] = $o['Notes'];

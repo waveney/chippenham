@@ -220,6 +220,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 //      if (!$O && !$found) continue;
       if ( !$found && $Ven['IsVirtual'] && in_array($e['Venue'],$VenList)) $found = 1; 
       foreach ($O as $i=>$thing) {
+        if ($thing['Identifier'] == 0) continue;
  //var_dump($thing);
         switch ($thing['Type']) {
           case 'Venue':

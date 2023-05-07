@@ -199,6 +199,7 @@ A similar feature will appear eventually for music.<p>
         $err = 0;
         if (!isset($Other)) $Other = Get_Other_Things_For($eid);
         if (!$err && $Other) foreach ($Other as $i=>$ov) {  // Start with venues only
+          if ($ov['Identifier'] == 0) continue;
           if ($ov['Type'] == 'Venue') {
             $id = $ov['BigEid'];
             if ($_POST["VEN$id"] != $ov['Identifier']) {
@@ -422,8 +423,8 @@ A similar feature will appear eventually for music.<p>
         if (!isset($Other)) $Other = Get_Other_Things_For($eid);
          if ($Other) {
           foreach ($Other as $i=>$ov) {
+            if (($id = $ov['Identifier']) == 0) continue;
             if ($ov['Type'] == 'Venue') {
-              $id = $ov['Identifier'];
                 echo "<td>" . fm_select2($Venues,$id,"VEN" . $ov['BigEid'] ,1);
               if ((($ovc++)&3) == 3) echo "\n<tr><td>";
             }

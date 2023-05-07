@@ -92,6 +92,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
         foreach ($Other as $i=>$ot) {
           if ($ot['Type'] == 'Side') {
             $s = $ot['Identifier'];
+            if ($s == 0) continue;
             $Events[$eid]['OtherPos'][$s] = $sidcount++;
             if (isset($Sides[$s])) {
               $dancing[$s][] = $eid;

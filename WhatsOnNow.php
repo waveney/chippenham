@@ -109,7 +109,7 @@
     if ($e['BigEvent']) {
       $Others = Get_Other_Things_For($eid);
       foreach ($Others as $i=>$o) {
-        if ($o['Type'] == 'Venue') {
+        if (($o['Type'] == 'Venue') && ($o['Identifier']>0) ) {
           echo ", " . ($Poster? $Vens[$o['Identifier']]['SN'] : Venue_Parents($Vens,$o['Identifier']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" .
                $Vens[$o['Identifier']]['SN'] . "</a>");
         }

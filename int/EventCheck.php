@@ -112,6 +112,7 @@ function EventCheck($checkid=0) {
         if ($Other) foreach($Other as $oi=>$oe) {// Big Events other venues against ordinary events
           if ($oe['Type'] == 'Venue') { 
             $cfv=$oe['Identifier'];
+            if ($cfv == 0) continue;
             foreach($evlist as $ci=>$ce) {
               if ($ce['Day'] == $ev['Day']) {
                 if ($ce['Venue'] == $cfv ) {
@@ -140,6 +141,7 @@ function EventCheck($checkid=0) {
             if (($chkstart >= $realstart && $chkstart <= $realend) || ($chkend >= $realstart && $chkend <= $realend)) { // Overlap now check o vens
               $COther = Get_Other_Things_For($fv['EventId']);
               foreach($COther as $icoi=>$coe) {
+                  if ($coe['Identifier'] == 0) continue;
                   if ($coe['Type'] == 'Venue') {
                   foreach($Other as $oi=>$oe) {
                     if ($oe['Type'] == 'Venue' && $coe['Identifier'] == $oe['Identifier']) { // Clash

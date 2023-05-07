@@ -52,6 +52,7 @@
 //      if (!$O && !$found) continue;
       if ( !$found && $Ven['IsVirtual'] && in_array($e['Venue'],$VenList)) $found = 1; 
       foreach ($O as $i=>$thing) {
+        if ($O['Identifier'] == 0) continue;
         switch ($thing['Type']) {
           case 'Venue':
             if (in_array($thing['Identifier'],$VenList)) $found = 1; 

@@ -105,7 +105,8 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
         $Others = Get_Other_Things_For($eid);
         $PerfC = 0;
         foreach ($Others as $i=>$o) {
-          if (empty($e['VenuePaper']) && ($o['Type'] == 'Venue')) echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
+          if (empty($e['VenuePaper']) && (($o['Type'] == 'Venue') && ($o['Identifier']>0) )) 
+            echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
           if ($o['Type'] == 'Perf') $PerfC++;
         }
       }

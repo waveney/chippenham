@@ -33,6 +33,8 @@
         case 'Side':
         case 'Act':
         case 'Other':
+          if ($id == 0) continue 2;
+          
           echo "<tr><td>" . ($Posn++) . "<td>" . SName($Sides[$id]);
           if ($Sides[$id]['Type']) echo " (" . trim($Sides[$id]['Type']) . ")";
           if ($t['Notes']) echo "<td>" . $t['Notes'];

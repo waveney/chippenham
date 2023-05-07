@@ -28,7 +28,7 @@
   $Sides = Select_Perf_Full();
 
   $things = Get_Other_Things_For($Eid);
-  foreach ($things as $t) if (preg_match('/Side|Act|Other|Perf/',$t['Type'])) $Order[$t['Identifier']] = $t['EventOrder'];
+  foreach ($things as $t) if ($t['Identifier'] > 0 && preg_match('/Side|Act|Other|Perf/',$t['Type'])) $Order[$t['Identifier']] = $t['EventOrder'];
 //  $Acts = Select_Act_Come(1);
 //  $Others = Select_Other_Come(1);
 

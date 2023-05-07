@@ -729,6 +729,7 @@ function Extended_Prog($type,$id,$all=0) {
             $Found=0;
             $Position=1;
             foreach ($Others as $O) {
+              if ($O['Identifier'] == 0) continue;
               switch ($O['Type']) {
               case 'Side':
               case 'Act':

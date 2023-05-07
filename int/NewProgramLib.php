@@ -118,6 +118,7 @@ function Grab_Data($day='',$Media='Dance') {
       $Other = Get_Other_Things_For($eid);
       $bes = $bev = array();
       foreach($Other as $i=>$o) {
+        if ($o['Identifier'] == 0) continue;
         if ($o['Type'] == 'Venue') $bev[] = $o['Identifier'];
         if ($o['Type'] == 'Side' || $o['Type'] == 'Perf' || $o['Type'] == 'Act' || $o['Type'] == 'Other' ) $bes[] = $o['Identifier'];
         if (!$ev['ExcludeCount']) if ($o['Type'] == 'Side') $SideCounts[$o['Identifier']]++;
@@ -244,6 +245,7 @@ function Create_Grid($condense=0,$Media='Dance') {
   $grid = array();
   $VenueList = array();
   $AllTimes = Feature('AllDanceTimes');
+  $ETime = 0;
 
   foreach ($Venues as $v) {
     if (!isset($VenueUse[$v])) continue;
@@ -267,6 +269,7 @@ function Create_Grid($condense=0,$Media='Dance') {
         if ($AllTimes || $ev['d'] > $Round) { // Blockout ahead and wrap this event
           $grid[$v][$t]['d'] = $ev['d'];
           $ForwardUse[$v] = $ev['d'] - $Round; // Wrong
+          $ETime = timeadd($t,$ev['d']);
         }
         $grid[$v][$t]['e'] = $ev['e'];
         if (!empty($ev['n'])) $grid[$v][$t]['n'] = $ev['n'];
@@ -502,8 +505,9 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
       if ($e['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
         foreach ($Others as $i=>$o) {
-          if ($o['Type'] == 'Venue') echo ", " . Venue_Parents($VenueInfo,$o['Identifier']) . ($links?"<a href=/int/VenueShow?v=" . $o['Identifier'] . ">":'') . 
-            $Vens[$o['Identifier']]['SN'] . ($links?"</a>":'');
+          if (($o['Type'] == 'Venue') && ($o['Identifier']>0)) 
+            echo ", " . Venue_Parents($VenueInfo,$o['Identifier']) . ($links?"<a href=/int/VenueShow?v=" . $o['Identifier'] . ">":'') . 
+                 $Vens[$o['Identifier']]['SN'] . ($links?"</a>":'');
         }
         echo " - " . ($links?"<a href=EventShow?e=" . $e['EventId'] . ">":'') . $e['SN'] . "</a> - " . $e['Description'];
         if (!$e['NoPart']) echo " with ". Get_Other_Participants($Others,0,($links?1:-1),15,1,'',$e);

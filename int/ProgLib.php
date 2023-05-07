@@ -568,7 +568,7 @@ function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='
   $ans = '';
   $pfx = '';
   foreach ($Others as $oi=>$o) {
-    if ($o['Type'] == 'Side' || $o['Type'] == 'Act' || $o['Type'] == 'Other' || $o['Type'] == 'OtherPerf' || $o['Type'] == 'Perf') {
+    if (($o['Identifier']> 0) && ($o['Type'] == 'Side' || $o['Type'] == 'Act' || $o['Type'] == 'Other' || $o['Type'] == 'OtherPerf' || $o['Type'] == 'Perf')) {
       $si = $o['Identifier'];  
       if (!isset($found[$si])) {
         $s = Get_Side($si);
@@ -765,6 +765,7 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
             $Found=0;
             $Position=1;
             foreach ($Others as $O) {
+              if ($O['Identifier'] == 0) continue;
               switch ($O['Type']) {
               case 'Side':
               case 'Act':
