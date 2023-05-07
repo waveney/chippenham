@@ -327,6 +327,10 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
     $DefLineLimit = (($Media == 'Dance')?2:1);
   }
 
+  $All_Times = Feature('AllDanceTimes');
+  $StartLine = 0;
+//  if ($condense && $All_Times) $StartLine = -1;
+  
   echo "<div class=GridWrapper$format><div class=GridContainer$format>";
   echo "<table border id=Grid><thead><tr><th id=DayId width=60 class=ProgDayHL>$DAY";
   $OtherInUse = array();
@@ -352,7 +356,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
       echo "<button class=botx onclick=UnhideARow($t) id=AddRow$t>+</button>";
     }
 
-    for ($line=0; $line < 4; $line++) {
+    for ($line=$StartLine; $line < 4; $line++) {
       $sl = "S" .($line+1);
       if ($line) echo "<tr>";
       $OtherLoc = '';
@@ -395,6 +399,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
         $class = 'DPGridDisp';
 
         $dev = '';
+        if ($line < 0) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
         if ($line == 0 && $G) $dev = 'data-e=' . (empty($G['e'])?0:$G['e']) . ':' . (empty($G['d'])?0:$G['d']);
         if (!$G || ($v<0 && !($G['S1'] || !$G['S2'] || $G['n']))) {
           if ($v > 0 && $condense==0) $class = "DPGridGrey";
@@ -409,7 +414,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
         } else if (!empty($G['h'])) {
           echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
-        } else if (!empty($G['d']) && $G['d'] > $Round) {
+        } else if ($All_Times || (!empty($G['d']) && $G['d'] > $Round)) {
           if ($line == 0) {
             $rows = intval(ceil($G['d']/$Round))*4;
             // Need to create a wrapped event - not editble here currently
@@ -471,7 +476,9 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           if ($links) echo "<a href=/int/ShowPerf?id=$si>";
           echo $txt;
           if ($links) echo "</a>";
-          if (!$evs[$G['e']]['ExcludeCount']) $SideCounts[$si]++;
+          if (!$evs[$G['e']]['ExcludeCount']) {
+            if (isset($SideCounts[$si])) $SideCounts[$si]++;
+          }
         } else {
           echo "$OtherLoc<td id=$id $DRAG $dev class=$class>&nbsp;";
         }
