@@ -256,19 +256,27 @@ function Create_Grid($condense=0,$Media='Dance') {
         $ev = 0;
       }
 
-      if (!empty($ForwardUse[$v])) {
+//      if (!empty($ForwardUse[$v])) {
+      if ($ETime) {  
         if ($ev) {
           // find original forward point and mark overlap
           foreach($Back_Times as $bt) if (($bt < $t) && !empty($grid[$v][$t]) && ($grid[$v][$t]['c'] > 1)) { $grid[$v][$t]['err'] = 1; break; };
         }
-        $ForwardUse[$v] = max(0,$ForwardUse[$v]-$Round);
-        $grid[$v][$t]['h'] = 1;
-      } else if (!$ev) {
+//        $ForwardUse[$v] = max(0,$ForwardUse[$v]-$Round);
+        if ($ETime > $t) {
+          $grid[$v][$t]['h'] = 1;
+          continue;
+        }
+         
+        $ETime = 0; 
+      }
+      
+      if (!$ev) {
         // No action I think
       } else {
         if ($AllTimes || $ev['d'] > $Round) { // Blockout ahead and wrap this event
           $grid[$v][$t]['d'] = $ev['d'];
-          $ForwardUse[$v] = $ev['d'] - $Round; // Wrong
+//          $ForwardUse[$v] = $ev['d'] - $Round; // Wrong
           $ETime = timeadd($t,$ev['d']);
         }
         $grid[$v][$t]['e'] = $ev['e'];

@@ -69,6 +69,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     dotail();
   }
   $Ven = Get_Venue($V);
+  if (!isset($Ven['Status'])) Error_Page('Venue Unknown');
 
   if ($Ven['PartVirt'] && !$Poster && $Together) {
     $V = $Ven['PartVirt'];
