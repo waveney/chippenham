@@ -492,7 +492,7 @@ Contract Signed - Enables listing to public.',
 function Default_SY($id=0) { 
   global $YEAR,$USERID;
   $numprocs = intval(Feature('ProcessDays'));
-  $ans = array('SatDance'=>4,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0);
+  $ans = array('SatDance'=>4,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0,'Coming'=>0);
   if ($id) $ans['SideId'] = $id;
   switch ($numprocs) {
   case 0:

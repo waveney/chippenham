@@ -5,12 +5,12 @@
   include_once("DanceLib.php");
   
   $id = 0;
-  if (isset($_GET['sidenum'])) {
-    $id = $_GET['sidenum'];
-  } else if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+  if (isset($_REQUEST['sidenum'])) {
+    $id = $_REQUEST['sidenum'];
+  } else if (isset($_REQUEST['id'])) {
+    $id = $_REQUEST['id'];
   } else {
-    echo "No Side Indicated";
+    echo "No Performer Indicated";
   }
   if (!is_numeric($id)) Error_page("Not a performer");
   
