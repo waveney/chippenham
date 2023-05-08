@@ -402,7 +402,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
             if ($OtherInUse[$v]) {
               continue;
             } else if ($G['S1'] || $G['S2'] || $G['n']) {
-              $rows = $G['d']?intval(ceil($G['d']/30))*4:4;
+              $rows = (isset($G['r'])?($G['r']+1):1)*4; //$G['d']?intval(ceil($G['d']/30))*4:4;
               $vv = $evs[$G['e']]['Venue']; 
               $OtherLoc = "<td id=XX data-d=X rowspan=$rows class=DPOvName>" ;
               if ($links) $OtherLoc .= "<a href=/int/VenueShow?v=$vv>"; 
@@ -434,7 +434,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
         } else if ($All_Times || (!empty($G['d']) && $G['d'] > $Round)) {
           if ($line == 0) {
-            $rows = (isset($G['r'])?$G['r']:1)*4; // intval(ceil($G['d']/$Round))*4; // WRONG
+            $rows = (isset($G['r'])?($G['r']+1):1)*4; // intval(ceil($G['d']/$Round))*4; // WRONG
             // Need to create a wrapped event - not editble here currently
             $cls = (empty($G['n'])?'':'class=DPNamed ');
             echo "$OtherLoc<td id=$id $WDRAG $dev $cls rowspan=$rows valign=top data-d=W>";
