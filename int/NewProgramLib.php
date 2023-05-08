@@ -245,10 +245,12 @@ function Create_Grid($condense=0,$Media='Dance') {
   $grid = array();
   $VenueList = array();
   $AllTimes = Feature('AllDanceTimes');
-  $ETime = 0;
 
   foreach ($Venues as $v) {
     if (!isset($VenueUse[$v])) continue;
+    $ETime = 0;
+    $STime = 0;
+    $RowSets = 0;
     foreach ($Times as $t) {
       if (isset($EV[$v][$t]['e'])) {
         $ev = &$EV[$v][$t];
@@ -265,10 +267,12 @@ function Create_Grid($condense=0,$Media='Dance') {
 //        $ForwardUse[$v] = max(0,$ForwardUse[$v]-$Round);
         if ($ETime > $t) {
           $grid[$v][$t]['h'] = 1;
+          $RowSets++;
           continue;
         }
-         
-        $ETime = 0; 
+        
+        if ($STime) $grid[$v][$STime]['r'] = $RowSets;
+        $ETime = $STime = $RowSets = 0; 
       }
       
       if (!$ev) {
@@ -278,6 +282,7 @@ function Create_Grid($condense=0,$Media='Dance') {
           $grid[$v][$t]['d'] = $ev['d'];
 //          $ForwardUse[$v] = $ev['d'] - $Round; // Wrong
           $ETime = timeadd($t,$ev['d']);
+          $STime = $t;
         }
         $grid[$v][$t]['e'] = $ev['e'];
         if (!empty($ev['n'])) $grid[$v][$t]['n'] = $ev['n'];
@@ -294,6 +299,8 @@ function Create_Grid($condense=0,$Media='Dance') {
         if ($s && !empty($Sides[$s]) && $Sides[$s]['Share'] == 2 && $things==1) $grid[$v][$t]['w'] = 1; // Set Wrap if no share
       }
     }
+    
+    if ($ETime && $STime) $grid[$v][$STime]['r'] = $RowSets;
   }
 
   foreach ($Venues as $v) if (isset($VenueUse[$v])) $VenueList[] = $v;
@@ -427,7 +434,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
         } else if ($All_Times || (!empty($G['d']) && $G['d'] > $Round)) {
           if ($line == 0) {
-            $rows = intval(ceil($G['d']/$Round))*4;
+            $rows = (isset($G['r'])?$G['r']:1)*4; // intval(ceil($G['d']/$Round))*4; // WRONG
             // Need to create a wrapped event - not editble here currently
             $cls = (empty($G['n'])?'':'class=DPNamed ');
             echo "$OtherLoc<td id=$id $WDRAG $dev $cls rowspan=$rows valign=top data-d=W>";
