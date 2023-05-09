@@ -43,7 +43,7 @@
         'Camping'=>'InfoCamping',
         'Parking'=>'InfoParking',
         'Travel'=>'InfoGettingHere',
-        'Mailing List'=>'InfoMailingList',
+//        'Mailing List'=>'InfoMailingList',
         'Contact Us'=>'contact',
         'Data Privacy'=>'InfoData',
         'Festival Software'=>'InfoSoftware',

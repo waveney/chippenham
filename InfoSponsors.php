@@ -45,7 +45,7 @@ of valuable potential customers.  We offer a range of sponsorship packages to su
   foreach ($Spons as $s) {
     echo "<div class=sponflexcont>\n";
     if ($s['Website']) echo weblinksimple($s['Website']);
-    if ($s['Image']) echo "<img src='" . $s['Image'] . "' class=miniing width=200>";
+    if ($s['Image']) echo "<img src='" . $s['Image'] . "' width=200>";
     echo "<div class=sponttl>" . $s['SN'] . "</div>";
     if ($s['Website']) echo "</a>";
     if ($s['Description']) echo "<p>" . $s['Description'];
