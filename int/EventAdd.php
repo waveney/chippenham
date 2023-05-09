@@ -307,6 +307,7 @@ A similar feature will appear eventually for music.<p>
       if (isset($eid) && $eid > 0) {
         echo "<td>Event Id:" . $eid . fm_hidden('EventId',$eid);
         Register_AutoUpdate('Event',$eid);
+        if (Access('SysAdmin')) echo fm_text0('Year',$Event,'Year');
       } else {
         echo fm_hidden('EventId',-1);
         if (!isset($_GET['COPY'])) $Event['Day'] = 1;
