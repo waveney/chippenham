@@ -11,6 +11,7 @@ var mtypready = 0;
 var docready = 0;
 var gmap;
 var DSrequest;
+var dfltloc;
 //var From = {lat: 50.800150, lng: -1.988000};
 //var From  = {lat: 51.45925, lng: -2.11694};
 var MapDataDate = 0;
@@ -43,7 +44,7 @@ function ShowDirect(MarkId) { // Open directions window from current loc (me) to
       dirDisp = new google.maps.DirectionsRenderer();
       dirDisp.setMap(map);
     }
-    var dfltloc = {lat: +$('#DirLat').val(), lng: +$('#DirLong').val()};
+
     DSrequest = {
       origin: (direct && me && me.position)?me.position:dfltloc,
       destination: markers[MarkId].position,
@@ -79,6 +80,7 @@ function initMap() {
   var MapZoom = +$('#MapZoom').val();
   MapFeatures = +$('#MapFeat').val();
   MapDataDate = +$('#MapDataDate').val();
+  dfltloc = {lat: +$('#DirLat').val(), lng: +$('#DirLong').val()};
   var Mapf = MapFeatures;
   var customStyled = [{
     featureType: "all",
@@ -87,7 +89,7 @@ function initMap() {
       { visibility: ((Mapf == 1)?"on":"off") }
     ]
   }];
-  var Center = ((MapLat == 0 && MapLong == 0)?Wimb:{lat: MapLat, lng: MapLong});
+  var Center = ((MapLat == 0 && MapLong == 0)?dfltloc:{lat: MapLat, lng: MapLong});
 
   gmap = map = new google.maps.Map(document.getElementById('map'), {
     center: Center,
