@@ -124,7 +124,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
           echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
         }
       } elseif ($e['NoPerfsPaper'] || $e['SN'] == $Event_Types[1]['Plural']) {
-        echo "<span style='font-size:14'>See the Dance Grid for details</span>";
+        echo "<span style='font-size:14'><br>See the Dance Grid for details</span>";
       } else {
         echo Get_Event_Participants($eid,0,-1,12);
       }
