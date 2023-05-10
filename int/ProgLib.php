@@ -306,9 +306,9 @@ function RecordEventChanges(&$now,&$Cur,$new) {
        
   if ($Check) {
     for($i=1;$i<5;$i++) {
-      if ($now["Side$i"] != $Cur["Side$i"]) {
-        if ($Cur["Side$i"]) RecordPerfEventChange($Cur["Side$i"]);
-        if ($now["Side$i"]) RecordPerfEventChange($now["Side$i"]);
+      if (!isset($Cur["Side$i"]) || $now["Side$i"] != $Cur["Side$i"]) {
+        if (!empty($Cur["Side$i"])) RecordPerfEventChange($Cur["Side$i"]);
+        if (!empty($now["Side$i"])) RecordPerfEventChange($now["Side$i"]);
       }
     }
   }
