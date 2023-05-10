@@ -282,7 +282,7 @@ function RecordPerfEventChange($id) {
 
 function RecordEventChanges(&$now,&$Cur,$new) {
   global $PLANYEAR;
-  $Fields = ['Start','End','Day','SN','Side1','Side2','Side3','Side4','Status'];
+  $Fields = ['Start','End','Day','SN','Side1','Side2','Side3','Side4','Type','Status'];
   $Check = 0;
   foreach ($Fields as $f) if ($now[$f] != $Cur[$f]) {
     $Check = 1;

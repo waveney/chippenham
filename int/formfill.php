@@ -227,13 +227,14 @@
     
   case 'EventSteward':
     $RandWho = $id;
-    if (preg_match('/(\w*):(\d*)/',$field,$mtch)?true:false) {
+    if (preg_match('/(\w*):(\d*):(.*)/',$field,$mtch)?true:false) {
       $Eid = $mtch[2];
       $Efld = $mtch[1];
-      $ES = Gen_Get_Cond1('EventSteward',"RandId=$id AND EventId=$Eid AND Year='$PLANYEAR'");
+      $SE = $mtch[3];
+      $ES = Gen_Get_Cond1('EventSteward',"RandId=$id AND EventId=$Eid AND SubEvent=$SE AND Year='$PLANYEAR'");
             
       if (!isset($ES['id'])) {
-        $ES = ['RandId'=>$id, 'EventId'=>$Eid, 'HowMany'=>0, 'HowWent'=>'','Name'=>'', 'Year'=>$PLANYEAR];
+        $ES = ['RandId'=>$id, 'EventId'=>$Eid, 'HowMany'=>0, 'HowWent'=>'','Name'=>'', 'SubEvent'=>$SE, 'Year'=>$PLANYEAR];
       }
       $ES[$Efld] = $Value;
       return Gen_Put('EventSteward',$ES);
