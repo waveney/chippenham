@@ -283,18 +283,25 @@ function RecordPerfEventChange($id) {
 function RecordEventChanges(&$now,&$Cur,$new) {
   global $PLANYEAR;
   $Fields = ['Start','End','Day','SN','Side1','Side2','Side3','Side4','Type','Status'];
-  $Check = 0;
-  foreach ($Fields as $f) if ($now[$f] != $Cur[$f]) {
-    $Check = 1;
-    $Rec = Gen_Get_Cond1('EventChanges',"( EventId=" . $now['EventId'] . " AND Field='$f' )");
-    if (isset($Rec['id'])) {
-      $Rec['Changes'] = $now[$f];
-      Gen_Put('EventChanges',$Rec);
-    } else {
-      $Rec = ['EventId'=>$now['EventId'], 'Year'=>$PLANYEAR, 'Changes'=>$now[$f], 'Field'=>$f ];
-      Gen_Put('EventChanges',$Rec);
+  
+  if (isset($Cur['EventId'])) {
+  
+    $Check = 0;
+    foreach ($Fields as $f) if ($now[$f] != $Cur[$f]) {
+      $Check = 1;
+      $Rec = Gen_Get_Cond1('EventChanges',"( EventId=" . $now['EventId'] . " AND Field='$f' )");
+      if (isset($Rec['id'])) {
+        $Rec['Changes'] = $now[$f];
+        Gen_Put('EventChanges',$Rec);
+      } else {
+        $Rec = ['EventId'=>$now['EventId'], 'Year'=>$PLANYEAR, 'Changes'=>$now[$f], 'Field'=>$f ];
+        Gen_Put('EventChanges',$Rec);
+      }
     }
-    
+  } else {
+    $Check = 1;  
+    $Rec = ['EventId'=>$now['EventId'], 'Year'=>$PLANYEAR, 'Changes'=>$now['SN'], 'Field'=>'New' ];
+    Gen_Put('EventChanges',$Rec);
   }
        
   if ($Check) {
@@ -311,8 +318,13 @@ function RecordEventChanges(&$now,&$Cur,$new) {
 function Put_Event(&$now,$new=0) {
   $e=$now['EventId'];
   $Cur = Get_Event($e,$new);
-  if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
-  Update_db('Events',$Cur,$now);
+  if (isset($Cur['EventId'])) {
+    if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
+    Update_db('Events',$Cur,$now);
+  } else {
+    Update_db('Events',$Cur,$now);  
+    if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
+  }
   Check_4Changes($Cur,$now);
 }
 

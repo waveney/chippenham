@@ -249,7 +249,8 @@ A similar feature will appear eventually for music.<p>
       $_POST['Year'] = $YEAR;
 //var_dump($_POST);
       $eid = Insert_db_post('Events',$Event,$proc); //
-      $empty = array();
+      $empty = [];
+      if (Feature('RecordEventChanges')) RecordEventChanges($Event,$empty,1);      
       Check_4Changes($empty,$Event);
     }
   } elseif (isset($_GET['COPY'])) {
