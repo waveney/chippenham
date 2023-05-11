@@ -498,6 +498,7 @@ function Replace_Help($Area='',$Right=0) {
   ['*URL:URL:Text*','URL (https:// is prepended, TEXT - To be displayed (NO SPACES - any _ will appear as spaces)','All'],
   ['*DANCEORG*','Sign of for dance messages','Dance'],
   ['*SENDER*','Name of sender - person clicking the email','All'],
+  ['*CONTRACT*','Attach Contract to the message','Performers'],
   ];
 
   echo "<span " . ($Right?' class=floatright':'') . " id=largeredsubmit onclick=($('.HelpDiv').toggle()) >Click to toggle Standard Replacements Help</span>";

@@ -8,7 +8,7 @@
   include_once("ViewLib.php");
   global $YEAR,$FESTSYS,$USERID,$USER, $Access_Type, $Event_Types;
     
-    
+// UNFINISHED CODE - DONT USE YET
     
     
   $Ven = Get_Venue($V);
