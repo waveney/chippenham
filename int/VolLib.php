@@ -966,7 +966,9 @@ function List_Team($Team) {
   if ($CatP & VOL_Money) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Money</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Mobility</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
-
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Child</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Youth</a>\n";
+  
   if ($CatP & VOL_Likes) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Likes</a>\n";
   if ($CatP & VOL_Dislikes) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Dislikes</a>\n";
   if ($CatP & VOL_Exp) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Experience</a>\n";
@@ -1001,6 +1003,8 @@ function List_Team($Team) {
     if ($CatP & VOL_Money) echo "<td>" . $yesno[$Vol['Money']];
     echo "<td>" . $Vol['Disabilities'];
     echo "<td>" . (empty($VY['Notes'])?'':$link . "Yes</a>");
+    echo "<td>" . $VY['Children'];
+    echo "<td>" . $VY['Youth'];
 
     if ($CatP & VOL_Likes) echo "<td>" . $VCY['Likes'] ;
     if ($CatP & VOL_Dislikes) echo "<td>" . $VCY['Dislikes'] ;
@@ -1038,7 +1042,9 @@ function List_Team_CSV($Team) {
   if ($CatP & VOL_Money) $heads[]= 'Money';
   $heads[]= 'Mobility';
   $heads[]= 'Notes';
-
+  $heads[]= 'Child';
+  $heads[]= 'Youth';
+  
   if ($CatP & VOL_Likes) $heads[]= 'Likes';
   if ($CatP & VOL_Dislikes) $heads[]= 'Dislikes';
   if ($CatP & VOL_Exp) $heads[]= 'Experience';
@@ -1071,6 +1077,8 @@ function List_Team_CSV($Team) {
     if ($CatP & VOL_Money) $csv[] = $yesno[$Vol['Money']];
     $csv[] =  $Vol['Disabilities'];
     $csv[] =  (empty($VY['Notes'])?'':"Yes");
+    $csv[] = $VY['Children'];
+    $csv[] = $VY['Youth'];
 
     if ($CatP & VOL_Likes) $csv[] =  $VCY['Likes'] ;
     if ($CatP & VOL_Dislikes) $csv[] = $VCY['Dislikes'] ;

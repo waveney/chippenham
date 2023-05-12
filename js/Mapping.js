@@ -109,7 +109,8 @@ function initMap() {
         if (mtch[3]) maxz=mtch[3]; 
       }
       if ((MapFeatures == 2) && (data.id < 1000000)) return;
-      if ((MapFeatures != 11) && (data.id > 2000000)) return;
+      if ((MapFeatures != 11) && (data.id > 2000000)) return; // Food & drink
+      if ((MapFeatures == 11) && (data.id < 2000000)) return;
       if ((MapFeatures == 3) && (!data.usage || !data.usage.match(/^D/))) return;
       if ((MapFeatures == 4) && (data.icon != 3) && (data.icon != 5) && (data.icon != 10)) return; // Car Parks
       if ((MapFeatures == 5) && (!data.usage || !data.usage.match(/^.M/))) return;
