@@ -940,6 +940,90 @@ function List_Vols() {
   dotail();
 }
 
+function List_Team($Team) {
+  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus;
+  $Cat = $VolCats[$Team];
+  $CatP = $Cat['Props'];
+  $SplitWhen = explode(',', $Cat['Listofwhen']);
+  
+  dostaffhead("Details for:" . $Cat['Name']);
+
+  $VolMgr = Access('Committee','Volunteers');
+
+  $coln = 0;
+// var_dump($VolCats);  
+  echo "<form method=post>";
+  echo "<div class=tablecont><table id=indextable border class=altcolours>\n";
+  echo "<thead><tr>";
+
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";
+//  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
+  if ($CatP & VOL_Money) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Money</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Mobility</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
+
+  if ($CatP & VOL_Likes) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Likes</a>\n";
+  if ($CatP & VOL_Dislikes) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Dislikes</a>\n";
+  if ($CatP & VOL_Exp) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Experience</a>\n";
+  if ($CatP & VOL_Other1) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>" . $Cat['OtherQ1'] . "</a>\n";
+  if ($CatP & VOL_Other2) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>" . $Cat['OtherQ2'] . "</a>\n";
+  if ($CatP & VOL_Other3) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>" . $Cat['OtherQ3'] . "</a>\n";
+  if ($CatP & VOL_Other4) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>" . $Cat['OtherQ4'] . "</a>\n";
+
+  foreach ($SplitWhen as $W) {
+    if ($W == 'Before') {
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Months Before</a>\n";
+    } else if ($W == 'Week') {
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Week Before</a>\n";
+    } else {
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>" . FestDate($W,'s') . "</a>\n";
+    }
+  }
+  echo "</thead><tbody>";
+
+  $Vols = Gen_Get_Cond('Volunteers',"Status=0 ORDER BY SN");
+  foreach ($Vols as $Vol) {
+    $vid = $Vol['id'];
+    $VY = Get_Vol_Year($vid);
+    $VCY = Get_Vol_Cat_Year($vid,$Team,$YEAR);
+    if ( $CatStatus[$VCY['Status']] != 'Confirmed') continue;
+
+    $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$vid>";
+    echo "<tr><td>$vid<td>$link" . $Vol['SN'] . "</a>";
+    echo "<td>" . $Vol['Email'];
+    echo "<td>" . $Vol['Phone'];
+
+    if ($CatP & VOL_Money) echo "<td>" . $yesno[$Vol['Money']];
+    echo "<td>" . $Vol['Disabilities'];
+    echo "<td>" . (empty($VY['Notes'])?'':'Yes');
+
+    if ($CatP & VOL_Likes) echo "<td>" . $VCY['Likes'] ;
+    if ($CatP & VOL_Dislikes) echo "<td>" . $VCY['Dislikes'] ;
+    if ($CatP & VOL_Exp) echo "<td>" . $VCY['Experience'] ;
+    if ($CatP & VOL_Other1) echo "<td>" . $VCY['Other1'] ;
+    if ($CatP & VOL_Other2) echo "<td>" . $VCY['Other2'] ;
+    if ($CatP & VOL_Other3) echo "<td>" . $VCY['Other3'] ;
+    if ($CatP & VOL_Other4) echo "<td>" . $VCY['Other4'] ;
+
+    foreach ($SplitWhen as $W) {
+      if ($W == 'Before') {
+        echo "<td>" . $VY['AvailBefore'];
+      } else if ($W == 'Week') {
+        echo "<td>" . $VY['AvailWeek'];
+      } else {
+        echo "<td>" . $VY["Avail" . ($W <0 ? "_" . (-$W) : $W)];
+      }
+    }
+    echo "\n";
+  }
+  echo "</table></div>";  
+  dotail();
+}
+
+
 
 function Email_Form_Only($Vol,$mess='',$xtra='') {
   $coln = 0;
@@ -1226,6 +1310,17 @@ function VolAction($Action,$csv=0) {
         dotail();
       }
     $M($Vol);
+    
+  case 'TeamList':
+    $Team=$_REQUEST['Cat'];
+    List_Team($Team);
+    break;
+    
+  case 'TeamListCSV':
+    $Team=$_REQUEST['Cat'];
+    List_Team_CSV($Team);
+    break;
+
 
   }  
   if (Access('Staff')) List_Vols();

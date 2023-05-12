@@ -10,15 +10,18 @@
 
   dostaffhead("Staff Pages", ["/js/jquery.typeahead.min.js", "/css/jquery.typeahead.min.css", "/js/Staff.js"]);
 
-  global $YEAR,$PLANYEAR,$YEARDATA,$Event_Types;
+  global $YEAR,$PLANYEAR,$YEARDATA,$Event_Types,$VolCats;
   include_once("ProgLib.php");
   include_once("TradeLib.php");
+  include_once("VolLib.php");
   $Years = Get_Years();
   $Days = array('All','Sat','Sun','Mon');
   $Heads = [];
   
   $ETypes = [];
   foreach($Event_Types as $eti => $ET) $ETypes[$eti] = $ET['Plural'];
+  $VolTeams = [''];
+  foreach($VolCats as $V) $VolTeams[] = $V['Name'];
 
   function StaffTable($Section,$Heading,$cols=1) {
     global $Heads; 
@@ -376,7 +379,7 @@
 //    if (Access('SysAdmin')) $txt .= "<li><a href=ConvertEvents>Convert Old Format Events to New Format Events</a>\n";
     $txt .= "<li><form method=Post action=/WhatsOnNow class=staffform>";
       $txt .= "<input type=submit name=a value='Whats On At ' id=staffformid>" . 
-                fm_hidden('Y',$YEAR) . fm_text0('',$_POST,'AtTime') .' on ' . fm_text0('',$_POST,'AtDate');
+                fm_hidden('Y',$YEAR) . fm_text0('',$_POST,'AtTime') .' on ' . fm_text0('',$_POST,'AtDate') . "</form>\n";
     if (Access('SysAdmin')) {
       $txt .= "<li class=smalltext><a href=CopyEvent2This?Y=$YEAR>Create/Copy Last years music Events to this year</a>";    
       $txt .= "<li class=smalltext><a href=SubEvWoParents?Y=$YEAR>Find Subevents Without Parents</a>";    
@@ -408,6 +411,10 @@
     $txt .= "<li><a href=Volunteers?A=New>Volunteering Application Form</a>\n";
     $txt .= "<li><a href=Volunteers?A=List>List Volunteers</a>\n";
     $txt .= "<li><a href=VolCats>Volunteer Categories</a>\n";
+    $txt .= "<li><form method=Post action=Volunteers?ACTION=TeamList class=staffform>" .
+                fm_hidden('Y',$YEAR) .
+                "<input type=submit name=a value='Volunteer Details for ' id=staffformid>" . 
+                fm_select($VolTeams,0,'Cat',0," onchange=this.form.submit()") . "</form>\n";
     
     if (Access('Staff','Photos')) {
       $txt .= "<p><li><a href=PhotoUpload>Photo Upload</a>";

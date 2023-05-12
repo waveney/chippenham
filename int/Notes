@@ -15,30 +15,8 @@
 30) Large docs in the Store
 36) Documents - Replace
 37) Volunteers - link to Vol handbook
-38) 
+38) Steward Team Spreadsheet
 
-
-
-
-
-
-
-
-Volunteers
-
-1.  Volunteers - camping tweaks
-2.  Task force extra question
-3.  Confirmation/Rejection - per team
-4.  Warning if Crew camp & not confirmed crew/bar staff
-
-
-On stage at
-
-Tim
-1.  Staging/dev builds
-2.  Database skeema, updating automatically on new builds
-3.  Left/Right Articles
-4.
 
 Sponsor
 1. Venues
@@ -50,34 +28,10 @@ SponsoredBy
 +ve id = Sponsor
 -1 Many sponsors - use sponsor/year records to find multiple - order by Importance
 
-Changes after printing
 Ceilidh calling styles
 Venues
 Event displays
 QR Codes
-
-dxhpqt59pyhs
-28*5, 27
-
-https://chippfolk.co.uk/images/Venues/78.jpg?1681713476636
-https://photos.google.com/u/1/share/AF1QipMFERHYkzkgV02yPUI7pdDMwzdJ9l-scjtGxn1RmuuQ71_sks6ZP8IUWqdrEe41Yw/photo/AF1QipOilzrTo8iJ3nIn5GLr58Q_d6MK1N-nPeKPpvhd?key=N2JDbV9HWThqdTA0Z1czYkljSTZFemxzU2R2cXdn
-
-          if (!empty($G['n'])) echo $G['n'];
-        } else if (!empty($G["S" . ($line+($G['n']?0:1))])) {
-          $si = $G["S" . ($line + ($G['n']?0:1))];
-//          if (!empty($G['n'])) echo $G['n'];
-//        } else if (!empty($G["S" . ($line+(empty($G['n'])?0:1))])) {
-//          $si = $G["S" . ($line + (empty($G['n'])?0:1))];
-
-Line 455 NPL
-
-Why I dropped:
-
-I had done nothing in three sessions, but one roll of dice for something that was not even used.
-
-I have no empathy with either the setting or the totally unrealistic characters.
-
-I was very sceptical that this would be for me when we started, but was persuded to give it a go.  I am happy with Fantasy or real world / hard science, Scion is in the uncomfortable spot.
 
 
 

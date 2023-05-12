@@ -23,9 +23,10 @@
   */
 
   $Poster = 0;
-  
-  if (isset($_REQUEST['AtDate'])) {
+
 //  var_dump($_REQUEST);
+  if (isset($_REQUEST['AtDate'])) {
+
     $date = Date_BestGuess($_REQUEST['AtDate']);
     $time = Time_BestGuess($_REQUEST['AtTime']);
 //    var_dump($date,$time);
