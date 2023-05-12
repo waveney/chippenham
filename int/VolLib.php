@@ -998,7 +998,7 @@ function List_Team($Team) {
 
     if ($CatP & VOL_Money) echo "<td>" . $yesno[$Vol['Money']];
     echo "<td>" . $Vol['Disabilities'];
-    echo "<td>" . (empty($VY['Notes'])?'':$link . $Vol['SN'] . "</a>");
+    echo "<td>" . (empty($VY['Notes'])?'':$link . "Yes</a>");
 
     if ($CatP & VOL_Likes) echo "<td>" . $VCY['Likes'] ;
     if ($CatP & VOL_Dislikes) echo "<td>" . $VCY['Dislikes'] ;
@@ -1015,7 +1015,7 @@ function List_Team($Team) {
         echo "<td>" . $VY['AvailWeek'];
       } else {
         $av = "Avail" . ($W <0 ? "_" . (-$W) : $W);
-        echo "<td>" . (isset($VY[$av])?$$VY[$av]:'');
+        echo "<td>" . (isset($VY[$av])?$VY[$av]:'');
       }
     }
     echo "\n";
