@@ -948,6 +948,8 @@ function List_Team($Team) {
   
   dostaffhead("Details for:" . $Cat['Name']);
 
+  echo "<h2><a href=Volunteers?ACTION=TeamListCSV&Cat=$Team&F=CSV>Output as CSV</a></h2>";
+  
   $VolMgr = Access('Committee','Volunteers');
 
   $coln = 0;
@@ -1024,7 +1026,75 @@ function List_Team($Team) {
   dotail();
 }
 
+function List_Team_CSV($Team) {
+  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus;
 
+  $Cat = $VolCats[$Team];
+  $CatP = $Cat['Props'];
+  $SplitWhen = explode(',', $Cat['Listofwhen']);
+   
+  $output = fopen('php://output', 'w');
+  $heads = ['Id','Name','Phone'];
+  if ($CatP & VOL_Money) $heads[]= 'Money';
+  $heads[]= 'Mobility';
+  $heads[]= 'Notes';
+
+  if ($CatP & VOL_Likes) $heads[]= 'Likes';
+  if ($CatP & VOL_Dislikes) $heads[]= 'Dislikes';
+  if ($CatP & VOL_Exp) $heads[]= 'Experience';
+  if ($CatP & VOL_Other1) $heads[]= $Cat['OtherQ1'];
+  if ($CatP & VOL_Other2) $heads[]= $Cat['OtherQ2'];
+  if ($CatP & VOL_Other3) $heads[]= $Cat['OtherQ3'];
+  if ($CatP & VOL_Other4) $heads[]= $Cat['OtherQ4'];
+
+  foreach ($SplitWhen as $W) {
+    if ($W == 'Before') {
+      $heads[]= 'Months Before';
+    } else if ($W == 'Week') {
+      $heads[]= 'Week Before';
+    } else {
+      $heads[]= FestDate($W,'s');
+    }
+  }
+
+  fputcsv($output, $heads,',','"');
+
+  $Vols = Gen_Get_Cond('Volunteers',"Status=0 ORDER BY SN");
+  foreach ($Vols as $Vol) {
+    $vid = $Vol['id'];
+    $VY = Get_Vol_Year($vid);
+    $VCY = Get_Vol_Cat_Year($vid,$Team,$YEAR);
+    if ( $CatStatus[$VCY['Status']] != 'Confirmed') continue;
+    
+    $csv = [$vid,$Vol['SN'],$Vol['Phone']];
+
+    if ($CatP & VOL_Money) $csv[] = $yesno[$Vol['Money']];
+    $csv[] =  $Vol['Disabilities'];
+    $csv[] =  (empty($VY['Notes'])?'':"Yes");
+
+    if ($CatP & VOL_Likes) $csv[] =  $VCY['Likes'] ;
+    if ($CatP & VOL_Dislikes) $csv[] = $VCY['Dislikes'] ;
+    if ($CatP & VOL_Exp) $csv[] = $VCY['Experience'] ;
+    if ($CatP & VOL_Other1) $csv[] = $VCY['Other1'] ;
+    if ($CatP & VOL_Other2) $csv[] = $VCY['Other2'] ;
+    if ($CatP & VOL_Other3) $csv[] = $VCY['Other3'] ;
+    if ($CatP & VOL_Other4) $csv[] = $VCY['Other4'] ;
+
+    foreach ($SplitWhen as $W) {
+      if ($W == 'Before') {
+        $csv[] = $VY['AvailBefore'];
+      } else if ($W == 'Week') {
+        $csv[] = $VY['AvailWeek'];
+      } else {
+        $av = "Avail" . ($W <0 ? "_" . (-$W) : $W);
+        $csv[] = (isset($VY[$av])?$VY[$av]:'');
+      }
+    }
+    fputcsv($output,$csv);    
+  }
+  fclose($output);
+  exit;
+}
 
 function Email_Form_Only($Vol,$mess='',$xtra='') {
   $coln = 0;
