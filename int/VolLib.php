@@ -1014,7 +1014,8 @@ function List_Team($Team) {
       } else if ($W == 'Week') {
         echo "<td>" . $VY['AvailWeek'];
       } else {
-        echo "<td>" . $VY["Avail" . ($W <0 ? "_" . (-$W) : $W)];
+        $av = "Avail" . ($W <0 ? "_" . (-$W) : $W);
+        echo "<td>" . (isset($VY[$av])?$$VY[$av]:'');
       }
     }
     echo "\n";
