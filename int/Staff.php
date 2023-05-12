@@ -20,8 +20,8 @@
   
   $ETypes = [];
   foreach($Event_Types as $eti => $ET) $ETypes[$eti] = $ET['Plural'];
-  $VolTeams = [''];
-  foreach($VolCats as $V) $VolTeams[] = $V['Name'];
+  $VolTeams = [0=>''];
+  foreach($VolCats as $V) $VolTeams[$V['id']] = $V['Name'];
 
   function StaffTable($Section,$Heading,$cols=1) {
     global $Heads; 

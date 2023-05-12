@@ -941,7 +941,7 @@ function List_Vols() {
 }
 
 function List_Team($Team) {
-  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus;
+  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus,$yesno;
   $Cat = $VolCats[$Team];
   $CatP = $Cat['Props'];
   $SplitWhen = explode(',', $Cat['Listofwhen']);
@@ -953,12 +953,12 @@ function List_Team($Team) {
   $coln = 0;
 // var_dump($VolCats);  
   echo "<form method=post>";
-  echo "<div class=tablecont><table id=indextable border class=altcolours>\n";
+  echo "<div class=tablecont><table id=indextable border class='altcolours TinyText'>\n";
   echo "<thead><tr>";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
+//  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
   if ($CatP & VOL_Money) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Money</a>\n";
@@ -993,12 +993,12 @@ function List_Team($Team) {
 
     $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$vid>";
     echo "<tr><td>$vid<td>$link" . $Vol['SN'] . "</a>";
-    echo "<td>" . $Vol['Email'];
+//    echo "<td>" . $Vol['Email'];
     echo "<td>" . $Vol['Phone'];
 
     if ($CatP & VOL_Money) echo "<td>" . $yesno[$Vol['Money']];
     echo "<td>" . $Vol['Disabilities'];
-    echo "<td>" . (empty($VY['Notes'])?'':'Yes');
+    echo "<td>" . (empty($VY['Notes'])?'':$link . $Vol['SN'] . "</a>");
 
     if ($CatP & VOL_Likes) echo "<td>" . $VCY['Likes'] ;
     if ($CatP & VOL_Dislikes) echo "<td>" . $VCY['Dislikes'] ;

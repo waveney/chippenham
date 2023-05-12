@@ -1701,3 +1701,7 @@ ol ol > li:before {
   font-weight:bold;
 }
 
+.TinyText td {
+  font-size:8pt;
+}
+
