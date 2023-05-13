@@ -100,6 +100,10 @@
     if (isset($User['LastAccess'])) echo "<tr><td>Last Login:<td>" . ($User['LastAccess']? date('d/m/y H:i:s',$User['LastAccess']):'Never');
     if (Access('SysAdmin')) {
       echo "<tr>" . fm_text('Change Sent',$User,'ChangeSent',1,'','readonly');
+      if ($User['AccessKey'] == '') {
+        $User['AccessKey'] = rand_string(40);
+        Put_User($User);
+      }
       echo "<tr>" . fm_text('Access Key',$User,'AccessKey',1,'','readonly'); 
       if (!empty($CONF['testing'])) {
         echo "<td><a href=Login.php?ACTION=ActAs&i=$unum&k=" . $User['AccessKey'] . ">Use</a>";
@@ -119,6 +123,7 @@
 
     echo "<input type=submit name=ACTION value='Remove Access' " .
                   "onClick=\"javascript:return confirm('are you sure you want to remove this user?');\"></form> "; 
+
     echo "<h2><a href=Welcome?U=$unum>Send Welcome Email with New Password Link</a> , \n";
   } else { 
     echo "<Center><input type=Submit name=Create value='Create'></center>\n";
