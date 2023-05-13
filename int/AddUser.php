@@ -50,6 +50,11 @@
         echo "<h2 class=ERR>NO login GIVEN</h2>\n";
         $proc = 0;
       }
+      $Exist = Gen_Get_Cond('FestUsers',"Login='" . $_POST['Login'] ."'",'UserId');
+      if ($proc && !empty($Exist)) {
+        echo "<h2 class=ERR>Username not unique</h2>\n";
+        $proc = 0;      
+      }
       $unum = Insert_db_post('FestUsers',$User,$proc);
     }
   } elseif (isset($_GET['usernum']) && $_GET['usernum']) {
@@ -100,13 +105,15 @@
     if (isset($User['LastAccess'])) echo "<tr><td>Last Login:<td>" . ($User['LastAccess']? date('d/m/y H:i:s',$User['LastAccess']):'Never');
     if (Access('SysAdmin')) {
       echo "<tr>" . fm_text('Change Sent',$User,'ChangeSent',1,'','readonly');
-      if ($User['AccessKey'] == '') {
-        $User['AccessKey'] = rand_string(40);
-        Put_User($User);
-      }
-      echo "<tr>" . fm_text('Access Key',$User,'AccessKey',1,'','readonly'); 
-      if (!empty($CONF['testing'])) {
-        echo "<td><a href=Login.php?ACTION=ActAs&i=$unum&k=" . $User['AccessKey'] . ">Use</a>";
+      if ($unum > 0) { 
+        if (!isset($User['AccessKey']) || $User['AccessKey'] == '') {
+          $User['AccessKey'] = rand_string(40);
+          Put_User($User);
+        }
+        echo "<tr>" . fm_text('Access Key',$User,'AccessKey',1,'','readonly'); 
+        if (!empty($CONF['testing'])) {
+          echo "<td><a href=Login.php?ACTION=ActAs&i=$unum&k=" . $User['AccessKey'] . ">Use</a>";
+        }
       }
       echo "<tr>" . fm_textarea('Prefs',$User,'Prefs',6,2);
       echo "<tr><td>Log Use" . fm_checkbox('',$User,'LogUse');
