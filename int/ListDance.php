@@ -9,8 +9,15 @@
   include_once("DateTime.php");
   
   echo "<h2>List Dance Sides $YEAR</h2>\n";
+  $Sel = $_REQUEST['SEL'];
+  
+  $col5 = $col6 = $col7 = $col7a = $col8 = $col9 = $col9a = $col9b = $col9c = $col10 = '';
+  $Totals['Fri'] = $Totals['Sat'] = $Totals['Sun'] = $Totals['Mon'] = 0;
+  $Totals['FriP'] = $Totals['SatP'] = $Totals['SunP'] = $Totals['MonP'] = 0;
+
   echo fm_hidden('Year',$YEAR);
-  if (Access('Staff','Dance')) echo "<div class=floatright style=text-align:right><div class=Bespoke>" .
+  if ($Sel && $Sel !='TinList') {
+    if (Access('Staff','Dance')) echo "<div class=floatright style=text-align:right><div class=Bespoke>" .
        "Sending:<button class=BigSwitchSelected id=BespokeM onclick=Add_Bespoke()>Generic Messages</button><br>" .  
        "Switch to: <button class=BigSwitch id=GenericM onclick=Add_Bespoke()>Bespoke Messages</button></div>" .
        "<div class=Bespoke hidden id=BespokeMess>" .
@@ -18,38 +25,40 @@
        "Switch to: <button class=BigSwitch id=BespokeM1 onclick=Remove_Bespoke()>Generic Messages</button></div>" .
        "</div>";
        
-  if (Access('SysAdmin')) {
-    echo "Debug: <span id=DebugPane></span><p>"; 
-  } else {
-    echo "<div hidden>Debug: <span id=DebugPane></span><p></div>"; 
-  }
+    if (Access('SysAdmin')) {
+      echo "Debug: <span id=DebugPane></span><p>"; 
+    } else {
+      echo "<div hidden>Debug: <span id=DebugPane></span><p></div>"; 
+    }
+   echo "Click on column header to sort by column.  Click on Side's name for more detail and programme when available,<p>\n";
 
-  $col5 = $col6 = $col7 = $col7 = $col8 = $col9 = $col9a = $col9b = $col9c = $col10 = '';
-  echo "Click on column header to sort by column.  Click on Side's name for more detail and programme when available,<p>\n";
+//  echo "Days to fest: $Days2Festival<p>";
+
+   echo "If you click on the email link, press control-V afterwards to paste the standard link into message.<p>";
+ } else {
+//   echo "<h2><a href=ListDance?SEL=TinList&F=CSV>List as a CSV</a></h2>\n";
+ }
 
   $DanceState = $Event_Types[1]['State'];
   $Days2Festival = Days2Festival();
-  $Totals['Fri'] = $Totals['Sat'] = $Totals['Sun'] = $Totals['Mon'] = 0;
-  $Totals['FriP'] = $Totals['SatP'] = $Totals['SunP'] = $Totals['MonP'] = 0;
-  
-//  echo "Days to fest: $Days2Festival<p>";
 
-  echo "If you click on the email link, press control-V afterwards to paste the standard link into message.<p>";
-  $col9 = $col8 = $col7 = $col7a = '';
   $Types = Get_Dance_Types(1);
   foreach ($Types as $i=>$ty) $Colour[strtolower($ty['SN'])] = $ty['Colour'];
   
   $link = 'AddPerf';
   $LastYear = $YEARDATA['PrevFest'];
 
-  if ($_GET['SEL'] == 'ALL') {
+
+  switch ($Sel) {
+  case 'ALL':
     $SideQ = $db->query("SELECT s.*, y.*, s.SideId FROM Sides AS s LEFT JOIN SideYear as y ON s.SideId=y.SideId AND y.Year='$YEAR' WHERE s.IsASide=1 ORDER BY SN");
     $col5 = "Invite";
     $col6 = "Coming";
     $col7 = "Wshp";
     if (Feature('DanceComp')) $col9 = "Dance Comp";
-  } else if ($_GET['SEL'] == 'INV') {
-
+    break;
+    
+  case 'INV':
     $flds = "s.*, ly.Invite, ly.Coming, y.Invite, y.Invited, y.Coming";
     $SideQ = $db->query("SELECT $flds FROM Sides AS s LEFT JOIN SideYear as y ON s.SideId=y.SideId AND y.Year='$PLANYEAR' " .
                         "LEFT JOIN SideYear as ly ON s.SideId=ly.SideId AND ly.Year='$LastYear' WHERE s.IsASide=1 AND s.SideStatus=0 ORDER BY SN");
@@ -58,7 +67,9 @@
     $col7 = "Invite $PLANYEAR";
     $col8 = "Invited $PLANYEAR";
     $col9 = "Coming $PLANYEAR";
-  } else if ($_GET['SEL'] == 'Coming') {
+    break;
+
+  case 'Coming':       
     echo "In the Missing Col: A=Address, D=Days, I=Insurance, M=Mobile, P=Performers Nos<br>\n";
     echo "A <b>P</b> in the Notes Col, indicates the performer numbers have changed<p>\n";
   
@@ -78,8 +89,19 @@
     $col9c = "Messages";
     if (Access('Staff','Dance')) $col10 = "Proforma Emails";
     $Comp = $stot = $Seen = 0;
-  } else { // general public list
-    $flds = "s.*, y.Sat, y.Sun";
+    break;
+
+  case 'TinList':       
+    $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, SideYear as y WHERE s.IsASide=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND y.Coming=" . 
+                $Coming_Type['Y'] . " ORDER BY SN");
+    $col5 = "Fri";
+    $col6 = "Sat";
+    $col7 = "Sun";
+    $col7a = "Mon";
+    break;
+
+  default:
+    $flds = "s.*, y.Sat, y.Sun, y.Mon";
     $SideQ = $db->query("SELECT $flds FROM Sides AS s, SideYear as y WHERE s.IsASide=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND y.Coming=" . 
                 $Coming_Type['Y'] . " ORDER BY SN");
     $col5 = "Fri";
@@ -97,7 +119,7 @@
     if ($col10) echo "<th><input type=checkbox name=SelectAll id=SelectAll onchange=ToolSelectAll(event)>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";
-    if ($_GET['SEL']) {
+    if ($Sel && $Sel !='TinList') {
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contact</a>\n";
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
@@ -146,7 +168,7 @@
           echo "<td>" . $fetch['Type'];
         }
       }
-      if ($_GET['SEL']) {
+      if ($Sel && $Sel !='TinList') {
         echo "<td>" . $fetch['Contact'];
         echo "<td>";
           if ($fetch['Email']) {
@@ -306,14 +328,16 @@
 //        echo "<td>" . ($fetch["SentEmail$i"]?"Y":"");
 //      }
     }
-    if ($Totals['Sat']) {
-      echo "<tr><td><td>Totals:<td><td><td><td><td>" . 
+    if ($Sel && $Sel !='TinList') {
+      if ($Totals['Sat']) {
+        echo "<tr><td><td>Totals:<td><td><td><td><td>" . 
            $Totals['Fri'] . ($Totals['FriP']? " (+ " . $Totals['FriP'] . ")":'') . "<td>" .
            $Totals['Sat'] . ($Totals['SatP']? " (+ " . $Totals['SatP'] . ")":'') . "<td>" .          
            $Totals['Sun'] . ($Totals['SunP']? " (+ " . $Totals['SunP'] . ")":'') . "<td>" .            
            $Totals['Mon'] . ($Totals['MonP']? " (+ " . $Totals['MonP'] . ")":'') . "<td>" .            
 
            "<td><td><td><td><td>";
+      }
     }
     echo "</tbody></table></div>\n";
     

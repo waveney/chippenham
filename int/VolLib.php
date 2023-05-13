@@ -1090,8 +1090,8 @@ function List_Team_CSV($Team) {
     if ($CatP & VOL_Money) $csv[] = $yesno[$Vol['Money']];
     $csv[] =  $Vol['Disabilities'];
     $csv[] =  (empty($VY['Notes'])?'':"Yes");
-    $csv[] = $VY['Children'];
-    $csv[] = $VY['Youth'];
+    $csv[] = isset($VY['Children'])?$VY['Children']:'';
+    $csv[] = isset($VY['Youth'])?$VY['Youth']:'';
 
     if ($CatP & VOL_Likes) $csv[] =  $VCY['Likes'] ;
     if ($CatP & VOL_Dislikes) $csv[] = $VCY['Dislikes'] ;
