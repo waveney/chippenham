@@ -119,7 +119,7 @@
 
     echo "<tr><td class=FullD>" . $CS['Name'] . "<td class=FullD hidden><b>Totals:</b>";
     foreach ($CampTypes as $CT) echo "<td>" . (isset($Total[$Csi][$CT['id']])?$Total[$Csi][$CT['id']]:0);
-            
+    
   }
   echo "</table>";
   

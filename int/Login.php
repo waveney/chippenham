@@ -41,7 +41,23 @@ function Logon(&$use=0) {
     Login("$user no longer has access");
   }
   return "User not known";
+}
 
+function ActAs() {
+  global $CONF,$CALYEAR,$USER,$USERID;
+  $user = $_REQUEST['i'];
+  $ans = Get_User($user);
+  if (!empty($CONF['Testing'])) Error_Page('Only on non live systems');
+  if ($_REQUEST['k'] != $ans['AccessKey']) Error_Page('Invalid key');
+
+//      $ans['Yale'] = rand_string(40); Don't chaange when acting as
+      setcookie('FEST2',$ans['Yale'],mktime(0,0,0,1,1,$CALYEAR+1),'/' );
+      $_COOKIE['FEST2'] = $ans['Yale'];
+      Put_User($ans);
+      $USER=$ans;
+      $USERID = $user;
+      include_once ("Staff.php"); // no return wanted
+      exit;
 }
 
 function Forgot() {
@@ -197,6 +213,9 @@ function NewPasswd() {
       Login(Set_Password($USERID));
     case 'Lost your password' :
       Login(Forgot());
+    case 'ActAs' :
+      ActAs();
+    
   }
   echo "Should not get here  $act ...";
 ?>

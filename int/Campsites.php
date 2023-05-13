@@ -42,7 +42,7 @@ function ListSites() {
 }
 
 function Show_Site(&$Site,$Act='UPDATE') {
-  echo "Properties: 1=In use, 2=Restricted Use <br>";
+  echo "Properties: 1=In use, 2=Restricted Use, 3=Use from text <br>";
 
   echo "<table border>";
   if (isset($Site['id'])) {
