@@ -830,6 +830,12 @@ function SanitiseAll($Rules) {
   }
 }
 
+// Count numbers !=0 in the text
+function NumbersOf($Text) {
+  if (empty($Text)) return 0;
+  return preg_match_all('/([1-9]\d*?)/',$Text,$matches);
+}
+
 /* TODO
 --Documents
 --Insurance

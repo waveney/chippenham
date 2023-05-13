@@ -820,6 +820,8 @@ function List_Vols() {
       $ShowCols[$Cat['id']] = $Cat['Colour'];
     }
   }
+  
+  $Ch = $Ad = $AdC = $Yth = $YthC = 0;
 
   foreach ($VolCats as &$Cat) $Cat['Total'] = 0;
   $VolMgr = Access('Committee','Volunteers');
@@ -893,6 +895,17 @@ function List_Vols() {
       }
     }
 
+//var_dump($VY);
+//  $Ch = $Ad = $AdC = $Yth = $YthC = 0;
+    if (!empty($VY['Children'])) $Ch +=  NumbersOf($VY['Children']);
+    if (!empty($VY['CampNeed'])) {
+      $AdC++;
+      if (!empty($VY['Youth'])) $YthC += NumbersOf($VY['Youth']);
+    } else {
+      $Ad++;
+      if (!empty($VY['Youth'])) $Yth += NumbersOf($VY['Youth']);    
+    }
+
 //    var_dump($VY);
     $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$id>";
     echo "<tr class='altcolours $VClass " . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || ($VY['Status'] == 4))?" FullD' hidden" : "'" ) . ">";
@@ -928,7 +941,7 @@ function List_Vols() {
     }
   }
 
-  echo "<tr><td><td>Total confirmed<td><td><td>";  
+  echo "<tr><td><td>Ad:$Ad Yth:$Yth Ch: $Ch<td>Ad+C:$AdC Yth+C:$YthC<td>Total confirmed<td>";  
     foreach ($VolCats as &$Cat) if ($Cat['Props'] & VOL_USE) echo "<td>" . $Cat['Total'];
   
   
