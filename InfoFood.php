@@ -14,7 +14,7 @@
   echo "<div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div>";
   echo "</div><div id=map  style='min-height:400px; max-height:400px;'></div></div>";
 
-Init_Map(-1,11,18,11);
+Init_Map(1,78,18,11); // Center on the Angel
 
 // </div></div><div id=Blob4>
 
