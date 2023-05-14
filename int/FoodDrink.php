@@ -35,7 +35,7 @@ function List_All() {
   if ($food) foreach($food as $f) {
     $i = $f['id'];
     echo "<tr><td>$i<td><a href=FoodDrink?ACTION=Edit&i=$i>" . $f['SN'] . "</a><td>" . $f['Year'] . 
-         "<td>" . ($f['Website']? "<a href=" . weblink($f['Website']) . ">" . $f['Website'] . "</a>" : "") ;
+         "<td>" . ($f['Website']? weblink($f['Website']) : "") ;
     echo "<td>" . $f['Phone'] . "<td>" . $f['Description'] . "<td>" . ($f['Vegetarian']?'Y':'') . "<td>" . ($f['Vegan']?'Y':'') . "<td>" . $f['Importance'];
     echo "\n";
   }
@@ -89,7 +89,9 @@ function Edit_Food($i,$e=1) {
 //  include_once("TradeLib.php");
 
   echo "<div class='content'><h2>Manage Food and Drink</h2>\n";
-  
+
+//var_dump($_REQUEST);
+
   if (isset($_REQUEST['ACTION'])) {
     switch ($_REQUEST['ACTION']) {
       case 'Edit':
@@ -105,7 +107,7 @@ function Edit_Food($i,$e=1) {
         break;
       case 'Update Map':
         Update_MapPoints();
-        Edit_Food($_REQUEST['i']);        
+        Edit_Food($_REQUEST['AutoRef']);        
       default:
         break;
     }

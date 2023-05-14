@@ -85,7 +85,7 @@ function Update_MapPoints() {
 
   $res = Gen_Get_Cond('FoodAndDrink',"Year=$PLANYEAR");
   foreach ($res as $mp) {
-    $data[] = array('id'=>(2000000+$mp['id']), 'name'=>$mp['Name'], 'lat'=>$mp['Lat'], 'long'=>$mp['Lng'],
+    $data[] = array('id'=>(2000000+$mp['id']), 'name'=>$mp['SN'], 'lat'=>$mp['Lat'], 'long'=>$mp['Lng'],
         'imp'=>$mp['MapImp'],'icon'=>$mp['Type'],'atxt'=>$mp['Description'],'direct'=>1,'link'=>$mp['Website']);
   }
 
