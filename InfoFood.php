@@ -12,9 +12,9 @@
 <div id=Blob1><div id=BlobMap> */
   echo "<div id=MapWrap><div id=DirPaneWrap>";
   echo "<div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div>";
-  echo "</div><div id=map  style='min-height:300px; max-height:400px;'></div></div>";
+  echo "</div><div id=map  style='min-height:400px; max-height:400px;'></div></div>";
 
-Init_Map(-1,11,16,11);
+Init_Map(-1,11,18,11);
 
 // </div></div><div id=Blob4>
 
