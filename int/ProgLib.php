@@ -282,7 +282,7 @@ function RecordPerfEventChange($id) {
 
 function RecordEventChanges(&$now,&$Cur,$new) {
   global $PLANYEAR;
-  $Fields = ['Start','End','Day','SN','Side1','Side2','Side3','Side4','Type','Status'];
+  $Fields = ['Start','SlotEnd','End','Day','SN','Side1','Side2','Side3','Side4','Type','Status'];
   
   if (isset($Cur['EventId'])) {
   
