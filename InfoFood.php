@@ -14,7 +14,12 @@
   echo "<div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div>";
   echo "</div><div id=map  style='min-height:400px; max-height:400px;'></div></div>";
 
-Init_Map(0,78,18,11); // Center on the Angel
+$Center = Feature('FoodCenter',0);
+if ($Center) {
+  Init_Map(0,$Center,18,11); // Center on the Angel
+} else {
+  Init_Map(-1,0,18,11); // Center on the Default Loc
+}
 
 // </div></div><div id=Blob4>
 

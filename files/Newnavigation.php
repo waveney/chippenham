@@ -18,7 +18,7 @@
 
 // text=>link or text=>[submenu] (recuresive)
 // 1st char 0f text * - not selectable, ! Icon, ? Only Dance, # Not Dance, = Get Tickets
-// 1st char of link ! - external
+// 1st char of link ! - external, ~ Only after Program freeze
   $Menus = [
     'Public'=> [
       '<Home'=>'',
@@ -29,6 +29,7 @@
         'Family and Community'=>'LineUp?T=Family',
         'Ceilidh and Dances'=>'LineUp?T=Ceilidh',
         'Story and Spoken Word'=>'LineUp?T=Other',
+        '_Lineup changes since programme printed'=>'PerfChanges',
 //        'Traders'=>'int/TradeShow',
 
         ],
@@ -37,6 +38,7 @@
         'By Time'=>'WhatsOnWhen',
         'Now'=>'WhatsOnNow',
         '@'=>0, //Special
+        '~Event changes since programme printed'=>'EventChanges',
         ],
       'Information'=>[
         'Festival Map'=>'Map',
@@ -98,7 +100,7 @@ global $MainBar,$HoverBar,$HoverBar2;
 $MainBar = $HoverBar = $HoverBar2 = '';
 
 function Show_Bar(&$Bar,$level=0,$Pval=1) { 
-  global $USERID,$host,$PerfTypes,$MainBar,$HoverBar,$HoverBar2,$YEARDATA,$Event_Types;
+  global $USERID,$host,$PerfTypes,$MainBar,$HoverBar,$HoverBar2,$YEARDATA,$Event_Types,$YEAR;
   $host= "https://" . $_SERVER['HTTP_HOST'];
 //  echo "<ul class=MenuLevel$level>";
   $P=$Pval*100;
@@ -174,7 +176,20 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         $Bar[$text] = $link;
         continue 2;
         break;
-      
+        
+      case '~' : // Only if Event Changes recorded, move to end
+        $text = substr($text,1);
+        if (Feature('RecordEventChanges') !=2 ) continue 2;
+        if (Gen_Get_Cond1('EventChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
+        continue 2;
+                
+      case '_' : // Only if Perf Changes recorded, move to end
+        $text = substr($text,1);
+        if (!Feature('RecordPerfChanges') !=2) continue 2;
+        if (Gen_Get_Cond1('PerfChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
+        continue 2;
+        break;
+                
       default:
     }
     if (is_array($link)) {
