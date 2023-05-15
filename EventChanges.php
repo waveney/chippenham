@@ -69,7 +69,7 @@
       }
     }
     echo "<td>";
-    $Chtxts = [];
+    $Chtxt = [];
      
     foreach ($e['Changes'] as $Ch) {
       switch ($Ch['Field']) {

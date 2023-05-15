@@ -131,6 +131,13 @@ function &Part_Come_All() {
   return $Coming;  
 }
 
+function Get_SideAndYear($snum) {
+  global $db,$YEAR;
+  $res = $db->query("SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=$snum AND s.SideId=y.SideId AND y.Year='$YEAR'") ;
+  if ($res) return $res->fetch_assoc();
+  return 0;  
+}
+
 function Show_Side($snum,$Message='',$price=0) {
   include_once("ProgLib.php");
   global $YEAR, $Coming_Type,$db;
