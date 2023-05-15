@@ -17,6 +17,8 @@
     dotail();
   } 
   
+  $TotA = $TotY = $TotC = 0;
+  
   $coln = 1; // Start at 1 for select col
   echo "<div class=tablecont><table id=indextable border width=100% style='min-width:1400px'>\n";
   echo "<thead><tr>";
@@ -30,13 +32,17 @@
   echo "</thead><tbody>";
 
   while ($fetch = $SideQ->fetch_assoc()) {
-    echo "<tr><td>" . $fetch['SideId'];
+    echo "\n<tr><td>" . $fetch['SideId'];
     echo "<td><a href=AddPerf?id=" . $fetch['SideId'] . "&Y=$YEAR>" . (empty($fetch['SN'])?'Nameless':$fetch['SN']) . "</a>";
     echo "<td>" . $fetch['Contact'];
     echo "<td>" . $fetch['FreePerf'];
     echo "<td>" . $fetch['FreeYouth'];
     echo "<td>" . $fetch['FreeChild'];
+    $TotA += $fetch['FreePerf'];
+    $TotY += $fetch['FreeYouth'];
+    $TotC += $fetch['FreeChild'];
   }
+  echo "<tr><td><td>TOTALS<td><td>$TotA<td>$TotY<td>$TotC\n";
   echo "</table></div>";
   dotail();
 ?>

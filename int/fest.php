@@ -72,7 +72,7 @@ function Check_Login() {
       $USERID = $USER['UserId'];
       $db->query("UPDATE FestUsers SET LastAccess='" . time() . "' WHERE UserId=$USERID" );
 // Track suspicious things
-      if (($USER['LogUse']) && (file_exists("LogFiles"))) {
+      if (Feature('LogAll') || (($USER['LogUse']) && (file_exists("LogFiles")))) {
         $logf = fopen("LogFiles/U$USERID.txt",'a+');
         if ($logf) {
           fwrite($logf,date('d/m H:j:s '));
@@ -81,6 +81,7 @@ function Check_Login() {
           if ($_COOKIE) fwrite($logf,json_encode($_COOKIE));
           if ($_FILES) fwrite($logf,json_encode($_FILES));
           fwrite($logf,"\n\n");
+          fclose($logf);
         }
       }
     }

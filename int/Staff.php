@@ -266,7 +266,7 @@
     if (Access('Staff','OtherPerf')) {
       $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
     }
-    if (Access('SysAdmin')) {
+    if (Access('Staff','Finance')) {
       $txt .= "<p><li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR>List All Performer Tickets Wanted</a>\n";
     }
 
