@@ -21,6 +21,12 @@
   $LastPerf = 0;
 
   dohead("Lineup changes since the programme went to print",[],1);
+  
+  if (!$PChanges) {
+    echo "<h2>No sigificant changes in performers have been recorded</h2>";
+    dotail();
+  }
+  
   echo "Click on the performers name to find out what they are now doing and when.<p>\n";
   
   foreach ($PChanges as $PC) {

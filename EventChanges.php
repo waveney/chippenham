@@ -21,6 +21,11 @@
   $LastEvent = 0;
 
   dohead("Events changes since the programme went to print",[],1);
+
+  if (!$EChanges) {
+    echo "<h2>No sigificant changes in events have been recorded</h2>";
+    dotail();
+  }
   
   foreach ($EChanges as $EC) {
     if ($EC['EventId'] == $LastEvent) {
