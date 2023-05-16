@@ -17,7 +17,10 @@
     dotail();
   } 
   
-  $TotA = $TotY = $TotC = 0;
+  $TotA = $TotY = $TotC = $AC = $YC = 0;
+      $CampSites = Gen_Get_All('Campsites');
+      $CampTypes = Gen_Get_All('Camptypes');
+  $CampTot = [];
   
   $coln = 1; // Start at 1 for select col
   echo "<div class=tablecont><table id=indextable border width=100% style='min-width:1400px'>\n";
@@ -29,6 +32,19 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Adults</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Youth</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Child</a>\n";
+
+  foreach ($CampSites as $CSi => $CS) {
+    if (($CS['Props'] & 1) ==0) continue;
+    if (0 && ($CS['Props'] & 2)) {
+        echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>" . $CS['Name'] . "</a>\n";
+    } else {
+      foreach($CampTypes as $CTi => $CT) {
+        echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>" . $CS['Name'] . " - " . $CT['Name'] . "</a>\n";
+        $CampTot[$CSi][$CTi] = 0;
+      }
+    }
+  }
+
   echo "</thead><tbody>";
 
   while ($fetch = $SideQ->fetch_assoc()) {
@@ -41,8 +57,50 @@
     $TotA += $fetch['FreePerf'];
     $TotY += $fetch['FreeYouth'];
     $TotC += $fetch['FreeChild'];
+
+    $syid = $fetch['syId'] ?? -1;
+    $CampUse = Gen_Get_Cond('CampUse',"SideYearId=$syid");
+    $CampU = $Camp = [];
+    foreach ($CampUse as $CU) {
+      $CampU[$CU['CampSite']][$CU['CampType']] = $CU['Number'];
+//      $Camp[$CU['CampSite']] = 1;
+    }
+ 
+    if ($CampU) {
+      $AC += $fetch['FreePerf'];
+      $YC += $fetch['FreeYouth'];
+
+      foreach ($CampSites as $CSi => $CS) {
+        if (($CS['Props'] & 1) ==0) continue;
+        if (0 && ( $CS['Props'] & 2)) {
+          echo "<td>" . ($CampU[$CSi][$CTi] ?? 0);
+        } else {
+          foreach($CampTypes as $CTi => $CT) {
+            echo "<td>" . ($CampU[$CSi][$CTi] ?? 0);
+            $CampTot[$CSi][$CTi] += ($CampU[$CSi][$CTi] ?? 0);
+          }
+        }
+      }
+    } else {
+      foreach ($CampSites as $CS) {
+        if (($CS['Props'] & 1) ==0) continue;
+        foreach($CampTypes as $CT) echo "<td>";
+      }
+    }
   }
-  echo "<tr><td><td>TOTALS<td><td>$TotA<td>$TotY<td>$TotC\n";
+  echo "<tr><td><td>TOTALS<br>Camping<td><td>$TotA<br>$AC<td>$TotY<br>$YC<td>$TotC\n";
+
+  foreach ($CampSites as $CSi => $CS) {
+    if (($CS['Props'] & 1) ==0) continue;
+    if (0 && ($CS['Props'] & 2)) {
+        echo "<td>";
+    } else {
+      foreach($CampTypes as $CTi => $CT) {
+        echo "<td>" . $CampTot[$CSi][$CTi];
+      }
+    }
+  }
+
   echo "</table></div>";
   dotail();
 ?>

@@ -20,7 +20,7 @@
   $Events = [];
   $LastEvent = 0;
 
-  dohead("Events changes since the programme went to print",[],1);
+  dohead("Event changes since the programme went to print",[],1);
 
   if (!$EChanges) {
     echo "<h2>No sigificant changes in events have been recorded</h2>";
@@ -44,8 +44,7 @@
 
   function cmp($a,$b) {
     if ($a['Day'] != $b['Day']) return ($a['Day'] < $b['Day']) ? -1 : 1;
-    if ($a['Start'] != $b['Start']) return ($a['Start'] < $b['Start']) ? -1 : 1;
-    return 0;
+    return ($a['Start'] <=> $b['Start']);
   }
   
   uasort($Events, 'cmp');
@@ -100,7 +99,7 @@
         break;
       case 'Status' :
         if ($e['Status'] == 0) {
-          $Chtxt[4] = '?';
+          $Chtxt[4] = 'Re-booked';
         } else {
           $Chtxt[4] = 'Cancelled';
         }

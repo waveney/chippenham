@@ -329,7 +329,7 @@ function Test_Dump() { // far far from complete
   ? = special
 */
 
-function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dance') {
+function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dance',) {
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList;
   global $Earliest,$Latest,$SlotSize,$OffGrid;
 

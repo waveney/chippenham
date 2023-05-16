@@ -45,13 +45,12 @@
   }
 
   function cmp($a,$b) {
-    if ($a['SN'] != $b['SN']) return ($a['SN'] < $b['SN']) ? -1 : 1;
-    return 0;
+    return ($a['SN'] <=> $b['SN']);
   }
   
   uasort($Perfs, 'cmp');
   
-  echo "<table border style='min-width:1200'><td>Name<td>Changes\n";
+  echo "<table border style='min-width:1200'><td>Performer<td>Changes\n";
   foreach ($Perfs as $snum=>$p) {
     
     echo "<tr><td><a href=/int/ShowPerf?id=$snum&Y=$YEAR>" . $p['SN'] . "</a><td>";
