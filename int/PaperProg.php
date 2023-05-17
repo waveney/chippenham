@@ -58,7 +58,7 @@
       if (!$Photo) $Photo = '/images/icons/user2.png';
       echo "<td class=Pic$Pair rowspan=2><img src=$Photo class=PL$Imp>";
       if ($Pair == 1) echo "<tr>";
-      echo "<td class=Desc$Pair ><span class=PName$Imp>" . $perf['SN'] . "</span> <span PDesc$Imp>" . $perf['Description'] . "</span>";
+      echo "<td class=Desc$Pair ><span class=PName$Imp>" . $perf['SN'] . "</span> <span class=PDesc$Imp>" . $perf['Description'] . "</span>";
 
 //      echo "<div class=PPPicP$Pair><img src=$Photo class=PPPic$Imp></div>";
 //      echo "<div class=PPDescP$Pair><div class=PPName$Imp>" . $perf['SN'] . "</div><div PPDesc$Imp>" . $perf['Description'] . "</div></div>";

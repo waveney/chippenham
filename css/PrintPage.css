@@ -32,39 +32,39 @@ body {
 }
 
 .Pic0 {
-  height:120;
-  width:159;
-  max-width:159;
+  height:138;
+  width:177;
+  max-width:177;
   border-style:solid none solid solid;
   background:AliceBlue;
 }
 
 .Pic1 {
-  height:120;
-  width:159;
-  max-width:159;
+  height:138;
+  width:177;
+  max-width:177;
   border-style:solid solid solid none;
   right:1;
   background:Linen;
 }
 
 .PL0, .PL1, .PL2 {
-  max-width:158;
-  max-height:118;
+  max-width:175;
+  max-height:188;
 }
 
 .Desc0 {
-  height:60;
-  width:464;
-  max-width:464;
+  height:69;
+  width:450;
+  max-width:450;
   border-style:solid solid solid none;
   background:AliceBlue;
 }
 
 .Desc1 {
-  height:60;
-  width:464;
-  max-width:464;
+  height:69;
+  width:450;
+  max-width:450;
   border-style:solid none solid solid;
   margin:0;
   background:Linen;
@@ -72,21 +72,21 @@ body {
 
 .PName0 {
   font-weight:bold;
-  font-size:12pt;
+  font-size:14pt;
 }
 
 .PName1 {
   font-weight:bold;
-  font-size:14pt;
+  font-size:16pt;
 }
 
 .PName2 {
   font-weight:bold;
-  font-size:16pt;
+  font-size:18pt;
 }
 
 .PDesc0, .PDesc1, .PDesc2 {
-  font-size:10pt;
+  font-size:13.3pt;
 }
 
 .DayHead {
