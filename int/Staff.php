@@ -416,7 +416,10 @@
                 fm_hidden('Y',$YEAR) .
                 "<input type=submit name=a value='Volunteer Details for ' id=staffformid>" . 
                 fm_select($VolTeams,0,'Cat',0," onchange=this.form.submit()") . "</form>\n";
-    
+    if (Access('SysAdmin')) {
+      $txt .= "<li><a href=Volunteers?A=CompAdd>Add Festival team and Complimentary tickets</a>\n";
+      $txt .= "<li><a href=Volunteers?A=CompList>List Festival team and Complimentary tickets</a>\n";
+    }   
     if (Access('Staff','Photos')) {
       $txt .= "<p><li><a href=PhotoUpload>Photo Upload</a>";
       $txt .= "<li><a href=PhotoManage>Photo Manage</a>";

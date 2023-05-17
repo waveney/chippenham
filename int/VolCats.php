@@ -12,7 +12,7 @@
 function Show_Cat($Cat,$Act='UPDATE') {
   echo "Properties: 1=In use, 2=Likes, 4=Dislikes, 8=Need Over 21, 10=Upload, 20=Experience, 40=Need Money, 80=Need DBS, " .
        " 100=OtherQ1, 200=OtherQ2, 400=OtherQ3, 800=OtherQ4, " .
-       " 1000=LongQ1, 2000=LongQ2, 4000=LongQ3, 8000=LongQ4, 10000=Special Camp<br>";
+       " 1000=LongQ1, 2000=LongQ2, 4000=LongQ3, 8000=LongQ4, 10000=Special Camp, 20000=Don't list<br>";
   echo "For List of When: 'Before' - long time before, 'Week' - week before, 0=Friday of festival, -1 = day before, 1 next day etc.  upto -4 and +11<p>\n";
 
   echo "<table border>";
