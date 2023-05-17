@@ -90,6 +90,22 @@ case 'Z':
   echo "<td style='background-color:" . $Book_Colours[$State] . "' id=BookState$id >" . $Book_States[$State];
   break;
   
+case 'PC':
+  Set_User();
+  global $USER,$USERID;
+  $Sidey = Get_SideYear($id);
+  if (empty($Sidey['TicketsCollected'])) {
+    $Sidey['TicketsCollected'] = time();
+    $Sidey['CollectedBy'] = $USERID;
+    Put_SideYear($Sidey);
+    echo "Collected " . date("D M j G:i:s",$Sidey['TicketsCollected']) . " from " . ($USER['SN'] ?? 'Unknown');
+  } else { // error message to be presented
+    $User = Get_User($Sidey['CollectedBy']);
+    echo "<span class=Err>ERROR - already Collected " . date("D M j G:i:s",$Sidey['TicketsCollected']) . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
+  }
+  
+  exit;
+    
 default:
   $Side = Get_Side($id);
   $Side[$_GET['F']]=$_GET['V'];

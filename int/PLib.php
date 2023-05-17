@@ -686,6 +686,12 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             echo "<tr class=NotCSide><td class=NotCSide>Free Tickets:" . fm_number1('Adults',$Sidey,'FreePerf','class=NotCSide') . 
                  fm_number1('Youth (10-16)',$Sidey,'FreeYouth','class=NotCSide') .
                  fm_number1('Child (under 10)',$Sidey,'FreeChild','class=NotCSide');
+            if (Access('Staff')) {
+              if ($Sidey['TicketsCollected']) {
+                $User = Get_User($Sidey['CollectedBy']);
+                echo fm_text1("Tickets Collected", $Sidey,'TicketsCollected') . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
+              }
+            }
           }
           break;
       }   

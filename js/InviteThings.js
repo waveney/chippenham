@@ -106,3 +106,10 @@ $(document).ready(function() {
   Add_Bespoke();
 } );
 
+function TicketsCollected(sid,c=1) { // c is for later changes
+debugger;
+  if (c) {
+    $("#Collect" + sid).load("setfields.php", "I=" + sid + "&O=PC");
+  }
+}
+

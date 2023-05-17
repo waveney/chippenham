@@ -266,9 +266,6 @@
     if (Access('Staff','OtherPerf')) {
       $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
     }
-    if (Access('Staff','Finance')) {
-      $txt .= "<p><li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR>List All Performer Tickets Wanted</a>\n";
-    }
 
     $txt .= "<p>";
     $txt .= "<li><a href=PaperProg?ALPHA=1>Lineups for Printed Program</a> (Even if not public)";    
@@ -357,7 +354,7 @@
                 "</form> \n";
 
     if (Access('Staff','Events')) $txt .= "<li><a href=EventTypes>Event Types</a>\n";
-    if (Access('SysAdmin')) $txt .= "<li><a href=TicketEvents?Y=$YEAR>List Ticketed Events</a>\n";
+
     $txt .= "<li><a href=StewList?Y=$YEAR>List Stewarding Events</a>\n";
     $txt .= "<li><a href=EventSummary?Y=$YEAR>Event Summary</a>\n";
     $txt .= "<li><form method=Post action=PAShow class=staffform>";
@@ -403,6 +400,20 @@
     if (Access('SysAdmin')) $txt .= "<li><a href=FoodDrink>Food and Drink</a>\n";    
     $txt .= "</ul>\n";
   }
+
+// *********************** Tickets *****************************************************************
+  if ($x = StaffTable('Events','Tickets')) {
+    $txt .= $x;
+    $txt .= "<ul>\n";
+    $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR>List All Performer Tickets Wanted</a>\n";
+    $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR&COL=1>Record Performer Ticket Collection</a><p>\n";    
+
+//    $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR&COL=1>Record Volunteer Ticket Collection</a><p>\n";     
+
+    if (Access('SysAdmin')) $txt .= "<li><a href=TicketEvents?Y=$YEAR>List Ticketed Events</a>\n"; 
+    $txt .= "</ul>\n";
+  }
+
 
 // *********************** Misc *****************************************************************
   if ($x = StaffTable('Misc','Misc')) {
