@@ -45,6 +45,12 @@
         'Camping'=>'InfoCamping',
         'Parking'=>'InfoParking',
         'Travel'=>'InfoGettingHere',
+        'Food & Drink'=>'InfoFood',
+/*        'FAQs, Rules and Policies' => [
+          'FAQs' => 'Info?D=FAQ',
+          'Camping Rules - Westmead' => 'Info?D=Westmead',
+          'Camping Rules - Monkton Park' => 'Info?D=Monkton',
+          ],*/
 //        'Mailing List'=>'InfoMailingList',
         'Contact Us'=>'contact',
         'Data Privacy'=>'InfoData',

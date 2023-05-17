@@ -22,6 +22,7 @@ CREATE TABLE `VolYear` (
   `Year` text NOT NULL,
   `Notes` text NOT NULL,
   `Status` int NOT NULL,
+  `Adults` int NOT NULL DEFAULT '1',
   `Children` text NOT NULL,
   `Youth` text NOT NULL,
   `CampNeed` int NOT NULL,
@@ -29,5 +30,7 @@ CREATE TABLE `VolYear` (
   `SubmitDate` int NOT NULL,
   `LastUpdate` int NOT NULL,
   `CampText` text NOT NULL,
+  `TicketsCollected` int NOT NULL,
+  `CollectedBy` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;

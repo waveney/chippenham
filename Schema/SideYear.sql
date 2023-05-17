@@ -96,6 +96,8 @@ CREATE TABLE `SideYear` (
   `NoEvents` tinyint NOT NULL,
   `PerfNumChange` tinyint NOT NULL,
   `ContractAnyway` tinyint NOT NULL,
+  `TicketsCollected` int NOT NULL,
+  `CollectedBy` int NOT NULL,
   PRIMARY KEY (`syId`),
   UNIQUE KEY `syId` (`syId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
