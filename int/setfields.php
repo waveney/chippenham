@@ -98,14 +98,21 @@ case 'PC':
     $Sidey['TicketsCollected'] = time();
     $Sidey['CollectedBy'] = $USERID;
     Put_SideYear($Sidey);
-    echo "Collected " . date("D M j G:i:s",$Sidey['TicketsCollected']) . " from " . ($USER['SN'] ?? 'Unknown');
+    echo "Collected " . date("D M j G:i:s",$Sidey['TicketsCollected']) . " from " . ($USER['SN'] ?? 'Unknown') .
+         " <button id=Oops$id type=button onclick=TicketsCollected($id,0)>Oops - undo that</button>";
   } else { // error message to be presented
     $User = Get_User($Sidey['CollectedBy']);
     echo "<span class=Err>ERROR - already Collected " . date("D M j G:i:s",$Sidey['TicketsCollected']) . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
   }
-  
   exit;
     
+case 'NC':
+  $Sidey = Get_SideYear($id);
+  $Sidey['TicketsCollected'] = 0;
+  Put_SideYear($Sidey);
+  echo "<button type=button class=FakeButton onclick='TicketsCollected($id)'>Collect</button>";
+  exit;
+
 default:
   $Side = Get_Side($id);
   $Side[$_GET['F']]=$_GET['V'];

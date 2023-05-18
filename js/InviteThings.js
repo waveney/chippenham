@@ -110,6 +110,11 @@ function TicketsCollected(sid,c=1) { // c is for later changes
 debugger;
   if (c) {
     $("#Collect" + sid).load("setfields.php", "I=" + sid + "&O=PC");
+    setTimeout(function(){
+      $("#Oops" + sid).fadeOut(3000);
+    },10000);
+  } else {
+    $("#Collect" + sid).load("setfields.php", "I=" + sid + "&O=NC");  
   }
 }
 
