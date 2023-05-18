@@ -107,7 +107,6 @@ $(document).ready(function() {
 } );
 
 function TicketsCollected(id,c=1) { // c is for later changes
-debugger;
   if (c) {
     $("#Collect" + id).load("setfields.php", "I=" + id + "&O=PC");
     setTimeout(function(){
@@ -115,6 +114,17 @@ debugger;
     },10000);
   } else {
     $("#Collect" + id).load("setfields.php", "I=" + id + "&O=NC");  
+  }
+}
+
+function VTicketsCollected(id,c=1) { // c is for later changes
+  if (c) {
+    $("#Collect" + id).load("setvfields.php", "I=" + id + "&O=VC");
+    setTimeout(function(){
+      $("#Oops" + id).fadeOut(3000);
+    },10000);
+  } else {
+    $("#Collect" + id).load("setvfields.php", "I=" + id + "&O=VNC");  
   }
 }
 

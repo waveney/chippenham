@@ -10,7 +10,7 @@
     header('Content-Disposition: attachment; filename=Volunteers.csv');
 
   } else {
-    dostaffhead("Steward / Volunteer Application",["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
+    dostaffhead("Steward / Volunteer Application",["/js/Volunteers.js","js/dropzone.js","css/dropzone.css",'/js/InviteThings.js' ]);
   }
  
   global $USER,$USERID,$db,$PLANYEAR,$StewClasses,$Relations,$Days;

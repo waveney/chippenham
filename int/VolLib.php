@@ -1,8 +1,6 @@
 <?php
   include_once("fest.php");
 
-//  dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js"]);
-
   include_once("Email.php");
 //  include_once("SignupLib.php");
   global $USER,$USERID,$db,$PLANYEAR,$StewClasses,$Relations,$AgeCats,$CampType,$CampStatus;
@@ -182,7 +180,7 @@ function Get_Vol_Year($Volid,$Year=0) {
 
 //var_dump($VY);
   if (isset($VY['id'])) return $VY;
-  return ['Volid'=>$Volid,'Year'=>$Year,'id'=>0, 'Status'=>0];
+  return ['Volid'=>$Volid,'Year'=>$Year,'id'=>0, 'Status'=>0, 'CampNeed'=>0];
 }
 
 function Put_Vol_Year(&$VY) {
@@ -395,6 +393,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if (Feature('Vol_Children')) {
       echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their ages)",$VYear,'Children',4,'','',"Children::$PLANYEAR");
       echo "<tr>" . fm_text("Free Youth tickets (11 to 17 - please give their ages)",$VYear,'Youth',4,'','',"Youth::$PLANYEAR");
+      if (Access('SysAdmin') || $VYear['Adults'] > 1) echo "<tr>" . fm_text("Adults",$VYear,'Adults',4,'','',"Adults::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
@@ -411,6 +410,11 @@ function VolForm(&$Vol,$Err='',$View=0) {
     echo "\n<tr><td>Application Status:<td colspan=3 " . ($Stat?'style=color:Green;font-weight:bold;>': 'style=color:Red;font-weight:bold;>') . $YearStatus[$Stat];
     if ($VYear['Status'] == 1 && $VYear['SubmitDate']) echo " On " . date('d/n/Y',$VYear['SubmitDate']);
     if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate']) echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
+
+    if (Access('Staff') && $VYear['TicketsCollected']) {
+      $User = Get_User($VYear['CollectedBy']);
+      echo fm_text1("Tickets Collected", $VYear,'TicketsCollected') . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
+    }
 
     if (Access('SysAdmin')) {
       echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$PLANYEAR");
@@ -1368,6 +1372,57 @@ function Check_Unique() { // Is email Email already registered - if so send new 
   } // else new - full through*/
 }
 
+function TicketList($Cat) {
+  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus;
+  include_once('DocLib.php');
+  
+  $VolMgr = Access('Committee','Volunteers');
+
+  $Users = Get_AllUsers(2);
+
+  $coln = 0;
+// var_dump($VolCats);  
+  echo "<form method=post>";
+  echo "<div class=tablecont><table id=indextable border class=altcolours>\n";
+  echo "<thead><tr>";
+
+  if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Tickets</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Collect</a>\n";
+  
+  echo "</thead><tbody>";
+
+  $Vols = Gen_Get_Cond('Volunteers',"Status=0 ORDER BY SN");
+  foreach ($Vols as $Vol) {
+    $vid = $Vol['id'];
+    $VY = Get_Vol_Year($vid);
+    if ( $CatStatus[$VY['Status']] != 'Confirmed') continue;    
+    if ($Cat > 0) {
+      $VCY = Get_Vol_Cat_Year($vid,$Cat,$YEAR);
+      if ( $CatStatus[$VCY['Status']] != 'Confirmed') continue;
+    }
+
+    $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$vid>";
+    echo "<tr>";
+    if (Access('SysAdmin')) echo "<td>$vid";
+    echo "<td>$link" . $Vol['SN'] . "</a>";
+    $Camp = ($VY['CampNeed'] != 0);
+    echo "<td>" . $VY['Adults'] . Plural($VY['Adults']," Adults",' Adult',' Adults') . ($Camp?'+ Camp ':'');
+    if ($VY['Youth'] ?? 0) ", " . $VY['Youth'] . Plural($VY['Youth'],'',' Youth',' Youths') . ($Camp?'+ Camp ':'');
+    if ($VY['Children'] ?? 0) ", " . $VY['Children'] . Plural($VY['Children'],'',' Child',' Children');
+    echo "<td id=Collect$vid>" . ($VY['TicketsCollected']
+        ? "Collected " . date("D M j G:i:s",$VY['TicketsCollected']) . " from " . ($Users[$VY['CollectedBy']]['SN'] ?? 'Unknown')
+        : "<button type=button class=FakeButton onclick='VTicketsCollected($vid)'>Collect</button>");
+
+    echo "\n";
+  }
+  echo "</table></div>";  
+  dotail();
+
+}
+
+
 function SendCatsToBrowser() {
   global $VolCats;
   echo fm_hidden('VolCatsRaw',base64_encode(json_encode($VolCats)));
@@ -1401,7 +1456,7 @@ function VolAction($Action,$csv=0) {
   global $PLANYEAR,$VolCats,$M;
 
   if ($csv == 0) {
-    dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css" ]);
+    dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css",'/js/InviteThings.js' ]);
     SendCatsToBrowser();
   }
 //var_dump($Action);
