@@ -64,6 +64,7 @@ function Show_Site(&$Site,$Act='UPDATE') {
   echo "<tr>" . fm_textarea('Long Description',$Site,'LongDesc',3,3);
   echo "<tr>" . fm_text('Image',$Cat,'Image',2); 
   echo "<tr>" . fm_text('If Restricted, to who',$Site,'Restriction',3) . "<td>eg just for Task Force\n";
+  echo "<tr>" . fm_text('Campsite Rules File Name',$Cat,'RulesName',2); 
   if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
   echo "</table><br>\n";
   if (empty($Site['id'])) {

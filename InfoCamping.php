@@ -25,6 +25,9 @@
     if ($C['Image']) echo "<img src=" . $C['Image'] . "><br>";
     echo $C['ShortDesc'] . "<p>";
     if (!empty($C['LongDesc'])) echo $C['LongDesc'] . "<p>";
+    
+    if (!empty($C['RulesName'])) echo "See the <a href='/InfoFAQ?D=" . $C['RulesName'] . "'>" . $C['Name'] . " Campsite Rules</a><p>";
+    
     if ($Mapp == 0) $Mapp = $C['MapPoint'];
 //    echo "<button onclick=ShowDirect(" . (1000000 + $T['id']) . ")>Directions</button>\n";
     echo "</div>";
