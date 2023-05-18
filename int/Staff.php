@@ -23,6 +23,7 @@
   $VolTeams = [0=>''];
   foreach($VolCats as $V) $VolTeams[$V['id']] = $V['Name'];
 
+
   function StaffTable($Section,$Heading,$cols=1) {
     global $Heads; 
     static $ColNum = 3;
@@ -407,6 +408,13 @@
     $txt .= "<ul>\n";
     $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR>List All Performer Tickets Wanted</a>\n";
     $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR&COL=1>Record Performer Ticket Collection</a><p>\n";    
+
+    $AllTeams = $VolTeams;
+    $AllTeams[-1] = 'All Volunteers';
+    $txt .= "<li><form method=Post action=Volunteers?ACTION=TicketList class=staffform>" .
+                fm_hidden('Y',$YEAR) .
+                "<input type=submit name=a value='Record Volunteer Ticket Collection ' id=staffformid>" . 
+                fm_select($AllTeams,0,'Cat',0," onchange=this.form.submit()") . "</form>\n";
 
 //    $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR&COL=1>Record Volunteer Ticket Collection</a><p>\n";     
 

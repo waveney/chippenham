@@ -1,9 +1,8 @@
 <?php
   include_once("int/fest.php");
 
-  dohead("FAQ");
-  echo TnC("InfoFAQ");
+  $Subject = $_REQUEST['D'] ?? 'FAQ';
+  dohead($Subject);
+  echo TnC($Subject);
   dotail();
-
-  
 ?>

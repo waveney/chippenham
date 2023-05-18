@@ -1606,8 +1606,11 @@ function VolAction($Action,$csv=0) {
     CompList();
     break;
 
-
-  }  
+  case 'TicketList':
+    TicketList($_REQUEST['Cat'] ?? -1);
+    break;
+  }
+  
   if (Access('Staff')) List_Vols();
   echo "<h2>Something has gone wrong...</h2>";
   dotail();

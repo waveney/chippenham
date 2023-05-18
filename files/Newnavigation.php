@@ -46,11 +46,11 @@
         'Parking'=>'InfoParking',
         'Travel'=>'InfoGettingHere',
         'Food & Drink'=>'InfoFood',
-/*        'FAQs, Rules and Policies' => [
-          'FAQs' => 'Info?D=FAQ',
-          'Camping Rules - Westmead' => 'Info?D=Westmead',
-          'Camping Rules - Monkton Park' => 'Info?D=Monkton',
-          ],*/
+// /*        'FAQs, Rules and Policies' => [
+        'FAQs' => 'InfoFAQ?D=FAQ',
+        'Westmead Camping Rules' => 'InfoFAQ?D=Westmead Campsite Rules',
+        'Monkton Park Camping Rules' => 'InfoFAQ?D=Monkton Park Campsite Rules',
+//          ],*/
 //        'Mailing List'=>'InfoMailingList',
         'Contact Us'=>'contact',
         'Data Privacy'=>'InfoData',
