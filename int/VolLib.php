@@ -1408,9 +1408,15 @@ function TicketList($Cat) {
     if (Access('SysAdmin')) echo "<td>$vid";
     echo "<td>$link" . $Vol['SN'] . "</a>";
     $Camp = ($VY['CampNeed'] != 0);
-    echo "<td>" . $VY['Adults'] . Plural($VY['Adults']," Adults",' Adult',' Adults') . ($Camp?'+ Camp ':'');
-    if ($VY['Youth'] ?? 0) ", " . $VY['Youth'] . Plural($VY['Youth'],'',' Youth',' Youths') . ($Camp?'+ Camp ':'');
-    if ($VY['Children'] ?? 0) ", " . $VY['Children'] . Plural($VY['Children'],'',' Child',' Children');
+    echo "<td>" . $VY['Adults'] . Plural($VY['Adults']," Adults",' Adult',' Adults') . ($Camp?'+Camp ':'');
+    if ($VY['Youth']) {
+      $Yn = NumbersOf($VY['Youth']);
+      if ($Yn) echo ", $Yn" . Plural($Yn,'',' Youth',' Youths') . ($Camp?'+Camp ':'');
+    }
+    if ($VY['Children']) {
+      $Yn = NumbersOf($VY['Children']);
+      echo ", $Yn" . Plural($Yn,'',' Child',' Children');
+    }
     echo "<td id=Collect$vid>" . ($VY['TicketsCollected']
         ? "Collected " . date("D M j G:i:s",$VY['TicketsCollected']) . " from " . ($Users[$VY['CollectedBy']]['SN'] ?? 'Unknown')
         : "<button type=button class=FakeButton onclick='VTicketsCollected($vid)'>Collect</button>");
