@@ -1380,6 +1380,10 @@ function TicketList($Cat) {
 
   $Users = Get_AllUsers(2);
 
+  echo "All you should need to do is click the Collect button to the right of each volunteer.<p>" .
+       "If you click one in error you have 15 seconds to click the Oops button to revert it.<p>" .
+       "In the event of problems call Richard.<p>\n";
+
   $coln = 0;
 // var_dump($VolCats);  
   echo "<form method=post>";
