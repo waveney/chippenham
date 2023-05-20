@@ -318,6 +318,8 @@
                    Proforma_Background('FinalInfo') . ">Final Info</button>";
               echo "<button type=button id=Prog$snum class=ProfButton onclick=ProformaSend('Dance_Final_Info2',$snum,'FinalInfo2','SendProfEmail')" . 
                    Proforma_Background('FinalInfo2') . ">Final Info2</button>";
+              echo "<button type=button id=Prog$snum class=ProfButton onclick=ProformaSend('Dance_Tickets',$snum,'MorrisTickets','SendProfEmail')" . 
+                   Proforma_Background('MorrisTickets') . ">Morris Tickets</button>";
           }
         } else {
           echo "No Email!";

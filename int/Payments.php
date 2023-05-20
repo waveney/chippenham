@@ -53,7 +53,7 @@
     foreach($BUDGET as $i=>$b) {
       if ($b['id']) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>" . $b['SN'] . "</a>\n";
     }
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Homeless</a>\n";
+    if ($BUDGET) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Homeless</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contract</a>\n";
     echo "</thead><tbody>";
   }
@@ -75,7 +75,7 @@
 
       foreach($BUDGET as $i=>$b)  $data[]= (isset($bud[$i])?$bud[$i]:"");
       $csvdata = [];
-      foreach ($data as $d) $csvdata[] = (is_numeric($d)?"'$d'":$d);
+      foreach ($data as $d) $csvdata[] = (is_numeric($d)?"$d":$d);
       
       fputcsv($output,$csvdata);
     } else {

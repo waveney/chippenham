@@ -39,7 +39,7 @@ function ProformaSend(name,snum,label,link,AlwaysBespoke=0,AltEmail='',UpdateId=
   } else {
     var newwin = window.open((link + "?id=" + snum + "&N=" + name + "&L=" + label + "&E=" + AltEmail),"Bespoke Message " + snum);
     newwin.onbeforeunload = function(){
-      setTimeout(function(){$("#" + UpdateId).load("setfields.php", "I=" + snum + "&O=R"); // , function() {
+      setTimeout(function(){$("#" + UpdateId).load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // , function() {
 //       $("#" + UpdateId).scrollTop(1E6+ProformasSent*100)}
       },500)
     }
