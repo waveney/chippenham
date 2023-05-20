@@ -301,7 +301,7 @@ function RecordPerfChanges(&$now,&$Cur,$Up) {
   global $PLANYEAR;
   $Fields = ['Coming','Sat','Sun','Mon','YearState'];
 
-  if ($now['NoEvents']) return;
+  if (!isset($now['NoEvents']) || $now['NoEvents'] || $now['Year'] != $PLANYEAR) return;
 //var_dump("HERE");
   foreach ($Fields as $f) if (isset($Cur[$f]) && $now[$f] != $Cur[$f]) {
     if (($f == 'YearState') && ($now['YearState'] >= 2) && ($Cur['YearState'] > 0)) continue;
