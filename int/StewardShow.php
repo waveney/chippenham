@@ -163,7 +163,7 @@
     
       if (isset($e['With'])) foreach ($e['With'] as $snum) {
         $side = Get_Side($snum);
-        $str .= "<tr><td class=ES_What><a href=ShowPerf?sidenum=$snum>" . $side['SN'] . "</a><td class=ES_Detail>";
+        $str .= "<tr><td class=ES_What><a href=ShowPerf?id=$snum>" . $side['SN'] . "</a><td class=ES_Detail>";
         if ($side['StagePA'] == '@@FILE@@') {
           $files = glob("PAspecs/$snum.*");
           if ($files) {

@@ -205,7 +205,7 @@ function EventCheck($checkid=0) {
                   if ((($pd[2] > $estrt) && (($pd[3] > $estrt) || (($pd[3] == $estrt) && ($ev['Venue'] != $evlist[$pd[0]]['Venue'])))) ||
                        (($pd[2] <= $estrt) && (($eend > $pd[2]) || (($eend == $pd[2]) && ($ev['Venue'] != $evlist[$pd[0]]['Venue']))))) {
                     $Side = Get_Side($sid);
-                    echo "<a href=AddPerf?sidenum=$sid>" . $Side['SN'] . " has an Event clash between <a href=EventAdd?e=" . $ev['EventId'] . ">This Event</a>" .
+                    echo "<a href=AddPerf?id=$sid>" . $Side['SN'] . " has an Event clash between <a href=EventAdd?e=" . $ev['EventId'] . ">This Event</a>" .
                          " and <a href=EventAdd?e=" . $evlist[$pd]['EventId'] . ">This Event</a>.<p>\n";
                   }
                 }

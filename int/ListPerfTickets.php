@@ -43,16 +43,13 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contact</a>\n";
 
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Adults</a>\n";
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Youth</a>\n";
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Child</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Adults</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Youth</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Child</a>\n";
 
   if ($Collect) {
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Collected</a>\n";  
   } else {
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Adults</a>\n";
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Youth</a>\n";
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Child</a>\n";
 
     foreach ($CampSites as $CSi => $CS) {
       if (($CS['Props'] & 1) ==0) continue;

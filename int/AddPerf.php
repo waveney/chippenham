@@ -49,6 +49,8 @@
   global $YEAR,$PLANYEAR,$Mess,$BUTTON,$YEARDATA;  // TODO Take Mess local
   $ShowAvailOnly = 0;
 
+  $AllDone = 0;
+  
   echo '<h2>Add/Edit Performer</h2>'; // TODO CHANGE
   global $Mess,$Action,$Dance_TimeFeilds,$ShowAvailOnly;
   $DateFlds = ['ReleaseDate'];
@@ -82,6 +84,49 @@
 
       break; // Action is taken later after loading
       
+    case 'Record as Non Performer' :
+      $Side = Get_Side($snum);
+      $Sidey = Get_SideYear($snum);
+      if (!$Sidey) $Sidey = Default_SY($snum);
+      $Side['NotPerformer'] = 1;
+      $Sidey['NoEvents'] = 1;
+      $Sidey['YearState'] = 2;
+      if (empty($Sidey['FreePerf'])) $Sidey['FreePerf'] = 1;
+      Put_Side($Side);
+      Put_SideYear($Sidey);
+      global $Save_Sides,$Save_SideYears;
+      $Save_SideYears = $Save_Sides = []; // Clears Cached values
+
+      $Side = Get_Side($snum); // Sets all the defaults
+      $Sidey = Get_SideYear($snum);
+// var_dump($Sidey);exit;
+      echo "<h1>Setup as a non performer</h1>";
+      $AllDone = 1;
+      break;
+      
+    case 'Create as Non Performer' :
+      $_POST['NotPerformer'] = 1;
+      $_POST['NoEvents'] = 1;
+      $_POST['YearState'] = 2;
+      if (empty($_POST['FreePerf'])) $_POST['FreePerf'] = 1;
+      
+      $proc = 1;
+      $Side = [];
+      if (!isset($_POST['SN'])) {
+        echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
+        $proc = 0;
+      }
+      $_POST['AccessKey'] = rand_string(40);
+      $_POST['SideId'] = $snum = Insert_db_post('Sides',$Side,$proc);
+      if ($snum) Insert_db_post('SideYear',$Sidey,$proc);
+      echo "<h1>Created as a non performer</h1>";
+      $Side = Get_Side($snum);
+      $Sidey = Get_SideYear($snum);
+
+      $AllDone = 1;
+      break; 
+
+
     case 'Send Generic Contract':
       SendProfEmail();
  //   'Dance_Final_Info',$snum,'FinalInfo','SendProfEmail')
@@ -93,7 +138,8 @@
     }
   }
 //  echo "<!-- " . var_dump($_POST) . " -->\n";
-  if (isset($_POST['SideId'])) { // Response to update button 
+  if ($AllDone) {
+  } else if (isset($_POST['SideId']) ) { // Response to update button 
     
     Clean_Email($_POST['Email']);
     Clean_Email($_POST['AltEmail']);
@@ -246,6 +292,8 @@
                      Music_Proforma_Background('Contract') . ">Resend Generic Contract</button>"; 
         echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',2,'','Invited')" . 
                      Music_Proforma_Background('Contract') . ">Resend Bespoke Contract</button>"; 
+      } elseif ($Book_States[$Sidey['YearState']] == 'None') {
+        echo "<input type=Submit name='Action' value='Record as Non Performer' class=Button$BUTTON >\n";
       }
 //      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Generic Contract'>";
 //      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Bespoke Contract'>";  
@@ -255,7 +303,9 @@
 
     echo "</center>\n";
   } else { 
-    echo "<Center><input type=Submit name=Create value='Create' class=Button$BUTTON ></center>\n";
+    echo "<Center><input type=Submit name=Create value='Create' class=Button$BUTTON >\n";
+    echo "<input type=Submit name='Action' value='Create as Non Performer' class=Button$BUTTON >\n";
+    echo "</center>\n";
   }
   echo "</form>\n";
 

@@ -36,7 +36,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
   $ErrC = $MerrC = $UerrC = 0;
   
 /* foreach ($Sides as $s=>$sid) {
-  if (!isset($sidenames[$s])) echo "Side $s <a href=AddPerf?sidenum=$s>" . $Sides['SN'] . "</a> not in names<br>";
+  if (!isset($sidenames[$s])) echo "Side $s <a href=AddPerf?id=$s>" . $Sides['SN'] . "</a> not in names<br>";
 } */
 
   $res = $db->query("SELECT e.* FROM Events e WHERE Year='$YEAR' AND Status=0 ORDER BY Day, Start" );
@@ -52,12 +52,12 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
           } else if (!isset($Sides[$s])) {
             $NotSide = Get_Side($s);
 // var_dump($NotSide);
-            echo "<a href=AddPerf?sidenum=$s>" . $NotSide['SN'] . "</a>: ";
+            echo "<a href=AddPerf?id=$s>" . $NotSide['SN'] . "</a>: ";
             echo "<span class=red>Is listed doing an <a href=EventAdd?e=" . $e['EventId'] . ">event</a> at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
               " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span><br>\n";
             $ErrC++;            
           } else if ($Sides[$s]['IsASide']) { 
-            echo "<a href=AddPerf?sidenum=$s>" . $sidenames[$s] . "</a>: ";
+            echo "<a href=AddPerf?id=$s>" . $sidenames[$s] . "</a>: ";
             echo "<span class=red>Is listed doing an <a href=EventAdd?e=" . $e['EventId'] . ">event</a> at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
               " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span><br>\n";
             $ErrC++;
@@ -68,7 +68,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
           if (isset($Sides[$s])) {
             $dancing[$s][] = $eid;
           } else if ($Sides[$s]['IsASide']) { // Should never get here, wont work anyway
-            echo "<a href=AddPerf?sidenum=$s>" . $sidenames[$s] . "</a>: ";
+            echo "<a href=AddPerf?id=$s>" . $sidenames[$s] . "</a>: ";
             echo "<span class=red>Is listed doing an event at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
                 " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span><br>\n";
           }
@@ -77,7 +77,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
           if (isset($Sides[$s])) {
             $dancing[$s][] = $eid;
           } else if ($Sides[$s]['IsASide']) {
-            echo "<a href=AddPerf?sidenum=$s>" . $sidenames[$s] . "</a>: ";
+            echo "<a href=AddPerf?id=$s>" . $sidenames[$s] . "</a>: ";
             echo "<span class=red>Is listed doing an event at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
                  " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span><br>\n";
           }
@@ -97,7 +97,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
             if (isset($Sides[$s])) {
               $dancing[$s][] = $eid;
             } else {
-              echo "<a href=AddPerf?sidenum=$s>" . $sidenames[$s] . "</a>: ";
+              echo "<a href=AddPerf?id=$s>" . $sidenames[$s] . "</a>: ";
               echo "<span class=red>Is listed doing an event at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
                    " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span>";
               $ErrC++;
@@ -453,20 +453,20 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
     $needbr=0;
     $link = 'AddPerf';
     if ($Err) {
-      echo "<a href=$link?sidenum=$si>" . $side['SN'] . "</a>:<ul>";
+      echo "<a href=$link?id=$si>" . $side['SN'] . "</a>:<ul>";
       foreach ($Err as $er) echo "<li class=red>$er";
       $needbr=1;
     }
     if ($Merr && $level>=2) {
       if (!$needbr) {
-        echo "<a href=$link?sidenum=$si>" . $side['SN'] . "</a>:<ul>";
+        echo "<a href=$link?id=$si>" . $side['SN'] . "</a>:<ul>";
       }
       foreach ($Merr as $er) echo "<li class=brown>$er";
       $needbr=1;
     }
     if ($Uerr && $level>=3) {
       if (!$needbr) {
-        echo "<a href=$link?sidenum=$si>" . $side['SN'] . "</a>:<ul>";
+        echo "<a href=$link?id=$si>" . $side['SN'] . "</a>:<ul>";
       }
       foreach ($Uerr as $er) echo "<li>$er";
       $needbr=1;

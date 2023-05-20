@@ -52,7 +52,10 @@
         
         Show_Part($Side,'Side',1,'AddPerf');
         Show_Perf_Year($snum,$Sidey,$YEAR,Access('Staff'));
-        echo "<Center><input type=Submit name=Create value='Create' class=Button$BUTTON ></center>\n";
+        echo "<Center><input type=Submit name=Create value='Create' class=Button$BUTTON >\n";
+        echo "<input type=Submit name='Action' value='Record as Non Performer' class=Button$BUTTON >\n"; 
+        echo "</center>\n";
+
         echo "</form>\n";
         dotail();
       }

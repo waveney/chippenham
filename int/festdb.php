@@ -193,6 +193,8 @@ function Insert_db($table, &$from, &$data=0, $proced=1) {
     }
   }
   if ($proced) {
+  
+//  debug_print_backtrace();
 // var_dump($newrec);exit;
     $insert = $db->query($newrec);
     if ($insert) {

@@ -51,7 +51,7 @@
 //    if ($act['IsAnAct']) echo "Act ";
 //    if ($act['IsOther']) echo "Other ";
 //      echo "<td>";
-      echo "<a href=AddPerf?sidenum=" . $b[0] . ">" . $act['SN'] . "</a>";
+      echo "<a href=AddPerf?id=" . $b[0] . ">" . $act['SN'] . "</a>";
       echo "<td>";
       echo $b[1];
     }
