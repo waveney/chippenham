@@ -53,7 +53,7 @@
   echo "<table border style='min-width:1200'><td>Performer<td>Changes\n";
   foreach ($Perfs as $snum=>$p) {
     
-    echo "<tr><td><a href=/int/ShowPerf?id=$snum&Y=$YEAR>" . $p['SN'] . "</a><td>";
+
 //var_dump($p['Changes']);
     $Chtxt = [];
     foreach ($p['Changes'] as $Ch) {
@@ -92,8 +92,11 @@
       }
 // var_dump($Ch, $Chtxt) ;
     }
-    echo implode(", ",$Chtxt);
-      
+    
+    if ($Chtxt) {
+      echo "<tr><td><a href=/int/ShowPerf?id=$snum&Y=$YEAR>" . $p['SN'] . "</a><td>";
+      echo implode(", ",$Chtxt);
+    }  
   }
   echo "</table></div>\n";
   dotail();
