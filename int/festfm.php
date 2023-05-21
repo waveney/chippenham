@@ -677,6 +677,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
     $url = (isset($DDd['URL'])? $DDd['URL'] : 'DragAndDropped.php');
     $replace = (isset($DDd['Replace'])? 1 : 0 );
     $extra = (isset($DDd['Extra'])? $DDd['Extra'] : '');
+    $Restrict = ($extra?'jpeg/jpg/png ONLY':'');
     $str .= <<<XXX
   Dropzone.options.Upload$Type$Padding = { 
     paramName: "Upload",
@@ -701,7 +702,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
       if ($Mode) formData.append('Mode',"$Mode" ); 
       if ('$tdclass' != '') formData.append('Class',"$tdclass" );  
     },
-    dictDefaultMessage: "Drop $Name here to upload or click to browse<br>jpeg/jpg/png ONLY"
+    dictDefaultMessage: "Drop $Name here to upload or click to browse<br>$Restrict"
   };
 XXX;
     $str .= "</script></$Table>";
