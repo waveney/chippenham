@@ -23,6 +23,18 @@ D=Z0:Side:32&S=S10:Side:32&EV=167&E=
   include_once("ProgLib.php");
   include_once("CheckDance.php");
 
+function RecordBeEventChanges($Ev) {
+  global $PLANYEAR;
+
+  $Rec = Gen_Get_Cond1('EventChanges',"( EventId=$Ev AND Field='Side1' )");
+  if (empty($Rec['id'])) {
+    $Rec = ['EventId'=>$Ev, 'Year'=>$PLANYEAR, 'Changes'=>'Changes', 'Field'=>'Side1' ];
+    Gen_Put('EventChanges',$Rec);
+  }
+}
+
+
+
 //var_dump($_GET);
   if (isset($_GET['D'])) {
     $dstId = $_GET['D'];  
@@ -61,11 +73,20 @@ D=Z0:Side:32&S=S10:Side:32&EV=167&E=
 
     case 'SZ': // Remove
       db_delete_cond('BigEvent',"Event=$Ev AND ( Type='$stt' OR Type='Perf' OR Type='Act' OR Type='Other' )  AND Identifier=$sid");
+      if (Feature('RecordEventChanges') && $sid >0) {
+        RecordPerfEventChange($sid,$Type='Perform');
+        RecordBeEventChanges($Ev);
+      }
       break;
 
     case 'ZE': // New
       $new = array('Event'=>$Ev, 'Type'=>$stt, 'Identifier'=>$sid, 'EventOrder'=>$dstmtch[2]);
       Insert_db('BigEvent',$new);
+      if (Feature('RecordEventChanges') && $sid >0) {
+        RecordPerfEventChange($sid,$Type='Perform');
+        RecordBeEventChanges($Ev);
+      }
+
       break;
 
     case 'ZS': // New Replace
