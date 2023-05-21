@@ -419,7 +419,7 @@
 //    $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR&COL=1>Record Volunteer Ticket Collection</a><p>\n";     
 
     if (Access('SysAdmin')) $txt .= "<p><li><a href=TicketEvents?Y=$YEAR>List Ticketed Events</a>\n"; 
-    if (Access('SysAdmin')) {
+    if (0 && Access('SysAdmin')) {
       $txt .= "<p><li><a href=Volunteers?A=CompAdd>Add Festival team and Complimentary tickets</a>\n";
       $txt .= "<li><a href=Volunteers?A=CompList>List Festival team and Complimentary tickets</a>\n";
     }   

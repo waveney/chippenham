@@ -69,7 +69,8 @@
   while ($fetch = $SideQ->fetch_assoc()) {
 //  echo "<tr><td colspan=20>"; var_dump($fetch);
     echo "\n<tr>";
-    if (Access('SysAdmin')) echo "<td>" . ($sid = $fetch['SideId']);
+    $sid = $fetch['SideId'];
+    if (Access('SysAdmin')) echo "<td>$sid";
     $syId = $fetch['syId'];
     echo "<td><a href=AddPerf?id=" . $fetch['SideId'] . "&Y=$YEAR>" . (empty($fetch['SN'])?'Nameless':$fetch['SN']) . "</a>";
     echo "<td>" . $fetch['Contact'];
