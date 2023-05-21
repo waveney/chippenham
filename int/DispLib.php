@@ -349,7 +349,7 @@ function Expand_Special(&$Art,$future=0) {
 
     Expand_Many($Art,'IsAnAct',"(y.YearState>1 OR y.Coming=" . $Coming_Type['Y'] . ") ", 
        'Performer', "Next Years Festival - $NYear",0,$future,$YEAR+1,"We are already planning next years festival from " . 
-        "$NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) . "</sup> $NMonth $NYear and already have " );
+        "$NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) . "</sup> $NMonth $NYear and " );
     return;
   
 

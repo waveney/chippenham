@@ -14,6 +14,7 @@ function Logon(&$use=0) {
   $Rem = 0;
   if (!$use) {
     $user = $_POST['UserName'];
+    if (!ctype_alnum($user))  return 'No Hacking';
     $pwd = $_POST['password'];
     if (isset($_POST['RememberMe'])) $Rem = $_POST['RememberMe'];
     $ans = Get_User($user);
