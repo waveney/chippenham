@@ -12,12 +12,16 @@
 30) Large docs in the Store IMP1
 36) Documents - Replace IMP1
 37) Volunteers - link to Vol handbook IMP2
-39) Comp tickets and Festival Team tickets IMP6
 44) 2 level menu bar(FAQs etc) IMP2
 45) Search Performers this year (public side) IMP1
 49) Map links for toilets etc
-50) Move Get_Users out of DocLib
+50) Move Get_AllUsers out of DocLib
 51) Split VolLib into core and actual volunteer stuff
+53) Staff menus from a table
+54) Move all festival specific stuff from basic site
+55) Use ini format for config
+
+
 
 Sponsor
 1. Venues
@@ -40,7 +44,7 @@ Ground sheets
 Matress Pump
 Sleeping bag + pillow
 Water bottle
-Laptop, cables etc
+Laptop, cables etc, Monitor
 Red tatters & hat
 Rucksack, shoulder bag
 Phone + charger
@@ -48,7 +52,7 @@ Tooth brush, flanel
 Hard Hat(s), Tools, Hi Vis
 2 changes of clothes, swiming costume, towel
 Coat, Boots, trainers
-Tankard
+Tankard, hairbrush, Knee support
 
 Take Friday
 Judith

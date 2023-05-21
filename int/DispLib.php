@@ -263,13 +263,14 @@ function Expand_Imp(&$Art,$Isa,$Cometest,$Importance,$lvl,$future) {
     $Art = [];
 }
 
-function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future) {
+function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx='') {
   global $db,$YEAR,$Coming_Type,$ShownInArt;
+  if ($Year== 0) $Year=$YEAR;
   $now = time();
   $Art['SN'] = $Name;
-  $Art['Link'] = "/LineUp?T=$LineUp";
+  if ($LineUp) $Art['Link'] = "/LineUp?T=$LineUp";
 
-    $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.$Isa=1 AND $Cometest " . 
+    $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.$Isa=1 AND $Cometest " . 
            " AND y.ReleaseDate<$now");
     $Dsc = 0;
     if ($ans) {
@@ -277,11 +278,11 @@ function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future) {
       $Dsc = $res['Total'];
     }
     
-    $Art['Text'] = "$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " already confirmed for $YEAR.";
+    $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " already confirmed for $Year.";
 
 
     $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
-                    "WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND s.$Isa=1 AND $Cometest " . 
+                    "WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.Photo!='' AND s.$Isa=1 AND $Cometest " . 
                     " AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
 
     if (!$ans) return; 
@@ -338,7 +339,19 @@ function Expand_Special(&$Art,$future=0) {
     Expand_Many($Art,'IsCeilidh',"y.YearState>1", 'Ceilidh and Dance bands and caller', 'Ceilidh and Dance ','Ceilidh',$future);
     return;
     
- 
+  case '@NextYear':
+    global $YEARDATA,$Months;
+    $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);
+    $NFrom = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['FirstDay']);
+    $NTo = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['LastDay']);
+    $NMonth = $Months[$NEXTYEARDATA['MonthFri']];
+    $NYear = substr($YEARDATA['NextFest'],0,4);
+
+    Expand_Many($Art,'IsAnAct',"(y.YearState>1 OR y.Coming=" . $Coming_Type['Y'] . ") ", 
+       'Performer', "Next Years Festival - $NYear",0,$future,$YEAR+1,"We are already planning next years festival from " . 
+        "$NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) . "</sup> $NMonth $NYear and already have " );
+    return;
+  
 
   case '@Perf': // Just this performer
     $id = $words[1];

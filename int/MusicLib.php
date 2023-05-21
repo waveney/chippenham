@@ -450,7 +450,7 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
     }  
   } else {
     $Sy = Get_SideYear($snum,$YEAR);
-    if ($Sy['NoEvents']) $InValid = 0;  
+    if ($Sy['NoEvents'] ?? 1) $InValid = 0;  
   }
 
   $ActY = Get_SideYear($snum);
