@@ -274,6 +274,11 @@
     $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat>Sat Dance Grid for Printed Program</a>";    
     $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun>Sun Dance Grid for Printed Program</a>";    
     $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon>Mon Dance Grid for Printed Program</a>";    
+    
+    $txt .= "<p>";
+    $txt .= "<li><a href=/PerfChanges>Performer Changes since programme went to print</a>";    
+    $txt .= "<li><a href=/EventChanges>Event Changes since programme went to print</a>";    
+    
     $txt .= "</ul>\n";
   }
     
