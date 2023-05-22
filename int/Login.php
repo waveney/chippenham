@@ -130,10 +130,14 @@ function Limited() {
 }
 
 function Login($errmsg='', $message='') {
-  global $db,$USER,$AccessType;
+  global $db,$USER,$Access_Type;
   Set_User();
-  if (!empty($USER) && !empty($USER['AccessLevel']) && $USER['AccessLevel'] > $AccessType['Participant']) include_once ("Staff.php");
-
+  
+  if (isset($USER) && (($USER['AccessLevel'] ?? 0) > $Access_Type['Participant'])) {
+    include_once ("Staff.php");  // No return
+    exit;
+  }
+  
   dostaffhead("Staff Login");
   if ($errmsg) echo "<h2 class=ERR>$errmsg</h2>";
   if ($message) echo "<h2>$message</h2>";

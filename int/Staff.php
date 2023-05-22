@@ -278,7 +278,7 @@
     $txt .= "<p>";
     $txt .= "<li><a href=/PerfChanges>Performer Changes since programme went to print</a>";    
     $txt .= "<li><a href=/EventChanges>Event Changes since programme went to print</a>";    
-    
+    $txt .= "<li><a href=ProfEventPrint>Event and Performer Changes to be printed</a>";    
     $txt .= "</ul>\n";
   }
     

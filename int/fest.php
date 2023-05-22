@@ -59,7 +59,7 @@ $Months = ['','Jan','Feb','Mar','Apr','May','June','July','Aug','Sep','Oct','Nov
 date_default_timezone_set('GMT');
 
 function Check_Login() {
-  global $db,$USER,$USERID,$AccessType,$YEAR,$CALYEAR;
+  global $db,$USER,$USERID,$Access_Type,$YEAR,$CALYEAR;
 
   if (isset($_COOKIE['FEST2'])) {
     $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['FEST2'] . "'");
@@ -89,7 +89,7 @@ function Check_Login() {
 }
 
 function Set_User() {
-  global $db,$USER,$USERID,$AccessType,$YEAR,$CALYEAR;
+  global $db,$USER,$USERID,$Access_Type,$YEAR,$CALYEAR;
   if (isset($USER)) return;
   $USER = array();
   $USERID = 0;

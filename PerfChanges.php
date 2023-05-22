@@ -1,6 +1,7 @@
 <?php
   include_once("int/fest.php");
-
+  include_once("int/ChangeLib.php");
+/*
   include_once("int/ProgLib.php");
   include_once("int/DateTime.php");
   include_once("int/DispLib.php");
@@ -13,15 +14,19 @@
 
   /* Get All Perf Changes
      Get the Perf, sort by name
-     Report changes in that order */
+     Report changes in that order 
      
   $PChanges = Gen_Get_Cond('PerfChanges',"Year='$YEAR' ORDER by SideId");
   
   $Events = [];
   $LastPerf = 0;
+*/
 
   dohead("Lineup changes since the programme went to print",[],1);
+  PerfChangePrint(1);
+  dotail();
   
+/*
   if (!$PChanges) {
     echo "<h2>No sigificant changes in performers have been recorded</h2>";
     dotail();
@@ -99,6 +104,7 @@
     }  
   }
   echo "</table></div>\n";
-  dotail();
+  dotail();*/
+  
 
 ?>
