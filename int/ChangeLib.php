@@ -150,11 +150,12 @@ function PerfChangePrint($Mode=1) {
       $Perfs[$LastPerf]['Changes'][] = $PC;
     } else {
       $LastPerf = $PC['SideId'];
-      $Res = $Perfs[$LastPerf] = Get_SideAndYear($LastPerf);
+      $Res = Get_SideAndYear($LastPerf);
       if (!$Res && Access('SysAdmin')) {
         echo "<span class=Err>Error Performer $LastPerf not found</span><br>";
         continue;
       }
+      if ($Res['NotPerformer'] ?? 0) continue;
       $Perfs[$LastPerf] = $Res;
       $Perfs[$LastPerf]['Changes'] = [$PC];
     }
