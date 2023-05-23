@@ -184,7 +184,7 @@
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Sel</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>File</a>\n";
+  echo "<th colspan=2><a href=javascript:SortTable(" . $coln++ . ",'T')>File</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Caption</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Order</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Thumbnail</a>\n";
@@ -195,7 +195,7 @@
 //    if ($Page > 0 && ($Skip < ($Page*100)) continue;
     $i = $g['id'];
     echo "<tr><td>" . fm_checkbox('',$g,'Select','',"Sel$i") . "<td>$i";
-    echo fm_text1("",$g,'File',1,'','',"File$i") . "</a>";
+    echo fm_text1("",$g,'File',2,'','',"File$i") . "</a>";
     echo fm_text1("",$g,'Caption',1,'','',"Caption$i") . "</a>";
     echo fm_number1("",$g,'RelOrder','','',"RelOrder$i") . "</a>";
     echo fm_hidden("Galid$i",$Galid);

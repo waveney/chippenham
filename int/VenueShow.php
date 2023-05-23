@@ -257,7 +257,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     $EVs[$e['EventId']] = $e;
     $ETused[$e['Type']] = 1;
     $MaxEvDay[$e['Day']] = $MaxEv = max($MaxEv,$WithC);
-    if ($e['DoorPrice'] || $e['Price1'] || $e['SpecPrice']) $NotAllFree=1;
+    if ($e['DoorPrice'] || $e['Price1'] || $e['SpecPrice'] || $e['SeasonTicketOnly'] ) $NotAllFree=1;
   }
 
   if (!isset($EVs) || !$EVs) {
