@@ -305,6 +305,9 @@ function RecordPerfChanges(&$now,&$Cur,$Up) {
 //var_dump("HERE");
   foreach ($Fields as $f) if (isset($Cur[$f]) && $now[$f] != $Cur[$f]) {
     if (($f == 'YearState') && ($now['YearState'] >= 2) && ($Cur['YearState'] > 0)) continue;
+    if (preg_match('/(Sat)|(Sun)|(Mon)/',$f)) {
+      $f = ($now[$f]?'+':'-') . $f;
+    }
     $Rec = Gen_Get_Cond1('PerfChanges',"( SideId=" . $now['SideId'] . " AND Field='$f' )");
     if (isset($Rec['id'])) {
       $Rec['Changes'] = $now[$f];

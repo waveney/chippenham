@@ -185,24 +185,34 @@ function PerfChangePrint($Mode=1) {
       case 'Mon' :
         $Chtxt[2] = 'Changed days';
         break;
+      case '+Sat' :
+      case '+Sun' :
+      case '+Mon' :
+        $Chtxt[3] = 'Added days';
+        break;
+      case '-Sat' :
+      case '-Sun' :
+      case '-Mon' :
+        $Chtxt[4] = 'Cancelled days';
+        break;
       case 'Perform' :
-        $Chtxt[3] = 'Changed Performances';
+        $Chtxt[5] = 'Changed Performances';
         break;
       case 'Coming' :
         if ($p['Coming'] == 2) {
-          $Chtxt[4] = 'New Performer';
+          $Chtxt[6] = 'New Performer';
         } else {
-          $Chtxt[4] = 'Cancelled';
+          $Chtxt[6] = 'Cancelled';
         }
         break;
       case 'SN' :
-        $Chtxt[5] = 'Changed Name';
+        $Chtxt[7] = 'Changed Name';
         break;
       case 'YearState' :
         if ($p['YearState'] >= 2) {
-          $Chtxt[4] = 'New Performer';
+          $Chtxt[6] = 'New Performer';
         } else {
-          $Chtxt[4] = 'Cancelled';
+          $Chtxt[6] = 'Cancelled';
         }
         break;
       }

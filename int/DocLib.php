@@ -40,6 +40,7 @@ function Get_DirInfo($d,$new=0) {
   $res = $db->query($qry);
   if (!$res) return $Dir_cache[$d] = 0; 
   $rec = $res->fetch_assoc();
+  if (!$rsc) return $Dir_cache[$d] = 0;
   if ($rec['AccessLevel'] == 0 || $rec['Who'] == $USERID || $rec['AccessLevel'] < $USER['AccessLevel']) { // Not restricted
     } else if ($rec['AccessLevel'] == $USER['AccessLevel'] && $rec['AccessSections'] !='') {
 
