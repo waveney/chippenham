@@ -412,7 +412,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if ($VYear['Status'] == 1 && $VYear['SubmitDate']) echo " On " . date('d/n/Y',$VYear['SubmitDate']);
     if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate']) echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
 
-    if (Access('Staff') && $VYear['TicketsCollected']) {
+    if (Access('Staff') && ($VYear['TicketsCollected'] ?? 0)) {
       $User = Get_User($VYear['CollectedBy']);
       echo fm_text1("Tickets Collected", $VYear,'TicketsCollected') . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
     }
