@@ -135,6 +135,7 @@ function PerfChangePrint($Mode=1) {
   
   $Events = [];
   $LastPerf = 0;
+  $RealPerf = 1;
 
 //  dohead("Lineup changes since the programme went to print",[],1);
   
@@ -147,7 +148,7 @@ function PerfChangePrint($Mode=1) {
   
   foreach ($PChanges as $PC) {
     if ($PC['SideId'] == $LastPerf) {
-      $Perfs[$LastPerf]['Changes'][] = $PC;
+      if ($RealPerf) $Perfs[$LastPerf]['Changes'][] = $PC;
     } else {
       $LastPerf = $PC['SideId'];
       $Res = Get_SideAndYear($LastPerf);
@@ -155,7 +156,11 @@ function PerfChangePrint($Mode=1) {
         echo "<span class=Err>Error Performer $LastPerf not found</span><br>";
         continue;
       }
-      if ($Res['NotPerformer'] ?? 0) continue;
+      if ($Res['NotPerformer'] ?? 0) {
+        $RealPerf = 0;
+        continue;
+      }
+      $RealPerf = 1;
       $Perfs[$LastPerf] = $Res;
       $Perfs[$LastPerf]['Changes'] = [$PC];
     }
@@ -165,6 +170,7 @@ function PerfChangePrint($Mode=1) {
     return ($a['SN'] <=> $b['SN']);
   }
   
+//  var_dump($Perfs);exit;
   uasort($Perfs, 'Pcmp');
   
   echo "<table border style='min-width:1200'><td>Performer<td>Changes\n";
