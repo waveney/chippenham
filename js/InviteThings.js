@@ -86,9 +86,12 @@ function MProformaSend(name,snum,label,link,AlwaysBespoke=0) { // Actions on Per
     $("#DebugPane").load("sendMproforma.php", "I=" + snum + "&N=" + name +"&E=" +AltEmail); // the callback should change YearState
     $("#Invited").load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by sendMproforma
     $('input[name="YearState"]').filter("[value='5']").prop('checked', true); 
-  }
-  
-  
+  } 
+}
+
+function ProformaVolSend(name,id) {
+  $("#Debug").load("sendVproforma.php", "I=" + id + "&N=" + name ); 
+  $('#VolSendEmail' + id).hide();
 }
 
 function Add_Bespoke() {

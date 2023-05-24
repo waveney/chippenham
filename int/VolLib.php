@@ -964,7 +964,8 @@ function List_Vols() {
 
 //    var_dump($VY);
     $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$id>";
-    echo "<tr class='altcolours $VClass " . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || ($VY['Status'] == 4))?" FullD' hidden" : "'" ) . ">";
+    echo "<tr class='altcolours $VClass " . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || 
+          ($VY['Status'] == 4))?" FullD' hidden" : "'" ) . ">";
     echo "<td>$id";
     echo "<td>$link" . $Vol['SN'] . "</a>";
     echo "<td>" . $Vol['Email'];
@@ -975,7 +976,8 @@ function List_Vols() {
       Put_Vol_Year($VY);
     }
     
-    echo "<td>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . $YearStatus[$VY['Status']] . "</span>"):'');
+    echo "<td>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . 
+      $YearStatus[$VY['Status']] . "</span>"):'');
       if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
     echo "<td class=FullD hidden>$year";
     echo $str;
@@ -992,8 +994,11 @@ function List_Vols() {
       echo "<td>";
       if ($Form) {
         echo "<b><a href=Volunteers?ACTION=Accept&id=$id>Accept</a></b>\n";
+
 //        echo "<input type=submit name=Accept value=Accept></form>\n";
       }
+      if (Access('SysAdmin')) echo  " <button type=button id=VolSendEmail$id class=ProfButton onclick=ProformaVolSend('Vol_Email1',$id,'Email1','SendVolEmail')" . 
+                   ">Email1</button>";
     }
   }
 
@@ -1001,7 +1006,8 @@ function List_Vols() {
     foreach ($VolCats as &$Cat) if ($Cat['Props'] & VOL_USE) echo "<td>" . $Cat['Total'];
   
   
-  
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=8 class=NotSide><textarea id=Debug></textarea>";  
+ 
   echo "</tbody></table></div>\n";
 
   echo "<h2><a href=Volunteers?A=New>Add a Volunteer</a></h2>";
@@ -1572,6 +1578,10 @@ function VolAction($Action,$csv=0) {
   case 'TicketList':
     TicketList($_REQUEST['Cat'] ?? -1);
     break;
+    
+  case 'Email1':
+    
+  
   }
   
   if (Access('Staff')) List_Vols();
