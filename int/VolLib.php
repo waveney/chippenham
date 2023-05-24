@@ -120,7 +120,7 @@ function Get_Vol_Details(&$vol) {
   if (Feature('Vol_Camping') && !empty($VY['CampNeed'])) {
     $Body .= "Camping: " . $camps[$VY['CampNeed']] . "<br>\n";
     if ($VY['CampNeed'] < 10) { }
-    elseif ($VY['CampNeed'] < 20) $Body .= "Space for: " . $CampType[$VY['CampType']] . "<p>\n";
+    elseif ($VY['CampNeed'] < 20) $Body .= "Space for: " . ($CampType[$VY['CampType']] ?? 0) . "<p>\n";
     elseif ($VY['CampNeed'] < 30) $Body .= "Space for: " . $VY['CampText'] . "<p>\n";
   }
 
@@ -324,13 +324,13 @@ function VolForm(&$Vol,$Err='',$View=0) {
     
       if ($cp & VOL_Likes)   { 
         $rows++; 
-        $Ctxt .= "\n<tr $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',4,"colspan=4 class=$cls $Hide $Colour",'',"Likes:$Catid:$PLANYEAR") . 
-                             $Cat['LExtra']; 
+        $Ctxt .= "\n<tr $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',4,"colspan=4 class=$cls $Hide $Colour",'',
+                 "Likes:$Catid:$PLANYEAR") . $Cat['LExtra']; 
       };
       if ($cp & VOL_Dislikes){ 
         $rows++; 
-        $Ctxt .= "\n<tr $Colour>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',4,"colspan=4 class=$cls $Hide $Colour",'',"Dislikes:$Catid:$PLANYEAR") .
-                             $Cat['DExtra']; 
+        $Ctxt .= "\n<tr $Colour>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',4,"colspan=4 class=$cls $Hide $Colour",'',
+                 "Dislikes:$Catid:$PLANYEAR") . $Cat['DExtra']; 
       };
 
       if ($cp & VOL_Exp){ 
@@ -342,7 +342,8 @@ function VolForm(&$Vol,$Err='',$View=0) {
         if ($cp & (VOL_Other1 << ($i-1))) {
           $rows++; 
           if ($cp & (VOL_Other1 << ($i+3))) {
-            $Ctxt .= "\n<tr>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i",3,3,"class=$cls $Hide $Colour",'',"Other$i:$Catid:$PLANYEAR");
+            $Ctxt .= "\n<tr>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i",3,3,
+                   "class=$cls $Hide $Colour",'',"Other$i:$Catid:$PLANYEAR");
           
           } else {
             $Ctxt .= "\n<tr>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",4,"colspan=4 class=$cls $Hide $Colour",'',"Other$i:$Catid:$PLANYEAR") .

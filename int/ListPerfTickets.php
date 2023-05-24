@@ -92,7 +92,7 @@
       }
       
       echo "<td id=Collect$sid>" . ($fetch['TicketsCollected']
-        ? "Collected " . date("D M j G:i:s",$fetch['TicketsCollected']) . " from " . ($Users[$fetch['CollectedBy']]['SN'] ?? 'Unknown')
+        ? "Collected " . date("D M j G:i:s",$fetch['TicketsCollected']) . " from " . ($Users[($fetch['CollectedBy'] ?? 0)]['SN'] ?? 'Unknown')
         : "<button type=button class=FakeButton onclick='TicketsCollected($sid)'>Collect</button>");
     } else {
       echo "<td>" . $fetch['FreePerf'];

@@ -147,7 +147,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
           $ErrC++;
         }
         if ($Events[$e]['SubEvent'] < 0) { $End = $Events[$e]['SlotEnd']; } else { $End = $Events[$e]['End']; };
-        if ($Events[$e]['BigEvent'] && ($Events[$e]['OtherPos'][$si] <= $Events[$e]['OtherCount']/2)) $End = timeadd($End, -30);
+        if ($Events[$e]['BigEvent'] && ($Events[$e]['OtherPos'][$si] <= $Events[$e]['OtherCount']/2)) $End = timeadd($End, -30); // WRONG
         if ($side['IsASide']) {
           if (!isset($side[$daynam])) { 
             $Err[] = "Event Issue: Dances not allowed for on $daynam (yet)";
