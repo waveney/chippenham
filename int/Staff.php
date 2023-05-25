@@ -427,7 +427,11 @@
     if (0 && Access('SysAdmin')) {
       $txt .= "<p><li><a href=Volunteers?A=CompAdd>Add Festival team and Complimentary tickets</a>\n";
       $txt .= "<li><a href=Volunteers?A=CompList>List Festival team and Complimentary tickets</a>\n";
-    }   
+    }
+    
+
+//    $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR&COL=1>Record Performer Ticket Collection</a><p>\n";    
+    
 
     $txt .= "</ul>\n";
   }

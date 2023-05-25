@@ -306,14 +306,16 @@ function RecordPerfChanges(&$now,&$Cur,$Up) {
   foreach ($Fields as $f) if (isset($Cur[$f]) && $now[$f] != $Cur[$f]) {
     if (($f == 'YearState') && ($now['YearState'] >= 2) && ($Cur['YearState'] > 0)) continue;
     if (preg_match('/(Sat)|(Sun)|(Mon)/',$f)) {
-      $f = ($now[$f]?'+':'-') . $f;
+      $ff = ($now[$f]?'+':'-') . $f;
+    } else {
+      $ff = $f;
     }
-    $Rec = Gen_Get_Cond1('PerfChanges',"( SideId=" . $now['SideId'] . " AND Field='$f' )");
+    $Rec = Gen_Get_Cond1('PerfChanges',"( SideId=" . $now['SideId'] . " AND Field='$ff' )");
     if (isset($Rec['id'])) {
       $Rec['Changes'] = $now[$f];
       Gen_Put('PerfChanges',$Rec);
     } else {
-      $Rec = ['SideId'=>$now['SideId'], 'Year'=>$PLANYEAR, 'Changes'=>$now[$f], 'Field'=>$f ];
+      $Rec = ['SideId'=>$now['SideId'], 'Year'=>$PLANYEAR, 'Changes'=>$now[$f], 'Field'=>$ff ];
       Gen_Put('PerfChanges',$Rec);
     }
     
@@ -323,51 +325,29 @@ function RecordPerfChanges(&$now,&$Cur,$Up) {
 function Put_SideYear(&$data,$Force=0) {
   global $db;
   global $Save_SideYears,$YEAR;
-/*  
-echo "<P>" . $data['SideId'] . " - " . $data['Year'] . " - " . $data['YearState'] . "<p>";
-if ($data['YearState'] != 5) {
-  debug_print_backtrace();
-  var_dump($data);
-}*/
   if (!$data) return;
   if ($Force) {
     $Save = Get_SideYear($data['SideId']);
-    $rec = "UPDATE SideYear SET ";
     $Up = 1;    
-  } else {
-   if (!isset($Save_SideYears[$data['SideId']][$data['Year']])) {
-    $Save = &$Save_SideYears[$data['SideId']][$YEAR];
-    $Save = Default_SY($data['SideId']);
-    $data = array_merge($Save,$data);
-    $rec = "INSERT INTO SideYear SET ";
-    $Up = 0;
-  } else { 
-    $Save = &$Save_SideYears[$data['SideId']][$data['Year']];
-    $rec = "UPDATE SideYear SET ";
-    $Up = 1;
+   } else {
+     if (!isset($Save_SideYears[$data['SideId']][$data['Year']])) {
+       $Save = &$Save_SideYears[$data['SideId']][$YEAR];
+       $Save = Default_SY($data['SideId']);
+       $data = array_merge($Save,$data);
+       $Up = 0;
+     } else { 
+       $Save = &$Save_SideYears[$data['SideId']][$data['Year']];
+       $Up = 1;
+     }
   }
-   }
-  $fcnt = 0;
-  foreach ($data as $fld=>$val) {
-    if ($Up == 0 || (isset($Save[$fld]) && $val != $Save[$fld])) {
-      if ($fcnt++) $rec .= ", ";
-      $rec .= "$fld='" . $val . "'";
-    }
-  }
-//return var_export($fcnt);
-//var_dump($data);
-  if (!$fcnt) return 0;
-  if ($Up) $rec .= " WHERE syId='" . $Save['syId'] . "'";
   
   if (Feature('RecordPerfChanges')) RecordPerfChanges($data,$Save,$Up);
-  
-  $Save = $data;
-//var_dump($rec);
-  if ($Up) return $db->query($rec);
-  $insert = $db->query($rec);
-  $snum = $db->insert_id;
-  $data['syId'] = $snum;
-  return $insert;
+  if ($Up) {
+    return Update_db('SideYear',$Save,$data);
+  } else {
+    return Insert_db('SideYear',$data);
+  }
+ 
 }
 
 function isknown($snum,$yr) {
