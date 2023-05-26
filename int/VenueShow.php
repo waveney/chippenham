@@ -329,6 +329,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     $things = 0;
     $ImpC = ImpCount($imps);
     $rows = max(1,ceil($ImpC/2));
+    $Colspan = (($ImpC == 0) ?' colspan=3 ':'');
 
     if ($e['SubEvent'] <0) { // has subes
       if ($e['LongEvent'] && !$imps) continue;
@@ -337,7 +338,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
       $rowsp1 = ($ImpC? $rows+1: $rows);
       echo "<tr><td rowspan=$rowsp1 $colwid valign=top><a href=EventShow?e=$eid>" . timecolon($e['Start']) . " - " . timecolon($e['End']) .  "</a>";
       if ($VirtVen) echo "<br>" . $VenNames[$e['Venue']];
-      echo "<td colspan=" . ($imps?$ll+($e['LongEvent']?0:1):$ll+1) . " valign=top><a href=EventShow?e=$eid>" . $parname . "</a>";
+      echo "<td colspan=" . ($imps?$ll+($e['LongEvent']?0:1):$ll+1) . " valign=top $Colspan ><a href=EventShow?e=$eid >" . $parname . "</a>";
       if ($e['Status'] == 1) echo "<br><div class=Cancel>CANCELLED</div>";
       if ($e['Description']) echo "<br>" . $e['Description'];
 
@@ -349,7 +350,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
       $lastDay = $e['Day'];
       $parname = $e['SN'];
       if ($Poster) $rows = 1; // Only ever show first row
-      $Colspan = (($ImpC == 0) ?' colspan=2 ':'');
+
       echo "<tr><td rowspan=$rows $colwid $Colspan valign=top><a href=EventShow?e=$eid valign=top>"
            . timecolon($e['Start']) . " - " . timecolon($e['End']) . "</a>";
       if ($VirtVen) {
@@ -372,7 +373,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
         $parname = $pare['SN']; 
         echo "<tr><td rowspan=$rows $colwid valign=top ><a href=EventShow?e=$lastevent>" . timecolon($e['Start']) . " - " . timecolon($e['End']) . "</a>";
         if ($VirtVen) echo "<br>" . $VenNames[$e['Venue']];
-        echo "<td rowspan=$rows valign=top ><a href=EventShow?e=$lastevent>" . $parname . "</a>";
+        echo "<td rowspan=$rows $Colspan valign=top ><a href=EventShow?e=$lastevent>" . $parname . "</a>";
         if ($e['Status'] == 1) echo "<br><div class=Cancel>CANCELLED</div>";
         if ($pare['Description']) echo "<br>" . $pare['Description'];
         if ($imps) PrintImps($imps,$NotAllFree,Price_show($pare,1),$rows,$ImpC);
