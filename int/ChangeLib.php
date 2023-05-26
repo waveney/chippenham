@@ -110,6 +110,10 @@ function EventChangePrint($Mode=1) {
       case 'Type' :
         $Chtxt[6] = 'Changed Type';
         break;
+      case 'Venue' :
+        $Chtxt[7] = 'Changed Venue';
+        break;
+ 
       }
     }
     echo implode(", ",$Chtxt);
