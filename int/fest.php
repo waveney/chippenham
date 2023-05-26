@@ -12,7 +12,7 @@ if (isset($_REQUEST['Y'])) $YEAR = $_REQUEST['Y'];
 if (isset($_REQUEST['B'])) $BUTTON = ($_REQUEST['B']+1) % 4;
 
 if (isset($YEAR)) {
-  if (strlen($YEAR)>10) exit("Invalid Year");
+  if (strlen($YEAR)>6) exit("Invalid Year");
 }
 
 $Access_Levels = ['','Participant','Upload','Steward','Staff','Committee','SysAdmin','Internal'];// Sound Engineers will be Stewards, Upload not used yet

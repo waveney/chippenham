@@ -2,7 +2,7 @@
   include_once("int/fest.php");
 
   set_ShowYear();
-  $Type = $_REQUEST['t'];
+  $Type = ($_REQUEST['t'] ?? 1);
 
 // var_dump($_REQUEST);
 

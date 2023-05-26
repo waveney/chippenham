@@ -97,7 +97,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     echo "<div id=Poster>"; 
     echo "<center>";
     echo "<h2 class=subtitle id=Postertitle>";
-    echo "<img src=" . $FESTSYS['WebSiteBanner'] . " height=100><br>";
+    echo "<img src=" . $FESTSYS['WebSiteBanner'] . " height=60> &nbsp; ";
     $namlen = strlen($Ven['SN']);
     if ($namlen > 20) {
       $siz = 60 - floor(($namlen-16)/2);
@@ -157,7 +157,8 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
       echo "<div id=VenueMap><div id=MapWrap>";
       echo "<div id=DirPaneWrap><div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div></div>";
       echo "<p><div id=map style='min-height:300px; max-height:400px'></div></div><p>";
-      echo "<button class=PurpButton onclick=ShowDirect($V)>Directions</button> (From the " . Feature('DirectionDefault','Square') . " if it does not know your location)\n";
+      echo "<button class=PurpButton onclick=ShowDirect($V)>Directions</button> (From the " . Feature('DirectionDefault','Square') . 
+           " if it does not know your location)\n";
       echo "</div><script>Register_Onload(Set_MinHeight,'.venueimg','.MainContent')</script>\n";
       Init_Map(0,$V,18);
       echo "</div></div><div class=OneCol id=TwoCols2></div></div>";  
@@ -238,7 +239,9 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
               if (!$s['DiffImportance']) {
                 $iimp = $s['Importance'];
               } else {
-                foreach ($PerfTypes as $j=>$pd) if (Capability("Enable" . $pd[2])) if ($s[$pd[0]] && $s[$pd[2] . "Importance"] > $iimp) $iimp = $s[$pd[2] . "Importance"];
+                foreach ($PerfTypes as $j=>$pd) if (Capability("Enable" . $pd[2])) {
+                  if ($s[$pd[0]] && $s[$pd[2] . "Importance"] > $iimp) $iimp = $s[$pd[2] . "Importance"];
+                }
               }
               $e['With'][$Poster?$iimp:0][] = array_merge($s,$sidy);
             }
@@ -385,7 +388,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   echo "</table></div>\n";
 
   if ($Poster) {
-    echo "<div class=floatright id=qrcode></div>";
+    echo "<br><div class=floatright id=qrcode></div>";
     echo "<h3> To find out more scan this:<br>to visit " . $FESTSYS['HostURL'] . "</h3>"; // pixels should be multiple of 41
     echo "<script type='text/javascript'>
       var qrcode = new QRCode(document.getElementById('qrcode'), {

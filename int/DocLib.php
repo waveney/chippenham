@@ -305,7 +305,8 @@ function List_dir_ent(&$dir,$type,$xtra='') {
   echo "<td class=FullD hidden>" . (isset($AllU[$dir['Who']])?$AllU[$dir['Who']]: "Unknown");
   echo "<td>$type";
   echo "<td class=FullD hidden>" . date('d/m/y H:i:s',$dir['Created']);
-  echo "<td class=FullD hidden>" . ((isset($sub['AccessLevel']) && $dir['AccessLevel']>0) ? ($Access_Levels[$dir['AccessLevel']]  . ": " . $dir['AccessSections']) : "");
+  echo "<td class=FullD hidden>" . ((isset($sub['AccessLevel']) && $dir['AccessLevel']>0) ? 
+       ($Access_Levels[$dir['AccessLevel']]  . ": " . $dir['AccessSections']) : "");
   echo "<td>";
   if (Access('Committee','Docs') || $dir['Who'] == $USERID  || ($parid > 0 && $Parent['Who'] == $USERID )) {
     echo " <a href=Dir?d=$pid&Action=Rename1>Rename</a>"; 
