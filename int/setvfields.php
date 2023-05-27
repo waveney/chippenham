@@ -22,7 +22,7 @@ case 'VC':
     echo "Collected " . date("D M j G:i:s",$VY['TicketsCollected']) . " from " . ($USER['SN'] ?? 'Unknown') .
          " <button id=Oops$id type=button onclick=VTicketsCollected($id,0)>Oops - undo that</button>";
   } else { // error message to be presented
-    $User = Get_User($Sidey['CollectedBy']);
+    $User = Get_User($VY['CollectedBy']);
     echo "<span class=Err>ERROR - already Collected " . date("D M j G:i:s",$VY['TicketsCollected']) . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
   }
   exit;
