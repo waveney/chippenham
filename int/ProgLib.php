@@ -582,13 +582,14 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
 function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='',&$Event=0) {
   global $db,$PerfTypes;
   include_once "DanceLib.php";
+  if (!is_array($Others)) return;
   $now = time();
   $imps=array();
   $found = array();
   $something = 0;
   $ans = '';
   $pfx = '';
-  foreach ($Others as $oi=>$o) {
+  if ($Others) foreach ($Others as $oi=>$o) {
     if (($o['Identifier']> 0) && ($o['Type'] == 'Side' || $o['Type'] == 'Act' || $o['Type'] == 'Other' || $o['Type'] == 'OtherPerf' || $o['Type'] == 'Perf')) {
       $si = $o['Identifier'];  
       if (!isset($found[$si])) {
