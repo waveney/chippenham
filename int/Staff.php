@@ -15,7 +15,7 @@
   include_once("TradeLib.php");
   include_once("VolLib.php");
   $Years = Get_Years();
-  $Days = array('All','Sat','Sun','Mon');
+  $Days = array('All','Fri','Sat','Sun','Mon');
   $Heads = [];
   
   $ETypes = [];
@@ -175,9 +175,9 @@
       $txt .= "<li><a href=ListMusic?SEL=Booking&Y=$YEAR&T=M>List Music Acts Booking</a>\n";
       $txt .= "<li><a href=ListMusic?SEL=BookingLastYear&Y=$YEAR&T=M>List Music Acts Booking Last Year</a>\n";
       $txt .= "<li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=M>List All Music Acts in Database</a>\n";
-      $txt .= "<li><a href=/LineUp?T=Music&FORCE>Music Lineup</a> (Even if not public)";
 //      $txt .= "<li>Music Acts Summary"; //<a href=MusicSummary?Y=$YEAR>Music Acts Summary</a>\n";
     }
+    $txt .= "<li><a href=/LineUp?T=Music&FORCE>Music Lineup</a> (Even if not public)";
     if (Access('Staff','Music')) {
 //      $txt .= "<li>Invite Music Acts\n";
       $txt .= "<li><a href=CreatePerf?T=Music&Y=$YEAR>Add Music Act to Database</a>";
@@ -268,17 +268,6 @@
       $txt .= "<p><li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=Z>List All Acts without Performer Types set</a>\n";
     }
 
-    $txt .= "<p>";
-    $txt .= "<li><a href=PaperProg?ALPHA=1>Lineups for Printed Program</a> (Even if not public)";    
-    $txt .= "<li><a href=PaperTime>Events for Printed Program</a> (Even if not public)";    
-    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat>Sat Dance Grid for Printed Program</a>";    
-    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun>Sun Dance Grid for Printed Program</a>";    
-    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon>Mon Dance Grid for Printed Program</a>";    
-    
-    $txt .= "<p>";
-    $txt .= "<li><a href=/PerfChanges>Performer Changes since programme went to print</a>";    
-    $txt .= "<li><a href=/EventChanges>Event Changes since programme went to print</a>";    
-    if (Access('SysAdmin')) $txt .= "<li><a href=PerfEventPrint>Event and Performer Changes to be printed</a>";    
     $txt .= "</ul>\n";
   }
     
@@ -346,13 +335,6 @@
       $txt .= "<input type=submit name=a value='Show Events at' id=staffformid>" . 
                 fm_hidden('Y',$YEAR) .
                 fm_select($Vens,0,'v',0," onchange=this.form.submit()") . " - A public view of events even if they are not public</form>\n";
-    $txt .= "<li><form method=Post action=VenueShow?Poster=1 class=staffform>";
-      $txt .= "<input type=submit name=a value='Poster For' id=Posterid>" . 
-                fm_hidden('Y',$YEAR) .
-                fm_select($Vens,0,'v',0," onchange=this.form.submit()") . 
-                fm_radio('',$Days,$_POST,'DAYS','',0) . fm_checkbox('Pics',$_POST,'Pics') .
-                "</form>\n";
-
     $txt .= "<li><form method=Post action=../Sherlock?SHOWALL=1 class=staffform>";
       $txt .= "<input type=submit name=a value='Timetable For' id=Posterid>" . 
                 fm_hidden('Y',$YEAR) .
@@ -433,6 +415,32 @@
 //    $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR&COL=1>Record Performer Ticket Collection</a><p>\n";    
     
 
+    $txt .= "</ul>\n";
+  }
+
+
+// *********************** Publicity *****************************************************************
+  if ($x = StaffTable('Events','Publicity')) {
+    $txt .= $x;
+    $txt .= "<ul>\n";
+    $txt .= "<li><form method=Post action=VenueShow?Poster=1 class=staffform>";
+      $txt .= "<input type=submit name=a value='Poster For' id=Posterid>" . 
+                fm_hidden('Y',$YEAR) . 
+                fm_select($Vens,0,'v',0," onchange=this.form.submit()") . "<br>" .
+                fm_radio('',$Days,$_POST,'DAYS','',0) . fm_checkbox('Pics',$_POST,'Pics') .
+                "</form>\n";
+
+    $txt .= "<p>";
+    $txt .= "<li><a href=PaperProg?ALPHA=1>Lineups for Printed Program</a> (Even if not public)";    
+    $txt .= "<li><a href=PaperTime>Events for Printed Program</a> (Even if not public)";    
+    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat>Sat Dance Grid for Printed Program</a>";    
+    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun>Sun Dance Grid for Printed Program</a>";    
+    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon>Mon Dance Grid for Printed Program</a>";    
+    
+    $txt .= "<p>";
+    $txt .= "<li><a href=/PerfChanges>Performer Changes since programme went to print</a>";    
+    $txt .= "<li><a href=/EventChanges>Event Changes since programme went to print</a>";    
+    if (Access('SysAdmin')) $txt .= "<li><a href=PerfEventPrint>Event and Performer Changes to be printed</a>";    
     $txt .= "</ul>\n";
   }
 

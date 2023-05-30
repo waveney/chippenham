@@ -9,15 +9,15 @@ Richard at a Folk Festival
 </div>
 
 <h3>BACKGROUND</h3>
-A sophisticated database and website system was developed for Wimborne Minster Folk Festival, using experence and knowledge from providing facilities for many events 
-(Folk Festivals and Science
+A sophisticated database and website system was originally developed for Wimborne Minster Folk Festival, using experence and knowledge 
+from providing facilities for many events (Folk Festivals and Science
 Fiction Conventions) over many years.  It is going to be of considerable use to other festivals and events in the future.<p>
 
-I have now parted company with Wimborne (Non) Folk Festival.  I now work with Chippenham, Swanage and any other genuine Folk Festival.<p>
+I have now parted company with Wimborne (No longer a) Folk Festival.  I now work with Chippenham, Swanage and any other genuine Folk Festival.<p>
 
 Rather than having lots of non-integrated spreadsheets and lists on many peoples computers to be lost when people leave and difficult to maintain, 
 the idea is to keep everything in one place (heavily backed up).  All records are central, with the philosophy that at the committee level, (almost) 
-everything is readable by all, but only limited people can update each type of area.<p>
+everything is readable by all (other than financial info), but only limited people can update each type of area.<p>
 
 <h3>FRONT END</h3>
 Most pages are generated on the fly as needed, showing performers (music, dance, other), tickets and prices, events listed by venue, time, type.<p>
@@ -53,10 +53,12 @@ This sits on top of a database with everything stored in it.<p>
 This is potentially available as a number of separate packages, dance, music, documents, timeline, trade etc.<p>
 
 <h3>OTHER FESTIVALS</h3>
-Realising that what was developed for Wimborne, could be of considerable use for other festivals, some work has been done to generalise it so others could use it.<p>
+Realising that what was developed for Wimborne, could be of considerable use for other festivals, some work has been done to 
+generalise it so others could use it.<p>
 
-This is an on going development and some parts are still very Wimborne specific, the intention is that it is licenseable in the future, if you are interested in what has been
-developed so far and would like to be involved, please contact <a href=mailto:Richard@wavwebs.com>Richard</a>.<p>
+This is an on going development and a few parts are still very Wimborne specific, the intention is that it is licenseable in the future, 
+if you are interested in what has been
+developed so far and would like to help and/or use it for your festival, please contact <a href=mailto:Richard@wavwebs.com>Richard</a>.<p>
 
 Note: The intention is to license the system, but (currently) none of the data about individual dance sides, performers etc.<p> 
 
