@@ -39,6 +39,7 @@
     $Url = preg_replace('/^\/\?.*/','/',$Url);
     $Url = preg_replace('/&fbclid=.*/','',$Url);
     $Url = preg_replace('/\?fbclid=.*/','',$Url);
+    $Url = preg_replace('/(ShowGallery?g=\d*)&p=(\d*)/','$1',$Url);
     
     if (strstr($Url,'Direct') || strstr($Url,'AddPerf') || strstr($Url,'EventAdd') || strstr($Url,'Login') || 
         strstr($Url,'EventList') || strstr($Url,'NewDanceProg') ||
