@@ -441,6 +441,7 @@
     $txt .= "<li><a href=/PerfChanges>Performer Changes since programme went to print</a>";    
     $txt .= "<li><a href=/EventChanges>Event Changes since programme went to print</a>";    
     if (Access('SysAdmin')) $txt .= "<li><a href=PerfEventPrint>Event and Performer Changes to be printed</a>";    
+    if (Access('SysAdmin')) $txt .= "<li><a href=Analytics>Analyse Google Analytics</a>";    
     $txt .= "</ul>\n";
   }
 
