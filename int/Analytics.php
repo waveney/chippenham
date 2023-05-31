@@ -6,7 +6,7 @@
   
   A_Check('SysAdmin');
   
-  global $YEAR;
+  global $YEAR,$DayLongList;
   
   // Get file to be analysed
   
@@ -72,7 +72,8 @@
       echo "<tr><td>Venue Show: " . ($Venues[$mtch[1]] ?? $mtch[1]) . "<td>$Cnt\n";
     } elseif (preg_match('/EventShow\?e=(\d*)/',$Page,$mtch)) {
       $Event = Get_Event($mtch[1]);
-      echo "<tr><td>Event Show: " . ($Event['SN'] ?? $mtch[1]) . "<td>$Cnt\n";
+      echo "<tr><td>Event Show: " . ($Event['SN'] ?? $mtch[1]) . " on " . $DayLongList[$Event['Day']] . " at " . 
+           ($Venues[$Event['Venue']] ?? $Event['Venue']) . " <td>$Cnt\n";
     } else {
       echo "<tr><td>$Page<td>$Cnt\n";
     }
