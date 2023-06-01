@@ -40,9 +40,12 @@
     $Url = preg_replace('/&fbclid=.*/','',$Url);
     $Url = preg_replace('/\?fbclid=.*/','',$Url);
     $Url = preg_replace('/(ShowGallery\?g\=\d*)&p=(\d*)/','$1',$Url);
+    $Url = preg_replace('/(SlideShow\?g\=\d*)&s=(\d*)/','$1',$Url);
     
     if (strstr($Url,'Direct') || strstr($Url,'AddPerf') || strstr($Url,'EventAdd') || strstr($Url,'Login') || 
-        strstr($Url,'EventList') || strstr($Url,'NewDanceProg') ||
+        strstr($Url,'EventList') || strstr($Url,'NewDanceProg') || strstr($Url,'/int/ShowFile') || strstr($Url,'NewDanceProg') ||
+        strstr($Url,'int/Access') || strstr($Url,'ListPerfTickets') || strstr($Url,'PaperProg') || strstr($Url,'/int/PAShow') || 
+        strstr($Url,'Analytics') || strstr($Url,'AddVenue') || strstr($Url,'VenueShow?Poster') || strstr($Url,'PerfEventPrint') ||
         strstr($Url,'Staff') || strstr($Url,'SendPerfEmail') || strstr($Url,'CreatePerf') || strstr($Url,'Volunteers?A=Show') || 
         strstr($Url,'int/Volunteers?A=List') || strstr($Url,'ListDance') || strstr($Url,'PaperTime') || strstr($Url,'ListUsers') || 
         strstr($Url,'ListArticles') || strstr($Url,'AddUser') || strstr($Url,'/int/Dir') || strstr($Url,'/int/StewardShow') || 
@@ -62,7 +65,7 @@
   
   arsort($PageUse);
   
-  echo "<table border><tr><td>Page<td>Count\n";
+  echo "<table border width=800><tr><td>Page<td>Count\n";
     
   foreach($PageUse as $Page=>$Cnt) {
     if (preg_match('/ShowPerf\?id=(\d*)/',$Page,$mtch)) {

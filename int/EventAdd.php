@@ -242,7 +242,7 @@ A similar feature will appear eventually for music.<p>
         $proc = 0;
       }
 
-      if ($_POST['Owner'] == 0) $_POST['Owner'] = $USERID;
+      if (empty($_POST['Owner'])) $_POST['Owner'] = $USERID;
       Parse_TimeInputs($EventTimeFields,$EventTimeMinFields);
       
       Parse_Perf_Selection();

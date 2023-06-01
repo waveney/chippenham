@@ -53,7 +53,7 @@
   } else {
     $str = '';
     $coln = 0;
-    $str .= "<div class=tablecont><table id=indextable border>\n";
+    $str .= "<div class=Scrolltable><table id=indextable border>\n";
     $str .= "<thead><tr>";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";

@@ -62,7 +62,7 @@
     echo "<h2>No Sides Found</h2>\n";
   } else {
     $coln = 1; // Start at 1 for select col
-    echo "<div class=tablecont><table id=indextable border width=100%>\n";
+    echo "<div class=Scrolltable><table id=indextable border width=100%>\n";
     echo "<thead><tr>";
     echo "<th><input type=checkbox name=SelectAll id=SelectAll onchange=ToolSelectAll(event)>\n";
     echo "<th width=200><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

@@ -29,7 +29,7 @@
   echo "Set Sherlock to number to select event by number.  Text string used instead of Sherlock call - eg dance<p>";
   
   echo "<form method=post action=EventTypes>";
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Event Type</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

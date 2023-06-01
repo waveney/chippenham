@@ -180,7 +180,7 @@
   
   
   echo fm_hidden('g',$Galid);
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Sel</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";

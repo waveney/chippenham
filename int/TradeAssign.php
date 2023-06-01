@@ -15,7 +15,7 @@
     if (!$Traders) {
       echo "No Traders Here Yet";
     } else {
-      echo "<div class=tablecont><table border><tr><td>Name<td>info<td>Size<td>Pitch";
+      echo "<div class=Scrolltable><table border><tr><td>Name<td>info<td>Size<td>Pitch";
       foreach ($Traders as $Trad) {
         $tid = $Trad['Tid'];
         echo "<tr><td draggable=true class='TradeName Trader$tid' id=TradeN$tid ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) " .

@@ -74,7 +74,7 @@
   // List
     $files = glob("Store/Performers/$id/*");
     if ($files) {
-      echo "<div class=tablecont><table border><tr><td>File Name<td>Size<td>Uploaded<td>Actions";
+      echo "<div class=Scrolltable><table border><tr><td>File Name<td>Size<td>Uploaded<td>Actions";
       foreach ($files as $file) {
         $fname = basename($file);
         echo "<tr><td><a href=ShowFile?l64=" . base64_encode("Store/Performers/$id/$fname") . ">$fname</a>";

@@ -34,7 +34,7 @@
   $coln = 0;
   echo fm_hidden('Y',$YEAR);
   echo fm_hidden('Year0',$PLANYEAR);
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Type</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

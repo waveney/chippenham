@@ -27,7 +27,7 @@
 
   echo "<h2>Map Points</h2><p>";
   echo "<form method=post action=MapPoints>";
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

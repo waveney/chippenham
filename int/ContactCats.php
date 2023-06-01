@@ -24,7 +24,7 @@
 
 // function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field2='',$colours=0,$multi=0,$extra3='',$extra4='') {
   echo "<form method=post action=ContactCats>";
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Index</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

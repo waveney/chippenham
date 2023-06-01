@@ -104,7 +104,7 @@
   echo "Click on Id/Name to edit, on Show for public page.<p>\n";
   echo "If the Stewards column has 'Stew' or 'Set' then there are more elaborate Stewarding/Setup Requirements - see the event for more detail.<p>";
   if ($se) echo fm_hidden('se',$se);
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
 
   if (!$PFComms) echo "<th><input type=checkbox name=SelectAll id=SelectAll onchange=ToolSelectAll(event)>\n";

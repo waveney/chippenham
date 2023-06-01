@@ -288,7 +288,6 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
     if (isset($Vol['Year']) && $YEAR != $Vol['Year']) {
       echo "<center>This shows what you filled in for " . $Vol['Year'] . " please update as appropriate</center>";
-//    $Vol['VYid'] = -1;
     }
     echo "<tr><td colspan=5><h3><center>Part 2: Which Team(s) would you like to volunteer for?</center></h3>\n";
 
@@ -399,7 +398,8 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
 //var_dump($camps);exit;
-      echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$PLANYEAR",0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
+      echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$PLANYEAR",
+        0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
       echo "<tr id=CampPUB>" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',1,' colspan=4',"CampType::$PLANYEAR");
       echo "<tr id=CampREST>" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
                     $VYear,'CampText',4,'','',"CampText::$PLANYEAR");
@@ -410,7 +410,8 @@ function VolForm(&$Vol,$Err='',$View=0) {
     $Stat = empty($VYear['Status'])?0:$VYear['Status'];
     echo "\n<tr><td>Application Status:<td colspan=3 " . ($Stat?'style=color:Green;font-weight:bold;>': 'style=color:Red;font-weight:bold;>') . $YearStatus[$Stat];
     if ($VYear['Status'] == 1 && $VYear['SubmitDate']) echo " On " . date('d/n/Y',$VYear['SubmitDate']);
-    if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate']) echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
+    if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate'])
+      echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
 
     if (Access('Staff') && ($VYear['TicketsCollected'] ?? 0)) {
       $User = Get_User($VYear['CollectedBy']);
@@ -647,7 +648,8 @@ function VolFormM(&$Vol,$Err='',$View=0) {
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
 //var_dump($camps);exit;
-      echo "<tr><td>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',-3,'',"CampNeed::$PLANYEAR",0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
+      echo "<tr><td>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',-3,'',"CampNeed::$PLANYEAR",
+        0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
       echo "<tr id=CampPUB><td>" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',-3,'',"CampType::$PLANYEAR");
       echo "<tr id=CampREST>" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
                     $VYear,'CampText',-2,'','',"CampText::$PLANYEAR");
@@ -658,7 +660,8 @@ function VolFormM(&$Vol,$Err='',$View=0) {
     $Stat = empty($VYear['Status'])?0:$VYear['Status'];
     echo "\n<tr><td>Application Status:<br><span " . ($Stat?'style=color:Green;font-weight:bold;>': 'style=color:Red;font-weight:bold;>') . $YearStatus[$Stat];
     if ($VYear['Status'] == 1 && $VYear['SubmitDate']) echo " On " . date('d/n/Y',$VYear['SubmitDate']);
-    if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate']) echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
+    if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate']) 
+      echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
     echo "</span>";
 
   echo "</table></div><p></div>";
@@ -893,11 +896,12 @@ function List_Vols() {
   $coln = 0;
 // var_dump($VolCats);  
   echo "<form method=post>";
-  echo "<div class=tablecont><table id=indextable border class=altcolours>\n";
+  echo "<div class=Scrolltable><table id=indextable border class=altcolours>\n";
   echo "<thead><tr>";
 
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
+
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
+  if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
@@ -966,8 +970,9 @@ function List_Vols() {
     $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$id>";
     echo "<tr class='altcolours $VClass " . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || 
           ($VY['Status'] == 4))?" FullD' hidden" : "'" ) . ">";
-    echo "<td>$id";
+
     echo "<td>$link" . $Vol['SN'] . "</a>";
+    if (Access('SysAdmin')) echo "<td>$id";
     echo "<td>" . $Vol['Email'];
     echo "<td>" . $Vol['Phone'];
     
@@ -1002,7 +1007,9 @@ function List_Vols() {
     }
   }
 
-  echo "<tr><td><td>Ad:$Ad Yth:$Yth Ch: $Ch<td>Ad+C:$AdC Yth+C:$YthC<td>Total confirmed<td>";  
+  echo "<tr><td>";
+  if (Access('SysAdmin')) echo "<td>";
+  echo "<td>Ad:$Ad Yth:$Yth Ch: $Ch<td>Ad+C:$AdC Yth+C:$YthC<td>Total confirmed";  
     foreach ($VolCats as &$Cat) if ($Cat['Props'] & VOL_USE) echo "<td>" . $Cat['Total'];
   
   
@@ -1030,7 +1037,7 @@ function List_Team($Team) {
   $coln = 0;
 // var_dump($VolCats);  
   echo "<form method=post>";
-  echo "<div class=tablecont><table id=indextable border class='altcolours TinyText'>\n";
+  echo "<div class=Scrolltable><table id=indextable border class='altcolours TinyText'>\n";
   echo "<thead><tr>";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
@@ -1260,7 +1267,7 @@ function TicketList($Cat) {
   $coln = 0;
 // var_dump($VolCats);  
   echo "<form method=post>";
-  echo "<div class=tablecont><table id=indextable border class=altcolours>\n";
+  echo "<div class=Scrolltable><table id=indextable border class=altcolours>\n";
   echo "<thead><tr>";
 
   if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";

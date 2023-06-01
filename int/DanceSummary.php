@@ -25,7 +25,7 @@
                 '($YEARDATA["FirstDay"] <= 3 && $YEARDATA["LastDay"] > 2)Sun Evening'=>("y.Coming=" . $Coming_Type['Y'] . " AND y.SunEve=1 "),
                 ); 
 
-  echo "<div class=tablecont><table border><tr><th>Category<th>Total";
+  echo "<div class=Scrolltable><table border><tr><th>Category<th>Total";
   foreach ($Types as $typ) echo "<th style='background:" . $typ['Colour'] . ";'>" . $typ['SN'];
   echo "<th>Other</tr>\n";
 

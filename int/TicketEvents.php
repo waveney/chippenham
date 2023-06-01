@@ -13,7 +13,7 @@
   $Evs = $db->query($qry);
 
   $coln = 0;
-  echo "<div class=tablecont><table id=indextable border=1>\n";
+  echo "<div class=Scrolltable><table id=indextable border=1>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Day</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Start</a>\n";

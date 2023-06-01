@@ -18,7 +18,7 @@
   echo "Any negative Menu Bar entry will not appear on 'All Galleries'<p>";
  
   echo "<form method=post action=GallManage>";
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

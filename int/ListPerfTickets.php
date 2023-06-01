@@ -37,7 +37,7 @@
   echo "All you should need to do is click the Collect button to the right of each performer.<p>" .
        "If you click one in error you have 15 seconds to click the Oops button to revert it.<p>" .
        "In the event of problems call Richard.<p>\n";
-  echo "<div class=tablecont><table id=indextable border width=100% style='min-width:1400px'>\n";
+  echo "<div class=Scrolltable><table id=indextable border width=100% style='min-width:1400px'>\n";
   echo "<thead><tr>";
   if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

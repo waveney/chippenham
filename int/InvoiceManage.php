@@ -297,7 +297,7 @@
   $Now = time();
   $TotInv = $TotPaid = 0;
   $coln = 0;
-  echo "<div class=tablecont><table id=indextable border class=SimpleTable>\n";
+  echo "<div class=Scrolltable><table id=indextable border class=SimpleTable>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   if ($All) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Inv/CN</a>\n";

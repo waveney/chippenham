@@ -12,7 +12,7 @@
   if (!isset($_GET['ALL'])) echo "<h2>Click <a href=VenueList?ALL>All</a> to see not in use Venues</h2>";
   $edit = Access('Staff','Venues');
   $coln = 0;
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Venue Id</a>\n";

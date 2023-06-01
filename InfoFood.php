@@ -26,7 +26,7 @@ if ($Center) {
 echo "<h2>Looking for the best Food and Drink in town?</h2>";
 echo "These establishments have supported the festival.<p>";
 
-echo "<div class=tablecont><table class=InfoTable><tr class=FoodHead><td>Name<td>Address<td>Post Code<td>Phone<td>What's on offer over the festival<td>Directions";
+echo "<div class=Scrolltable><table class=InfoTable><tr class=FoodHead><td>Name<td>Address<td>Post Code<td>Phone<td>What's on offer over the festival<td>Directions";
   $Food = Gen_Get_Cond('FoodAndDrink', "Year=$PLANYEAR ORDER By Importance DESC, SN");
   foreach ($Food as $f) {
     echo "<tr><td>" . $f['SN'] . "<td>" . $f['Address'] . "<td>" . $f['PostCode'] . "<td>" . $f['Phone'] .

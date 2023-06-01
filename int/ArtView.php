@@ -12,7 +12,7 @@
   if ($extra) echo "<h2><a href=LiveNLoudView?ALL>Show All including canceled and Declined</a></h2>";
   $coln = 0;  
 //  echo "<form method=post action=LiveNLoudView>";
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";

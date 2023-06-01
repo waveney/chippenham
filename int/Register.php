@@ -178,7 +178,7 @@ function ListReg() {
  
     $coln = 0;
     echo "<form method=post action=Register?ACTION=View>";
-    echo "<div class=tablecont><table id=indextable border>\n";
+    echo "<div class=Scrolltable><table id=indextable border>\n";
     echo "<thead><tr>";
 
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";

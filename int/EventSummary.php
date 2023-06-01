@@ -8,7 +8,7 @@
 
   echo "<div class=content><h2>Event Summary $YEAR</h2>\n";
 
-  echo "<div class=tablecont><table class=TueTab><tr><td>Event type<td>Number";
+  echo "<div class=Scrolltable><table class=TueTab><tr><td>Event type<td>Number";
 
   $tot = $sp = $fam = 0;
   foreach ($Event_Types as $t) {

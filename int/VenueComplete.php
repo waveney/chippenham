@@ -41,7 +41,7 @@
 
   $coln = 0;
   echo "<form method=post>";
-  echo "<div class=tablecont><table id=indextable border style='width:500;'>\n";
+  echo "<div class=Scrolltable><table id=indextable border style='width:500;'>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Index</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Venue</a>\n";

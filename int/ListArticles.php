@@ -23,7 +23,7 @@ Titles starting with @ have special derived content, which is generated on the f
 Click on the title to edit.<p>";
   $coln = 0;
   $now = time();
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Index</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Title</a>\n";

@@ -36,7 +36,7 @@
   if ($Manage) echo "<form method=post action=BudgetManage>";
   echo fm_hidden('Y',$YEAR);
   echo fm_hidden('Year0',$PLANYEAR);
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   if ($Manage) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

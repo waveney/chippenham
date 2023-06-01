@@ -777,7 +777,7 @@ function Extended_Prog($type,$id,$all=0) {
         if ($With) $str = "<td>With\n" . $str;
         $str = "<h2>$Desc Programme for " . $Thing['SN'] . " including overlaps:</h2>\n" . 
                 ($UsedNotPub?"<span class=NotCSide>These are not currently public<p>\n</span>":"") .
-                "<div class=tablecont><table border class=PerfProg><tr><td>Day<td>time<td>As<td>Event<td>Venue" . $str;
+                "<div class=Scrolltable><table border class=PerfProg><tr><td>Day<td>time<td>As<td>Event<td>Venue" . $str;
       }
     }
     if ($evc) {

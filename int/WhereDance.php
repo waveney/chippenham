@@ -33,7 +33,7 @@
  
   sort($ks);
 
-  echo "<div class=tablecont><table border><td>PostCode<td>Sat<td>Sun<td>Both\n";
+  echo "<div class=Scrolltable><table border><td>PostCode<td>Sat<td>Sun<td>Both\n";
   foreach ($ks as $pc) {
     echo "<tr><td>$pc<td>" . $PCodes[$pc]['Sat'] . "<td>" . $PCodes[$pc]['Sun'] . "<td>" . $PCodes[$pc]['Both'] . "\n";
   }

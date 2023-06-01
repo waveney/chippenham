@@ -29,7 +29,7 @@
                 'Coming on Sun'=>("y.Coming=" . $Coming_Type['Y'] . " AND y.Sun=1 ")
                 ); 
 
-  echo "<div class=tablecont><table border><tr><th>Category<th>Total";
+  echo "<div class=Scrolltable><table border><tr><th>Category<th>Total";
   foreach ($Types as $typ) echo "<th>$typ";
   echo "<th>Other</tr>\n";
 

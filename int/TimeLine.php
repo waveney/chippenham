@@ -134,7 +134,7 @@ Coming ...
   echo "</ul>\n";
 */
 
-  echo "<div class=tablecont><table style=' width: auto;' border><tr><td><a class=PurpButton href=AddTimeLine>Add a Task</a>";
+  echo "<div class=Scrolltable><table style=' width: auto;' border><tr><td><a class=PurpButton href=AddTimeLine>Add a Task</a>";
   echo "<td><div class=PurpButton id=TasksYou onclick=TLSelect(this.id)>Your Tasks</div><br><div class=PurpSelect id=TasksAll onclick=TLSelect(this.id)>Everyone's</div>";
   echo "<td><div class=PurpButton id=OpenTasks onclick=TLSelect(this.id)>Open Tasks</div>";
   echo     "<div class=PurpSelect id=NextMonth onclick=TLSelect(this.id)>Tasks Due Next Month</div>";

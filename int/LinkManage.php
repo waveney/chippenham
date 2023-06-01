@@ -16,7 +16,7 @@
   echo "<h2>Links</h2><p>";
   echo "Heading 'Category' not yet used.<p>";
   echo "<form method=post action=LinkManage>";
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

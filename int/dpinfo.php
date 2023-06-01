@@ -15,10 +15,10 @@
 
   echo "<html><body>";
 
-  echo "<div class=tablecont><table><tr><td>";
+  echo "<div class=Scrolltable><table><tr><td>";
   echo "<h2>" . SName($data) . "</h2>\n";
   echo "<td align=right><a href=$link>Edit</a> <a onclick=infoclose(event)>X</a> &nbsp; </table></div>\n";
-  echo "<div class=tablecont><table>";
+  echo "<div class=Scrolltable><table>";
   if ($data['Type']) echo "<tr><td>Type:<td>" . $data['Type'];
   if ($data['Description']) echo "<tr valign=top><td>Desc:<td>" . $data['Description'];
   $surfs = 0; 

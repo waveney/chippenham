@@ -504,7 +504,7 @@ function Replace_Help($Area='',$Right=0) {
   echo "<span " . ($Right?' class=floatright':'') . " id=largeredsubmit onclick=($('.HelpDiv').toggle()) >Click to toggle Standard Replacements Help</span>";
   echo "<div class=HelpDiv hidden>";
 
-  echo "<div class=tablecont><table border>\n";
+  echo "<div class=Scrolltable><table border>\n";
   echo "<tr><td>Code<td>What it does<td>Areas \n";
 
   foreach($Reps as $r) {

@@ -14,7 +14,7 @@
 
   $coln = 0; 
   echo "Click on Id/Name to edit, on Show for public page.<p>\n";
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Event Id</a>\n";

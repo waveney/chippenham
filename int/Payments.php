@@ -41,7 +41,7 @@
   } else {  
     echo "<h2><a href=Payments?Y=$YEAR&F=CSV>Output as CSV</a></h2>";
     $coln = 0;
-    echo "<div class=tablecont><table id=indextable border>\n";
+    echo "<div class=Scrolltable><table id=indextable border>\n";
     echo "<thead><tr>";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>id</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

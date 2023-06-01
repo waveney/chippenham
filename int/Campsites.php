@@ -24,7 +24,7 @@ function ListSites() {
   echo "Clicking on the name takes you to edit access<br>\n";
   
   $coln = 0;
-  echo "<div class=tablecont><table id=indextable border width=100% style='min-width:1400px'>\n";
+  echo "<div class=Scrolltable><table id=indextable border width=100% style='min-width:1400px'>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";

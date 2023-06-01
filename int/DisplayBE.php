@@ -23,7 +23,7 @@
   if ($things) {
     $Posn = 1;
     echo "<h2>" . $Event['SN'] . "</h2>\n";
-    echo "<div class=tablecont><table border><tr><th>Position<th>What<th>Notes\n";
+    echo "<div class=Scrolltable><table border><tr><th>Position<th>What<th>Notes\n";
     foreach ($things as $i=>$t) {
       $id = $t['Identifier'];
       $tt = $t['Type'];

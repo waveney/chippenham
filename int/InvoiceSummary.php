@@ -28,7 +28,7 @@
      
   $Now = time();
   $coln = 0;
-  echo "<div class=tablecont><table id=indextable border>\n";
+  echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'D')>Date Raised</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Client</a>\n";
