@@ -341,7 +341,7 @@ function Put_SideYear(&$data,$Force=0) {
      }
   }
   
-  if (Feature('RecordPerfChanges')) RecordPerfChanges($data,$Save,$Up);
+  if (FestFeature('RecordPerfChanges')) RecordPerfChanges($data,$Save,$Up);
   if ($Up) {
     return Update_db('SideYear',$Save,$data);
   } else {

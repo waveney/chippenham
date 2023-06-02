@@ -185,13 +185,13 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         
       case '~' : // Only if Event Changes recorded, move to end
         $text = substr($text,1);
-        if (Feature('RecordEventChanges') !=2 ) continue 2;
+        if (FestFeature('RecordEventChanges') !=2 ) continue 2;
         if (Gen_Get_Cond1('EventChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
         continue 2;
                 
       case '_' : // Only if Perf Changes recorded, move to end
         $text = substr($text,1);
-        if (Feature('RecordPerfChanges') !=2) continue 2;
+        if (FestFeature('RecordPerfChanges') !=2) continue 2;
         if (Gen_Get_Cond1('PerfChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
         continue 2;
         break;

@@ -73,7 +73,7 @@ function RecordBeEventChanges($Ev) {
 
     case 'SZ': // Remove
       db_delete_cond('BigEvent',"Event=$Ev AND ( Type='$stt' OR Type='Perf' OR Type='Act' OR Type='Other' )  AND Identifier=$sid");
-      if (Feature('RecordEventChanges') && $sid >0) {
+      if (FestFeature('RecordEventChanges') && $sid >0) {
         RecordPerfEventChange($sid,$Type='Perform');
         RecordBeEventChanges($Ev);
       }
@@ -82,7 +82,7 @@ function RecordBeEventChanges($Ev) {
     case 'ZE': // New
       $new = array('Event'=>$Ev, 'Type'=>$stt, 'Identifier'=>$sid, 'EventOrder'=>$dstmtch[2]);
       Insert_db('BigEvent',$new);
-      if (Feature('RecordEventChanges') && $sid >0) {
+      if (FestFeature('RecordEventChanges') && $sid >0) {
         RecordPerfEventChange($sid,$Type='Perform');
         RecordBeEventChanges($Ev);
       }

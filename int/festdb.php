@@ -274,7 +274,7 @@ function Feature($Name,$default='') {  // Return value of feature if set from FE
   return $default;
 }
 
-function FestFeature($Name,$default='') {  // Return value of feature if set from FESTSYS
+function FestFeature($Name,$default='') {  // Return value of feature if set 
   static $Features;
   global $YEARDATA;
   if (!$Features) {
