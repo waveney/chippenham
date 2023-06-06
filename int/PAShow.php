@@ -7,7 +7,7 @@
   include_once("ProgLib.php");
   include_once("DanceLib.php");
   include_once("ViewLib.php");
-  global $YEAR,$FESTSYS;
+  global $YEAR;
     
   $Ven = Get_Venue($V);
   $host = "https://" . $_SERVER['HTTP_HOST'];
@@ -110,7 +110,8 @@
     if ($e['StagePA']) $rows++;
     
     if ($rows) {
-      echo "<tr><td rowspan=$rows>". timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td rowspan=$rows>" . ($e['SubEvent']<1?$e['SN']:"") ;
+      echo "<tr><td rowspan=$rows>". timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td rowspan=$rows>" . 
+           ($e['SubEvent']<1?$e['SN']:"") ;
       $tr = 0;
       if ($e['StagePA']) { echo "<td><td>" . $e['StagePA']; $tr=1;}
       if (isset($e['With'])) foreach ($e['With'] as $snum) {

@@ -6,7 +6,7 @@
   include_once("DanceLib.php");
   include_once("Email.php");
   
-  global $FESTSYS,$db;
+  global $db;
   
 function decode_addr($addr) {
     $to = json_decode($addr,true);

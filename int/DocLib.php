@@ -34,6 +34,7 @@ $Dir_cache = array();
 
 function Get_DirInfo($d,$new=0) {
   global $db,$Dir_cache,$USER,$USERID;
+  Set_User();
   if ($new==0 && isset($Dir_cache[$d])) return $Dir_cache[$d];
 
   $qry = "SELECT * FROM Directories WHERE DirId='" . $d . "'";
@@ -42,7 +43,8 @@ function Get_DirInfo($d,$new=0) {
   $rec = $res->fetch_assoc();
   if (!$rec) return $Dir_cache[$d] = 0;
   if ($rec['AccessLevel'] == 0 || $rec['Who'] == $USERID || $rec['AccessLevel'] < $USER['AccessLevel']) { // Not restricted
-    } else if ($rec['AccessLevel'] == $USER['AccessLevel'] && $rec['AccessSections'] !='') {
+    } 
+  else if ($rec['AccessLevel'] == $USER['AccessLevel'] && $rec['AccessSections'] !='') {
 
     $sects = explode(',',$rec['AccessSections']);
     $valid = 0;

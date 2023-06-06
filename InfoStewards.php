@@ -2,7 +2,7 @@
   include_once("int/fest.php");
   include_once("int/VolLib.php");
   include_once("int/DispLib.php");
-  global $FESTSYS,$PLANYEAR,$YEARDATA;
+  global $PLANYEAR,$YEARDATA;
   
   dohead("Get Involved",["/js/Articles.js"],1);
 

@@ -18,7 +18,7 @@
       Update_db_post('Venues',$Venue);
     } else { /* New */
       $proc = 1;
-      if (!isset($_POST['SN'])) {
+      if (empty($_POST['SN'])) {
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $proc = 0;
       }

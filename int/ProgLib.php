@@ -328,11 +328,11 @@ function Put_Event(&$now,$new=0) {
   $e=$now['EventId'];
   $Cur = Get_Event($e,$new);
   if (isset($Cur['EventId'])) {
-    if (FestFeature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
+    if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
     Update_db('Events',$Cur,$now);
   } else {
     Update_db('Events',$Cur,$now);  
-    if (FestFeature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
+    if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
   }
   Check_4Changes($Cur,$now);
 }

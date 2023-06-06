@@ -96,7 +96,7 @@ This is data about the festival that is multi-year.<p>
 Hope to automate it soon.
 <tr><td>Show year/ Plan year<td>Show year is what year's festival the public side defaults to.  Plan year is what year the staff pages default to.  
 Typically the Plan year moves to the next year as soon as the festival has finished, the Show year only when material for the comming year is available.  
-Internally use $YEAR, $PLANYEAR, $SHOWYEAR and $CALYEAR for year being worked on, the plan year, the show year and the actual callenda year.
+Internally use $YEAR, $PLANYEAR and $SHOWYEAR for year being worked on, the plan year and the show year.
 <tr><td>Host URL<td>This is the host the SMTP will use to send outgoing email.
 <tr><td>SMTP user/password<td>This is used for the system to send emails
 <tr><td>Features<td>Controls Feature availability - see below

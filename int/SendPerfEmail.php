@@ -4,7 +4,7 @@ include_once("fest.php");
 include_once("DanceLib.php");
 include_once("MusicLib.php");
 include_once("Email.php");
-global $FESTSYS,$PLANYEAR,$USER,$USERID,$PerfTypes,$CONF;
+global $PLANYEAR,$USER,$USERID,$PerfTypes,$CONF;
 
 A_Check("Staff");
 
@@ -16,7 +16,7 @@ if (isset($_REQUEST['REEDIT'])) {
   $id = $Log['TypeId'];
   $Side = Get_Side($id);
   $Sidey = Get_SideYear($id);
-  $subject = $FESTSYS['FestName'] . " $PLANYEAR and " . $Side['SN'];
+  $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
   $Mess = $Log['TextBody'];  
   $Mess = preg_replace("/<p>\s*\n\s*\n/","\n\n",$Mess);
   $Mess = preg_replace("/\s*\n\s*\n<p>/","\n\n",$Mess);
@@ -45,7 +45,7 @@ if (isset($_REQUEST['REEDIT'])) {
 //  var_dump($Atts);
   $Side = Get_Side($id);
   $Sidey = Get_SideYear($id);
-  $subject = $FESTSYS['FestName'] . " $PLANYEAR and " . $Side['SN'];
+  $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
   $Mess = (isset($_POST['Message'])?$_POST['Message']:(Get_Email_Proforma($proforma))['Body']);
   $To = $Side['Email'];
   if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
@@ -78,12 +78,12 @@ if (isset($_REQUEST['REEDIT'])) {
       if ($USERID == $Sidey['BookedBy']) {
         if (!empty($USER['FestEmail'])) {
           $ReplyTo = $USER['FestEmail'];
-          if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . $FESTSYS['HostURL'];
+          if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
         }
       } else {
         $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
         $ReplyTo = $User['FestEmail'];
-        if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . $FESTSYS['HostURL'];
+        if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
       }
     }
 
@@ -92,8 +92,8 @@ if (isset($_REQUEST['REEDIT'])) {
     }
 
     $too = [['to',$To,$Side['Contact']],
-//            ['from',$ReplyTo,$FESTSYS['ShortName']], // WRONG ANYWAY
-            ['replyto',$ReplyTo,$FESTSYS['ShortName']]];
+//            ['from',$ReplyTo,Feature('ShortName')], // WRONG ANYWAY
+            ['replyto',$ReplyTo,Feature('ShortName')]];
 
 
     if ($_POST['CCs']) {

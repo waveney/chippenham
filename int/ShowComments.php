@@ -6,7 +6,7 @@
   include_once("ProgLib.php");
   include_once("DanceLib.php");
   include_once("ViewLib.php");
-  global $YEAR,$FESTSYS,$USERID,$USER, $Access_Type, $Event_Types;
+  global $YEAR,$USERID,$USER, $Access_Type, $Event_Types;
     
 // UNFINISHED CODE - DONT USE YET
     

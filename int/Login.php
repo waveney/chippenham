@@ -10,7 +10,7 @@
   include_once("UserLib.php");
     
 function Logon(&$use=0) {
-  global $YEAR,$USER,$USERID,$CALYEAR;
+  global $YEAR,$USER,$USERID;
   $Rem = 0;
   if (!$use) {
     $user = $_POST['UserName'];
@@ -31,7 +31,7 @@ function Logon(&$use=0) {
     }
     if ($ans['AccessLevel']) {
       $ans['Yale'] = rand_string(40);
-      setcookie('FEST2',$ans['Yale'],($Rem ? mktime(0,0,0,1,1,$CALYEAR+1) : 0),'/' );
+      setcookie('FEST2',$ans['Yale'],($Rem ? mktime(0,0,0,1,1,gmdate('Y')+1) : 0),'/' );
       $_COOKIE['FEST2'] = $ans['Yale'];
       Put_User($ans);
       $USER=$ans;
@@ -45,14 +45,14 @@ function Logon(&$use=0) {
 }
 
 function ActAs() {
-  global $CONF,$CALYEAR,$USER,$USERID;
+  global $CONF,$USER,$USERID;
   $user = $_REQUEST['i'];
   $ans = Get_User($user);
   if (!empty($CONF['Testing'])) Error_Page('Only on non live systems');
   if ($_REQUEST['k'] != $ans['AccessKey']) Error_Page('Invalid key');
 
 //      $ans['Yale'] = rand_string(40); Don't chaange when acting as
-      setcookie('FEST2',$ans['Yale'],mktime(0,0,0,1,1,$CALYEAR+1),'/' );
+      setcookie('FEST2',$ans['Yale'],mktime(0,0,0,1,1,gmdate('Y')+1),'/' );
       $_COOKIE['FEST2'] = $ans['Yale'];
       Put_User($ans);
       $USER=$ans;
@@ -62,7 +62,6 @@ function ActAs() {
 }
 
 function Forgot() {
-  global $FESTSYS;
   $rand_hash = rand_string(40);
   $user = $_POST['UserName'];
   if (strlen($user) > 2) {
@@ -73,7 +72,8 @@ function Forgot() {
         $ans['AccessKey'] = $rand_hash;
         Put_User($ans);
 
-        Email_Proforma(4,$ans['UserId'],$ans['Email'],'Login_Forgot_Password', $FESTSYS['FestName'] . " Staff Access for " . $ans['SN'],'Login_Details',$ans,'LoginLog.txt');
+        Email_Proforma(4,$ans['UserId'],$ans['Email'],'Login_Forgot_Password', 
+            Feature('FestName') . " Staff Access for " . $ans['SN'],'Login_Details',$ans,'LoginLog.txt');
         return "A limited use link has been emailed to you";
       }
     }
@@ -158,7 +158,7 @@ function Login($errmsg='', $message='') {
 }
 
 function NewPasswd() {
-  global $YEAR,$USER,$USERID,$CALYEAR;
+  global $YEAR,$USER,$USERID;
   $user = $_POST['UserId']; 
   if (!$user) $user = $USERID;
   if (!($ans = Get_User($user) )) Login("User not known");
@@ -182,7 +182,7 @@ function NewPasswd() {
   $ans['Yale'] = rand_string(40);
   $USER = $ans;
   $USERID = $user;
-  setcookie('FEST2',$ans['Yale'],($_POST['RememberMe'] ? mktime(0,0,0,1,1,$CALYEAR+1) : 0 ),'/');
+  setcookie('FEST2',$ans['Yale'],($_POST['RememberMe'] ? mktime(0,0,0,1,1,gmdate('Y')+1) : 0 ),'/');
   Put_User($ans);
   include ("Staff.php"); // no return wanted
   exit;

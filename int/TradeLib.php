@@ -456,11 +456,6 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
   echo "</table></div>";
 }
 
-function Trade_TandC() {
-  global $FESTSYS;
-  echo $FESTSYS['TradeTandC'];
-}
-
 function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   global $YEAR,$PLANYEAR,$YEARDATA,$Trade_States,$Mess,$Action,$ADDALL,$Trade_State_Colours,$InsuranceStates,$Trade_State,$Trade_Days,$EType_States,$YEARDATA;
   $Trad = Get_Trader($Tid);
@@ -828,38 +823,38 @@ function Trader_Admin_Details($key,&$data,$att=0) {
 }
 
 function Send_Trader_Email(&$Trad,&$Trady,$messcat='Link',$att='') {
-  global $PLANYEAR,$FESTSYS;
+  global $PLANYEAR;
   include_once("Email.php");
   $bccto = Feature('CopyTradeEmailsTo');
   $bcc=[];
   $from = Feature('SendTradeEmailFrom');
-  if ($from) $from .= "@" . $FESTSYS['HostURL'];
-  if ($bccto) $bcc = ['bcc' , "$bccto@" . $FESTSYS['HostURL'],Feature('CopyTradeEmailsName')];
+  if ($from) $from .= "@" . Feature('HostURL');
+  if ($bccto) $bcc = ['bcc' , "$bccto@" . Feature('HostURL'),Feature('CopyTradeEmailsName')];
   Email_Proforma(2,$Trad['Tid'],[['to',$Trad['Email'],$Trad['Contact']],$bcc],
-    $messcat,$FESTSYS['FestName'] . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att,0,$from);
+    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att,0,$from);
 }
 
 function Send_Trader_Simple_Email(&$Trad,$messcat='Link',$att='') {
-  global $PLANYEAR,$FESTSYS;
+  global $PLANYEAR;
   include_once("Email.php");
   $from = Feature('SendTradeEmailFrom');
-  if ($from) $from .= "@" . $FESTSYS['HostURL'];
-  Email_Proforma(2,$Trad['Tid'],[$Trad['Email'],$Trad['Contact']],$messcat,$FESTSYS['FestName'] . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad],'TradeLog',$att,0,$from);
+  if ($from) $from .= "@" . Feature('HostURL');
+  Email_Proforma(2,$Trad['Tid'],[$Trad['Email'],$Trad['Contact']],$messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad],'TradeLog',$att,0,$from);
 }
 
 function Send_Trade_Finance_Email(&$Trad,&$Trady,$messcat,$att=0) {
-  global $PLANYEAR,$FESTSYS;
+  global $PLANYEAR;
   include_once("Email.php");
 
-  Email_Proforma(2,$Trad['Tid'],"treasurer@" . $FESTSYS['HostURL'],$messcat,$FESTSYS['FestName'] . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att);
+  Email_Proforma(2,$Trad['Tid'],"treasurer@" . Feature('HostURL'),$messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att);
 }
 
 function Send_Trade_Admin_Email(&$Trad,&$Trady,$messcat,$att=0) {
 
-  global $PLANYEAR,$FESTSYS;
+  global $PLANYEAR;
   include_once("Email.php");
 
-  Email_Proforma(2,$Trad['Tid'],"trade@" . $FESTSYS['HostURL'],$messcat,$FESTSYS['FestName'] . " $PLANYEAR and " . $Trad['SN'],'Trader_Admin_Details',[&$Trad,&$Trady],'TradeLog',$att);
+  Email_Proforma(2,$Trad['Tid'],"trade@" . Feature('HostURL'),$messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Admin_Details',[&$Trad,&$Trady],'TradeLog',$att);
 }
 
 //  Mark as submitted, email fest and trader, record data of submission
@@ -1026,7 +1021,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
 // Mode 0 = Traders, 1 = ctte, 2 = Finance (for other invoices) Program = Trade/Trader $iddd if set starts it up, with that Tid
 
   global $YEAR,$PLANYEAR,$Mess,$Action,$Trade_State,$Trade_States,$USER,$TS_Actions,$ButExtra,$ButTrader,$ButAdmin,$RestrictButs;
-  global $TradeTypeData,$TradeLocData,$FESTSYS;
+  global $TradeTypeData,$TradeLocData;
   include_once("DateTime.php"); 
   echo "<div class=content><h2>Add/Edit " . ($Mode<2?'Trade Stall Booking':'Buisness or Organisation') . "</h2>";
 
@@ -1207,9 +1202,9 @@ function Trade_Main($Mode,$Program,$iddd=0) {
     echo "<Center>";
     echo "<input type=Submit name='Update' value='Save Changes'>";
     echo "</Center>";    
-    Trade_TandC();
-    echo $FESTSYS['TradeTimes'];
-    echo $FESTSYS['TradeFAQ'];
+    echo TnC('TradeTnC');
+    echo TnC('TradeTimes');
+    echo TnC('TradeFAQ');
   }
 
   if ($Tid > 0) {
@@ -1218,14 +1213,16 @@ function Trade_Main($Mode,$Program,$iddd=0) {
       if (Access('SysAdmin')) {
         echo "<div class=floatright>";
         echo "<input type=Submit id=smallsubmit name='NewAccessKey' value='New Access Key'>";
-        if (!Feature("AutoInvoices") && $Trady['BookingState'] >= $Trade_State['Accepted']) echo "<input type=Submit id=smallsubmit name='ACTION' value='Resend Finance'>";
+        if (!Feature("AutoInvoices") && $Trady['BookingState'] >= $Trade_State['Accepted']) 
+          echo "<input type=Submit id=smallsubmit name='ACTION' value='Resend Finance'>";
         echo "</div>\n";
       }
     }
     echo "<Center>";
     echo "<input type=Submit name='Update' value='Save Changes'>";
     if (Access('Committee','Finance')) {
-      echo "<input type=Submit name='NewInvoice' title='Send a NON TRADE Invoice to this trader' value='New Invoice' formaction='InvoiceManage?ACTION=NEWFOR&Tid=$Tid'>\n";
+      echo "<input type=Submit name='NewInvoice' title='Send a NON TRADE Invoice to this trader' value='New Invoice' " .
+           "formaction='InvoiceManage?ACTION=NEWFOR&Tid=$Tid'>\n";
     }
 //    if (!isset($Trady['BookingState']) || $Trady['BookingState']== 0) echo "<input type=Submit name=Submit value='Save Changes and Submit Application'>";
 
@@ -1236,7 +1233,8 @@ function Trade_Main($Mode,$Program,$iddd=0) {
 //        if ($TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) $dummy=1;
 //      }
 //echo $Trad['TradeType'];
-      if ($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && isset($Trady['PitchLoc0']) && $Trady['PitchLoc0'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) $Acts[] = 'Artisan Invite';
+      if ($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && isset($Trady['PitchLoc0']) && $Trady['PitchLoc0'] && 
+         $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) $Acts[] = 'Artisan Invite';
       foreach($Acts as $ac) {
         if ($Mode==0 && !in_array($ac,$ButTrader)) continue;
         if ($Mode==1 && !Access('SysAdmin') && !in_array($ac,$ButAdmin)) continue;
@@ -1269,10 +1267,10 @@ function Trade_Main($Mode,$Program,$iddd=0) {
             if ($Trady['PitchLoc0'] == 0 || $Trady['Fee'] == 0) continue 2;
             break;
           case 'FestC' :
-            if (!FestFeature('EnableCancelMsg')) continue 2;
+            if (!Feature('EnableCancelMsg')) continue 2;
             break;
           case 'Dates' :
-            if (!FestFeature('EnableDateChange')) continue 2;
+            if (!Feature('EnableDateChange')) continue 2;
             break;
           default:
         }

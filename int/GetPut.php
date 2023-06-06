@@ -70,8 +70,6 @@ function Event_Types_ReRead() {
   return $Event_Types;
 }
 
-$Event_Types = Event_Types_ReRead();
-
 function Get_Event_Types($tup=0) { // 0 just names, 1 all data
   global $Event_Types;
   if ($tup) return $Event_Types;

@@ -2,13 +2,13 @@
 // Participant Display Lib - Generalises Show_Side etc
 
 function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank look at data to determine type.  Mode=0 for public, 1 for ctte
-  global $YEARDATA,$Side_Statuses,$Importance,$Surfaces,$Surface_Colours,$Noise_Levels,$Noise_Colours,$Share_Spots,$Mess,$Action,$ADDALL,$CALYEAR,$PLANYEAR,$YEAR;
+  global $YEARDATA,$Side_Statuses,$Importance,$Surfaces,$Surface_Colours,$Noise_Levels,$Noise_Colours,$Share_Spots,$Mess,$Action,$ADDALL,$PLANYEAR,$YEAR;
   global $OlapTypes,$OlapCats,$OlapDays,$PerfTypes,$ShowAvailOnly,$ADDALL,$PayTypes;
   if ($CatT == '') {
     $CatT = ($Side['IsASide'] ? 'Side' : ($Side['IsAnAct'] ? 'Act' : 'Other')); // Probably needs adding other cats
   }
 
-  $Mstate = ($PLANYEAR == $CALYEAR && $PLANYEAR == $YEAR);
+  $Mstate = ($PLANYEAR == gmdate('Y') && $PLANYEAR == $YEAR);
   $Wide = UserGetPref('WideDisp');
 
   Set_Side_Help();
@@ -395,7 +395,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 
 
 function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at data to determine type.  Mode=0 for public, 1 for ctte
-  global $YEAR,$CALYEAR,$PLANYEAR,$YEARDATA,$Invite_States,$Coming_States,$Coming_Colours, $Mess,$Action,$ADDALL,$Invite_Type,$TickBoxes;
+  global $YEAR,$PLANYEAR,$YEARDATA,$Invite_States,$Coming_States,$Coming_Colours, $Mess,$Action,$ADDALL,$Invite_Type,$TickBoxes;
   global $InsuranceStates,$Book_State,$Book_States,$Book_Colours,$ContractMethods,$Dance_Comp,$Dance_Comp_Colours,$PerfTypes,$ShowAvailOnly;
   
   if ($year==0) $year=$YEAR;
@@ -404,7 +404,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   Set_Side_Year_Help();
   $Wide = UserGetPref('WideDisp');
   
-  $Mstate = ($PLANYEAR == $CALYEAR && $PLANYEAR == $YEAR);  // TODO?
+  $Mstate = ($PLANYEAR == gmdate('Y') && $PLANYEAR == $YEAR);  // TODO?
 
   if ($year < $PLANYEAR) { // Then it is historical - no changes allowed
     fm_addall('disabled readonly');

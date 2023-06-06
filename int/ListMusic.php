@@ -26,7 +26,7 @@
     $DiffFld = $PerfD[2] . "Importance";
   }
   
-  if (Access('Staff',$PerfD[2])) echo "<div class=floatright style=text-align:right><div class=Bespoke>" .
+  if (Access('Staff',($PerfD[2] ?? 'OtherPerf'))) echo "<div class=floatright style=text-align:right><div class=Bespoke>" .
        "Sending:<button class=BigSwitchSelected id=BespokeM onclick=Add_Bespoke()>Generic Messages</button><br>" .  
        "Switch to: <button class=BigSwitch id=GenericM onclick=Add_Bespoke()>Bespoke Messages</button></div>" .
        "<div class=Bespoke hidden id=BespokeMess>" .
@@ -185,7 +185,7 @@
 
         case 'Actions':
           echo "<td>";
-          if (!Access('Staff',$PerfD[2])) break;  // Not your area
+          if (!Access('Staff',($PerfD[2] ?? 'OtherPerf'))) break;  // Not your area
           $acts = $Book_Actions[$Book_States[$State]];
           if ($acts) {
             $acts = array_reverse(preg_split('/,/',$acts) );
@@ -201,10 +201,10 @@
                   }
                   break;
                 case 'Dates':
-                  if (!FestFeature('EnableDateChange')) continue 2;
+                  if (!Feature('EnableDateChange')) continue 2;
                   break;
                 case 'FestC':
-                  if (!FestFeature('EnableCancelMsg')) continue 2;
+                  if (!Feature('EnableCancelMsg')) continue 2;
                   break;
               }
               echo "<button type=button id=$ac$snum class=ProfButton onclick=MList_ProformaSend('Music_$ac',$snum,'$ac','SendPerfEmail')" . 

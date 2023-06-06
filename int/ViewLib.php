@@ -2,7 +2,6 @@
 
 function ViewFile($file,$read=1,$targetname='',$Single=1) {
 global $USERID;
-global $FESTSYS;
 global $head_done;
   
   $path = pathinfo($file );
@@ -83,7 +82,7 @@ if ($read) { // Attempt to read rather than download
       echo "<iframe id=$id src='Temp/$tf.html' width=100%  height=" . ($Single?"800":"100%") . " $onload></iframe>"; 
     } else {
       copy($file,"Temp/$tf");
-      echo "<iframe id=$id src='https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2F" . $FESTSYS['HostURL'] . "%2Fint%2FTemp%2F$tf' width=100% height=" .  
+      echo "<iframe id=$id src='https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2F" . Feature('HostURL') . "%2Fint%2FTemp%2F$tf' width=100% height=" .  
           ($Single?"800":"100%") . " $onload></iframe>";
       if ($Single) dotail();
     }
@@ -173,7 +172,7 @@ function Cache_File($file) {
     
 // Duff
     copy($file,"Temp/$tf");
-    $cached = file_get_contents('https://docs.google.com/gview?url=https://' . $_SERVER['SERVER_NAME'] . "/int/Temp/$tf&embedded=true");
+    $cached = file_get_contents('https://docs.google.com/gview?url=https://' . Feature('HostURL') . "/int/Temp/$tf&embedded=true");
     file_put_contents("$cachefile",$cached);
     return $cached;
   

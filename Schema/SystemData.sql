@@ -1,4 +1,4 @@
-CREATE TABLE `MasterData` (
+CREATE TABLE `SystemData` (
   `FestName` text NOT NULL,
   `ShortName` text NOT NULL,
   `PlanYear` text NOT NULL,

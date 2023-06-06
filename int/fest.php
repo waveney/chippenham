@@ -2,9 +2,10 @@
 
 /* Various common code across fest con tools */
 
+  include_once("GetPut.php");
   include_once("festdb.php");
   include_once("festfm.php");
-  include_once("GetPut.php");
+
 
 $BUTTON = 0;
 
@@ -59,7 +60,7 @@ $Months = ['','Jan','Feb','Mar','Apr','May','June','July','Aug','Sep','Oct','Nov
 date_default_timezone_set('GMT');
 
 function Check_Login() {
-  global $db,$USER,$USERID,$Access_Type,$YEAR,$CALYEAR;
+  global $db,$USER,$USERID,$Access_Type,$YEAR;
 
   if (isset($_COOKIE['FEST2'])) {
     $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['FEST2'] . "'");
@@ -89,7 +90,7 @@ function Check_Login() {
 }
 
 function Set_User() {
-  global $db,$USER,$USERID,$Access_Type,$YEAR,$CALYEAR;
+  global $db,$USER,$USERID,$Access_Type,$YEAR;
   if (isset($USER)) return;
   $USER = array();
   $USERID = 0;
@@ -320,31 +321,29 @@ $head_done = 0;
 $AdvancedHeaders = file_exists(dirname(__FILE__) . "/files/Newnavigation.php");
 
 function doextras($extras) {
-  global $FESTSYS;
-  $V=$FESTSYS['V'];
+  global $VERSION;
   if ($extras) foreach ($extras as $e) {
     $suffix=pathinfo($e,PATHINFO_EXTENSION);
     if ($suffix == "js") {
-      echo "<script src=$e?V=$V></script>\n";
+      echo "<script src=$e?V=$VERSION></script>\n";
     } else if ($suffix == 'jsdefer') {
       $e = preg_replace('/jsdefer$/','js',$e);
-      echo "<script defer src=$e?V=$V></script>\n";
+      echo "<script defer src=$e?V=$VERSION></script>\n";
     } else if ($suffix == "css") {
-      echo "<link href=$e?V=$V type=text/css rel=stylesheet>\n";
+      echo "<link href=$e?V=$VERSION type=text/css rel=stylesheet>\n";
     }
   }
 }
 
 // If Banner is a simple image then treated as a basic banner image with title overlaid otherwise what is passed is used as is
 function dohead($title,$extras=[],$Banner='',$BannerOptions=' ') {
-  global $head_done,$FESTSYS,$CONF,$AdvancedHeaders;
+  global $head_done,$CONF,$AdvancedHeaders;
 
   if ($head_done) return;
-  $V=$FESTSYS['V'];
   $pfx="";
   if (isset($CONF['TitlePrefix'])) $pfx = $CONF['TitlePrefix'];
   echo "<html><head>";
-  echo "<title>$pfx " . $FESTSYS['FestName'] . " | $title</title>\n";
+  echo "<title>$pfx " . Feature('FestName') . " | $title</title>\n";
   if ($AdvancedHeaders) {
     include_once("files/Newheader.php");
   } else {
@@ -359,7 +358,7 @@ function dohead($title,$extras=[],$Banner='',$BannerOptions=' ') {
 
     if ($Banner) {
       if ($Banner == 1) {
-        echo "<div class=WMFFBanner400><img src=" . $FESTSYS['DefaultPageBanner'] . " class=WMFFBannerDefault>";
+        echo "<div class=WMFFBanner400><img src=" . Feature('DefaultPageBanner') . " class=WMFFBannerDefault>";
         echo "<div class=WMFFBannerText>$title</div>";
         if (!strchr('T',$BannerOptions)) echo "<img src=/images/icons/torn-top.png class=TornTopEdge>";
         echo "</div>";
@@ -384,13 +383,12 @@ function dohead($title,$extras=[],$Banner='',$BannerOptions=' ') {
 
 //  No Banner 
 function doheadpart($title,$extras=[]) {
-  global $head_done,$FESTSYS,$CONF,$AdvancedHeaders;
+  global $head_done,$CONF,$AdvancedHeaders;
   if ($head_done) return;
-  $V=$FESTSYS['V'];
   $pfx="";
   if (isset($CONF['TitlePrefix'])) $pfx = $CONF['TitlePrefix'];
   echo "<html><head>";
-  echo "<title>$pfx " . $FESTSYS['FestName'] . " | $title</title>\n";
+  echo "<title>$pfx " . Feature('FestName') . " | $title</title>\n";
   if ($AdvancedHeaders) {
     include_once("files/Newheader.php");
   } else {
@@ -403,13 +401,12 @@ function doheadpart($title,$extras=[]) {
 
 // No Banner
 function dostaffhead($title,$extras=[]) {
-  global $head_done,$FESTSYS,$CONF,$AdvancedHeaders;
+  global $head_done,$CONF,$AdvancedHeaders;
   if ($head_done) return;
-  $V=$FESTSYS['V'];
   $pfx="";
   if (isset($CONF['TitlePrefix'])) $pfx = $CONF['TitlePrefix'];
   echo "<html><head>";
-  echo "<title>$pfx " . $FESTSYS['ShortName'] . " | $title</title>\n";
+  echo "<title>$pfx " . Feature('ShortName') . " | $title</title>\n";
   if ($AdvancedHeaders && Feature('NewStyle') && ! UserGetPref('StaffOldFormat')) {
     include_once("files/Newheader.php");
     include_once("festcon.php");
@@ -432,13 +429,11 @@ function dostaffhead($title,$extras=[]) {
 
 // No Banner
 function dominimalhead($title,$extras=[]) { 
-  global $head_done,$FESTSYS,$CONF,$AdvancedHeaders;
-  $V=$FESTSYS['V'];
+  global $head_done,$CONF,$AdvancedHeaders,$FESTSYS;
   $pfx="";
   if (isset($CONF['TitlePrefix'])) $pfx = $CONF['TitlePrefix'];
   echo "<html><head>";
-  echo "<title>$pfx " . $FESTSYS['ShortName'] . " | $title</title>\n";
-//  echo "<link href=files/Newstyle.css?V=$V type=text/css rel=stylesheet>";
+  echo "<title>$pfx " . Feature('ShortName') . " | $title</title>\n";
   echo "<script src=/js/jquery-3.2.1.min.js></script>";
   if ($extras) doextras($extras);
   if ($FESTSYS['Analytics']) echo "<script>" . $FESTSYS['Analytics'] . "</script>";

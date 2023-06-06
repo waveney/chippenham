@@ -562,7 +562,7 @@ function ActYear_Check4_Change(&$Cur,&$now) {
 }
 
 function Music_Actions($Act,&$side,&$Sidey) { // Note Sidey MAY have other records in it >= Side
-  global $Book_State,$Book_States,$YEAR,$PLANYEAR,$FESTSYS;
+  global $Book_State,$Book_States,$YEAR,$PLANYEAR;
   $NewState = $OldState = $Sidey['YearState'];
   $Change = 0;
   if (!isset($NewState)) $NewState = 0;
@@ -592,7 +592,7 @@ function Music_Actions($Act,&$side,&$Sidey) { // Note Sidey MAY have other recor
       break;
       
     case 'Dates':
-      $subject = $FESTSYS['FestName'] . " $PLANYEAR and " . $side['SN'];
+      $subject = Feature('FestName') . " $PLANYEAR and " . $side['SN'];
       $too = Music_Email_Too($side);
       if ($too) echo Email_Proforma(1,$side['SideId'],$too,'Music_Change_Dates',$subject,'Dance_Email_Details',[$side,$Sidey],$logfile='Music');
       $Sidey['TickBox4'] = 1;
@@ -600,7 +600,7 @@ function Music_Actions($Act,&$side,&$Sidey) { // Note Sidey MAY have other recor
       break;
 
     case 'FestC':
-      $subject = $FESTSYS['FestName'] . " $PLANYEAR and " . $side['SN'];
+      $subject = Feature('FestName') . " $PLANYEAR and " . $side['SN'];
       $too = Music_Email_Too($side);
       if ($too) echo Email_Proforma(1,$side['SideId'],$too,'Music_Festival_Cancel',$subject,'Dance_Email_Details',[$side,$Sidey],$logfile='Music');
       $Sidey['TickBox4'] = 1;
@@ -666,7 +666,7 @@ function MusicMail($data,$name,$id,$direct) {
 }
 
 function Music_Email_Too(&$data) {
-  global $FESTSYS,$YEAR;
+  global $YEAR;
   $em = $name = '';
   
   if (isset($data['HasAgent']) && ($data['HasAgent']) && isset($data["AgentEmail"]) && !isset($data['BookDirect'])) {
@@ -687,8 +687,8 @@ function Music_Email_Too(&$data) {
   if (!$name) $name = $data['SN'];
       
   $too = [['to',$em,$name],
-          ['from','Music@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' Music'],
-          ['replyto','Music@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' Music']];
+          ['from','Music@' . Feature('HostURL'),Feature('ShortName') . ' Music'],
+          ['replyto','Music@' . Feature('HostURL'),Feature('ShortName') . ' Music']];
   return $too;
 }
 

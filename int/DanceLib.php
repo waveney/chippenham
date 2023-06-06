@@ -341,7 +341,7 @@ function Put_SideYear(&$data,$Force=0) {
      }
   }
   
-  if (FestFeature('RecordPerfChanges')) RecordPerfChanges($data,$Save,$Up);
+  if (Feature('RecordPerfChanges')) RecordPerfChanges($data,$Save,$Up);
   if ($Up) {
     return Update_db('SideYear',$Save,$data);
   } else {
@@ -386,7 +386,6 @@ function Put_Perf_Type(&$now) {
 }
 
 function Set_Side_Help() {
-  global $FESTSYS;
   $t = array(
         'SN'=>'To appear on website and in the programme',
         'ShortName'=>'IF the name is more than 20 characters, give a short form to appear on the Grids.',
@@ -415,7 +414,7 @@ function Set_Side_Help() {
         'DataCheck'=>'Not yet working',
         'MorrisAnimal'=>'If the side has a morris animal - what kind is it',
         'Workshops'=>'That the side could run',
-        'Overlaps'=>('Do you overlap with any dance sides, musicians or other performers who might be at' . $FESTSYS['FestName'] . 
+        'Overlaps'=>('Do you overlap with any dance sides, musicians or other performers who might be at' . Feature('FestName') . 
                     ', if so please describe in detail and we will try and prevent clashes'),
         'OverlapRules'=>'Dancer - must have break between spots, Musician allowed to play at same spot for two periods - then must break, Avoid - Dont put these together.
 Major - major error, minor avoid if you can',

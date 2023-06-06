@@ -7,7 +7,7 @@
   include_once("ProgLib.php");
   include_once("DanceLib.php");
   include_once("ViewLib.php");
-  global $YEAR,$FESTSYS,$USERID,$USER, $Access_Type, $Event_Types;
+  global $YEAR,$USERID,$USER, $Access_Type, $Event_Types;
     
   $Ven = Get_Venue($V);
   $host = "https://" . $_SERVER['HTTP_HOST'];

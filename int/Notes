@@ -19,7 +19,6 @@
 51) Split VolLib into core and actual volunteer stuff
 53) Staff menus from a table
 54) Move all festival specific stuff from basic site
-55) Use ini format for config
 58) Check Dance line 150 WRONG
 60) Order of things on Event Sheets
 61) Move Main menu to a TnC entry
@@ -37,6 +36,7 @@
 73c) On Performers
 74) Email and Control V
 75) Volunteer Schedualling
+76) Look back N years as default rather than just 1
 
 Wider Fest Software
 1) Shared servers for many festivals
@@ -92,3 +92,5 @@ Judiths stuff, swiming costume, towel
 Judith pillow, Mugs
 Laptop + kit + monitor + Tools
 Extra bedding, blankets
+
+

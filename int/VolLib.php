@@ -128,7 +128,7 @@ function Get_Vol_Details(&$vol) {
 }
 
 function Vol_Details($key,&$vol) {
-  global $FESTSYS,$VolCats,$CatStatus;
+  global $VolCats,$CatStatus;
   switch ($key) {
   case 'WHO': return firstword($vol['SN']);
   case 'DETAILS': return Get_Vol_Details($vol);
@@ -153,8 +153,8 @@ function Vol_Details($key,&$vol) {
 }
 
 function Email_Volunteer(&$vol,$messcat,$whoto) {
-  global $PLANYEAR,$USER,$FESTSYS;
-  Email_Proforma(5,$vol['id'],$whoto,$messcat,$FESTSYS['FestName'] . " $PLANYEAR and " . $vol['SN'],'Vol_Details',$vol,'Volunteer.txt');
+  global $PLANYEAR,$USER;
+  Email_Proforma(5,$vol['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $vol['SN'],'Vol_Details',$vol,'Volunteer.txt');
 }
 
 function Get_Volunteer($id) { return Gen_Get('Volunteers',$id); };
@@ -782,7 +782,7 @@ function Vol_Validate(&$Vol) {
 }
 
 function Vol_Emails(&$Vol,$reason='Submit') {// Allow diff message on reason=update
-  global $FESTSYS,$VolCats,$PLANYEAR;
+  global $VolCats,$PLANYEAR;
   $Leaders = [];
   Email_Volunteer($Vol,"Vol_Application_$reason",$Vol['Email']);
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$PLANYEAR");
@@ -802,7 +802,7 @@ function Vol_Emails(&$Vol,$reason='Submit') {// Allow diff message on reason=upd
 }
 
 function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on reason=update
-  global $FESTSYS,$VolCats,$PLANYEAR;
+  global $VolCats,$PLANYEAR;
 
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$PLANYEAR");
   foreach($VolCats as $Cat) {

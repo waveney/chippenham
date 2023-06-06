@@ -62,7 +62,7 @@ function Get_Emails($roll) {
 $UpdateLog = '';
 
 function Report_Log($roll) {
-  global $Access_Type,$USER,$USERID,$UpdateLog,$FESTSYS;
+  global $Access_Type,$USER,$USERID,$UpdateLog;
   if ($UpdateLog) {
     if ($USER['AccessLevel'] == $Access_Type['Participant']) {
       switch ($USER['Subtype']) {
@@ -92,9 +92,9 @@ function Report_Log($roll) {
 
     $emails = Get_Emails($roll);
     if ($emails) {
-      NewSendEmail($Src,$SrcId, $emails,$FESTSYS['ShortName'] . " update by $who",$UpdateLog);
+      NewSendEmail($Src,$SrcId, $emails,Feature('ShortName') . " update by $who",$UpdateLog);
     }
-    Logg($FESTSYS['ShortName'] . " update by $who\n" . $UpdateLog);
+    Logg(Feature('ShortName') . " update by $who\n" . $UpdateLog);
     $UpdateLog = '';
   }
 }
@@ -243,37 +243,17 @@ function db_get($table,$cond) {
 
 // Read YEARDATA Data - this is NOT year specific - Get fest name, short name, version everything else is for future
 
-function Get_FESTSYS() {
-  global $db,$FESTSYS;
-  $res = $db->query("SELECT * FROM MasterData");
-  if ($res) return $res->fetch_assoc();
-}
-
-$FESTSYS = Get_FESTSYS();
-$CALYEAR = gmdate('Y');
-$SHOWYEAR = $FESTSYS['ShowYear'];
-$YEAR = $PLANYEAR = $FESTSYS['PlanYear'];  //$YEAR can be overridden
-include_once("Version.php");
-$FESTSYS['V'] = $CALYEAR . ".$VERSION";
-
-function Feature($Name,$default='') {  // Return value of feature if set from FESTSYS
-  static $Features;
-  global $FESTSYS;
+function Feature($Name,$default='') {  // Return value of feature if set Year data value overrides system value
+  static $Features,$YearFeatures;
+  global $FESTSYS,$YEARDATA;
   if (!$Features) {
-    $Features = [];
-    foreach (explode("\n",$FESTSYS['Features']) as $i=>$feat) {
-      $Dat = explode(":",$feat,4);
-      if ($Dat[0] && isset($Dat[1])) {
-        $Features[$Dat[0]] = trim($Dat[1]);
-      } elseif ($Dat[0] && isset($Dat[4])) {
-        $Features[$Dat[0]] = trim($Dat[4]);
-      }
-    }
+    $Features = parse_ini_string($FESTSYS['Features']);
+    $YearFeatures = parse_ini_string($YEARDATA['FestFeatures'] ?? '');
   }
-  if (isset($Features[$Name])) return $Features[$Name];
-  return $default;
+  return $YearFeatures[$Name] ?? $Features[$Name] ?? $default;
 }
 
+/*
 function FestFeature($Name,$default='') {  // Return value of feature if set 
   static $Features;
   global $YEARDATA;
@@ -291,6 +271,7 @@ function FestFeature($Name,$default='') {  // Return value of feature if set
   if (isset($Features[$Name])) return $Features[$Name];
   return $default;
 }
+*/
 
 function Capability($Name,$default='') {  // Return value of Capability if set from FESTSYS
   static $Capabilities;
@@ -305,6 +286,13 @@ function Capability($Name,$default='') {  // Return value of Capability if set f
   if (isset($Capabilities[$Name])) return $Capabilities[$Name];
   return $default;
 }
+
+$FESTSYS = Gen_Get('SystemData',1);;
+$SHOWYEAR = Feature('ShowYear');
+$YEAR = $PLANYEAR = Feature('PlanYear');  //$YEAR can be overridden
+include_once("Version.php");
+$Event_Types = Event_Types_ReRead();// Caching
+
 
 function TnC($Name,$default='') {  // Return value of T and C if set from TsAndCs
   $Res = Gen_Get_Cond1('TsAndCs2',"Name='$Name'");

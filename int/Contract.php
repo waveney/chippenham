@@ -6,7 +6,7 @@
   include_once("Email.php");
   
 function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 proposed, 1 freeze reason - see contractConfirm, ctype 0=Side,1=act,2=other
-  global $Mess,$Action,$YEARDATA,$Cat_Type,$YEAR,$PLANYEAR,$DayLongList, $Event_Types,$ContractMethods,$USERID,$ReportTo,$FESTSYS,$PLANYEARDATA,$Months;
+  global $Mess,$Action,$YEARDATA,$Cat_Type,$YEAR,$PLANYEAR,$DayLongList, $Event_Types,$ContractMethods,$USERID,$ReportTo,$PLANYEARDATA,$Months;
 
   $str = "<div class=content900>\n";
   $Venues = Get_Venues(1);
@@ -213,7 +213,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
   case 'Wimborne':
   default:
 
-  $str .= "<h2>" . $FESTSYS['FestName'] . " - $kwd Contract</h2>\n";
+  $str .= "<h2>" . Feature('FestName') . " - $kwd Contract</h2>\n";
   if ($kwd) $str .= "<em><b>$kwd contract:</b></em><p>\n";
 
   $str .= "Standard Agreement between " . ($ctype == 1?"Band/Artist/Performer":"Performer") . " &amp; Employer.<p>\n";
@@ -227,7 +227,7 @@ services, under the following terms and conditions:<p>\n";
 
   $str .= "This agreement for performance services is entered into by the performers(s) known as:<br>";
 
-  $str .= "<b>" . (empty($Booked['SN']) ?'' : $Booked['SN']) . "</b> for and on behalf of " . $FESTSYS['FestName'] . " (now referred to as Employer) and \n";
+  $str .= "<b>" . (empty($Booked['SN']) ?'' : $Booked['SN']) . "</b> for and on behalf of " . Feature('FestName') . " (now referred to as Employer) and \n";
   $str .= "<b>" . $Side['SN'] . " </b>(now referred to as Artist)<p>";
 
   $str .= "Performances:<p>";

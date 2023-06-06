@@ -2,7 +2,7 @@
   include_once("int/fest.php");
 
   include_once("int/ContactLib.php");
-  global $ContCatState, $ContCatColours,$PLANYEAR, $FESTSYS, $db;
+  global $ContCatState, $ContCatColours,$PLANYEAR, $db;
   
   dohead("Contact Us",[],1);
 
@@ -15,7 +15,7 @@
     if ($t['RelOrder']<0) continue;
     echo "<tr><td>" . $t['SN'] . "<td style='font-weight:bold; color:" . $ContCatColours[$t['OpenState']] . "'>" . $ContCatState[$t['OpenState']];
     if ($t['OpenState']) {
-      echo "<td><a href='mailto:" . $t['Email'] . '@' . $FESTSYS['HostURL'] . "'>"  . $t['Email'] . '@' . $FESTSYS['HostURL'] . "</a>";
+      echo "<td><a href='mailto:" . $t['Email'] . '@' . Feature('HostURL') . "'>"  . $t['Email'] . '@' . Feature('HostURL') . "</a>";
     } else {
       echo "<td>";
     }
@@ -24,12 +24,12 @@
   echo "</table></div><p>";
 
   $ans = $db->query("SELECT * FROM FestUsers WHERE Contacts!=0 ORDER BY RelOrder DESC");
-  $url = $FESTSYS['HostURL'];
+  $url = Feature('HostURL');
   $url = preg_replace('/\./','. ',$url);
 
   while ($user = $ans->fetch_assoc()) {
     echo "<div class=smallfloatleft><div class=mini>\n";
-    if ($user['WMFFemail']) echo "<a href=mailto:" . $user['WMFFemail'] . '@' . $FESTSYS['HostURL'] . ">";
+    if ($user['WMFFemail']) echo "<a href=mailto:" . $user['WMFFemail'] . '@' . Feature('HostURL') . ">";
     if (feature('ShowContactPhotos')) {
       echo "<img alt='Chippenham Folk Festival' style='float:left; max-width:200px;max-height:200px;margin-right:5px' src='";
       echo ($user['Image']?$user['Image']:"/images/WimborneFolkLogo.png") . "'>";

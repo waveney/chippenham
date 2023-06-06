@@ -7,10 +7,10 @@
   include_once("MusicLib.php");
   include_once("DispLib.php");
   
-  global $db, $YEAR,$ll,$SpecialImage,$Pictures,$PerfTypes,$DayLongList,$FESTSYS;
+  global $db, $YEAR,$ll,$SpecialImage,$Pictures,$PerfTypes,$DayLongList;
 
 function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
-  global $ll,$SpecialImage,$Pictures,$FESTSYS;
+  global $ll,$SpecialImage,$Pictures;
   global $Perf_Rolls;  
   $things = 0;
 //var_dump($imps);
@@ -97,7 +97,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     echo "<div id=Poster>"; 
     echo "<center>";
     echo "<h2 class=subtitle id=Postertitle>";
-    echo "<img src=" . $FESTSYS['WebSiteBanner'] . " height=60> &nbsp; ";
+    echo "<img src=" . Feature('WebSiteBanner') . " height=60> &nbsp; ";
     $namlen = strlen($Ven['SN']);
     if ($namlen > 20) {
       $siz = 60 - floor(($namlen-16)/2);
@@ -392,10 +392,10 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 
   if ($Poster) {
     echo "<br><div class=floatright id=qrcode></div>";
-    echo "<h3> To find out more scan this:<br>to visit " . $FESTSYS['HostURL'] . "</h3>"; // pixels should be multiple of 41
+    echo "<h3> To find out more scan this:<br>to visit " . Feature('HostURL') . "</h3>"; // pixels should be multiple of 41
     echo "<script type='text/javascript'>
       var qrcode = new QRCode(document.getElementById('qrcode'), {
-        text: 'https://" . $FESTSYS['HostURL'] . "/int/QRVenueShow?V=$V',
+        text: 'https://" . Feature('HostURL') . "/int/QRVenueShow?V=$V',
         width: 123,
         height: 123,
       });

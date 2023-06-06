@@ -7,7 +7,7 @@
   include_once("MusicLib.php");
   include_once("DispLib.php");
   
-  global $YEAR,$FESTSYS;
+  global $YEAR;
 
   dostaffhead("QR Codes",["js/qrcode.js","css/festconstyle.css"]);
   
@@ -33,7 +33,7 @@
     }
   }
   
-  $_REQUEST['URL'] = 'Https://' . $FESTSYS['HostURL'];
+  $_REQUEST['URL'] = 'Https://' . Feature('HostURL');
   echo "<form method=post action=QRMake?ACTION=Code>";
   echo fm_text("URL to encode",$_REQUEST,'URL',3);
   echo "<input type=submit value='Make Code'>";

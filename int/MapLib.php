@@ -98,7 +98,7 @@ function Update_MapPoints() {
 // 10=Ceilidh, 11=Food&Drink (Not yet)
 
 function Init_Map($CentType,$Centerid,$Zoom,$Features=1) { // CentType 0=Venue, 1=Mappoint, -1= Festival home
-  global $FESTSYS;  
+  global $VERSION;  
   $DirLat  = Feature('DefaultDirLat');
   if ($DirLat == 0) $DirLat = Feature('MapLat');
   $DirLong  = Feature('DefaultDirLong');
@@ -116,22 +116,22 @@ function Init_Map($CentType,$Centerid,$Zoom,$Features=1) { // CentType 0=Venue, 
     $Long = Feature('MapLong',0);
   }
 
-  $V = $FESTSYS['V'];
   echo fm_hidden('MapLat',$Lat) . fm_hidden('MapLong',$Long) . fm_hidden('MapZoom',$Zoom) . fm_hidden('MapFeat',$Features) .
        fm_hidden('DirLat',$DirLat) . fm_hidden('DirLong',$DirLong) . fm_hidden('MapDataDate',filemtime("cache/mappoints.json"));
        
-  echo "<script src='https://maps.googleapis.com/maps/api/js?key=" . $FESTSYS['GoogleAPI'] . "' ></script>";
-  echo "<script src=/js/maplabel.js?V=$V ></script>";
-  echo "<script src=/js/Mapping.js?V=$V ></script>";
+  echo "<script src='https://maps.googleapis.com/maps/api/js?key=" . Feature('GoogleAPI') . "' ></script>";
+  echo "<script src=/js/maplabel.js?V=$VERSION ></script>";
+  echo "<script src=/js/Mapping.js?V=$VERSION ></script>";
 }
 
-function Show_Map_Point($V) {
+function Show_Map_Point($Venue) {
   echo "<div id=VenueMap><div id=MapWrap>";
   echo "<div id=DirPaneWrap><div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div></div>";
   echo "<p><div id=map style='min-height:300px; max-height:400px'></div></div><p>";
-  echo "<button class=PurpButton onclick=ShowDirect($V)>Directions</button> (From the " . Feature('DirectionDefault','Square') . " if it does not know your location)\n";
+  echo "<button class=PurpButton onclick=ShowDirect($Venue)>Directions</button> (From the " . Feature('DirectionDefault','Square') . 
+       " if it does not know your location)\n";
   echo "</div><script>Register_Onload(Set_MinHeight,'.venueimg','.MainContent')</script>\n";
-  Init_Map(1,$V,18);
+  Init_Map(1,$Venue,18);
   echo "</div></div>"; 
 }
 

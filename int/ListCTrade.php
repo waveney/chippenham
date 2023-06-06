@@ -127,10 +127,10 @@
                 if ($fetch['Fee'] == 0) continue 2;
                 break;
               case 'Dates':
-                if (!FestFeature('EnableDateChange')) continue 2;
+                if (!Feature('EnableDateChange')) continue 2;
                 break;
               case 'FestC':
-                if (!FestFeature('EnableCancelMsg')) continue 2;
+                if (!Feature('EnableCancelMsg')) continue 2;
                 break;
               
               default:
@@ -147,7 +147,7 @@
         } else {
           $str .= $Trade_States[$stat];
         }
-      if (FestFeature('EnableDateChange') || FestFeature('EnableCancelMsg') ) {
+      if (Feature('EnableDateChange') || Feature('EnableCancelMsg') ) {
         $str .= "<td>";
         if ($fetch['DateChange'] < 10) {
           $str .= "DC: " . ['Not Sent','Sent','Ack','Happy','Unhappy'][$fetch['DateChange']];

@@ -11,13 +11,13 @@
   dostaffhead("Requested", ["/js/clipboard.min.js", "/js/emailclick.js", "/js/Participants.js","js/dropzone.js","css/dropzone.css", "js/InviteThings.js"],1);
   echo "<h2>Requested</h2>\n";
   include_once("DanceLib.php");
-  global $YEAR,$FESTSYS,$PerfTypes;
+  global $YEAR,$PerfTypes;
 
   $Side=Get_Side($snum);
   $Sidey = Get_SideYear($snum);
   
   $emails = [];
-  foreach ($PerfTypes as $n=>$p) if (Capability("Enable" . $p[2])) if ($Side[$p[0]]) $emails[] = $p[1] . "@" . $FESTSYS['HostURL'];
+  foreach ($PerfTypes as $n=>$p) if (Capability("Enable" . $p[2])) if ($Side[$p[0]]) $emails[] = $p[1] . "@" . Feature('HostURL');
   $txt = $Side['SN'] . " request an invite for $YEAR";
 
   NewSendEmail(1,$snum,$emails,$Side['SN'] . " request invite for $YEAR",$txt);

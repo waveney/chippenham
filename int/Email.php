@@ -60,7 +60,7 @@ function ConvertHtmlToText(&$body) {
 //$atts can be simple fie or [[file, name],[file,name]...]
 
 function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embeded=0,$from='') { 
-  global $FESTSYS,$CONF;
+  global $CONF;
   
 //  echo "Debug: XXX" .( UserGetPref('EmailDebug')?2:0) . "<p>";
 //var_dump($sub,$attachments,$to);
@@ -115,7 +115,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
 //    return;  // Under test this will then log, and not send
     }
   }
-  $From = $FESTSYS['SMTPuser'];
+  $From = Feature('SMTPuser');
   $Atts = [];
   
   $EmailFrom = Feature('EmailFromAllowed',0);
@@ -125,14 +125,14 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
   try {
     $email->SMTPDebug = ((Access('SysAdmin') && UserGetPref('EmailDebug'))?2:0);  // 2 general testing, 4 problems...
     $email->isSMTP();
-    $mailserv = Feature('SMPTserver',$FESTSYS['HostURL']);
+    $mailserv = Feature('SMPTserver',Feature('HostURL'));
     if (Feature('SMTPsubdomain')) $mailserv = Feature('SMTPsubdomain') . "." . $mailserv;
     $email->Host = $mailserv;
     $email->SMTPAuth = true;
     $email->AuthType = 'LOGIN';
-    $email->From = $email->Username = $FESTSYS['SMTPuser'];
-    $email->FromName = $FESTSYS['FestName'];
-    $email->Password = $FESTSYS['SMTPpwd'];
+    $email->From = $email->Username = $From;
+    $email->FromName = Feature('FestName');
+    $email->Password = Feature('SMTPpwd');
     $email->SMTPSecure = 'tls';
     $email->Port = 587;
     
@@ -144,7 +144,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
           $email->setFrom($from);
         }
       } else {
-          $email->setFrom(Feature('DefaultFrom','No-Reply@' . $FESTSYS['HostURL']));    
+          $email->setFrom(Feature('DefaultFrom','No-Reply@' . Feature('HostURL')));    
       }
     }
     
@@ -189,7 +189,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
     $email->Body = $letter; // HTML format
     $email->AltBody = ConvertHtmlToText($letter); // Text format
 
-    if ($EmailReplyTo) $email->addReplyTo($EmailReplyTo,$FESTSYS['FestName']);
+    if ($EmailReplyTo) $email->addReplyTo($EmailReplyTo,Feature('FestName'));
 
 
     if ($attachments) {
@@ -292,7 +292,7 @@ function Put_Email_Proforma(&$now) {
 }
 
 function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments=0,&$embeded=[]) {
-  global $PLANYEAR,$YEARDATA,$FESTSYS,$USERID,$USER;
+  global $PLANYEAR,$YEARDATA,$USERID,$USER;
   static $attnum = 0;
   $Reps = [];
   $Limit = 0;
@@ -318,13 +318,13 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
             $rep = FestDate($YEARDATA['FirstDay'],'L') ;
             break;
           case 'FESTIVAL':
-            $rep = $FESTSYS['FestName'];
+            $rep = Feature('FestName');
             break;
           case 'HOST':
-            $rep = $FESTSYS['HostURL'];
+            $rep = Feature('HostURL');
             break;
           case (preg_match('/MAILTO_(.*)/',$key,$mtch)?true:false):
-            $rep = "<a href='mailto:" . $mtch[1] . "@" . $FESTSYS['HostURL'] . "'>" . $mtch[1] . "@" . $FESTSYS['HostURL'] . "</a>";
+            $rep = "<a href='mailto:" . $mtch[1] . "@" . Feature('HostURL') . "'>" . $mtch[1] . "@" . Feature('HostURL') . "</a>";
             break;
           case (preg_match('/WEBINT(:.*)/',$key,$mtch)?true:false):
             $bits = preg_split('/:/',$mtch[1],3);
@@ -336,10 +336,10 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
           case (preg_match('/WEB(:.*)/',$key,$mtch)?true:false):
             $bits = preg_split('/:/',$mtch[1],3);
             $url = '';
-            $txt = $FESTSYS['HostURL'];
+            $txt = Feature('HostURL');
             if (isset($bits[1])) $url = $bits[1];
             if (isset($bits[2])) { $txt = $bits[2]; $txt = preg_replace('/_/',' ',$txt); }
-            $rep = "<a href='https://" . $FESTSYS['HostURL'] . ($url? "/$url" : "") . "'>$txt</a>";
+            $rep = "<a href='https://" . Feature('HostURL') . ($url? "/$url" : "") . "'>$txt</a>";
             break;
           case (preg_match('/URL(:.*)/',$key,$mtch)?true:false):
             $bits = preg_split('/:/',$mtch[1],3);
@@ -404,7 +404,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
 // helper is a function that takes (THING,helperdata,atts) to return THING - not needed for generic fields typical THINGs are DETAILS, DEPOSIT...
 // if mescat > 40 chars it is assumed to be the proforma itself
 function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=0,$logfile='',&$attachments=0,$embeded=0,$from='') {
-  global $PLANYEAR,$YEARDATA,$FESTSYS;
+  global $PLANYEAR,$YEARDATA;
   if (strlen($mescat) < 40) {
     $Prof = Get_Email_Proforma($mescat);
     $Mess = ($Prof? $Prof['Body'] : "Unknown message $mescat ");

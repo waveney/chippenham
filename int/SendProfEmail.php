@@ -3,7 +3,7 @@
 include_once("fest.php");
 include_once("DanceLib.php");
 include_once("Email.php");
-global $FESTSYS,$PLANYEAR,$USERID,$CONF;
+global $PLANYEAR,$USERID,$CONF;
 
 A_Check("Staff","Dance");
 
@@ -16,7 +16,7 @@ if (isset($_REQUEST['REEDIT'])) {
   $id = $Log['TypeId'];
   $Side = Get_Side($id);
   $Sidey = Get_SideYear($id);
-  $subject = $FESTSYS['FestName'] . " $PLANYEAR and " . $Side['SN'];
+  $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
   $Mess = $Log['TextBody'];  
   $Mess = preg_replace("/<p>\s*\n\s*\n/","\n\n",$Mess);
   $Mess = preg_replace("/\s*\n\s*\n<p>/","\n\n",$Mess);
@@ -45,7 +45,7 @@ if (isset($_REQUEST['REEDIT'])) {
 //  var_dump($Atts);
   $Side = Get_Side($id);
   $Sidey = Get_SideYear($id);
-  $subject = $FESTSYS['FestName'] . " $PLANYEAR and " . $Side['SN'];
+  $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
   $Mess = (isset($_POST['Message'])?$_POST['Message']:(Get_Email_Proforma($proforma))['Body']);
   $To = $Side['Email'];
   if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
@@ -57,8 +57,8 @@ if (isset($_REQUEST['REEDIT'])) {
   if (isset($_POST['SEND'])) {
     $DanceEmailsFrom = Feature('DanceEmailsFrom','Dance');
     $too = [['to',$To,$Side['Contact']],
-            ['from',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom],
-            ['replyto',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom]];
+            ['from',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom],
+            ['replyto',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom]];
     if ($_POST['CCs']) {
       $CCs = explode("\n",$_POST['CCs']);
       foreach ($CCs as $CC) {

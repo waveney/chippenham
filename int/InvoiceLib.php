@@ -86,7 +86,7 @@ function Inv_Amt($amt) {
 
 // Print the Invoice pdf, returns 0 if it cant
 function Invoice_Print(&$inv) {
-  global $FESTSYS,$PLANYEAR;
+  global $PLANYEAR;
   
   $CN = ((isset($inv['PayDate']) && $inv['PayDate']<0)?'CN':'');
   $Rev = ((isset($inv['Revision']) && $inv['Revision'])?("R" . $inv['Revision'] ):'');
@@ -156,7 +156,7 @@ function Invoice_Print(&$inv) {
   $pdf->Text($padx+55.5*$cw,$pady+17.3*$ch,"AMOUNT");
 
   $pdf->SetFont('Arial','BU',14);  
-  $pdf->Text($padx+$cw,$pady+19.5*$ch,"Re: " . $FESTSYS['FestName'] . " " . substr($PLANYEAR,0,4));
+  $pdf->Text($padx+$cw,$pady+19.5*$ch,"Re: " . Feature('FestName') . " " . substr($PLANYEAR,0,4));
   $pdf->SetFont('Arial','',$fs);
 
   if ($CN) {
@@ -186,7 +186,6 @@ function Invoice_Print(&$inv) {
     if ($inv['Amount3']) $pdf->Text($padx+56*$cw,$pady+25*$ch, Inv_Amt($Vat?($inv['Amount3']/(1+$VatRate)):$inv['Amount3']));
   }
   $pdf->SetTextColor(0,0,0);
-      // TODO put the Bank info into FESTSYS
   if (!$CN) {
     $pdf->SetFont('Arial','B',14);
     $pdf->Text($padx+$cw,$pady+29*$ch,"BACS PAYMENTS TO:");  
@@ -725,11 +724,11 @@ function Set_Invoice_Help() {
 }
 
 function Bespoke_Inv_CoverNote($id,&$inv) {
-  global $FESTSYS,$PLANYEAR;
+  global $PLANYEAR;
   dostaffhead("Cover Note for" . $inv['BZ']);
 
    
-  $subject = $FESTSYS['FestName'] . " " . substr($PLANYEAR,0,4) . " and " . $inv['BZ'];
+  $subject = Feature('FestName') . " " . substr($PLANYEAR,0,4) . " and " . $inv['BZ'];
   $inv['CoverNote'] = $Mess = (isset($_POST['Message'])?$_POST['Message']:$inv['CoverNote']);
 
   if (isset($_POST['SEND'])) {

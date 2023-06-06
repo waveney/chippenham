@@ -5,7 +5,7 @@
 
   dostaffhead("Add/Change User");
   include_once("UserLib.php");
-  global $FESTSYS,$Sections,$CONF;
+  global $Sections,$CONF;
 
   Set_User_Help();
 
@@ -86,7 +86,7 @@
     echo "<tr>" . fm_text('Personal Email',$User,'Email',3,'','autocomplete=off');
 //    echo "<tr>" . fm_text('ClassEmail',$User,'ClassEmail',3,'','autocomplete=off') . "<td>Festival level email to send replies to if booking";
     echo "<tr>" . fm_text('Phone',$User,'Phone',1,'','autocomplete=off');
-    echo "<tr>" . fm_text($FESTSYS['ShortName'] . " Email",$User,'FestEmail',1,'','autocomplete=off');
+    echo "<tr>" . fm_text(Feature('ShortName') . " Email",$User,'FestEmail',1,'','autocomplete=off');
     echo "<tr>" . fm_text('Login',$User,'Login');
     echo "<tr>" . fm_text('Roll',$User,'Roll',3);
     echo "<tr>" . fm_text('Relative Order',$User,'RelOrder',3);

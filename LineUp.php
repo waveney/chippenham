@@ -151,7 +151,7 @@
   formatLineups($Slist,'ShowPerf',$Sizes,$ShortDesc);
   
   echo "<div style='clear:both;'>";
-  $Prev = FestFeature('PrevRealFest',$YEARDATA['PrevFest']);
+  $Prev = Feature('PrevRealFest',$YEARDATA['PrevFest']);
   if (isset($ET) && $Prev >= $ET['FirstYear']) {
     if ($T == 'Dance') echo "<b><a href=/int/ShowDanceProg?Y=$Prev>Complete Dance Programme for $Prev</a>, ";
     echo "<br clear=all><a href=/LineUp?t=$T&Y=$Prev>$T Line Up $Prev</a></b><p>";

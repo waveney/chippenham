@@ -3,7 +3,7 @@
   include_once("int/DateTime.php");
 
   dohead("Buy Tickets and Passes",[],1);
-  global $YEARDATA,$YEAR,$FESTSYS;
+  global $YEARDATA,$YEAR;
   set_ShowYear();
   include_once "int/ProgLib.php";
   
@@ -38,7 +38,7 @@
          "Camping may be purchased at the campsite gate if space is available.<p>";
   }
 
-  echo "Select from the options below to purchase your passes and tickets for " . $FESTSYS['FullName'] . " " . substr($YEAR,0,4) . ".<p>";
+  echo "Select from the options below to purchase your passes and tickets for " . Feature('FullName') . " " . substr($YEAR,0,4) . ".<p>";
  
   echo "The weekend Pass is access to everything (apart from events at the Tivoli and events before Friday).  The Saturday Pass gives access to everything on Saturday only.  
   Event tickets are just access to that individual event.<p>";

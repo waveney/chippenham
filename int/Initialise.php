@@ -198,7 +198,7 @@ function Preload_Data() {
     ['FestUsers', 9,['Login'=>'reserved']],
     ['FestUsers', 10,['Login'=>'reserved']],
 
-    ['MasterData',1,['FestName'=>'Festival','ShortName'=>'Fest','Version'=>666,'PlanYear'=>$Year, 'ShowYear'=>$Year,'Cabailities'=> 
+    ['SystemData',1,['FestName'=>'Festival','ShortName'=>'Fest','PlanYear'=>$Year, 'ShowYear'=>$Year,'Cabailities'=> 
 'EnableDocs:1
 EnableTLine:0
 EnableMusic:1

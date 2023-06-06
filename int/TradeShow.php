@@ -14,7 +14,7 @@
     
     echo "Here is what was here last year<p>";
     
-    set_ShowYear(FestFeature('PrevRealFest',$YEARDATA['PrevFest']));
+    set_ShowYear(Feature('PrevRealFest',$YEARDATA['PrevFest']));
 //    dotail();
   }
 

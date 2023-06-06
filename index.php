@@ -1,7 +1,7 @@
 <?php
   include_once("int/fest.php");
   set_ShowYear();  
-  global $FESTSYS,$YEARDATA,$NEXTYEARDATA,$Months,$SHOWYEAR;
+  global $YEARDATA,$NEXTYEARDATA,$Months,$SHOWYEAR;
   include_once("int/TradeLib.php");
   include_once("int/NewsLib.php");
   include_once("int/DispLib.php");
@@ -46,13 +46,14 @@
       $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
                  "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
     } else {
-      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>"; //<br>Buy Tickets</a>";  
+      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . 
+        "</sup> $DMonth $Sy</a>"; //<br>Buy Tickets</a>";  
     }
 
     $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
     $Banner .= "</div>";
   } else {
-    $Banner  = "<div class=WMFFBanner400><img src=" . $FESTSYS['DefaultPageBanner'] . " class=WMFFBannerDefault>";
+    $Banner  = "<div class=WMFFBanner400><img src=" . Feature('DefaultPageBanner') . " class=WMFFBannerDefault>";
     $Banner .= "<div class=BanOverlay><!--<img src=/images/icons/wimborne-folk-festival-logo-white-shadow.png?1>-->";
 //    $Banner .= "<img src=/images/icons/underline.png?1>";
     $Banner .= "</div>";
@@ -61,7 +62,8 @@
       $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
                  "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
     } else {
-      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>"; //<br>Buy Tickets</a>";
+      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>"; 
+        //<br>Buy Tickets</a>";
     }
 
     $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";

@@ -47,12 +47,34 @@
 
 //echo php_ini_loaded_file() . "<P>";
 
-  echo "<div class=floatright><h2>";
-  if (isset($Years[$YEARDATA['PrevFest']])) echo "<a href=Staff?Y=" . $YEARDATA['PrevFest'] .">" . $YEARDATA['PrevFest'] . "</a> &nbsp; ";
-  if (isset($Years[$YEARDATA['NextFest']])) echo "<a href=Staff?Y=" . $YEARDATA['NextFest'] .">" . $YEARDATA['NextFest'] . "</a>\n";
-  echo "</h2></div>";
-  echo "<h2>Staff Pages - $YEAR";
-  if (isset($Years[$YEARDATA['PrevFest']])) echo "<span style='font-size:16;font-weight:normal;'>For other years select &gt;&gt;&gt;</span>";
+  echo "<h2>";
+  echo "<div style=float:left; width: 33%; text-align: left>Staff Pages - $YEAR</div>";
+  if (isset($Years[$YEARDATA['PrevFest']])) 
+    echo " <div style='float:left; width: 33%; text-align:center; font-weight:normal;'> For other years select &gt;&gt;&gt;</div>";
+  echo "<div style=float:right; width: 33%; text-align: right>";
+  if (isset($Years[$YEARDATA['PrevFest']])) { 
+    $Lookback = Feature('LookBackYears',1);
+    if ($Lookback == 1) {
+      echo "<a href=Staff?Y=" . $YEARDATA['PrevFest'] .">" . $YEARDATA['PrevFest'] . "</a> &nbsp; ";
+    } else {
+      $BackData = Gen_Get_All('General');
+      $BDidx = [];
+      foreach ($BackData as $i=>$BD) $BDidx[$BD['Year']] = $i;
+      $List = [];
+      
+      $Prev = $YEARDATA['PrevFest'];
+//      $Previ = $BDidx[$Prev];
+      while (Count($List) < $Lookback) {
+        $List[] = "<a href=Staff?Y=$Prev>$Prev</a> &nbsp; ";
+        $Prev = $BackData[$BDidx[$Prev]]['PrevFest'];
+        if (empty($Prev)) break;
+      }
+//      var_dump($List);
+      foreach(array_reverse($List) as $L) echo $L;
+    }
+  }
+  if (isset($Years[$YEARDATA['NextFest']]) && ($YEARDATA['NextFest'] != $YEAR)) echo "<a href=Staff?Y=" . $YEARDATA['NextFest'] .">" . $YEARDATA['NextFest'] . "</a>\n";
+  echo "</div>";
   echo "</h2>\n";
   
   $txt = "<div class=tablecont><table border width=100% class=Staff style='min-width:800px'>\n";
@@ -310,8 +332,8 @@
       $txt .= "<li class=smalltext><a href=ResetImageSizes?TRADE>Scan and save Image sizes</a>";
       $txt .= "<li class=smalltext><a href=FixBug4>Fix unsaved states</a>";
       $txt .= "<li class=smalltext><a href=ListBTrade>Special List for Brian</a>";
-      if (FestFeature('EnableCancelMsg')) $txt .= "<li class=smalltext><a href=CopyTradeYear?Y=$YEAR>Copy Trade Year to New Years</a>";
-      if (FestFeature('EnableCancelMsg')) $txt .= "<li class=smalltext><a href=CopyTradeYear2?Y=$YEAR>Copy Trade Year to New Years Bug Fix</a>";
+      if (Feature('EnableCancelMsg')) $txt .= "<li class=smalltext><a href=CopyTradeYear?Y=$YEAR>Copy Trade Year to New Years</a>";
+      if (Feature('EnableCancelMsg')) $txt .= "<li class=smalltext><a href=CopyTradeYear2?Y=$YEAR>Copy Trade Year to New Years Bug Fix</a>";
       $txt .= "</table></div><p>\n";
     }
     $txt .= "</ul>\n";
@@ -580,6 +602,7 @@
       $txt .= "<li><a href=TsAndCs2?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";
       $txt .= "<li><a href=MasterData>Festival System Data Settings</a> \n";
+      $txt .= "<li><a href=SystemData>New Festival System Data Settings</a> \n";
     }
     $txt .= "</ul>\n";
   }

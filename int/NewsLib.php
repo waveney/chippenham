@@ -35,7 +35,6 @@ function News_List_Item(&$news) {
 }
 
 function News_Item(&$news,$tlim=500,$more=0,$class='newsimg') { // if tlim=0 all text, more=1 always show more button, 2 = never
-  global $FESTSYS;
   $getid = $news['id'];
   $getcontent = $news['content'];
   $getimage = $news['image'];
@@ -54,7 +53,7 @@ function News_Item(&$news,$tlim=500,$more=0,$class='newsimg') { // if tlim=0 all
   if(!empty($getimage)) {
     $img=$getimage;
     if (!preg_match('/^http(s?):/',$getimage)) $img = "/images/" . $img;
-    echo "<div class=$class><a href=/int/newsitem?id=$getid rel=bookmark><img src='$img' alt=\"" . $FESTSYS['FestName'] . "\" class=$class></a>";
+    echo "<div class=$class><a href=/int/newsitem?id=$getid rel=bookmark><img src='$img' alt=\"" . Feature('FestName') . "\" class=$class></a>";
     if ($news['caption']) echo "<br>" . $news['caption'];
     echo "</div>";
   }

@@ -216,18 +216,18 @@
 
         }
       }
-      if (FestFeature('EnableDateChange')) echo "<button type=button id=Change$snum class=ProfButton onclick=ProformaSend('Dance_Reinvite_Change_Dates',$snum,'Change','SendProfEmail')" .
+      if (Feature('EnableDateChange')) echo "<button type=button id=Change$snum class=ProfButton onclick=ProformaSend('Dance_Reinvite_Change_Dates',$snum,'Change','SendProfEmail')" .
                                       Proforma_Background('Reinvite') . ">Cancel</button>";
-      if (FestFeature('EnableCancelMsg')) echo "<button type=button id=Cancel$snum class=ProfButton onclick=ProformaSend('Dance_Cancel_Fest',$snum,'Cancel','SendProfEmail')" .
+      if (Feature('EnableCancelMsg')) echo "<button type=button id=Cancel$snum class=ProfButton onclick=ProformaSend('Dance_Cancel_Fest',$snum,'Cancel','SendProfEmail')" .
                                       Proforma_Background('Cancel') . ">Cancel</button>";
 
       if (isset($fetch['Coming'])) {
-        if (FestFeature('SpecialInvite') && $fetch['Coming'] == 2) {
+        if (Feature('SpecialInvite') && $fetch['Coming'] == 2) {
            echo "<button type=button id=SpecInvite$snum class=ProfButton onclick=ProformaSend('Dance_SpecInvite',$snum,'SpecInvite','SendProfEmail')" .
                                       Proforma_Background('SpecInvite') . ">Reinvite</button>";
           }
         
-        if (FestFeature('SpecialInvite') && $fetch['Coming'] == 4) {
+        if (Feature('SpecialInvite') && $fetch['Coming'] == 4) {
            echo "<button type=button id=SpecPossible$snum class=ProfButton onclick=ProformaSend('Dance_SpecPossible',$snum,'SpecPossible','SendProfEmail')" .
                                       Proforma_Background('SpecPossible') . ">RePossible</button>";
           }

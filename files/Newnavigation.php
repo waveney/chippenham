@@ -1,5 +1,5 @@
 <?php
-  global $Access_Type,$USER,$USERID,$YEAR,$FESTSYS,$YEARDATA,$NEXTYEARDATA,$Months,$PLANYEARDATA,$PLANYEAR;
+  global $Access_Type,$USER,$USERID,$YEAR,$YEARDATA,$NEXTYEARDATA,$Months,$PLANYEARDATA,$PLANYEAR;
   Set_User();
   
   // Header bar  
@@ -7,7 +7,6 @@
   // Public bar
   // Private bar (may be zero height)
 
-  $V=$FESTSYS['V'];  
   $Bars = 1;
   $UserName = '';
   if (isset($_COOKIE{'FEST2'}) || isset($USER{'AccessLevel'})) {
@@ -106,7 +105,7 @@ global $MainBar,$HoverBar,$HoverBar2;
 $MainBar = $HoverBar = $HoverBar2 = '';
 
 function Show_Bar(&$Bar,$level=0,$Pval=1) { 
-  global $USERID,$host,$PerfTypes,$MainBar,$HoverBar,$HoverBar2,$YEARDATA,$Event_Types,$YEAR;
+  global $USERID,$host,$PerfTypes,$MainBar,$HoverBar,$HoverBar2,$YEARDATA,$Event_Types,$YEAR,$VERSION;
   $host= "https://" . $_SERVER['HTTP_HOST'];
 //  echo "<ul class=MenuLevel$level>";
   $P=$Pval*100;
@@ -185,13 +184,13 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         
       case '~' : // Only if Event Changes recorded, move to end
         $text = substr($text,1);
-        if (FestFeature('RecordEventChanges') !=2 ) continue 2;
+        if (Feature('RecordEventChanges') !=2 ) continue 2;
         if (Gen_Get_Cond1('EventChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
         continue 2;
                 
       case '_' : // Only if Perf Changes recorded, move to end
         $text = substr($text,1);
-        if (FestFeature('RecordPerfChanges') !=2) continue 2;
+        if (Feature('RecordPerfChanges') !=2) continue 2;
         if (Gen_Get_Cond1('PerfChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
         continue 2;
         break;
@@ -274,8 +273,8 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
   }   
 
   echo "<a href=/>";
-    echo "<img src=" . $FESTSYS['WebsiteBanner2'] . "?V=$V class='header-logo head-white-logo'>";
-    echo "<img src=" . $FESTSYS['WebSiteBanner'] . "?V=$V class='header-logo head-coloured-logo'>";
+    echo "<img src=" . Feature('WebsiteBanner2') . "?V=$VERSION class='header-logo head-white-logo'>";
+    echo "<img src=" . Feature('WebSiteBanner') . "?V=$VERSION class='header-logo head-coloured-logo'>";
     if ($PLANYEARDATA['Years2Show'] < 2) { // TODO Handle Both
       $Yr = substr($PLANYEAR,0,4);
       echo "<div class=SmallDates>$DFrom - $DTo $DMonth $Yr</div>";

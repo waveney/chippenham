@@ -4,7 +4,7 @@ include_once("fest.php");
 include_once("DanceLib.php");
 include_once("MusicLib.php");
 include_once("Email.php");
-global $FESTSYS,$PLANYEAR,$USER,$USERID,$PerfTypes;
+global $PLANYEAR,$USER,$USERID,$PerfTypes;
 // Send an Email Proforma for a performer other than dance
 $id = $_REQUEST['I'];
 $proforma = $_REQUEST['N'];
@@ -33,24 +33,24 @@ if (empty($Sidey['BookedBy'])) {
   if ($USERID == $Sidey['BookedBy']) {
     if (!empty($USER['FestEmail'])) {
       $ReplyTo = $USER['FestEmail'];
-      if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . $FESTSYS['HostURL'];
+      if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
     }
   } else {
     $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
     $ReplyTo = $User['FestEmail'];
-    if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . $FESTSYS['HostURL'];
+    if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
   }
 }
 
-$subject = $FESTSYS['FestName'] . " $PLANYEAR and " . $Side['SN'];
+$subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
 $To = $Side['Email'];
 if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
   $To = $Side[$_REQUEST['E']];
 }
 
     $too = [['to',$To,$Side['Contact']],
-//            ['from',$ReplyTo,$FESTSYS['ShortName']], // WRONG ANYWAY
-            ['replyto',$ReplyTo,$FESTSYS['ShortName']]];
+//            ['from',$ReplyTo,Feature('ShortName')], // WRONG ANYWAY
+            ['replyto',$ReplyTo,Feature('ShortName')]];
             
   $Atts = [];
 

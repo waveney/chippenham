@@ -38,20 +38,19 @@ function Register_Email_Details($key,&$data,$att=0) {
 }
 
 function Send_MgrMessage(&$Reg,$Msg) {
-  global $MgrMsg,$FESTSYS;
+  global $MgrMsg;
   $MgrMsg = $Msg;
   $DanceEmailsFrom = Feature('DanceEmailsFrom','Dance');
-  $too = [['to',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom]];
+  $too = [['to',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom]];
 
   echo Email_Proforma(1,$Reg['id'],$too,'Dance_Register','Dance Side Registering','Register_Email_Details',$Reg,$logfile='Dance');
 }
 
 function Send_DanceMessage($Side,$Mess,$To='') {
-  global $FESTSYS;
   $DanceEmailsFrom = Feature('DanceEmailsFrom','Dance');
   $too = [['to', $To, ((!empty($Side['AltEmail'])) && ($To == $Side['AltEmail'])?$Side['AltContact'] : $Side['Contact'])],
-          ['from',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom],
-          ['replyto',$DanceEmailsFrom . '@' . $FESTSYS['HostURL'],$FESTSYS['ShortName'] . ' ' . $DanceEmailsFrom]];
+          ['from',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom],
+          ['replyto',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom]];
 
   echo Email_Proforma(1,$Side['SideId'],$too,$Mess,'Dance Side Registering','Register_Email_Details',$Side,$logfile='Dance');
 }
@@ -63,9 +62,8 @@ function Thankyou() {
 }
 
 function WhoYouAre($Mess='') {
-  global $FESTSYS;
   $RedStar = " <span class=Red><b>*</b></span>";
-  echo "This will be checked to ensure you are who you say you are and that " . $_REQUEST['SN'] . " is apropriate for " . $FESTSYS['FestName'] . "<p>";
+  echo "This will be checked to ensure you are who you say you are and that " . $_REQUEST['SN'] . " is apropriate for " . Feature('FestName') . "<p>";
   if ($Mess) echo "<span class=Red>$Mess</span<p>";
   echo "<form method=post action=Register?ACTION=NewSide><table border>";         
   echo fm_hidden('Email',$_REQUEST['Email']) . fm_hidden('Contact',$_REQUEST['Contact']) . fm_hidden('SN',$_REQUEST['SN']);
@@ -525,7 +523,7 @@ function Ignore($id) {
   }
   
   
-  echo "<h1>This is for Dance sides to register to take part in " . $FESTSYS['FestName'] . "</h1>";
+  echo "<h1>This is for Dance sides to register to take part in " . Feature('FestName') . "</h1>";
   echo "The first check is to see if you are already in our database.  If so a link will be provided to enable you to update your records.<p>";
   echo "If not, you will be asked to provide some information so we can check you are a real dance side, not an imposter.<p>" .
        "Be patient please, there are humans in the loop.<p>";
