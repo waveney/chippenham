@@ -243,35 +243,24 @@ function db_get($table,$cond) {
 
 // Read YEARDATA Data - this is NOT year specific - Get fest name, short name, version everything else is for future
 
+$_Features = [];
+$_YearFeatures = [];
+
 function Feature($Name,$default='') {  // Return value of feature if set Year data value overrides system value
-  static $Features,$YearFeatures;
+  global $_Features,$_YearFeatures;
   global $FESTSYS,$YEARDATA;
-  if (!$Features) {
-    $Features = parse_ini_string($FESTSYS['Features']);
-    $YearFeatures = parse_ini_string($YEARDATA['FestFeatures'] ?? '');
+  if (!$_Features) {
+    $_Features = parse_ini_string($FESTSYS['Features']);
+    $_YearFeatures = parse_ini_string($YEARDATA['FestFeatures'] ?? '');
   }
-  return $YearFeatures[$Name] ?? $Features[$Name] ?? $default;
+  return $_YearFeatures[$Name] ?? ($_Features[$Name] ?? $default);
 }
 
-/*
-function FestFeature($Name,$default='') {  // Return value of feature if set 
-  static $Features;
-  global $YEARDATA;
-  if (!$Features) {
-    $Features = [];
-    foreach (explode("\n",$YEARDATA['FestFeatures']) as $i=>$feat) {
-      $Dat = explode(":",$feat,4);
-      if ($Dat[0] && isset($Dat[1])) {
-        $Features[$Dat[0]] = trim($Dat[1]);
-      } elseif ($Dat[0] && isset($Dat[4])) {
-        $Features[$Dat[0]] = trim($Dat[4]);
-      }
-    }
-  }
-  if (isset($Features[$Name])) return $Features[$Name];
-  return $default;
+function Feature_Reset() {
+  global $_Features,$_YearFeatures;
+  global $FESTSYS,$YEARDATA;
+  $_YearFeatures = parse_ini_string($YEARDATA['FestFeatures'] ?? '');
 }
-*/
 
 function Capability($Name,$default='') {  // Return value of Capability if set from FESTSYS
   static $Capabilities;
@@ -304,9 +293,11 @@ function set_ShowYear($last=0) { // Overrides default above if not set by a Y ar
   if ($last == 0 && !isset($_REQUEST['Y'])) {
     $YEAR = $SHOWYEAR;
     $YEARDATA = Get_General($YEAR);
+    Feature_Reset();
   } else if (!isset($_POST['Y']) && !isset($_GET['Y'])) {
     $YEAR = $last;
     $YEARDATA = Get_General($YEAR);
+    Feature_Reset();
   }
   if ($YEARDATA['Years2Show'] > 0) {
     $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);

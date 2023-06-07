@@ -202,7 +202,8 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
       $MainBar .= "<a onclick=NavStick(event) onmouseover=NavSetPosn(event,$P)>$text</a>";
       $MainBar .= "<div class=dropdown-content id=MenuChild$P>";
       if ($level == 1) $xtra .= " style='animation-duration: " . (150 * $Pi) . "ms; '";      
-      $HoverBar .= "<div class=hoverdown id=HoverParent$P onclick=HoverDownShow($P) $xtra >$text<img class=hoverdownarrow src=/images/icons/Down-arrow.png id=DownArrow$P></div>";
+      $HoverBar .= "<div class=hoverdown id=HoverParent$P onclick=HoverDownShow($P) $xtra >$text" .
+        "<img class=hoverdownarrow src=/images/icons/Down-arrow.png id=DownArrow$P></div>";
       $HoverBar .= "<div class=hoverdown-content id=HoverChild$P>";
       Show_Bar($link,$level+1,$P);
       $MainBar .= "</div></div>";

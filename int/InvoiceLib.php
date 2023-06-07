@@ -237,9 +237,7 @@ function Invoice_Print(&$inv) {
   // footer
   $pdf->Text($padx+1*$cw,$pady+48*$ch,"Registered Office:");
   $pdf->Text($padx+15*$cw,$pady+48*$ch,Feature('FestLegalTitle'));
-  $pdf->Text($padx+15*$cw,$pady+49*$ch,Feature('FestLegalAddr1'));
-  $pdf->Text($padx+15*$cw,$pady+50*$ch,Feature('FestLegalAddr2'));
-  $pdf->Text($padx+15*$cw,$pady+51*$ch,Feature('FestLegalAddr3'));
+  foreach (Feature('FestLegalAddr') as $i=>$A) $pdf->Text($padx+15*$cw,$pady+(49+$i)*$ch,$A); // This only works on 3 line addresses at the momen
   
   $pdf->Text($padx+1*$cw,$pady+53*$ch,Feature('FestTresEmail',"Email:Treasurer@"));
 

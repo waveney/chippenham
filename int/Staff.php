@@ -116,6 +116,7 @@
 // *********************** DANCE ****************************************************
   if ($x = StaffTable('Dance','Dance',2)) {
     $txt .= $x;
+    if (Access('SysAdmin')) $txt .= "<div class=tablecont><table class=FullWidth><tr><td>";
     $txt .= "<ul>\n";
     if (Access('Staff','Dance')) {
       $txt .= "<li><a href=InviteDance?Y=$YEAR>Invite Dance Sides</a>\n";
@@ -128,25 +129,10 @@
     }
     if (Access('Staff','Dance')) $txt .= "<li><a href=CreatePerf?T=Dance&Y=$YEAR>Add Dance Side to Database</a>";
 
-//      $txt .= "<li><input class=typeahead type=text placeholder='Find a Side'>\n";
-    if (0 && Access('SysAdmin')) {
-      $txt .= "<li>";
-//        $txt .= "<form id=form-sidefind name=form-sidefind>\n";
-      $txt .= "<span class=typeahead__container><span class=typeahead__field>\n";
-      $txt .= "<span class=typeahead__query><input class=findaside name=sidefind type=search placeholder='Find Side' autocomplete=off></span>";
-      $txt .= "<span class=typeahead__button><button type=submit><i class=typeahead__search-icon></i></button></span>\n";
-      $txt .= "</span>"; //</span>";
-//        $txt .= "</form>\n"; 
-    } else {
-//      $txt .= "<li>Find a Side\n";
-//         $txt .= "<li><input class=typeahead type=text placeholder='Find a Side'>\n";
-    }
-
     if (Access('Staff'))  $txt .= "<li><a href=ListDance?SEL=ALL&Y=$YEAR>List All Dance Sides in Database</a>\n";
     $txt .= "<li><a href=DanceFAQ>Dance FAQ</a>\n";
     if (Access('Staff','Dance')) {
       if ($YEAR == $PLANYEAR) {
-        /* $txt .= "<li><a href=DanceProg?Y=$YEAR>Edit Dance Programme</a>"; */
         $txt .= "<li><a href=NewDanceProg?Cond=1&Pub=0&Y=$YEAR>Edit Dance Programme</a>";
       } else {
         $txt .= "<li><a href=NewDanceProg?Y=Cond=1&Pub=0&$YEAR&SAND>Edit $YEAR Dance Programme in Sandbox</a>";
@@ -159,22 +145,23 @@
     $txt .= "<li><a href=ListDance?SEL=TinList&Y=$YEAR>Just a list of sides and days</a>\n";
         
     if (Access('SysAdmin')) {
+      $txt .= "<td><ul>";
 //      $txt .= "<li><a href=ShowDanceProg?Y=$YEAR>View Dance Programme</a>";
-      $txt .= "<p><div class=tablecont><table class=FullWidth><tr><td width=300px>";
+
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=1&Y=$YEAR>Condensed Dance Programme</a>";
       $txt .= "<li class=smalltext><a href=DanceCheck?Y=$YEAR>Dance Checking</a>";
       $txt .= "<li class=smalltext><a href=DanceTypes>Set Dance Types</a>";
       $txt .= "<li class=smalltext><a href=LineUpDance?MIN&Y=$YEAR>Picture free List of Dance Sides Coming</a>\n";
 //      $txt .= "<li class=smalltext><a href=ModifyDance2>Modify Dance Structure #2</a>\n";
       $txt .= "<li class=smalltext><a href=WhereDance?Y=$YEAR>Where did Dance Sides Come from</a>\n";
-      $txt .= "<td width=300px>";
+//      $txt .= "<td width=300px>";
       $txt .= "<li class=smalltext><a href=PrintLabels?Y=$YEAR>Print Address Labels</a>";
       $txt .= "<li class=smalltext><a href=CarPark?Y=$YEAR>Car Park Tickets</a>";
       if ($YEAR == $PLANYEAR) $txt .= "<li class=smalltext><a href=WristbandsSent>Mark Wristbands Sent</a>";
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=1&Pub=1&Y=$YEAR>Public Dance Programme</a>";
 //      $txt .= "<li class=smalltext><a href=FixBug3?Y=$YEAR>Create/Copy missing SideYear records after Date Change</a>";
 //      $txt .= "<li class=smalltext><a href=FixBug2?Y=$YEAR>Change order of message records</a>";
-      $txt .= "<td width=300px>";
+//      $txt .= "<td width=300px>";
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Day=Sat&Y=$YEAR>Dance Programme - Sat - no headers</a>";
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Day=Sun&Y=$YEAR>Dance Programme - Sun - no headers</a>";
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Day=Mon&Y=$YEAR>Dance Programme - Mon - no headers</a>";
@@ -182,7 +169,7 @@
 //      $txt .= "<li class=smalltext><a href=ImportDance2>Import Appalachian List</a>"; // Should never be needed again
 //      $txt .= "<li class=smalltext><a href=CheckAccessKeys>Check and fix Blank Access Keys</a>"; 
       $txt .= "<li class=smalltext><a href=ResetImageSizes>Scan and save all Perf Image sizes</a>";
-      $txt .= "</table></div>\n";
+      $txt .= "</ul></table></div>\n";
     }
     $txt .= "</ul>\n";
   }
@@ -453,17 +440,18 @@
                 "</form>\n";
 
     $txt .= "<p>";
-    $txt .= "<li><a href=PaperProg?ALPHA=1>Lineups for Printed Program</a> (Even if not public)";    
-    $txt .= "<li><a href=PaperTime>Events for Printed Program</a> (Even if not public)";    
-    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat>Sat Dance Grid for Printed Program</a>";    
-    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun>Sun Dance Grid for Printed Program</a>";    
-    $txt .= "<li><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon>Mon Dance Grid for Printed Program</a>";    
+    $txt .= "<li class=smalltext><a href=PaperProg?ALPHA=1>Lineups for Printed Program</a> (Even if not public)";    
+    $txt .= "<li class=smalltext><a href=PaperTime>Events for Printed Program</a> (Even if not public)";    
+    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat>Sat Dance Grid for Printed Program</a>";    
+    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun>Sun Dance Grid for Printed Program</a>";    
+    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon>Mon Dance Grid for Printed Program</a>";    
     
-    $txt .= "<p>";
+    $txt .= "<p class=smalltext>";
     $txt .= "<li><a href=/PerfChanges>Performer Changes since programme went to print</a>";    
     $txt .= "<li><a href=/EventChanges>Event Changes since programme went to print</a>";    
-    if (Access('SysAdmin')) $txt .= "<li><a href=PerfEventPrint>Event and Performer Changes to be printed</a>";    
-    if (Access('SysAdmin')) $txt .= "<li><a href=Analytics>Analyse Google Analytics</a>";    
+    if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=PerfEventPrint>Event and Performer Changes to be printed</a>";    
+    if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=Analytics>Analyse Google Analytics</a>";
+    $txt .= "<li><a href=QRMake>Generate a QR code</a>\n";     
     $txt .= "</ul>\n";
   }
 
@@ -493,7 +481,7 @@
     if (Access('Committee')) $txt .= "<li><a href=CampUse?Y=$YEAR>Camping Use</a>\n"; 
     $txt .= "<p>";
     
-    $txt .= "<li><a href=QRMake>Generate a QR code</a>\n";     
+
 //    if (Access('SysAdmin')) $txt .= "<li><a href=CampsiteUse?Y=$YEAR>Manage Wimborne Style Campsite Use</a>\n"; 
 //    if (Access('SysAdmin')) $txt .= "<li><a href=CarerTickets?Y=$YEAR>Manage Carer / Partner Tickets</a>\n"; 
 //    if (Access('SysAdmin','Sponsors')) $txt .= "<li><a href=TaxiCompanies>Manage Taxi Company List</a>\n"; 
@@ -598,11 +586,10 @@
 //      $txt .= "<li><a href=BannerManage>Manage Banners</a> \n";
       $txt .= "<li><a href=DonateTypes?Y=$YEAR>Donation Buttons Setup</a> \n";
       $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
-//      $txt .= "<li><a href=TsAndCs?Y=$YEAR>Old Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=TsAndCs2?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";
-      $txt .= "<li><a href=MasterData>Festival System Data Settings</a> \n";
-      $txt .= "<li><a href=SystemData>New Festival System Data Settings</a> \n";
+//      $txt .= "<li><a href=MasterData>Old Festival System Data Settings</a> \n";
+      $txt .= "<li><a href=SystemData>Festival System Data Settings</a> \n";
     }
     $txt .= "</ul>\n";
   }

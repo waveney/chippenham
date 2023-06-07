@@ -297,6 +297,7 @@ function Get_Years() {
 }
 
 $YEARDATA = Get_General();
+Feature_Reset();
 $PLANYEARDATA = Get_General($PLANYEAR);
 //var_dump($YEARDATA,$PLANYEARDATA);exit;
 if (isset($PLANYEARDATA['NextFest']) && $PLANYEARDATA['Years2Show'] > 0 ) $NEXTYEARDATA = Get_General($PLANYEARDATA['NextFest']);
@@ -429,7 +430,7 @@ function dostaffhead($title,$extras=[]) {
 
 // No Banner
 function dominimalhead($title,$extras=[]) { 
-  global $head_done,$CONF,$AdvancedHeaders,$FESTSYS;
+  global $head_done,$CONF,$AdvancedHeaders,$FESTSYSFGet_Gen;
   $pfx="";
   if (isset($CONF['TitlePrefix'])) $pfx = $CONF['TitlePrefix'];
   echo "<html><head>";

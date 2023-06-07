@@ -89,7 +89,7 @@ function &Report_To() { // List of report to locs
   static $List;
   include_once('MapLib.php');
   if (isset($List)) return $List;
-  $List = [Feature('DefaultReport','Information Point'),'None'];
+  $List = [Feature('DefaultReportPoint','Information Point'),'None'];
   $Vens = Get_Real_Venues(0);
   $Pts = Get_Map_Points();
   $List = array_merge($List,$Vens);
