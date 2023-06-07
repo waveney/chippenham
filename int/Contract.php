@@ -113,11 +113,11 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
 
     $str .= "<center>This Document forms the Agreement between<p>";
     
-    $str .= "<h2>Chippenham Folk Festival CIC</h2>(Known as <i>The Festival</i>)<br>and<br>";
+    $str .= "<h2>" . Feature('FestLegalName') . "</h2>(Known as <i>The Festival</i>)<br>and<br>";
     $str .= "<h2>" .$Side['SN'] . "</h2>(known as <i>The Artist</i>)<p>";
   
-    $str .= "<i>The Festival</i> and <i>The Artist</i> are to performances and associated sound checks at the Festival in<br>$DFrom - $DTo $DMonth $PLANYEAR inclusive" . 
-            " (known as <i>The Booking</i>)<p>";
+    $str .= "<i>The Festival</i> and <i>The Artist</i> are to performances and associated sound checks at the Festival in<br>" .
+            "$DFrom - $DTo $DMonth $PLANYEAR inclusive (known as <i>The Booking</i>)<p>";
             
     $str .= "In respect of <i>The Booking<i>, <i>The Festival</i> agrees to pay <i>The Artist</i> the sum of<p>";
     
@@ -155,11 +155,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $str .= "<tr><td><b>Festival Details</b>";
     $str .= "<tr><td>Name:<td>" . Feature("FestLegalName");
     $str .= "<tr><td>Address:<td>";
-    for($i=1; $i<10; $i++) {
-      $A = Feature("FestLegalAddr$i");
-      if (!$A) break;
-      $str .= $A . "<br>";
-    }
+    foreach(Feature("FestLegalAddr") as $A) $str .= $A . "<br>";
     $str .= "<tr><td>Telephone:<td>" . Feature("FestPhone");
     $str .= "<tr><td>Email:<td>" . Feature("FestContractEmail");
     

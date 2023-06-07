@@ -213,7 +213,17 @@ EnableMisc:1
 EnableFinance:0
 EnableAdmin:1
 EnableCraft:0
-EnableVols:1','Features'=>'NewStyle:1']],
+EnableVols:1','Features'=>'; Global settings never change
+UseArticles = 1
+NewStyle = 1
+
+; Festival
+FestName = Festival
+ShortName = Fest
+ShowYear = ' . $Year . '
+PlanYear = ' . $Year . '
+; There are lots more here to be set up - needs documenting
+']],
     ['General',$Year,['Year'=>$Year]],
     
     ['MapPointTypes',1,['SN'=>'Text','Icon'=>'Text']],
@@ -226,6 +236,9 @@ EnableVols:1','Features'=>'NewStyle:1']],
     ['MapPointTypes',8,['SN'=>'Car Charge','Icon'=>'charging.png']],
     ['MapPointTypes',9,['SN'=>'Camping','Icon'=>'Camping.png']],
     ['MapPointTypes',10,['SN'=>'Short Term Car Park','Icon'=>'carparkred.png']],
+    ['MapPointTypes',11,['SN'=>'Cup','Icon'=>'tea-hot-icon.png']],
+    ['MapPointTypes',12,['SN'=>'Meal','Icon'=>'meal-icon.png']],
+    ['MapPointTypes',13,['SN'=>'Beer','Icon'=>'beer-glass-mug-icon.png']],
         
     ['Directories',0,['SN'=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>0, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
     ['BigEvents',1,['Event'=>-1,'Type'=>'Blank', 'Identifier'=>1,'EventOrder'=>0,'Notes'=>'']],
@@ -287,6 +300,14 @@ function Create_htaccess() {
       $htac_changed = 1;
     }
 
+    if (!strstr($htaccess,'<Files ~ "\.ini$">')) {
+    $htaccess .= '
+<Files ~ "\.ini$">
+    Order allow,deny
+    Deny from all
+</Files>';
+      $htac_changed = 1;
+    }
 
     if (!strstr($htaccess,'php_value include_path')) {
       $htaccess .= 'php_value include_path "' . get_include_path() . ":" . $DocRoot . "\"\n";
@@ -307,6 +328,12 @@ function Create_htaccess() {
 RewriteEngine on
 RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]
 ' . 'php_value include_path "' . get_include_path() . ":" . $DocRoot . "\"\n";
+    $htac .= '
+<Files ~ "\.ini$">
+    Order allow,deny
+    Deny from all
+</Files>';
+
     if (file_put_contents("../.htaccess",$htac)) {
       echo "htaccess created<p>";
     } else {
