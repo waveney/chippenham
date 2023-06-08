@@ -6,7 +6,7 @@ Venues and Map Points
 
 YEAR, CALYEAR, SHOWYEAR, PLANYEAR
   YEAR is the year the action is about (defaults to PLANYEAR, but can switch by adding Y=2999 to any link). 
-  CALYEAR is the actual calender year
+  CALYEAR is the actual calender year - Now removed
   PLANYEAR is the year being planned - will be set to the next year as soon as the festival had ended
   SHOWYEAR is the year most of the public front end works with.  Will remain as the festival just held until new stuff is ready to display - most front end progs call set_ShowYear to override YEAR default - call is needed before a call to dohead.
 

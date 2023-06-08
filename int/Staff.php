@@ -575,7 +575,7 @@
       $txt .= "<li><a href=ListArticles>Front Page Article Management</a>";
       $txt .= "<li><a href=LinkManage>Manage Other Fest Links</a>\n";
     }
-    if (Access('Steward')) {
+    if (0 && Access('Steward')) {
       $txt .= "<li><a href=AddBug>New Bug/Feature request</a>\n";
       $txt .= "<li><a href=ListBugs>List Bugs/Feature requests</a><p>\n";
     }

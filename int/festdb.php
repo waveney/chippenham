@@ -109,9 +109,6 @@ function Update_db($table,&$old,&$new,$proced=1) {
   $newrec = "UPDATE $table SET ";
   $fcnt = 0;
 
-//var_dump( $Flds);
-//echo "<p>$newrec<p>";
-
   foreach ($Flds as $fname=>$ftype) {
     if ($indxname == $fname) { // Skip
     } elseif (isset($new[$fname])) {
@@ -126,7 +123,6 @@ function Update_db($table,&$old,&$new,$proced=1) {
         $dbform = $new[$fname];
       }
 
-//echo "$fname " . $old[$fname] . " $dbform<br>";
       if (!isset($old[$fname]) || $dbform != $old[$fname]) {
         $old[$fname] = $dbform;
         if ($fcnt++ > 0) { $newrec .= " , "; }
@@ -134,7 +130,6 @@ function Update_db($table,&$old,&$new,$proced=1) {
       }
     } else {
       if ($ftype == 'tinyint' || $ftype == 'smallint' ) {
-//      if ($fname == 'InUse') debug_print_backtrace();
         if ($old[$fname]) {
           $old[$fname] = 0;
             if ($fcnt++ > 0) { $newrec .= " , "; }
@@ -243,12 +238,11 @@ function db_get($table,$cond) {
 
 // Read YEARDATA Data - this is NOT year specific - Get fest name, short name, version everything else is for future
 
-$_Features = [];
 $_YearFeatures = [];
 
 function Feature($Name,$default='') {  // Return value of feature if set Year data value overrides system value
-  global $_Features,$_YearFeatures;
-  global $FESTSYS,$YEARDATA;
+  static $_Features;
+  global $FESTSYS,$YEARDATA,$_YearFeatures;
   if (!$_Features) {
     $_Features = parse_ini_string($FESTSYS['Features']);
     $_YearFeatures = parse_ini_string($YEARDATA['FestFeatures'] ?? '');
@@ -257,8 +251,7 @@ function Feature($Name,$default='') {  // Return value of feature if set Year da
 }
 
 function Feature_Reset() {
-  global $_Features,$_YearFeatures;
-  global $FESTSYS,$YEARDATA;
+  global $_YearFeatures,$YEARDATA;
   $_YearFeatures = parse_ini_string($YEARDATA['FestFeatures'] ?? '');
 }
 
