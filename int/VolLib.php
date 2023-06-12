@@ -973,7 +973,7 @@ function List_Vols() {
 
     echo "<td>$link" . $Vol['SN'] . "</a>";
     if (Access('SysAdmin')) echo "<td>$id";
-    echo "<td>" . $Vol['Email'];
+    echo "<td class=smalltext style='max-width:200;overflow-x:auto;'>" . $Vol['Email'];
     echo "<td>" . $Vol['Phone'];
     
     if ($Accepted && ($YearStatus[$VY['Status']] != 'Confirmed')) {
@@ -981,7 +981,7 @@ function List_Vols() {
       Put_Vol_Year($VY);
     }
     
-    echo "<td>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . 
+    echo "<td class=smalltext>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . 
       $YearStatus[$VY['Status']] . "</span>"):'');
       if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
     echo "<td class=FullD hidden>$year";
@@ -1009,7 +1009,7 @@ function List_Vols() {
 
   echo "<tr><td>";
   if (Access('SysAdmin')) echo "<td>";
-  echo "<td>Ad:$Ad Yth:$Yth Ch: $Ch<td>Ad+C:$AdC Yth+C:$YthC<td>Total confirmed";  
+  echo "<td>Ad:$Ad Yth:$Yth Ch: $Ch<td>Ad+C:$AdC Yth+C:$YthC<td class=smalltext>Total confirmed";  
     foreach ($VolCats as &$Cat) if ($Cat['Props'] & VOL_USE) echo "<td>" . $Cat['Total'];
   
   
