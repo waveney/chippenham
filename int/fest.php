@@ -430,7 +430,7 @@ function dostaffhead($title,$extras=[]) {
 
 // No Banner
 function dominimalhead($title,$extras=[]) { 
-  global $head_done,$CONF,$AdvancedHeaders,$FESTSYSFGet_Gen;
+  global $head_done,$CONF,$AdvancedHeaders,$FESTSYS;
   $pfx="";
   if (isset($CONF['TitlePrefix'])) $pfx = $CONF['TitlePrefix'];
   echo "<html><head>";

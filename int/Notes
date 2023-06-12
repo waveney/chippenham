@@ -4,13 +4,12 @@
 12) Dance grid Cache IMP3
 16) Locations on Map not clicking through IMP3
 17) App IMP0
-18) Poster formatting IMP0
 19) Google Analytics IMP0
 20) Map Use IMP0
 24) Search Database For Anything IMP2
 29) Other Caches IMP2
 30) Large docs in the Store IMP1
-36) Documents - Replace IMP1
+36) Documents - Replace a file IMP1
 37) Volunteers - link to Vol handbook IMP2
 44) 2 level menu bar(FAQs etc) IMP2
 45) Search Performers this year (public side) IMP1 - maybe never as it has hacking issues
@@ -21,7 +20,7 @@
 54) Move all festival specific stuff from basic site
 58) Check Dance line 150 WRONG
 60) Order of things on Event Sheets
-61) Move Main menu to a TnC entry?? Or something that can be managed better
+61) Move Main menu to a TnC entry?? Or table or something that can be managed better
 62) Venue Days - Event Checking to check that Venues are booked...!
 63) Grids for Folk Dance, Music, etc
 64) Grids for music
@@ -30,10 +29,11 @@
 68) Vol List too wide...
 69) Vol List sort by lastname
 71) Email groups of Volunteers
-72) Sponser links
+72) Sponsor links
 72a) On Venues
 72b) ON Events
 73c) On Performers
+73d) From Sponsor to what they are sponsoring
 74) Email and Control V
 75) Volunteer Schedualling
 77) Accomadation record keeping
@@ -41,7 +41,18 @@
 79) InvoiceLib - size of address
 80) Buisness list (build on Trade Organisations etc)
 81) Secure all non staff inputs against hacking
-82)
+82) Personalised timetables (for App only?)
+83) Email buttons and selecting the right gmail account
+84) Whats on When Cache
+85) Timetables on Mobiles
+86) Events on Mobiles
+87) Venues on Mobiles
+88) Per users default CC on all emails
+89) Infrastructure management - Tents, Marquees, tables, chairs, power, loos, showers
+90) Colecting tin Mgmt
+91) Emails to collectors of what they got
+92)
+
 
 
 Wider Fest Software
@@ -61,42 +72,5 @@ SponsoredBy
 -1 Many sponsors - use sponsor/year records to find multiple - order by Importance
 
 
-Take Wednesday
-  Tent(s?)
-  Ground sheets
-  Matress Pump
-  Sleeping bag + pillow
-  Water bottle
-Laptop, cables etc, Monitor, laptop bag, headphones
-  Red tatters & hat
-Rucksack, 
-  shoulder bag
-  Phone + charger
-  Tooth brush, flanel
-  Hard Hat(s), Tools, Hi Vis, Multi Meter, Line diagnostic tools
-  2 changes of clothes (hot + cold), swiming costume, towel
-  Coat, Boots, 
-  Tankard, 
-  hairbrush, tissues, games
-  Knee support, 
-  Sun Tan Lotion
-  Dried Fruit, Fruit, Sun Hat, 
-  head torches, multiway, Duct tape, Hazard tape
-  Seats? 
-Return With (and take back again)
-
-
-
-
-Take Friday
-Judith
-  Other Tent?
-  Other Sleeping bags
-Swords, trolly
-Judiths stuff, swiming costume, towel
-  Oswin stuff
-Judith pillow, Mugs
-Laptop + kit + monitor + Tools
-Extra bedding, blankets
 
 

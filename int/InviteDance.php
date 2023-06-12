@@ -201,14 +201,16 @@
           
           case 'N':
           case 'NY':
-            if ($YEAR=='2020') echo "<button type=button id=Change$snum class=ProfButton onclick=ProformaSend('Dance_Reinvite_Change_Dates',$snum,'Reinvite','SendProfEmail')" .
+            if ($YEAR=='2020') echo "<button type=button id=Change$snum class=ProfButton " .
+               "onclick=ProformaSend('Dance_Reinvite_Change_Dates',$snum,'Reinvite','SendProfEmail')" .
                                       Proforma_Background('Reinvite') . ">Reinvite</button>";
 
 //            echo "Woof";
             break;
           }        
         } else {
-          echo "<button type=button id=Invie$snum class=" . ( $fetch['Invited']?"ProfSmallButton":"ProfButton") . " onclick=ProformaSend('Dance_Invite',$snum,'Invite','SendProfEmail')" . 
+          echo "<button type=button id=Invie$snum class=" . ( $fetch['Invited']?"ProfSmallButton":"ProfButton") . 
+                  " onclick=ProformaSend('Dance_Invite',$snum,'Invite','SendProfEmail')" . 
                   Proforma_Background('Invite') . ($fetch['Invite']?'':' hidden ') . ">Invite</button>";
           if (!isset($fetch['Coming']) || $Coming_idx[$fetch['Coming']]=='') {
             echo "<button type=button id=Remind$snum class=ProfButton onclick=ProformaSend('Dance_Remind',$snum,'Remind','SendProfEmail')" . 
@@ -216,9 +218,11 @@
 
         }
       }
-      if (Feature('EnableDateChange')) echo "<button type=button id=Change$snum class=ProfButton onclick=ProformaSend('Dance_Reinvite_Change_Dates',$snum,'Change','SendProfEmail')" .
+      if (Feature('EnableDateChange')) echo "<button type=button id=Change$snum class=ProfButton " .
+                                      "onclick=ProformaSend('Dance_Reinvite_Change_Dates',$snum,'Change','SendProfEmail')" .
                                       Proforma_Background('Reinvite') . ">Cancel</button>";
-      if (Feature('EnableCancelMsg')) echo "<button type=button id=Cancel$snum class=ProfButton onclick=ProformaSend('Dance_Cancel_Fest',$snum,'Cancel','SendProfEmail')" .
+      if (Feature('EnableCancelMsg')) echo "<button type=button id=Cancel$snum class=ProfButton " .
+          "onclick=ProformaSend('Dance_Cancel_Fest',$snum,'Cancel','SendProfEmail')" .
                                       Proforma_Background('Cancel') . ">Cancel</button>";
 
       if (isset($fetch['Coming'])) {
@@ -245,7 +249,8 @@
     echo "</tbody></table></div>\n";
     
       $Dtypes = Get_Dance_Types(0);
-      echo "<div id=SelTools data-t1=Tool_Type,2 data-t2=Tool_Invite,8 data-t3=Tool_Coming,10 data-t4=Tool_Coming_Last,7></div>"; // Encode all tools below selectname,col to test
+      echo "<div id=SelTools data-t1=Tool_Type,2 data-t2=Tool_Invite,8 data-t3=Tool_Coming,10 data-t4=Tool_Coming_Last,7></div>"; 
+      // Encode all tools below selectname,col to test
       echo "<b>Select: Type=" . fm_select($Dtypes,$_POST,'Tool_Type',1,' oninput=ToolSelect(event)') ;
       echo " Invite=" . fm_select($Invite_States,$_POST,'Tool_Invite',1,' oninput=ToolSelect(event)') ;    
       echo " Coming $PLANYEAR=" . fm_select($Coming_States,$_POST,'Tool_Coming',1,' oninput=ToolSelect(event)') ;    
