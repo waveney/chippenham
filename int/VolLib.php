@@ -900,7 +900,7 @@ function List_Vols() {
   echo "<thead><tr>";
 
 
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln . ",'T')>Name</a> (<a href=javascript:SortTable(" . $coln++ . ",'L')>Lastname</a>)\n";
   if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";

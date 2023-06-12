@@ -60,6 +60,7 @@ for(var i=0, len=rows.length; i<len; i++) {
 	  } else {
   	  var celltext = ct1.innerHTML.replace(/<[^>]*>/g,"");
 	    switch(type) {
+	    case "L": arrayOfRows[i].value = celltext.trim().replace(/.*? /g,"").substr(0,25).toLowerCase();break;
 		  case "D": arrayOfRows[i].value = GetDateSortingKey(dateformat,celltext); break;
   		case "N": arrayOfRows[i].value = celltext.replace(/[^\.\-\+\d]/g,"").substr(0,25).toLowerCase();break;
 	  	default: arrayOfRows[i].value = celltext.substr(0,25).toLowerCase();
@@ -73,6 +74,7 @@ else {
 	switch(type) {
 		case "N" : arrayOfRows.sort(CompareRowOfNumbers); break;
 		case "D" : arrayOfRows.sort(CompareRowOfNumbers); break;
+		case "L" : arrayOfRows.sort(CompareRowOfText); break;
 		default  : arrayOfRows.sort(CompareRowOfText);
 		}
 	}
