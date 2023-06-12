@@ -275,7 +275,7 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
 
   echo "<a href=/>";
     echo "<img src=" . Feature('WebsiteBanner2') . "?V=$VERSION class='header-logo head-white-logo'>";
-    echo "<img src=" . Feature('WebSiteBanner') . "?V=$VERSION class='header-logo head-coloured-logo'>";
+    echo "<img src=" . Feature('WebsiteBanner') . "?V=$VERSION class='header-logo head-coloured-logo'>";
     if ($PLANYEARDATA['Years2Show'] < 2) { // TODO Handle Both
       $Yr = substr($PLANYEAR,0,4);
       echo "<div class=SmallDates>$DFrom - $DTo $DMonth $Yr</div>";

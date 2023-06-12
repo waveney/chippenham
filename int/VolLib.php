@@ -1002,7 +1002,7 @@ function List_Vols() {
 
 //        echo "<input type=submit name=Accept value=Accept></form>\n";
       }
-      if (Access('SysAdmin')) echo  " <button type=button id=VolSendEmail$id class=ProfButton onclick=ProformaVolSend('Vol_Email1',$id,'Email1','SendVolEmail')" . 
+      if (Access('SysAdmin') && Feature('VolEmailAll')) echo  " <button type=button id=VolSendEmail$id class=ProfButton onclick=ProformaVolSend('Vol_Email1',$id,'Email1','SendVolEmail')" . 
                    ">Email1</button>";
     }
   }
