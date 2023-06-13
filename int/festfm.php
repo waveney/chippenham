@@ -474,6 +474,15 @@ function Register_AutoUpdate($type,$ref,$Store='') {
   $AutoADD = 1;
 }
 
+function Register_IndexedAutoUpdate($type,$ref,$Store='') {
+  global $AutoADD;
+  echo fm_hidden('AutoIndexed',1);
+  echo fm_hidden('AutoType',$type);
+  echo fm_hidden('AutoRef',$ref);
+  if ($Store) echo fm_hidden($Store,$ref);
+  $AutoADD = 1;
+}
+
 function Cancel_AutoUpdate() {
   global $AutoADD;
   $AutoADD = 0;

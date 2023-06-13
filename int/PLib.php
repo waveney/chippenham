@@ -84,7 +84,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     echo "<tr><th colspan=8><h2><b>Public Information" . Help('PublicInfo') . " <span class=smaller>(Name, Picture, Description, Web, Social Media)</b></b>";
     echo "</h2>";
 
-    echo "<tr>" . fm_text(($Side['IsASide']?'Team Name':'Act Name'), $Side,'SN',3,'','autocomplete=off onchange=nameedit(event) oninput=nameedit(event) id=SN');
+    echo "<tr>" . fm_text(($Side['IsASide']?'Team Name':'Act Name'), $Side,'SN',3,'','autocomplete=off onchange=nameedit(event) id=SN'); // oninput=nameedit(event)');
       $snx = 'class=ShortName';
       if (((isset($Side['SN'])) && (strlen($Side['SN']) > 20) ) || (isset($Side['ShortName']) && strlen($Side['ShortName']) != 0)) { 
         if (strlen($Side['ShortName']) == 0) $Side['ShortName'] = substr($Side['SN'],0,20);

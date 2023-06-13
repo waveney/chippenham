@@ -298,7 +298,7 @@ function set_ShowYear($last=0) { // Overrides default above if not set by a Y ar
 }
 
 // Works for simple tables
-// Deletes = 0 none, 1=one, 2=many
+// Deletes = 0 none, 1=one, 2=many  Putfn=name of put fn or empty for gen_put call
 function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$Mstr='SN',$MstrNot='',$Hexflds='') {
   global $TableIndexes;
   include_once("DateTime.php");
@@ -307,6 +307,7 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
   $TimeFlds = explode(',',$Timeflds);
   $HexFlds = explode(',',$Hexflds);
   $indxname = (isset($TableIndexes[$table])?$TableIndexes[$table]:'id');
+  if (!isset($Flds['SN']) && isset($Flds['Name'])) $Mstr='Name';
 
 //var_dump($_REQUEST);
 //return;
@@ -343,7 +344,13 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
           }
 //          var_dump($recpres,$t);exit;
 //          return;
-          if ($recpres) $Putfn($t);
+          if ($recpres) {
+            if ($Putfn) {
+              $Putfn($t);
+            } else {
+              Gen_Put($table,$t,$indxname);
+            }
+          }
         }
       }
     }

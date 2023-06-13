@@ -420,7 +420,9 @@
       $txt .= "<li><a href=Volunteers?A=CompList>List Festival team and Complimentary tickets</a>\n";
     }
     
-
+    $txt .= "<p><li><a href=Collecting?Y=$YEAR>General Collecting</a>\n";
+    $txt .= "<li><a href=Collecting?ACTION=Records&Y=$YEAR>Tin Records</a>\n";
+    $txt .= "<li><a href=Collecting?ACTION=IO&$YEAR>Tins in and out</a>\n";
 //    $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR&COL=1>Record Performer Ticket Collection</a><p>\n";    
     
 

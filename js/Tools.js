@@ -275,7 +275,15 @@ function AutoInput(f,after) {
   var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
   var typeval = document.getElementById('AutoType').value;
   var refval = document.getElementById('AutoRef').value;
-  $.post("formfill.php", {'D':typeval, 'F':id, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) {
+  var Indexed = document.getElementById('AutoIndexd') ? document.getElementById('AutoIndexd').value : 0;
+  if (Indexed) {
+    var m = f.match(/(\a*)(\d*)/);
+    var Paras = {'D':typeval, 'F':m[1], 'V':newval, 'Y':yearval, 'I':m[2]};      
+  } else {
+    var Paras = {'D':typeval, 'F':id, 'V':newval, 'Y':yearval, 'I':refval};  
+  }
+
+  $.post("formfill.php", Paras , function( data ) {
     var elem = document.getElementById(f);
     var m = data.match(/^\s*?@(.*)@/);
     if (m) {
