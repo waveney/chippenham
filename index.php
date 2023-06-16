@@ -5,7 +5,6 @@
   include_once("int/TradeLib.php");
   include_once("int/NewsLib.php");
   include_once("int/DispLib.php");
-  include_once("int/festfm.php");
   
   if (isset($_REQUEST['F']) && Access('Staff') && is_numeric($_REQUEST['F']) ) {
     $future = $_REQUEST['F'];
@@ -47,30 +46,32 @@
                  "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
     } else {
       $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . 
-        "</sup> $DMonth $Sy</a>"; //<br>Buy Tickets</a>";  
+        "</sup> $DMonth $Sy</a>";   
     }
 
     $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
     $Banner .= "</div>";
+
+    dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js", "/js/responsiveslides.js", "/css/responsiveslides.css"],$Banner ); 
   } else {
     $Banner  = "<div class=WMFFBanner400><img src=" . Feature('DefaultPageBanner') . " class=WMFFBannerDefault>";
     $Banner .= "<div class=BanOverlay><!--<img src=/images/icons/wimborne-folk-festival-logo-white-shadow.png?1>-->";
-//    $Banner .= "<img src=/images/icons/underline.png?1>";
     $Banner .= "</div>";
 
     if ($YEARDATA['Years2Show'] == 2) {  
       $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
                  "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
+    } else if ($YEARDATA['TicketControl'] == 1) {
+      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>";     
     } else {
-      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>"; 
-        //<br>Buy Tickets</a>";
+      $Banner .= "<span class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</span>"; 
     }
 
     $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
     $Banner .= "</div>";
+    dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner ); 
   }
 
-  dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner );
 
   $TopShow = "Top";
   if ( !Show_Articles_For($TopShow,$future)) {
@@ -83,7 +84,7 @@
   echo "<center>Our festival would not be possible without the amazing help and generosity of many organisations including the following major sponsors<p>";
   echo "</center>";
   $Spons = Get_Sponsors();
-  echo "<div hidden>" . fm_hidden('ChangeTime',2000); // IN msec
+  echo "<div hidden>" . fm_hidden('ChangeTime',Feature('SponsorTime',2000)); // IN msec
   foreach ($Spons as $s) {
     echo "<li class=SponsorsIds id=" .$s['id'] . "><div class=sponcontainer><div class=sponContent>";
     if ($s['Website']) echo weblinksimple($s['Website']);

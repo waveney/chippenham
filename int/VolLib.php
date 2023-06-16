@@ -30,6 +30,7 @@ define('VOL_Other2',0x200);
 define('VOL_Other3',0x400);
 define('VOL_Other4',0x800);
 define('VOL_NoList',0x20000);
+define('VOL_Tins',0x40000);
 
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
 
