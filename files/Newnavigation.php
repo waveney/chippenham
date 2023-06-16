@@ -167,7 +167,7 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
           }
           break;
         case 1:
-          $Gals = Gen_Get_All('Galleries',"WHERE Level=0 ORDER BY MenuBarOrder DESC");
+          $Gals = Gen_Get_All('Galleries',"WHERE MenuBarOrder>0 ORDER BY MenuBarOrder DESC");
           foreach ($Gals as $G) {
             if ($G['MenuBarOrder']>0) $Bar[$G['SN']] = "int/ShowGallery?g=" . $G['id'];
           }
