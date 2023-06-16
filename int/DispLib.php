@@ -203,7 +203,7 @@ function Gallery($id,$embed=0) {
       echo "<p>Photos by: " . $Gal['Credits'] . "<p>";
     }
   } else { //Sub Gallery
-    $Gals = Gen_Get_Cond('Galleries'," GallerySet='" . $Gal['SN'] . "' ORDER BY MenuBarOrder DESC" );
+    $Gals = Gen_Get_Cond('Galleries'," GallerySet='" . $Gal['SN'] . "' ORDER BY MenuBarOrder, SetOrder DESC" );
 
     echo "<div id=flex5>\n";    
     foreach ($Gals as $G) {

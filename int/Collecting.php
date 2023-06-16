@@ -62,7 +62,7 @@ function TinTypes() {
   
 }
 
-function TinIssue() {
+function TinIssue($Reassign=0) {
   global $YEAR;
   
   $Tcat = $_REQUEST['WhoCat'];
@@ -77,8 +77,22 @@ function TinIssue() {
   
   $Rec = Gen_Get_Cond1('CollectingUse',"Year='$YEAR' AND CollectionUnitId=$Tno AND Value=0");
   if ($Rec) {
-  
-  
+    if ($Reassign) {
+      $Rec['Value'] = -1;
+      Gen_Put('CollectingUse',$Rec); // Close old record 
+    } else {
+      $State = ($Rec['TimeIn'] ? 'Returned not empty': 'Not Returned');
+      echo "<h2>" . $Tin['Name'] . " is assigned to $TName</h2>";
+      echo "<form method=post action=Collecting>\n";
+      echo fm_hidden('WhoCat',$Tcat) . fm_hidden('TinIdOut',$Tno);
+      switch ($Tcat) {
+        case 0: echo fm_hidden('SideId',$TIden); break;
+        case 1: echo fm_hidden('VolMemb',$TIden) . fm_hidden('VolTeam',$_REQUEST['VolTeam']); break;
+        case 2: echo fm_hidden('OtherName',$TName); break;
+      }
+      echo "<input type=submit name=ACTION value=Reassign><input type=submit name=ACTION value='Choose Another'>";
+      dotail();
+    }
   }
   $Rec = ['Year'=>$YEAR,'AssignType'=>$Tcat,'TimeOut'=>time(),'TimeIn'=>0,'Value'=>0,'CollectionUnitId'=>$Tno];
   if ($Tcat < 2) {
@@ -90,11 +104,14 @@ function TinIssue() {
   echo "<h2>" . $Tin['Name'] . " has been assigned to $TName</h2>";
 }
 
-function TinIO() {
+function TinIO($Another=0) {
   global $YEAR,$TinTypes,$TinStatus,$VolCats,$CatStatus,$WhoCats,$Thresh;
   
   $Dance_Sides = Select_Come();
   $Collectors = [];
+  if ($Another) {
+    $WhoCat = $_REQUEST['WhoCat'];
+  }
   foreach($VolCats as $Ci=>$VC) if ($VC['Props'] & VOL_USE) if ($VC['Props'] & VOL_Tins) $Collectors[$Ci] = [];
   
   $Vols = Gen_Get_Cond("Volunteers","Status=0 AND Money>0 ORDER BY SN");  
@@ -114,7 +131,9 @@ function TinIO() {
   echo "<h1>Assign Tins</h1><div class=CollectDiv><form method=post action=Collecting>\n";
   echo "<h3>Select Who</h3>";
   echo fm_radio('Category',$WhoCats,$_REQUEST,'WhoCat','class=CollectWho1 oninput=SelectWhoCat(event)',0);
-  echo "<div class=CollectDance id=CollectDance hidden>";
+  
+  
+  echo "<div class=CollectDance id=CollectDance " . (($Another && ($WhoCat==0))?'>': "hidden>");
     if (count($Dance_Sides) > $Thresh) {
       echo fm_select($Dance_Sides,$_REQUEST,'SideId',0,' oninput=SelectDanceSide(event)');
     } else {
@@ -123,11 +142,11 @@ function TinIO() {
   echo "</div>";
   
   if ($VolTeams) {
-    echo "<div class=CollectVol id=CollectVol hidden><p>";
+    echo "<div class=CollectVol id=CollectVol " . (($Another && $WhoCat==1)?'>': "hidden>");
     echo fm_radio('Team',$VolTeams,$_REQUEST,'VolTeam','class=CollectTeam1  oninput=SelectTeam(event)',0);
     foreach($VolCats as $Ci=>$VC) if (!empty($Collectors[$Ci])) {
-//    var_dump($VC); echo "<br>Team: "; var_dump($VolTeams[$Ci]);echo "<p>";
-      echo "<div class=CollectTeam id=Collect$Ci hidden>";
+
+      echo "<div class=CollectTeam id=Collect$Ci " . (($Another && ($WhoCat==1) && ($_REQUEST['VolTeam'] == $Ci))?'>': "hidden>");
       if (count($Collectors[$Ci]) > $Thresh) {
         echo fm_select($Collectors[$Ci],$_REQUEST,'VolMemb',0,' oninput=SelectVolunteer(event)');
       } else {
@@ -138,8 +157,8 @@ function TinIO() {
     echo "</div>\n";
   }
     
-  echo "<div class=CollectOther id=CollectOther hidden><p>";
-    echo fm_text('Name',$_REQUEST,'OtherName',2,'',' oninput=SelectOther(event)');
+  echo "<div class=CollectOther id=CollectOther " . (($Another && $WhoCat==2)?'>': "hidden>");
+    echo "<p>" . fm_text('Name',$_REQUEST,'OtherName',2,'',' oninput=SelectOther(event)');
     echo "</div>\n";
     
 
@@ -157,7 +176,7 @@ function TinIO() {
   echo "<p><input id=TinTake class=TinNotYet readonly type=submit name=ACTION value='Assign'>";
   
   echo "<hr><h1>Return Tins</h1>\n";
-  
+  echo "If it is being returned unused please tick here: " . fm_checkbox('Not Used',$_REQUEST,'NotUsed') . "<p>";
   if (count($TinNames) > $Thresh) {
     echo fm_select($TinNames,$_REQUEST,'TinIdIn',0,' oninput=EnableReturn(event)'); // Consider Type then name in the future
   } else {
@@ -168,6 +187,23 @@ function TinIO() {
   
   
   echo "</form></div>\n";
+}
+
+function ReturnTin() {
+  global $TinTypes;
+  $TinNumb = $_REQUEST['TinIdIn'];
+  $Tin = Gen_Get('CollectingUnit',$TinNumb);
+  $Rec = Gen_Get_Cond1('CollectingUse',"CollectionUnitId=$TinNumb AND Value=0");
+  if (!$Rec) {
+    echo "<h2>" . $TinTypes[$Tin['Type']] . " " . $Tin['Name'] . " is not booked out</h2>";
+    TinIO(2);
+  }
+  $Rec['TimeIn'] = time();
+  if (!empty($_REQUEST['NotUsed'])) $Rec['Value'] = -1;
+  Gen_Put('CollectingUse',$Rec);
+  echo "<h1>This has been recorded - please put " . $Tin['Type'] . " " . $Tin['Name'] . 
+       (!empty($Rec['Value'])?' back in the pile to be reused' : ' to be counted') . "</h1>";
+  TinIO(0);
 }
 
 // MAIN CODE HERE
@@ -187,17 +223,21 @@ function TinIO() {
         break;
 
       case 'IO': // Tins in and out
-        TinIO();
+        TinIO(0);
         break;
         
       case 'Assign': // Assign Tins
-        TinIssue();
+        TinIssue(0);
         break;
         
       case 'Reassign': // Reassign Tins
-      
+        TinIssue(1);
         break;
-        
+
+      case 'Choose Another': // Choose another tin
+        unset($_REQUEST['TinIdOut']);
+        TinIO(1);      
+        break;
 
       case 'Email': // Send out totals
       
@@ -205,6 +245,14 @@ function TinIO() {
         
       case 'Totals': // Show totals
       
+        break;
+
+      case 'Count': // Show totals
+      
+        break;
+
+      case 'Returned': // Return Tin
+        ReturnTin();
         break;
         
       case 'TinTypesUpdate': // Manage Tin Types
@@ -220,6 +268,7 @@ function TinIO() {
   if (Access('Staff','Finance')) {
     echo "<li><a href=Collecting?ACTION=ListTins>List Tins</a>";
     echo "<li><a href=Collecting?ACTION=Records>List this year records</a>";  
+    echo "<li><a href=Collecting?ACTION=Count>Count Tins</a>";  
     echo "<li><a href=Collecting?ACTION=Totals>Show Totals</a>";  
     echo "<li><a href=Collecting?ACTION=Email>Email Teams and Collectors their results</a>";  
     echo "<li><a href=Collecting?ACTION=TinTypes>Manage Tin Types</a>";  

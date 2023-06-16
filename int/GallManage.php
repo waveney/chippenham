@@ -15,7 +15,8 @@
   $coln = 0;
   echo "<h2>Galleries</h2><p>";
   echo "Non zero postive Menu Bar entries will be in the site banner ordered by that number<br>";
-  echo "Any negative Menu Bar entry will not appear on 'All Galleries'<p>";
+  echo "Any negative Menu Bar entry will not appear on 'All Galleries'<br>";
+  echo "The Set Order is used for sub Galleries<p>";
  
   echo "<form method=post action=GallManage>";
   echo "<div class=Scrolltable><table id=indextable border>\n";
@@ -26,6 +27,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Level</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Gallery Set</a>\n";  
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Menu Bar Order</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Set Order</a>\n";
   echo "</thead><tbody>";
   foreach($Gals as $g) {
     $i =  $g['id'];
@@ -36,6 +38,7 @@
     echo fm_number1("",$g,'Level','','',"Level$i");
     echo fm_text1("",$g,'GallerySet',1,'','',"GallerySet$i");
     echo fm_number1("",$g,'MenuBarOrder','','',"MenuBarOrder$i");
+    echo fm_number1("",$g,'SetOrder','','',"SetOrder$i");
     echo "<td><a href=" . ($g['Media']?'GallVManage':'GallCManage') . "?g=" . $g['id'] . ">Edit</a>";
     echo "<td><a href=ShowGallery?g=" . $g['id'] . ">Show</a>";
 
@@ -45,6 +48,7 @@
   echo "<td>" . fm_select($Medias,$g,"Media0") . fm_number1("",$g,'Level');
   echo "<td><input type=text name=GallerySet0 >";
   echo "<td><input type=text name=MenuBarOrder0 >";
+  echo "<td><input type=text name=SetOrder0 >";
   echo "</table></div>\n";
   echo "<input type=submit name=Update value=Update>\n";
   echo "</form></div>";

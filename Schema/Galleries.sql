@@ -9,5 +9,6 @@ CREATE TABLE `Galleries` (
   `GallerySet` text NOT NULL,
   `Image` int NOT NULL,
   `Level` int NOT NULL,
+  `SetOrder` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
