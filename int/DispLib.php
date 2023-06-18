@@ -150,6 +150,10 @@ function Gallery($id,$embed=0) {
 
 
     $PStr = "";
+    if ($Gal['GallerySet']) {
+      $PGal = preg_replace('/ /','_',$Gal['GallerySet']);
+      $PStr = "<div class=floatright><a href=ShowGallery?g=$PGal>Up to " . $Gal['GallerySet'] . "</a></div>";
+    }
     if ($ImgCount > $PS) {
       $Page = (isset($_GET['p']) ? $_GET['p'] : 1);
       $lastP = ceil($ImgCount/$PS);
@@ -175,7 +179,7 @@ function Gallery($id,$embed=0) {
       $first = 0;
       $last = $PS;
     }
-    $PStr .= "<p>\n";
+    $PStr .= "<br clear=all><p>\n";
   
     echo $PStr;
   
@@ -203,6 +207,12 @@ function Gallery($id,$embed=0) {
       echo "<p>Photos by: " . $Gal['Credits'] . "<p>";
     }
   } else { //Sub Gallery
+    if ($Gal['GallerySet']) {
+      $PGal = preg_replace('/ /','_',$Gal['GallerySet']);
+      $PStr = "<div><a href=ShowGallery?g=$PGal>Up to " . $Gal['GallerySet'] . "</a></div>";
+      echo $PStr . "<br clear=all>";
+    }
+
     $Gals = Gen_Get_Cond('Galleries'," GallerySet='" . $Gal['SN'] . "' ORDER BY SetOrder DESC" );
 
     echo "<div id=flex5>\n";    

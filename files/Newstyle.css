@@ -342,7 +342,7 @@ table {
   overflow: auto;
 }
 
-.Scrolltable  thead td,
+.Scrolltable  thead td,G
 .Scrolltable  thead th,
 .Scrolltable2 thead td,
 .Scrolltable2 thead th,
@@ -1750,4 +1750,11 @@ dl dd {
 dl dt {
   font-weight:normal;
 }
+
+.floatright {
+  padding-left:3px;
+  float:right; 
+}
+
+
 
