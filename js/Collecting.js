@@ -10,11 +10,15 @@ function SelectWhoCat(e) {
   case "0": $('#CollectDance').show(); return;
   case "1": $('#CollectVol').show(); return;
   case "2": $('#CollectOther').show(); return;
+  case "3": $('#TinTake').prop("disabled", false); return;
   }
 }
 
-function SelectDanceSide() {
-
+function SelectDanceSide(e) {
+debugger;
+  var TinIdElem = document.getElementById('ColForm').elements['TinIdOut'];
+  if (TinIdElem) var TinId = TinIdElem.value;
+  if (TinId) $('#TinTake').prop("disabled", false);
 }
 
 function SelectTeam(e) {
@@ -24,22 +28,43 @@ debugger;
   $("#Collect" + Team).show();
 }
 
-function SelectVolunteer() {
-
+function SelectVolunteer(e) {
+  var TinIdElem = document.getElementById('ColForm').elements['TinIdOut'];
+  if (TinIdElem) var TinId = TinIdElem.value;
+  if (TinId) $('#TinTake').prop("disabled", false);
 }
 
-function SelectOther() {
-
-}
-  
-function EnableAssign() {
-
-}
-  
-function EnableReturn() {
-
+function SelectOther(e) {
+  var TinIdElem = document.getElementById('ColForm').elements['TinIdOut'];
+  if (TinIdElem) var TinId = TinIdElem.value;
+  if (TinId) $('#TinTake').prop("disabled", false);
 }
   
+function EnableAssign(e) {
+debugger;
+  var SideElem = document.getElementById('ColForm').elements['SideId']; if (SideElem) var SideId = SideElem.value;
+  var VolElem = document.getElementById('ColForm').elements['VolMemb']; if (VolElem) var VolId = VolElem.value;
+  var OtherElem = document.getElementById('ColForm').elements['OtherName']; if (OtherElem) var OtherName = OtherElem.value;
+  if (SideId || VolId || OtherName) $('#TinTake').prop("disabled", false);
+}
+  
+function EnableReturn(e) {
+  var TinIdElem = document.getElementById('ColForm').elements['TinIdIn'];
+  if (TinIdElem) var TinId = TinIdElem.value;
+  if (TinId) $('#TinReturn').prop("disabled", false);
+}
+  
+function EnableCount(e) {
+  var TinIdElem = document.getElementById('ColForm').elements['TinIdIn'];
+  if (TinIdElem) var TinId = TinIdElem.value;
+  var ValElem = document.getElementById('ColForm').elements['Value'];
+  if (ValElem) var value = ValElem.value;
+  if (TinId && value.length > 0) $('#TinCount').prop("disabled", false);
+}
+
+function NOTUSED(e) {
+
+}
 
 
   /*

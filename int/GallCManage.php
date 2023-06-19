@@ -184,6 +184,7 @@
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Sel</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Seq</a>\n";
   echo "<th colspan=2><a href=javascript:SortTable(" . $coln++ . ",'T')>File</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Caption</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Order</a>\n";
@@ -191,10 +192,11 @@
   echo "</thead><tbody>";
   
 //  $GCount = $Skip = 0;
+  $Seq = 0;
   foreach($Gal as $g) {
 //    if ($Page > 0 && ($Skip < ($Page*100)) continue;
     $i = $g['id'];
-    echo "<tr><td>" . fm_checkbox('',$g,'Select','',"Sel$i") . "<td>$i";
+    echo "<tr><td>" . fm_checkbox('',$g,'Select','',"Sel$i") . "<td>$i<td>" . $Seq++;
     echo fm_text1("",$g,'File',2,'','',"File$i") . "</a>";
     echo fm_text1("",$g,'Caption',1,'','',"Caption$i") . "</a>";
     echo fm_number1("",$g,'RelOrder','','',"RelOrder$i") . "</a>";
@@ -202,7 +204,7 @@
     echo "<td><img src=\"" . $g['File'] . "\" height=75>";
     echo "\n";
   }
-  echo "<tr><td><td><input type=text name=File0 >";
+  echo "<tr><td><td><td><input type=text name=File0 >";
   echo "<td><input type=text name=Captions0 >";
   echo "<td><input type=number name=RelOrder0 >";
   echo "</table></div>\n";
