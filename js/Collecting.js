@@ -59,7 +59,7 @@ function EnableCount(e) {
   if (TinIdElem) var TinId = TinIdElem.value;
   var ValElem = document.getElementById('ColForm').elements['Value'];
   if (ValElem) var value = ValElem.value;
-  if (TinId && value.length > 0) $('#TinCount').prop("disabled", false);
+  if (TinId>0 && value.length > 0) $('#TinCount').prop("disabled", false);
 }
 
 function NOTUSED(e) {

@@ -872,6 +872,10 @@ function Dance_Email_Details($key,&$data,&$att=0) {
     return $str;
     }
   return '';
+  
+  case 'COLLECTINFO':
+    include_once("CollectLib.php");
+    return CollectInfo($Side);  
   }
 }
 

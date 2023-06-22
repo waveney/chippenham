@@ -31,7 +31,7 @@
 72b) ON Events
 73c) On Performers
 73d) From Sponsor to what they are sponsoring
-74) Email and Control V
+74) Email and Control V - partialy working now
 75) Volunteer Schedualling
 77) Accomadation record keeping
 78) Accomadation Payments
@@ -46,9 +46,19 @@
 87) Venues on Mobiles
 88) Per users default CC on all emails
 89) Infrastructure management - Tents, Marquees, tables, chairs, power, loos, showers
+89a) Per Venue
+89b) Totals
+89c) Year records, copy forward option
 90) Colecting tin Mgmt
+90a) Also card readers
+90b) Also Emailing sides and volunteers
 91) Emails to collectors of what they got
 93) QR codes with icon in the middle
+95) Music Grids
+96) Make database updates work on instalation and updates
+97) Work out how to make CSS colours instalation dependant
+98) Year should always be a string
+
 
 
 
