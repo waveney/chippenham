@@ -1,10 +1,8 @@
 <?php
   global $YEARDATA,$FESTSYS,$VERSION;
 
-  echo "<meta name=description content='Chippenham\'s annual folk festival takes place in the historic market town of Chippenham 
-  in Wiltshire on the spring bank holiday weekend.>\n";
-  echo "<meta name=keywords content='Chippenham, folk, festival, folk festival, dorset, folkie, fringe, morris, dance, side, music, concerts, camping, 
-	      parking, trade, trading, stewards, volunteer, tickets, line up, appalachian, ceildihs, procession, step dance, workshops, craft, sessions'>\n";
+  echo "<meta name=description content='" . addslashes(TnC('Page_Description')) . ">\n";
+  echo "<meta name=keywords content='" . addslashes(TnC('Page_Keywords')) . ">\n";
   echo "<meta name=viewport content='width=device-width, initial-scale=1.0'>";
 
   echo "<script>" . $FESTSYS['Analytics'] . "</script>";

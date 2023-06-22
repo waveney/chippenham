@@ -8,9 +8,48 @@
   include_once("TradeLib.php");
   global $Medias;
 
+  if (isset($_REQUEST['ACTION'])) {
+    switch ($_REQUEST['ACTION']) {
+      case 'Add':
+      echo "<form method=post action=GallManage>";
+      $coln = 0;
+
+      echo "<div class=Scrolltable><table id=indextable border>\n";
+      echo "<thead><tr>";
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Media</a>\n";
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Level</a>\n";
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Gallery Set</a>\n";  
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Menu Bar Order</a>\n";
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Set Order</a>\n";
+      echo "</thead><tbody>";
+        
+      echo "<tr><td><input type=text size=20 name=SN0 >";
+      echo "<td>" . fm_select($Medias,$_REQUEST,"Media0") . fm_number1("",$_REQUEST,'Level0');
+      echo "<td><input type=text name=GallerySet0 >";
+      echo "<td><input type=text name=MenuBarOrder0 >";
+      echo "<td><input type=text name=SetOrder0 >";
+      echo "</table></div>";
+      echo "<input type=submit name=ACTION value=Create>\n";
+      dotail();
+      
+      
+      case 'Create':      
+//var_dump($_REQUEST);
+        $Gal = ['SN'=>$_REQUEST['SN0'], 'Media'=>$_REQUEST['Media0'], 'Level'=>$_REQUEST['Level0'], 'GallerySet'=>$_REQUEST['GallerySet0'],
+                'MenuBarOrder'=>$_REQUEST['MenuBarOrder0'], 'SetOrder'=>$_REQUEST['SetOrder0']];
+        Gen_Put('Galleries',$Gal);
+        break;
+        
+    }
+  }
+
+
   $coln = 0;
   $Gals = Get_Gallery_Names();
-  if (UpdateMany('Galleries','Put_Gallery_Name',$Gals,1)) $Gals = Get_Gallery_Names();
+  
+  
+//  if (UpdateMany('Galleries','Put_Gallery_Name',$Gals,1)) $Gals = Get_Gallery_Names();
 
   $coln = 0;
   echo "<h2>Galleries</h2><p>";
@@ -19,6 +58,7 @@
   echo "The Set Order is used for sub Galleries<p>";
  
   echo "<form method=post action=GallManage>";
+  Register_IndexedAutoUpdate('Galleries',1,1);
   echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
@@ -44,14 +84,15 @@
 
     echo "\n";
   }
-  echo "<tr><td><td><input type=text size=20 name=SN0 >";
-  echo "<td>" . fm_select($Medias,$g,"Media0") . fm_number1("",$g,'Level');
-  echo "<td><input type=text name=GallerySet0 >";
-  echo "<td><input type=text name=MenuBarOrder0 >";
-  echo "<td><input type=text name=SetOrder0 >";
+
+  if (Access('SysAdmin')) {
+    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+  }
+
   echo "</table></div>\n";
-  echo "<input type=submit name=Update value=Update>\n";
-  echo "</form></div>";
+//  echo "<input type=submit name=Update value=Update>\n";
+  echo "</form>";
+  echo "<h2><a href=GallManage?ACTION=Add>Add a new Gallery</a></h2>";
 
   dotail();
 

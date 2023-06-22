@@ -275,9 +275,9 @@ function AutoInput(f,after) {
   var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
   var typeval = document.getElementById('AutoType').value;
   var refval = document.getElementById('AutoRef').value;
-  var Indexed = document.getElementById('AutoIndexd') ? document.getElementById('AutoIndexd').value : 0;
+  var Indexed = document.getElementById('AutoIndexed') ? document.getElementById('AutoIndexed').value : 0;
   if (Indexed) {
-    var m = f.match(/(\a*)(\d*)/);
+    var m = f.match(/(.+?)(\d+)/);
     var Paras = {'D':typeval, 'F':m[1], 'V':newval, 'Y':yearval, 'I':m[2]};      
   } else {
     var Paras = {'D':typeval, 'F':id, 'V':newval, 'Y':yearval, 'I':refval};  
@@ -324,11 +324,19 @@ function AutoCheckBoxInput(f) {
   var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
   var typeval = document.getElementById('AutoType').value;
   var refval = document.getElementById('AutoRef').value;
+  var Indexed = document.getElementById('AutoIndexed') ? document.getElementById('AutoIndexed').value : 0;
+  if (Indexed) {
+    var m = f.match(/(.+?)(\d+)/);
+    var Paras = {'D':typeval, 'F':m[1], 'V':newval, 'Y':yearval, 'I':m[2]};      
+  } else {
+    var Paras = {'D':typeval, 'F':id, 'V':newval, 'Y':yearval, 'I':refval};  
+  }
+
   var dbg = document.getElementById('Debug');
   if (dbg) {
-    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) { $('#Debug').html( data)});
+    $.post("formfill.php", Paras , function( data ) { $('#Debug').html( data)});
   } else {
-    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval});
+    $.post("formfill.php", Paras );
   }
   DoAfterInputs();
 }
@@ -339,10 +347,18 @@ function AutoRadioInput(f,i) {
   var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
   var typeval = document.getElementById('AutoType').value;
   var refval = document.getElementById('AutoRef').value;
+  var Indexed = document.getElementById('AutoIndexed') ? document.getElementById('AutoIndexed').value : 0;
+  if (Indexed) {
+    var m = f.match(/(.+?)(\d+)/);
+    var Paras = {'D':typeval, 'F':m[1], 'V':newval, 'Y':yearval, 'I':m[2]};      
+  } else {
+    var Paras = {'D':typeval, 'F':id, 'V':newval, 'Y':yearval, 'I':refval};  
+  }
+
   var dbg = document.getElementById('Debug');
   DoAfterInputs();
   if (dbg) {
-    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval}, function( data ) { $('#Debug').html( data);
+    $.post("formfill.php", Paras , function( data ) { $('#Debug').html( data);
     if (data.match(/FORCERELOAD54321/m)) {
       setTimeout(function(){
         window.location.reload();
@@ -355,7 +371,7 @@ function AutoRadioInput(f,i) {
     } 
    });
   } else {
-    $.post("formfill.php", {'D':typeval, 'F':f, 'V':newval, 'Y':yearval, 'I':refval});
+    $.post("formfill.php", Paras);
   }
 
 }
