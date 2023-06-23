@@ -7,7 +7,8 @@
   global $USER,$YEAR;
 
   A_Check('Staff');
-  
+
+global $TinTypes; 
 $TinTypes = Gen_Get_All('TinTypes');
 $TinStatus = ['','Lost'];
 $WhoCats = ['Dance Side','Volunteer','Other'];
@@ -17,7 +18,9 @@ $AltColours = ['#ff99ff', '#ccffff', '#ccffcc', '#ffffcc', '#ffcccc', '#e6ccff',
      '#ffb3ff', '#b3b3ff', '#b3ffff', '#b3ffb3', '#ffffb3', '#ffb3b3', '#ecc6c6', '#ffb3cc', '#ffb3d9', '#ecc6d9', '#ffb3ff', '#ecc6ec', '#ecb3ff', '#e0b3ff',
      '#d9b3ff', '#d1d1e0', '#c6c6ec', '#b3b3ff', '#b3ccff', '#c2d1f0', '#c6d9ec', '#b3d9ff', '#d1e0e0', '#c6ecd9', '#d9ffb3', '#e5e5cc', '#e0e0d1', '#ecd9c6',
      '#ffd9b3', '#ffe6b3', '#ffc6b3', '#ffccb3' ];
-     
+
+
+
 function ShowList($Pfx,&$List, $Fld, $Action='') {
   global $AltColours,$Thresh;
   $LLen = count($List);
@@ -492,7 +495,7 @@ function ShowTotals() {
   if ($Finished) {
     echo "<h2>All tins are counted.  The totals are:</h2>";
   } else {
-    echo "<h2>The interim totals are:</h2>";
+    echo "<h2>The interim totals are:</h2>The email buttons only appear when all are counted.<p>";
   }
   
   uasort($ColCount, function ($a,$b) { return $b['Value'] <=> $a['Value'];});
@@ -534,12 +537,15 @@ function ShowTotals() {
 
                 break;
               case 1: 
-                $Vol = Get_Volunteer($Col['Who']); 
+                $Vid = $Col['Who'];
+                $Vol = Get_Volunteer($Vid); 
                 echo "<td class=smalltext style='max-width:180;overflow-x:auto;' rowspan=$Rows>" . $Vol['Email'] . "<td rowspan=$Rows>" . $Vol['Phone']; 
-                if ($Finished) echo "<td rowspan=$Rows>EMAIL";
+                if ($Finished) echo "<td rowspan=$Rows><button type=button class=ProfButton onclick=ProformaVolSend('Vol_Collect_Info',$Vid,'CollectInfo','SendVolEmail')" .
+                     Proforma_Background('FinalInfo2') . ">Send Thanks</button>";
                 break;
               case 2: 
-                echo "<td rowspan=$Rows><td rowspan=$Rows><td rowspan=$Rows>\n";
+                echo "<td rowspan=$Rows><td rowspan=$Rows>";
+                if ($Finished) echo "<td rowspan=$Rows>\n";
             }
           }
         }
@@ -547,43 +553,47 @@ function ShowTotals() {
 //      }
     
   }
+  
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=8 class=NotSide><textarea id=Debug></textarea>";    
   echo "</table></div>\n";
 }
 
 function CollectInfo(&$Data,$type=0) { // 0 =Dance, 1=Vol
   global $TinTypes,$YEAR,$WhoCats,$ColCount,$Records;
-  
+
   $Finished = Get_All_Data();
   $Tins = Gen_Get_All('CollectingUnit');
     
-  if ($Finished) {
-    $Str = "The details are:\n";
-  } else {
-    $Str = "The interim details are:\n";
-  }
-  
   uasort($ColCount, function ($a,$b) { return $b['Value'] <=> $a['Value'];});
 
+  $Str = "You collected <br><table border><tr><th>Device Type<th>Device<th>From<th>To<th>Value";
   $Posn = 0;
+  $Total = 0;
   foreach ($ColCount as $CName=>$Col) {
     $Posn++;
     if ((($type == 0) && ($Data['SideId'] == $Col['Who'])) ||
         (($type == 1) && ($Data['id'] == $Col['Who']))) {
-      
-      $Str .= "You collected ";
-      // Tins
-      
-      // Total
-      
-      // if (Posn < N state your position
-    
+      foreach($Col['Tins'] as $Rid) {
+        $R = $Records[$Rid];
+        $Tin = $Tins[$R['CollectionUnitId']];
+        $Str .= "<tr>";
+        $Str .=  "<td>" . $TinTypes[$Tin['Type']]['Name'] . "<td>" . $Tin['Name'] . "<td>";
+        $Str .=  date('D H:i:s',$R['TimeOut']) . "<td>" . date('D H:i:s',$R['TimeIn']);
+        $Str .=  "<td align=right>" . ($R['Value'] <0 ? 0 :  sprintf('£%0.2f',$R['Value']/100));
+        }
+      $Str .= "<tr><td colspan=5 align=right>" . sprintf('£%0.2f',$Col['Value']) . "</table>";
+
+      if ($Posn < Feature('CollectingPosn',4)) {
+        $Str .= "<p>You collected the " . 
+                (($Posn < 4)?['<B>Most</b>','<b>Second</b> most','<b>third</b> most'][$Posn-1] : ($Posn .  Ordinal($Posn) . " largest ")) . " amount<p>";
+      }
       return $Str;
     }
   }
 }
 
 function CollectActions() {
-  dostaffhead("Collecting",["/css/Collecting.css","/js/Collecting.js"]);
+  dostaffhead("Collecting",["/css/Collecting.css","/js/Collecting.js","/js/InviteThings.js"]);
 //var_dump($_REQUEST);
   if (isset($_REQUEST['ACTION'])) {
     switch ($_REQUEST['ACTION']) {

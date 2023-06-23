@@ -11,10 +11,12 @@ $proforma = $_GET['N'];
 $Vol = Get_Volunteer($id);
 $subject = Feature('FestName') . " $PLANYEAR and " . $Vol['SN'];
 $To = $Vol['Email'];
+//var_dump($Vol);
     $too = [['to',$To,$Vol['SN']],
             ['from','Stewards' . '@' . Feature('HostURL'),Feature('ShortName') ],
             ['replyto','Stewards' . '@' . Feature('HostURL'),Feature('ShortName') ] ];
 //$to = $Side['Email']; // Temp value
-echo Email_Proforma(1,$id, $too,$proforma,$subject,'Get_Vol_Details',$Vol,'Volunteers');
+//var_dump($_REQUEST);
+echo Email_Proforma(1,$id, $too,$proforma,$subject,'Vol_Details',$Vol,'Volunteers');
 
 ?>

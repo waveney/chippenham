@@ -296,7 +296,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
   static $attnum = 0;
   $Reps = [];
   $Limit = 0;
-  
+
   while (preg_match('/\*(\w*)\*/',$Mess)) {
     if ($Limit++ > 10) break; // Limit recursion to 10 deep
     if (preg_match_all('/\*(\S*)\*/',$Mess,$Matches)) {
@@ -381,7 +381,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
             break;
 
           default:
- //var_dump($helper,$helperdata,$attachments,$embeded);
+// var_dump($helper,$helperdata,$attachments,$embeded);
             $rep = ($helper?$helper($key,$helperdata,$attachments,$embeded):"@@$key@@");
             break;
           }
@@ -405,6 +405,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
 // if mescat > 40 chars it is assumed to be the proforma itself
 function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=0,$logfile='',&$attachments=0,$embeded=0,$from='') {
   global $PLANYEAR,$YEARDATA;
+
   if (strlen($mescat) < 40) {
     $Prof = Get_Email_Proforma($mescat);
     $Mess = ($Prof? $Prof['Body'] : "Unknown message $mescat ");
@@ -499,6 +500,7 @@ function Replace_Help($Area='',$Right=0) {
   ['*DANCEORG*','Sign of for dance messages','Dance'],
   ['*SENDER*','Name of sender - person clicking the email','All'],
   ['*CONTRACT*','Attach Contract to the message','Performers'],
+  ['*COLLECTINFO*','Collection Information','Dance, Volunteers'],
   ];
 
   echo "<span " . ($Right?' class=floatright':'') . " id=largeredsubmit onclick=($('.HelpDiv').toggle()) >Click to toggle Standard Replacements Help</span>";
