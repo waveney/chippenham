@@ -321,7 +321,7 @@ function Feature($Name,$default='') {  // Return value of feature if set Year da
   static $_Features;
   global $FESTSYS,$YEARDATA,$_YearFeatures;
   if (!$_Features) {
-    $_Features = parse_ini_string($FESTSYS['Features']);
+    $_Features = parse_ini_string($FESTSYS['Features']?? '');
     $_YearFeatures = parse_ini_string($YEARDATA['FestFeatures'] ?? '');
   }
   return $_YearFeatures[$Name] ?? ($_Features[$Name] ?? $default);

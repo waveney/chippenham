@@ -241,7 +241,7 @@ PlanYear = ' . $Year . '
     ['MapPointTypes',13,['SN'=>'Beer','Icon'=>'beer-glass-mug-icon.png']],
         
     ['Directories',0,['SN'=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>0, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
-    ['BigEvents',1,['Event'=>-1,'Type'=>'Blank', 'Identifier'=>1,'EventOrder'=>0,'Notes'=>'']],
+    ['BigEvent',1,['Event'=>-1,'Type'=>'Blank', 'Identifier'=>1,'EventOrder'=>0,'Notes'=>'']],
 
   ];
 
