@@ -670,7 +670,7 @@ function CollectActions() {
     echo "<li><a href=Collecting?ACTION=Records>List this year records</a>";  
     echo "<li><a href=Collecting?ACTION=Count>Count Tins</a>";  
     echo "<li><a href=Collecting?ACTION=Totals>Show Totals</a>";  
-    echo "<li><a href=Collecting?ACTION=Email>Email Teams and Collectors their results</a>";  
+//    echo "<li><a href=Collecting?ACTION=Email>Email Teams and Collectors their results</a>";  
     echo "<li><a href=Collecting?ACTION=TinTypes>Manage Tin Types</a>";  
   }
   echo "<li><a href=Collecting?ACTION=IO>Tins in and out</a></ul>";    

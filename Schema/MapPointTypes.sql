@@ -1,6 +1,6 @@
 CREATE TABLE `MapPointTypes` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `SN` text NOT NULL,
-  `Icon` text NOT NULL,
+  `SN` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Icon` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

@@ -1,9 +1,9 @@
 CREATE TABLE `TradePrices` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `SN` text,
+  `SN` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
   `ListOrder` int NOT NULL,
-  `Colour` text NOT NULL,
-  `BasePrice` text NOT NULL,
+  `Colour` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `BasePrice` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `PerDay` tinyint NOT NULL,
   `Deposit` int NOT NULL,
   `Addition` tinyint NOT NULL,
@@ -13,8 +13,8 @@ CREATE TABLE `TradePrices` (
   `NeedRiskAssess` tinyint NOT NULL,
   `ArtisanMsgs` tinyint NOT NULL,
   `TOpen` tinyint NOT NULL,
-  `Description` text NOT NULL,
+  `Description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `SalesCode` int NOT NULL,
-  `DefaultSize` text NOT NULL,
+  `DefaultSize` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

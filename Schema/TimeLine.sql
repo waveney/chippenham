@@ -1,6 +1,6 @@
 CREATE TABLE `TimeLine` (
   `TLid` int NOT NULL AUTO_INCREMENT,
-  `Title` text NOT NULL,
+  `Title` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `Progress` int NOT NULL,
   `Assigned` int NOT NULL,
   `Created` int NOT NULL,
@@ -8,11 +8,11 @@ CREATE TABLE `TimeLine` (
   `CreatedBy` int NOT NULL,
   `Start` int NOT NULL,
   `Due` int NOT NULL,
-  `Notes` text NOT NULL,
-  `Year` text NOT NULL,
+  `Notes` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Year` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `NextYearId` int NOT NULL,
-  `Progtext` text NOT NULL,
-  `History` text NOT NULL,
+  `Progtext` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `History` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `Importance` tinyint NOT NULL,
   `Recuring` tinyint NOT NULL,
   `DependsOn1` int NOT NULL,
@@ -20,4 +20,4 @@ CREATE TABLE `TimeLine` (
   `DependsOn3` int NOT NULL,
   `DependsOn4` int NOT NULL,
   PRIMARY KEY (`TLid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

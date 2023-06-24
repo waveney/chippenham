@@ -1,7 +1,7 @@
 CREATE TABLE `EventTypes` (
   `ETypeNo` int NOT NULL AUTO_INCREMENT,
-  `SN` text NOT NULL,
-  `Plural` text NOT NULL,
+  `SN` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Plural` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `Public` tinyint NOT NULL,
   `HasDance` tinyint NOT NULL,
   `HasMusic` tinyint NOT NULL,
@@ -13,12 +13,12 @@ CREATE TABLE `EventTypes` (
   `IncType` tinyint NOT NULL,
   `NoPart` tinyint NOT NULL,
   `DontList` tinyint NOT NULL,
-  `FirstYear` text NOT NULL,
-  `Banner` text NOT NULL,
+  `FirstYear` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Banner` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `MapFeatNum` int NOT NULL,
   `IsConcert` tinyint NOT NULL,
   `Importance` int NOT NULL,
-  `Sherlock` text NOT NULL,
+  `Sherlock` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `HasRolls` tinyint NOT NULL,
   PRIMARY KEY (`ETypeNo`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

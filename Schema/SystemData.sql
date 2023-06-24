@@ -1,13 +1,13 @@
 CREATE TABLE `SystemData` (
-  `FestName` text NOT NULL,
-  `ShortName` text NOT NULL,
-  `PlanYear` text NOT NULL,
-  `ShowYear` text NOT NULL,
+  `FestName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ShortName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `PlanYear` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ShowYear` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
-  `Capabilities` text NOT NULL,
-  `Features` text NOT NULL,
-  `HostURL` text NOT NULL,
-  `Analytics` text NOT NULL,
-  `FooterText` text NOT NULL,
+  `Capabilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Features` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `HostURL` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Analytics` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `FooterText` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
