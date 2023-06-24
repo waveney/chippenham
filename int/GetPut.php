@@ -1,6 +1,6 @@
 <?php
 // General Table operations
-
+/*
 function Gen_Get($Table,$id, $idx='id') {
   global $db;
   $res = $db->query("SELECT * FROM $Table WHERE $idx=$id");
@@ -76,6 +76,6 @@ function Get_Event_Types($tup=0) { // 0 just names, 1 all data
   $ans = array();
   foreach($Event_Types as $t=>$et) $ans[$t] = $et['SN'];
   return $ans;
-}
+}*/
 
 ?>

@@ -180,7 +180,7 @@ user=" . $CONF['user'] . "\n";
 // [Table, id, [data]] 
 
 function Preload_Data() {
-//  include_once("festdb.php");
+
   global $db,$PLANYEAR,$YEAR;
   
   $Year = gmdate('Y');
