@@ -1,6 +1,6 @@
 <?php
 
-//global $TableIndexes;
+global $TableIndexes;
 // If table's index is 'id' it does not need to be listed here
 $TableIndexes = array(  'Sides'=>'SideId', 'SideYear'=>'syId', 'FestUsers'=>'UserId', 'Venues'=>'VenueId', 'Events'=>'EventId', 
                         'Bugs'=>'BugId', 'BigEvent'=>'BigEid', 'DanceTypes'=>'TypeId', 
