@@ -222,6 +222,7 @@ FestName = Festival
 ShortName = Fest
 ShowYear = ' . $Year . '
 PlanYear = ' . $Year . '
+HostURL = ' . $_SERVER['SERVER_NAME'] . '
 ; There are lots more here to be set up - needs documenting
 ']],
     ['General',$Year,['Year'=>$Year]],
@@ -374,7 +375,7 @@ function Check_Sysadmin() {
 }
 
 function Setup_Sysadmin() {
-  global $Access_Type;
+  global $Access_Type,$YEAR;
   include_once("UserLib.php");
   include_once("DocLib.php");
   

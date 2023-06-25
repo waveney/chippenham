@@ -595,6 +595,16 @@
     }
     $txt .= "</ul>\n";
   }
+  
+// *********************** Development ONLY *********************************************************
+  if ($x = StaffTable('Development','Development Tools')) {
+    $txt .= $x;
+    $txt .= "<ul>\n";
+
+    $txt .= "<li><a href=DumpEmails>Dump Emails</a>";
+    $txt .= "<li><a href=DumpTnC>Dump Ts and Cs</a>\n";
+    $txt .= "</ul>\n";
+  }
 
   $txt .= "</table></div>\n";
 

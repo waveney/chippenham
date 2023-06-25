@@ -75,7 +75,7 @@
 
   $TopShow = "Top";
   if ( !Show_Articles_For($TopShow,$future)) {
-    echo "<center><a href=/Tickets><img align=center src=/images/stuff/Main_Acts_2020t2.jpg class=BrianImg></a></center>";
+    echo "<center><a href=/Tickets>Details to Follow></a></center>";
   }
   echo "<br clear=all>";
 
