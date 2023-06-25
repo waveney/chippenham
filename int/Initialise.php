@@ -265,16 +265,15 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
   echo "About to Create Email Proformas<p>";
   
   include_once("Email.php"); 
-  $Pros=Get_Email_Proformas_By_Name(1);
+  $Pros = Gen_Get_All('EmailProformas');
   
   $Profs = json_decode(file_get_contents('festfiles/DumpEmails.json')); 
 
   foreach ($Profs as $P) {
-    if (!isset($Pros[$P['SN']])) {
-      unset($P['id']);
-      Gen_Put('EmailProformas',$P);
-      echo "Added Email Proforma - " . $P['SN'] . "<Br>";
-    }
+    foreach($Pros as $Pr) if ($Pr['SN'] == $P['SN']) continue 2;
+    unset($P['id']);
+    Gen_Put('EmailProformas',$P);
+    echo "Added Email Proforma - " . $P['SN'] . "<Br>";
   }
   
   echo "About to Create Ts And Cs <p>";
@@ -285,10 +284,9 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
 
   foreach ($Cs as $C) {
     foreach($Ts as $T) if ($T['Name'] == $C['Name']) continue 2;
-      unset($T['id']);
-      Gen_Put('TsAndCs2',$T);
-      echo "Added TnC Proforma - " . $T['Name'] . "<Br>";
-    }
+    unset($T['id']);
+    Gen_Put('TsAndCs2',$T);
+    echo "Added TnC Proforma - " . $T['Name'] . "<Br>";
   }
   
 }
