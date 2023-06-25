@@ -267,16 +267,30 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
   include_once("Email.php"); 
   $Pros=Get_Email_Proformas_By_Name(1);
   
-  $file = fopen('festfiles/EmailDump','r');
-  while ($line = fgets($file)) {
-    [$key,$value] = explode(',',$line,2);
-    if ($key && $value && !isset($Pros[$key])) {
-      $value = str_replace('\r\n',"\n",trim($value));
-      $ent = ['SN'=>$key,'Body'=>$value];
-      insert_db('EmailProformas',$ent);
-      echo "Added Email Proforma - $key<Br>";
+  $Profs = json_decode(file_get_contents('festfiles/DumpEmails.json')); 
+
+  foreach ($Profs as $P) {
+    if (!isset($Pros[$P['SN']])) {
+      unset($P['id']);
+      Gen_Put('EmailProformas',$P);
+      echo "Added Email Proforma - " . $P['SN'] . "<Br>";
     }
   }
+  
+  echo "About to Create Ts And Cs <p>";
+  
+  $Ts=Gen_Get_All('TsAndCs2');
+  
+  $Cs = json_decode(file_get_contents('festfiles/DumpTsNCs.json')); 
+
+  foreach ($Cs as $C) {
+    foreach($Ts as $T) if ($T['Name'] == $C['Name']) continue 2;
+      unset($T['id']);
+      Gen_Put('TsAndCs2',$T);
+      echo "Added TnC Proforma - " . $T['Name'] . "<Br>";
+    }
+  }
+  
 }
 
 function Create_htaccess() {
