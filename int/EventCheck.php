@@ -104,7 +104,7 @@ function EventCheck($checkid=0) {
     }   
     // Big Events...
 
-    if ($evlist) foreach($evlist as $e=>$ev) {
+    if ($evlist ?? 0) foreach($evlist as $e=>$ev) {
       if ($ev['BigEvent']) {
         $realstart = timereal($ev['Start']) - $ev['Setup'];
         $realend = timereal($ev['SubEvent']<0 ? $ev['SlotEnd'] : $ev['End']);

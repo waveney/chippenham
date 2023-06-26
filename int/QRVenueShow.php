@@ -56,6 +56,12 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 
 
   $V = (isset($_REQUEST['v'])? $_REQUEST['v']: 0);
+  
+  if ($V == 0) {
+    dohead('No Venue Selected');
+    echo "<h1> No Venue Selected</h1>";
+    dotail();
+  }
 
   $Mode = (isset($_REQUEST['Mode']) ? $_REQUEST['Mode'] : 0 ) ; // If present show everything
   $Poster = (isset($_REQUEST['Poster']) ? $_REQUEST['Poster'] : 0 ) ; // If present do Poster Mode - No Navigation/Trailer, but add new trailer with web and QR

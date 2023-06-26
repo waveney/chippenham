@@ -9,6 +9,12 @@
   include_once("ViewLib.php");
   global $YEAR,$USERID,$USER, $Access_Type, $Event_Types;
     
+  if ($V == 0) {
+    dohead('No Venue Selected');
+    echo "<h1> No Venue Selected</h1>";
+    dotail();
+  }
+
   $Ven = Get_Venue($V);
   $host = "https://" . $_SERVER['HTTP_HOST'];
   

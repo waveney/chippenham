@@ -249,11 +249,19 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
     ['EventTypes',3,['SN'=>'Workshop','Plural'=>'Workshops','Public'=>1,'HasMusic'=>1, 'HasDance'=>1,'FirstYear'=>$Year,'IncType'=>1]],
     ['EventTypes',4,['SN'=>'Session','Plural'=>'Sessions','Public'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'IncType'=>1]],
     ['EventTypes',5,['SN'=>'Ceilidh','Plural'=>'Ceilidhs','Public'=>1,'HasDance'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'HasRolls'=>1,'IncType'=>1]],
-    ['EventTypes',6,['SN'=>'Sound Check','Plural'=>'Sound Checks','Public'=>0,'HasMusic'=>1,'NotCrit'=>1, 'FirstYear'=>$Year,'IncType'=>1,'NoPart'=>1]],
+    ['EventTypes',6,['SN'=>'Sound Check','Plural'=>'Sound Checks','Public'=>0,'DontList'=>1,'HasMusic'=>1,'NotCrit'=>1, 'FirstYear'=>$Year,'IncType'=>1,'NoPart'=>1]],
     ['EventTypes',7,['SN'=>'Music','Plural'=>'Music','Public'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'IncType'=>1]],
-    ['EventTypes',8,['SN'=>'Venue Blocked Out','Plural'=>'Venue Blocked Out','Public'=>0,'FirstYear'=>$Year,'NoPart'=>1]],
+    ['EventTypes',8,['SN'=>'Venue Blocked Out','Plural'=>'Venue Blocked Out','DontList'=>1,'Public'=>0,'FirstYear'=>$Year,'NoPart'=>1]],
     ['EventTypes',9,['SN'=>'Folk Dance','Plural'=>'Folk Dances','Public'=>1,'HasDance'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'HasRolls'=>1]],
 
+    ['PerformerTypes',1,['SN'=>'Dance','FullName'=>'Dance Displays']],
+    ['PerformerTypes',2,['SN'=>'Music','FullName'=>'Music']],
+    ['PerformerTypes',3,['SN'=>'Comedy','FullName'=>'Comedy']],
+    ['PerformerTypes',4,['SN'=>'Family','FullName'=>'Family and Community']],
+    ['PerformerTypes',5,['SN'=>'Ceilidh','FullName'=>'Ceilidhs and Folk Dances']],
+    ['PerformerTypes',6,['SN'=>'Other','FullName'=>'Other']],
+    
+    ['Galleries',1,['SN'=>'All Galleries', 'Level'=>1]],
 
   ];
 
@@ -317,7 +325,7 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
     foreach ($CFeatures as $CF=>$CV) {
       if (isset($RFeatures[$CF])) {
         if ($RFeatures[$CF] == $CV) continue; //
-        $RFeats = preg_replace("/($CF)( *)?\=.*?/", "$CF = $CV", $RFeats);
+        $RFeats = preg_replace("/($CF)( *)?\=.*?$/", "$CF = $CV", $RFeats);
       } else {
         $RFeats .= "$CF = $CV\n";
       }
@@ -328,7 +336,7 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
     foreach ($RFeatures as $RF=>$RV) {
       if (isset($CFeatures[$RF])) {
         if ($CFeatures[$RF] == $RV) continue; //
-        $CFeats = preg_replace("/($RF)( *)?\=.*?/", "$RF = $RV", $CFeats);
+        $CFeats = preg_replace("/($RF)( *)?\=.*?$/", "$RF = $RV", $CFeats);
       } else {
         $CFeats .= "$FF = $RV\n";
       }

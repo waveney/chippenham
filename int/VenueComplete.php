@@ -47,7 +47,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Venue</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Complete</a>\n";
   echo "</thead><tbody>";
-  foreach($Vens as $v) {
+  if ($Vens) foreach($Vens as $v) {
     $i = $v['VenueId'];
     $vyi = 0;
     if (isset($VenY[$i])) $vyi = $VenY[$i]['id'];

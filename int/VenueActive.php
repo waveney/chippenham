@@ -11,7 +11,7 @@
   $Vens = Get_Active_Venues(1);
   $Vids = [];
   
-  foreach ($Vens as $Ven) $Vids[] = $Ven['VenueId'];
+  if ($Vens) foreach ($Vens as $Ven) $Vids[] = $Ven['VenueId'];
   
   file_put_contents("../cache/VenueList",json_encode($Vids));
 

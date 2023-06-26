@@ -16,6 +16,7 @@ function Add_Act_Year_Help() {
 
 function Get_Music_Types($tup) {
   global $db;
+  $full = [];
   $res = $db->query("SELECT * FROM MusicTypes ORDER BY Importance DESC");
   if ($res) {
     while ($typ = $res->fetch_assoc()) {
