@@ -69,7 +69,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Menu Bar Order</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Set Order</a>\n";
   echo "</thead><tbody>";
-  foreach($Gals as $g) {
+  if ($Gals) foreach($Gals as $g) {
     $i =  $g['id'];
     echo "<tr><td>" . $i;
     echo fm_text1("",$g,'SN',1,'','',"SN$i") . "</a>";

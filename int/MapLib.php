@@ -22,6 +22,7 @@ function Put_Map_Point_Type(&$now) {
 
 function Get_Map_Points() {
   global $db;
+  $full = [];
   $res = $db->query("SELECT * FROM MapPoints ORDER BY id");
   if ($res) while ($mpt = $res->fetch_assoc()) $full[] = $mpt;
   return $full;

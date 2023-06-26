@@ -40,7 +40,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Directions</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Link</a>\n";
   echo "</thead><tbody>";
-  foreach($Pts as $t) {
+  if ($Pts) foreach($Pts as $t) {
     $i = $t['id'];
     echo "<tr><td>$i" . fm_text1("",$t,'SN',1,'','',"SN$i");
     echo "<td>" . fm_select($Icons,$t,'Type',0,'',"Type$i");

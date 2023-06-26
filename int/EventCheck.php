@@ -104,7 +104,7 @@ function EventCheck($checkid=0) {
     }   
     // Big Events...
 
-    foreach($evlist as $e=>$ev) {
+    if ($evlist) foreach($evlist as $e=>$ev) {
       if ($ev['BigEvent']) {
         $realstart = timereal($ev['Start']) - $ev['Setup'];
         $realend = timereal($ev['SubEvent']<0 ? $ev['SlotEnd'] : $ev['End']);
@@ -163,7 +163,7 @@ function EventCheck($checkid=0) {
       }
     }
 
-    foreach ($evlist as $e=>$ev) { //Check for don't use if other venue used
+    if($evlist) foreach ($evlist as $e=>$ev) { //Check for don't use if other venue used
       if ($ev['BigEvent']) continue; // For now
       if (isset($Venues[$ev['Venue']]['DontUseIf']) && $Venues[$ev['Venue']]['DontUseIf']) {
         $block = $Venues[$ev['Venue']]['DontUseIf'];

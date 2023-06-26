@@ -1540,7 +1540,11 @@ function VolAction($Action,$csv=0) {
     
   case 'TeamList':
     $Team=$_REQUEST['Cat'];
-    List_Team($Team);
+    if (empty($Team)) { 
+      echo "No Team requested";
+    } else {
+      List_Team($Team);
+    }
     break;
     
   case 'TeamListCSV':

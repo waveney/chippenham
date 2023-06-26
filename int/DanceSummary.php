@@ -26,7 +26,7 @@
                 ); 
 
   echo "<div class=Scrolltable><table border><tr><th>Category<th>Total";
-  foreach ($Types as $typ) echo "<th style='background:" . $typ['Colour'] . ";'>" . $typ['SN'];
+  if ($Types) foreach ($Types as $typ) echo "<th style='background:" . $typ['Colour'] . ";'>" . $typ['SN'];
   echo "<th>Other</tr>\n";
 
 
@@ -42,7 +42,7 @@
     $catcount = $qry->num_rows;
     echo "<tr><td>$cat<td align=right>$catcount";
     $runtotal=0;
-    foreach($Types as $typ) {
+    if ($Types) foreach($Types as $typ) {
       $lctyp = strtolower($typ['SN']);
       $qtxt = "SELECT y.SideId, s.Type FROM SideYear y, Sides s WHERE y.SideId=s.SideId AND y.SideId>0 AND y.Year='$YEAR' AND $srch " .
                 "AND LOWER(s.Type) LIKE '%$lctyp%'";

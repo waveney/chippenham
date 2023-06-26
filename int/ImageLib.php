@@ -136,6 +136,7 @@ function Image_Cache_Update_POST(&$Datas,$field='Photo',$path='') {
 
 function Get_Gallery_Names($type=0) {
   global $db;
+  $ans = [];
   $res=$db->query("SELECT * FROM Galleries");
   if ($res) {
     while ($g = $res->fetch_assoc()) $ans[$g['id']] = ($type?$g['SN']:$g);

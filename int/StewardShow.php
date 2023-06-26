@@ -1,7 +1,7 @@
 <?php
   include_once("fest.php");
   
-  $V = $_REQUEST['pa4v'];
+  $V = $_REQUEST['pa4v'] ?? 0;
   A_Check('Participant','Venue',$V);
   
   include_once("ProgLib.php");

@@ -75,7 +75,7 @@
 
   $TopShow = "Top";
   if ( !Show_Articles_For($TopShow,$future)) {
-    echo "<center><a href=/Tickets>Details to Follow></a></center>";
+    echo "<center><a href=/Tickets>Details to Follow</a></center>";
   }
   echo "<br clear=all>";
 

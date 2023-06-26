@@ -40,7 +40,7 @@
     dotail();
   } elseif (isset($_REQUEST['NEWACCESS'])) {
     $Vens = Get_Venues(1);
-    foreach ($Vens as $Ven) {
+    if ($Vens) foreach ($Vens as $Ven) {
       $Ven['AccessKey'] = rand_string(40);
       Put_Venue($Ven);
     }

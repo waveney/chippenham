@@ -519,6 +519,7 @@ function Default_SY($id=0) {
 function Get_Dance_Types($tup) {
   global $db;
   $res = $db->query("SELECT * FROM DanceTypes ORDER BY Importance DESC");
+  $short = $full = [];
   if ($res) {
     while ($typ = $res->fetch_assoc()) {
       $short[$typ['TypeId']] = $typ['SN'];

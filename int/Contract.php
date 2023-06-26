@@ -35,8 +35,8 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
              ];
     $Booked = Get_User(4);
     $kwd = 'Dummy ';
-    foreach($Venues as $i=>$v) { $Ven = $i; break;};
-    $Evs = [['SN' => 'Concert','Type' => 5, 'Day'=> 1, 'Start'=>1900, 'End'=>2000, 'Setup' => 10, 'Venue'=>$Ven, 'SubEvent' => 0, 'Duration'=>60]];
+    if ($Venues) foreach($Venues as $i=>$v) { $Ven = $i; break;};
+    $Evs = [['SN' => 'Concert','Type' => 5, 'Day'=> 1, 'Start'=>1900, 'End'=>2000, 'Setup' => 10, 'Venue'=>($Ven??0), 'SubEvent' => 0, 'Duration'=>60]];
   }
 
 // Performances
@@ -164,8 +164,8 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     } else if ($Sidey['ReportTo'] != 0 ) {
       $Reporttos = Report_To();
       $str .= "<tr><td><b>ON ARRIVAL</b> Please report to:<td>" . Venue_Parents($Venues, $Sidey['ReportTo']) . "<a href='https://" .  $_SERVER['HTTP_HOST'] . 
-             "/int/VenueShow?v=" . $Sidey['ReportTo'] . "'><b>" .
-             $Reporttos[$Sidey['ReportTo']] . "</b></a> (click for map and directions)<p>\n";
+             "/int/VenueShow?v=" . ($Sidey['ReportTo']??0) . "'><b>" .
+             ($Reporttos[$Sidey['ReportTo']] ?? '') . "</b></a> (click for map and directions)<p>\n";
     }
 
     $str .= "<tr><td><b>Expected Performance Duration</b><td>" . 

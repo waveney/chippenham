@@ -93,7 +93,7 @@ function &Report_To() { // List of report to locs
   $Vens = Get_Real_Venues(0);
   $Pts = Get_Map_Points();
   $List = array_merge($List,$Vens);
-  foreach ($Pts as $P) if ($P['Directions']) $List[-$P['id']] = $P['SN'];
+  if ($Pts) foreach ($Pts as $P) if ($P['Directions']) $List[-$P['id']] = $P['SN'];
   return $List;
 }
 
@@ -101,7 +101,7 @@ function &Report_To() { // List of report to locs
 function Get_Real_Venues($type=0) { // 0 =short, 1 =full
   $Vens = Get_Venues(1,' WHERE Status=0 ');
   $real = array();
-  foreach ($Vens as $vi=>$v) if (!$v['IsVirtual']) $real[$v['VenueId']] = ($type?$v:SName($v));
+  if ($Vens) foreach ($Vens as $vi=>$v) if (!$v['IsVirtual']) $real[$v['VenueId']] = ($type?$v:SName($v));
   return $real;
 }
 

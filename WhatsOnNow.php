@@ -27,8 +27,8 @@
 //  var_dump($_REQUEST);
   if (isset($_REQUEST['AtDate'])) {
 
-    $date = Date_BestGuess($_REQUEST['AtDate']);
-    $time = Time_BestGuess($_REQUEST['AtTime']);
+    $date = Date_BestGuess($_REQUEST['AtDate'] ?? '31/12/2000');
+    $time = Time_BestGuess($_REQUEST['AtTime'] ?? '14:00');
 //    var_dump($date,$time);
     $now = $date + timereal($time)*60;
     dominimalhead("Whats on",['files/Newstyle.css'],1);

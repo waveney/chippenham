@@ -43,7 +43,7 @@
   $Days2Festival = Days2Festival();
 
   $Types = Get_Dance_Types(1);
-  foreach ($Types as $i=>$ty) $Colour[strtolower($ty['SN'])] = $ty['Colour'];
+  if ($Types) foreach ($Types as $i=>$ty) $Colour[strtolower($ty['SN'])] = $ty['Colour'];
   
   $link = 'AddPerf';
   $LastYear = $YEARDATA['PrevFest'];

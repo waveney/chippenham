@@ -332,7 +332,7 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
         $CFeats .= "$FF = $RV\n";
       }
     }
-    $CSys['Features'] = $Cfeats;
+    $CSys['Features'] = $CFeats;
     Gen_Put('SystemData',$CSys);
   }
   
@@ -456,6 +456,14 @@ function Setup_Sysadmin() {
   Put_User($ans);
 }
 
+function Setup_Map_Data() {
+  include_once("MapLib.php");
+  Update_MapPoints();
+  
+  echo "Map Cache set up<p>";
+  
+}
+
 if (isset($_POST['SETUPSYS'])) {
   include_once("fest.php");
   Setup_Sysadmin();
@@ -473,6 +481,7 @@ if (isset($_POST['SETUPSYS'])) {
 
   include_once("fest.php");
   Check_Sysadmin();
+  Setup_Map_Data();
 }
 
 echo "All done<p><h2><a href=Staff.php>Now Login</a></h2>";
