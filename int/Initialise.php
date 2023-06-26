@@ -267,7 +267,7 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
   include_once("Email.php"); 
   $Pros = Gen_Get_All('EmailProformas');
   
-  $Profs = json_decode(file_get_contents('festfiles/DumpEmails.json')); 
+  $Profs = json_decode(file_get_contents('festfiles/DumpEmails.json'),1); 
 
   foreach ($Profs as $P) {
     foreach($Pros as $Pr) if ($Pr['SN'] == $P['SN']) continue 2;
@@ -280,15 +280,52 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
   
   $Ts=Gen_Get_All('TsAndCs2');
   
-  $Cs = json_decode(file_get_contents('festfiles/DumpTsNCs.json')); 
+  $Cs = json_decode(file_get_contents('festfiles/DumpTsNCs.json'),1); 
 
   foreach ($Cs as $C) {
     foreach($Ts as $T) if ($T['Name'] == $C['Name']) continue 2;
-    unset($T['id']);
-    Gen_Put('TsAndCs2',$T);
-    echo "Added TnC Proforma - " . $T['Name'] . "<Br>";
+    unset($C['id']);
+    Gen_Put('TsAndCs2',$C);
+    echo "Added TnC Proforma - " . $C['Name'] . "<Br>";
+  }
+ 
+ 
+  echo "About to Import raw features<p>";
+ 
+  $RFeats = base64_decode(file_get_contents('festfiles/RawFeatures'));
+  
+  $RFeatures = parse_ini_string($RFeats);
+  
+  $CSys = Gen_Get('SystemData',1);
+  $CFeats = $CSys['Features'];
+  
+  $CFeatures =  parse_ini_string($CFeats);
+  
+  if (strlen($Feats) > strlen($CFeats)) { // Raw is bigger
+    foreach ($CFeatures as $CF=>$CV) {
+      if (isset($RFeatures[$CF])) {
+        if ($RFeatures[$CF] == $CV) continue; //
+        $RFeats = preg_replace("/($CF)( *)?\=.*?/", "$CF = $CV", $RFeats);
+      } else {
+        $RFeats .= "$CF = $CV\n";
+      }
+    }
+    $CSys['Features'] = $Rfeats;
+    Gen_Put('SystemData',$CSys);
+  } else { // Current is bigger
+    foreach ($RFeatures as $RF=>$RV) {
+      if (isset($CFeatures[$RF])) {
+        if ($CFeatures[$CF] == $RV) continue; //
+        $CFeats = preg_replace("/($RF)( *)?\=.*?/", "$RF = $RV", $CFeats);
+      } else {
+        $CFeats .= "$FF = $RV\n";
+      }
+    }
+    $CSys['Features'] = $Cfeats;
+    Gen_Put('SystemData',$CSys);
   }
   
+  echo "System data now has Raw Features<p>";
 }
 
 function Create_htaccess() {
