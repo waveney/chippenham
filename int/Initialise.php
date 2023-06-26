@@ -245,14 +245,14 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
     ['BigEvent',1,['Event'=>-1,'Type'=>'Blank', 'Identifier'=>1,'EventOrder'=>0,'Notes'=>'']],
     
     ['EventTypes',1,['SN'=>'Dance','Plural'=>'Dances','Public'=>1,'HasDance'=>1,'FirstYear'=>$Year,'Sherlock'=>'int/ShowDanceProg']],
-    ['EventTypes',2,['SN'=>'Concert','Plural'=>'Concerts','Public'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'Has Rolls'=>1,'IncType'=>1]],
+    ['EventTypes',2,['SN'=>'Concert','Plural'=>'Concerts','Public'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'HasRolls'=>1,'IncType'=>1]],
     ['EventTypes',3,['SN'=>'Workshop','Plural'=>'Workshops','Public'=>1,'HasMusic'=>1, 'HasDance'=>1,'FirstYear'=>$Year,'IncType'=>1]],
     ['EventTypes',4,['SN'=>'Session','Plural'=>'Sessions','Public'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'IncType'=>1]],
-    ['EventTypes',5,['SN'=>'Ceilidh','Plural'=>'Ceilidhs','Public'=>1,'HasDance'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'IncType'=>1]],
+    ['EventTypes',5,['SN'=>'Ceilidh','Plural'=>'Ceilidhs','Public'=>1,'HasDance'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'HasRolls'=>1,'IncType'=>1]],
     ['EventTypes',6,['SN'=>'Sound Check','Plural'=>'Sound Checks','Public'=>0,'HasMusic'=>1,'NotCrit'=>1, 'FirstYear'=>$Year,'IncType'=>1,'NoPart'=>1]],
     ['EventTypes',7,['SN'=>'Music','Plural'=>'Music','Public'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'IncType'=>1]],
     ['EventTypes',8,['SN'=>'Venue Blocked Out','Plural'=>'Venue Blocked Out','Public'=>0,'FirstYear'=>$Year,'NoPart'=>1]],
-
+    ['EventTypes',9,['SN'=>'Folk Dance','Plural'=>'Folk Dances','Public'=>1,'HasDance'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'HasRolls'=>1]],
 
 
   ];
