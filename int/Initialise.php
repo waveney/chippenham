@@ -241,7 +241,7 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
     ['MapPointTypes',12,['SN'=>'Meal','Icon'=>'meal-icon.png']],
     ['MapPointTypes',13,['SN'=>'Beer','Icon'=>'beer-glass-mug-icon.png']],
         
-    ['Directories',0,['SN'=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>0, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
+    ['Directories',1,['SN'=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>1, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
     ['BigEvent',1,['Event'=>-1,'Type'=>'Blank', 'Identifier'=>1,'EventOrder'=>0,'Notes'=>'']],
 
   ];
@@ -301,7 +301,7 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
   
   $CFeatures =  parse_ini_string($CFeats);
   
-  if (strlen($Feats) > strlen($CFeats)) { // Raw is bigger
+  if (strlen($RFeats) > strlen($CFeats)) { // Raw is bigger
     foreach ($CFeatures as $CF=>$CV) {
       if (isset($RFeatures[$CF])) {
         if ($RFeatures[$CF] == $CV) continue; //
@@ -310,12 +310,12 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
         $RFeats .= "$CF = $CV\n";
       }
     }
-    $CSys['Features'] = $Rfeats;
+    $CSys['Features'] = $RFeats;
     Gen_Put('SystemData',$CSys);
   } else { // Current is bigger
     foreach ($RFeatures as $RF=>$RV) {
       if (isset($CFeatures[$RF])) {
-        if ($CFeatures[$CF] == $RV) continue; //
+        if ($CFeatures[$RF] == $RV) continue; //
         $CFeats = preg_replace("/($RF)( *)?\=.*?/", "$RF = $RV", $CFeats);
       } else {
         $CFeats .= "$FF = $RV\n";

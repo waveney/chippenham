@@ -188,7 +188,7 @@ function DeleteDir($d) {
     foreach($subs as $sub)  { DeleteDir($sub); };
   }
 
-  $res = $db->query("UPDATE Documents SET State=1 WHERE Directory='" . $d ."'");
+  $res = $db->query("UPDATE Documents SET State=1 WHERE Dir='" . $d ."'");
 }
 
 function DeleteFile($f) {
