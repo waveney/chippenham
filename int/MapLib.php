@@ -84,8 +84,8 @@ function Update_MapPoints() {
         'imp'=>$mp['MapImp'],'icon'=>$mp['Type'],'atxt'=>$mp['AddText'],'direct'=>$mp['Directions'],'link'=>$mp['Link']);
   }
 
-  $res = Gen_Get_Cond('FoodAndDrink',"Year=$PLANYEAR");
-  foreach ($res as $mp) {
+  $res = Gen_Get_Cond('FoodAndDrink',"Year='$PLANYEAR'");
+  if ($res) foreach ($res as $mp) {
     $data[] = array('id'=>(2000000+$mp['id']), 'name'=>$mp['SN'], 'lat'=>$mp['Lat'], 'long'=>$mp['Lng'],
         'imp'=>$mp['MapImp'],'icon'=>($mp['Type']+1),'atxt'=>$mp['Description'],'direct'=>1,'link'=>$mp['Website']);
   }

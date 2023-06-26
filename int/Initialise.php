@@ -259,6 +259,7 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
 
   // Now call festdb
   include_once("festdb.php");
+  Feature_Reset();
   global $db,$TableIndexes;
 // var_dump($TableIndexes);exit;
   foreach($Preloads as $P) {
@@ -335,7 +336,7 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
     $CSys['Features'] = $CFeats;
     Gen_Put('SystemData',$CSys);
   }
-  
+  Feature_Reset();  
   echo "System data now has Raw Features<p>";
 }
 
@@ -457,6 +458,7 @@ function Setup_Sysadmin() {
 }
 
 function Setup_Map_Data() {
+  global $PLANYEAR;
   include_once("MapLib.php");
   Update_MapPoints();
   
@@ -474,6 +476,7 @@ if (isset($_POST['SETUPSYS'])) {
   Create_Databases();
   Create_Skeema_local();
   Preload_Data();
+  Setup_Map_Data();
   if (!Create_htaccess()) {
     echo "Please fix and re-run";
     exit;
@@ -481,7 +484,7 @@ if (isset($_POST['SETUPSYS'])) {
 
   include_once("fest.php");
   Check_Sysadmin();
-  Setup_Map_Data();
+
 }
 
 echo "All done<p><h2><a href=Staff.php>Now Login</a></h2>";

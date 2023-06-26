@@ -318,8 +318,7 @@ function db_get($table,$cond) {
 $_YearFeatures = [];
 
 function Feature($Name,$default='') {  // Return value of feature if set Year data value overrides system value
-  static $_Features;
-  global $FESTSYS,$YEARDATA,$_YearFeatures;
+  global $FESTSYS,$YEARDATA,$_YearFeatures,$_Features;
   if (!$_Features) {
     $_Features = parse_ini_string($FESTSYS['Features']?? '');
     $_YearFeatures = parse_ini_string($YEARDATA['FestFeatures'] ?? '');
@@ -328,8 +327,9 @@ function Feature($Name,$default='') {  // Return value of feature if set Year da
 }
 
 function Feature_Reset() {
-  global $_YearFeatures,$YEARDATA;
+  global $_YearFeatures,$YEARDATA,$_Features,$FESTSYS;
   $_YearFeatures = parse_ini_string($YEARDATA['FestFeatures'] ?? '');
+  $_Features = parse_ini_string($FESTSYS['Features']?? '');
 }
 
 function Capability($Name,$default='') {  // Return value of Capability if set from FESTSYS
