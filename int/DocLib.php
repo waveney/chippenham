@@ -175,7 +175,7 @@ function DeleteAll($d) {
   umask(0);
   while (file_exists("OldStore" . $fullname . $pad1 . $pad2 )) { $pad1 = '_'; $pad2++; };
   if (!file_exists("OldStore" . $fullpath)) mkdir("OldStore" . $fullpath, 0777, 1);
-  rename("Store" . $fullname, "OldStore" . $fullname . $pad1 . $pad2 );
+  if (file_exists("Store" . $fullname)) rename("Store" . $fullname, "OldStore" . $fullname . $pad1 . $pad2 );
   Logg("Deleting Directory $fullname");
 }
 
