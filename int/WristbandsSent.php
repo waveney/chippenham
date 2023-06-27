@@ -7,7 +7,7 @@
   $sides = Select_Come_All();
   $sc = 0;
 
-  foreach($sides as $side) {
+  if ($Sides) foreach($sides as $side) {
     if ($side['Performers'] < 1 || strlen($side['Address']) < 10 || $side['WristbandsSent']) continue;
     $sidey = Get_SideYear($side['SideId']);
     $sidey['WristbandsSent'] = 1;

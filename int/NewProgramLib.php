@@ -185,7 +185,7 @@ function Scan_Data($condense=0,$Media='Dance') {
   $VenueInfo = Get_Real_Venues(1);
   $OtherLocs = array();
 
-  foreach ($Venues as $v) if (isset($VenueUse[$v]) && $condense && $VenueInfo[$v]["Minor$DAY"]) $OtherLocs[] = $v;
+  if ($Venues) foreach ($Venues as $v) if (isset($VenueUse[$v]) && $condense && $VenueInfo[$v]["Minor$DAY"]) $OtherLocs[] = $v;
 
   $MaxOther = 0; 
 
@@ -246,7 +246,7 @@ function Create_Grid($condense=0,$Media='Dance') {
   $VenueList = array();
   $AllTimes = Feature('AllDanceTimes');
 
-  foreach ($Venues as $v) {
+  if ($Venues) foreach ($Venues as $v) {
     if (!isset($VenueUse[$v])) continue;
     $ETime = 0;
     $STime = 0;
@@ -303,7 +303,7 @@ function Create_Grid($condense=0,$Media='Dance') {
     if ($ETime && $STime) $grid[$v][$STime]['r'] = $RowSets;
   }
 
-  foreach ($Venues as $v) if (isset($VenueUse[$v])) $VenueList[] = $v;
+  if ($Venues) foreach ($Venues as $v) if (isset($VenueUse[$v])) $VenueList[] = $v;
   if ($condense)  for($i=1; $i<=$MaxOther; $i++)  $VenueList[] = -$i;
 }
 

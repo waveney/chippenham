@@ -15,6 +15,7 @@
 
   echo "Please don't have too many types.<p>\n";
   echo "The only event types that should be not public are Sound Checks (probably)<br>\n";
+  echo "Set Dont List to prevent the events being a category under the public timetables<br>\n";
   echo "Set Inc Type to indicate event type in description if it is not part of the events name.<br>";
   echo "State drives lots: - set to draft to enable the performers to see their own events. Set to complete when all events of given type are in<br>\n";
   echo "Set <b>No Part</b> if event type is valid without any participants.<br>";

@@ -114,6 +114,7 @@ function Get_Virtual_Venues($type=0) {
 
 function Get_Venues_For($What) {
   global $db;
+  $ids = [];
   $res = $db->query("SELECT VenueId FROM Venues WHERE $What=1 AND Status=0 ORDER BY $What" . "Importance DESC");
   if ($res) {
     while ($Ven = $res->fetch_assoc()) $ids[] = $Ven['VenueId']; 

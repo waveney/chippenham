@@ -96,6 +96,7 @@ function Select_Come($type=0,$extra='') {
 
 function Select_Come_Day($Day,$xtr='') {
   global $db,$YEAR,$Coming_Type;
+  $Coming = [];
   $qry = "SELECT s.*, y.* FROM Sides s, SideYear y " .
          "WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND y.Coming=" . $Coming_Type['Y'] . " AND y.$Day=1 AND s.IsASide=1 $xtr ORDER BY s.SN";
   $res = $db->query($qry);

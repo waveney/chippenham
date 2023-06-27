@@ -151,7 +151,7 @@
       $txt .= "<li class=smalltext><a href=ShowDanceProg?Cond=1&Y=$YEAR>Condensed Dance Programme</a>";
       $txt .= "<li class=smalltext><a href=DanceCheck?Y=$YEAR>Dance Checking</a>";
       $txt .= "<li class=smalltext><a href=DanceTypes>Set Dance Types</a>";
-      $txt .= "<li class=smalltext><a href=LineUpDance?MIN&Y=$YEAR>Picture free List of Dance Sides Coming</a>\n";
+//      $txt .= "<li class=smalltext><a href=LineUpDance?MIN&Y=$YEAR>Picture free List of Dance Sides Coming</a>\n";
 //      $txt .= "<li class=smalltext><a href=ModifyDance2>Modify Dance Structure #2</a>\n";
       $txt .= "<li class=smalltext><a href=WhereDance?Y=$YEAR>Where did Dance Sides Come from</a>\n";
 //      $txt .= "<td width=300px>";

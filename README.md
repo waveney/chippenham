@@ -22,11 +22,13 @@ apt-get install wkhtmltopdf
 ln -s /usr/bin/wkhtmltopdf /usr/local/bin/html2pdf
 
 Then run int/Initialise.php - this will create appropriate subdirectories and populate the database 
-with appropriate initial tables and values (Warning definately out of date).
+with appropriate initial tables and values
 
 It will (soon?) track changes to the structure of the database and automatically update as appropriate.
 
 See int/AdminGuide.php for a lot more about the system admin
+
+See festfiles/documentation.odt for a start at documenting the system
 
 Does not include the data from the database, and most uploaded images under /images
 

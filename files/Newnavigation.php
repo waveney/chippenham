@@ -162,7 +162,7 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         switch ($link) {
         case 0:
           foreach ($Event_Types as $ET) {
-            if ($ET['DontList'] || $ET['Public']) continue;
+            if ($ET['DontList']) continue;
             $Bar[$ET['Plural']] = ((empty($ET['Sherlock']) || is_numeric($ET['Sherlock']) || ($ET['State'] < 3))?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
           }
           break;

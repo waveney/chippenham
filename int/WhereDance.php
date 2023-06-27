@@ -11,7 +11,7 @@
   $PCs = array();
   $Total = 0;
 
-  foreach($AllSides as $Sid) {
+  if($AllSides) foreach($AllSides as $Sid) {
     $Perf = $Sid['Performers'];
     if ($Perf > 0) {
       $PCode = strtoupper(trim($Sid['PostCode']));
