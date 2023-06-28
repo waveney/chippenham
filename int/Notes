@@ -87,6 +87,9 @@ SponsoredBy
 +ve id = Sponsor
 -1 Many sponsors - use sponsor/year records to find multiple - order by Importance
 
+Access writes to . and int 
+Setting up data base and user
+
 
 
 

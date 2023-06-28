@@ -39,6 +39,8 @@ function Create_Config() {
   if (Get_Config()) return;
   
   if (!isset($_POST['dbase']) || !isset($_POST['user'])) {
+    echo "Set up the database and user, with all privalages, so they can add and change the database later.<p>";
+    
     echo "<html><head><title>Festival System Setup</title></head><body>";
     echo "<form method=post><div class=tablecont><table border>\n";
     echo "<tr>" . fm_text("Host Name - usually localhost",$_POST,'host');
@@ -95,6 +97,19 @@ TitlePrefix=" . $_POST['TitlePrefix'] . "
 
 function Create_Directories() {  // Makes all needed directories and adds .htaccess where appropriate
   global $CONF;
+
+  echo "Checking access<p>";
+  $NeedWrite = ['.','int','Schema'];
+  
+  foreach($NeedWrite as $D) {
+    if (!is_writeable("../" . $D)) {
+      echo "../" . $D . "Is NOT writeable  - aborting for now - you can retry once corrected<p>";
+      exit;
+    }
+  }
+  
+  echo "Creating directories and links<p>";
+
   $Dirs = [['int/ArchiveImages',1],  // dir name, access control
            ['int/Contracts',1],
            ['int/Insurance',1],
@@ -112,14 +127,24 @@ function Create_Directories() {  // Makes all needed directories and adds .htacc
       mkdir("../" . $D[0],0777,true);
       chmod("../" . $D[0],0777);
       echo "Creating " . $D[0] . "<br>";
+      
+      if (!is_writeable("../" . $D[0])) {
+        echo "../" . $D[0] . "Is NOT writeable  - aborting for now - you can retry once corrected<p>";
+        exit;
+      }
     }
     if ($D[1] && !file_exists("../" . $D[0] . "/.htaccess")) file_put_contents("../" . $D[0] . "/.htaccess","order deny,allow\ndeny from all");
   }
   foreach($LinkedDirs as $D) {
-    if (!file_exists("../" . $D)) mkdir("../" . $D,0777,true);
+    if (!file_exists("../" . $D)) {
+      mkdir("../" . $D,0777,true);
+      chmod("../" . $D,0777);
+    }
     if (!file_exists($D)) symlink ("../" . $D, $D);
   }
   echo "Directories Created<p>";
+  
+
 }
 
 function Create_Databases() {
