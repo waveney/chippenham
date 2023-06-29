@@ -16,7 +16,7 @@
   $pfx = $Match[1];
   $Version = $Match[2];
 
-  if ($FESTSYS['CurVersion'] == $Version) {
+  if (($FESTSYS['CurVersion'] ?? 0) == $Version) {
     echo "The System is up to date - no actions taken<p>";
     dotail();
   }
