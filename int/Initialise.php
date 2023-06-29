@@ -129,7 +129,7 @@ function Create_Directories() {  // Makes all needed directories and adds .htacc
       echo "Creating " . $D[0] . "<br>";
       
       if (!is_writeable("../" . $D[0])) {
-        echo "../" . $D[0] . "Is NOT writeable  - aborting for now - you can retry once corrected<p>";
+        echo "../" . $D[0] . " Is NOT writeable  - aborting for now - you can retry once corrected<p>";
         exit;
       }
     }
@@ -207,7 +207,7 @@ user=" . $CONF['user'] . "\n";
 function Preload_Data() {
 
   global $db,$PLANYEAR,$YEAR;
-  
+  include_once("Version.php");
   $Year = gmdate('Y');
   if (empty($PLANYEAR)) $YEAR = $PLANYEAR = $Year;
   // Does not do Email Proformas - see below for them
@@ -223,7 +223,7 @@ function Preload_Data() {
     ['FestUsers', 9,['Login'=>'reserved']],
     ['FestUsers', 10,['Login'=>'reserved']],
 
-    ['SystemData',1,['FestName'=>'Festival','ShortName'=>'Fest','PlanYear'=>$Year, 'ShowYear'=>$Year,'Capabilities'=> 
+    ['SystemData',1,['CurVersion'=> $VERSION,'Capabilities'=> 
 'EnableDocs:1
 EnableTLine:0
 EnableMusic:1

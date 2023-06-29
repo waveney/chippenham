@@ -1,6 +1,6 @@
 CREATE TABLE `Sponsorship` (
   `id` int DEFAULT NULL,
-  `Year` int NOT NULL,
+  `Year` text COLLATE latin1_general_ci NOT NULL,
   `SponsorId` int NOT NULL,
   `ThingType` int NOT NULL,
   `ThingId` int NOT NULL

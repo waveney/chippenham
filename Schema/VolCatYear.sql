@@ -2,7 +2,7 @@ CREATE TABLE `VolCatYear` (
   `id` int NOT NULL AUTO_INCREMENT,
   `Volid` int NOT NULL,
   `CatId` int NOT NULL,
-  `Year` int NOT NULL,
+  `Year` text COLLATE latin1_general_ci NOT NULL,
   `Status` int NOT NULL,
   `Likes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Dislikes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,

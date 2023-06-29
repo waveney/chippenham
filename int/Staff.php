@@ -590,7 +590,7 @@
       $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
       $txt .= "<li><a href=TsAndCs2?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";
-//      $txt .= "<li><a href=MasterData>Old Festival System Data Settings</a> \n";
+      $txt .= "<li><a href=UpdateSystem>Update the system after pull</a> \n";
       $txt .= "<li><a href=SystemData>Festival System Data Settings</a> \n";
     }
     $txt .= "</ul>\n";

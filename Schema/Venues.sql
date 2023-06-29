@@ -52,7 +52,7 @@ CREATE TABLE `Venues` (
   `Complete` int NOT NULL,
   `Banner` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `SponsoredBy` int NOT NULL,
-  `SponsorYear` int NOT NULL,
+  `SponsorYear` text COLLATE latin1_general_ci NOT NULL,
   `3Words` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `SuppressParent` tinyint NOT NULL,
   PRIMARY KEY (`VenueId`),
