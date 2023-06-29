@@ -5,11 +5,19 @@
 // Call Special Update if needed
 
   include_once("fest.php");
-  global $FESTSYS,$VERSION;
-  
+  global $FESTSYS,$VERSION,$db;
+ 
+// Change the year field from int to text - Skeema does not like it. 
+function PreUpdate420() {
+  $db->query("ALTER TABLE `VolCatYear` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
+  $db->query("ALTER TABLE `PerfChanges` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
+  $db->query("ALTER TABLE `EventChanges` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
+  $db->query("ALTER TABLE `VolCatYear` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
+  $db->query("ALTER TABLE `Venues` MODIFY COLUMN `SponsorYear` text COLLATE latin1_general_ci NOT NULL");
+  $db->query("ALTER TABLE `PerformerTypes` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
+  $db->query("ALTER TABLE `Sponsorship` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
+}
 
-
-  
 
   dostaffhead("Update System");  
   preg_match('/(\d*)\.(\d*)/',$VERSION,$Match);
@@ -20,15 +28,26 @@
     echo "The System is up to date - no actions taken<p>";
     dotail();
   }
+// Pre Database changes
+
+  for ($Ver = ($FESTSYS['CurVersion'] ?? 0); $Ver <= $Version; $Ver++) {
+    if (function_exists("Update$Ver")) {
+      echo "Doing Pre update to Verion $pfx.$Ver<br>";
+      ("PreUpdate$Ver")();
+    }
+  }
+
   
   chdir('../Schema');
-  $skema = `skeema push`;
+  $skema = system('skeema push');
   echo $skema . "\n\n";
   chdir('../int');
-  
-  for ($Ver = $FESTSYS['CurVersion']; $Ver <= $Version; $Ver++) {
+
+// Post Database changes
+ 
+  for ($Ver = ($FESTSYS['CurVersion'] ?? 0); $Ver <= $Version; $Ver++) {
     if (function_exists("Update$Ver")) {
-      echo "Doing update to Verion $pfx.$Ver<br>";
+      echo "Doing Post update to Verion $pfx.$Ver<br>";
       ("Update$Ver")();
     }
   }
