@@ -9,6 +9,7 @@
  
 // Change the year field from int to text - Skeema does not like it. 
 function PreUpdate420() {
+  global $db;
   $db->query("ALTER TABLE `VolCatYear` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
   $db->query("ALTER TABLE `PerfChanges` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
   $db->query("ALTER TABLE `EventChanges` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
@@ -31,7 +32,7 @@ function PreUpdate420() {
 // Pre Database changes
 
   for ($Ver = ($FESTSYS['CurVersion'] ?? 0); $Ver <= $Version; $Ver++) {
-    if (function_exists("Update$Ver")) {
+    if (function_exists("PreUpdate$Ver")) {
       echo "Doing Pre update to Verion $pfx.$Ver<br>";
       ("PreUpdate$Ver")();
     }
@@ -46,9 +47,9 @@ function PreUpdate420() {
 // Post Database changes
  
   for ($Ver = ($FESTSYS['CurVersion'] ?? 0); $Ver <= $Version; $Ver++) {
-    if (function_exists("Update$Ver")) {
+    if (function_exists("PostUpdate$Ver")) {
       echo "Doing Post update to Verion $pfx.$Ver<br>";
-      ("Update$Ver")();
+      ("PostUpdate$Ver")();
     }
   }
   

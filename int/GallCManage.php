@@ -16,6 +16,7 @@
 
 // var_dump($_REQUEST);
 
+  $ThumbSize = $_REQUEST['Thumb'] ?? 75;
   $Gals = Get_Gallery_Names(1);
   $Galid = (isset($_GET['g'])? $_GET['g'] : (isset($_POST['g'])? $_POST['g']:0 ));
   if (strlen($Galid) > 4) $Galid=0;
@@ -201,7 +202,7 @@
     echo fm_text1("",$g,'Caption',1,'','',"Caption$i") . "</a>";
     echo fm_number1("",$g,'RelOrder','','',"RelOrder$i") . "</a>";
     echo fm_hidden("Galid$i",$Galid);
-    echo "<td><img src=\"" . $g['File'] . "\" height=75>";
+    echo "<td><img src=\"" . $g['File'] . "\" height=$ThumbSize>";
     echo "\n";
   }
   echo "<tr><td><td><td><input type=text name=File0 >";
