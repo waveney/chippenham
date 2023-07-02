@@ -589,7 +589,6 @@
       $Version = $Match[2];
       $xtra = ($Version != ($FESTSYS['CurVersion'] ?? 0) ? " style='color:red;font-size:28;font-weight:bold;' ":'');
 //      $txt .= "<li><a href=BannerManage>Manage Banners</a> \n";
-var_dump($VERSION,$Version,$FESTSYS['CurVersion'],$xtra);
       $txt .= "<li><a href=DonateTypes?Y=$YEAR>Donation Buttons Setup</a> \n";
       $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
       $txt .= "<li><a href=TsAndCs2?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
