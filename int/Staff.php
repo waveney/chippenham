@@ -10,7 +10,7 @@
 
   dostaffhead("Staff Pages", ["/js/jquery.typeahead.min.js", "/css/jquery.typeahead.min.css", "/js/Staff.js"]);
 
-  global $YEAR,$PLANYEAR,$YEARDATA,$Event_Types,$VolCats;
+  global $YEAR,$PLANYEAR,$YEARDATA,$Event_Types,$VolCats,$VERSION,$FESTSYS;
   include_once("ProgLib.php");
   include_once("TradeLib.php");
   include_once("VolLib.php");
@@ -585,12 +585,16 @@
     if (Access('Staff')) $txt .= "<li><a href=TEmailProformas>EMail Proformas</a>";
     if (Access('Staff')) $txt .= "<li><a href=AdminGuide>Admin Guide</a> \n";
     if (Access('SysAdmin')) {
+      preg_match('/(\d*)\.(\d*)/',$VERSION,$Match);
+      $Version = $Match[2];
+      $xtra = ($Version != ($FESTSYS['CurVersion'] ?? 0) ? " style='color:red;font-size:28;font-weight:bold;' ":'');
 //      $txt .= "<li><a href=BannerManage>Manage Banners</a> \n";
+var_dump($VERSION,$Version,$FESTSYS['CurVersion'],$xtra);
       $txt .= "<li><a href=DonateTypes?Y=$YEAR>Donation Buttons Setup</a> \n";
       $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
       $txt .= "<li><a href=TsAndCs2?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";
-      $txt .= "<li><a href=UpdateSystem>Update the system after pull</a> \n";
+      $txt .= "<li><a href=UpdateSystem $xtra>Update the system after pull</a> \n";
       $txt .= "<li><a href=SystemData>Festival System Data Settings</a> \n";
     }
     $txt .= "</ul>\n";
