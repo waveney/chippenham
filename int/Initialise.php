@@ -144,6 +144,29 @@ function Create_Directories() {  // Makes all needed directories and adds .htacc
   }
   echo "Directories Created<p>";
   
+  // Copy files
+  if (!file_exists("../favicon.ico")) {
+    if (copy("../images/icons/favicon.ico","../favicon.ico")) {
+      echo "Copied the default favicon<br>";
+    } else {
+      echo "Failed to copy default favicon - aborting for now - you can retry once corrected<p>";  
+      exit;
+    }
+  }
+  
+  foreach (glob("../images/icons/apple-touch-icon*") as $fn) {
+    $dfn = preg_replace('/images\/icons\//','',$fn);
+    if (!file_exists($dfn)) {
+      if (copy($fn,$dfn)) {
+        echo "Copied $fn to $dfn<br>";     
+      } else {
+        echo "Failed to copy $fn to $dfn - aborting for now - you can retry once corrected<p>";
+        exit;    
+      }
+    }
+  }
+  
+  echo "Icon files copied<p>";
 
 }
 
