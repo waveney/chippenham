@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'PHP_ICO' => $vendorDir . '/chrisjean/php-ico/class-php-ico.php',
     'Stringable' => $vendorDir . '/myclabs/php-enum/stubs/Stringable.php',
 );

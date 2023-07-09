@@ -43,6 +43,9 @@ function PostUpdate429() {
   }
 }
 
+// ********************** START HERE ***************************************************************
+
+
   dostaffhead("Update System");  
   preg_match('/(\d*)\.(\d*)/',$VERSION,$Match);
   $pfx = $Match[1];
@@ -78,6 +81,7 @@ function PostUpdate429() {
   
   echo "Updated to Version $VERSION<p>";
   $FESTSYS['CurVersion'] = $Version;
+  $FESTSYS['VersionDate'] = time();
   Gen_Put('SystemData',$FESTSYS);
   dotail();
 ?>

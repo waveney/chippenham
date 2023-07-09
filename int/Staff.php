@@ -575,7 +575,7 @@
     if (Capability('EnableAdmin') && Access('Committee','News')) {
 //      $txt .= "<li><a href=NewsManage>News Management</a>";
       $txt .= "<li><a href=ListArticles>Front Page Article Management</a>";
-      $txt .= "<li><a href=LinkManage>Manage Other Fest Links</a>\n";
+
     }
     if (0 && Access('Steward')) {
       $txt .= "<li><a href=AddBug>New Bug/Feature request</a>\n";
@@ -587,14 +587,24 @@
     if (Access('SysAdmin')) {
       preg_match('/(\d*)\.(\d*)/',$VERSION,$Match);
       $Version = $Match[2];
-      $xtra = ($Version != ($FESTSYS['CurVersion'] ?? 0) ? " style='color:red;font-size:28;font-weight:bold;' ":'');
+      $xtra = '';
+      if ($Version != ($FESTSYS['CurVersion'] ?? 0)) {
+        foreach(glob("../Schema/*.sql") as $sql) {
+          if (filemtime($sql) > $FESTSYS['VersionDate']) {
+            $xtra = " style='color:red;font-size:28;font-weight:bold;'";
+            break;
+          }
+        }
+      }
 //      $txt .= "<li><a href=BannerManage>Manage Banners</a> \n";
       $txt .= "<li><a href=DonateTypes?Y=$YEAR>Donation Buttons Setup</a> \n";
       $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
       $txt .= "<li><a href=TsAndCs2?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";
       $txt .= "<li><a href=UpdateSystem $xtra>Update the system after pull</a> \n";
-      $txt .= "<li><a href=SystemData>Festival System Data Settings</a> \n";
+      $txt .= "<li><a href=SystemData>Festival System Data Settings</a><p> \n";
+      
+      $txt .= "<li><a href=RareAdmin>Rare Admin Tasks</a> \n";      
     }
     $txt .= "</ul>\n";
   }

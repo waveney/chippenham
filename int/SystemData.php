@@ -15,8 +15,11 @@
   Register_AutoUpdate('SystemData',1);
   echo "<div class=tablecont><table>";
   echo "<tr>" . fm_textarea("Features",$FESTSYS,'Features',6,40);
-  if (Access('Internal')) echo "<tr>" . fm_textarea("Capabilities",$FESTSYS,'Capabilities',6,10);
-  echo "<tr>" . fm_text('Update Version #',$FESTSYS,'CurVersion');
+  if (Access('Internal')) {
+    echo "<tr>" . fm_textarea("Capabilities",$FESTSYS,'Capabilities',6,10);
+    echo "<tr>" . fm_text('Update Version #',$FESTSYS,'CurVersion') . "<td>Never edit";
+    echo "<tr>" . fm_text('Version Changed',$FESTSYS,'VersionDate') . "<td>Never edit";
+  }
   echo "<tr>" . fm_textarea("Analytics code",$FESTSYS,'Analytics',3,3);
   echo "</table></div>\n";
 

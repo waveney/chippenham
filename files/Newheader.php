@@ -7,7 +7,9 @@
 
   echo "<script>" . $FESTSYS['Analytics'] . "</script>";
   echo "<link href=/files/Newstyle.css?V=$VERSION type=text/css rel=stylesheet />";
-  echo "<link href=/files/Newdropdown.css?V=$VERSION type=text/css rel=stylesheet />\n";  
+  echo "<link href=/files/Newdropdown.css?V=$VERSION type=text/css rel=stylesheet />\n";
+  echo "<link rel=icon href=/favicon.ico>";
+//  echo "<link rel=apple-touch-icon type=image/png sizes=167x167 href=favicon-167x167.png">
 
   echo "<script src=/js/jquery-3.2.1.min.js></script>";
   echo "<link href=/files/themes.css?V=$VERSION type=text/css rel=stylesheet>";
