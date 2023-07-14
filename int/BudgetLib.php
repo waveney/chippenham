@@ -7,10 +7,11 @@
 function Get_Budget() {
   global $YEAR,$db;  
   $full = [];
+  $full[0] = ['id'=>0,'SN'=>'','Year'=>$YEAR,'CommittedSoFar'=>0];
   $res = $db->query("SELECT * FROM BudgetAreas WHERE Year='$YEAR' ORDER BY id ");
   if ($res) while ($spon = $res->fetch_assoc()) $full[$spon['id']] = $spon;
-  if (empty($full)) return $full;
-  $full[0] = ['id'=>0,'SN'=>'','Year'=>$YEAR,'CommittedSoFar'=>0];
+//  if (empty($full)) return $full;
+
   return $full;  
 }
 
@@ -33,15 +34,15 @@ function Budget_Update($area,$value,$oldvalue=0) {
 }
 
 function Budget_Scan($Detail=0) {
-  global $YEAR,$db,$BUDGET,$Coming_Idx,$YEARDATA;
-  foreach ($BUDGET as $B) $B['CommittedSoFar'] = 0;
+  global $YEAR,$db,$BUDGET,$Coming_idx,$YEARDATA;
+  foreach ($BUDGET as &$B) $B['CommittedSoFar'] = 0;
 
   include_once("DanceLib.php");
   $qry = "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND (y.Coming=2 OR y.YearState>=2) AND " .
          " ( TotalFee>0 OR OtherPayCost>0 OR (CampFri>0 OR CampSat>0 OR CampSun>0))";
   $res = $db->query($qry);
   if ($res) while ($sy = $res->fetch_assoc()) {
-    if (preg_match('/N/',$Coming_Idx[$sy['Coming']]) && ($sy['YearState'] < 2)) continue;
+    if (preg_match('/N/',$Coming_idx[$sy['Coming']]) && ($sy['YearState'] < 2)) continue;
     $Fee = $sy['TotalFee']+$sy['OtherPayCost'];
     $Camps =  ($sy['CampFri'] + $sy['CampSat'] + $sy['CampSun']) * $YEARDATA['CampingCost'];
 //if ($sy['SideId'] == 484) { echo "Camps = $Camps<br>"; 
@@ -56,6 +57,7 @@ function Budget_Scan($Detail=0) {
       if ($Detail) $BUDGET[$sy['BudgetArea3']]['Detail'][] = [ $sy['SideId'], $sy['BudgetValue3']];
       $Fee -= $sy['BudgetValue3'];
     }
+ //   if (!isset($BUDGET[$sy['BudgetArea']]['CommittedSoFar'])) var_dump($sy);
     $BUDGET[$sy['BudgetArea']]['CommittedSoFar'] += $Fee;
     if ($Detail) $BUDGET[$sy['BudgetArea']]['Detail'][] = [ $sy['SideId'], $Fee];
   }

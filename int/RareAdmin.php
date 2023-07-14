@@ -92,7 +92,55 @@ function  Make_FavIcons() {
   echo "FavIcon Written<p>";
     
 }
+
+function Start_RealFavicons() {
+  echo "Please supply a starting image - best at least 256 x 256, on the server here is best<p>";
+  echo fm_text1('',$_REQUEST,"OrigImage256",2) , "<input type=submit name=ACTION value='Call_Favicons'>";
+  dotail();
+}
+
+
+function Call_RealFavicons() {
+  global $FESTSYS;
+  $ImgLoc256 = $_REQUEST['OrigImage256'] ?? '';
+  if (!$ImgLoc256) Start_RealFavicons();
   
+  $json = ["favicon_generation"=>[
+    "api-key"=>Feature('RealFaviconGeneratorKey'),
+    "master_picture"=> [
+      "type"=> "url",
+			"url"=> "https://" . Feature('HostURL') . "/" . $ImgLoc256,
+			"demo"=> "false"
+		  ],
+		"files_location"=> [
+			"type"=> "root",
+		  ],
+		"callback" => [
+			"type"=> "url",
+			"url"=> "https://" . Feature('HostURL') . "/int/RareAdmin?ACTION=Callback_RealFavicons",
+			"short_url"=> "false",
+			"path_only"=> "false",
+			"custom_parameter"=> hash('md5',json_encode($FESTSYS)),
+		  ]
+	  ]
+  ];
+  
+  $jsn = json_encode($json);
+  echo "<p>";
+  var_dump($json); echo "<p>";
+  var_dump($jsn);
+
+}
+
+
+function Callback_RealFavicons() {
+
+
+}
+
+
+
+
   // START HERE
 
 // var_dump($_REQUEST); 
@@ -106,6 +154,19 @@ function  Make_FavIcons() {
         Make_FavIcons();      
         break;
         
+      case 'Favicons':
+        Start_RealFavicons();      
+        break;
+
+      case 'Call_Favicons':
+        Call_RealFavicons();      
+        break;
+
+      case 'CallBack_Favicons':
+        Callback_RealFavicons();      
+        break;
+        
+        
       
       default:
     }
@@ -114,6 +175,7 @@ function  Make_FavIcons() {
   echo "<ul>";
   echo "<li><a href=LinkManage>Manage Other Fest Links</a>\n";
   echo "<li><a href=RareAdmin?ACTION=Check%20Icons>Set up Favicon</a>\n";
+  echo "<li><a href=RareAdmin?ACTION=Favicons>Set up Favicon (new method - not working yet)</a>\n";
   echo "</ul>";
   
   dotail();

@@ -298,11 +298,11 @@ function Put_Trade_Year(&$now) {
 
 function Set_Trade_Help() {
   static $t = array(
-        'Website'=>'If you would like to be listed on the Folk Festival Website, please supply your website (if you have one) and an Image and tick the box (Note traders will appear on the public website shortly)',
-        'GoodsDesc'=>'Describe your goods and buisness.  At least 20 words please.  This is used both to decide whether to accept your booking and as words to accompany your Image on the festival website',
+        'Website'=>'If you would like to be listed on the Folk Festival Website, please supply your website (if you have one) and an Image and tick the box',
+        'GoodsDesc'=>'Describe your goods and business.  At least 20 words please, but not more than 500 characters.  This is used both to decide whether to accept your booking and as words to accompany your Image on the festival website',
         'PitchSize'=>'If you want more than 1 pitch, give each pitch size, a deposit will be required for each.  If you attempt to setup a pitch larger than booked you may be told to leave',
         'Power'=>'Some locations can provide power, some only support lower power requirements. 
-There will be an additional fee for power from &pound;10-20, that will be added to your final invoice.
+There will be an additional fee for power from &pound;10, that will be added to your final invoice.
 Any generator must meet the Euro 4 silent generator standard.',
         'Photo'=>'Give URL of Image to use or upload one (landscape is prefered)',
         'TradeType'=>'Fees depend on trade type, pitch size and location',
@@ -374,7 +374,8 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
   if (isset($_REQUEST['ORGS'])) echo fm_hidden('ORGS',1);
   echo "<div class=tablecont><table width=90% border class=SideTable>\n";
     echo "<tr><th colspan=8><b>Public Information</b>" . Help('PublicInfo');
-    echo "<tr>" . fm_text('Business Name', $Trad,'SN',2,'','autocomplete=off id=SN');
+    echo "<tr>" . fm_text('Business Name', $Trad,'SN',2,'','autocomplete=off id=SN') . 
+                  fm_text('Trading name if different', $Trad,'BizName',2,'','autocomplete=off id=SN');
     echo "<tr>";
       if (isset($Trad['Website']) && strlen($Trad['Website'])>1) {
         echo fm_text(weblink($Trad['Website']),$Trad,'Website');
@@ -419,11 +420,12 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
       echo fm_text('Post Code',$Trad,'PostCode')."\n";
     if ($Mode < 2) {
       echo "<tr class=PublicHealth " . ($TradeTypeData[$Trad['TradeType']]['NeedPublicHealth']?'':'hidden') . ">" ;
-        echo fm_text("Registered with which Local Authority ",$Trad,'PublicHealth',2,'colspan=2');
-      echo "<tr><td>Are you a <td>" . fm_checkbox('BID Levy Payer',$Trad,'BID') . "<td>" . fm_checkbox('Chamber of Commerce Member',$Trad,'ChamberTrade');
-      if ($Mode) echo "<td>" . fm_checkbox('Previous Festival Trader',$Trad,'Previous');
-        echo fm_text('Charity Number',$Trad,'Charity',1,'class=Charity ' . ($TradeTypeData[$Trad['TradeType']]['NeedCharityNum']?'':'hidden'));
-        if ($Mode) echo "<td class=NotSide colspan=2>" . fm_radio("",$Trader_Status,$Trad,'Status','',0);
+      echo fm_text("Registered with which Local Authority ",$Trad,'PublicHealth',2,'colspan=2');
+      echo "<tr><td>Are you a <td>" . (Feature('TradeBID')?(fm_checkbox('BID Levy Payer',$Trad,'BID') . "<td>"):'') . 
+                                      (Feature('TradeChamberCommerce')?(fm_checkbox('Chamber of Commerce Member',$Trad,'ChamberTrade') . "<td>"):'');
+      if ($Mode) echo fm_checkbox('Previous Festival Trader',$Trad,'Previous');
+      echo fm_text('Charity Number',$Trad,'Charity',1,'class=Charity ' . ($TradeTypeData[$Trad['TradeType']]['NeedCharityNum']?'':'hidden'));
+      if ($Mode) echo "<td class=NotSide colspan=2>" . fm_radio("",$Trader_Status,$Trad,'Status','',0);
       }
     if (Access('SysAdmin') && isset($Trad['AccessKey'])) {
       echo "<tr>";
@@ -435,8 +437,12 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
       echo "  <td class=NotSide><button name=Action value=Delete onClick=\"javascript:return confirm('are you sure you want to delete this?');\">Delete</button>\n";
     }
     if ($Mode && Capability("EnableFinance")) {
-      echo "<tr><td class=NotSide>" . fm_checkbox("Is a Trader",$Trad,'IsTrader');
-      if ($Tid > 0 && Access('Committee',"Finance")) {
+      echo "<tr><td class=NotSide>" . fm_checkbox("Is a Trader",$Trad,'IsTrader',' onchange=this.form.submit() ') . 
+           "<td class=NotSide>" . fm_checkbox("Is a Sponsor",$Trad,'IsSponsor',' onchange=this.form.submit() ') .
+           "<td class=NotSide>" . fm_checkbox("Is an Advertiser",$Trad,'IsAdvertiser',' onchange=this.form.submit() ') . 
+           "<td class=NotSide>" . fm_checkbox("Is a Supplier",$Trad,'IsSupplier',' onchange=this.form.submit() ') . 
+           "<td class=NotSide>" . fm_checkbox("Is Other",$Trad,'IsOther',' onchange=this.form.submit() ');
+      if ($Tid > 0 && Feature('NeedSageCode') && Access('Committee',"Finance")) {
         include_once("InvoiceLib.php");
         if (isset($Trad['SN'])) $Scode = Sage_Code($Trad);
         echo fm_text("Sage Code",$Trad,'SageCode',1,'class=NotSide','class=NotSide');
@@ -445,7 +451,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
       echo fm_hidden('IsTrader',$Trad['IsTrader']);
     }
     if ($Mode || (isset($Trad['SortCode']) && $Trad['SortCode'])) {
-      echo "<tr><td>Bank Details" . fm_text('Sort Code',$Trad,'SortCode') . fm_text('Account No',$Trad,'Account') . fm_text('Account Name',$Trad,'AccountName');
+      echo "<tr><td>Bank Details" . fm_text('Sort Code',$Trad,'SortCode') . fm_text('Account No',$Trad,'Account') . fm_text('Account Name',$Trad,'AccountName',2);
     }
     echo fm_hidden("Tid", $Tid);
     echo fm_hidden("Id", $Tid);
@@ -489,7 +495,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   if (isset($Trady['TYid'])) echo fm_hidden('TYid',$Trady['TYid']);
 
   if ($Mode) {
-    echo "<td class=NotCSide>Booking State:" . help('BookingState') . "<td colspan=2 class=NotCSide>";
+    echo "<td class=NotCSide>Booking State:" . help('BookingState') . "<td colspan=3 class=NotCSide>";
       foreach ($Trade_States as $i=>$ts) {
         if( preg_match('/^-/',$Trade_State_Colours[$i])) continue;
         $cls = " style='background:" . $Trade_State_Colours[$i] . ";padding:4; white-space: nowrap;'";
@@ -1023,7 +1029,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   global $YEAR,$PLANYEAR,$Mess,$Action,$Trade_State,$Trade_States,$USER,$TS_Actions,$ButExtra,$ButTrader,$ButAdmin,$RestrictButs;
   global $TradeTypeData,$TradeLocData;
   include_once("DateTime.php"); 
-  echo "<div class=content><h2>Add/Edit " . ($Mode<2?'Trade Stall Booking':'Buisness or Organisation') . "</h2>";
+  echo "<div class=content><h2>Add/Edit " . ($Mode<2?'Trade Stall Booking':'Business or Organisation') . "</h2>";
 
 /*
   $file = fopen("LogFiles/moeslog",'a+');
@@ -1096,7 +1102,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
       if (isset($_POST['NewAccessKey'])) $_POST['AccessKey'] = rand_string(40);
 
       Update_db_post('Trade',$Trad);
-      Report_Log('Trade');
+      if (Feature('LogAllTrade')) Report_Log('Trade');
       if ($Mode < 2 && !$Orgs) {
         if ($_POST['Year'] == $PLANYEAR) {
           $same = 1;

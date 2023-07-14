@@ -976,6 +976,23 @@ textarea:Focus
   max-height:150px;
   max-width:150px;
 } 
+.SponWhat {
+  font-size:14pt;
+  font-weight:bold;
+}
+.Sponsoring {
+  position: relative;
+  float:left;
+  padding:5;
+}
+.SponSet {
+  position: relative;
+  float: left;
+}
+.sponsoringImage {
+  max-height:150px;
+  max-width:150px;
+} 
 .FlexContain {
   display: flex;
   flex-wrap: wrap;

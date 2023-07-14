@@ -223,6 +223,7 @@ user=" . $CONF['user'] . "\n";
   }
   chdir ("../int");
   echo "Database tables created.<p>";
+  
 }
 
 // [Table, id, [data]] 
@@ -231,6 +232,7 @@ function Preload_Data() {
 
   global $db,$PLANYEAR,$YEAR;
   include_once("Version.php");
+
   $Year = gmdate('Y');
   if (empty($PLANYEAR)) $YEAR = $PLANYEAR = $Year;
   // Does not do Email Proformas - see below for them
@@ -261,7 +263,8 @@ EnableMisc:1
 EnableFinance:0
 EnableAdmin:1
 EnableCraft:0
-EnableVols:1','Features'=>'; Global settings never change
+EnableVols:1',
+'Features'=>'; Global settings never change
 UseArticles = 1
 NewStyle = 1
 
@@ -270,7 +273,7 @@ FestName = Festival
 ShortName = Fest
 ShowYear = ' . $Year . '
 PlanYear = ' . $Year . '
-HostURL = ' . $_SERVER['SERVER_NAME'] . '
+HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
 ; There are lots more here to be set up - needs documenting
 ']],
     ['General',$Year,['Year'=>$Year]],
@@ -317,15 +320,33 @@ HostURL = ' . $_SERVER['SERVER_NAME'] . '
   include_once("festdb.php");
   Feature_Reset();
   global $db,$TableIndexes;
+
+  echo "Checking database settings:<p>";
+  $res = $db->query('SELECT @@sql_mode');
+//  $res=$db->query('SELECT @@hostname');
+  if ($res) {
+    $ans = $res->fetch_assoc();
+//    var_dump($res,$ans);
+    if (strstr('STRICT_TRANS_TABLES',$ans['@@sql_mode'])) {
+      echo "You have STRICT_TRANS_TABLES set in the database.<br>" .
+           'edit /etc/my.cnf add the line:<br>
+            sql_mode = ""<br>
+            or if it exists make it empty.';
+      exit;
+    }
+  }
+
 // var_dump($TableIndexes);exit;
   foreach($Preloads as $P) {
     $indx = (isset($TableIndexes[$P[0]])? $TableIndexes[$P[0]] : 'id');
+    echo "Checking " . $P[0] . ": " . $P[1] . "<br>";
     if (db_get($P[0],"$indx=" . $P[1])) continue; // already in - skip
     $qry = "INSERT INTO " . $P[0] . " SET ";
     $bits = [];
     $bits[] = " $indx=" . $P[1];
     foreach($P[2] as $k=>$v) $bits[] = " $k='$v' ";
     $qry .= implode(", ",$bits);
+    echo "SQL is : $qry<br>";
     $db->query($qry);
   }
 
@@ -545,17 +566,9 @@ if (isset($_POST['SETUPSYS'])) {
 
 echo "All done<p><h2><a href=Staff.php>Now Login</a></h2>";
 
-//include ("Staff.php"); // no return wanted
 
 /* 
 
-  
-  bring_uptodate run from old version to new version
-  
-  run any neededscripts to mod data from old to new
-
-  php include path $_SYSTEM['DOCUMENT_ROOT'] get_include_path
-  
 TODO
   chmod
   improve skemea paths

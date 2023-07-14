@@ -11,6 +11,8 @@ Needs to be at a webspace root, Php needs the Document root in the php include p
 php settings (Other than Default): max_execution_time=120, max_input_time=120, post_max_size=16M, upload_max_filesize=16M,
               pm.max_children=20, max_input_vars = 4000
 
+Apache needs rewrite enabled: sudo a2enmod rewrite && sudo service apache2 restart
+
 Needs ImageMagick installed for some features to work.
 
 Needs libheif-examples installed to handle heic/heif image formats.

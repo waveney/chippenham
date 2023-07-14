@@ -528,5 +528,35 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
   return 1;
 }
 
+function SponsoredBy(&$Data,&$Name,$TType,$Tid) {
+  global $YEAR;
+    if ($Data['SponsoredBy'] ?? 0) {
+      $Spid = $Data['SponsoredBy'];
+      if ($Spid > 0) {
+        $Spon = Gen_Get('Trade',$Spid,'Tid');
+        echo "<div class=SponWrap><div class=SponSet><div class=SponWhat>$Name</div> is sponsored by:</div><div class=Sponsoring>" . 
+             weblink($Spon['Website'], 
+               (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . "  class=sponImage></center>"):'') .
+               ($Spon['BizName']?$Spon['BizName']:$Spon['SN'] )," class=sponText") . "</div></div><br clear=all>";
+
+      } else {
+        $Spids = Gen_Get_Cond('Sponsorship',"Year=$YEAR AND ThingType=$TType AND ThingId=$Tid ORDER BY Importance, RAND()");
+        if ($Spids) {
+          echo "<div><div class=SponSet><div class=SponWhat>$Name</div> is sponsored by:</div>";
+          foreach ($Spids as $Spid) {
+            $Spon = Gen_Get('Trade',$Spid['SponsorId'],'Tid');
+            echo "<div class=Sponsoring>" . 
+               weblink($Spon['Website'], 
+                 (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . "  class=sponImage></center>"):'') .
+                 ($Spon['BizName']?$Spon['BizName']:$Spon['SN'] )," class=sponText") . "</div>";
+               
+          }        
+          echo "</div><br clear=all>";
+        }
+        
+      }
+    }
+
+}
 
 

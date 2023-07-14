@@ -5,7 +5,7 @@
   echo "<meta name=keywords content='" . addslashes(TnC('Page_Keywords')) . ">\n";
   echo "<meta name=viewport content='width=device-width, initial-scale=1.0'>";
 
-  echo "<script>" . $FESTSYS['Analytics'] . "</script>";
+  echo $FESTSYS['Analytics'];
   echo "<link href=/files/Newstyle.css?V=$VERSION type=text/css rel=stylesheet />";
   echo "<link href=/files/Newdropdown.css?V=$VERSION type=text/css rel=stylesheet />\n";
   echo "<link rel=icon href=/favicon.ico>";

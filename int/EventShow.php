@@ -214,6 +214,8 @@ function Print_Participants($e,$when=0,$thresh=0) {
     else if ($Ev['BarFoodText']) { echo "<td>" . $Ev['BarFoodText']; }
   }
   echo "</table></div><p>\n";
+  
+  SponsoredBy($Ev,$Ev['SN'],2,$Eid);
 
   // Headlines
   if ($ETs[$Ev['Type']]['UseImp']) {

@@ -394,7 +394,10 @@
     if (Access('SysAdmin')) $txt .= "<li><a href=AddVenue?NEWACCESS onClick=\"javascript:return confirm('are you sure you update these?');\">" .
                                     "Generate New Access Keys for Venues</a>\n";
     if ($YEAR == $PLANYEAR && Access('Staff')) $txt .= "<li><a href=VenueActive>Refresh Active Venue List</a>\n";
-    if (Access('SysAdmin')) $txt .= "<li><a href=FoodDrink>Food and Drink</a>\n";    
+    if (Access('SysAdmin')) {
+      $txt .= "<li><a href=FoodDrink>Food and Drink</a>\n";    
+      $txt .= "<li><a href=WaterManage>Water Refills</a>\n";
+    }
     $txt .= "</ul>\n";
   }
 
@@ -515,7 +518,6 @@
 //      $txt .= "<li class=smalltext><a href=ImportProgAds>Import Programme ads</a>\n";  
 //      $txt .= "<p>";
       $txt .= "<li><a href=Sponsors>Sponsors</a>\n";
-      $txt .= "<li><a href=WaterManage>Water Refills</a>\n";
 
 //      $txt .= "<li><a href=ImportOldInvoice>Import Old Invoices</a>\n";  
     }
@@ -545,7 +547,7 @@
     } else {
       $txt .= "<li><a href=ListUsers>List Committee/Group Users</a>";    
     }
-    if (Access('SysAdmin')) {
+    if (Access('SysAdmin') && !Capability("EnableFinance")) {
 //      $txt .= "<p>";
 //      $txt .= "<li><a href=Capabilities>Capabilities</a>";      
 //      $txt .= "<li class=smalltext><a href=ImportDebtorCodes>Import Debtor Codes</a>";
@@ -557,12 +559,8 @@
 
 //      $txt .= "<li><a href=ImportOldInvoice>Import Old Invoices</a>\n";  
     }
-    if (Access('Committee','Finance')) {
+    if (Access('Committee','Finance') && !Capability("EnableFinance")) {
       $txt .= "<li><a href=Payments?Y=$YEAR>List All Performer Payments</a>\n";      
-    }
-    if (Access('Committee','Finance')) {
-      $txt .= "<li><a href=ListTrade?ORGS>Businesses and Organistaions List</a>\n"; 
-      $txt .= "<li><a href=Trade?ORGS>New Business or Organistaion</a>\n";  
     }
     $txt .= "</ul><p>\n";
   }

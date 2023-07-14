@@ -76,6 +76,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   }
   $Ven = Get_Venue($V);
   if (!isset($Ven['Status'])) Error_Page('Venue Unknown');
+  $VenY = Gen_Get_Cond1('VenueYear',"Year=$YEAR AND VenueId=$V");
 
   if ($Ven['PartVirt'] && !$Poster && $Together) {
     $V = $Ven['PartVirt'];
@@ -140,6 +141,38 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
       if ($Ven['Food']) echo "<img src=/images/icons/foodicon.jpeg width=50 title='There is Food'> ";
       if ($Ven['BarFoodText']) echo " " . $Ven['BarFoodText'] . "<P>\n";
     }
+
+    SponsoredBy($VenY,$Ven['SN'],1,$V);
+    
+/*    if ($VenY['SponsoredBy'] ?? 0) {
+      $Spid = $VenY['SponsoredBy'];
+      if ($Spid > 0) {
+        $Spon = Gen_Get('Trade',$Spid,'Tid');
+        echo "<div class=SponWrap><div class=SponSet><div class=SponWhat>" . $Ven['SN'] . "</div> is sponsored by:</div><div class=Sponsoring>" . 
+             weblink($Spon['Website'], 
+               (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . "  class=sponImage></center>"):'') .
+               ($Spon['BizName']?$Spon['BizName']:$Spon['SN'] )," class=sponText") . "</div></div><br clear=all>";
+
+      } else {
+        $Spids = Gen_Get_Cond('Sponsorship',"Year=$YEAR AND ThingType=1 AND ThingId=$V ORDER BY Importance, RAND()");
+        if ($Spids) {
+          echo "<div><div class=SponSet><div class=SponWhat>" . $Ven['SN'] . "</div> is sponsored by:</div>";
+          foreach ($Spids as $Spid) {
+            $Spon = Gen_Get('Trade',$Spid['SponsorId'],'Tid');
+            echo "<div class=Sponsoring>" . 
+               weblink($Spon['Website'], 
+                 (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . "  class=sponImage></center>"):'') .
+                 ($Spon['BizName']?$Spon['BizName']:$Spon['SN'] )," class=sponText") . "</div>";
+               
+          }        
+          echo "</div><br clear=all>";
+        }
+        
+      }
+    }
+    
+//    echo "This is after the sponsors<p>";
+*/
 
     echo "</div>";
       $Img = 0;

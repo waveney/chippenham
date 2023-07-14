@@ -168,7 +168,7 @@ function Report_Log($roll) {
     }
 
     $emails = Get_Emails($roll);
-    if ($emails) {
+    if ($Src && $emails) {
       NewSendEmail($Src,$SrcId, $emails,Feature('ShortName') . " update by $who",$UpdateLog);
     }
     Logg(Feature('ShortName') . " update by $who\n" . $UpdateLog);
