@@ -5,7 +5,10 @@
   dostaffhead("Add/Change Venue");
   include_once("ProgLib.php");
   include_once("MapLib.php");
+  include_once("DispLib.php");
   include_once("DanceLib.php");
+  
+  global $YEAR;
   
   Set_Venue_Help();
 
@@ -58,12 +61,14 @@
   
   echo "<div class=tablecont  style='width:70%;float:left;'><table border>\n";
     if (isset($vid) && $vid > 0) {
-      echo "<tr><td>Venue Id:<td>";
-      echo $vid . fm_hidden('VenueId',$vid);
+      echo "<tr><td>Venue Id:<td>$vid" . fm_hidden('VenueId',$vid);
+      $VenY = Gen_Get_Cond1('VenueYear',"Year=$YEAR AND VenueId=$vid");
+      SponsoredByWho($VenY,$Venue['SN'],1,$vid);
     } else {
       echo fm_hidden('VenueId',-1);
     }
     echo "<tr>" . fm_text('Short Name', $Venue,'ShortName');
+    if (isset($vid) && $vid > 0 && isset($VenY['QRCount'])) echo "<td>QR Count:<td>" . $VenY['QRCount'];  
     echo "<tr>" . fm_text('Name',$Venue,'SN',3);
     echo "<tr>" . fm_text('Address',$Venue,'Address',3);
     echo          fm_text('Post Code',$Venue,'PostCode',1);

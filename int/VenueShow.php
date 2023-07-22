@@ -434,7 +434,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     echo "<h3> To find out more scan this:<br>to visit " . Feature('HostURL') . "</h3>"; // pixels should be multiple of 41
     echo "<script type='text/javascript'>
       var qrcode = new QRCode(document.getElementById('qrcode'), {
-        text: 'https://" . Feature('HostURL') . "/int/QRVenueShow?V=$V',
+        text: 'https://" . Feature('HostURL') . "/int/QRVenueShow?V=$V&Q',
         width: 123,
         height: 123,
       });

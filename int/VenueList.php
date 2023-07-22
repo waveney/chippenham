@@ -8,6 +8,17 @@
   include_once("ProgLib.php");
   include_once("DanceLib.php");
   $venues = ((isset($_GET['ALL'])) ? Get_Venues(1) : Get_AVenues(1));
+  $VYear = Gen_Get_Cond('VenueYear',"Year=$YEAR");
+  if ($VYear) foreach($VYear as $VY) {
+    $Spid = $VY['SponsoredBy'];
+    if ($Spid > 0) {
+      $Spon = Gen_Get('Trade',$Spid,'Tid');      
+      $venues[$VY['VenueId']]['SponsoredBy'] = "<a href=Trade?id=$Spid&T=S>" . $Spon['SN'] . "</a>";
+    } else {
+      $venues[$VY['VenueId']]['SponsoredBy'] = "<a href=SponSort?T=V&i=" . $VY['VenueId'] . ">Many</a>";    
+    }
+    $venues[$VY['VenueId']]['QRCount'] = ($VYear['QRCount'] ?? 0);
+  }
 
   if (!isset($_GET['ALL'])) echo "<h2>Click <a href=VenueList?ALL>All</a> to see not in use Venues</h2>";
   $edit = Access('Staff','Venues');
@@ -19,7 +30,8 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Short Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Full Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Virt</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Sponsored</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>QR Count</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Dance Order</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Music Order</a>\n";
@@ -51,7 +63,10 @@
         if ($edit) echo "</a>";
 
       echo "<td>" . ($Ven['IsVirtual']?'Y':'');
-      echo "<td>" . $Ven['Notes'] . "<td>" . $Venue_Status[$Ven['Status']];
+      echo "<td>" . ($Ven['SponsoredBy']?$Ven['SponsoredBy']:"");
+
+      echo "<td>" . ($Ven['QRCount']??0);
+      echo "<td>" . $Venue_Status[$Ven['Status']];
       echo "<td>" . $Ven['DanceImportance'];
       echo "<td>" . $Ven['MusicImportance'];
       echo "<td>" . $Ven['OtherImportance'];
