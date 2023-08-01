@@ -505,19 +505,28 @@
       $txt .= "<li><a href=InvoiceCodes?Y=$YEAR>Invoice Codes</a>\n";   
       $txt .= "<li><a href=InvoiceSummary?Y=$YEAR>Invoice Summary</a>\n";   
       $txt .= "<li><a href=OtherPaymentSummary?Y=$YEAR>Other Payment Summary</a>\n";   
-      $txt .= "<li><a href=ListTrade?ORGS>Businesses and Organistaions List</a>\n"; 
-      $txt .= "<li><a href=Trade?ORGS>New Business or Organistaion</a>\n";  
       $txt .= "<li><a href=Payments?Y=$YEAR>List All Performer Payments</a>\n";  
     } elseif (Access('Committee')) {
       $txt .= "<li><a href=BudgetManage?Y=$YEAR>Budget View</a>\n";
       $txt .= "<li><a href=InvoiceManage?Y=$YEAR>Invoice Management</a>\n";
     }
+
+    if (Access('Committee','Finance') || Access('Committee','Biz')) {    
+      $txt .= "<p><li><a href=ListBiz>Businesses and Organistaions List (Not traders)</a>\n"; 
+      $txt .= "<li><a href=Biz?ACTION=AllSponList>All Sponsorships </a> (new code)\n";
+      $txt .= "<li><a href=Biz?ACTION=ReHash>Set up Cached Data</a> (Run after changes)\n";
+
+      $txt .= "<p><li><a href=ListTrade?ORGS>Businesses and Organistaions List</a> (Old code)\n"; 
+      $txt .= "<li><a href=Trade?ORGS>New Business or Organistaion</a> (Old code)\n";  
+      $txt .= "<li><a href=Sponsors>Sponsors</a> (old code)\n";
+    }
+    
     if (Access('SysAdmin')) {
 //      $txt .= "<p>";
 //      $txt .= "<li class=smalltext><a href=ImportDebtorCodes>Import Debtor Codes</a>";
 //      $txt .= "<li class=smalltext><a href=ImportProgAds>Import Programme ads</a>\n";  
 //      $txt .= "<p>";
-      $txt .= "<li><a href=Sponsors>Sponsors</a>\n";
+
 
 //      $txt .= "<li><a href=ImportOldInvoice>Import Old Invoices</a>\n";  
     }
@@ -599,7 +608,10 @@
       $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
       $txt .= "<li><a href=TsAndCs2?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";
-      $txt .= "<li><a href=UpdateSystem $xtra>Update the system after pull</a> \n";
+      if ($xtra) {
+        $txt .= "<li><a href=UpdateSystem $xtra>Update the system after pull</a> \n";
+        $txt .= "<li class=smalltext><a href=UpdateSystem?MarkDone>Just mark done</a><p> \n";
+      };
       $txt .= "<li><a href=SystemData>Festival System Data Settings</a><p> \n";
       
       $txt .= "<li><a href=RareAdmin>Rare Admin Tasks</a> \n";      

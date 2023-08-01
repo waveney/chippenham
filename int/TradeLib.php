@@ -53,10 +53,14 @@ $ButExtra = array(
 $ButTrader = array('Submit','Accept','Decline','Cancel','Resend'); // Actions Traders can do
 $ButAdmin = array('Paid','Dep Paid');
 $RestrictButs = array('Paid','Dep Paid'); // If !AutoInvoice or SysAdmin
-$Trade_Days = array('Both','Saturday only','Sunday only');
+$Trade_Days = array('All','Saturday only','Sunday only','Saturday and Sunday','Monday','Saturday and Monday','All');
 $Prefixes = array ('in','in the','by the');
-$TaxiAuthorities = array('East Dorset','Poole','Bournemouth','BCP','Dorset');
+// $TaxiAuthorities = array('East Dorset','Poole','Bournemouth','BCP','Dorset');
 $TradeMapPoints = ['Trade','Other'];
+
+$BizProps = ['IsTrader'=>1,'IsSponsor'=>2,'IsAdvertiser'=>4,'IsSupplier'=>0,'IsOther'=>0]; // bit 0 = Image, 2=Logo, 3=Advert
+$SponTypes = ['General','Venue','Event','Performer'];
+$SponStates = ['Raised','Invoiced','Paid','Paid in Kind'];
 
 function Get_Trade_Locs($tup=0,$Cond='') { // 0 just names, 1 all data
   global $db;
@@ -150,14 +154,9 @@ function Put_Trade_Type(&$now) {
 function Get_Sponsors($tup=0) { // 0 Current, 1 all data
   global $db,$SHOWYEAR,$YEARDATA;
   $full = array();
-  $yr = ($tup ?"" :" WHERE Year='" . substr($SHOWYEAR,0,4) . "' ");
+  $yr = ($tup ?"" :" WHERE Year!=0 ");
   $res = $db->query("SELECT * FROM Sponsors $yr ORDER BY SN ");
   if ($res) while ($spon = $res->fetch_assoc()) $full[] = $spon;
-  if ($tup==0 && empty($full)) {
-    $yr = " WHERE Year='" . substr($YEARDATA['PrevFest'],0,4) . "'";
-    $res = $db->query("SELECT * FROM Sponsors $yr ORDER BY SN ");
-    if ($res) while ($spon = $res->fetch_assoc()) $full[] = $spon;
-  }
   return $full;
 }
 
@@ -299,10 +298,12 @@ function Put_Trade_Year(&$now) {
 function Set_Trade_Help() {
   static $t = array(
         'Website'=>'If you would like to be listed on the Folk Festival Website, please supply your website (if you have one) and an Image and tick the box',
-        'GoodsDesc'=>'Describe your goods and business.  At least 20 words please, but not more than 500 characters.  This is used both to decide whether to accept your booking and as words to accompany your Image on the festival website',
-        'PitchSize'=>'If you want more than 1 pitch, give each pitch size, a deposit will be required for each.  If you attempt to setup a pitch larger than booked you may be told to leave',
+        'GoodsDesc'=>'Describe your goods and business.  Essential for Traders, optional otherwise.  At least 20 words please, but not more than 500 characters.  
+For traders, this is used both to decide whether to accept a Traders booking and as words to accompany your Image on the festival website.',
+        'PitchSize'=>'If you want more than 1 pitch, give each pitch size, a deposit will be required for each.  
+If you attempt to setup a pitch larger than booked you may be told to leave',
         'Power'=>'Some locations can provide power, some only support lower power requirements. 
-There will be an additional fee for power from &pound;10, that will be added to your final invoice.
+There will be an additional fee for power, that will be added to your final invoice.
 Any generator must meet the Euro 4 silent generator standard.',
         'Photo'=>'Give URL of Image to use or upload one (landscape is prefered)',
         'TradeType'=>'Fees depend on trade type, pitch size and location',
@@ -311,6 +312,7 @@ Any generator must meet the Euro 4 silent generator standard.',
         'PrivateInfo'=>'Information in this section is only visible to you and the revelent members of the festival, you can amend this at any time',
         'PublicHealth'=>'Please give the NAME of the local authority your registered with',
         'IsTrader'=>'Used to indicate the business is a trader (useful for finance) do not touch (normally)',
+        'BankDetails'=>'Needed for suppliers, very rarely needed for others when doing a refund',
 
   );
   Set_Help_Table($t);
@@ -344,9 +346,11 @@ function PayCodeGen($Type,$TYid) { // Type = DEP, BAL, PAY
   return "$Type$TYid$check_digit";
 }
 
-function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Finance
-  global $YEAR,$ADDALL,$Mess,$Action,$Trader_Status,$TradeTypeData,$TradeLocData;
+function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Finance, 3=Biz general
+  global $YEAR,$ADDALL,$Mess,$Action,$Trader_Status,$TradeTypeData,$TradeLocData,$BizProps;
   Set_Trade_Help();
+  $Props = 0;
+  foreach ($BizProps as $p=>$m) if (!empty($Trad[$p])) $Props |= $m;
 
 //  if (isset($Trad['Photo']) && $Trad['Photo']) echo "<img class=floatright id=TradThumb src=" . $Trad['Photo'] . " height=80>\n";
   if ($Tid > 0) echo "<input  class=floatright type=Submit name='Update' value='Save Changes' form=mainform>";
@@ -382,18 +386,38 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
       } else {
         echo fm_text('Website',$Trad,'Website');
       };
-      if ($Tid >0) {
-        echo "<td>Recent Photo:" . fm_DragonDrop(1, 'Photo','Trade',$Tid,$Trad,$Mode); // TODO  <td><a href=PhotoProcess.php?Cat=Perf&id=$snum>Edit/Change</a>";
-      } else {
-        echo "<td colspan=3>You can upload a photo once you have created your record\n";
+      if ($Props &1) {
+        if ($Tid >0) {
+          echo "<tr><td>Recent Photo:" . fm_DragonDrop(1, 'Photo','Trade',$Tid,$Trad,$Mode); // TODO  <td><a href=PhotoProcess.php?Cat=Perf&id=$snum>Edit/Change</a>";
+        } else {
+          echo "<td colspan=3>You can upload a photo once you have created your record\n";
+        }
       }
-    if ($Mode != 2) echo "<tr>" . fm_textarea('Products Sold <span id=DescSize></span>',$Trad,'GoodsDesc',7,2,
+      if ($Props &2) {
+        if ($Tid >0) {
+          echo "<tr><td>Logo:" . fm_DragonDrop(1, 'Logo','Trade',$Tid,$Trad,$Mode); // TODO  <td><a href=PhotoProcess.php?Cat=Perf&id=$snum>Edit/Change</a>";
+        } else {
+          echo "<td colspan=3>You can upload a Logo once you have created your record\n";
+        }
+      }
+/*
+      if ($Props &4) {
+        if ($Tid >0) {
+          echo "<tr><td>Advert:" . fm_DragonDrop(1, 'Advert','TradeYear',$Tid,$Trad,$Mode); // TODO  <td><a href=PhotoProcess.php?Cat=Perf&id=$snum>Edit/Change</a>";
+        } else {
+          echo "<td colspan=3>You can upload an Advert once you have created your record\n";
+        }
+      }
+*/
+      
+      
+    if ($Mode != 2) echo "<tr>" . fm_textarea('Products <span id=DescSize></span>',$Trad,'GoodsDesc',7,2,
                         'maxlength=500 oninput=SetDSize("DescSize",500,"GoodsDesc")');     
 
 //********* PRIVATE
 
     echo "<tr><th colspan=8><b>Private Information</b>" . Help('PrivateInfo');
-    if ($Mode < 2) {
+    if ($Trad['IsTrader']) {
       echo "<tr>";
         echo "<td>Trade Type:" . help('TradeType') . "<td colspan=7>";
         foreach ($TradeTypeData as $i=>$d) {
@@ -409,8 +433,6 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         }
         echo "<br clear=all><div id=TTDescription style='background:" . $TradeTypeData[$Trad['TradeType']]['Colour'] . ";'>" . 
           $TradeTypeData[$Trad['TradeType']]['Description'] . "</div>\n";
-    } else {
-      fm_hidden('TradType',$Trad['TradeType']);
     }
     echo "<tr>" . fm_text('<span id=ContactLabel>Contact Name</span>',$Trad,'Contact');
       echo fm_text1('Email',$Trad,'Email',2);
@@ -418,10 +440,14 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
       echo fm_text('Mobile',$Trad,'Mobile',1,$Imp,'onchange=updateimps()') . "\n";
     echo "<tr>" . fm_text('Address',$Trad,'Address',5,$Imp,'onchange=updateimps()');
       echo fm_text('Post Code',$Trad,'PostCode')."\n";
-    if ($Mode < 2) {
+     
+// Other Contacts to be added here at some point     
+     
+      
+    if ($Trad['IsTrader']) {
       echo "<tr class=PublicHealth " . ($TradeTypeData[$Trad['TradeType']]['NeedPublicHealth']?'':'hidden') . ">" ;
       echo fm_text("Registered with which Local Authority ",$Trad,'PublicHealth',2,'colspan=2');
-      echo "<tr><td>Are you a <td>" . (Feature('TradeBID')?(fm_checkbox('BID Levy Payer',$Trad,'BID') . "<td>"):'') . 
+      echo "<tr><td>Are a <td>" . (Feature('TradeBID')?(fm_checkbox('BID Levy Payer',$Trad,'BID') . "<td>"):'') . 
                                       (Feature('TradeChamberCommerce')?(fm_checkbox('Chamber of Commerce Member',$Trad,'ChamberTrade') . "<td>"):'');
       if ($Mode) echo fm_checkbox('Previous Festival Trader',$Trad,'Previous');
       echo fm_text('Charity Number',$Trad,'Charity',1,'class=Charity ' . ($TradeTypeData[$Trad['TradeType']]['NeedCharityNum']?'':'hidden'));
@@ -447,11 +473,13 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         if (isset($Trad['SN'])) $Scode = Sage_Code($Trad);
         echo fm_text("Sage Code",$Trad,'SageCode',1,'class=NotSide','class=NotSide');
       }
+      if ($Tid > 0 && $Trad['IsSponsor']) echo "<td class=NotSide>" . fm_checkbox("Show Name and Logo",$Trad,'IandT');
     } else { 
       echo fm_hidden('IsTrader',$Trad['IsTrader']);
     }
     if ($Mode || (isset($Trad['SortCode']) && $Trad['SortCode'])) {
-      echo "<tr><td>Bank Details" . fm_text('Sort Code',$Trad,'SortCode') . fm_text('Account No',$Trad,'Account') . fm_text('Account Name',$Trad,'AccountName',2);
+      echo "<tr><td>Bank Details" . Help('BankDetails') . 
+           fm_text('Sort Code',$Trad,'SortCode') . fm_text('Account No',$Trad,'Account') . fm_text('Account Name',$Trad,'AccountName',2);
     }
     echo fm_hidden("Tid", $Tid);
     echo fm_hidden("Id", $Tid);
@@ -527,11 +555,6 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     }
   }
   
-//  if (Access('SysAdmin') && isset($Trady['TYid']) ) {
-//    echo "<tr><td>" . PayCodeGen("DEP",$Trady['TYid']) ."<td>" . PayCodeGen("BAL",$Trady['TYid']) ."<td>" . PayCodeGen("PAY",$Trady['TYid']);
-//    echo "<tr><td>" . PayCodeGen("DEP",$Trady['TYid']+1) ."<td>" . PayCodeGen("BAL",$Trady['TYid']+1) ."<td>" . PayCodeGen("PAY",$Trady['TYid']+1);
-//  }
-  
   echo "<tr><td>Days:<td>" . fm_select($Trade_Days,$Trady,'Days');
   echo "<tr><td>Requested Pitch Sizes, <span class=DefaultPitch>" . Pitch_Size_Def($Trad['TradeType']) . "</span> is default" . Help('PitchSize');
   if (Feature("TradePower")) echo "<td colspan=2>Power Requirements" . Help('Power') . "<br>3 Amps - Lighting, 13 Amps - 1 Kettle...";
@@ -569,7 +592,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   include_once("InvoiceLib.php");
   $Pay = Pay_Code_Find(1,$Tid);
   if ($Pay && $Pay['State']==0) {
-    echo "<tr><td>Payment due for<td colspan=5><b>" . $Pay['Reason'] . "</b><br>Due " . date('j/n/Y',$Pay['DueDate']) . "<br>Please pay " . Print_Pence($Pay['Amount']) . " to:<br>" . 
+    echo "<tr><td>Payment due for<td colspan=5><b>" . $Pay['Reason'] . "</b><br>Due " . date('j/n/Y',$Pay['DueDate']) . 
+        "<br>Please pay " . Print_Pence($Pay['Amount']) . " to:<br>" . 
         Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . "<p>Quote Reference: " .
         $Pay['Code'];
   };
@@ -787,7 +811,8 @@ function Trader_Details($key,&$data,$att=0) {
   case 'PAYCODES':
     $Pay = Pay_Code_Find(1,$Tid);
     if ($Pay && $Pay['State']==0) {
-      return "<b>Payment due</b><br>For: <b>" . $Pay['Reason'] . "</b><br>Due: " . date('j/n/Y',$Pay['DueDate']) . "<br>Please pay: " . Print_Pence($Pay['Amount']) . " to:<br>" . 
+      return "<b>Payment due</b><br>For: <b>" . $Pay['Reason'] . "</b><br>Due: " . date('j/n/Y',$Pay['DueDate']) . 
+          "<br>Please pay: " . Print_Pence($Pay['Amount']) . " to:<br>" . 
           Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . "<p>Quote Reference: " .
           $Pay['Code'] . "<p>";
     };
@@ -1447,7 +1472,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     }
 
     if (Feature("AutoInvoices")) {
-      $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? "Trade_Artisan_Final_Invoice" : "Trade_Final_Invoice");
+      $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
+          "Trade_Artisan_Final_Invoice" : "Trade_Final_Invoice");
       $InvCode = Trade_Invoice_Code($Trad,$Trady);
       $DueDate = Trade_Date_Cutoff();
       $ipdf = New_Invoice($Trad,
@@ -1625,7 +1651,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       } elseif ($CurState == $Trade_State['Balance Requested']) {                    
         $NewState = $Trade_State['Fully Paid'];
         $ipdf = New_Invoice($Trad,
-                          [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100],["Less your deposit payment",-$PaidBefore*100]],
+                          [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100],
+                           ["Less your deposit payment",-$PaidBefore*100]],
                            'Trade Stand Balance Charge',
                            $InvCode, 1,-1,0,0,1 );
         Send_Trader_Email($Trad,$Trady,'Trade_Balance_Paid_Invoice',$ipdf);
@@ -1767,7 +1794,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
           $NewState = $Trady['BookingState'] = $Trade_State['Accepted'];
           Send_Trader_Email($Trad,$Trady,'Trade_Statement',$invoice);  
         } elseif (!$Invs) {
-          $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? "Trade_Artisan_Accept" : "Trade_Accepted");
+          $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
+             "Trade_Artisan_Accept" : "Trade_Accepted");
           $ipdf = Trade_Deposit_Invoice($Trad,$Trady);
           if ($ipdf) Send_Trader_Email($Trad,$Trady,$ProformaName . ($DueDate?"_FullInvoice":"_Invoice"),$ipdf);
         } else {
@@ -2067,7 +2095,8 @@ function Get_Traders_For($loc,$All=0 ) {
   global $db, $Trade_State,$YEAR;
   $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE " . 
         ($All? ("y.BookingState>= " . $Trade_State['Submitted'] ) : 
-          ( "(y.BookingState=" . $Trade_State['Deposit Paid'] . " OR y.BookingState=" . $Trade_State['Balance Requested'] . " OR y.BookingState=" . $Trade_State['Fully Paid'] . ")" ) ) . 
+          ( "(y.BookingState=" . $Trade_State['Deposit Paid'] . " OR y.BookingState=" . $Trade_State['Balance Requested'] . 
+            " OR y.BookingState=" . $Trade_State['Fully Paid'] . ")" ) ) . 
          " AND t.Tid = y.Tid AND y.Year='$YEAR' AND (y.PitchLoc0=$loc OR y.PitchLoc1=$loc OR y.PitchLoc2=$loc ) ORDER BY SN";
 
   $res = $db->query($qry);
@@ -2104,7 +2133,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
           $list = explode(',',$Trad["PitchNum$i"]);
           foreach ($list as $p) {
             $Usage[$p] = (isset($Usage[$p])?"CLASH!":$Trad['SN']);
-            if ( $Trad['BookingState'] == $Trade_State['Deposit Paid'] || $Trad['BookingState'] == $Trade_State['Balance Requested'] || $Trad['BookingState'] == $Trade_State['Fully Paid'] ) {
+            if ( $Trad['BookingState'] == $Trade_State['Deposit Paid'] || 
+                 $Trad['BookingState'] == $Trade_State['Balance Requested'] || 
+                 $Trad['BookingState'] == $Trade_State['Fully Paid'] ) {
               $TT[$p] = $Trad['TradeType'];
             } else {
               $TT[$p] = -1;

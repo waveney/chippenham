@@ -638,6 +638,10 @@ $DDdata = [
     'Image'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>1 ], 
     'MobPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>2,
                  'Name'=>'Photo', 'NotTable'=>1 ], 
+    'Logo'     => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>1,
+                 'Name'=>'Logo' ], 
+    'Advert'   => [ 'UseYear'=>1, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>1,
+                 'Name'=>'Advert' ], 
 
 ];
 

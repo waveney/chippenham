@@ -23,9 +23,9 @@ function ToolSelect(e,c) { // e= event, c = colnum
 }
 
 
-function PCatSel(e) {
+function PCatSel(e,pname='PCAT') {
   $('[id^=MPC_').hide();
-  var selectedOption = $("input:radio[name=PCAT]:checked").val()
+  var selectedOption = $("input:radio[name=" + pname + "]:checked").val()
   $('#MPC_' + selectedOption).show();
 }
 

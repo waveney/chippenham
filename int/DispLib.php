@@ -559,4 +559,34 @@ function SponsoredBy(&$Data,&$Name,$TType,$Tid) {
 
 }
 
+function SponsoredByWho(&$Data,&$Name,$TType,$Tid,$cols=3) {
+  global $YEAR;
+    if ($Data['SponsoredBy'] ?? 0) {
+      $Spid = $Data['SponsoredBy'];
+      if ($Spid > 0) {
+        $Spon = Gen_Get('Trade',$Spid,'Tid');
+        echo "<td>Sponsored by:<td colspan=$cols><a href=Trade?id=$Spid&T=S>" . $Spon['SN'] . "</a>";
+      } else {
+        $Spids = Gen_Get_Cond('Sponsorship',"Year=$YEAR AND ThingType=$TType AND ThingId=$Tid ORDER BY Importance, RAND()");
+        if ($Spids) {
+          echo "<td>Sponsored by:<td colspan=$cols>";
+          $num = 0;
+          foreach ($Spids as $Spid) {
+            $Spon = Gen_Get('Trade',$Spid['SponsorId'],'Tid');
+            if ($num++ != 0) echo ", ";
+            echo "<a href=Trade?id=" . $Spid['SponsorId'] . "&T=S>" . NoBreak($Spon['SN']) . "</a>";
+          }        
+          echo "</div><br clear=all>";
+        } else {
+          echo "<td>Not Sponsored";
+        }
+      }
+    } else {
+      echo "<td>Not Sponsored";
+    }
+
+
+}
+
+
 

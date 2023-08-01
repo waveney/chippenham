@@ -80,7 +80,7 @@ default:
 }
 
 if (!$Data) { 
-  echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,$Mode,"No Data found to update - $Type - $Cat - $Id ",1,'',$Class);
+  echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,$Mode,"No Data found to update - $Type - $Cat - $id ",1,'',$Class);
   exit;
 }
 
@@ -96,7 +96,7 @@ if (isset($DDd['path'])) {
 } else {
   $pdir = ($DDd['UseYear']?"$Type/$YEAR/$Cat":$Name);
 }
-$path = "$pdir/$id";
+$path = "$pdir/$Type$id";
 
 $files = glob("$path.*");
 if ($files) {
@@ -113,13 +113,13 @@ if (!file_exists($target_dir)) mkdir($target_dir,0775,true);
 $suffix = pathinfo($_FILES["Upload"]["name"],PATHINFO_EXTENSION);
 
 if ($suffix == 'heic' || $suffix =='heif') {
-  $target_file = "$target_dir/$id.jpg";
+  $target_file = "$target_dir/$Type$id.jpg";
   if (!exec("heif-convert -q 90 " . $_FILES["Upload"]["tmp_name"] . " $target_file")) {
     echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);    
     exit;
   }
 } else {
-  $target_file = "$target_dir/$id.$suffix";
+  $target_file = "$target_dir/$Type$id.$suffix";
 // var_dump($target_file);
   if (!move_uploaded_file($_FILES["Upload"]["tmp_name"], $target_file)) {
     echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);

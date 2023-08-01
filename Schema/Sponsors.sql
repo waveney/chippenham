@@ -9,5 +9,6 @@ CREATE TABLE `Sponsors` (
   `ImageHeight` int NOT NULL,
   `ImageWidth` int NOT NULL,
   `IandT` tinyint NOT NULL,
+  `SponsorId` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

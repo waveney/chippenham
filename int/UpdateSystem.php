@@ -57,28 +57,29 @@ function PostUpdate429() {
   }
 // Pre Database changes
 
-  for ($Ver = ($FESTSYS['CurVersion'] ?? 0); $Ver <= $Version; $Ver++) {
-    if (function_exists("PreUpdate$Ver")) {
-      echo "Doing Pre update to Verion $pfx.$Ver<br>";
-      ("PreUpdate$Ver")();
+  if (!isset($_REQUEST['MarkDone'])) {
+    for ($Ver = ($FESTSYS['CurVersion'] ?? 0); $Ver <= $Version; $Ver++) {
+      if (function_exists("PreUpdate$Ver")) {
+        echo "Doing Pre update to Verion $pfx.$Ver<br>";
+        ("PreUpdate$Ver")();
+      }
     }
-  }
 
   
-  chdir('../Schema');
-  $skema = system('skeema push');
-  echo $skema . "\n\n";
-  chdir('../int');
+    chdir('../Schema');
+    $skema = system('skeema push');
+    echo $skema . "\n\n";
+    chdir('../int');
 
 // Post Database changes
  
-  for ($Ver = ($FESTSYS['CurVersion'] ?? 0); $Ver <= $Version; $Ver++) {
-    if (function_exists("PostUpdate$Ver")) {
-      echo "Doing Post update to Verion $pfx.$Ver<br>";
-      ("PostUpdate$Ver")();
+    for ($Ver = ($FESTSYS['CurVersion'] ?? 0); $Ver <= $Version; $Ver++) {
+      if (function_exists("PostUpdate$Ver")) {
+        echo "Doing Post update to Verion $pfx.$Ver<br>";
+        ("PostUpdate$Ver")();
+      }
     }
-  }
-  
+  }  
   echo "Updated to Version $VERSION<p>";
   $FESTSYS['CurVersion'] = $Version;
   $FESTSYS['VersionDate'] = time();

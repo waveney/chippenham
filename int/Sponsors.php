@@ -15,7 +15,7 @@
   if (UpdateMany('Sponsors','Put_Sponsor',$Spons,0)) $Spons=Get_Sponsors(1);
 
   echo "Year is the most recent year they are a sponsor.  Importance is a relative value (not yet used).<p>\n";
-  echo "Don't use Both - it does not work...<p>\n";
+//  echo "Don't use Both - it does not work...<p>\n";
 
   $coln = 0;
   echo "<form method=post>";
@@ -29,6 +29,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Both</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Description</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Importance</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Convert</a>\n";
   echo "</thead><tbody>";
   if ($Spons) foreach($Spons as $t) {
     $i = $t['id'];
@@ -39,6 +40,7 @@
     echo "<td>" . fm_checkbox('',$t,'IandT','',"IandT$i");
     echo "<td>" . fm_basictextarea($t,'Description',2,2,'',"Description$i");
     echo fm_number1('',$t,'Importance','','',"Importance$i");
+    echo "<td><a href=Biz?ACTION=Convert&id=$i>Convert</a>";
     echo "\n";
   }
   echo "<tr><td><td><input type=text name=SN0 >";

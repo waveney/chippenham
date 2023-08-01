@@ -501,7 +501,7 @@ function ShowTotals() {
   uasort($ColCount, function ($a,$b) { return $b['Value'] <=> $a['Value'];});
 
   echo "<div class=Scrolltable><table border class=altcolours>\n";
-  echo "<th>User Type<th>User Name<th>Device<th>When<th>Sub Total<th>Total Value<th>Email<th>Phone\n";
+  echo "<th>User Type<th>User Name<th>Device<th>Out<th>In<th>Sub Total<th>Total Value<th>Email<th>Phone\n";
   if ($Finished) echo "<th>Send Email";
   echo "</thead><tbody>\n";
 
@@ -522,7 +522,7 @@ function ShowTotals() {
           $Tin = $Tins[$R['CollectionUnitId']];
           if ($TinNum) echo "<tr>";
           echo "<td>" . $TinTypes[$Tin['Type']]['Name'] . ": " . $Tin['Name'] . "<td>";
-          echo "Out: " . date('D H:i:s',$R['TimeOut']) . " In: " . date('D H:i:s',$R['TimeIn']);
+          echo date('D j/n/y H:i:s',$R['TimeOut']) . "<td>" . date('D j/n/y H:i:s',$R['TimeIn']);
           echo "<td align=right>" . ($R['Value'] <0 ? 0 :  sprintf('£%0.2f',$R['Value']/100));
           
           if ($TinNum++ == 0) {
@@ -666,7 +666,7 @@ function CollectActions() {
   echo "<hr><h2>Other Actions:<ul>";
   if (Access('Staff','Finance')) {
     echo "<li><a href=Collecting?ACTION=ListTins>Manage Tins</a>";
-    echo "<li><a href=Collecting?ACTION=CurrentTins>Current Tins</a>";
+//    echo "<li><a href=Collecting?ACTION=CurrentTins>Current Tins</a>";
     echo "<li><a href=Collecting?ACTION=Records>List this year records</a>";  
     echo "<li><a href=Collecting?ACTION=Count>Count Tins</a>";  
     echo "<li><a href=Collecting?ACTION=Totals>Show Totals</a>";  

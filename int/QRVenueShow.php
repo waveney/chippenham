@@ -77,6 +77,10 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   $Ven = Get_Venue($V);
   if (!isset($Ven['Status'])) Error_Page('Venue Unknown');
   $VenY = Gen_Get_Cond1('VenueYear',"Year=$YEAR AND VenueId=$V");
+  if (isset($_REQUEST['Q'])) {
+    $VenY['QRCount']++;
+    Gen_Put('VenueYear',$VenY);
+  }
 
   if ($Ven['PartVirt'] && !$Poster && $Together) {
     $V = $Ven['PartVirt'];

@@ -32,5 +32,6 @@ CREATE TABLE `Trade` (
   `SortCode` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `Account` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `AccountName` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `IandT` tinyint NOT NULL,
   PRIMARY KEY (`Tid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
