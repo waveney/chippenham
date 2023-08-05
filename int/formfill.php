@@ -278,7 +278,13 @@
     } 
     break;
     exit;
-    
+  
+  case 'Sponsorship':
+    if (preg_match('/Id(\d*)/',$field,$mtch)?true:false) {        
+      $id = 'ThingId';
+    }
+    break;
+  
   case 'FestUsers':
     if (preg_match('/UserCap:(\d*)/',$field,$mtch)?true:false) {        
       $Capid = $mtch[1];    

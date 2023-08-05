@@ -188,7 +188,8 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 
     $AgentTxt = (isset($Side['HasAgent']) && $Side['HasAgent']?"":"hidden");
     if ($NotD) { 
-      echo "<tr><td>" . fm_checkbox("Has Agent",$Side,'HasAgent','onchange=AgentChange(event)') . "<td class=AgentDetail>" . fm_checkbox('Book Directly',$Side,'BookDirect');
+      echo "<tr><td>" . fm_checkbox("Has Agent",$Side,'HasAgent','onchange=AgentChange(event)') . 
+           "<td class=AgentDetail>" . fm_checkbox('Book Directly',$Side,'BookDirect');
     }
 
     echo "<tr class=AgentDetail $AgentTxt>";
@@ -1001,7 +1002,19 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   // INsurance
   
   if (Feature('PublicLiability')) if (!$ShowAvailOnly) echo fm_DragonDrop(1, 'Insurance','Sides',$snum,$Sidey,$Mode,'',(($NotD || $Mstate || $Mode)),$Imp);
-  
+
+  if (isset($_REQUEST['DUMP'])) {
+    echo "<tr><td colspan=6>Dump:";
+    var_dump($Side);
+    echo "<P>";
+    var_dump($Sidey);
+  }
+
+  if ($Sidey['SponsoredBy']) {
+    echo "<tr>";
+    SponsoredByWho($Sidey,$Side['SN'],3,$snum);
+  }
+   
   $ntxt = 'Notes (Do <b>NOT</b> use this for questions.<br>if not answered by the ';
   if ($Side['IsASide']) {
     $ntxt .= "<a href=DanceFAQ>Dance FAQ</a>";
@@ -1011,6 +1024,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   $ntxt .= '<br>please send in an email)';
 
   echo "<tr>" . fm_textarea($ntxt,$Sidey,'YNotes',8,2);
+
 
   if ($Mode) echo "<tr>" . fm_textarea('Private Notes',$Sidey,'PrivNotes',8,2,'class=NotSide','class=NotSide');
 

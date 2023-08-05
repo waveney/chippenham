@@ -4,6 +4,7 @@
   include_once("MusicLib.php"); // TODO Merge two libs
   include_once("DateTime.php");
   include_once("ProgLib.php");
+  include_once("DispLib.php");
   include_once("PLib.php");
   include_once("Email.php");
 

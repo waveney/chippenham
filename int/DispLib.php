@@ -565,24 +565,25 @@ function SponsoredByWho(&$Data,&$Name,$TType,$Tid,$cols=3) {
       $Spid = $Data['SponsoredBy'];
       if ($Spid > 0) {
         $Spon = Gen_Get('Trade',$Spid,'Tid');
-        echo "<td>Sponsored by:<td colspan=$cols><a href=Trade?id=$Spid&T=S>" . $Spon['SN'] . "</a>";
+        echo "<td>Sponsored by:" . help('SponsoredBy') . "<td colspan=$cols><a href=Biz?ACTION=Show&id=$Spid>" . $Spon['SN'] . "</a>";
       } else {
         $Spids = Gen_Get_Cond('Sponsorship',"Year=$YEAR AND ThingType=$TType AND ThingId=$Tid ORDER BY Importance, RAND()");
         if ($Spids) {
-          echo "<td>Sponsored by:<td colspan=$cols>";
+          echo "<td>Sponsored by: " . help('SponsoredBy') . "<td colspan=$cols>";
           $num = 0;
           foreach ($Spids as $Spid) {
             $Spon = Gen_Get('Trade',$Spid['SponsorId'],'Tid');
             if ($num++ != 0) echo ", ";
-            echo "<a href=Trade?id=" . $Spid['SponsorId'] . "&T=S>" . NoBreak($Spon['SN']) . "</a>";
+            echo "<a href=Biz?ACTION=Show&id=" . $Spid['SponsorId'] . ">" . NoBreak($Spon['SN']) . "</a>";
           }        
           echo "</div><br clear=all>";
         } else {
-          echo "<td>Not Sponsored";
+          echo "<td>Not Sponsored " . help('SponsoredBy');
         }
       }
     } else {
-      echo "<td>Not Sponsored";
+      echo "<td>Not Sponsored " . help('SponsoredBy');
+      var_dump($Data);
     }
 
 

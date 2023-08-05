@@ -482,6 +482,7 @@ Contract Signed - Enables listing to public.',
         'Messages' => 'To Edit ask Richard (for now)',
         'ContractAnyway' => 'Forces contract even if none are needed',
         'NoEvents' => 'Set this if you are issuing a contract even without any events',
+        'SponsoredBy' => 'This is setup from the Sponsor, just displayed here for info',
 
   );
   Set_Help_Table($t);
