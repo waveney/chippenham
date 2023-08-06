@@ -350,6 +350,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
   global $YEAR,$ADDALL,$Mess,$Action,$Trader_Status,$TradeTypeData,$TradeLocData,$BizProps;
   Set_Trade_Help();
   $Props = 0;
+
   foreach ($BizProps as $p=>$m) if (!empty($Trad[$p])) $Props |= $m;
 
 //  if (isset($Trad['Photo']) && $Trad['Photo']) echo "<img class=floatright id=TradThumb src=" . $Trad['Photo'] . " height=80>\n";
@@ -382,9 +383,9 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
                   fm_text('Trading name if different', $Trad,'BizName',2,'','autocomplete=off id=SN');
     echo "<tr>";
       if (isset($Trad['Website']) && strlen($Trad['Website'])>1) {
-        echo fm_text(weblink($Trad['Website']),$Trad,'Website');
+        echo fm_text(weblink($Trad['Website']),$Trad,'Website',2);
       } else {
-        echo fm_text('Website',$Trad,'Website');
+        echo fm_text('Website',$Trad,'Website',2);
       };
       if ($Props &1) {
         if ($Tid >0) {

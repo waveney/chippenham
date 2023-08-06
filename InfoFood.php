@@ -35,8 +35,6 @@ echo "<div class=Scrolltable><table class=InfoTable><tr class=FoodHead><td>Name<
 
 echo "</table></div>";
 
-echo "And don't forget the food and drink outlets on Island Park<p>";
-
-echo "If you would also like to be listed here, please contact festival marketing through <a href=mailto:ContactUs@Chippfolk.co.uk>ContactUs@Chippfolk.co.uk</a>.<p>";
+echo TnC('Food_And_Drink_Tail');
   dotail();
 ?>

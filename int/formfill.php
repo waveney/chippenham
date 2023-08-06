@@ -281,7 +281,7 @@
   
   case 'Sponsorship':
     if (preg_match('/Id(\d*)/',$field,$mtch)?true:false) {        
-      $id = 'ThingId';
+      $field = 'ThingId';
     }
     break;
   

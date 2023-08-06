@@ -8,7 +8,7 @@
   include_once("ProgLib.php");
   A_Check('Staff','Biz');
   global $FESTSYS,$VERSION,$YEAR;
-  dostaffhead("Business Admin");
+  dostaffhead("Business Admin",["js/dropzone.js"]);
 
 function Show_Biz() {
   global $Trad,$Tid,$YEAR;
@@ -33,6 +33,8 @@ function Show_Biz() {
   if ($Trad['IsOther']) {
     echo "<h2>Other Actions: </h2>";
   }
+  
+  echo "<h2><a href=Biz?ACTION=AllSponList>Back to list of Sponsors</a></h2>\n";
 }
 
 function Spon_Header($Tid) {
@@ -101,7 +103,7 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
       echo "<td>" . $S['Year'] . "<td>" . $S['Importance'] . "<td>" . $SponStates[$S['Status']] . "<td>";
       
       echo "<a href=Biz?ACTION=SponAdd&Spid=$Spid>Edit</a>, ";
-      echo "<a href=Biz?ACTION=SponDel&Spid=$Spid>Delete</a>, ";
+      echo "<a href=Biz?ACTION=SponDel&Spid=$Spid>Remove</a>, ";
 // Actions will go here
     }
     
@@ -388,6 +390,10 @@ function Add_Spon_Request($Spid=0) {
     $i++;
   }
   echo "<tr>" . fm_number('Value',$S,'Importance') . "<td colspan=3>Used to sort sponsors and in Invoices (May be ommitted)";
+
+  if (Access('SysAdmin')) {
+    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+  }
   echo "</table>";
   if ($Spid == 0) echo "<input type=submit name=ACTION value=Create>";
   
@@ -413,7 +419,7 @@ function Spon_Validate() {
 
 /// START HERE
 
-  var_dump($_REQUEST);
+//  var_dump($_REQUEST);
   
   $Tid = ($_REQUEST['id']??$_REQUEST['T']??0);
   if ($Tid) $Trad = Get_Trader($Tid);
@@ -441,8 +447,17 @@ function Spon_Validate() {
         }
         break;
               
-      case 'SponEdit':
-
+      case 'SponDel':
+        if (isset($_REQUEST['Spid'])) {
+          $Spid = $_REQUEST['Spid'];
+          $S = Gen_Get('Sponsorship',$Spid);
+          db_delete('Sponsorship',$Spid);
+          echo "<h1>Removed Sponsorship record</h1>";
+          $Tid = $S['SponsorId'];
+          if ($Tid) $Trad = Get_Trader($Tid);          
+          Show_Biz();
+          dotail();
+        }
         break;      
 
       case 'SponCancel':

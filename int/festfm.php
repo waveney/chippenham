@@ -651,6 +651,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
   global $db,$InsuranceStates,$YEAR,$DDdata;
 
 //var_dump($Call, $Type,$Cat,$id,$Mode,$Mess,$Cond);
+//  if ($Mode>1) $Mode=1;
   $str = '';
   $DDd = &$DDdata[$Type];
 //var_dump($DDd);

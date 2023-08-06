@@ -3,35 +3,8 @@
 
   dohead("Sponsorship",[],1);
 
-?>
+  echo TnC('Sponsor_Page');
 
-<h2>About the Festival</h2>
-
-<p><strong>Chippenham Folk Festival</strong> is Chippenham's biggest event of the year.  Over the Spring Bank Holiday weekend at the end of May, 
-it attracts tens of thousands of people into the town for Four days of folk, family and fun.</p>
-
-<p>One of the UK's premier in-town folk festivals, it draws people from all over the UK.</p>
-
-<p>'Folk, family and fun' are at the heart of the festival: celebrating folk music and dance; 
-offering a family-friendly atmosphere; and providing a range of fun activities for all ages.</p>
-
-<p>Chippenham is in the spotlight over the folk festival weekend, with TV, radio, press and 
-online media coverage showcasing what the town has to offer.  We are highly active on social media, 
-reaching thousands of people across <a href="http://facebook.com/chippfolk" rel="tag" target="_blank"><strong>Facebook</strong></a>, 
-<a href="http://twitter.com/chippfolk" rel="tag" target="_blank"><strong>Twitter</strong></a> and 
-<a href="http://instagram.com/chippfolk" rel="tag" target="_blank"><strong>Instagram</strong></a>.</p>
-
-<p>Organised entirely by volunteers, the festival aims to deliver a range of benefits to Chippenham's economy and community.</p>
-
-<h2>How to Help</h2>
-
-<p>Our sponsors play a vital role in helping the festival thrive and continue 'giving back' to Chippenham for years to come.  
-As a sponsor, your business would be aligned with our family-friendly values and enjoy multiple opportunities to reach thousands 
-of valuable potential customers.  We offer a range of sponsorship packages to suit any budget.</p>
-
-<!--<p>If you are interested in supporting the festival, please contact committee secretary <a href="/contact" rel="bookmark"><strong>Graham Brown</strong></a>.</p>-->
-
-<?php 
   global $SHOWYEAR;
   set_ShowYear();
   echo "<h2>Our Sponsors in " . substr($SHOWYEAR,0,4) . "</h2>";
@@ -39,6 +12,7 @@ of valuable potential customers.  We offer a range of sponsorship packages to su
   echo "<div class=sponflexwrap>\n";
 
   include_once("int/TradeLib.php");
+  include_once("int/Biz.php");
   $Spons = Get_Sponsors();
   shuffle($Spons);
 
@@ -49,6 +23,47 @@ of valuable potential customers.  We offer a range of sponsorship packages to su
     echo "<div class=sponttl>" . $s['SN'] . "</div>";
     if ($s['Website']) echo "</a>";
     if ($s['Description']) echo "<p>" . $s['Description'];
+    
+    $Sponsrd = Gen_Get_Cond('Sponsorship',"Year=$SHOWYEAR AND SponsorId=" . $s['SponsorId'] . " ORDER BY Importance Desc");
+    
+    if ($Sponsrd) {
+      $SPlst = [];
+      foreach ($Sponsrd as $Sp) {
+        $SpType = $Sp['ThingType'];
+        $SpId = ($Sp['ThingId'] ??0);
+        
+        switch ($SponTypes[$SpType]) {
+          case 'General':
+            $SPlst[]= "the Festival";
+            break;
+          case 'Venue':
+            $Ven = Get_Venue($SpId);
+            $SPlst[]=  "<a href=int/VenueShow?v=$SpId>" . ($Ven['SN'] ?? '<span class=Err>Unknown</span>') . "</a>";
+            break;
+          case 'Event':
+            $Ev = Get_Event($SpId);
+            if ($Ev) $Ven = Get_Venue($Ev['Venue']);
+            $SPlst[]=  "<a href=int/EventShow?e=$SpId>" . ($Ev['SN'] ?? '<span class=Err>Unknown</span>') . 
+                       "</a> at <a href=int/VenueShow?v=" . ($Ev['Venue'] ??0) . ">" . ($Ven['SN'] ?? '<span class=Err>Unknown</span>') . "</a> on " . 
+                       ($Ev? (FestDate($Ev['Day'],'S') . " at " . timecolon($Ev['Start'])) : "<span class=Err>Unknown</span>");
+            break;
+          case 'Performer':
+            $Perf = Get_Side($SpId);
+            $SPlst[]= "<a href=ShowPerf?id=$SpId>" . ( $Perf['SN']  ?? '<span class=Err>Unknown</span>') . "</a>";
+            break;
+        }
+      }
+      
+      $Last = array_pop($SPlst);
+      if ($SPlst) {
+        echo "<p>" . $s['SN'] . " is sponsoring: " . implode(', ',$SPlst) . " and $Last"; 
+      } else {
+        echo "<p>" . $s['SN'] . " is sponsoring $Last";
+      }
+    
+    } else {
+      echo "<p>" . $s['SN'] . " is sponsoring the Festival";
+    }
     echo "</div>\n";
   }
   echo "</div>";
