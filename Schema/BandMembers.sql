@@ -3,4 +3,4 @@ CREATE TABLE `BandMembers` (
   `SN` text COLLATE latin1_general_ci NOT NULL,
   `BandId` int NOT NULL,
   PRIMARY KEY (`BandMemId`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

@@ -84,4 +84,4 @@ CREATE TABLE `Sides` (
   `NotPerformer` tinyint NOT NULL,
   PRIMARY KEY (`SideId`),
   KEY `SideNum` (`SideId`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

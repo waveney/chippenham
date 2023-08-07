@@ -14,4 +14,4 @@ CREATE TABLE `TradeLocs` (
   `Showscale` double NOT NULL,
   `NoList` tinyint NOT NULL,
   PRIMARY KEY (`TLocId`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

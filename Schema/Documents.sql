@@ -9,4 +9,4 @@ CREATE TABLE `Documents` (
   `State` tinyint NOT NULL DEFAULT '0',
   `Access` int NOT NULL DEFAULT '666',
   PRIMARY KEY (`DocId`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

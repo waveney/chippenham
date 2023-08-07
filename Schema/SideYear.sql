@@ -100,4 +100,4 @@ CREATE TABLE `SideYear` (
   `CollectedBy` int NOT NULL,
   PRIMARY KEY (`syId`),
   UNIQUE KEY `syId` (`syId`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

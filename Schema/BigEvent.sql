@@ -6,4 +6,4 @@ CREATE TABLE `BigEvent` (
   `EventOrder` int NOT NULL,
   `Notes` text COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`BigEid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

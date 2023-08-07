@@ -11,4 +11,4 @@ CREATE TABLE `Sponsors` (
   `IandT` tinyint NOT NULL,
   `SponsorId` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

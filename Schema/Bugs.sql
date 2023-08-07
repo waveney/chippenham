@@ -10,4 +10,4 @@ CREATE TABLE `Bugs` (
   `LastUpdate` int NOT NULL,
   `Notes1` text COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`BugId`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

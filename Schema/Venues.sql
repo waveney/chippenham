@@ -57,4 +57,4 @@ CREATE TABLE `Venues` (
   `SuppressParent` tinyint NOT NULL,
   PRIMARY KEY (`VenueId`),
   UNIQUE KEY `VenueId` (`VenueId`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
