@@ -1,9 +1,9 @@
 CREATE TABLE `TradePrices` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `SN` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+  `SN` text COLLATE utf8mb4_general_ci,
   `ListOrder` int NOT NULL,
-  `Colour` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `BasePrice` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Colour` text COLLATE utf8mb4_general_ci,
+  `BasePrice` text COLLATE utf8mb4_general_ci,
   `PerDay` tinyint NOT NULL,
   `Deposit` int NOT NULL,
   `Addition` tinyint NOT NULL,
@@ -13,8 +13,8 @@ CREATE TABLE `TradePrices` (
   `NeedRiskAssess` tinyint NOT NULL,
   `ArtisanMsgs` tinyint NOT NULL,
   `TOpen` tinyint NOT NULL,
-  `Description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Description` text COLLATE utf8mb4_general_ci,
   `SalesCode` int NOT NULL,
-  `DefaultSize` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `DefaultSize` text COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

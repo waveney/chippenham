@@ -1,10 +1,10 @@
 CREATE TABLE `CampsiteUse` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `SN` text COLLATE latin1_general_ci NOT NULL,
+  `SN` text COLLATE utf8mb4_general_ci,
   `Number` int NOT NULL,
-  `Who` text COLLATE latin1_general_ci NOT NULL,
+  `Who` text COLLATE utf8mb4_general_ci,
   `Priority` int NOT NULL,
-  `Year` text COLLATE latin1_general_ci NOT NULL,
-  `Notes` text COLLATE latin1_general_ci NOT NULL,
+  `Year` text COLLATE utf8mb4_general_ci,
+  `Notes` text COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

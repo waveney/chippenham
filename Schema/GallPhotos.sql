@@ -1,11 +1,11 @@
 CREATE TABLE `GallPhotos` (
   `id` int NOT NULL AUTO_INCREMENT,
   `Galid` int NOT NULL,
-  `Credit` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `File` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `Caption` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Credit` text COLLATE utf8mb4_general_ci,
+  `File` text COLLATE utf8mb4_general_ci,
+  `Caption` text COLLATE utf8mb4_general_ci,
   `RelOrder` int NOT NULL,
   `ImageHeight` int NOT NULL,
   `ImageWidth` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

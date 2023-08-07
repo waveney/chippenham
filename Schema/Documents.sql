@@ -1,12 +1,12 @@
 CREATE TABLE `Documents` (
   `DocId` int NOT NULL AUTO_INCREMENT,
-  `SN` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `SN` text COLLATE utf8mb4_general_ci,
   `Who` int NOT NULL,
   `Created` int NOT NULL,
   `Dir` int NOT NULL,
-  `Filename` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `Filename` text COLLATE utf8mb4_general_ci,
   `filesize` int NOT NULL,
   `State` tinyint NOT NULL DEFAULT '0',
   `Access` int NOT NULL DEFAULT '666',
   PRIMARY KEY (`DocId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

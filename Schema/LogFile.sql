@@ -1,7 +1,7 @@
 CREATE TABLE `LogFile` (
   `LogId` int NOT NULL AUTO_INCREMENT,
   `Who` int NOT NULL,
-  `changed` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `What` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `changed` text COLLATE utf8mb4_general_ci,
+  `What` text COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`LogId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

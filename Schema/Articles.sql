@@ -1,20 +1,20 @@
 CREATE TABLE `Articles` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `SN` text COLLATE latin1_general_ci NOT NULL,
+  `SN` text COLLATE utf8mb4_general_ci,
   `Type` smallint NOT NULL,
-  `Link` text COLLATE latin1_general_ci NOT NULL,
-  `Text` text COLLATE latin1_general_ci NOT NULL,
-  `Image` text COLLATE latin1_general_ci NOT NULL,
+  `Link` text COLLATE utf8mb4_general_ci,
+  `Text` text COLLATE utf8mb4_general_ci,
+  `Image` text COLLATE utf8mb4_general_ci,
   `ImageHeight` int NOT NULL,
   `ImageWidth` int NOT NULL,
   `Importance` tinyint NOT NULL,
   `StartDate` int NOT NULL,
   `StopDate` int NOT NULL,
   `Format` tinyint NOT NULL,
-  `UsedOn` text COLLATE latin1_general_ci NOT NULL,
+  `UsedOn` text COLLATE utf8mb4_general_ci,
   `HideTitle` tinyint NOT NULL,
   `RedTitle` tinyint NOT NULL,
   `RelOrder` int NOT NULL,
   `ExternalLink` tinyint NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

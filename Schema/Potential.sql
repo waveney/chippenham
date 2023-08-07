@@ -1,14 +1,14 @@
 CREATE TABLE `Potential` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `SN` text COLLATE latin1_general_ci NOT NULL,
-  `Description` text COLLATE latin1_general_ci NOT NULL,
-  `Contact` text COLLATE latin1_general_ci NOT NULL,
-  `Email` text COLLATE latin1_general_ci NOT NULL,
-  `Website` text COLLATE latin1_general_ci NOT NULL,
-  `YouTube` text COLLATE latin1_general_ci NOT NULL,
-  `Phone` text COLLATE latin1_general_ci NOT NULL,
-  `Mobile` text COLLATE latin1_general_ci NOT NULL,
-  `Type` text COLLATE latin1_general_ci NOT NULL,
+  `SN` text COLLATE utf8mb4_general_ci,
+  `Description` text COLLATE utf8mb4_general_ci,
+  `Contact` text COLLATE utf8mb4_general_ci,
+  `Email` text COLLATE utf8mb4_general_ci,
+  `Website` text COLLATE utf8mb4_general_ci,
+  `YouTube` text COLLATE utf8mb4_general_ci,
+  `Phone` text COLLATE utf8mb4_general_ci,
+  `Mobile` text COLLATE utf8mb4_general_ci,
+  `Type` text COLLATE utf8mb4_general_ci,
   `Status` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

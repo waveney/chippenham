@@ -8,7 +8,7 @@
   global $FESTSYS,$VERSION,$db;
  
 // Change the year field from int to text - Skeema does not like it. 
-function PreUpdate420() {
+function xPreUpdate420() {
   global $db;
   $db->query("ALTER TABLE `VolCatYear` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
   $db->query("ALTER TABLE `PerfChanges` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
@@ -43,6 +43,16 @@ function PostUpdate429() {
   }
 }
 
+function PreUpdate436() {  // Corect mediumtext to text
+  global $db,$CONF;
+  $qry = "SELECT COLUMN_NAME, DATA_TYPE, TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='" . $CONF['dbase'] ."' AND DATA_TYPE='text'";
+  $res = $db->query($qry);
+  while ($dat=$res->fetch_array()){
+    $db->query("ALTER TABLE $dat[2] MODIFY $dat[0] TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci") or die($db->error);
+  }
+  echo "The collation of your database has been successfully changed!";
+}
+
 // ********************** START HERE ***************************************************************
 
 
@@ -70,6 +80,7 @@ function PostUpdate429() {
     $skema = system('skeema push');
     echo $skema . "\n\n";
     chdir('../int');
+
 
 // Post Database changes
  

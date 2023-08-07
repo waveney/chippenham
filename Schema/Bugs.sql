@@ -2,12 +2,12 @@ CREATE TABLE `Bugs` (
   `BugId` int NOT NULL AUTO_INCREMENT,
   `Who` int NOT NULL,
   `Created` int NOT NULL,
-  `SN` text COLLATE latin1_general_ci NOT NULL,
-  `Description` text COLLATE latin1_general_ci NOT NULL,
+  `SN` text COLLATE utf8mb4_general_ci,
+  `Description` text COLLATE utf8mb4_general_ci,
   `State` int NOT NULL,
-  `Response` text COLLATE latin1_general_ci NOT NULL,
+  `Response` text COLLATE utf8mb4_general_ci,
   `Severity` int NOT NULL,
   `LastUpdate` int NOT NULL,
-  `Notes1` text COLLATE latin1_general_ci NOT NULL,
+  `Notes1` text COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`BugId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

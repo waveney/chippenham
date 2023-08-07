@@ -1,12 +1,12 @@
 CREATE TABLE `Directories` (
   `DirId` int NOT NULL AUTO_INCREMENT,
-  `SN` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `SN` text COLLATE utf8mb4_general_ci,
   `Created` int NOT NULL,
   `Who` int NOT NULL,
   `Parent` int NOT NULL,
   `State` tinyint NOT NULL DEFAULT '0',
   `AccessLevel` int NOT NULL,
-  `AccessSections` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `AccessSections` text COLLATE utf8mb4_general_ci,
   `ExtraData` int NOT NULL,
   PRIMARY KEY (`DirId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

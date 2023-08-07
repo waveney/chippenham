@@ -1,7 +1,7 @@
 CREATE TABLE `DanceTypes` (
   `TypeId` int NOT NULL AUTO_INCREMENT,
-  `SN` text COLLATE latin1_general_ci NOT NULL,
+  `SN` text COLLATE utf8mb4_general_ci,
   `Importance` int NOT NULL,
-  `Colour` text COLLATE latin1_general_ci NOT NULL,
+  `Colour` text COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`TypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
