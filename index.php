@@ -5,6 +5,7 @@
   include_once("int/TradeLib.php");
   include_once("int/NewsLib.php");
   include_once("int/DispLib.php");
+  include_once("int/DateTime.php");
   
   if (isset($_REQUEST['F']) && Access('Staff') && is_numeric($_REQUEST['F']) ) {
     $future = $_REQUEST['F'];
@@ -60,7 +61,7 @@
 
     if ($YEARDATA['Years2Show'] == 2) {  
       $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
-                 "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
+                 "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
     } else if ($YEARDATA['TicketControl'] == 1) {
       $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>";     
     } else {

@@ -225,12 +225,14 @@ function Parse_DateInputs(&$feilds,$All=0) {
 
 function Days2Festival() {
   global $YEARDATA,$YEAR;
+  static $Days;
+  if ($Days) return $Days;
   $now = time();
   
   $your_date = strtotime("$YEAR-" . $YEARDATA['MonthFri'] . "-" . ($YEARDATA['DateFri'] + $YEARDATA['FirstDay']));
   $datediff = $your_date - $now;
 
-  return round($datediff / (60 * 60 * 24));
+  return $Days = round($datediff / (60 * 60 * 24));
 }
 
 

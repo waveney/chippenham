@@ -288,8 +288,11 @@ function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0
       $Dsc = $res['Total'];
     }
     
-    $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " already confirmed for $Year.";
-
+    if (Days2Festival() > -3) {
+      $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " already confirmed for $Year.";
+    } else {
+      $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?" was":"s were") . " performing in $Year.";       
+    }
 
     $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
                     "WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.Photo!='' AND s.$Isa=1 AND $Cometest " . 
