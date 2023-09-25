@@ -320,6 +320,8 @@ function AutoInput(f,after) {
 function AutoCheckBoxInput(f) {
 //  debugger;
   var cbval = document.getElementById(f).checked;
+  var id = f;
+//  if (document.getElementById(f).newid ) id = document.getElementById(f).newid;
   var newval = (cbval?1:0); 
   var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
   var typeval = document.getElementById('AutoType').value;
@@ -343,6 +345,9 @@ function AutoCheckBoxInput(f) {
 
 function AutoRadioInput(f,i) {
 //  debugger;
+  var id = f;
+//  if (document.getElementById(f).newid ) id = document.getElementById(f).newid;
+
   var newval = document.getElementById(f+i).value;
   var yearval = (document.getElementById('Year') ? (document.getElementById('Year').value || 0) : 0);
   var typeval = document.getElementById('AutoType').value;
