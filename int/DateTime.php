@@ -223,13 +223,13 @@ function Parse_DateInputs(&$feilds,$All=0) {
   }
 }
 
-function Days2Festival() {
-  global $YEARDATA,$YEAR;
+function Days2Festival($Which = 0) {
+  global $YEARDATA,$YEAR,$PLANYEAR;
   static $Days;
   if ($Days) return $Days;
   $now = time();
   
-  $your_date = strtotime("$YEAR-" . $YEARDATA['MonthFri'] . "-" . ($YEARDATA['DateFri'] + $YEARDATA['FirstDay']));
+  $your_date = strtotime(($Which?$PLANYEAR:$YEAR) . "-" . $YEARDATA['MonthFri'] . "-" . ($YEARDATA['DateFri'] + $YEARDATA['FirstDay']));
   $datediff = $your_date - $now;
 
   return $Days = round($datediff / (60 * 60 * 24));

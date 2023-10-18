@@ -212,7 +212,7 @@ function Show_Side($snum,$Message='',$price=0) {
     
     if ($side['Photo']) echo "<div id=Blob2><img src=" . $side['Photo'] . " width=100%></div>\n";
     
-    if ($syear['SponsoredBy']) {
+    if ($syear['SponsoredBy'] ?? 0) {
       echo "<div id=Blob5>";
       SponsoredBy($syear,$side['SN'],3,$snum);
       echo "</div>";

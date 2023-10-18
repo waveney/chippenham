@@ -1,7 +1,7 @@
 CREATE TABLE `EventTypes` (
   `ETypeNo` int NOT NULL AUTO_INCREMENT,
-  `SN` text COLLATE utf8mb4_general_ci,
-  `Plural` text COLLATE utf8mb4_general_ci,
+  `SN` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Plural` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Public` tinyint NOT NULL,
   `HasDance` tinyint NOT NULL,
   `HasMusic` tinyint NOT NULL,
@@ -13,12 +13,12 @@ CREATE TABLE `EventTypes` (
   `IncType` tinyint NOT NULL,
   `NoPart` tinyint NOT NULL,
   `DontList` tinyint NOT NULL,
-  `FirstYear` text COLLATE utf8mb4_general_ci,
-  `Banner` text COLLATE utf8mb4_general_ci,
+  `FirstYear` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Banner` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `MapFeatNum` int NOT NULL,
   `IsConcert` tinyint NOT NULL,
   `Importance` int NOT NULL,
-  `Sherlock` text COLLATE utf8mb4_general_ci,
+  `Sherlock` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `HasRolls` tinyint NOT NULL,
   PRIMARY KEY (`ETypeNo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

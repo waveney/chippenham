@@ -1,6 +1,6 @@
 CREATE TABLE `Sponsorship` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `Year` text COLLATE utf8mb4_general_ci,
+  `Year` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `SponsorId` int NOT NULL,
   `ThingType` int NOT NULL,
   `ThingId` int NOT NULL,

@@ -53,7 +53,7 @@ function Get_Campsites($Restrict=0,$Comments=1) {
 
 function Get_Vol_Details(&$vol) {
   global $VolCats,$Relations,$YEARDATA,$YEAR,$PLANYEAR,$YearStatus,$AgeCats,$CampType;
-var_dump($vol);
+// var_dump($vol);
   $Volid = $vol['id'];
   $Body = "\nName: " . $vol['SN'] . "<br>\n";
   $Body .= "Email: <a href=mailto:" . $vol['Email'] . ">" . $vol['Email'] . "</a><br>\n";

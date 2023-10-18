@@ -53,10 +53,27 @@ function PreUpdate436() {  // Corect mediumtext to text
   echo "The collation of your database has been successfully changed!";
 }
 
+function FixUpdate436() {  // Corect mediumtext to text
+  global $db,$CONF;
+  $qry = "SELECT COLUMN_NAME, DATA_TYPE, TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='" . $CONF['dbase'] ."' AND DATA_TYPE='text'";
+  $res = $db->query($qry);
+  while ($dat=$res->fetch_array()){
+    echo "Trying: ALTER TABLE $dat[2] MODIFY $dat[0] TEXT COLLATE utf8mb4_general_ci<p>";
+    $db->query("ALTER TABLE $dat[2] MODIFY $dat[0] TEXT COLLATE utf8mb4_general_ci") or die($db->error);
+  }
+  echo "The collation of your database has been successfully changed!";
+}
+
 // ********************** START HERE ***************************************************************
 
 
   dostaffhead("Update System");  
+  
+  FixUpdate436();
+  echo "Done";
+  exit;
+  
+  
   preg_match('/(\d*)\.(\d*)/',$VERSION,$Match);
   $pfx = $Match[1];
   $Version = $Match[2];
