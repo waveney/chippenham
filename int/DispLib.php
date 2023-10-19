@@ -251,10 +251,10 @@ function Count_Perf_Type($type,$Year=0) {
   return $Dsc;
 }
 
-function Expand_Imp(&$Art,$Isa,$Cometest,$Importance,$lvl,$future) {
+function Expand_Imp(&$Art,$Cometest,$Importance,$lvl,$future) {
   global $db,$YEAR,$Coming_Type,$ShownInArt;
   $now = time();
-    $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.$IsA=1 AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND $Cometest " .    
+    $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND $Cometest " .    
                     " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.$Importance>$lvl)) AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
     if (!$ans) { $Art = []; return; }  
   
@@ -273,14 +273,14 @@ function Expand_Imp(&$Art,$Isa,$Cometest,$Importance,$lvl,$future) {
     $Art = [];
 }
 
-function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx='') {
+function Expand_Many(&$Art,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx='') {
   global $db,$YEAR,$PLANYEAR,$Coming_Type,$ShownInArt;
   if ($Year== 0) $Year=$YEAR;
   $now = time();
   $Art['SN'] = $Name;
   if ($LineUp) $Art['Link'] = "/LineUp?T=$LineUp";
 
-    $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.$Isa=1 AND $Cometest " . 
+    $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$Year' AND $Cometest " . 
            " AND y.ReleaseDate<$now");
     $Dsc = 0;
     if ($ans) {
@@ -295,7 +295,7 @@ function Expand_Many(&$Art,$Isa,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0
     }
 
     $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
-                    "WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.Photo!='' AND s.$Isa=1 AND $Cometest " . 
+                    "WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.Photo!='' AND $Cometest " . 
                     " AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
 
     if (!$ans) return; 
@@ -321,35 +321,35 @@ function Expand_Special(&$Art,$future=0) {
 //var_dump($words);
   switch ($words[0]) {
   case '@Dance_Imp':
-    Expand_Imp($Art,'IsASide',"y.Coming=" . $Coming_Type['Y'] ,'DanceImportance', (isset($words[1])?$words[1]:0),$future);
+    Expand_Imp($Art,'s.IsASide=1 AND y.Coming=' . $Coming_Type['Y'] ,'DanceImportance', (isset($words[1])?$words[1]:0),$future);
     return;
     
   case '@Music_Imp': 
-    Expand_Imp($Art,'IsAnAct',"y.YearState>1" ,'MusicImportance', (isset($words[1])?$words[1]:0),$future);
+    Expand_Imp($Art,'s.IsAnAct=1 AND y.YearState>1' ,'MusicImportance', (isset($words[1])?$words[1]:0),$future);
     return;
   
   case '@Family_Imp':
-    Expand_Imp($Art,'IsFamily',"y.YearState>1" ,'FamilyImportance', (isset($words[1])?$words[1]:0),$future);
+    Expand_Imp($Art,'s.IsFamily=1 AND y.YearState>1' ,'FamilyImportance', (isset($words[1])?$words[1]:0),$future);
     return;
 
   case '@Ceilidh_Imp':
-    Expand_Imp($Art,'IsCeilidh',"y.YearState>1" ,'CeilidhImportance', (isset($words[1])?$words[1]:0),$future);
+    Expand_Imp($Art,'s.IsCeilidh=1 AND y.YearState>1' ,'CeilidhImportance', (isset($words[1])?$words[1]:0),$future);
     return;
 
   case '@Dance_Many':
-    Expand_Many($Art,'IsASide',"y.Coming=" . $Coming_Type['Y'], 'Dance Team', 'Dancing','Dance',$future);
+    Expand_Many($Art,'s.IsASide=1 AND y.Coming=' . $Coming_Type['Y'], 'Dance Team', 'Dancing','Dance',$future);
     return;
     
   case '@Music_Many':
-    Expand_Many($Art,'IsAnAct',"y.YearState>1", 'Music Act', 'Music','Music',$future);
+    Expand_Many($Art,'s.IsAnAct=1 AND y.YearState>1', 'Music Act', 'Music','Music',$future);
     return;
 
   case '@Family_Many':
-    Expand_Many($Art,'IsFamily',"y.YearState>1", 'Family Entertainer', 'Family Entertainment','Family',$future);
+    Expand_Many($Art,'s.IsFamily=1 AND y.YearState>1', 'Family Entertainer', 'Family Entertainment','Family',$future);
     return;
 
   case '@Ceilidh_Many':
-    Expand_Many($Art,'IsCeilidh',"y.YearState>1", 'Ceilidh and Dance bands and caller', 'Ceilidh and Dance ','Ceilidh',$future);
+    Expand_Many($Art,'s.IsCeilidh=1 AND y.YearState>1', 'Ceilidh and Dance bands and caller', 'Ceilidh and Dance ','Ceilidh',$future);
     return;
     
   case '@NextYear':
@@ -360,7 +360,7 @@ function Expand_Special(&$Art,$future=0) {
     $NMonth = $Months[$NEXTYEARDATA['MonthFri']];
     $NYear = substr($YEARDATA['NextFest'],0,4);
 
-    Expand_Many($Art,'IsAnAct',"(y.YearState>1 OR y.Coming=" . $Coming_Type['Y'] . ") ", 
+    Expand_Many($Art,'(s.IsASide AND y.Coming=' . $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsCeilidh=1))', 
        'Performer', "Next Years Festival - $NYear",0,$future,$YEAR+1,"We are already planning next years festival from " . 
         "$NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) . "</sup> $NMonth $NYear and " );
     return;

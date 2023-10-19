@@ -17,7 +17,7 @@
   }
 ?>
 -->
-<div class="mini" style="border-bottom:0; margin-bottom:0;text-decoration:none;">
+<div class="mini" style="border-bottom:0; margin-bottom:0;margin-left:20;text-decoration:none;">
 <?php
   $htail = Feature('FooterBit');
   if ($htail) echo $htail;
