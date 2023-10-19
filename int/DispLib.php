@@ -360,7 +360,7 @@ function Expand_Special(&$Art,$future=0) {
     $NMonth = $Months[$NEXTYEARDATA['MonthFri']];
     $NYear = substr($YEARDATA['NextFest'],0,4);
 
-    Expand_Many($Art,'(s.IsASide AND y.Coming=' . $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsCeilidh=1))', 
+    Expand_Many($Art,'((s.IsASide AND y.Coming=' . $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsCeilidh=1)))', 
        'Performer', "Next Years Festival - $NYear",0,$future,$YEAR+1,"We are already planning next years festival from " . 
         "$NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) . "</sup> $NMonth $NYear and " );
     return;

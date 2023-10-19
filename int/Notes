@@ -65,6 +65,8 @@
 117c) Fns for Image, Blurb, desc
 117d) Overlay record - indexed by sidenum + fest + year?, if image set overrides, if blurb set ovverides, if desc set overrides
 117e) Images need to be stored in a diff way for this
+118) Generic email to last year dance
+119) Volunteer emails
 
 
 

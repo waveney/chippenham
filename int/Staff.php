@@ -140,7 +140,7 @@
     }
     $txt .= "<li><a href=ShowDanceProg?Pub=0&Y=$YEAR>View Dance Programme</a>";
     $txt .= "<li><a href=/Map?F=3>Dance Location Map</a>";
-    $txt .= "<li><a href=/LineUp?T=Dance&FORCE>Dance Lineup</a> (Even if not public)";
+    $txt .= "<li><a href=/LineUp?T=Dance&FORCE&Y=$PLANYEAR>Dance Lineup</a> (Even if not public)";
     if (Access('Staff','Dance')) $txt .= "<li><a href=Register?ACTION=List>Side Registrations</a>";
     $txt .= "<li><a href=ListDance?SEL=TinList&Y=$YEAR>Just a list of sides and days</a>\n";
         
@@ -186,7 +186,7 @@
       $txt .= "<li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=M>List All Music Acts in Database</a>\n";
 //      $txt .= "<li>Music Acts Summary"; //<a href=MusicSummary?Y=$YEAR>Music Acts Summary</a>\n";
     }
-    $txt .= "<li><a href=/LineUp?T=Music&FORCE>Music Lineup</a> (Even if not public)";
+    $txt .= "<li><a href=/LineUp?T=Music&FORCE&Y=$PLANYEAR>Music Lineup</a> (Even if not public)";
     if (Access('Staff','Music')) {
 //      $txt .= "<li>Invite Music Acts\n";
       $txt .= "<li><a href=CreatePerf?T=Music&Y=$YEAR>Add Music Act to Database</a>";
@@ -230,7 +230,7 @@
     if (Access('Staff','Comedy')) {
       $txt .= "<li><a href=CreatePerf?T=C&Y=$YEAR>Add Comedy Performer to Database</a>";
     }
-    $txt .= "<li><a href=/LineUp?T=Comedy&FORCE>Comedy Lineup</a> (Even if not public)";
+    $txt .= "<li><a href=/LineUp?T=Comedy&FORCE&Y=$PLANYEAR>Comedy Lineup</a> (Even if not public)";
    
     $txt .= "</ul>\n";
   }
@@ -244,7 +244,7 @@
     if (Access('Staff','Ceilidh')) {
       $txt .= "<li><a href=CreatePerf?T=H&Y=$YEAR>Add Ceilidh Performer to Database</a>";
     }
-    $txt .= "<li><a href=/LineUp?T=Ceilidh&FORCE>Ceilidh Lineup</a> (Even if not public)";
+    $txt .= "<li><a href=/LineUp?T=Ceilidh&FORCE&Y=$PLANYEAR>Ceilidh Lineup</a> (Even if not public)";
     
     $txt .= "</ul>\n";
   }
@@ -258,7 +258,7 @@
     if (Access('Staff','Family')) {
       $txt .= "<li><a href=CreatePerf?T=Y&Y=$YEAR>Add Children's Entertainers to Database</a>";
     }
-    $txt .= "<li><a href=/LineUp?T=Family&FORCE>Family Lineup</a> (Even if not public)";
+    $txt .= "<li><a href=/LineUp?T=Family&FORCE&Y=$PLANYEAR>Family Lineup</a> (Even if not public)";
     
     $txt .= "</ul>\n";
   }

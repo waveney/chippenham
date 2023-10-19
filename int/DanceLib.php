@@ -235,7 +235,7 @@ function Show_Side($snum,$Message='',$price=0) {
     if ($prog = Show_Prog('Side',$snum,0,$price)) {
       echo $prog;
     } else {
-      echo "<h2>The programme has not yet been published yet.</h2>\n";
+      echo "<h2>The programme has not yet been published.</h2>\n";
       echo "When it is, the programme for <b>" . $side['SN'] . "</b> will appear here.<p>";
     }
 

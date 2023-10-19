@@ -79,7 +79,7 @@ CREATE TABLE `Events` (
   `ShowSubevent` tinyint NOT NULL,
   `WeirdStuff` tinyint NOT NULL,
   `SponsoredBy` int NOT NULL,
-  `SeasonTicketOnly` tinyint NOT NULL,
+  `SeasonTicketOnly` int NOT NULL,
   `HowMany` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `HowWent` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `ShowNameOnGrid` tinyint NOT NULL,
