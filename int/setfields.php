@@ -47,7 +47,7 @@ case 'L': // Dont Save
   $prefix .= date('j/n/y');
   if ($label) $prefix .= "</span>";
   if (strlen($Sidey['Invited'])) {
-    $Sidey['Invited'] = $prefix . "XX, " . $Sidey['Invited'];
+    $Sidey['Invited'] = $prefix . ", " . $Sidey['Invited'];
   } else {
     $Sidey['Invited'] = $prefix;  
   }

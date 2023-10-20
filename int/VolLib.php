@@ -910,6 +910,7 @@ function List_Vols() {
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
+  echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'T')>Last Year</a>\n";
   echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Year</a>\n";
   foreach ($VolCats as &$Cat) {
 // var_dump($Cat);
@@ -931,6 +932,7 @@ function List_Vols() {
     $id = $Vol['id'];
     if (empty($id) || empty($Vol['SN']) || empty($Vol['Email']) ) continue;
     $VY = Get_Vol_Year($id);
+    $VLY = Get_Vol_Year($id,$PLANYEAR-1);
 
     $Accepted = 0;
     $Form = 0;
@@ -989,6 +991,11 @@ function List_Vols() {
     echo "<td class=smalltext>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . 
       $YearStatus[$VY['Status']] . "</span>"):'');
       if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
+
+    echo "<td class='smalltext FullD' hidden>" . ((isset($VLY['id']) && $VLY['id']>0)?("<span style='background:" . $YearColour[$VLY['Status']] . ";'>" . 
+      $YearStatus[$VY['Status']] . "</span>"):'');
+      if (isset($VLY['id']) && $VLY['id']>0 && $VLY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VLY['SubmitDate']);
+
     echo "<td class=FullD hidden>$year";
     echo $str;
     

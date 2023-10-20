@@ -69,9 +69,9 @@ function FixUpdate436() {  // Corect mediumtext to text
 
   dostaffhead("Update System");  
   
-  FixUpdate436();
-  echo "Done";
-  exit;
+//  FixUpdate436();
+//  echo "Done";
+//  exit;
   
   
   preg_match('/(\d*)\.(\d*)/',$VERSION,$Match);

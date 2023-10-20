@@ -290,7 +290,7 @@
         if ($mess = Feature('DanceSpecialMessage')) {
           $Mname = preg_replace('/ /', '',$mess);
           echo "<button type=button id=$Mname$snum class=ProfButton onclick=ProformaSend('Dance_$Mname',$snum,'$Mname','SendProfEmail')" . 
-                 Proforma_Background('ProgChk') . ">$mess</button>"; 
+                 '#ffccff' . ">$mess</button>"; 
         }
         
         if ($fetch['Email']) {
