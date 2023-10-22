@@ -175,7 +175,7 @@ function Get_Vol_Cat_Year($Volid,$CatId,$Year=0) {
 }
 
 function Put_Vol_Cat_Year(&$VCY) {
-  Gen_Put('VolCatYear',$VCY);
+  return Gen_Put('VolCatYear',$VCY);
 }
 
 function Get_Vol_Year($Volid,$Year=0) {
@@ -311,12 +311,18 @@ function VolForm(&$Vol,$Err='',$View=0) {
       
       if (($VCY['id'] == 0) && isset($VYear1)) { //!
         $VCY = Get_Vol_Cat_Year($Volid,$Catid,$VYear1['Year']);
+        $VCY['Year'] = $PLANYEAR;
+        $VCY['id'] = 0;
+        Put_Vol_Cat_Year($VCY);
       }
 
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
       $rows = 1;
       $cp = $Cat['Props'];
+      
+      if (($cp & VOL_NoList) && !$VolMgr && ($VCY['Status'] == 0)) continue;
+      
       $SName = preg_replace('/ /','',$Cat['Name']);
       $cls = "SC_$SName";
       if (($cp & VOL_USE) == 0) continue;
@@ -562,12 +568,18 @@ function VolFormM(&$Vol,$Err='',$View=0) {
 
       if (($VCY['id'] == 0) && isset($VYear1)) { //!
         $VCY = Get_Vol_Cat_Year($Volid,$Catid,$VYear1['Year']);
+        $VCY['Year'] = $PLANYEAR;
+        $VCY['id'] = 0;
+        Put_Vol_Cat_Year($VCY);
       }
 
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
       $rows = 1;
       $cp = $Cat['Props'];
+
+      if (($cp & VOL_NoList) && !$VolMgr && ($VCY['Status'] == 0)) continue;
+      
       $SName = preg_replace('/ /','',$Cat['Name']);
       $cls = "SC_$SName";
       $Colour = (empty($Cat['Colour'])?'' : " style='background:" . $Cat['Colour'] . "' ");
