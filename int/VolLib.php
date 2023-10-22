@@ -309,7 +309,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       $VCY = Get_Vol_Cat_Year($Volid,$Catid);
       
       if (($VCY['id'] == 0) && isset($VYear1)) { //!
-        $VCY = Get_Col_Cat_Year($Volid,$Catid,$VYear1['Year']);
+        $VCY = Get_Vol_Cat_Year($Volid,$Catid,$VYear1['Year']);
       }
 
       $SetShow = ($VCY['Status'] > 0);
@@ -559,7 +559,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
       $VCY = Get_Vol_Cat_Year($Volid,$Catid);
 
       if (($VCY['id'] == 0) && isset($VYear1)) { //!
-        $VCY = Get_Col_Cat_Year($Volid,$Catid,$VYear1['Year']);
+        $VCY = Get_Vol_Cat_Year($Volid,$Catid,$VYear1['Year']);
       }
 
       $SetShow = ($VCY['Status'] > 0);
