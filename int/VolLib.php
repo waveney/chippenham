@@ -294,8 +294,9 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if ($VYear['id'] == 0) {
       $VYear1 = Get_Vol_Year($Volid,$YEAR-1);
       if ($VYear1['id'] != 0) {
-        $VYear = $VYear1;
-        echo "<center>This shows what you filled in for " . $VYear['Year'] . " please update as appropriate</center>";
+//        $VYear = $VYear1;
+//        $VYear['Status'] = 0;
+        echo "<center>This shows what you filled in for " . $VYear1['Year'] . " please update as appropriate</center>";
       }
     }
     echo "<tr><td colspan=5><h3><center>Part 2: Which Team(s) would you like to volunteer for?</center></h3>\n";
@@ -543,8 +544,9 @@ function VolFormM(&$Vol,$Err='',$View=0) {
     if ($VYear['id'] == 0) {
       $VYear1 = Get_Vol_Year($Volid,$YEAR-1);
       if ($VYear1['id'] != 0) {
-        $VYear = $VYear1;
-        echo "<center>This shows what you filled in for " . $VYear['Year'] . " please update as appropriate</center>";
+//        $VYear = $VYear1;
+//        $VYear['Status'] = 0;
+        echo "<center>This shows what you filled in for " . $VYear1['Year'] . " please update as appropriate</center>";
       }
     }
 
