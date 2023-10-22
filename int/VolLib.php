@@ -171,7 +171,7 @@ function Get_Vol_Cat_Year($Volid,$CatId,$Year=0) {
   if ($Year == 0) $Year = $PLANYEAR;
   $VCY = Gen_Get_Cond1('VolCatYear'," Volid=$Volid AND CatId=$CatId AND Year=$Year ");
   if (isset($VCY['id'])) return $VCY;
-  return ['Volid'=>$Volid,'CatId'=>$CatId,'Year'=>$Year,'id'=>0, 'Status'=>0];
+  return ['Volid'=>$Volid,'CatId'=>$CatId,'Year'=>$PLANYEAR,'id'=>0, 'Status'=>0];
 }
 
 function Put_Vol_Cat_Year(&$VCY) {
@@ -289,10 +289,14 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=4 class=NotSide><textarea id=Debug></textarea>";  
   
   echo "<tr><td colspan=5><h2><center>Volunteering in $PLANYEAR</center></h2>";
+  $VYear = Get_Vol_Year($Volid);//!
 
-
-    if (isset($Vol['Year']) && $YEAR != $Vol['Year']) {
-      echo "<center>This shows what you filled in for " . $Vol['Year'] . " please update as appropriate</center>";
+    if ($VYear['id'] == 0) {
+      $VYear1 = Get_Vol_Year($Volid,$YEAR-1);
+      if ($VYear1['id'] != 0) {
+        $VYear = $VYear1;
+        echo "<center>This shows what you filled in for " . $VYear['Year'] . " please update as appropriate</center>";
+      }
     }
     echo "<tr><td colspan=5><h3><center>Part 2: Which Team(s) would you like to volunteer for?</center></h3>\n";
 
@@ -303,6 +307,10 @@ function VolForm(&$Vol,$Err='',$View=0) {
     foreach ($VolCats as $Cat) {
       $Catid = $Cat['id'];
       $VCY = Get_Vol_Cat_Year($Volid,$Catid);
+      
+      if (($VCY['id'] == 0) && isset($VYear1)) { //!
+        $VCY = Get_Col_Cat_Year($Volid,$Catid,$VYear1['Year']);
+      }
 
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
@@ -372,12 +380,6 @@ function VolForm(&$Vol,$Err='',$View=0) {
       echo $Ctxt. "\n"; // $Desc,&$data,$field,$extra='',$field2='',$split=0,$extra2='
 
     }
-
-//echo "<tr><td colspan=4>"; var_dump($DayTeams);
-
-    $VYear = Get_Vol_Year($Volid);
-//    $DayCats = ['Before','Week'];
-//    for ($day = $YEARDATA['FirstDay']-1; $day<=$YEARDATA['LastDay']+1; $day++) $DayCats[]= $day;
     
     echo "\n<tr><td colspan=5><h3><center>Part 3: Availability in $PLANYEAR</center></h3>" .
          "If you could help on the days below, please give the times you would be available\n";
@@ -536,11 +538,16 @@ function VolFormM(&$Vol,$Err='',$View=0) {
 
   echo "<h2><center>Volunteering in $PLANYEAR</center></h2>";
   echo "<table border>\n";    
+  $VYear = Get_Vol_Year($Volid);//!
 
-    if (isset($Vol['Year']) && $YEAR != $Vol['Year']) {
-      echo "<center>This shows what you filled in for " . $Vol['Year'] . " please update as appropriate</center>";
-//    $Vol['VYid'] = -1;
+    if ($VYear['id'] == 0) {
+      $VYear1 = Get_Vol_Year($Volid,$YEAR-1);
+      if ($VYear1['id'] != 0) {
+        $VYear = $VYear1;
+        echo "<center>This shows what you filled in for " . $VYear['Year'] . " please update as appropriate</center>";
+      }
     }
+
     echo "<tr><td><h3><center>Part 2: Which Team(s) would you like to volunteer for?</center></h3>\n";
 
     $DayTeams = [];
@@ -550,6 +557,10 @@ function VolFormM(&$Vol,$Err='',$View=0) {
     foreach ($VolCats as $Cat) {
       $Catid = $Cat['id'];
       $VCY = Get_Vol_Cat_Year($Volid,$Catid);
+
+      if (($VCY['id'] == 0) && isset($VYear1)) { //!
+        $VCY = Get_Col_Cat_Year($Volid,$Catid,$VYear1['Year']);
+      }
 
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
