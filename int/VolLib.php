@@ -822,7 +822,7 @@ function Vol_Emails(&$Vol,$reason='Submit') {// Allow diff message on reason=upd
     $em = strtolower($Cat['Email']);
     foreach ($VCYs as $VCY) {
       if (($VCY['CatId'] == $Cat['id']) && ($VCY['Status']>0)) {
-        if (empty($em]) || isset($Leaders[$em])) continue 2;
+        if (empty($em) || isset($Leaders[$em])) continue 2;
         $Leaders[$em] = 1;
         Email_Volunteer($Vol,"Vol_Staff_$reason",$Cat['Email']);
         continue 2;
@@ -842,7 +842,7 @@ function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on
     $em = strtolower($Cat['Email']);
     foreach ($VCYs as $VCY) {
       if (($VCY['CatId'] == $Cat['id']) && ($VCY['Status']>0)) {
-        if (empty($em]) || isset($Leaders[$em])) continue 2;
+        if (empty($em) || isset($Leaders[$em])) continue 2;
         $Leaders[$em] = 1;
         Email_Volunteer($Vol,"Vol_Staff_$reason",$Cat['Email']);
         continue 2;
