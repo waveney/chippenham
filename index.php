@@ -40,7 +40,7 @@
   }   
 
 
-  $Sy = substr($SHOWYEAR,0,4);
+  $Sy = substr($PLANYEAR,0,4);
   $TopBans = Get_All_Articles(0,'TopPageBanner',$future);
 
   if ($TopBans) {
