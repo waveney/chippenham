@@ -1,7 +1,7 @@
 <?php
   include_once("int/fest.php");
   set_ShowYear();  
-  global $YEARDATA,$NEXTYEARDATA,$Months,$SHOWYEAR;
+  global $YEARDATA,$NEXTYEARDATA,$PLANYEARDATA,$Months,$SHOWYEAR;
   include_once("int/TradeLib.php");
   include_once("int/NewsLib.php");
   include_once("int/DispLib.php");
@@ -17,13 +17,28 @@
   $DFrom = ($YEARDATA['DateFri']+$YEARDATA['FirstDay']);
   $DTo = ($YEARDATA['DateFri']+$YEARDATA['LastDay']);
   $DMonth = $Months[$YEARDATA['MonthFri']];
+
+  $NFrom = $DFrom = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['FirstDay']);
+  $NTo = $DTo = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['LastDay']);
+  $NMonth = $DMonth = $Months[$PLANYEARDATA['MonthFri']];
+  $NYear = $PLANYEARDATA['NextFest']; 
+
+
 //  var_dump($YEARDATA);
-  if ($YEARDATA['Years2Show'] > 0) {
+  if (($YEARDATA['Years2Show'] > 0)) {
     $NFrom = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['FirstDay']);
     $NTo = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['LastDay']);
     $NMonth = $Months[$NEXTYEARDATA['MonthFri']];
     $NYear = substr($YEARDATA['NextFest'],0,4);
   }
+
+  if ($PLANYEARDATA['Years2Show'] > 0) {
+    $NFrom = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['FirstDay']);
+    $NTo = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['LastDay']);
+    $NMonth = $Months[$NEXTYEARDATA['MonthFri']];
+    $NYear = $YEARDATA['NextFest'];
+  }   
+
 
   $Sy = substr($SHOWYEAR,0,4);
   $TopBans = Get_All_Articles(0,'TopPageBanner',$future);
@@ -38,11 +53,11 @@
       $Banner .= "<li><img src='$img' class=WMFFBannerDefault>";
     }
     $Banner .= '</ul></div><script>$(function() { $(".rslides").responsiveSlides(); });</script>';
-    $Banner .= "<div class=BanOverlay><!--<img src=/images/icons/wimborne-folk-festival-logo-white-shadow.png?1>-->";
+    $Banner .= "<div class=BanOverlay>" . Feature('BannerOverlay');
     $Banner .= "<img src=/images/icons/underline.png?1>";
     $Banner .= "</div>";
 
-    if ($YEARDATA['Years2Show'] == 2) {  
+    if ($PLANYEARDATA['Years2Show'] > 0) {  
       $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
                  "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
     } else {
@@ -53,16 +68,16 @@
     $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
     $Banner .= "</div>";
 
-    dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js", "/js/responsiveslides.js", "/css/responsiveslides.css"],$Banner ); 
+    dohead("$DFrom -YY- $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js", "/js/responsiveslides.js", "/css/responsiveslides.css"],$Banner ); 
   } else {
     $Banner  = "<div class=WMFFBanner400><img src=" . Feature('DefaultPageBanner') . " class=WMFFBannerDefault>";
-    $Banner .= "<div class=BanOverlay><!--<img src=/images/icons/wimborne-folk-festival-logo-white-shadow.png?1>-->";
+    $Banner .= "<div class=BanOverlay>" . Feature('BannerOverlay');
     $Banner .= "</div>";
 
-    if ($YEARDATA['Years2Show'] == 2) {  
+    if ($PLANYEARDATA['Years2Show'] == 0) {  
       $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
                  "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
-    } else if ($YEARDATA['TicketControl'] == 1) {
+    } else if ($PLANYEARDATA['TicketControl'] == 1) {
       $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>";     
     } else {
       $Banner .= "<span class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</span>"; 
@@ -70,7 +85,13 @@
 
     $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
     $Banner .= "</div>";
-    dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner ); 
+//    if (Days2Festival() > -7) {
+      dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner ); 
+      
+//      var_dump($PLANYEARDATA);
+//    } else {
+//      dohead("$NFrom -XX- $NTo $NMonth $NYear", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner );     
+//    }
   }
 
 

@@ -5,7 +5,7 @@
 //  include_once("GetPut.php");
   include_once("festdb.php");
   include_once("festfm.php");
-
+  include_once("DateTime.php");
 
 $BUTTON = 0;
 
@@ -300,7 +300,7 @@ $YEARDATA = Get_General();
 Feature_Reset();
 $PLANYEARDATA = Get_General($PLANYEAR);
 //var_dump($YEARDATA,$PLANYEARDATA);exit;
-if (isset($PLANYEARDATA['NextFest']) && $PLANYEARDATA['Years2Show'] > 0 ) $NEXTYEARDATA = Get_General($PLANYEARDATA['NextFest']);
+if (isset($PLANYEARDATA['NextFest']) && (($PLANYEARDATA['Years2Show'] > 0 ) || (Days2Festival() < -6))) $NEXTYEARDATA = Get_General($PLANYEARDATA['NextFest']);
 
 function First_Sent($stuff) {
   $onefifty=substr($stuff,0,150);
