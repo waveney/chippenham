@@ -71,7 +71,7 @@
         
        ],
       '!/images/icons/Facebook.png'=>('!http://facebook.com/' . Feature('Facebook','**NONE**')),
-      '!/images/icons/Twitter.png'=>('!http://twitter.com/' . Feature('Twitter','**NONE**')),
+      '!/images/icons/X.png'=>('!http://X.com/' . Feature('Twitter','**NONE**')),
       '!/images/icons/Instagram.png'=>'!http://instagram.com/' . (Feature('Instagram','**NONE**')),
       '!/images/icons/YouTube.png'=>'!http://YouTube.com/' . (Feature('YouTube','**NONE**')),
       '=Buy Tickets'=>'Tickets',

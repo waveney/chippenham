@@ -83,7 +83,7 @@
 .headericon {
   transition: all ease-in-out 0.4s;
   max-height:20px;
-  filter: grayscale(100%);
+/*  filter: grayscale(100%);*/
 }
 
 .headericon:hover {
