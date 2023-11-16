@@ -385,7 +385,7 @@ function Expand_Special(&$Art,$future=0) {
     if ($YEAR != $PLANYEAR) {
       $Sy = Get_SideYear($id,$PLANYEAR);
       if (isset($Sy['syId']) && (($Perf['IsASide'] && ($Sy['Coming'] == $Coming_States['Coming'])) || $Sy['YearState']>1)) {
-        $Art['Text'] = "CONFIRMED FOR $PLANYEAR\n\n" . $Perf['Description'];
+        $Art['Text'] = "CONFIRMED FOR $PLANYEAR<p>\n\n" . $Perf['Description'];
       }
     }
     break;
