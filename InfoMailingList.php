@@ -1,7 +1,11 @@
 <?php
   include_once("int/fest.php");
 
-  dohead("Mailing List",["//cdn-images.mailchimp.com/embedcode/classic-10_7.css", 'css/MailChimp.css'] ,1);
+  dohead("Mailing List");
+
+  echo "<h2>Subscribe to our Mailing List</h2>";
+  
+  
 
   echo TnC('MailChimp',"This is not yet setup");
   /*

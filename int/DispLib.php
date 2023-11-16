@@ -312,7 +312,7 @@ function Expand_Many(&$Art,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx
 }
 
 function Expand_Special(&$Art,$future=0) {
-  global $db,$YEAR,$Coming_Type;
+  global $db,$YEAR,$Coming_Type,$PLANYEAR,$Coming_States;
   global $ShownInArt;
   global $EShownInArt;
   $now = time();
@@ -374,12 +374,20 @@ function Expand_Special(&$Art,$future=0) {
     }
     $ShownInArt [] = $id;
     $Perf = Get_Side($id);
+   
     $Art['SN'] = $Perf['SN'];
     $Art['Link'] = '/int/ShowPerf?id=' . $Perf['SideId'];
     $Art['Text'] = $Perf['Description'];
     $Art['Image'] = $Perf['Photo'];
     $Art['ImageWidth'] = (isset($Perf['ImageWidth'])?$Perf['ImageWidth']:100);
     $Art['ImageHeight'] = (isset($Perf['ImageHeight'])?$Perf['ImageHeight']:100);
+    
+    if ($YEAR != $PLANYEAR) {
+      $Sy = Get_SideYear($id,$PLANYEAR);
+      if (isset($Sy['syId']) && (($Perf['IsASide'] && ($Sy['Coming'] == $Coming_States['Coming'])) || $Sy['YearState']>1)) {
+        $Art['Text'] = "CONFIRMED FOR $PLANYEAR\n\n" . $Perf['Description'];
+      }
+    }
     break;
     
   case '@Event' : // Just this Event
