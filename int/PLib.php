@@ -1010,7 +1010,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     var_dump($Sidey);
   }
 
-  if ($Sidey['SponsoredBy']) {
+  if (($Sidey['SponsoredBy'] ?? 0)) {
     echo "<tr>";
     SponsoredByWho($Sidey,$Side['SN'],3,$snum);
   }

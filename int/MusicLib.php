@@ -516,7 +516,7 @@ function Contract_Changed_id($id) {
 function Contract_State_Check(&$Sidey,$chkba=1) {
   global $Book_State;
 //echo "</table><br>";  debug_print_backtrace();exit;
-  if (!isset($Sidey['SideId'])) return 0;
+  if (!isset($Sidey['SideId']) || (($Sidey['syId'] ?? 0) <=1)) return 0;
   $snum = $Sidey['SideId'];
   $Evs = Get_Events4Act($snum,$Sidey['Year']);
   $Es = isset($Evs[0]);
