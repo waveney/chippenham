@@ -456,7 +456,9 @@
     $txt .= "<li><a href=/EventChanges>Event Changes since programme went to print</a>";    
     if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=PerfEventPrint>Event and Performer Changes to be printed</a>";    
     if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=Analytics>Analyse Google Analytics</a>";
-    $txt .= "<li><a href=QRMake>Generate a QR code</a>\n";     
+    $txt .= "<li><a href=QRMake>Generate a QR code</a><p>\n";     
+    
+    $txt .= "<li><a href=MailListMgr?A=ListForms>Mailing List Manager</a><p>\n";
     $txt .= "</ul>\n";
   }
 
