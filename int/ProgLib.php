@@ -9,6 +9,8 @@ $InfoLevels = array('None','Major','Minor','All');
 $VisParts = array('All','None'); // Add subcats when needed
 $Thing_Types = array('Sides','Acts','Others');
 $Public_Event_Types = array('As Global','Yes', 'Not yet','Never');
+$Event_Access_Type = ['Open','Weekend or Day tickets Only', 'Weekend, Day or Event tickets Only'];
+$Event_Access_Colours = ['white','lightblue','lightgreen'];
 
 $Day_Type = ['Thur'=>-1,'Fri'=>0,'Sat'=>1,'Sun'=>2,'Mon'=>3,'Tue'=>4]; 
 $Info_Type = array_flip($InfoLevels);
@@ -652,7 +654,7 @@ function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='
 }
 
 function Price_Show(&$Ev,$Buy=0) {
-  global $YEARDATA;
+  global $YEARDATA,$Event_Access_Type;
 
   if ($Ev['SpecPrice']) return $Ev['SpecPrice'];
 
@@ -660,7 +662,7 @@ function Price_Show(&$Ev,$Buy=0) {
   $str = '';
   $once = 0;
   $Cpri = $Ev['Price1'];
-  if ($Ev['SeasonTicketOnly']) return "Season Ticket Only";
+  if ($Ev['SeasonTicketOnly']) return $Event_Access_Type[$Ev['SeasonTicketOnly']];
   if (!$Cpri) return Feature('FreeText','Free');
 
   if ($Buy) {
