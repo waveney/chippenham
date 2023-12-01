@@ -9,7 +9,7 @@
   include_once("DanceLib.php");
   include_once("MusicLib.php");
   include_once("EventCheck.php");
-  global $YEARDATA,$YEAR,$USERID,$Importance,$PerfTypes;
+  global $YEARDATA,$YEAR,$USERID,$Importance,$PerfTypes,$Event_Access_Type,$Event_Access_Colours;
 
   Set_Event_Help();
 
@@ -373,7 +373,8 @@ A similar feature will appear eventually for music.<p>
         echo "<div class=FullD hidden>" . fm_smalltext2(', Duration:',$Event,'Duration') . "&nbsp;(mins)";
         if ($se < 0) echo fm_smalltext2(', Slot End:',$Event,'SlotEnd');
         echo fm_smalltext2(', Doors:',$Event,'DoorsOpen') . "</div>";
-        if ($se <= 0) echo "<td>" . fm_checkbox("Season Ticket Only",$Event,'SeasonTicketOnly');
+        if ($se <= 0) echo "<tr>" . fm_radio("Access",$Event_Access_Type, $Event,'SeasonTicketOnly','',1,'colspan=2','',$Event_Access_Colours);
+                     // echo "<td>" . fm_checkbox("Season Ticket Only",$Event,'SeasonTicketOnly');
       if ($se <= 0) echo "<tr class=mday $hidemday>" . fm_radio('End Day',$FestDays,$Event,'EndDay') . 
                 "<td colspan=3>Set up a sub event for each day after first, times are for first day";
       echo "<tr" . ($se>0?" class=FullD hidden":"") . "><td><b>Venue</b>:<td>" . fm_select($Venues,$Event,'Venue',1);
