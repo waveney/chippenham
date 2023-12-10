@@ -57,6 +57,7 @@
         ],
       '-Get Involved'=>[
         'Volunteer'=>'InfoStewards',
+        'Talking Folk Mailing List'=>'InfoMailingList',
         'Sponsorship'=>'InfoSponsors',
         'New Dance Side Registration'=>'int/Register',
 //        'Trade Stand Applications'=>'InfoTrade', 

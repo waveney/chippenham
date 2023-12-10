@@ -37,7 +37,8 @@ function Edit_Proforma(&$Proforma) {
  
   $prefixes = ['BB'=>Capability("EnableMisc"),'Dance'=>Capability('EnableDance'),'Finance'=>Capability('EnableFinance'),'LNL'=>Capability("EnableMisc"),'Login'=>1,
                'Trade'=>Capability("EnableTrade"),'lol'=>Capability("EnableMisc"), 'Stew'=>Capability("EnableOldVols"),'Vol'=>Capability("EnableVols"),
-               'Invoice'=>(Capability('EnableFinance') || Capability('EnableTrade')), 'ART'=>Capability('EnableArt'), 'Music'=>Capability('EnableMusic')];
+               'Invoice'=>(Capability('EnableFinance') || Capability('EnableTrade')), 'ART'=>Capability('EnableArt'), 'Music'=>Capability('EnableMusic'),
+               'MailList'=>Capability('EnableAdmin')];
   
   Replace_Help();
   echo "<P>";

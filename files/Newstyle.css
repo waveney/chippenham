@@ -911,7 +911,7 @@ textarea:Focus
 }
 
 .WhenTable table tr td:nth-child(1) {
-  width:115px;
+  width:105px;
 }
 
 .WhenTable table tr td:nth-child(2) {
@@ -923,11 +923,11 @@ textarea:Focus
 }
 
 .WhenTable table tr td:nth-child(4) {
-  width:700px;
+  width:660px;
 }
 
 .WhenTable table tr td:nth-child(5) {
-  width:100px;
+  width:150px;
 }
 
 @keyframes WhenTablefade {

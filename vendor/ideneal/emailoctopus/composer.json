@@ -1,0 +1,30 @@
+{
+    "name": "ideneal/emailoctopus",
+    "type": "library",
+    "description": "EmailOctopus Service Client Library",
+    "license": "MIT",
+    "authors": [{
+        "name": "Daniele Pedone",
+        "email": "ideneal.ztl@gmail.com",
+        "homepage": "https://ideneal.github.io/",
+        "role": "Developer"
+    }],
+    "require": {
+        "php": ">=7.4",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ideneal\\EmailOctopus\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ideneal\\EmailOctopus\\Tests\\": "tests/"
+        }
+    }
+}

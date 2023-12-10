@@ -308,7 +308,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
           case 'YEAR':
             $rep = $PLANYEAR;
             break;
-          case 'NEXTYEAR': 
+          case 'NEXTYEAR':   
             $rep = $PLANYEAR+1;
             break;
           case 'DATES':
@@ -322,6 +322,9 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
             break;
           case 'HOST':
             $rep = Feature('HostURL');
+            break;
+          case 'ID':
+            $rep = ($helperdata['id'] ?? 0);
             break;
           case (preg_match('/MAILTO_(.*)/',$key,$mtch)?true:false):
             $rep = "<a href='mailto:" . $mtch[1] . "@" . Feature('HostURL') . "'>" . $mtch[1] . "@" . Feature('HostURL') . "</a>";
@@ -339,6 +342,11 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
             $txt = Feature('HostURL');
             if (isset($bits[1])) $url = $bits[1];
             if (isset($bits[2])) { $txt = $bits[2]; $txt = preg_replace('/_/',' ',$txt); }
+            $url = preg_replace_callback('/\%(\S*)\%/',function ($matches) use ($helper,$helperdata,$Preview,$attachments,$embeded) {
+                $rtxt = "*" . $matches[1] . "*";
+                Parse_Proforma($rtxt,$helper,$helperdata,$Preview,$attachments,$embeded);
+                return $rtxt;
+              }, $url);
             $rep = "<a href='https://" . Feature('HostURL') . ($url? "/$url" : "") . "'>$txt</a>";
             break;
           case (preg_match('/URL(:.*)/',$key,$mtch)?true:false):
