@@ -74,14 +74,26 @@ function MailSub_Details($key,&$Sub) {
   case 'NAME': return $Sub['FirstName'] .' ' . $Sub['LastName'];
   case 'EMAIL': return $Sub['Email'];
   case 'WHEN': return date("j/n/Y", $Sub['SubmitTime']);
-  case 'CONFIRM': return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/MailListMgr?A=Confirm&i=" . $Sub['id'] . "&k=" . $Sub['AccessKey'] . "'><b>link</b></a>";
+  case 'CONFIRM': 
+    if (empty($Sub['AccessKey'])) {
+      $Sub['AccessKey'] = rand_string(40);
+      Gen_Put('MailingListRequest',$Sub);      
+    }
+    return $Sub['AccessKey'];
+//  case 'CONFIRM': return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/MailListMgr?A=Confirm&i=" . $Sub['id'] . "&k=" . $Sub['AccessKey'] . "'><b>link</b></a>";
   }
 }
 
 
-function Email_Publicity($Sub,$Message) {
+function Email_Publicity(&$Sub,$Message) {
   global $PLANYEAR;
   Email_Proforma(6,$Sub['id'],Feature('MailListMgrEmail'),$Message,Feature('FestName') . " $PLANYEAR and " . $Sub['FirstName'] . ' ' . $Sub['LastName'],
+    'MailSub_Details',$Sub,'MailingList.txt');
+}
+
+function Email_Sub(&$Sub,$Message) {
+  global $PLANYEAR;
+  Email_Proforma(6,$Sub['id'],$Sub['Email'],$Message,Feature('FestName') . " $PLANYEAR and " . $Sub['FirstName'] . ' ' . $Sub['LastName'],
     'MailSub_Details',$Sub,'MailingList.txt');
 }
 
@@ -92,6 +104,7 @@ function MailFormFilled() {
     Sanitise($_POST['FirstName']);
     Sanitise($_POST['LastName']);
     $_POST['SubmitTime'] = time();
+    $_POST['AccessKey'] = rand_string(40);
     $SubId = Insert_db_post('MailingListRequest',$Sub);
   } else {
     $SubId = $_REQUEST['id'];
@@ -105,8 +118,9 @@ function MailFormFilled() {
   $md5 = md5(strtolower($Sub['Email']));
   
   $CheckRes = CallOctopus("lists/" . Feature('MailListID') . "/contacts/$md5");
-  
-  if (!isset($CheckRes['error'])) {
+
+//var_dump($Sub,$CheckRes);  
+  if (!strstr($CheckRes,'MEMBER_NOT_FOUND')) {
     echo "You are already subscribed to the list, thankyou.";
     $Sub['Status'] = $StatusMail['Duplicate'];
     Gen_Put('MailingListRequest',$Sub);
@@ -155,10 +169,11 @@ function AcceptForm() {
   
   $Res = CallOctopus("lists/" . Feature('MailListID') . "/contacts" ,$Data);
 
-var_dump($Res);
+//var_dump($Res);
 
-  if (isset($Res['error'])) {
-    echo "Failed to add to the MailOctopus list because: <b>" . $Res['error'] . "</b>";
+  if ($Res && strstr($Res,'error')) {
+    $RRes = json_decode($Res,true);
+    echo "<span class=Err>Failed to add to the MailOctopus list because: <b>" . $RRes['error']['message'] . "</b></span>";
   } else {
     echo "<B>" . $Sub['FirstName'] . " " . $Sub['LastName'] . "</b> has been added to the mailing list<p>";
   
@@ -185,6 +200,7 @@ function ListForms($Status) {
   $coln = 0;
 
 
+  if ($Status != 'All') echo "<div class=right><h2><a href=MailListMgr?A=ListForms&ListType=All>Show All entries</a></2></div>";
   echo "<form method=post>";
   echo "<div class=Scrolltable><table id=indextable border class=altcolours>\n";
   echo "<thead><tr>";
@@ -200,6 +216,7 @@ function ListForms($Status) {
   $Subs = Gen_Get_All('MailingListRequest');
   
   foreach ($Subs as $Sub) {
+    if ($Status != 'All' && $Sub['Status'] != 1) continue;
     $SubId = $Sub['id'];
     echo "<tr><td>$SubId";
     echo "<td>" . htmlspec($Sub['FirstName']);
@@ -216,6 +233,10 @@ function ListForms($Status) {
       case 1: // Email Confirmed
         echo "<a href=MailListMgr?id=$SubId&A=AcceptForm>Accept</a>, <a href=MailListMgr?id=$SubId&A=RejectForm>Reject</a> ";
         break;
+      case 3: // Rejectted
+        echo "<a href=MailListMgr?id=$SubId&A=AcceptForm>Accept</a> ";
+        break;
+      
       default: // No actions (currently)
       }
   }
@@ -229,7 +250,7 @@ function ListForms($Status) {
 
 function Mail_List_Action($Action) {
 
-var_dump($_REQUEST);
+// var_dump($_REQUEST);
   switch ($Action) {
   case 'New':
   case 'MailForm':
@@ -257,7 +278,7 @@ var_dump($_REQUEST);
     break;
   
   case 'ListForms':
-    ListForms('Open');
+    ListForms($_REQUEST['ListType'] ?? 'Open');
     break;
   
   case 'SendMail':

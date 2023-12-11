@@ -296,11 +296,14 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
   static $attnum = 0;
   $Reps = [];
   $Limit = 0;
+//echo "Passing <p>";
 
-  while (preg_match('/\*(\w*)\*/',$Mess)) {
+  while (preg_match('/\*(.*?)\*/',$Mess)) {
+//echo "<p>Here<p>";
     if ($Limit++ > 10) break; // Limit recursion to 10 deep
     if (preg_match_all('/\*(\S*)\*/',$Mess,$Matches)) {
       foreach($Matches[1] as $key) {
+//echo "Doing $key<br>";
         if (!isset($Reps[$key])) {
           switch ($key) {
           case 'PLANYEAR': 
@@ -342,7 +345,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
             $txt = Feature('HostURL');
             if (isset($bits[1])) $url = $bits[1];
             if (isset($bits[2])) { $txt = $bits[2]; $txt = preg_replace('/_/',' ',$txt); }
-            $url = preg_replace_callback('/\%(\S*)\%/',function ($matches) use ($helper,$helperdata,$Preview,$attachments,$embeded) {
+            $url = preg_replace_callback('/\%(\S*?)\%/',function ($matches) use ($helper,$helperdata,$Preview,$attachments,$embeded) {
                 $rtxt = "*" . $matches[1] . "*";
                 Parse_Proforma($rtxt,$helper,$helperdata,$Preview,$attachments,$embeded);
                 return $rtxt;
