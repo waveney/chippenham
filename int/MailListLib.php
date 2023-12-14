@@ -151,7 +151,7 @@ function MailConfirmed() {
     }
   }
   
-  echo "Recorded for checking";
+  echo "Recorded for checking.<p>";
   Email_Publicity($Sub,"MailList_Add");
   $Sub['Status'] = $StatusMail['Email Confirmed'];
   Gen_Put('MailingListRequest',$Sub);

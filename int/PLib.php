@@ -430,6 +430,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   if ($years) {
  
 //echo var_dump($years);
+//var_dump($Sidey);
 
     foreach ($years as $yr) {
       if (isset($yr['Year'])) $OList[] = $yr['Year'];
@@ -866,17 +867,18 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     if (!empty($Sidey['OtherPayment'])) echo fm_text('Other payments',$Sidey,'OtherPayment',1,'disabled readonly');
     if (isset($Sidey['Rider']) && strlen($Sidey['Rider']) > 5)  echo "<tr>" . fm_textarea('Additional Riders',$Sidey,'Rider',2,1,'','disabled') ."\n";
   }
-
+//  echo "<tr><td colspan=8>BEFORE";
   if ((isset($Sidey['TotalFee']) && $Sidey['TotalFee']) || 
       (isset($Sidey['OtherPayment']) && $Sidey['OtherPayment']) || 
       ($Sidey['YearState'] == $Book_State['Contract Sent']) ||
       (isset($Sidey['ContractAnyway']) && $Sidey['ContractAnyway'])) { // Contract if there is a fee
 
 // Events - RO to Act, RW to ctte
-
+//var_dump($snum,$year);
     $Evs = Get_Events4Act($snum,$year);
     $HasPark = '';
     $ParkedLocs = array();
+//var_dump($Evs);
 //var_dump($Evs);
     if ($Evs) {
       $Venues = Get_Real_Venues(1);
@@ -997,6 +999,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       default:
         break;
     }
+  } else {
+//    echo "<TR><TD>NO";
   }
 
   // INsurance
