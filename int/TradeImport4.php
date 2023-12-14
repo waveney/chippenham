@@ -46,13 +46,14 @@
 	  echo "Trader " . $stuff['Trading Name'] . " already in database.<br>";
 	}
       } else {
-	$rec['SName'] = $stuff['Trading Name'];
+	$rec['SN'] = $stuff['Trading Name'];
 	$rec['Contact'] = $stuff['First Name'] . ' ' . $stuff['Last Name'] ;
 	$rec['Email'] = $stuff['Email'];
 	$rec['Website'] = $stuff['Web'];
 	$rec['Address'] = $stuff['Address'];
 	$rec['PostCode'] = $stuff['Post Code'];
 	$rec['GoodsDesc'] = $stuff['Trade Type'];
+	$rec['IsTrader'] = 1;
 //        if (preg_match('/^07/',$stuff['Contact No.'])) {
           $rec['Mobile'] = $stuff['SMS OR Landline'];
 //        } else {
