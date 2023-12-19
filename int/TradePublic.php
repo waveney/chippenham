@@ -12,6 +12,7 @@ function Trade_Type_Table($class='') {
   echo "<tr><th>Trade Type<th>Description<th>Prices<td>Status\n";
 
   foreach ($tts as $tt) {
+    if ($tt['TOpen'] == 0) continue;
     if ($tt['Addition']) continue;
     echo "<tr><td>" . $tt['SN'];
     echo "<td>" . $tt['Description'];
@@ -22,7 +23,7 @@ function Trade_Type_Table($class='') {
       echo $tt['BasePrice'];   
     }
     if ($tt['PerDay']) echo " per day";
-    echo "<td>" . ($tt['TOpen']?'Open':'Closed');
+    echo "<td>" . (($tt['TOpen'] == 1)?'Open':'Closed');
   }
   echo "</table></div><p>";
 

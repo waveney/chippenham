@@ -7,7 +7,7 @@
   
   echo TnC('MailingListIntro');
   
-  echo "<h2><a href=int/MailListMgr>Sign up</a></h2>";
+  echo "<div class=trader-app-link><a href=int/MailListMgr>Click Here to Sign up</a></div>";
   echo "The mailing list is run by Mail Octopus, this is just a front end allowing us to check you are real.<p>";
   echo "The check is manual so may take a few days, please be patient.<p>";
 

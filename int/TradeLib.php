@@ -61,6 +61,7 @@ $TradeMapPoints = ['Trade','Other'];
 $BizProps = ['IsTrader'=>1,'IsSponsor'=>2,'IsAdvertiser'=>4,'IsSupplier'=>0,'IsOther'=>0]; // bit 0 = Image, 2=Logo, 3=Advert
 $SponTypes = ['General','Venue','Event','Performer'];
 $SponStates = ['Raised','Invoiced','Paid','Paid in Kind'];
+$TradeTypeStates = ['Private','Open','Closed']; // Private - not shown on site
 
 function Get_Trade_Locs($tup=0,$Cond='') { // 0 just names, 1 all data
   global $db;
@@ -556,7 +557,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     }
   }
   
-  echo "<tr><td>Days:<td>" . fm_select($Trade_Days,$Trady,'Days');
+  if (Feature('TradeDays')) echo "<tr><td>Days:<td>" . fm_select($Trade_Days,$Trady,'Days');
   echo "<tr><td>Requested Pitch Sizes, <span class=DefaultPitch>" . Pitch_Size_Def($Trad['TradeType']) . "</span> is default" . Help('PitchSize');
   if (Feature("TradePower")) echo "<td colspan=2>Power Requirements" . Help('Power') . "<br>3 Amps - Lighting, 13 Amps - 1 Kettle...";
   if (isset($Trady['PitchLoc0']) && $Trady['PitchLoc0']) {

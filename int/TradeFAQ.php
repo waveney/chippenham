@@ -2,7 +2,7 @@
   include_once("fest.php");
   dohead("Trade FAQ",[],1);
   
-  echo TnC("MusicFAQ");
+  echo TnC("TradeTnC");
   dotail();
 ?>
 

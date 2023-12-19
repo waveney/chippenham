@@ -3,7 +3,7 @@
   A_Check('Committee','Trade');
 
   dostaffhead("Manage Trade Types and Prices");
-  global $PLANYEAR;
+  global $PLANYEAR,$TradeTypeStates;
 
   include_once("TradeLib.php");
   include_once("InvoiceLib.php");
@@ -25,7 +25,7 @@
   $t = [];
   
   echo "<form method=post>";
-  echo "<div class=Scrolltable><table id=indextable border>\n";
+  echo "<div class=Scrolltable+><table id=indextable border>\n";
   echo "<thead><tr>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Index</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Trade Type</a>\n";
@@ -59,7 +59,8 @@
     echo "<td>" . fm_checkbox("",$t,'NeedInsurance','',"NeedInsurance$i");
     echo "<td>" . fm_checkbox("",$t,'NeedRiskAssess','',"NeedRiskAssess$i");
     echo "<td>" . fm_checkbox("",$t,'ArtisanMsgs','',"ArtisanMsgs$i");
-    echo "<td>" . fm_checkbox("",$t,'TOpen','',"TOpen$i");
+    echo "<td>" . fm_select($TradeTypeStates,$t,'TOpen',1,'',"TOpen$i");
+//    echo "<td>" . fm_checkbox("",$t,'TOpen','',"TOpen$i");
     echo "<td>" . fm_select($InvCodes,$t,'SalesCode',1,'',"SalesCode$i");
     echo fm_text1('',$t,'DefaultSize',0.5,'','',"DefaultSize$i");
     echo "<td>" . fm_basictextarea($t,'Description',2,1,'',"Description$i");
@@ -77,7 +78,8 @@
   echo "<td><input type=checkbox name=NeedInsurance0>";
   echo "<td><input type=checkbox name=NeedRiskAssess0>";
   echo "<td><input type=checkbox name=ArtisanMsgs0>";
-  echo "<td><input type=checkbox name=TOpen0>";
+  echo "<td>" . fm_select($TradeTypeStates,$t,'TOpen',1,'',"TOpen0");
+//  echo "<td><input type=checkbox name=TOpen0>";
   echo "<td>" . fm_select($InvCodes,$t,'InvoiceCode',1,'',"SalesCode0");
   echo "<td><input type=text size=8 name=DefaultSize0>";
   echo "<td><textarea name=Description0 cols=40></textarea>";
