@@ -49,7 +49,7 @@
     echo "<h3>Select subset of traders - if no States/Locations/types are selected that category is treated as all</h3><p>";
     echo "<form method=post><div class=Scrolltable><table class=Devemail>";
     
-    echo "<tr height=30>" . fm_radio("State",$Trade_States,$_POST,'Tr_State','',1,'','',$Trade_State_Colours,1);
+    echo "<tr height=80>" . fm_radio("State",$Trade_States,$_POST,'Tr_State','',1,'','',$Trade_State_Colours,1);
     echo "<tr height=30>" . fm_radio("Location",$Trade_Loc_Names,$_POST,'Tr_Loc','',1,'','',null,1);
     echo "<tr height=30>" . fm_radio("Trade Type",$Trade_Type_Names,$_POST,'Tr_Type','',1,'','',$Trade_Type_Colours,1);
     echo "</table></div><p>";
@@ -74,8 +74,12 @@
     foreach ($Trade_States as $i=>$n) if (isset($_POST["Tr_State$i"] )) $ts[] = $i;
     foreach ($Trade_Loc_Names as $i=>$n) if (isset($_POST["Tr_Loc$i"] )) $lt[] = $i;
     foreach ($TradeTypeData as $i=>$td) if (isset($_POST["Tr_Type$i"] )) $ttt[] = $i;
-      
-    $qry = "SELECT t.*, y.* FROM Trade t LEFT JOIN TradeYear y ON t.Tid=y.Tid AND y.Year='$YEAR'";   
+    
+    if (empty($ts) && empty($lt) && empty($ttt)) {
+      $qry = "SELECT t.* FROM Trade t WHERE t.IsTrader=1 AND t.status=0";   
+    } else {
+      $qry = "SELECT t.*, y.* FROM Trade t LEFT JOIN TradeYear y ON t.Tid=y.Tid AND y.Year='$YEAR'";   
+    }
     $Mess = $_POST['Mess'];
 
     $res = $db->query($qry);
@@ -89,9 +93,10 @@
     $Sent_Count = 0;
     $StartAt = (isset($_POST['STARTAT']) ? ($_POST['STARTAT']?$_POST['STARTAT']:0) : 0);
 
-    $EndAt = $StartAt +20;// Batch size 5 for testing 20 in real life  // TODO review that
+    $EndAt = $StartAt +5;// Batch size 5 for testing 20 in real life  // TODO review that
 
     while ($Trad = $res->fetch_assoc()) {
+      if ($Trad['Status'] != 0) continue;  //Remove dead/blocked traders
       if (!empty($ttt)) {
         $valid = 0;
         foreach ($ttt as $tt) if ($Trad['TradeType'] == $tt) $valid = 1;
