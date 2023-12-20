@@ -875,22 +875,25 @@ function Send_Trader_Simple_Email(&$Trad,$messcat='Link',$att='') {
   include_once("Email.php");
   $from = Feature('SendTradeEmailFrom');
   if ($from) $from .= "@" . Feature('HostURL');
-  Email_Proforma(2,$Trad['Tid'],[$Trad['Email'],$Trad['Contact']],$messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad],'TradeLog',$att,0,$from);
+  Email_Proforma(2,$Trad['Tid'],[$Trad['Email'],$Trad['Contact']],
+    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad],'TradeLog',$att,0,$from);
 }
 
 function Send_Trade_Finance_Email(&$Trad,&$Trady,$messcat,$att=0) {
   global $PLANYEAR;
   include_once("Email.php");
 
-  Email_Proforma(2,$Trad['Tid'],"treasurer@" . Feature('HostURL'),$messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att);
+  Email_Proforma(2,$Trad['Tid'],"treasurer@" . Feature('HostURL'),
+    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att);
 }
 
 function Send_Trade_Admin_Email(&$Trad,&$Trady,$messcat,$att=0) {
-
+  
   global $PLANYEAR;
   include_once("Email.php");
 
-  Email_Proforma(2,$Trad['Tid'],"trade@" . Feature('HostURL'),$messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Admin_Details',[&$Trad,&$Trady],'TradeLog',$att);
+  Email_Proforma(2,$Trad['Tid'],"trade@" . Feature('HostURL'),
+    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Admin_Details',[&$Trad,&$Trady],'TradeLog',$att);
 }
 
 //  Mark as submitted, email fest and trader, record data of submission

@@ -126,7 +126,7 @@
       };
 
       if ($Sent_Count >= $StartAt && $Sent_Count < $EndAt) {
-        if ($_POST['JustList']) {
+        if ($_POST['JustList'] ?? 0) {
           echo "Would Send to " . $Trad['SN'] . "<br>";
         } else {
           Send_Trader_Email($Trad,$Trad,$Mess);
