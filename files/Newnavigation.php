@@ -60,7 +60,7 @@
         'Talking Folk Mailing List'=>'InfoMailingList',
         'Sponsorship'=>'InfoSponsors',
         'New Dance Side Registration'=>'int/Register',
-//        'Trade Stand Applications'=>'InfoTrade', 
+        'Trade Stand Applications'=>'InfoTrade', 
 //        'Art Show Application' => 'int/ArtForm',
 //        '*Live and Loud'=>'LiveNLoud',
 //        '*Buskers Bash'=>'BuskersBash',
