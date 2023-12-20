@@ -355,7 +355,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
   foreach ($BizProps as $p=>$m) if (!empty($Trad[$p])) $Props |= $m;
 
 //  if (isset($Trad['Photo']) && $Trad['Photo']) echo "<img class=floatright id=TradThumb src=" . $Trad['Photo'] . " height=80>\n";
-  if ($Tid > 0) echo "<input  class=floatright type=Submit name='Update' value='Save Changes' form=mainform>";
+//  if ($Tid > 0) echo "<input  class=floatright type=Submit name='Update' value='Save Changes' form=mainform>";
   if ($Mode && isset($Trad['Email']) && strlen($Trad['Email']) > 5) {
     echo "If you click on the " . linkemailhtml($Trad,'Email');
     echo ", press control-V afterwards to paste the standard link." ;// <button type=button onclick=Copy2Div('Email$Tid','SideLink$Tid')>standard link</button>";
@@ -424,6 +424,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         echo "<td>Trade Type:" . help('TradeType') . "<td colspan=7>";
         foreach ($TradeTypeData as $i=>$d) {
           if ($d['Addition']) continue;
+          if (($d['TOpen'] != 1) && (($Trad['TradeType'] != $i) || ($Mode==0))) continue;
           echo " <div class=KeepTogether style='background:" . $d['Colour'] . ";'>" . $d['SN'] . ": ";
           echo " <input type=radio name=TradeType $ADDALL value=$i ";
           if ($Trad['TradeType'] == $i) echo " checked";
@@ -449,8 +450,10 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
     if ($Trad['IsTrader']) {
       echo "<tr class=PublicHealth " . ($TradeTypeData[$Trad['TradeType']]['NeedPublicHealth']?'':'hidden') . ">" ;
       echo fm_text("Registered with which Local Authority ",$Trad,'PublicHealth',2,'colspan=2');
-      echo "<tr><td>Are a <td>" . (Feature('TradeBID')?(fm_checkbox('BID Levy Payer',$Trad,'BID') . "<td>"):'') . 
+      if (Feature('TradeBID') || Feature('TradeChamberCommerce')) {
+        echo "<tr><td>Are a <td>" . (Feature('TradeBID')?(fm_checkbox('BID Levy Payer',$Trad,'BID') . "<td>"):'') . 
                                       (Feature('TradeChamberCommerce')?(fm_checkbox('Chamber of Commerce Member',$Trad,'ChamberTrade') . "<td>"):'');
+        }
       if ($Mode) echo fm_checkbox('Previous Festival Trader',$Trad,'Previous');
       echo fm_text('Charity Number',$Trad,'Charity',1,'class=Charity ' . ($TradeTypeData[$Trad['TradeType']]['NeedCharityNum']?'':'hidden'));
       if ($Mode) echo "<td class=NotSide colspan=2>" . fm_radio("",$Trader_Status,$Trad,'Status','',0);
@@ -1130,7 +1133,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
 
       Update_db_post('Trade',$Trad);
       if (Feature('LogAllTrade')) Report_Log('Trade');
-      if ($Mode < 2 && !$Orgs) {
+      if ($Mode < 2 && !$Orgs && isset($_POST['YEAR'])) {
         if ($_POST['Year'] == $PLANYEAR) {
           $same = 1;
           if (isset($Trady) && $Trady) {
@@ -1232,7 +1235,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   Show_Trader($Tid,$Trad,$Program,$Mode);
   if ($Mode < 2 && !$Orgs) {
     if (Feature('TradeStatus',1) ==0) {
-      echo "<h2>The Trading system is still being setup, when done you will be able to complete your booking here.</h2>";
+      echo "<h2>The Trading system is still being set up.  When ready, you will be able to complete your booking here.</h2>";
     } else {
       Show_Trade_Year($Tid,$Trady,$DYear,$Mode);
     }
@@ -1240,7 +1243,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   
   if ($Mode == 0 && !$Orgs) {
     echo "<Center>";
-    echo "<input type=Submit name='Update' value='Save Changes'>";
+//    echo "<input type=Submit name='Update' value='Save Changes'>";
     echo "</Center>";    
     echo TnC('TradeTnC');
     echo TnC('TradeTimes');
@@ -1259,7 +1262,6 @@ function Trade_Main($Mode,$Program,$iddd=0) {
       }
     }
     echo "<Center>";
-    echo "<input type=Submit name='Update' value='Save Changes'>";
     if (Access('Committee','Finance')) {
       echo "<input type=Submit name='NewInvoice' title='Send a NON TRADE Invoice to this trader' value='New Invoice' " .
            "formaction='InvoiceManage?ACTION=NEWFOR&Tid=$Tid'>\n";
@@ -1312,6 +1314,10 @@ function Trade_Main($Mode,$Program,$iddd=0) {
           case 'Dates' :
             if (!Feature('EnableDateChange')) continue 2;
             break;
+          case 'Submit' :
+            if (Feature('TradeStatus',1) == 0) continue 2;
+            break;
+            
           default:
         }
         echo "<input type=submit name=ACTION value='$ac' " . $ButExtra[$ac] . " >";
