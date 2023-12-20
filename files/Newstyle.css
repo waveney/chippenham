@@ -1761,11 +1761,11 @@ ol ol > li:before {
 }
 
 dl dd {
-  font-weight:bold;
+  font-weight:normal;
 }
 
 dl dt {
-  font-weight:normal;
+  font-weight:bold;
 }
 
 .floatright {

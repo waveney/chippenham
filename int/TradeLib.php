@@ -475,7 +475,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         if (isset($Trad['SN'])) $Scode = Sage_Code($Trad);
         echo fm_text("Sage Code",$Trad,'SageCode',1,'class=NotSide','class=NotSide');
       }
-      if ($Tid > 0 && $Trad['IsSponsor']) echo "<td class=NotSide>" . fm_checkbox("Show Name and Logo",$Trad,'IandT');
+      if ($Tid > 0 && ($Trad['IsSponsor'] ?? 0)) echo "<td class=NotSide>" . fm_checkbox("Show Name and Logo",$Trad,'IandT');
     } else { 
       echo fm_hidden('IsTrader',$Trad['IsTrader']);
     }
@@ -1186,6 +1186,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
       if ($Tid && !$Orgs && $Trad['IsTrader'] ) {
         Insert_db_post('TradeYear',$Trady);
         $Trady = Get_Trade_Year($Trad['Tid']);
+        if (empty($Trady)) $Trady = Default_Trade($Tid,$Trad['TradeType']);
       }
       if ($Mode == 2 || $Orgs) {
 //        if (isset($_POST['ACTION'])) Invoice_Action($_POST['ACTION'],$Trad);
@@ -1229,8 +1230,14 @@ function Trade_Main($Mode,$Program,$iddd=0) {
 // echo "<p>Trady " . $Trady['Year'] . "<p>";
 
   Show_Trader($Tid,$Trad,$Program,$Mode);
-  if ($Mode < 2 && !$Orgs) Show_Trade_Year($Tid,$Trady,$DYear,$Mode);
-
+  if ($Mode < 2 && !$Orgs) {
+    if (Feature('TradeStatus',1) ==0) {
+      echo "<h2>The Trading system is still being setup, when done you will be able to complete your booking here.</h2>";
+    } else {
+      Show_Trade_Year($Tid,$Trady,$DYear,$Mode);
+    }
+  }
+  
   if ($Mode == 0 && !$Orgs) {
     echo "<Center>";
     echo "<input type=Submit name='Update' value='Save Changes'>";
@@ -1320,7 +1327,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   } else { 
     echo "<Center>";
     echo "<input type=Submit name=ACTION value='Create'>\n";
-    if ($Mode < 2) echo "<input type=Submit name=ACTION value='Create and Submit Application'>";
+    if (($Mode < 2) && Feature('TradeBooking')) echo "<input type=Submit name=ACTION value='Create and Submit Application'>";
     echo "</center>\n";
   }
   echo "</form>\n";
