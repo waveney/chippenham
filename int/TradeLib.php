@@ -424,7 +424,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         echo "<td>Trade Type:" . help('TradeType') . "<td colspan=7>";
         foreach ($TradeTypeData as $i=>$d) {
           if ($d['Addition']) continue;
-          if (($d['TOpen'] != 1) && (($Trad['TradeType'] != $i) || ($Mode==0))) continue;
+          if (($d['TOpen'] != 1) && ($Trad['TradeType'] != $i) && ($Mode==0)) continue;
           echo " <div class=KeepTogether style='background:" . $d['Colour'] . ";'>" . $d['SN'] . ": ";
           echo " <input type=radio name=TradeType $ADDALL value=$i ";
           if ($Trad['TradeType'] == $i) echo " checked";
