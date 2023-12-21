@@ -49,7 +49,7 @@
     echo "<h3>Select subset of traders - if no States/Locations/types are selected that category is treated as all</h3><p>";
     echo "<form method=post><div class=Scrolltable><table class=Devemail>";
     
-    echo "<tr height=80>" . fm_radio("State",$Trade_States,$_POST,'Tr_State','',1,'','',$Trade_State_Colours,1);
+    echo "<tr height=100>" . fm_radio("State",$Trade_States,$_POST,'Tr_State','',1,'','',$Trade_State_Colours,1);
     echo "<tr height=30>" . fm_radio("Location",$Trade_Loc_Names,$_POST,'Tr_Loc','',1,'','',null,1);
     echo "<tr height=30>" . fm_radio("Trade Type",$Trade_Type_Names,$_POST,'Tr_Type','',1,'','',$Trade_Type_Colours,1);
     echo "</table></div><p>";
@@ -129,6 +129,11 @@
         if ($_POST['JustList'] ?? 0) {
           echo "Would Send to " . $Trad['SN'] . "<br>";
         } else {
+          if ($Trad['Tid'] != 681) { // Diagnostic code
+            echo "Caught in error doing " . $Trad['Tid'] . ' ' . $Trad['SN'] . "<p>";
+            var_dump($_REQUEST);
+            exit;
+          }
           Send_Trader_Email($Trad,$Trad,$Mess);
           echo "Sent to " . $Trad['SN'] . "<br>";
         }
@@ -144,7 +149,7 @@
       foreach ($TradeTypeData as $i=>$td) if (isset($_POST["Tr_Type$i"] )) echo fm_hidden("Tr_Type$i",$i);
       
       if (isset($_POST['JustList'])) echo fm_hidden('JustList',$_POST['JustList']);
-      echo "<input type=submit name=MORE value='Next batch " . $EndAt . "'>\n";
+      echo "<input type=submit name=MORE value='Next batch " . ($EndAt-1) . "'>\n";
     } else {
       echo "All Done";
     }
