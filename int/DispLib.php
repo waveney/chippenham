@@ -595,7 +595,7 @@ function SponsoredByWho(&$Data,&$Name,$TType,$Tid,$cols=3) {
       }
     } else {
       echo "<td>Not Sponsored " . help('SponsoredBy');
-      var_dump($Data);
+//      var_dump($Data);
     }
 
 

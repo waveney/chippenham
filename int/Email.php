@@ -65,11 +65,11 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
 //  echo "Debug: XXX" .( UserGetPref('EmailDebug')?2:0) . "<p>";
 //var_dump($sub,$attachments,$to);
 
-if (Access('SysAdmin')) {
+/*if (Access('SysAdmin')) {
   echo "Calling NewSendEmail: ";
   var_dump($to); echo "<P>";
   var_dump($from); echo "<P>";
-}
+}*/
   $Send = 1;
   if (!empty($CONF['testing'])){
     if (strstr($CONF['testing'],'@')) { 
@@ -155,6 +155,8 @@ if (Access('SysAdmin')) {
           $EmailReplyTo = $from;
         }
       }
+    } else if ($from) {
+      $EmailReplyTo = $from;
     }
     
     if (is_array($to)) {

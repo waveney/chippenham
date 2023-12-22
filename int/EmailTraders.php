@@ -20,11 +20,12 @@
     $Trade_Type_Colours[$i] = $tt['Colour']; 
   };
 
+//var_dump($_REQUEST);
   if (!isset($_POST['SEND'])) {
     // Basic message text
     // Select (BID &/ TC), Previous (not BID/TC), All
     // Select list?
-//var_dump($_REQUEST);
+
 
     echo "<h2>FIRST select message type to be sent</h2>";
     echo "This is the message that will be sent.<p>"; 
@@ -52,6 +53,7 @@
     echo "<tr height=100>" . fm_radio("State",$Trade_States,$_POST,'Tr_State','',1,'','',$Trade_State_Colours,1);
     echo "<tr height=30>" . fm_radio("Location",$Trade_Loc_Names,$_POST,'Tr_Loc','',1,'','',null,1);
     echo "<tr height=30>" . fm_radio("Trade Type",$Trade_Type_Names,$_POST,'Tr_Type','',1,'','',$Trade_Type_Colours,1);
+    echo "<tr>" . fm_text('Or List of Tids',$_POST,'Tr_List',6) . "<tr><td>Sep by commas";
     echo "</table></div><p>";
     
     if (!isset($Mess)) $Mess = $Messages[1]['Body'];
@@ -69,33 +71,41 @@
     echo "</table></div><form>\n";
   } else {
     $Limited = '';
+    $TRM = 0;
 
-    $ts  = $lt = $ttt = [];
-    foreach ($Trade_States as $i=>$n) if (isset($_POST["Tr_State$i"] )) $ts[] = $i;
-    foreach ($Trade_Loc_Names as $i=>$n) if (isset($_POST["Tr_Loc$i"] )) $lt[] = $i;
-    foreach ($TradeTypeData as $i=>$td) if (isset($_POST["Tr_Type$i"] )) $ttt[] = $i;
+    if (empty($_REQUEST['Tr_List'])) {
+      $ts  = $lt = $ttt = [];
+      foreach ($Trade_States as $i=>$n) if (isset($_POST["Tr_State$i"] )) $ts[] = $i;
+      foreach ($Trade_Loc_Names as $i=>$n) if (isset($_POST["Tr_Loc$i"] )) $lt[] = $i;
+      foreach ($TradeTypeData as $i=>$td) if (isset($_POST["Tr_Type$i"] )) $ttt[] = $i;
     
-    if (empty($ts) && empty($lt) && empty($ttt)) {
-      $qry = "SELECT t.* FROM Trade t WHERE t.IsTrader=1 AND t.status=0";   
+      if (empty($ts) && empty($lt) && empty($ttt)) {
+        $qry = "SELECT t.* FROM Trade t WHERE t.IsTrader=1 AND t.status=0";   
+      } else {
+        $qry = "SELECT t.*, y.* FROM Trade t LEFT JOIN TradeYear y ON t.Tid=y.Tid AND y.Year='$YEAR'";   
+      }
+      $res = $db->query($qry);
+
+      if (!$res || $res->num_rows==0) {
+        echo "None found!";
+        dotail();
+      }
+
     } else {
-      $qry = "SELECT t.*, y.* FROM Trade t LEFT JOIN TradeYear y ON t.Tid=y.Tid AND y.Year='$YEAR'";   
+      $TR_List = explode(',',$_REQUEST['Tr_List']);
+      $TRM = 1;
     }
+      
+//echo "<P>";    var_dump($TR_List);
+      
     $Mess = $_POST['Mess'];
-
-    $res = $db->query($qry);
-    if (!$res || $res->num_rows==0) {
-      echo "None found!";
-      dotail();
-    }
-    
-//echo "QRY was $qry<p>";
 
     $Sent_Count = 0;
     $StartAt = (isset($_POST['STARTAT']) ? ($_POST['STARTAT']?$_POST['STARTAT']:0) : 0);
 
     $EndAt = $StartAt +5;// Batch size 5 for testing 20 in real life  // TODO review that
 
-    while ($Trad = $res->fetch_assoc()) {
+    while ($Trad = ($TRM? Get_Trader(array_shift($TR_List)) : $res->fetch_assoc())) {
       if ($Trad['Status'] != 0) continue;  //Remove dead/blocked traders
       if (!empty($ttt)) {
         $valid = 0;
@@ -147,6 +157,7 @@
       foreach ($Trade_States as $i=>$n) if (isset($_POST["Tr_State$i"] )) echo fm_hidden("Tr_State$i",$i);
       foreach ($Trade_Loc_Names as $i=>$n) if (isset($_POST["Tr_Loc$i"] )) echo fm_hidden("Tr_Loc$i",$i);
       foreach ($TradeTypeData as $i=>$td) if (isset($_POST["Tr_Type$i"] )) echo fm_hidden("Tr_Type$i",$i);
+      echo fm_hidden('Tr_List',$_REQUEST['Tr_List']);
       
       if (isset($_POST['JustList'])) echo fm_hidden('JustList',$_POST['JustList']);
       echo "<input type=submit name=MORE value='Next batch " . ($EndAt-1) . "'>\n";
