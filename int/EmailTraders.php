@@ -139,7 +139,7 @@
         if ($_POST['JustList'] ?? 0) {
           echo "Would Send to " . $Trad['SN'] . "<br>";
         } else {
-          if ($Trad['Tid'] != 681) { // Diagnostic code
+          if (0 && $Trad['Tid'] != 681) { // Diagnostic code
             echo "Caught in error doing " . $Trad['Tid'] . ' ' . $Trad['SN'] . "<p>";
             var_dump($_REQUEST);
             exit;
