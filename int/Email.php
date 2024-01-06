@@ -337,6 +337,9 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
           case 'HOST':
             $rep = Feature('HostURL');
             break;
+          case 'TOWN':
+            $rep = Feature('FestHomeName');
+            break;
           case 'ID':
             $rep = ($helperdata['id'] ?? 0);
             break;
