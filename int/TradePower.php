@@ -13,7 +13,7 @@
   $Trads = Gen_Get_All('TradePower');
   if (UpdateMany('TradePower','',$Trads,0)) $Trads=Gen_Get_All('TradePower');
 
-  echo "This is for Power.  Properties to be defined<p>\n";
+  echo "This is for Power.  Properties bit map of locns<p>\n";
 
   
   $coln = 0;

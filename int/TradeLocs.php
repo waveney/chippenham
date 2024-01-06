@@ -15,6 +15,8 @@
   
   echo "Set No List to exclude from venues on Show Trade<p>";
   
+  echo "Power Offset - Bit number for power properties<p>";
+  
   $Locs=Get_Trade_Locs(1);
   
 
@@ -36,6 +38,8 @@
   echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'T')>Days</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Artisan Msgs</a>\n";
   echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'T')>Invoice Code</a>\n";
+  echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Power Offset</a>\n";
+
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Map</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Map Scale</a>\n";
@@ -54,6 +58,7 @@
     echo "<td class=FullD hidden>" . fm_select($Trade_Days,$t,"Days",0,'',"Days$i");
     echo "<td>" . fm_checkbox("",$t,'ArtisanMsgs','',"ArtisanMsgs$i");
     echo "<td class=FullD hidden>" . fm_select($InvCodes,$t,'InvoiceCode',1,'',"InvoiceCode$i");
+    echo fm_number1('',$t,'PowerOffset',' class=FullD hidden','',"PowerOffset$i");
     echo fm_text1('',$t,'Notes',1,'','',"Notes$i");
     echo fm_text1('',$t,'MapImage',1,'','',"MapImage$i");
     echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale$i");
@@ -71,6 +76,7 @@
   echo "<td class=FullD hidden>" . fm_select2($Trade_Days,0,'Days0');
   echo "<td><input type=checkbox name=ArtisanMsgs0>";
   echo "<td class=FullD hidden>" . fm_select($InvCodes,$t,'InvoiceCode',1,'',"InvoiceCode0");
+  echo fm_number1('',$t,'PowerOffset',' class=FullD hidden','',"PowerOffset0");
   echo "<td><input type=text name=Notes0 >";
   echo "<td><input type=text name=MapImage0 >";
   echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale0"); 

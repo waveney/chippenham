@@ -186,9 +186,24 @@
       echo Put_Trade_Year($Trady);
       exit;
     }
-    if (!$Trady) {
+    
+    $TradFlds = table_fields('Trade');
+    if (isset($TradFlds[$field])) {
+      $Trad[$field] = $Value;
+      echo Put_Trader($Trad);
+      exit;    
+    }
+    
+    $TradyFlds = table_fields('TradeYear');     
+    if ($Trady) {
+      if (isset($TradyFlds[$field])) {
+        $Trady[$field] = $Value;
+        echo Put_Trade_Year($Trady);
+        exit;
+      }
+    } else {
       $flds = table_fields('TradeYear');
-      if (isset($flds[$field])) {
+      if (isset($TradyFlds[$field])) {
         $Trady = Default_Trade($id);
         $Trady[$field] = $Value;
         echo Put_Trade_Year($Trady);
