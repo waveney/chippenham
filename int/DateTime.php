@@ -229,6 +229,11 @@ function Days2Festival() {
   if ($Days) return $Days;
   $now = time();
   
+  if (!isset($YEARDATA['MonthFri'])) {
+    debug_print_backtrace();
+    return 0;
+  }
+
   $your_date = strtotime("$PLANYEAR -" . $YEARDATA['MonthFri'] . "-" . ($YEARDATA['DateFri'] + $YEARDATA['FirstDay']));
   $datediff = $your_date - $now;
 

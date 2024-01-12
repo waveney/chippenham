@@ -7,7 +7,7 @@
 
   global $PLANYEAR;
 
-//var_dump($PLANYEAR,$_POST);  
+//var_dump($_POST);  
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
@@ -259,7 +259,6 @@
 
   case 'Volunteers':
     if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {        
-//var_dump($id, $field, $Value, $mtch);
       $vfld = $mtch[1];
       $Catid = $mtch[2];
       $Year = $mtch[3];
@@ -272,6 +271,7 @@
         case 'Other2':
         case 'Other3':
         case 'Other4':
+        case 'VolOrder' :
           $VCY = Gen_Get_Cond1('VolCatYear'," Volid=$id AND Catid=$Catid AND Year=$Year ");
           if (!$VCY) $VCY = ['Volid'=>$id,'CatId'=>$Catid,'Year'=>$Year, 'Props'=>0];
           $VCY[$vfld] = $Value;

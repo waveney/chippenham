@@ -187,7 +187,7 @@ function fm_checkbox($Desc,&$data,$field,$extra='',$field2='',$split=0,$extra2='
 function fm_select2(&$Options,$Curr,$field,$blank=0,$selopt='',$field2='',$Max=0) {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
-  $str = "<select name=$field2 $selopt id=$field2 $ADDALL ";
+  $str = "<select name='$field2' $selopt id='$field2' $ADDALL ";
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
   $str .= ">";
   if ($blank) {
