@@ -818,7 +818,7 @@ function CompAdd($Volid,$Err='',$View=0) {
 function Vol_Validate(&$Vol) {
   global $YEARDATA,$VolCats,$YEAR;
   
-  $Num1st = $Num2nd = 0;
+  $Num1st = $Num2nd = $Num3rd = 0;
 
   if (($l = strlen($Vol['SN'])) < 2 || $l > 40) return "Please give your name";
   if (($l = strlen($Vol['Email'])) < 6 || $l > 40) return "Please give your Email";
@@ -847,13 +847,16 @@ function Vol_Validate(&$Vol) {
           $Num2nd = 1;
         } else {
           return "You have more than 1 Second preferences";
-        }
-      } 
+        } 
+      } if ($VCY['VolOrder'] == 3) {
+        $Num3rd++;
+      }
     }
   }
   if (Feature('VolPhoto') == 2 && empty($Vol['Photo'])) return "Please supply a photo of yourself so we can print personal volunteer badges.";
 
   if ($Clss == 0) return "Please select at least one team";
+  if (($Clss > 1) && (($Num1st+$Num2nd+$Num3rd) < $Clss)) return "Please prioritise your teams, thankyou.";
 
   $Avail=0;
   $VY = Get_Vol_Year($Vol['id']);
