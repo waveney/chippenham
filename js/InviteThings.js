@@ -89,9 +89,10 @@ function MProformaSend(name,snum,label,link,AlwaysBespoke=0) { // Actions on Per
   } 
 }
 
-function ProformaVolSend(name,id) {
-  $("#Debug").load("sendVproforma.php", "I=" + id + "&N=" + name ); 
-  $('#VolSendEmail' + id).hide();
+function ProformaVolSend(name,id,code) {
+  $("#Debug").load("sendVproforma.php", "I=" + id + "&N=" + name + "&C=" + code); 
+  $('#VolSendEmail' + code + id).hide();
+  $('#MessMap' +id).load("setvfields.php", "I=" + id + "&O=VYM" + "&C=" + code);
 }
 
 function Add_Bespoke() {

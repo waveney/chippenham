@@ -33,6 +33,9 @@ define('VOL_Other4',0x800);
 define('VOL_NoList',0x20000);
 define('VOL_Tins',0x40000);
 
+// Button Name, Vol_Button
+$EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','S'=>'Stew1','M'=>'Note2'];
+
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
 
 function Get_Campsites($Restrict=0,$Comments=1) {
@@ -53,7 +56,7 @@ function Get_Campsites($Restrict=0,$Comments=1) {
 }
 
 function Get_Vol_Details(&$vol) {
-  global $VolCats,$Relations,$YEARDATA,$YEAR,$PLANYEAR,$YearStatus,$AgeCats,$CampType;
+  global $VolCats,$Relations,$YEARDATA,$YEAR,$PLANYEAR,$YearStatus,$AgeCats,$CampType,$VolOrders;
 // var_dump($vol);
   $Volid = $vol['id'];
   $Body = "\nName: " . $vol['SN'] . "<br>\n";
@@ -87,6 +90,7 @@ function Get_Vol_Details(&$vol) {
       $VCY = Get_Vol_Cat_Year($Volid,$Catid,$PLANYEAR);
       if (!empty($VCY['id']) && ($VCY['Status'] > 0)) {
         $Body .= "<p>Team: " . $Cat['Name'] . "<br>\n";
+        if ($VCY['VolOrder']??0) $Body .= "Team Preference: " . $VolOrders[$VCY['VolOrder']];
         if (($cp & VOL_Likes)  && !empty($VCY['Likes'])) $Body .= "Like: " . $VCY['Likes'] . "<br>\n";
         if (($cp & VOL_Dislikes)  && !empty($VCY['Dislikes'])) $Body .= "Dislike: " . $VCY['Dislikes'] . "<br>\n";
         if (($cp & VOL_Exp)  && !empty($VCY['Experience'])) $Body .= "Experience: " . $VCY['Experience'] . "<br>\n";
@@ -456,6 +460,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
     if (Access('SysAdmin')) {
       echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$PLANYEAR");
+      echo fm_text('Messages', $VYear,'MessMap');
       echo "<tr><td>Link:<td colspan=4>" . htmlspec(Vol_Details('INNERLINK',$Vol)) . "<br>" . Vol_Details('LINK',$Vol);
     }
   echo "</table></div><p>";    
@@ -952,7 +957,7 @@ function CSV_Vols() {
 
 
 function List_Vols() {
-  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus,$VolOrders;
+  global $YEAR,$db,$VolCats,$YEARDATA,$PLANYEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus,$VolOrders,$EmailMsgs;
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Applications</button>" .
        "<button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Curent Aplications</button> ";
   echo "<button class='floatright AvailD' onclick=\"($('.AvailD').toggle())\">Hide Availability</button>" .
@@ -977,7 +982,8 @@ function List_Vols() {
   $VolMgr = Access('Committee','Volunteers');
   echo "Click on name for full info<p>";
   echo "A <b>?</b> for a team, means they have volunteered for this team, but not yet been accepted.<p>";
-  echo "Where it says EXPAND under availability, means there is a longer entry - click on the persons name or the expand button to see more info on their availabilty<p>";
+  echo "Where it says EXPAND under availability, means there is a longer entry " .
+       "- click on the persons name or the expand button to see more info on their availabilty<p>";
   
   if ($VolMgr ) echo "To reject an application or do a partial acceptance, first click on their name.<p>";
 
@@ -1010,6 +1016,7 @@ function List_Vols() {
     echo "<th class=AvailD><a href=javascript:SortTable(" . $coln++ . ",'T')>" . FestDate($day,'s') . "</a>\n";
   }
   if (Access('Committee','Volunteers')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";
+  if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Msgs</a>\n";
   echo "</thead><tbody>";
 
   $res=$db->query("SELECT * FROM Volunteers WHERE Status=0 ORDER BY SN");
@@ -1024,6 +1031,7 @@ function List_Vols() {
     $Form = 0;
     $str = '';
     $VClass = 'Volunteer ';
+    $Stew = 0;
 
     if (isset($VY['id']) && $VY['id']>0) {
       $year = $PLANYEAR;
@@ -1038,6 +1046,7 @@ function List_Vols() {
       if (($Cat['Props'] & VOL_USE) && ($Cat['Props'] != VOL_NoList)) {
         $VCY = Get_Vol_Cat_Year($Vol['id'],$Cat['id'],$year);
         $str .= "<td>" . $Cat_Status_Short[$VCY['Status']]; 
+        if (($Cat['Name'] == 'Stewarding') && $VCY['Status']) $Stew = 1;
         if ($VCY['VolOrder'] ?? 0) $str .= " " . $VolOrders[$VCY['VolOrder']][0];
         if (($CatStatus[$VCY['Status']] == 'Applied') && $VolMgr) $Form = 1;
         if ( $CatStatus[$VCY['Status']] == 'Confirmed') {
@@ -1099,11 +1108,40 @@ function List_Vols() {
       echo "<td>";
       if ($Form) {
         echo "<b><a href=Volunteers?ACTION=Accept&id=$id>Accept</a></b>\n";
-
-//        echo "<input type=submit name=Accept value=Accept></form>\n";
+        
       }
-      if (Access('SysAdmin') && Feature('VolEmailAll')) 
-          echo  " <button type=button id=VolSendEmail$id class=ProfButton onclick=ProformaVolSend('Vol_Email1',$id,'Email1','SendVolEmail')>Email1</button>";
+      if (Access('SysAdmin')) {
+        $Mmap = $VY['MessMap'] ?? '';
+        if (($year == $PLANYEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U'))) {
+          $Msg = $EmailMsgs['U'];
+          echo  " <button type=button id=VolSendEmailU$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'U')>$Msg</button>";
+        }
+        
+        if (($year != $PLANYEAR) && (!strstr($Mmap,'N')) && (!strstr($Mmap,'S'))) {
+          if ($Stew) {
+            $Msg = $EmailMsgs['S'];
+            echo  " <button type=button id=VolSendEmailS$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'S')>$Msg</button>";
+          } else {
+            $Msg = $EmailMsgs['N'];
+            echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'N')>$Msg</button>";
+          }
+        }
+
+/*        
+        if (($VY['Status'] != 0) && (!strstr($VY['MessMap'],'S'))) {
+          echo  " <button type=button id=VolSendEmailS$id class=ProfButton onclick=ProformaVolSend('Vol_" . $EmailMsgs['S'] .  
+                "',$id," . $EmailMsgs['S'] . ",'SendVolEmail')>" . $EmailMsgs['S'] . "</button>";
+        }
+        
+        if (($VY['Status'] != 0) && (!strstr($VY['MessMap'],'M'))) {
+          echo  " <button type=button id=VolSendEmailM$id class=ProfButton onclick=ProformaVolSend('Vol_" . $EmailMsgs['M'] .  
+                "',$id," . $EmailMsgs['M'] . ",'SendVolEmail')>" . $EmailMsgs['M'] . "</button>";
+        }*/
+      }
+//   $EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Note1','S'=>'Stew1','M'=>'Note2'];            
+//       if && Feature('VolEmailAll')) 
+//          echo  " <button type=button id=VolSendEmail$id class=ProfButton onclick=ProformaVolSend('Vol_Email1',$id,'Email1','SendVolEmail')>Email1</button>";
+      echo "<td id=MessMap$id>" . ($VY['MessMap'] ?? '');
     }
   }
 
@@ -1113,7 +1151,7 @@ function List_Vols() {
     foreach ($VolCats as &$Cat) if ($Cat['Props'] & VOL_USE) echo "<td>" . $Cat['Total'];
   
   
-  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=8 class=NotSide><textarea id=Debug></textarea>";  
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=20 class=NotSide><textarea id=Debug></textarea>";  
  
   echo "</tbody></table></div>\n";
 

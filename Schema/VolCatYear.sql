@@ -11,5 +11,6 @@ CREATE TABLE `VolCatYear` (
   `Other3` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Other4` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Experience` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `VolOrder` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -26,6 +26,17 @@ case 'VC':
     echo "<span class=Err>ERROR - already Collected " . date("D M j G:i:s",$VY['TicketsCollected']) . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
   }
   exit;
+  
+case 'VYM':
+  $VY = Get_Vol_Year($id);
+  if (isset($VY['MessMap'])) {
+    $VY['MessMap'] .= $_GET['C'];
+  } else {
+    $VY['MessMap'] = $_GET['C'];  
+  }
+  Put_Vol_Year($VY);
+  echo $VY['MessMap'];
+  exit;
     
 case 'VNC':
   $VY = Get_Vol_Year($id);

@@ -7,6 +7,7 @@ global $PLANYEAR;
 
 $id = $_GET['I'];
 $proforma = $_GET['N'];
+$Code = $_GET['C'];
 
 $Vol = Get_Volunteer($id);
 $subject = Feature('FestName') . " $PLANYEAR and " . $Vol['SN'];
