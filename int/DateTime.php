@@ -226,18 +226,19 @@ function Parse_DateInputs(&$feilds,$All=0) {
 function Days2Festival() {
   global $YEARDATA,$YEAR,$PLANYEAR,$SHOWYEAR;
   static $Days;
-  if ($Days) return $Days;
+  if ($Days) return ($Days);
   $now = time();
   
   if (!isset($YEARDATA['MonthFri'])) {
     debug_print_backtrace();
+    exit;
     return 0;
   }
 
-  $your_date = strtotime("$PLANYEAR -" . $YEARDATA['MonthFri'] . "-" . ($YEARDATA['DateFri'] + $YEARDATA['FirstDay']));
+  $your_date = strtotime("$PLANYEAR-" . $YEARDATA['MonthFri'] . "-" . ($YEARDATA['DateFri'] + $YEARDATA['FirstDay']));
   $datediff = $your_date - $now;
 
-  return $Days = round($datediff / (60 * 60 * 24));
+  return $Days = round($datediff/ (60 * 60 * 24));
 }
 
 

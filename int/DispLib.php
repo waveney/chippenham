@@ -277,6 +277,7 @@ function Expand_Many(&$Art,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx
   global $db,$YEAR,$PLANYEAR,$Coming_Type,$ShownInArt;
   if ($Year== 0) $Year=$YEAR;
   $D2F = Days2Festival();
+
   $now = time();
   $Art['SN'] = $Name;
   if ($LineUp) $Art['Link'] = "/LineUp?T=$LineUp";
@@ -290,7 +291,7 @@ function Expand_Many(&$Art,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx
     }
     
     if (($D2F > 0) || ($Year == $YEAR+1) ) {
-      $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " already confirmed for $Year.";
+      $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " $D2F already confirmed for $Year.";
     } else {
       $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?"":"s") . " performed in $Year.";       
     }
@@ -362,10 +363,20 @@ function Expand_Special(&$Art,$future=0) {
     $NYear = substr($YEARDATA['NextFest'],0,4);
 
     Expand_Many($Art,'((s.IsASide AND y.Coming=' . $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsCeilidh=1)))', 
-       'Performer', "Next Years Festival - $NYear",0,$future,$YEAR+($YEAR==$PLANYEAR?0:1),"We are already planning next years festival from " . 
+       'Performer', "Next Years Festival - $NYear",0,$future,$YEAR+($YEAR==$PLANYEAR?0:1),"We are already planning next year's festival from " . 
         "$NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) . "</sup> $NMonth $NYear and " );
     return;
   
+  case '@ThisYear':
+    global $YEARDATA,$Months;
+    $From = ($YEARDATA['DateFri']+$YEARDATA['FirstDay']);
+    $To = ($YEARDATA['DateFri']+$YEARDATA['LastDay']);
+    $Month = $Months[$YEARDATA['MonthFri']];
+
+    Expand_Many($Art,'((s.IsASide AND y.Coming=' . $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsCeilidh=1)))', 
+       'Performer', "This Years Festival",0,$future,$YEAR,"We are already planning this year's festival from " . 
+        "$From<sup>" . ordinal($From) . "</sup> - $To<sup>" . ordinal($To) . "</sup> $Month $PLANYEAR and " );
+    return;
 
   case '@Perf': // Just this performer
     $id = $words[1];

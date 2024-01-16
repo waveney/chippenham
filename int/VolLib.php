@@ -840,13 +840,13 @@ function Vol_Validate(&$Vol) {
         if ($Num1st == 0) {
           $Num1st = 1;
         } else {
-          return "You have more than 1 First preferences";
+          return "You have more than 1 First preferences.  (You may put more than one 3rd)";
         }
       } else if ($VCY['VolOrder'] == 2) {
         if ($Num2nd == 0) {
           $Num2nd = 1;
         } else {
-          return "You have more than 1 Second preferences";
+          return "You have more than 1 Second preferences.  (You may put more than one 3rd)";
         } 
       } if ($VCY['VolOrder'] == 3) {
         $Num3rd++;
@@ -856,7 +856,7 @@ function Vol_Validate(&$Vol) {
   if (Feature('VolPhoto') == 2 && empty($Vol['Photo'])) return "Please supply a photo of yourself so we can print personal volunteer badges.";
 
   if ($Clss == 0) return "Please select at least one team";
-  if (($Clss > 1) && (($Num1st+$Num2nd+$Num3rd) < $Clss)) return "Please prioritise your teams, thankyou.";
+  if (($Clss > 1) && (($Num1st+$Num2nd+$Num3rd) < $Clss)) return "Please prioritise your teams (You may put more than one 3rd).";
 
   $Avail=0;
   $VY = Get_Vol_Year($Vol['id']);
