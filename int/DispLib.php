@@ -291,7 +291,7 @@ function Expand_Many(&$Art,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx
     }
     
     if (($D2F > 0) || ($Year == $YEAR+1) ) {
-      $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " $D2F already confirmed for $Year.";
+      $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " already confirmed for $Year.";
     } else {
       $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?"":"s") . " performed in $Year.";       
     }
