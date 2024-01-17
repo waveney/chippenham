@@ -1126,7 +1126,7 @@ function List_Vols() {
 //            echo  " <button type=button id=VolSendEmailS$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'S')>$Msg</button>";
 //          } else {
             $Msg = $EmailMsgs['N'];
-//            echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'N')>$Msg</button>";
+            echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'N')>$Msg</button>";
 //          }
         }
 
