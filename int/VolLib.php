@@ -1121,13 +1121,13 @@ function List_Vols() {
         }
         
         if (($year != $PLANYEAR) && (!strstr($Mmap,'N')) && (!strstr($Mmap,'S'))) {
-          if ($Stew) {
-            $Msg = $EmailMsgs['S'];
-            echo  " <button type=button id=VolSendEmailS$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'S')>$Msg</button>";
-          } else {
+//          if ($Stew) {
+//            $Msg = $EmailMsgs['S'];
+//            echo  " <button type=button id=VolSendEmailS$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'S')>$Msg</button>";
+//          } else {
             $Msg = $EmailMsgs['N'];
-            echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'N')>$Msg</button>";
-          }
+//            echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'N')>$Msg</button>";
+//          }
         }
 
 /*        

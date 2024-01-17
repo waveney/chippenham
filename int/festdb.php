@@ -35,7 +35,7 @@ function Gen_Get($Table,$id, $idx='id') {
 
 function Gen_Put($Table, &$now, $idx='id') {
   global $db,$GAMEID;
-  if (isset($now[$idx])) {
+  if (!empty($now[$idx])) {
     $e=$now[$idx];
     $Cur = Gen_Get($Table,$e,$idx);
 

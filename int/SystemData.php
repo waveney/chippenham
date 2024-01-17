@@ -21,6 +21,8 @@
     echo "<tr>" . fm_text('Version Changed',$FESTSYS,'VersionDate') . "<td>Never edit";
   }
   echo "<tr>" . fm_textarea("Analytics code",$FESTSYS,'Analytics',3,3);
+  
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=6 class=NotSide><textarea id=Debug></textarea>";
   echo "</table></div>\n";
 
   echo "</form>\n";
