@@ -147,8 +147,7 @@ function Vol_Details($key,&$vol) {
     return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Access?t=v&i=" . $vol['id'] . "&k=" . $vol['AccessKey'] . "'><b>link</b></a>";
   case 'INNERLINK': return "https://" . $_SERVER['HTTP_HOST'] . "/int/Access?t=v&i=" . $vol['id'] . "&k=" . $vol['AccessKey'];
   
-  case 'FESTLINK' :
-  case 'WMFFLINK' : return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Volunteers?A=View&id=" . $vol['id'] . "'><b>link</b></a>";
+  case 'FESTLINK' : return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Volunteers?A=View&id=" . $vol['id'] . "'><b>link</b></a>";
   case 'VOLTEAM_ACCEPT' :
     $Accept = '';
     foreach ($VolCats as $Cat) {
@@ -1616,6 +1615,7 @@ function VolAction($Action,$csv=0) {
 
     echo "<h2>Thankyou for Volunteering in the past, you are no longer recorded</h2>";
     db_delete('Volunteers',$id);  
+    if ($Action != 'Delete') dotail();
     break;
 
   case 'Accept':
