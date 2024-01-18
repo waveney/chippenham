@@ -1034,6 +1034,7 @@ function List_Vols() {
     $str = '';
     $VClass = 'Volunteer ';
     $Stew = 0;
+    $CatTot = 0;
 
     if (isset($VY['id']) && $VY['id']>0) {
       $year = $PLANYEAR;
@@ -1056,7 +1057,7 @@ function List_Vols() {
           $Cat['Total']++;
           $Accepted++;
         }
-        
+        if ($VCY['Status']) $CatTot++;
         if ($Cat_Status_Short[$VCY['Status']]) $VClass .= " VolCat" . $Cat['id'];
       }
     }
@@ -1075,7 +1076,7 @@ function List_Vols() {
 //    var_dump($VY);
     $link = "<a href=Volunteers?A=" . ($VolMgr? "Show":"View") . "&id=$id>";
     echo "<tr class='altcolours $VClass " . ((($VY['Year'] != $PLANYEAR) || empty($VY['id']) || ($VY['Status'] == 2) || 
-          ($VY['Status'] == 4))?" FullD' hidden" : "'" ) . ">";
+          ($VY['Status'] == 4) || ($CatTot==0) )?" FullD' hidden" : "'" ) . ">";
 
     echo "<td>$link" . $Vol['SN'] . "</a>";
     if (Access('SysAdmin')) echo "<td>$id";
