@@ -217,9 +217,10 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
   if ($field2 == '') $field2=$field;
   $str = "";
   if ($tabs > 0) $str .= "<td $extra>"; 
-  if ($Desc) $str .= "$Desc:";
-  $str .= help($field) . "&nbsp;";
-  if ($tabs > 0) $str .= "<td $extra2>"; 
+  if ($Desc) { $str .= "$Desc:";
+    $str .= help($field) . "&nbsp;";
+    if ($tabs > 0) $str .= "<td $extra2>"; 
+  }
   if ($tabs < 0 ) $str .= "<br>";
   $done = 0;
   foreach($defn as $i=>$d) {

@@ -90,7 +90,7 @@ function Get_Vol_Details(&$vol) {
       $VCY = Get_Vol_Cat_Year($Volid,$Catid,$PLANYEAR);
       if (!empty($VCY['id']) && ($VCY['Status'] > 0)) {
         $Body .= "<p>Team: " . $Cat['Name'] . "<br>\n";
-        if ($VCY['VolOrder']??0) $Body .= "Team Preference: " . $VolOrders[$VCY['VolOrder']];
+        if ($VCY['VolOrder']??0) $Body .= "Team Preference: " . $VolOrders[$VCY['VolOrder']] . "<br>\n";
         if (($cp & VOL_Likes)  && !empty($VCY['Likes'])) $Body .= "Like: " . $VCY['Likes'] . "<br>\n";
         if (($cp & VOL_Dislikes)  && !empty($VCY['Dislikes'])) $Body .= "Dislike: " . $VCY['Dislikes'] . "<br>\n";
         if (($cp & VOL_Exp)  && !empty($VCY['Experience'])) $Body .= "Experience: " . $VCY['Experience'] . "<br>\n";
@@ -227,22 +227,12 @@ function VolForm(&$Vol,$Err='',$View=0) {
   $CopyList = ['t','i','ACTION','k','id','A','FORCE'];
   echo "<form method=post action=Volunteers?M>";
   foreach ($CopyList as $F) if (isset($_REQUEST[$F])) echo fm_hidden($F,$_REQUEST[$F]);
-/*
-    foreach ($_REQUEST as $K=>$V) {
-      if ($K != 'M') {
-        if (preg_match('/_F_(.*)/',$K,$Mtch)) {
-          $_POST[$Mtch[1]] = $_REQUEST[$Mtch[1]] = $V;
-          echo fm_hidden("$K",$V);          
-        } else if (strlen($K) > 2) {
-          echo fm_hidden("_F_$K",$V);
-        } else {
-          echo fm_hidden("$K",$V);        
-        }
-      }
-    }
-    */
-    echo "<input type=submit style='font-size:12pt' value='Switch to: Mobile Friendly Version'>";
+  echo "<input type=submit style='font-size:12pt' value='Switch to: Mobile Friendly Version'>";
   echo "</form>";
+
+  if ($VolMgr) {
+    echo "<h2><a class=floatright href=Volunteers?A=Show&id=$Volid&FORCE>As Seen by the Volunteer</a></h2>";
+  }
   
   $OVols = OtherVols($Vol);
   if ($OVols) {
@@ -281,6 +271,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     echo "<tr>" . fm_text('Phone(s)',$Vol,'Phone',4);
     echo "<tr>" . fm_textarea("Address", $Vol,'Address',3,3);
     echo "<tr>" . fm_Radio("Age range",$AgeCats,$Vol,'Over18',"",1). "<td colspan=3>All volunteers need to be over 18, a few roles need over 21.";
+    if ($VolMgr) echo " <span class=NotSide>" . fm_checkbox("Allow Underage",$Vol,'AllowUnder') . "</span>";
     $Photo = Feature('VolPhoto');
     if ($Photo) echo "<tr rowspan=4 colspan=4 height=80><td>" . ($Photo == 1 ? 'Photo, not essential yet' : 'Photo') .
         fm_DragonDrop(1,'Photo','Volunteer',$Volid,$Vol,1,'',1,'','Photo');
@@ -430,8 +421,8 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
      echo "\n<tr><td colspan=5><h3><center>Part 4: Anything else for $PLANYEAR</center></h3>";
     if (Feature('Vol_Children')) {
-      echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their ages)",$VYear,'Children',4,'','',"Children::$PLANYEAR");
-      echo "<tr>" . fm_text("Free Youth tickets (11 to 17 - please give their ages)",$VYear,'Youth',4,'','',"Youth::$PLANYEAR");
+      echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their names and ages)",$VYear,'Children',4,'','',"Children::$PLANYEAR");
+      echo "<tr>" . fm_text("Free Youth tickets (11 to 17 - please give their names and ages)",$VYear,'Youth',4,'','',"Youth::$PLANYEAR");
       if (Access('SysAdmin') || (isset($VYear['Adults']) && $VYear['Adults'] > 1)) echo "<tr>" . fm_text("Adults",$VYear,'Adults',4,'','',"Adults::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
@@ -457,7 +448,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       echo fm_text1("Tickets Collected", $VYear,'TicketsCollected') . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
     }
 
-    if (Access('SysAdmin')) {
+    if (Access('Internal')) {
       echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$PLANYEAR");
       echo fm_text('Messages', $VYear,'MessMap');
       echo "<tr><td>Link:<td colspan=4>" . htmlspec(Vol_Details('INNERLINK',$Vol)) . "<br>" . Vol_Details('LINK',$Vol);
@@ -497,22 +488,12 @@ function VolFormM(&$Vol,$Err='',$View=0) {
   $CopyList = ['t','i','ACTION','k','id','A','FORCE'];
   echo "<form method=post action=Volunteers>";
   foreach ($CopyList as $F) if (isset($_REQUEST[$F])) echo fm_hidden($F,$_REQUEST[$F]);
-/*
-  echo "<form method=post action=Volunteers>";
-    foreach ($_REQUEST as $K=>$V) {
-      if ($K != 'M') {
-        if (preg_match('/_F_(.*)/',$K,$Mtch)) {
-          $_POST[$Mtch[1]] = $_REQUEST[$Mtch[1]] = $V;
-          echo fm_hidden("$K",$V);          
-        } else if (strlen($K) > 2) {
-          echo fm_hidden("_F_$K",$V);
-        } else {
-          echo fm_hidden("$K",$V);
-        }
-      }
-    }*/
-    echo "<input type=submit style='font-size:12pt' value='Switch to: Computer Friendly Version'>";
+  echo "<input type=submit style='font-size:12pt' value='Switch to: Computer Friendly Version'>";
   echo "</form>";
+
+  if ($VolMgr) {
+    echo "<h2><a class=floatright href=Volunteers?A=Show&M&id=$Volid&FORCE>As Seen by the Volunteer</a></h2>";
+  }
 
   $OVols = OtherVols($Vol);
   if ($OVols) {
@@ -558,6 +539,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
     echo "<tr>" . fm_textarea("Address", $Vol,'Address',3,-3); //fm_text('Address',$Vol,'Address',-2);
 
     echo "<tr><td>" . fm_radio("Age range",$AgeCats,$Vol,'Over18','',-1) . "<br>All volunteers need to be over 18, a few roles need over 21.";
+    if ($VolMgr) echo " <span class=NotSide>" . fm_checkbox("Allow Underage",$Vol,'AllowUnder') . "</span>";
     $Photo = Feature('VolPhoto');
     if ($Photo) {
       echo "<tr><td>" . ($Photo == 1 ? 'Photo, not essential yet' : 'Photo');
@@ -823,7 +805,7 @@ function Vol_Validate(&$Vol) {
   if (($l = strlen($Vol['Email'])) < 6 || $l > 40) return "Please give your Email";
   if (($l = strlen($Vol['Phone'])) < 6 || $l > 40) return "Please give your Phone number(s)";
   if (($l = strlen($Vol['Address'])) < 10 || $l > 100) return "Please give your Address";
-  if (!isset($Vol['Over18']) || !$Vol['Over18']) return "Please confirm you are over 18";
+  if (!isset($Vol['AllowUnder'])) if (!isset($Vol['Over18']) || !$Vol['Over18']) return "Please confirm you are over 18";
 //  if (strlen($Vol['Birthday']) < 2) return "Please give your age";
 
   $Clss=0;
@@ -832,7 +814,8 @@ function Vol_Validate(&$Vol) {
     $Clss++;
     if ($VCY['CatId'] == 0) { /* var_dump($VCY);*/ continue; };
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_NeedDBS) && empty($Vol['DBS'])) return $VolCats[$VCY['CatId']]['Name'] . " requires DBS";
-    if (($VolCats[$VCY['CatId']]['Props'] & VOL_Over21) && $Vol['Over18'] <2) return $VolCats[$VCY['CatId']]['Name'] . " requires you to be over 21";
+    if (!isset($Vol['AllowUnder']) && ($VolCats[$VCY['CatId']]['Props'] & VOL_Over21) && $Vol['Over18'] <2) 
+      return $VolCats[$VCY['CatId']]['Name'] . " requires you to be over 21";
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_Money) && $Vol['Money'] != 1) return $VolCats[$VCY['CatId']]['Name'] . " requires you to be handle money";
     if ($VCY['VolOrder']) {
       if ($VCY['VolOrder'] == 1) {
@@ -987,7 +970,8 @@ function List_Vols() {
   echo "Where it says EXPAND under availability, means there is a longer entry " .
        "- click on the persons name or the expand button to see more info on their availabilty<p>";
   
-  if ($VolMgr ) echo "To reject an application or do a partial acceptance, first click on their name.<p>";
+  if ($VolMgr ) echo "To Accept for just one team click on the <button class=AcceptButton >A</button> in the list.<p>" .
+                     "To reject an application or accept for many teams, first click on their name.<p>";
 
   $Show['ThingShow'] = 0;
   echo "<div class=floatright ><b>" . fm_radio("Show",$ShowCats,$Show,'ThingShow',' onchange=VolListFilter()',1,'','',$ShowCols)  . "</b></div>";
@@ -1017,8 +1001,10 @@ function List_Vols() {
   for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {
     echo "<th class=AvailD><a href=javascript:SortTable(" . $coln++ . ",'T')>" . FestDate($day,'s') . "</a>\n";
   }
-  if (Access('Committee','Volunteers')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";
-  if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Msgs</a>\n";
+  if (Access('SysAdmin')) {
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Msgs</a>\n";
+  }
   echo "</thead><tbody>";
 
   $res=$db->query("SELECT * FROM Volunteers WHERE Status=0 ORDER BY SN");
@@ -1045,13 +1031,16 @@ function List_Vols() {
       }
     }
 
-    foreach ($VolCats as &$Cat) {
+    foreach ($VolCats as $catid=>&$Cat) {
       if (($Cat['Props'] & VOL_USE) && ($Cat['Props'] != VOL_NoList)) {
         $VCY = Get_Vol_Cat_Year($Vol['id'],$Cat['id'],$year);
-        $str .= "<td>" . $Cat_Status_Short[$VCY['Status']]; 
+        $str .= "<td id='Wanted$id" . "CAT$catid'>" . $Cat_Status_Short[$VCY['Status']]; 
         if (($Cat['Name'] == 'Stewarding') && $VCY['Status']) $Stew = 1;
         if ($VCY['VolOrder'] ?? 0) $str .= " " . $VolOrders[$VCY['VolOrder']][0];
-        if (($CatStatus[$VCY['Status']] == 'Applied') && $VolMgr) $Form = 1;
+        if (($VY['Status'] == 1) && ($CatStatus[$VCY['Status']] == 'Applied') && $VolMgr) {
+          $Form = 1;
+          $str .= "<button type=button id='Accept:$id:$catid' class='AcceptButton Accept$id' onclick=AcceptTeam($id,$catid)>A</button>";
+        }
         if ( $CatStatus[$VCY['Status']] == 'Confirmed') {
 
           $Cat['Total']++;
@@ -1088,7 +1077,7 @@ function List_Vols() {
       Put_Vol_Year($VY);
     }
     
-    echo "<td class=smalltext>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . 
+    echo "<td class=smalltext id=YearStatus$id>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" . 
       $YearStatus[$VY['Status']] . "</span>"):'');
       if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
 
@@ -1107,13 +1096,11 @@ function List_Vols() {
       if (isset($VY[$av])) echo ((strlen($VY[$av])<12)? $VY[$av] : ($link . "Expand</a>")) . "\n";
     }
     
-    if ($VolMgr) {
+    if (Access('SysAdmin')) {
       echo "<td>";
       if ($Form) {
-        echo "<b><a href=Volunteers?ACTION=Accept&id=$id>Accept</a></b>\n";
-        
+        echo "<b><a href=Volunteers?ACTION=Accept&id=$id class=Accept$id'>Accept All</a></b>\n";
       }
-      if (Access('SysAdmin')) {
         $Mmap = $VY['MessMap'] ?? '';
         if (($year == $PLANYEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U'))) {
           $Msg = $EmailMsgs['U'];
@@ -1130,20 +1117,6 @@ function List_Vols() {
 //          }
         }
 
-/*        
-        if (($VY['Status'] != 0) && (!strstr($VY['MessMap'],'S'))) {
-          echo  " <button type=button id=VolSendEmailS$id class=ProfButton onclick=ProformaVolSend('Vol_" . $EmailMsgs['S'] .  
-                "',$id," . $EmailMsgs['S'] . ",'SendVolEmail')>" . $EmailMsgs['S'] . "</button>";
-        }
-        
-        if (($VY['Status'] != 0) && (!strstr($VY['MessMap'],'M'))) {
-          echo  " <button type=button id=VolSendEmailM$id class=ProfButton onclick=ProformaVolSend('Vol_" . $EmailMsgs['M'] .  
-                "',$id," . $EmailMsgs['M'] . ",'SendVolEmail')>" . $EmailMsgs['M'] . "</button>";
-        }*/
-      }
-//   $EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Note1','S'=>'Stew1','M'=>'Note2'];            
-//       if && Feature('VolEmailAll')) 
-//          echo  " <button type=button id=VolSendEmail$id class=ProfButton onclick=ProformaVolSend('Vol_Email1',$id,'Email1','SendVolEmail')>Email1</button>";
       echo "<td id=MessMap$id>" . ($VY['MessMap'] ?? '');
     }
   }
@@ -1484,7 +1457,7 @@ function Send_Accepts($Vol) {
 }
 
 function VolAction($Action,$csv=0) {
-  global $PLANYEAR,$VolCats,$M;
+  global $PLANYEAR,$VolCats,$M,$YearColour,$YearStatus;
 
   if ($csv == 0) {
     dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css",'/js/InviteThings.js' ]);
@@ -1619,7 +1592,7 @@ function VolAction($Action,$csv=0) {
     if ($Action != 'Delete') dotail();
     break;
 
-  case 'Accept':
+  case 'Accept': // All
     $Vol = Get_Volunteer($id = $_REQUEST['id']);
     
     $Accepted = 0;
@@ -1642,6 +1615,19 @@ function VolAction($Action,$csv=0) {
     List_Vols();
     break;
 
+  case 'Accept1':
+    $Vol = Get_Volunteer($id = $_REQUEST['id']);
+    $Catid = $_REQUEST['Catid'];
+    $VY = Get_Vol_Year($Vol['id'],$PLANYEAR);
+    $VCY = Get_Vol_Cat_Year($Vol['id'],$Catid,$PLANYEAR);
+    $VCY['Status'] = 3; // Accepted
+    Put_Vol_Cat_Year($VCY);
+    $VY['Status'] = 3; // Accepted at least once
+    Put_Vol_Year($VY);
+    Send_Accepts($Vol);
+    echo "<span style='background:" . $YearColour[$VY['Status']] . ";'>" . $YearStatus[$VY['Status']] . "</span>" .
+         "<br>" . date('d/n/Y',$VY['SubmitDate']);
+    return;
 
   case 'Send Updates':
     $Vol = Get_Volunteer($id = $_REQUEST['id']);

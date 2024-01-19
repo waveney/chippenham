@@ -7,6 +7,7 @@ $Trade_State = array_flip($Trade_States);
 //$Trade_StateClasses = array('TSNotSub','TSDecline','-TSRefunded','TSCancel','TSSubmit','TSInvite','TSConf','TSDeposit','TSInvoice','TSPaid','TSWaitList','TSRequote');
 // Put a - in front of colour to surpress it
 $Trade_State_Colours = ['white','red','grey','grey','yellow','lightyellow','cyan','lightblue','darkseagreen','LightGreen','#ffb380','#e6d9b2','Coral','Gold'];
+$Trade_State_Props = [3,0,0,0,3,2,2,2,0,0,3,2,0,0];
 
 $TS_Actions = array('Submit,Invite,Invite Better',
                 'Resend,Submit',
@@ -497,6 +498,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
 
 function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   global $YEAR,$PLANYEAR,$YEARDATA,$Trade_States,$Mess,$Action,$ADDALL,$Trade_State_Colours,$InsuranceStates,$Trade_State,$Trade_Days,$EType_States,$YEARDATA;
+  global $Trade_State_Props;
   $Trad = Get_Trader($Tid);
   if ($year==0) $year=$YEAR;
   $CurYear = date("Y");
@@ -521,8 +523,14 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo fm_hidden('Year',$year);
   if (isset($Trady['TYid']) && $Trady['TYid']) echo fm_hidden('TYid',$Trady['TYid']);
 
-  $TradeLocs = Get_Trade_Locs();
-
+  $TradeLocs = Get_Trade_Locs(0,'WHERE InUse=1');
+  $Trade_Prop = $Trade_State_Props[$Trady['BookingState'] ?? 0];
+  $TradePower = Gen_Get_All("TradePower");
+  $Powers = [];
+  foreach ($TradePower as $i=>$P) $Powers[$i] = $P['Name'] . (($P['Cost']??0)? " (£" . $P['Cost'] . ")" :'');
+  
+//  var_dump($Powers);
+  
   echo "<div class=tablecont><table width=90% border class=SideTable>\n";
   echo fm_hidden('Year',$year);
   if (isset($Trady['TYid'])) echo fm_hidden('TYid',$Trady['TYid']);
@@ -562,27 +570,59 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   
   if (Feature('TradeDays')) echo "<tr><td>Days:<td>" . fm_select($Trade_Days,$Trady,'Days');
   echo "<tr><td>Requested Pitch Sizes, <span class=DefaultPitch>" . Pitch_Size_Def($Trad['TradeType']) . "</span> is default" . Help('PitchSize');
-  if (Feature("TradePower")) echo "<td colspan=2>Power Requirements" . Help('Power') . "<br>3 Amps - Lighting, 13 Amps - 1 Kettle...";
-  if (isset($Trady['PitchLoc0']) && $Trady['PitchLoc0']) {
-    echo "<td>Location<td>Pitch Number";
+  
+  echo "<td>Location";
+  if ($Trade_Prop & 1) {
+    echo " Requested";
+  } else if ($Trady['PitchLoc0'] ?? 0) {
   } else {
-    echo "<td>Location (When Assigned)<td>Pitch Number";
+    echo " (When Assigned)";
   }
-  for ($i = 0; $i < 3; $i++) {
+  
+  if (Feature("TradePower")) echo "<td colspan=2>Power" . Help('Power');
+  if (Feature("TradeExtras")) echo "<td colspan=1>Extras" . Help('Extras');
+
+  echo "<td>Pitch Number";
+  
+/*  echo "<span hidden>"; // Power Options for each location
+  foreach ($TradeLocs as $TL) {
+    echo "<span id=TLBlock" . $TL['id'] . ">";
+    if ($TL['HasPower']) {
+      echo fm_select(
+    } 
+*/
+
+  for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
     $pwr = (isset($Trady["Power$i"])?$Trady["Power$i"]:0);
     echo "<tr>" . fm_text1("",$Trady,"PitchSize$i");
+    
+    if ($Mode) { // Festival
+      echo "<td class=NotCSide id=PowerFor$i>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1); //"class=NotCSide onchange(SelectPower($i))";
+      
+       
+    } else if ($Trade_Prop & 1) { // Change Pos
+      echo "<td>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1);    
+    } else if ($Trady['PitchLoc0'] ?? 0) {  // Assigned
+      echo "<td>" . $TradeLocs[$Trady["PitchLoc$i"]];
+    } else { // Not assigned
+      echo "<td>";
+    }
+    
     if (Feature("TradePower")) {
+      echo fm_radio('',$Powers,$Trady,"Power$i",' colspan=2',3); // Add actions to propgate cost 
+/*
       echo "<td colspan=2>None: <input type=radio name=PowerType$i value=0 onclick=PowerChange(0,$i) " . ($pwr==0?"checked ":"") . "> ";
       echo "My own Euro 4 Silent Generator: <input type=radio name=PowerType$i value=1 onclick=PowerChange(1,$i) " . ($pwr<0?"checked ":"") . "><br>";
       echo "<input type=radio name=PowerType$i hidden id=PowerTypeRequest$i value=2>Requested: <input type=number id=Power$i name=Power$i onchange=PowerChange(2,$i) " . 
           ($pwr>0?" value=" . $Trady["Power$i"] : "") . " min=0 max=1000>Amps";
+*/
     }
     if ($Mode) {
-      echo "<td class=NotCSide>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1,'class=NotCSide');
+
       echo fm_text1("",$Trady,"PitchNum$i",1,'class=NotCSide','class=NotCSide');
       if (isset($Trady["PitchLoc$i"]) && $Trady["PitchLoc$i"]) echo " <a href=TradeStandMap?l=" . $Trady["PitchLoc$i"] . ">Map</a>";
     } else {
-      echo "<td>";
+//      echo "<td>";
       if (isset($Trady["PitchLoc$i"])  && $Trady["PitchLoc$i"]) {
         echo $TradeLocs[$Trady["PitchLoc$i"]];
         echo fm_hidden("PitchLoc$i",$Trady["PitchLoc$i"]);
@@ -593,20 +633,23 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
       }
     }
   }
-  
-  include_once("InvoiceLib.php");
-  $Pay = Pay_Code_Find(1,$Tid);
-  if ($Pay && $Pay['State']==0) {
-    echo "<tr><td>Payment due for<td colspan=5><b>" . $Pay['Reason'] . "</b><br>Due " . date('j/n/Y',$Pay['DueDate']) . 
+
+  if (isset($Trady['Fee']) && $Trady['Fee'] > 0 ) {
+    include_once("InvoiceLib.php");
+    $Pay = Pay_Code_Find(1,$Tid);
+    if ($Pay && ($Pay['State']==0) && ($Trady)) {
+      echo "<tr><td>Payment due for<td colspan=5><b>" . $Pay['Reason'] . "</b><br>Due " . date('j/n/Y',$Pay['DueDate']) . 
         "<br>Please pay " . Print_Pence($Pay['Amount']) . " to:<br>" . 
         Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . "<p>Quote Reference: " .
         $Pay['Code'];
-  };
+    }
+  }
 
   
   echo "<tr>";
     if ($Mode) {
-      echo fm_text("Total Fee, put -1 for free",$Trady,'Fee',1,'class=NotCSide','class=NotCSide');
+      echo fm_text("Pitch Fee, put -1 for free",$Trady,'Fee',1,'class=NotCSide','class=NotCSide');
+      echo "<td>Total Fee:<td>" . ($Trady['Fee'] ?? 0) . "+ Power Cost ";
       echo fm_text("Paid so far",$Trady,'TotalPaid',1,'class=NotCSide','class=NotCSide');
     } else {
       echo "<td>Total Fee:<td>";

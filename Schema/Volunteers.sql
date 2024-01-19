@@ -6,6 +6,7 @@ CREATE TABLE `Volunteers` (
   `Address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `PostCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Over18` tinyint NOT NULL,
+  `AllowUnder` tinyint NOT NULL,
   `Birthday` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `ContactName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `ContactPhone` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,

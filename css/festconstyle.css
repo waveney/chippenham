@@ -887,6 +887,15 @@ button {
   font-size: 12px;
 }
 
+.AcceptButton {
+  border-width:2;
+  font-size:12px;
+  margin:0;
+  padding:0,0.5,0,0.5;
+  background:pink;
+  font-weight:bold;
+}
+
 .BespokeBorder {
   border-color:red;
 }

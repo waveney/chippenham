@@ -89,3 +89,12 @@ function VolListFilter() {
   })
 }
 
+function AcceptTeam(id,catid) {
+  // Call Volunteer with appropriate paras  
+  $("#YearStatus" + id).load("volaction.php", "A=Accept1&id=" + id + "&Catid=" + catid);
+  // Hide all A buttons $("[id^=jander]")
+  
+  $(".Accept" + id).hide();
+  $("#Wanted" + id + 'CAT' + catid).text('Y');
+}
+
