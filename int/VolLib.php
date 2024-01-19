@@ -11,7 +11,7 @@ $Relations = array('','Husband','Wife','Partner','Son','Daughter','Mother','Fath
 $YearStatus = ['Not Submitted','Submitted','Withdrawn','Confirmed','Rejected'];
 $YearColour = ['white','Yellow','white','lightgreen','Pink'];
 $CatStatus = ['No','Applied','Withdrawn','Confirmed','Rejected'];
-$Cat_Status_Short = ['','?','','Y',''];
+$Cat_Status_Short = ['','?','','<b>Y</b>',''];
 $AgeCats = ['Under 18','Over 18','Over 21'];
 $CampStatus = ['No','Yes, I am in a group of volunteers, another person is booking the space. e.g. Two people in a tent/van only need one tent/van space'];
 $VolOrders = ['','1st','2nd','3rd'];
@@ -328,12 +328,12 @@ function VolForm(&$Vol,$Err='',$View=0) {
         Put_Vol_Cat_Year($VCY);
       }
 
+      $cp = $Cat['Props'];
+      if ((!$VolMgr) && ($cp && VOL_NoList) && ($VCY['Status'] == 0)) continue;
+      
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
       $rows = 1;
-      $cp = $Cat['Props'];
-      
-      if (($cp & VOL_NoList) && !$VolMgr && ($VCY['Status'] == 0)) continue;
       
       $SName = preg_replace('/ /','',$Cat['Name']);
       $cls = "SC_$SName";
@@ -598,12 +598,12 @@ function VolFormM(&$Vol,$Err='',$View=0) {
         Put_Vol_Cat_Year($VCY);
       }
 
+      $cp = $Cat['Props'];
+      if ((!$VolMgr) && ($cp && VOL_NoList) && ($VCY['Status'] == 0)) continue;
+      
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
       $rows = 1;
-      $cp = $Cat['Props'];
-
-      if (($cp & VOL_NoList) && !$VolMgr && ($VCY['Status'] == 0)) continue;
       
       $SName = preg_replace('/ /','',$Cat['Name']);
       $cls = "SC_$SName";
@@ -1039,7 +1039,8 @@ function List_Vols() {
         if ($VCY['VolOrder'] ?? 0) $str .= " " . $VolOrders[$VCY['VolOrder']][0];
         if (($VY['Status'] == 1) && ($CatStatus[$VCY['Status']] == 'Applied') && $VolMgr) {
           $Form = 1;
-          $str .= "<button type=button id='Accept:$id:$catid' class='AcceptButton Accept$id' onclick=AcceptTeam($id,$catid)>A</button>";
+
+          $str .= " <button type=button id='Accept:$id:$catid' class='AcceptButton Accept$id' onclick=AcceptTeam($id,$catid)>A</button>";
         }
         if ( $CatStatus[$VCY['Status']] == 'Confirmed') {
 
