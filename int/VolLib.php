@@ -953,6 +953,8 @@ function List_Vols() {
 
   $ShowCats = ['All'];
   $ShowCols = ['white'];
+  $AllApps = ($_REQUEST['ALL'] ?? 0);
+  
   foreach ($VolCats as &$Cat) {
     if (($Cat['Props'] & VOL_USE) && ($Cat['Props'] != VOL_NoList)) {
       $ShowCats[$Cat['id']] = $Cat['Name'];
@@ -1083,7 +1085,7 @@ function List_Vols() {
       if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
 
     echo "<td class='smalltext FullD' hidden>" . ((isset($VLY['id']) && $VLY['id']>0)?("<span style='background:" . $YearColour[$VLY['Status']] . ";'>" . 
-      $YearStatus[$VY['Status']] . "</span>"):'');
+      $YearStatus[$VLY['Status']] . "</span>"):'');
       if (isset($VLY['id']) && $VLY['id']>0 && $VLY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VLY['SubmitDate']);
 
     echo "<td class=FullD hidden>$year";
@@ -1475,6 +1477,15 @@ function VolAction($Action,$csv=0) {
     $Vol = ['id'=>-1, 'Year'=>$PLANYEAR,'KeepMe'=>1];
     Email_Form_Only($Vol);
     break;
+
+  case 'NS2':
+    $mindata = json_decode(base64_decode($_REQUEST['data']),true);
+    $Name = $mindata[0] . " " . $mindata[1];
+    $Vol = ['Year'=>$PLANYEAR, 'SN'=>$Name, 'Email'=>$mindata[2], 'KeepMe'=>1, 'AccessKey' => rand_string(40) ];
+//var_dump($Vol);exit;
+    $Volid = Gen_Put('Volunteers',$Vol);
+    $M($Vol);
+    break;     
 
   case 'NewStage2': 
     if (isset($_REQUEST['Second'])) {
