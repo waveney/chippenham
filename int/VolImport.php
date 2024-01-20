@@ -41,9 +41,9 @@ function EmailImp_Volunteer(&$vol,$messcat,$whoto) {
     while (($bts = fgetcsv($F)) !== FALSE) {
       $First = $bts[0];
       $Secnd = $bts[1];
-      $email = trim($bts[2]);
+      $email = trim(strtolower($bts[2]));
       foreach($OldVols as $id=>$Vol) 
-        if ($Vol['Email'] == $email) {
+        if (strtolower($Vol['Email']) == $email) {
 //          echo "$First $Secnd $email is already in the database<br>";
           continue 2;
         }
