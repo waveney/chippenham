@@ -56,6 +56,7 @@ function EmailImp_Volunteer(&$vol,$messcat,$whoto) {
 
       echo "Emailing $First $Secnd $email<br>"; 
       EmailImp_Volunteer($bts,'Vol_OlderVol',$email);
+      // Pause 10 secs
     }      
   }
 

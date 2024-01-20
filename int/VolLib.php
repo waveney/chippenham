@@ -329,7 +329,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       }
 
       $cp = $Cat['Props'];
-      if ((!$VolMgr) && ($cp && VOL_NoList) && ($VCY['Status'] == 0)) continue;
+      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue;
       
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
@@ -599,7 +599,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
       }
 
       $cp = $Cat['Props'];
-      if ((!$VolMgr) && ($cp && VOL_NoList) && ($VCY['Status'] == 0)) continue;
+      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue;
       
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
@@ -700,8 +700,8 @@ function VolFormM(&$Vol,$Err='',$View=0) {
 
      echo "\n<tr><td><h3><center>Part 4: Anything else for $PLANYEAR</center></h3>";
     if (Feature('Vol_Children')) {
-      echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their ages)",$VYear,'Children',-2,'','',"Children::$PLANYEAR");
-      echo "<tr>" . fm_text("Free Youth tickets (11 to 15 - please give their ages)",$VYear,'Youth',4,'','',"Youth::$PLANYEAR");
+      echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their ages)",$VYear,'Children',-4,'','',"Children::$PLANYEAR");
+      echo "<tr>" . fm_text("Free Youth tickets (11 to 15 - please give their ages)",$VYear,'Youth',-4,'','',"Youth::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites(1,1);
