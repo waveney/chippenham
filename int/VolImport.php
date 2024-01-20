@@ -24,6 +24,7 @@ function EmailImp_Volunteer(&$vol,$messcat,$whoto) {
 }
 
   $OldVols = Gen_Get_All('Volunteers');
+  $SendCount = 0;
 
   if (!isset($_FILES['CSVfile'])) {
     echo '<div class="content"><h2>Import Volunteer data</h2>';
@@ -43,20 +44,22 @@ function EmailImp_Volunteer(&$vol,$messcat,$whoto) {
       $email = trim($bts[2]);
       foreach($OldVols as $id=>$Vol) 
         if ($Vol['Email'] == $email) {
-          echo "$First $Secnd $email is already in the database<br>";
-          continue;
+//          echo "$First $Secnd $email is already in the database<br>";
+          continue 2;
         }
 
+      $SendCount++;
       if ($TestOnly) {
         echo "Would Add $First $Secnd $email<br>";
         continue;
       }
-      
+
+      echo "Emailing $First $Secnd $email<br>"; 
       EmailImp_Volunteer($bts,'Vol_OlderVol',$email);
     }      
   }
 
-  echo "<h2>All Done</h2>";
+  echo "<h2>All Done - $SendCount</h2>";
   dotail();
 
 ?>
