@@ -20,7 +20,7 @@
     setcookie('FESTD',$biscuit,0,'/');
     $_COOKIE['FESTD'] = $biscuit;
 
-    dostaffhead("Trader", ["/js/Participants.js", "/js/dropzone.js","css/dropzone.css"]);
+    dostaffhead("Trader", ["/js/Trade.js", "/js/dropzone.js","css/dropzone.css"]);
 
     $USER['AccessLevel'] = $Access_Type['Participant'];
     $USER['Subtype'] = 'Trader';

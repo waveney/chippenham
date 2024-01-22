@@ -466,7 +466,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         if (isset($Trad['AccessKey'])) {
           echo "<td class=NotSide><a href=Direct?id=$Tid&t=trade&key=" . $Trad['AccessKey'] . ">Use</a>" . help('Testing');
         }
-      echo "  <td class=NotSide><button name=Action value=Delete onClick=\"javascript:return confirm('are you sure you want to delete this?');\">Delete</button>\n";
+//      echo "  <td class=NotSide><button name=Action value=Delete onClick=\"javascript:return confirm('are you sure you want to delete this?');\">Delete</button>\n";
     }
     if ($Mode && Capability("EnableFinance")) {
       echo "<tr><td class=NotSide>" . fm_checkbox("Is a Trader",$Trad,'IsTrader',' onchange=this.form.submit() ') . 
@@ -569,7 +569,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   }
   
   if (Feature('TradeDays')) echo "<tr><td>Days:<td>" . fm_select($Trade_Days,$Trady,'Days');
-  echo "<tr><td>Requested Pitch Sizes, <span class=DefaultPitch>" . Pitch_Size_Def($Trad['TradeType']) . "</span> is default" . Help('PitchSize');
+  echo "<tr><td>Requested Pitch Sizes, (W x D)<span class=DefaultPitch>" . Pitch_Size_Def($Trad['TradeType']) . "</span> is default" . Help('PitchSize');
   
   echo "<td>Location";
   if ($Trade_Prop & 1) {
@@ -583,25 +583,16 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   if (Feature("TradeExtras")) echo "<td colspan=1>Extras" . Help('Extras');
 
   echo "<td>Pitch Number";
+  $TotPowerCost = 0;
   
-/*  echo "<span hidden>"; // Power Options for each location
-  foreach ($TradeLocs as $TL) {
-    echo "<span id=TLBlock" . $TL['id'] . ">";
-    if ($TL['HasPower']) {
-      echo fm_select(
-    } 
-*/
-
   for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
     $pwr = (isset($Trady["Power$i"])?$Trady["Power$i"]:0);
     echo "<tr>" . fm_text1("",$Trady,"PitchSize$i");
     
     if ($Mode) { // Festival
-      echo "<td class=NotCSide id=PowerFor$i>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1); //"class=NotCSide onchange(SelectPower($i))";
-      
-       
+      echo "<td id=PowerFor$i>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1,"onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")");
     } else if ($Trade_Prop & 1) { // Change Pos
-      echo "<td>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1);    
+      echo "<td>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1);   
     } else if ($Trady['PitchLoc0'] ?? 0) {  // Assigned
       echo "<td>" . $TradeLocs[$Trady["PitchLoc$i"]];
     } else { // Not assigned
@@ -609,13 +600,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     }
     
     if (Feature("TradePower")) {
-      echo fm_radio('',$Powers,$Trady,"Power$i",' colspan=2',3); // Add actions to propgate cost 
-/*
-      echo "<td colspan=2>None: <input type=radio name=PowerType$i value=0 onclick=PowerChange(0,$i) " . ($pwr==0?"checked ":"") . "> ";
-      echo "My own Euro 4 Silent Generator: <input type=radio name=PowerType$i value=1 onclick=PowerChange(1,$i) " . ($pwr<0?"checked ":"") . "><br>";
-      echo "<input type=radio name=PowerType$i hidden id=PowerTypeRequest$i value=2>Requested: <input type=number id=Power$i name=Power$i onchange=PowerChange(2,$i) " . 
-          ($pwr>0?" value=" . $Trady["Power$i"] : "") . " min=0 max=1000>Amps";
-*/
+      echo fm_radio('',$Powers,$Trady,"Power$i"," colspan=2 onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")",3); // Add actions to propgate cost 
+      if ($Trady["Power$i"]??0) $TotPowerCost += $TradePower[$Trady["Power$i"]]['Cost'];
     }
     if ($Mode) {
 
@@ -649,16 +635,25 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo "<tr>";
     if ($Mode) {
       echo fm_text("Pitch Fee, put -1 for free",$Trady,'Fee',1,'class=NotCSide','class=NotCSide');
-      echo "<td>Total Fee:<td>" . ($Trady['Fee'] ?? 0) . "+ Power Cost ";
+      if ($TotPowerCost && $Trady['Fee'] ) {
+        echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . (($Trady['Fee'] ?? 0) + $TotPowerCost);
+      } else {
+        echo "<td class=Powerelems hidden >Total Fee:<td  class=Powerelems id=PowerFee hidden >";
+      }
       echo fm_text("Paid so far",$Trady,'TotalPaid',1,'class=NotCSide','class=NotCSide');
     } else {
-      echo "<td>Total Fee:<td>";
+      echo "<td>Pitch Fee:<td>";
       if (!isset($Trady['Fee']) || $Trady['Fee'] == 0 ) {
         echo "To be set";
       } else if ($Trady['Fee']<0) {
         echo "Free";
       } else  {
         echo "&pound;" . $Trady['Fee'];
+        if ($TotPowerCost) {
+          echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . (($Trady['Fee'] ?? 0) + $TotPowerCost);
+        } else {
+          echo "<td class=Powerelems hidden >Total Fee:<td  class=Powerelems id=PowerFee hidden >";
+        }
         echo "<td>Paid so far: &pound;" . $Trady['TotalPaid'];
       }
     }
@@ -1157,7 +1152,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
 //    A_Check('Participant','Trader',$Tid); // Check Surpressed until access resolved
 
     if (!$Orgs) {
-      if (Feature("TradePower")) for ($i=0;$i<3;$i++) if ($_POST["PowerType$i"]==1) $_POST["Power$i"] = -1;
+      if (Feature("TradePower")) for ($i=0;$i<3;$i++) if (($_POST["PowerType$i"]??0)==1) $_POST["Power$i"] = -1;
       Clean_Email($_POST['Email']);
 //    Clean_Email($_POST['AltEmail']);
       $proc = Validate_Trade($Mode);

@@ -231,25 +231,6 @@ function AddBandRow(BPerR) {
 function BandChange(ev) { 
 }
 
-function SetTradeType(p,c,i,r,d,dc,ps) {
-//  debugger;
-  if (p) { $('.PublicHealth').show() } else { $('.PublicHealth').hide() };
-  if (c) { $('.Charity').show() } else { $('.Charity').hide() };
-  $('#TTDescription').text(d);
-  $('#TTDescription').css('background',dc);
-  $('.DefaultPitch').text(ps);
-  $('#PitchSize0').val(ps);
-}
-      
-function PowerChange(t,i) {
-//  debugger;
-  if (t!=2) { 
-    $('#Power' + i).val('') 
-  } else { 
-    $('#PowerTypeRequest' + i).attr('checked',true) 
-  }
-}
-
 // Old code for deleteion
 function OlapCatChange(e,l,v) {
 //  debugger;
@@ -309,11 +290,6 @@ function ForceOneProcession(e) {
   CheckDiscount();
 }
 
-function Trader_Insurance_Upload() {
-  $('#Insurance').val(1);
-  document.getElementById('InsuranceButton').click();
-}
-
 function PayTypeSel() {
 debugger;
   if (!document.getElementById('WantCheque')) return;
@@ -332,4 +308,5 @@ debugger;
       break;
   }
 }
+
 

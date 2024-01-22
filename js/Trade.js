@@ -12,7 +12,7 @@ var Dragged ;
     var s = src.id.match(/TradeN(\d*)/);
     if (s) {
       var TradeNum = s[1]
-    } else if (src.id.match(/Posn(\d*)/) {
+    } else if (src.id.match(/Posn(\d*)/)) {
       var TradeNum = src.getAttribute("data-d");
       RemoveTrade(src);
     } 
@@ -110,6 +110,7 @@ function wraptorect(textnode, boxObject, padding, linePadding) {
     return linecounter;
 }
 
+/*
 document.getElementById('original').onmouseover = function () {
 
     var container = document.getElementById('destination');
@@ -117,8 +118,51 @@ document.getElementById('original').onmouseover = function () {
     console.log(numberoflines);  // In case you need it
 
 };
+*/
 
+function SetTradeType(p,c,i,r,d,dc,ps) {
+//  debugger;
+  if (p) { $('.PublicHealth').show() } else { $('.PublicHealth').hide() };
+  if (c) { $('.Charity').show() } else { $('.Charity').hide() };
+  $('#TTDescription').text(d);
+  $('#TTDescription').css('background',dc);
+  $('.DefaultPitch').text(ps);
+  $('#PitchSize0').val(ps);
+}
+      
+function PowerChange(t,i) {
+//  debugger;
+  if (t!=2) { 
+    $('#Power' + i).val('') 
+  } else { 
+    $('#PowerTypeRequest' + i).attr('checked',true) 
+  }
+}
 
+function Trader_Insurance_Upload() {
+  $('#Insurance').val(1);
+  document.getElementById('InsuranceButton').click();
+}
+
+function UpdatePower(pno,pitchfee) {
+  debugger;
+  if (pitchfee == 0) {
+    $('.Powerelems').hide();
+    return; 
+  }
+  var psel = document.querySelector('input[name="Power' + pno + '"]:checked').value;
+  var label = document.querySelector('label[for="Power' + pno + psel + '"]').innerHTML;
+  var powercost = 0;
+  pwr = label.match(/£(\d*)/);
+  if (pwr) powercost = pwr[1];
+  if (powercost) {
+    var cost = Number(pitchfee) + Number(powercost);
+    $('#PowerFee').text('£' + cost );
+    $('.Powerelems').show();
+  } else {
+    $('.Powerelems').hide();
+  }
+}
 
 
 /* copied code
