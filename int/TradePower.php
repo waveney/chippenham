@@ -26,17 +26,20 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Properties</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Cost</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Amps</a>\n";
   echo "</thead><tbody>";
   if ($Trads) foreach($Trads as $t) {
     $i = $t['id'];
     echo "<tr><td>$i" . fm_text1("",$t,'Name',1,'','',"Name$i");
     echo fm_number1('',$t,'Props','','',"Props$i");
     echo fm_number1('',$t,'Cost','','',"Cost$i");
+    echo fm_number1('',$t,'Amps','','',"Amps$i");
     echo "\n";
   }
   echo "<tr><td><td><input type=text size=16 name=Name0 >";
   echo "<td><input type=number name=Props0>";
   echo "<td><input type=number name=Cost0>";
+  echo "<td><input type=number name=Amps0>";
   echo "</table></div>\n";
   echo "<input type=submit name=Update value=Update>\n";
   echo "</form></div>";

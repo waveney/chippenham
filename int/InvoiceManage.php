@@ -113,6 +113,10 @@
       if ($inv['Source'] == 1) Trade_F_Action($inv['SourceId'],'Cancel',$Reason); 
       break;
       
+    case 'DELETE' :
+      db_delete('Invoices',$id);
+      break;
+      
     case 'NEW' :
     case 'NEWFOR' :
       Create_Invoice();
@@ -392,6 +396,7 @@
         echo "<button name=ACTION value=CREDIT onclick=reasonprompt($id) >Cancel/credit</button> ";
       }
       if ($All && Access('SysAdmin')) echo "<button name=ACTION value=DIFF onclick=diffprompt($id) >Paid Special</button> ";
+      if ($All && Access('SysAdmin')) echo "<button name=ACTION value=DELETE onclick=diffprompt($id) >DELETE</button> ";
       echo "</form>";
     }
     

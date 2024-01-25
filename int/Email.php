@@ -429,11 +429,12 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
 // helper is a function that takes (THING,helperdata,atts) to return THING - not needed for generic fields typical THINGs are DETAILS, DEPOSIT...
 // if mescat > 40 chars it is assumed to be the proforma itself
 function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=0,$logfile='',&$attachments=0,$embeded=0,$from='') {
-  global $PLANYEAR,$YEARDATA;
+  global $PLANYEAR,$YEARDATA,$CONF;
 
   if (strlen($mescat) < 40) {
     $Prof = Get_Email_Proforma($mescat);
     $Mess = ($Prof? $Prof['Body'] : "Unknown message $mescat ");
+    if (!$Prof && !empty($CONF['testing'])) debug_print_backtrace();
   } else {
     $Mess = $mescat;
   }

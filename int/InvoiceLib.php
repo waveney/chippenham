@@ -80,12 +80,119 @@ function Put_PayCode(&$now) {
 function Inv_Amt($amt) {
   $str = '';
   if ($amt < 0) { $str .= "-"; $amt = - $amt; }
-  $str .= utf8_decode("£") . sprintf("%0.2f",$amt/100 );
+  $str .= sprintf("&pound;%0.2f",$amt/100 );
   return $str;
 }
 
-// Print the Invoice pdf, returns 0 if it cant
+function Invoice_Gen(&$inv) {
+  $str = "<html><head><link rel='stylesheet' href=../../css/Invoice.css></head><body>\n"; // <div class=Invoice>";
+
+//var_dump($inv);  
+  $CN = ((isset($inv['PayDate']) && $inv['PayDate']<0)?'CN':'');
+  $Rev = ((isset($inv['Revision']) && $inv['Revision'])?("R" . $inv['Revision'] ):'');
+  
+  $Vat = Feature('FestVatNumber');
+  $VatRate = Feature('VatRate',0)/100;
+  
+  $str .= "<div class=Invoice_Logo><img src='../.." . feature('InvoiceBanner') . "'></div>\n";
+
+  $str .= "<div class=Invoice_Who>" . $inv['BZ'] ."<br>";
+  foreach (explode(',', $inv['Address'] . "," . $inv['PostCode']) as $bit) $str .= trim($bit) . "<br>";
+  $str .= "</div>\n";
+  
+  $str .= "<div class=Invoice_Refs><table><tr><td>Invoice No:<td>" . $inv['id'] . " $Rev";
+  $str .= "\n<tr><td>Date:<td>" . date('j F Y',($CN?-$inv['PayDate']:$inv['IssueDate']));
+  $yourref = $inv['Contact'];
+  if (strlen($yourref) > 15 ) {
+    $yourref = firstword($yourref);
+    if (strlen($yourref) > 15 ) $yourref = substr($yourref,0,15);
+    }
+  $str .= "\n<tr><td>Your Ref:<td>" . $yourref;
+  $str .= "\n<tr><td>Our Ref:<td>" . $inv['OurRef'] . '/' . $inv['id'] . " $Rev";
+  $str .= "</table></div>\n";
+  
+  $str .= "<div class=Invoice_Invoice>" . ($CN? "Credit Note": "Invoice") . "</div>\n";
+
+  $str .= "<div class=Invoice_Body><table class=Invoice_Table><tr><th>DESCRIPTION<th>VAT<th>AMOUNT\n";
+  
+  if ($CN) {
+    $str .= "<tr><td><b>To negate our invoice " . $inv['OurRef'] . '/' . $inv['id'] ." issued on " . date('j/n/Y',$inv['IssueDate']) . "</b><br>" . $inv['CNReason'];
+    $str .= "<td>&pound;0.00<td>" . Inv_Amt(-$inv['Total']);
+    if ($inv['PaidTotal']) {
+      $str .= "<tr style='color:red'><td>Less paid so far<td>&pound;0.00<td>" . Inv_Amt(-$inv['PaidSoFar']);
+    } 
+  } else { 
+    $str .= "<tr><td>" . $inv['Desc1'] . "<td>" .  ($Vat?Inv_Amt($inv['Amount1']*$VatRate/(1+$VatRate)):"&pound;0.00") . "<td>" .
+            Inv_Amt($Vat?($inv['Amount1']/(1+$VatRate)):$inv['Amount1']);
+  
+    if ($inv['Desc2'] || $inv['Amount2']) 
+      $str .= "\n<tr style='color:" . (($inv['Amount2']<0)? 'red':'black') . "'><td>" . $inv['Desc2'] . "<td>" . 
+              ($Vat?Inv_Amt($inv['Amount2']*$VatRate/(1+$VatRate)):"&pound;0.00") . "<td>" . Inv_Amt($Vat?($inv['Amount2']/(1+$VatRate)):$inv['Amount2']);
+  
+    if ($inv['Desc3'] || $inv['Amount3']) 
+      $str .= "\n<tr style='color:" . (($inv['Amount3']<0)? 'red':'black') . "'><td>" . $inv['Desc3'] . "<td>" . 
+              ($Vat?Inv_Amt($inv['Amount3']*$VatRate/(1+$VatRate)):"&pound;0.00") . "<td>" . Inv_Amt($Vat?($inv['Amount3']/(1+$VatRate)):$inv['Amount3']);
+    $str .= "<tr style='color:black'><td><td>\n";
+    
+            
+  }
+  $str .= "</table>\n";
+  // Totals
+  $str .= "<table class=Invoice_Totals><tr><td>Net<td><td>\n";
+  if ($Vat) {
+    $str .= Inv_Amt(($CN?$inv['PaidTotal']-$inv['Total']:$inv['Total'])/(1+$VatRate)) . "<tr><td>VAT<td>" . Feature('VatRate') . "%";
+  } else {
+    $str .= Inv_Amt($CN?$inv['PaidTotal']-$inv['Total']:$inv['Total']) . '<tr><td>VAT<td border>"T0"<td>&pound;0.00';  
+  }
+  $str .= "\n<tr><td><td>Gross<td><b>" . Inv_Amt($CN?$inv['PaidTotal']-$inv['Total']:$inv['Total']) . "</b></table>";
+  
+  $str .= "<p>&nbsp;<div class=Invoice_Tail>";
+
+
+  if (!$CN) {
+    if (isset($inv['PayDate']) && $inv['PayDate']) {
+      $str .= "<center><b>PAYMENT TERMS: PAID WITH THANKS </b><center>";
+    } else {
+      $str .= "<b>BACS PAYMENTS TO:</b><p><table class=BACS><tr><td>" . Feature('FestBankAdr') .
+            "\n<tr><td>Sort Code:<td>" . Feature('FestBankSortCode') . 
+            "\n<tr><td>Account No:<td>" . Feature('FestBankAccountNum') .
+            "\n<tr><td>Quote Reference:<td>" . $inv['OurRef'] . '/' . $inv['id'] . " $Rev" . "</table>&nbsp;<p>&nbsp;<p>\n";
+    
+
+      $str .= "<center><b>PAYMENT TERMS: PAYABLE BY " .  date('j/n/Y',$inv['DueDate']) . " PLEASE</b></center>";
+    }
+  }
+  
+  $str .= "\n<p>&nbsp;<table><tr><td valign=top>Registered Office:<td>" . Feature('FestLegalName') . "<br>";
+  $adr = implode(',',Feature('FestLegalAddr'));
+  $adr = preg_replace('/ /','&nbsp;',$adr);
+  $adr = preg_replace('/,/',', ',$adr);
+  $str .= $adr . "</table>";
+  
+  $str .= "<table><tr><td>Trade Email: " . Feature('TradeEmail','Trade' .  "@" . Feature('HostURL')) . "<br>" .
+          "Finance Email: " . Feature('FestContractEmail','Finance' . "@" . Feature('HostURL')) . "<td>\n" .
+          "Registered in England: " . Feature('FestCompanyNumber',0) . "<br>" .
+          (Feature('FestVatNumber')? "VAT Number: " . Feature('FestVatNumber') : "Non-VAT Registered") . "</table>";
+  $str .= "</div>\n";
+  return $str;
+}
+
 function Invoice_Print(&$inv) {
+  $Invhtml = Invoice_Gen($inv);
+  
+  $Rev = ((isset($inv['Revision']) && $inv['Revision'])?("R" . $inv['Revision'] ):'');
+  $CN = ((isset($inv['PayDate']) && $inv['PayDate']<0)?'CN':'');
+  $id = $inv['id'];
+  $dir = "Invoices/" . substr($id,0,-3 ) . "000";
+  if (!file_exists($dir)) mkdir($dir,0777,1);
+  file_put_contents("$dir/$id$CN$Rev.html", $Invhtml);
+  exec("html2pdf --enable-local-file-access $dir/$id$CN$Rev.html $dir/$id$CN$Rev.pdf");
+  return "$dir/$id$CN$Rev.pdf";
+}
+
+/*
+// Print the Invoice pdf, returns 0 if it cant
+function Old_Invoice_Print(&$inv) {
   global $PLANYEAR;
   
   $CN = ((isset($inv['PayDate']) && $inv['PayDate']<0)?'CN':'');
@@ -96,7 +203,7 @@ function Invoice_Print(&$inv) {
   
   // File for printings dddDDD is Invoices/ddd/dddDDD.pdf
   // Credit notes Invoices/ddd/DDDCN.pdf
-  include_once('fpdf.php');
+//  include_once('fpdf.php');
   $cw = 3;
   $ch = 5;
   $fs = 13;
@@ -161,28 +268,28 @@ function Invoice_Print(&$inv) {
 
   if ($CN) {
     $pdf->Text($padx+$cw,$pady+ 21*$ch,"To negate our invoice " . $inv['OurRef'] . '/' . $inv['id'] ." issued on " . date('j/n/Y',$inv['IssueDate']));
-    $pdf->Text($padx+46*$cw,$pady+21*$ch, utf8_decode("£0.00"));
+    $pdf->Text($padx+46*$cw,$pady+21*$ch, utf8_decode("&pound;0.00"));
     $pdf->Text($padx+56*$cw,$pady+21*$ch,Inv_Amt(-$inv['Total']));
     $pdf->Text($padx+$cw,$pady+ 23*$ch,$inv['CNReason']);
     if ($inv['PaidTotal']) {
       $pdf->SetTextColor(255,0,0);
       $pdf->Text($padx+$cw, $pady+25*$ch,"Less paid so far");
-      $pdf->Text($padx+46*$cw,$pady+25*$ch,utf8_decode("£0.00"));
+      $pdf->Text($padx+46*$cw,$pady+25*$ch,utf8_decode("&pound;0.00"));
       $pdf->Text($padx+56*$cw,$pady+25*$ch,Inv_Amt(-$inv['PaidSoFar']));
     } 
   } else {  
     if ($inv['Desc1']) $pdf->Text($padx+$cw,$pady+ 21*$ch,$inv['Desc1']);
-    if ($inv['Amount1']) $pdf->Text($padx+46*$cw,$pady+21*$ch, ($Vat?Inv_Amt($inv['Amount1']*$VatRate/(1+$VatRate)):utf8_decode("£0.00")));
+    if ($inv['Amount1']) $pdf->Text($padx+46*$cw,$pady+21*$ch, ($Vat?Inv_Amt($inv['Amount1']*$VatRate/(1+$VatRate)):utf8_decode("&pound;0.00")));
     if ($inv['Amount1']) $pdf->Text($padx+56*$cw,$pady+21*$ch, Inv_Amt($Vat?($inv['Amount1']/(1+$VatRate)):$inv['Amount1']));
   
     if ($inv['Amount1']>0 && ($inv['Amount2'])<0) { $pdf->SetTextColor(255,0,0); } else $pdf->SetTextColor(0,0,0);
     if ($inv['Desc2']) $pdf->Text($padx+$cw,$pady+ 23*$ch,$inv['Desc2']);
-    if ($inv['Amount2']) $pdf->Text($padx+46*$cw,$pady+23*$ch,($Vat?Inv_Amt($inv['Amount2']*$VatRate/(1+$VatRate)):utf8_decode("£0.00")));
+    if ($inv['Amount2']) $pdf->Text($padx+46*$cw,$pady+23*$ch,($Vat?Inv_Amt($inv['Amount2']*$VatRate/(1+$VatRate)):utf8_decode("&pound;0.00")));
     if ($inv['Amount2']) $pdf->Text($padx+56*$cw,$pady+23*$ch, Inv_Amt($Vat?($inv['Amount2']/(1+$VatRate)):$inv['Amount2']));
   
     if ($inv['Amount1']>0 && ($inv['Amount3'])<0) { $pdf->SetTextColor(255,0,0); } else $pdf->SetTextColor(0,0,0);
     if ($inv['Desc3']) $pdf->Text($padx+$cw, $pady+25*$ch,$inv['Desc3']);
-    if ($inv['Amount3']) $pdf->Text($padx+46*$cw,$pady+25*$ch,($Vat?Inv_Amt($inv['Amount3']*$VatRate/(1+$VatRate)):utf8_decode("£0.00")));
+    if ($inv['Amount3']) $pdf->Text($padx+46*$cw,$pady+25*$ch,($Vat?Inv_Amt($inv['Amount3']*$VatRate/(1+$VatRate)):utf8_decode("&pound;0.00")));
     if ($inv['Amount3']) $pdf->Text($padx+56*$cw,$pady+25*$ch, Inv_Amt($Vat?($inv['Amount3']/(1+$VatRate)):$inv['Amount3']));
   }
   $pdf->SetTextColor(0,0,0);
@@ -215,7 +322,7 @@ function Invoice_Print(&$inv) {
   } else {
     $pdf->Text($padx+56*$cw,$pady+36.5*$ch,Inv_Amt($CN?$inv['PaidTotal']-$inv['Total']:$inv['Total']));
     $pdf->Text($padx+48*$cw,$pady+38.5*$ch,'"T0"');
-    $pdf->Text($padx+56*$cw,$pady+38.5*$ch,utf8_decode(" £0.00"));  
+    $pdf->Text($padx+56*$cw,$pady+38.5*$ch,utf8_decode(" &pound;0.00"));  
   }
   $pdf->Text($padx+36*$cw,$pady+40.5*$ch,"Gross");
   $pdf->SetFont('Arial','B',$fs);
@@ -256,7 +363,7 @@ function Invoice_Print(&$inv) {
 //  $pdf->Output('F',"Temp/Invoice.pdf");
 //  echo "<h2>pdf outputed</h2>";
   return "$dir/$id$CN$Rev.pdf";
-}  
+}  */
 
 // Returns the file name of Pdf of a previously printed invoice
 function Get_Invoice_Pdf($id,$CN='',$Rev='') {
@@ -308,7 +415,11 @@ function Sage_Code(&$Whose) { // May only work for trade at the moment
 // Due date < 365 = days, > 365 taken as actual date
 function New_Invoice($Whose,$Details,$Reason='',$InvCode=0,$Source=1,$DueDate=-1,$InvCode2=0,$InvCode3=0,$Paid=0) {
   global $db,$YEAR,$NewInvoiceId,$NewInv,$USER;
-  
+
+// debug_print_backtrace();
+// var_dump($Whose,$Details,$Reason,$InvCode,$Source,$DueDate,$InvCode2,$InvCode3,$Paid);
+// echo "<p>";
+
 //var_dump("New_Invoice: ", $Whose, $Details, $Reason, $InvCode, $Source, $DueDate, $InvCode2, $InvCode3, $Paid, "<p>");
   if ($DueDate < 0) $DueDate=Feature('PaymentTerms',30);
   $inv['Source'] = $Source;
@@ -800,5 +911,7 @@ function Pay_Code_Remove($src,$srcid) {
   return 0;   
 }
 
-
+function Invoice_Find($src,$srcid) {
+  return Gen_Get_Cond('Invoices'," Source=$src AND SourceId=$srcid AND PaidTotal<Total ORDER BY IssueDate DESC");
+}
 ?>

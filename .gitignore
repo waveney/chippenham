@@ -26,7 +26,7 @@ int/LogFiles
 int/Archive
 int/Contracts
 int/testing
-int/Invoices/*/*.pdf
+int/Invoices/*
 int/Invoices/OldInvoices
 int/Config.txt
 devtools

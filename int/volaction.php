@@ -12,7 +12,7 @@ $Catid = $_GET['Catid'];
 switch ($Action) {
 
 case 'Accept1':
-  VolAction($Action);
+  VolAction($Action,1);
 
   exit;
   

@@ -1,0 +1,124 @@
+body {
+  max-width: 870px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 12pt;
+}
+
+.Invoice {
+}
+
+.Invoice_Logo {
+  
+}
+
+.Invoice_Logo img {
+  position:absolute;
+  max-width:60%;
+  max-height:200;
+  top:10;
+  left:10;
+}
+
+.Invoice_Who {
+  position:absolute;
+  height:100;
+  width:350;
+  top:250;
+  left:50;
+  border: 2px solid black;
+  padding:2;
+}
+
+.Invoice_Refs {
+  position:absolute;
+  height:100;
+  width:350;
+  top:250;
+  left:450;
+  border: 2px solid black;
+  padding:2;
+}
+
+.Invoice_Invoice {
+  position:absolute;
+  top:100;
+  left:550;
+  font-size:30pt;
+}
+
+.Invoice_Body {
+  width:850px;
+  position:absolute;
+  top:400;
+  left:50;
+}
+
+.Invoice_Table {
+  border: 2px solid black;
+  text-align:left;
+  width:90%
+}
+
+.Invoice_Table th {
+ border-bottom: 1px solid black;
+}
+
+.Invoice_Table tr th:first-child
+.Invoice_Table tr td:first-child {
+  width:550px;
+}
+
+.Invoice_Table tr th:nth-child(2)
+.Invoice_Table tr td:nth-child(2) {
+  width:150px;
+  text-align:right;
+  border-left: 1px solid black;
+}
+
+.Invoice_Table tr th:nth-child(3)
+.Invoice_Table tr td:nth-child(3) {
+  width:150px;
+  text-align:right;
+  border-left: 1px solid black;
+}
+
+.Invoice_Totals {
+/*  position: relative; */
+  width:90%;
+  margin:0;
+  padding:0;
+}
+
+.Invoice_Totals td:first-child {
+  width:550px;
+  padding-left:400px;
+}
+
+.Invoice_Totals td:nth-child(2) {
+  width:150px;
+}
+
+.Invoice_Totals td:nth-child(3) {
+  width:150px;
+  border:2px solid black;
+}
+
+.BACS {
+  width:500px;
+  max-width:500px;
+  border:2px solid black;
+}
+
+.Invoice_Tail {
+
+}
+
+.Invoice_Tail table {
+  width:100%
+}
+
+.tright {
+  align:right;
+}
