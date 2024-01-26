@@ -33,6 +33,9 @@
   $TradeLocData[0]['SN'] = 'HOMELESS';
   $TradeLocData[0]['TLocId'] = 0;
   $TotLRec = $TotLAcc = $TotLQut = 0;
+  $TradePowers = Gen_Get_All('TradePower');
+  $PowerTypes[0] = '';
+  foreach ($TradePowers as $TP) $PowerTypes[$TP['id']] = $TP['Name'];
 
   if (isset($_GET['ACTION'])) {
     $Tid = $_GET['id'];
@@ -85,7 +88,7 @@
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Su</a>\n";
 //    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Ref</a>\n";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Pitches</a>\n";
-        if (Feature("TradePower")) $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power</a>\n";
+    if (Feature("TradePower")) $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power</a>\n";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Location</a>\n";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Ins</a>\n";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Risk</a>\n";
@@ -180,14 +183,14 @@
         if ($fetch['PitchSize1']) $str .= "<br>" . $fetch['PitchSize1'];
         if ($fetch['PitchSize2']) $str .= "<br>" . $fetch['PitchSize2'];
       if (Feature("TradePower")) {
-        $str .= "<td>" . $fetch['Power0'];
+        $str .= "<td>" . $PowerTypes[$fetch['Power0']];
         if ($fetch['PitchSize1']) {
           $str .= "<br>";
-          $str .= $fetch['Power1'];
+          $str .= $PowerTypes[$fetch['Power1']];
         }
         if ($fetch['PitchSize2']) {
           $str .= "<br>";
-          $str .= $fetch['Power2'];
+          $str .= $PowerTypes[$fetch['Power2']];
         }
       }
       $str .= "<td>";

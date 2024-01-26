@@ -24,7 +24,7 @@ $TS_Actions = array('Submit,Invite,Invite Better',
                 'Resend,Accept,Decline,Cancel,FestC',
                 'Resend,Cancel',
                 );
-
+                
 $Trader_Status = array('Alive','Banned','Not trading');
 $Trader_State = array_flip($Trader_Status);
 $ButExtra = array(
@@ -33,7 +33,8 @@ $ButExtra = array(
         'Submit'=>'title="Submit application"',
         'Hold'=>'title="Hold for space available"',
         'Dep Paid'=>'title="Deposit Paid"', // Not Used 
-        'Send Bal'=>'title="Send Balance Request"',
+        'Send Bal'=>'title="Send Balance Request"', // PAYCODE
+        'Invoice'=>'title="Send Balance Request"', // Invoice
         'Paid'=>'title=Full Fees Paid"', // Not Used
         'Quote'=>'title="Send or repeat Quote email"',
         'Invite'=>'title="Send or repeat the Invitation Email"',
@@ -51,6 +52,14 @@ $ButExtra = array(
         'Dates'=>'Festival Changed Dates',
         'FestC'=>'Festival Cancelled this year',
         ); 
+        
+$ButTraderTips = [ // Overlay of diferent tips for traders 
+        'Accept'=>'title="The invitation or quote"',
+        'Decline'=>'title="Decline this invitation"',
+        'Resend'=>'title="Resend current state"',
+        ];
+        
+        
 $ButTrader = array('Submit','Accept','Decline','Cancel','Resend'); // Actions Traders can do
 $ButAdmin = array('Paid','Dep Paid');
 $RestrictButs = array('Paid','Dep Paid'); // If !AutoInvoice or SysAdmin
@@ -644,7 +653,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
 //var_dump($Invs);
       if ($Invs && ($Trady)) {
         $inv = array_shift($Invs);
-var_dump($inv);
+//var_dump($inv);
         echo "<tr><td>Payment due for<td colspan=5><b>" . $inv['Reason'] . "</b><br>Due " . date('j/n/Y',$inv['DueDate']) . 
              "<br>Please pay " . Print_Pence($inv['Total']) . " to:<br>" . 
             Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . "<p>Quote Reference: " .
@@ -1123,7 +1132,7 @@ function Trade_TickBox($Tid,&$Trad,&$Trady,$TB) {
 function Trade_Main($Mode,$Program,$iddd=0) {
 // Mode 0 = Traders, 1 = ctte, 2 = Finance (for other invoices) Program = Trade/Trader $iddd if set starts it up, with that Tid
 
-  global $YEAR,$PLANYEAR,$Mess,$Action,$Trade_State,$Trade_States,$USER,$TS_Actions,$ButExtra,$ButTrader,$ButAdmin,$RestrictButs;
+  global $YEAR,$PLANYEAR,$Mess,$Action,$Trade_State,$Trade_States,$USER,$TS_Actions,$ButExtra,$ButTraderTips, $ButTrader,$ButAdmin,$RestrictButs;
   global $TradeTypeData,$TradeLocData;
   include_once("DateTime.php"); 
   echo "<div class=content><h2>Add/Edit " . ($Mode<2?'Trade Stall Booking':'Business or Organisation') . "</h2>";
@@ -1312,6 +1321,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   }
   
   if ($Mode == 0 && !$Orgs) {
+    echo "<h2>The action buttons to click on are below the Terms and conditions</h2>";
     echo "<Center>";
     if (Access('SysAdmin')) echo "<input type=Submit name='Update' value='Save Changes'>";
     echo "</Center>";    
@@ -1321,6 +1331,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   }
 
   if ($Tid > 0) {
+    if (Access('Committee','Trade')) echo "<input type=submit name=Save value=Save> - Only needed in a few obscure cases";
     if ($Mode < 2 && !$Orgs) {
       if (!isset($Trady['BookingState'])) { $Trady['BookingState'] = 0; $Trady['Fee'] = 0; }
       if (Access('SysAdmin')) {
@@ -1390,6 +1401,8 @@ function Trade_Main($Mode,$Program,$iddd=0) {
             
           default:
         }
+//        var_dump($Mode, $ButTraderTips[$ac]);
+        if (!$Mode && !empty($ButTraderTips[$ac])) $ButExtra[$ac] = $ButTraderTips[$ac];
         echo "<input type=submit name=ACTION value='$ac' " . $ButExtra[$ac] . " >";
       }
     }
@@ -1482,6 +1495,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
   $xtra = '';
   $InvPay = Feature("TradeInvoicePay"); // Switch Invoice or Just Paycodes
 
+echo "<p>DOING Trade_ACtion $Action<p>";
 // var_dump($Action);
 
   switch ($Action) {
@@ -1547,55 +1561,57 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     }
     if ($Trady['DateChange']) $Trady['DateChange'] = 3;
     break;
-    
-  case 'Invoice':
-    if ($CurState >= $Trade_State['Invoiced']) {
-      echo "<h3>This has already been Invoiced</h3>";
-      return;
-    }
 
-    $Pwr = PowerCost($Trady);
-    if ($CurState == $Trade_State['Fully Paid']) break; // should not be here...
-    $Fee = $Trady['Fee'] + $Pwr;
-    if ($Fee <= $PaidSoFar) { // Fully paid on depoist invoice - needs final invoice
-      $NewState = $Trade_State['Fully Paid']; // Should not be here...
-      break; 
-    }
+  case 'Send Bal': // Send requests for final payments - PAYCODES    
+  case 'Invoice': // Invoices
+    if (!Feature('TradeInvoicePay')) {
+      if ($CurState >= $Trade_State['Balance Requested']) {
+        echo "<h3>This has already been Invoiced</h3>";
+        return;
+      }
 
-    if (Feature("AutoInvoices")) {
-      $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
-          "Trade_Artisan_Final_Invoice" : "Trade_Final_Invoice");
-      $InvCode = Trade_Invoice_Code($Trad,$Trady);
-      $DueDate = Trade_Date_Cutoff();
-      $details = [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
-      if ($details) $details[]= ['Plus Power',$Pwr*100];
-      $details[]= ["Less your deposit payment",-$PaidSoFar*100];
-      $ipdf = New_Invoice($Trad, $details, 'Trade Stand Balance Charge',
-                           $InvCode, 1, ($DueDate?$DueDate:30) );
-      Send_Trader_Email($Trad,$Trady,$ProformaName,$ipdf);
-      $NewState = $Trade_State['Balance Requested'];
-    }
-    break;
+      $Pwr = PowerCost($Trady);
+      if ($CurState == $Trade_State['Fully Paid']) break; // should not be here...
+      $Fee = $Trady['Fee'];
+      if (($Fee + $Pwr) <= $PaidSoFar) { // Fully paid on depoist invoice - needs final invoice
+        $NewState = $Trade_State['Fully Paid']; // Should not be here...
+        break; 
+      }
+
+      if (Feature("AutoInvoices")) {
+         $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
+            "Trade_Artisan_Final_Invoice" : "Trade_Final_Invoice");
+        $InvCode = Trade_Invoice_Code($Trad,$Trady);
+        $DueDate = Trade_Date_Cutoff();
+        $details = [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
+        if ($details) $details[]= ['Plus Power',$Pwr*100];
+        $details[]= ["Less your deposit payment",-$PaidSoFar*100];
+        $ipdf = New_Invoice($Trad, $details, 'Trade Stand Balance Charge',
+                             $InvCode, 1, ($DueDate?$DueDate:30) );
+        Send_Trader_Email($Trad,$Trady,$ProformaName,$ipdf);
+        $NewState = $Trade_State['Balance Requested'];
+      }
+      break;
+    } else { // Paycodes
+      if ($CurState == $Trade_State['Fully Paid']) break; // should not be here...
+      $Fee = $Trady['Fee'];
+      $Pwr = PowerCost($Trady);
     
-  case 'Send Bal': // Send requests for final payments
-  
-    if ($CurState == $Trade_State['Fully Paid']) break; // should not be here...
-    $Fee = $Trady['Fee'];
-    $Pwr = PowerCost($Trady);
-    
-    if ($Fee <= $PaidSoFar) { // Fully paid on depoist invoice - needs final invoice
-      $NewState = $Trade_State['Fully Paid']; // Should not be here...
-      break; 
-    } 
-    if ($CurState == $Trade_State['Deposit Paid']) {
-      $DueDate = Trade_Date_Cutoff();
-      $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $Trady['PitchLoc0'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
+      if ($Fee <= $PaidSoFar) { // Fully paid on depoist invoice - needs final invoice
+        $NewState = $Trade_State['Fully Paid']; // Should not be here...
+        break; 
+      } 
+      if ($CurState == $Trade_State['Deposit Paid']) {
+        $DueDate = Trade_Date_Cutoff();
+        $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $Trady['PitchLoc0'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
                         "Trade_Artisan_FinalPayment" : "Trade_FinalPayment");
-      $Code = Pay_Rec_Gen("BAL",($Trady['Fee'] + $Pwr - $PaidSoFar)*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Balance Payment',$DueDate); // TODO
-      Send_Trader_Email($Trad,$Trady,$ProformaName);    
+        $Code = Pay_Rec_Gen("BAL",($Trady['Fee'] + $Pwr - $PaidSoFar)*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Balance Payment',$DueDate);
+
+        Send_Trader_Email($Trad,$Trady,$ProformaName);    
+      }
+      $NewState = $Trade_State['Balance Requested']; 
+      break;
     }
-    $NewState = $Trade_State['Balance Requested']; 
-    break;
   
   case 'LastWeek' : // Send Last week message
     Send_Trader_Email($Trad,$Trady,'Trade_Quote_WeekLeft');   
@@ -1644,7 +1660,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     Send_Trader_Email($Trad,$Trady,'Trade_Hold');
     break;
 
-  case 'Dep Paid' : // Old Invoice Code
+  case 'Dep Paid' : 
     $Pwr = PowerCost($Trady);
     if ($Trady['Fee'] < 0 || ($Trady['Fee'] + $Pwr) <= $PaidSoFar) {
       Trade_Action('Paid',$Trad,$Trady,$Mode,"$Hist $Action");
@@ -1659,7 +1675,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       if ($Trady['TotalPaid'] >= $Dep) {
         $NewState = $Trade_State['Deposit Paid'];
         $DueDate = Trade_Date_Cutoff();
-        if ($DueDate) Trade_Action('Bal Request',$Trad,$Trady,$Mode,"$Hist $Action");
+        if ($DueDate) Trade_Action('Send Bal',$Trad,$Trady,$Mode,"$Hist $Action"); 
       }
     }
     break;

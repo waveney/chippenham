@@ -634,9 +634,9 @@ function linkemailhtml(&$data,$type="Side",$xtr='',$ButtonExtra='') {
 
 global $DDdata;
 $DDdata = [
-    'Insurance' => [ 'UseYear'=>1, 'AddState'=>1, 'tr'=>1, 'SetValue'=>1, 'cols'=>[2,2] ],
-    'RiskAssessment' => [ 'UseYear'=>1, 'AddState'=>1, 'Name' => 'Risk Assessment', 'tr'=>1, 'SetValue'=>1, 'cols'=>[2,2] ],
-    'StagePA'  => [ 'UseYear'=>0, 'AddState'=>0, 'Name'=>'PA requirements', 'tr'=>0, 'SetValue'=>'@@FILE@@', 'cols'=>[2,2], 'path'=>'PAspecs' ],
+    'Insurance' => [ 'UseYear'=>1, 'AddState'=>1, 'tr'=>1, 'SetValue'=>1, 'cols'=>[2,2], 'view'=>1 ],
+    'RiskAssessment' => [ 'UseYear'=>1, 'AddState'=>1, 'Name' => 'Risk Assessment', 'tr'=>1, 'SetValue'=>1, 'cols'=>[2,2], 'view'=>1 ],
+    'StagePA'  => [ 'UseYear'=>0, 'AddState'=>0, 'Name'=>'PA requirements', 'tr'=>0, 'SetValue'=>'@@FILE@@', 'cols'=>[2,2], 'path'=>'PAspecs', 'view'=>1 ],
     'Photo'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[2,2], 'path'=>'images', 'Show'=>1 ], 
     'NewPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1, 
                  'Extra'=>"acceptedFiles: 'image/*',", 'Show'=>1,'Name'=>'Photo'],
@@ -726,7 +726,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
       if ($Mode) formData.append('Mode',"$Mode" ); 
       if ('$tdclass' != '') formData.append('Class',"$tdclass" );  
     },
-    dictDefaultMessage: "Drop $Name here to upload or click to browse<br>$Restrict"
+    dictDefaultMessage: "Drop <b>$Name</b> here to upload or click to browse<br>$Restrict"
   };
 XXX;
     $str .= "</script></$Table>";
@@ -740,9 +740,9 @@ XXX;
   } else {
     $pdir = ($DDd['UseYear']?"$Type/$YEAR/$Cat":$Type);
   }
-  $path = "$pdir/$id";
+  $path = "$pdir/$Type$id";
   $files = glob("$path.*"); 
- 
+
   if ($Mode) {
     if ($DDd['AddState']) {
       $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][0] . ">";
@@ -763,7 +763,7 @@ XXX;
   }
   if ($Mess) $str .= "<$Table class='Result$Type $tdclass' $hid>$Mess</$Table>";
   
-  if ($Call == 0) $str .= "<script>Refresh_Image_After_Upload('$Type','" . $Data[$Name] . "');</script>";
+  if ($Call == 0) $str .= "<script>Refresh_Image_After_Upload('$Type','" . $Data[$Type] . "');</script>";
   return $str;
 }
 

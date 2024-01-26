@@ -128,11 +128,11 @@ if ($suffix == 'heic' || $suffix =='heif') {
 }
 
 if (is_numeric($DDd['SetValue'])) {
-  $Data[$Name] = $DDd['SetValue']; //TODO PAspec fix DDd
+  $Data[$Type] = $DDd['SetValue']; //TODO PAspec fix DDd
 } elseif ($DDd['SetValue'] == 'URL') {
-  $Data[$Name] = "/" . $target_file . "?" . time();
+  $Data[$Type] = "/" . $target_file . "?" . time();
 } else {
-  $Data[$Name] = $DDd['SetValue'];
+  $Data[$Type] = $DDd['SetValue'];
 }
 
 if (preg_match('/Image|Photo/',$Type,$mtch)) {

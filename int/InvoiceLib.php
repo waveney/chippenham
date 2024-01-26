@@ -912,6 +912,7 @@ function Pay_Code_Remove($src,$srcid) {
 }
 
 function Invoice_Find($src,$srcid) {
-  return Gen_Get_Cond('Invoices'," Source=$src AND SourceId=$srcid AND PaidTotal<Total ORDER BY IssueDate DESC");
+  global $PLANYEAR;
+  return Gen_Get_Cond('Invoices'," Source=$src AND SourceId=$srcid AND PaidTotal<Total AND Year>=($PLANYEAR-1) ORDER BY IssueDate DESC");
 }
 ?>
