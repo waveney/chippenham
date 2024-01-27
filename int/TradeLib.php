@@ -16,9 +16,9 @@ $TS_Actions = array('Submit,Invite,Invite Better',
                 'Resend,Quote,Accept,Invite,Decline,Hold,Cancel,Invite Better,Dates,FestC',
                 'Resend,Quote,Invite,Accept,Decline,UnQuote,LastWeek,Dates,FestC',
                 'Resend,Cancel,Dates,FestC',
-                'Pitch,Moved,Resend,Send Bal,Cancel,Dates,FestC',
-                'Pitch,Moved,Resend,Chase,Cancel,Dates,FestC',
-                'Pitch,Moved,Resend,Cancel,Dates,FestC',
+                'Pitch Assign,Pitch Change,Moved,Resend,Send Bal,Cancel,Dates,FestC',
+                'Pitch Assign,Pitch Change,Moved,Resend,Chase,Cancel,Dates,FestC',
+                'Pitch Assign,Pitch Change,Moved,Resend,Cancel,Dates,FestC',
                 'Resend,Accept,Decline,Cancel,FestC',
                 'Resend,Quote,Cancel,Dates,FestC',
                 'Resend,Accept,Decline,Cancel,FestC',
@@ -314,8 +314,7 @@ For traders, this is used both to decide whether to accept a Traders booking and
         'PitchSize'=>'If you want more than 1 pitch, give each pitch size, a deposit will be required for each.  
 If you attempt to setup a pitch larger than booked you may be told to leave',
         'Power'=>'Some locations can provide power, some only support lower power requirements. 
-There will be an additional fee for power, that will be added to your final invoice.
-Any generator must meet the Euro 4 silent generator standard.',
+There will be an additional fee for power, that will be added to your final invoice.',
         'Photo'=>'Give URL of Image to use or upload one (landscape is prefered)',
         'TradeType'=>'Fees depend on trade type, pitch size and location',
 //        'BookingState'=>'ONLY change this if you are fixing a problem, use the state change buttons',
@@ -358,7 +357,8 @@ function PayCodeGen($Type,$TYid) { // Type = DEP, BAL, PAY
 }
 
 function PowerCost(&$Trady) {
-  $TradePower = Gen_Get_All("TradePower");
+  static $TradePower;
+  if (!$TradePower) $TradePower = Gen_Get_All("TradePower");
   $TotPowerCost = 0;
   
   for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
@@ -623,7 +623,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     }
     if ($Mode) {
 
-      echo fm_text1("",$Trady,"PitchNum$i",1,'class=NotCSide','class=NotCSide');
+      echo fm_text1("",$Trady,"PitchNum$i",1,'class=NotCSide','class=NotCSide onchange=PitchNumChange(' . $Trady["PitchNum$i"] . ')');
       if (isset($Trady["PitchLoc$i"]) && $Trady["PitchLoc$i"]) echo " <a href=TradeStandMap?l=" . $Trady["PitchLoc$i"] . ">Map</a>";
     } else {
 //      echo "<td>";
@@ -826,6 +826,7 @@ function Trader_Details($key,&$data,$att=0) {
   case 'FESTLINK' : return "<a href='$host/int/Trade?id=$Tid'><b>link</b></a>";
   case 'HERE':
   case 'REMOVE': return "<a href='$host/int/Remove?t=Trade&id=$Tid&key=" . $Trad['AccessKey'] . "'><b>remove</b></a>";
+  case 'BIZ': return $Trad['BizName'] ?? $Trad['SN'] ?? "you";
   case 'LOCATION': 
     $Locs = Get_Trade_Locs(1);
     $Location = '';
@@ -1363,6 +1364,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
         if ($Mode==1 && !Access('SysAdmin') && !in_array($ac,$ButAdmin)) continue;
         if (!isset($Trady['Fee'])) $Trady['Fee'] = 0;
         if (Feature('AutoInvoices') && !Access('SysAdmin') && in_array($ac,$RestrictButs)) continue;  // Normal people cant hit Paid have to be through the invoice
+        $xtra = '';
         switch ($ac) {
           case 'Quote':
             if ($Trady['Fee'] == 0) continue 2;
@@ -1398,12 +1400,24 @@ function Trade_Main($Mode,$Program,$iddd=0) {
           case 'Submit' :
             if (Feature('TradeStatus',1) == 0) continue 2;
             break;
+          case 'Moved' :
+            if (($Trady['PitchNum0'] ??0) == 0) continue 2;
+            $xtra = " id=MoveButton hidden ";
+            break;
+          case 'Pitch Assign' :
+            if (($Trady['PitchNum0'] ??0) == 0) continue 2;
+            $xtra = " id=PitchAssignButton hidden ";
+            break;
+          case 'Pitch Change' :
+            if (($Trady['PitchNum0'] ??0) == 0) continue 2;
+            $xtra = " id=PitchChangeButton hidden ";
+            break;
             
           default:
         }
 //        var_dump($Mode, $ButTraderTips[$ac]);
         if (!$Mode && !empty($ButTraderTips[$ac])) $ButExtra[$ac] = $ButTraderTips[$ac];
-        echo "<input type=submit name=ACTION value='$ac' " . $ButExtra[$ac] . " >";
+        echo "<input type=submit name=ACTION value='$ac' " . ($ButExtra[$ac] ??'') . " $xtra >";
       }
     }
     if ($Mode == 0) { 
@@ -2037,7 +2051,11 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     Send_Trader_Email($Trad,$Trady,'Trade_Chase1',$att); 
     break;
     
-  case 'Pitch':
+  case 'Pitch Assign':
+    Send_Trader_Email($Trad,$Trady,'Trade_PitchAssign'); 
+    break;
+
+  case 'Pitch Change':
     Send_Trader_Email($Trad,$Trady,'Trade_PitchChange'); 
     break;
   

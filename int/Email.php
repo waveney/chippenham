@@ -489,6 +489,7 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
 function Replace_Help($Area='',$Right=0) {
   $Reps = [
   ['*WHO*','First name of contact','All'],
+  ['*BIZ*','Business name','Trade,Sponsors'],
   ['*PLANYEAR*/*NEXTYEAR*','Year for the booking, Planyear+1','All'],
   ['*DATES*','Dates of Festival From - to','All'],
   ['*LOCATION*','Location(s) of Pitches','Trade'],

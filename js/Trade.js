@@ -164,6 +164,14 @@ function UpdatePower(pno,pitchfee) {
   }
 }
 
+function PitchNumChange(oldval) {
+  if (oldval) {
+    $('#PitchChangeButton').show();
+  } else {
+    $('#PitchAssignButton').show();  
+  }
+}
+
 
 /* copied code
 

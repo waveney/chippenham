@@ -138,7 +138,7 @@
               
               default:
               }
-            if ($butcount++ == 3) $str .= "<br>";
+            if (($butcount++)%3 == 0) $str .= "<br>";
             $str .= "<button name=ACTION value='$ac' type=submit " . (isset($ButExtra[$ac])?$ButExtra[$ac]:"") . " >$ac</button>";
           }
           $str .= "</form></div>";
@@ -161,6 +161,8 @@
       $str .= "<td>";
         $Dep = T_Deposit($fetch);
         $fee = $fetch['Fee'];
+        $Pwr = PowerCost($fetch);
+        if ($fee>0) $fee+=$Pwr;
         if ($Dep == 0) {
           if ($fee < 0) { $str .= "Free"; }
           else if ($fee == 0) { $str .= "?"; }
@@ -215,7 +217,7 @@
             if ($fetch['BookingState'] >= $Trade_State['Submitted']) {
             $str .= "<td"  . ($fetch['HealthChecked']?'':' style="background:red;"') . ">";
               $str .= "<form>" . fm_hidden('id',$Tid) . fm_hidden('Y',$YEAR);
-            if ($Acts && !$fetch['HealthChecked']) $str .= "<button class=floatright name=ACTION value=Checked type=submit >Checked</button>";
+//            if ($Acts && !$fetch['HealthChecked']) $str .= "<button class=floatright name=ACTION value=Checked type=submit >Checked</button>";
             $str .= "</form>";
           } else {
             $str .= "<td>";
