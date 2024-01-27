@@ -153,7 +153,7 @@ function Invoice_Gen(&$inv) {
     if (isset($inv['PayDate']) && $inv['PayDate']) {
       $str .= "<center><b>PAYMENT TERMS: PAID WITH THANKS </b><center>";
     } else {
-      $str .= "<b>BACS PAYMENTS TO:</b><p><table class=BACS><tr><td>" . Feature('FestBankAdr') .
+      $str .= "<b>BACS PAYMENTS TO:</b><p><table class=BACS><tr><td>Bank:<td>" . Feature('FestBankAdr') .
             "\n<tr><td>Sort Code:<td>" . Feature('FestBankSortCode') . 
             "\n<tr><td>Account No:<td>" . Feature('FestBankAccountNum') .
             "\n<tr><td>Quote Reference:<td>" . $inv['OurRef'] . '/' . $inv['id'] . " $Rev" . "</table>&nbsp;<p>&nbsp;<p>\n";
@@ -895,16 +895,16 @@ function Pay_Update($id) {
   Update_db_post('OtherPayments',$pay);
 }
 
-function Pay_Code_Find($src,$srcid) {
+function Pay_Code_Find($src,$srcid,$extra='') {
   global $db;
-  $res=$db->query("SELECT * FROM OtherPayments WHERE Source=$src AND SourceId=$srcid ORDER BY IssueDate DESC");
+  $res=$db->query("SELECT * FROM OtherPayments WHERE Source=$src AND SourceId=$srcid $extra ORDER BY IssueDate DESC");
   if ($res) return $res->fetch_assoc();
   return 0;   
 }
 
 function Pay_Code_Remove($src,$srcid) {
   global $db;
-  while ($pay = Pay_Code_Find($src,$srcid)) {
+  while ($pay = Pay_Code_Find($src,$srcid," AND Year>0")) {
     $pay['Year'] = - $pay['Year'];
     Put_PayCode($pay);
   };

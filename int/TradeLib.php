@@ -588,7 +588,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   }
   
   if (Feature('TradeDays')) echo "<tr><td>Days:<td>" . fm_select($Trade_Days,$Trady,'Days');
-  echo "<tr><td>Requested Pitch Sizes, (WxD) <span class=DefaultPitch>" . Pitch_Size_Def($Trad['TradeType']) . "</span> is default" . Help('PitchSize');
+  echo "<tr><td>Requested Pitch Sizes, (WxD) <span class=DefaultPitch>" . Pitch_Size_Def($Trad['TradeType'] ?? 1) . "</span> is default" . Help('PitchSize');
   
   echo "<td>Location";
   if ($Trade_Prop & 1) {
@@ -1495,7 +1495,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
   $xtra = '';
   $InvPay = Feature("TradeInvoicePay"); // Switch Invoice or Just Paycodes
 
-echo "<p>DOING Trade_ACtion $Action<p>";
+//echo "<p>DOING Trade_ACtion $Action<p>";
 // var_dump($Action);
 
   switch ($Action) {
@@ -1622,7 +1622,7 @@ echo "<p>DOING Trade_ACtion $Action<p>";
     break;
 
   case 'Decline' :
-    if ($CurState == $Trade_States['Change_Aware']) {
+    if ($CurState == $Trade_State['Change Aware']) {
       Trade_Action('DateUnHappy',$Trad,$Trady,"$Hist $Action");
       return;
     }
@@ -1644,7 +1644,7 @@ echo "<p>DOING Trade_ACtion $Action<p>";
       if ($CurState == $Trade_State['Accepted']) { // Should not be here ...
         // Is there an invoice ? If so credit it and attach credit note
         $Invs = Get_Invoices(" PayDate=0 AND OurRef='" . Sage_Code($Trad) . "'"," IssueDate DESC ");
-        if ($Invs) $att = Invoice_Credit_Note($Invs[0]);
+        foreach ($Invs as $Inv) $att = Invoice_Credit_Note($Inv);
       }
     }
     Send_Trader_Email($Trad,$Trady,'Trade_Decline',$att);

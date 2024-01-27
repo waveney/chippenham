@@ -62,7 +62,7 @@
     case 'DIFF': // Need to find out ammount 
       $amt = $_REQUEST["amt$id"]*100;
       $inv['PaidTotal'] += $amt;
-      if ($inv['PaidTotal'] == $inv['Total']) {
+      if ($inv['PaidTotal'] >= $inv['Total']) {
         $inv['PayDate'] = time();
         $inv['History'] .= "Fully Paid on " . date('j/n/Y') . " by " . $USER['Login'] . "\n";
       } else  if ($inv['PaidTotal'] > $inv['Total']) {

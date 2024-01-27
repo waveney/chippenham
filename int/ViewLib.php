@@ -131,7 +131,7 @@ if ($targetname) $BName=$targetname;
 //  down load if not read or no handler available
   header('Content-Description: File Transfer');
   header('Content-Type: application/octet-stream');
-  header("Content-Disposition: attachment; filename='$BName'");
+  header("Content-Disposition: attachment; filename=$BName");
   header('Expires: 0');
   header('Cache-Control: must-revalidate');
   header('Pragma: public');
