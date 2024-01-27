@@ -623,7 +623,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     }
     if ($Mode) {
 
-      echo fm_text1("",$Trady,"PitchNum$i",1,'class=NotCSide','class=NotCSide onchange=PitchNumChange(' . $Trady["PitchNum$i"] . ')');
+      echo fm_text1("",$Trady,"PitchNum$i",1,'class=NotCSide','class=NotCSide onchange=PitchNumChange(' . ($Trady["PitchNum$i"]??0) . ')');
       if (isset($Trady["PitchLoc$i"]) && $Trady["PitchLoc$i"]) echo " <a href=TradeStandMap?l=" . $Trady["PitchLoc$i"] . ">Map</a>";
     } else {
 //      echo "<td>";
@@ -665,7 +665,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   
   echo "<tr>";
     if ($Mode) {
-      echo fm_text("Pitch Fee, put -1 for free",$Trady,'Fee',1,'class=NotCSide','class=NotCSide');
+      echo fm_text("Pitch Fee, put -1 for free",$Trady,'Fee',1,'class=NotCSide','class=NotCSide onchange=FeeChange()');
       if ($TotPowerCost && $Trady['Fee'] ) {
         echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . (($Trady['Fee'] ?? 0) + $TotPowerCost);
       } else {
@@ -1367,16 +1367,17 @@ function Trade_Main($Mode,$Program,$iddd=0) {
         $xtra = '';
         switch ($ac) {
           case 'Quote':
-            if ($Trady['Fee'] == 0) continue 2;
+            $xtra = " id=QuoteButton " . ($Trady['Fee']?'':'hidden'); 
             break;
           case 'Artisan Invite':
-            if ($Trady['Fee'] == 0) continue 2;
+            $xtra = " id=ArtInviteButton " . ($Trady['Fee']?'':'hidden');  
             break;
           case 'Invite':
-            if ($Trady['Fee'] == 0) continue 2;
+            $xtra = " id=InviteButton " . ($Trady['Fee']?'':'hidden'); 
             break;
           case 'Invite Better':
-            if ($Trady['Fee'] == 0) continue 2;
+            if (!Feature('InviteBetter')) continue 2;
+            $xtra = " id=InviteBetterButton " . ($Trady['Fee']?'':'hidden'); 
             break;
           case 'Accept':
             if ($Trady['Fee'] == 0) continue 2;

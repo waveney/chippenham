@@ -172,6 +172,15 @@ function PitchNumChange(oldval) {
   }
 }
 
+function FeeChange() {
+  var buts = ['Quote','ArtInvite','Invite','InviteBetter'];
+  var bb;
+  buts.forEach((but) => { 
+    if (bb = $('#' + but + 'Button')) {
+      bb.show();
+    }
+  });  
+}
 
 /* copied code
 
