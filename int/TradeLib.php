@@ -1321,7 +1321,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
 
   Show_Trader($Tid,$Trad,$Program,$Mode);
   if ($Mode < 2 && !$Orgs) {
-    if (Feature('TradeStatus',1) ==0) {
+    if (($Mode==0) && (Feature('TradeStatus',1) ==0)) {
       echo "<h2>The Trading system is still being set up.  When ready, you will be able to complete your booking here.</h2>";
     } else {
       Show_Trade_Year($Tid,$Trady,$DYear,$Mode);
