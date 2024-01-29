@@ -141,7 +141,7 @@
         } else {
           if (0 && $Trad['Tid'] != 681) { // Diagnostic code
             echo "Caught in error doing " . $Trad['Tid'] . ' ' . $Trad['SN'] . "<p>";
-            var_dump($_REQUEST);
+            var_dump($_REQUEST); // Diagnostic code on error path
             exit;
           }
           Send_Trader_Email($Trad,$Trad,$Mess);

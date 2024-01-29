@@ -1009,9 +1009,9 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
 
   if (isset($_REQUEST['DUMP'])) {
     echo "<tr><td colspan=6>Dump:";
-    var_dump($Side);
+    var_dump($Side); // Diagnostic code on debug path
     echo "<P>";
-    var_dump($Sidey);
+    var_dump($Sidey); // Diagnostic code on debug path
   }
 
   if (($Sidey['SponsoredBy'] ?? 0)) {

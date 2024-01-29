@@ -182,6 +182,14 @@ function FeeChange() {
   });  
 }
 
+function CheckReQuote(tid) {
+  $('#BookState').load('tradeauto.php', 'I=' + tid + '&A=RQ');
+//  return;
+  setTimeout(function(){
+    window.location.reload();
+  }, 100);
+}
+
 /* copied code
 
 var nexthl = 0;

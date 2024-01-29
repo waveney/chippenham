@@ -33,5 +33,8 @@ CREATE TABLE `TradeYear` (
   `BalanceCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `OtherCode` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `DateChange` int NOT NULL,
+  `QuoteSize0` text COLLATE utf8mb4_general_ci NOT NULL,
+  `QuoteSize1` text COLLATE utf8mb4_general_ci NOT NULL,
+  `QuoteSize2` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`TYid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

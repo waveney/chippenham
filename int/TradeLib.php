@@ -567,16 +567,17 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
       }
 //    echo fm_radio("Booking State",$Trade_States,$Trady,'BookingState','class=NotCSide',1,'colspan=2 class=NotCSide');
     echo "<td class=NotSide>" . fm_checkbox('Local Auth Checked',$Trady,'HealthChecked');
+    if (Access('Internal')) echo ($Trady['TYid'] ?? -1);
   } else {
     $stat = $Trady['BookingState'];
     if (!$stat) $stat = 0;
     echo fm_hidden('BookingState',$stat);
     if ($stat == $Trade_State['Fully Paid'] && ($Trady['Insurance'] == 0 || $Trady['RiskAssessment'] == 0)) {
-      echo "<td>Booking State:" . help('BookingState') . "<td class=TSNoInsRA>Fully Paid";
+      echo "<td id=BookState>Booking State:" . help('BookingState') . "<td class=TSNoInsRA>Fully Paid";
       if ($Trady['Insurance'] ==0) echo ", no Insurance";
       if ($Trady['RiskAssessment'] ==0) echo ", no Risk Assessment";
     } else {
-        echo "<td>Booking State:" . help('BookingState') . "<td ";
+        echo "<td id=BookState>Booking State:" . help('BookingState') . "<td ";
         if ($stat == $Trade_State['Fully Paid'] && ($Trady['Insurance'] == 0 || $Trady['RiskAssessment'] == 0)) {
           echo " class=TSNoInsRA>Paid";
           if ($Trady['Insurance'] ==0) echo ", no Insurance";
@@ -606,10 +607,11 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   
   for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
     $pwr = (isset($Trady["Power$i"])?$Trady["Power$i"]:0);
-    echo "<tr>" . fm_text1("",$Trady,"PitchSize$i");
+    echo "<tr>" . fm_text1("",$Trady,"PitchSize$i",1,(!$Mode && ($Trady['Fee']??0))?" onchange=CheckReQuote($Tid)":"");
+      if (!$Mode && ($Trady['Fee']??0)) echo "<br>Changing will result in a new quote.  Be patient.";
     
     if ($Mode) { // Festival
-      echo "<td id=PowerFor$i>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1,"onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")");
+      echo "<td id=PowerFor$i>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1,"onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")"); // TODO Looks WRONG
     } else if ($Trade_Prop & 1) { // Change Pos
       echo "<td>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1);   
     } else if ($Trady['PitchLoc0'] ?? 0) {  // Assigned
@@ -721,7 +723,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
       echo fm_date('Invite Sent',$Trady,'SentInvite');
     }
   }
-  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=6 class=NotSide><textarea id=Debug></textarea>";
+//  if (Access('SysAdmin')) 
+  echo "<tr><td class=NotSide>Debug<td colspan=6 class=NotSide><textarea id=Debug></textarea>";
   echo "</table></div>\n";
 }
 
@@ -754,18 +757,21 @@ function Get_Trade_Details(&$Trad,&$Trady) {
   if ($Trady['PitchLoc0']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc0']]['SN'];
   if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum0']) $Body .= "Pitch Number "  . $Trady['PitchNum0'];
   if ($Trady['Power0']) $Body .= " with " . ($Trady["Power0"]> 0 ? $Power[$Trady['Power0']]['Amps'] . " Amps\n" : " own Euro 4 silent generator\n");
+  if (isset($Trady['QuoteSize0']) && ($Trady['QuoteSize0'] != $Trady['PitchSize0'])) $Body .= "<b>WAS " . $Trady['QuoteSize0'] . "</b>\n";
 
   if ($Trady['PitchSize1']) {
     $Body .= "\nPitch 2:" . $Trady['PitchSize1'];
     if ($Trady['PitchLoc1']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc1']]['SN'];
     if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum1']) $Body .= "Pitch Number "  . $Trady['PitchNum1'];
     if ($Trady['Power1']) $Body .= " with " . $Power[$Trady['Power1']]['Amps'] . " Amps\n";
+    if (isset($Trady['QuoteSize1']) && ($Trady['QuoteSize1'] != $Trady['PitchSize1'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
   }
   if ($Trady['PitchSize2']) {
     $Body .= "\nPitch 3:" . $Trady['PitchSize2'];
     if ($Trady['PitchLoc2']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc2']]['SN'];
     if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum2']) $Body .= "Pitch Number "  . $Trady['PitchNum2'];
     if ($Trady['Power2']) $Body .= " with " . $Power[$Trady['Power2']]['Amps'] . " Amps\n";
+    if (isset($Trady['QuoteSize2']) && ($Trady['QuoteSize2'] != $Trady['PitchSize2'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
   }
 
   if ($Trady['Fee']) {
@@ -888,6 +894,7 @@ function Trader_Details($key,&$data,$att=0) {
   case 'OTHERCODE': return $Trady['OtherCode'];
   case 'PAIDSOFAR': return $Trady['TotalPaid'];
   case 'PAYCODES':
+    include_once("InvoiceLib.php");
     $Pay = Pay_Code_Find(1,$Tid);
     if ($Pay && $Pay['State']==0) {
       return "<b>Payment due</b><br>For: <b>" . $Pay['Reason'] . "</b><br>Due: " . date('j/n/Y',$Pay['DueDate']) . 
@@ -1031,7 +1038,7 @@ function Validate_Trade($Mode=0) { // Mode 1 for Staff Submit, less stringent
         echo "<h2 class=ERR>The Product Description is too short</h2>\n";
         $proc = 0;
       }
-      if ($Orgs==0 && (!isset($_POST['PublicHealth']) || strlen($_POST['PublicHealth']) < 5) && ($TradeTypeData[$_POST['TradeType']]['NeedPublicHealth']) && ($Mode == 0)) {
+      if ($Orgs==0 && (!isset($_POST['PublicHealth']) || strlen($_POST['PublicHealth']) < 4) && ($TradeTypeData[$_POST['TradeType']]['NeedPublicHealth']) && ($Mode == 0)) {
         echo "<h2 class=ERR>No Public Health Authority Given</h2>\n";
         $proc = 0;
       }
@@ -1554,10 +1561,11 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
 
     $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? "Trade_Artisan_Accept" : "Trade_Accepted");
     $Pwr = PowerCost($Trady);
+    $Fee = $Trady['Fee'];
     if ($InvPay) { // Only for when Mandy was being awkward
       $DueDate = Trade_Date_Cutoff();
       if ($DueDate) { // Single Pay Request
-        $Code = Pay_Rec_Gen("PAY",($Trady['Fee'] + $Pwr)*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Full Payment',$DueDate);
+        $Code = Pay_Rec_Gen("PAY",( $Fee + $Pwr)*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Full Payment',$DueDate);
         Send_Trader_Email($Trad,$Trady,$ProformaName . "_FullInvoice");    
       } else { // Deposit 
         $Code = Pay_Rec_Gen("DEP",$Dep*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Deposit',Feature('PaymentTerms',30));
@@ -1575,6 +1583,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       }
     }
     if ($Trady['DateChange']) $Trady['DateChange'] = 3;
+    $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
     break;
 
   case 'Send Bal': // Send requests for final payments - PAYCODES    
@@ -1878,23 +1887,32 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     break;
 
   case 'Invite' :
-    if ($Trady['Fee']) {
+    if ($Fee = $Trady['Fee']) {
+      for($i=0;$i<3;$i++) $Trady["QuoteSize$i"] = $Trady["PitchSize$i"]; 
+      $Ychng = 1;
       $NewState = $Trade_State['Quoted'];
       Send_Trader_Email($Trad,$Trady,'Trade_Invitation');
+      $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
     }
     break;
 
   case 'Artisan Invite' :
-    if ($Trady['Fee']) {
+    if ($Fee = $Trady['Fee']) {
+      for($i=0;$i<3;$i++) $Trady["QuoteSize$i"] = $Trady["PitchSize$i"]; 
+      $Ychng = 1;
       $NewState = $Trade_State['Quoted'];
       Send_Trader_Email($Trad,$Trady,'Trade_Artisan_Invite');
+      $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
     }
     break;
 
   case 'Invite Better' :
-    if ($Trady['Fee']) {
+    if ($Fee = $Trady['Fee']) {
+      for($i=0;$i<3;$i++) $Trady["QuoteSize$i"] = $Trady["PitchSize$i"]; 
+      $Ychng = 1;
       $NewState = $Trade_State['Quoted'];
       Send_Trader_Email($Trad,$Trady,'Trade_InvitationBetter');
+      $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
     }
     break;
 
@@ -1913,9 +1931,16 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     if dep not paid and dep not changed { if due
     
   */
-  
-    if ($CurState != $Trade_State['Requote']) {
+ 
+
+    for($i=0;$i<3;$i++) $Trady["QuoteSize$i"] = $Trady["PitchSize$i"]; 
+//var_dump($Trady);
+    $Ychng = 1;
+    $Fee = $Trady['Fee'];
+    $Dep = T_Deposit($Trad);
+    if ($CurState != $Trade_State['Requote']){
       $NewState = $Trady['BookingState'] = $Trade_State['Quoted'];
+      for($i=0;$i<3;$i++) $Trady["QuoteSize$i"] = $Trady["PitchSize$i"];
       Send_Trader_Email($Trad,$Trady,'Trade_Quote');    
     } elseif ($Trady['Fee'] <0) {
       $NewState = $Trady['BookingState'] = $Trade_State['Fully Paid'];
@@ -1924,14 +1949,14 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       $Invs = Get_Invoices(" OurRef='" . Sage_Code($Trad) . "'"," IssueDate DESC ");
       $InvoicedTotal = 0;
       foreach ($Invs as $inv) $InvoicedTotal += $inv['Total'];
-      $Dep = T_Deposit($Trad);
+
       $DueDate = Trade_Date_Cutoff();
       if ($Invs) $invoice = Get_Invoice_Pdf($Invs[0]['id']);
       
       if ($PaidSoFar < $Dep && $DueDate==0) {  // Need a deposit
         if ($Invs && $PaidSoFar==0 && $InvoicedTotal>=$Dep) { // For info no action required, existing deposit fine, repeat it
-          $NewState = $Trady['BookingState'] = $Trade_State['Accepted'];
-          Send_Trader_Email($Trad,$Trady,'Trade_Statement',$invoice);  
+          $NewState = $Trady['BookingState'] = $Trade_State['Quoted'];
+          Send_Trader_Email($Trad,$Trady,'Trade_Quote',$invoice);  
         } elseif (!$Invs) {
           $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
              "Trade_Artisan_Accept" : "Trade_Accepted");
@@ -1967,6 +1992,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       }
     }
     $Ychng = 1;
+    $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
     break;
 
   case 'Resend' :
@@ -2169,6 +2195,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
 // var_dump($Ychng,$CurState,$NewState);
 
   if ($Tchng && $Action) Put_Trader($Trad);
+// var_dump($Action,$Ychng,$CurState, $NewState,$Trady);
   if ($Action && ($Ychng || $CurState != $NewState )) {
     $Trady['BookingState'] = $NewState; // Action test is to catch the moe errors
     $By = (isset($USER['Login'])) ? $USER['Login'] : 'Trader';

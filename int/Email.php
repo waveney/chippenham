@@ -78,6 +78,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
       echo "<p>Would send email to " . Pretty_Print_To($to);
       if ($from) echo "From: " . Pretty_Print_To($from);
       echo " with subject: $sub<p>Content:<p>$letter<p>\n";
+      debug_print_backtrace();
     
       echo "Text: " . ConvertHtmlToText($letter);
       if ($attachments) {

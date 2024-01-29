@@ -219,7 +219,7 @@ function Update_db($table,&$old,&$new,$proced=1) {
 //echo "$fcnt<p>";
   if ($proced && $fcnt) {
     $newrec .= " WHERE $indxname=" . $old[$indxname];
-//echo "Updating $table with: "; var_dump($newrec);debug_print_backtrace(); echo "<P>";
+//if ($table == 'TradeYear') echo "Updating $table with: "; var_dump($newrec);debug_print_backtrace(); echo "<P>";
     $update = $db->query($newrec);
     $UpdateLog .= $newrec . "\n";
     if ($update) {

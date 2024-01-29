@@ -1,7 +1,7 @@
 <?php
   include_once("int/fest.php");
   set_ShowYear();  
-  global $YEARDATA,$NEXTYEARDATA,$PLANYEARDATA,$Months,$SHOWYEAR;
+  global $YEARDATA,$NEXTYEARDATA,$PLANYEARDATA,$Months,$SHOWYEAR,$PLANYEAR;
   include_once("int/TradeLib.php");
   include_once("int/NewsLib.php");
   include_once("int/DispLib.php");
