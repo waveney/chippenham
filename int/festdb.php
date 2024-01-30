@@ -29,12 +29,14 @@ db_open();
 function Gen_Get($Table,$id, $idx='id') {
   global $db;
   $res = $db->query("SELECT * FROM $Table WHERE $idx=$id");
-  if ($res) if ($ans = $res->fetch_assoc()) return $ans;
+  if ($res) {
+    $ans = $res->fetch_assoc();
+    if ($ans) return $ans;
+  }
   return [];
 }
 
 function Gen_Put($Table, &$now, $idx='id') {
-  global $db,$GAMEID;
   if (!empty($now[$idx])) {
     $e=$now[$idx];
     $Cur = Gen_Get($Table,$e,$idx);
@@ -70,12 +72,15 @@ function Gen_Get_Cond($Table,$Cond, $idx='id') {
   return $Ts;
 }
 
-function Gen_Get_Cond1($Table,$Cond, $idx='id') {
+function Gen_Get_Cond1($Table,$Cond) {
   global $db;
 //  var_dump($Cond);
 //  $Q = "SELECT * FROM $Table WHERE $Cond";var_dump("Q=",$Q);
   $res = $db->query("SELECT * FROM $Table WHERE $Cond LIMIT 1");
-  if ($res) if ($ans = $res->fetch_assoc()) return $ans;
+  if ($res) {
+    $ans = $res->fetch_assoc();
+    if ($ans) return $ans;
+  }
   return [];
 }
 
@@ -194,7 +199,7 @@ function Update_db($table,&$old,&$new,$proced=1) {
       } elseif ($ftype == 'tinyint' || $ftype == 'smallint') {
         $dbform = 0;
         if ($new[$fname]) {
-          if ((string)(int)$new[$fname] = $new[$fname]) { $dbform = $new[$fname]; } else { $dbform = 1; };
+          if ((string)(int)$new[$fname] = $new[$fname]) { $dbform = $new[$fname]; } else { $dbform = 1; }
         }
       } else {
         $dbform = $new[$fname];
@@ -254,7 +259,7 @@ function Insert_db($table, &$from, &$data=0, $proced=1) {
       } elseif ($ftype == "tinyint" || $ftype == 'smallint') {
         $dbform = 0;
         if ($from[$fname]) {
-          if ((string)(int)$from[$fname] = $from[$fname]) { $dbform = $from[$fname]; } else { $dbform = 1; };
+          if ((string)(int)$from[$fname] = $from[$fname]) { $dbform = $from[$fname]; } else { $dbform = 1; }
         }
         if ($data) $data[$fname] = $dbform;
         $newrec .= " $fname=$dbform ";
@@ -333,11 +338,11 @@ function Feature_Reset() {
 }
 
 function Capability($Name,$default='') {  // Return value of Capability if set from FESTSYS
-  static $Capabilities;
+  static $Capabilities = [];
   global $FESTSYS;
   if (!$Capabilities) {
     $Capabilities = [];
-    foreach (explode("\n",$FESTSYS['Capabilities']) as $i=>$Cape) {
+    foreach (explode("\n",$FESTSYS['Capabilities']) as $Cape) {
       $Dat = explode(":",$Cape,3);
       if ($Dat[0])$Capabilities[$Dat[0]] = trim($Dat[1]);
     }
@@ -346,7 +351,7 @@ function Capability($Name,$default='') {  // Return value of Capability if set f
   return $default;
 }
 
-$FESTSYS = Gen_Get('SystemData',1);;
+$FESTSYS = Gen_Get('SystemData',1);
 $SHOWYEAR = Feature('ShowYear');
 $YEAR = $PLANYEAR = Feature('PlanYear');  //$YEAR can be overridden
 include_once("Version.php");
@@ -355,11 +360,11 @@ $Event_Types = Event_Types_ReRead();// Caching
 
 function TnC($Name,$default='') {  // Return value of T and C if set from TsAndCs
   $Res = Gen_Get_Cond1('TsAndCs2',"Name='$Name'");
-  return (empty($Res['Content'])?'':$Res['Content']);
+  return (empty($Res['Content'])?$default:$Res['Content']);
 }
 
 function set_ShowYear($last=0) { // Overrides default above if not set by a Y argument
-  global $YEAR,$SHOWYEAR,$YEARDATA,$NEXTYEARDATA,$PLANYEAR;
+  global $YEAR,$SHOWYEAR,$YEARDATA,$NEXTYEARDATA;
   if ($last == 0 && !isset($_REQUEST['Y'])) {
     $YEAR = $SHOWYEAR;
     $YEARDATA = Get_General($YEAR);
@@ -454,5 +459,3 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
     return 1;
   } 
 }
-?>
-

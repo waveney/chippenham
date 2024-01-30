@@ -865,7 +865,7 @@ function Trader_Details($key,&$data,$att=0) {
                         'On a wait list',
                         'Awaiting a requote after change'][$Trady['BookingState']] . "<P>";
   case 'BACSREF':
-    preg_match('/(\d*)\.pdf/',$att,$mtch = []);
+    preg_match('/(\d*)\.pdf/',$att,$mtch);
     return Sage_Code($Trad) . "/" . (isset($mtch[1]) ? $mtch[1] : '0000' );
   case 'FINANCIAL': return Trade_Finance($Trad,$Trady);
   case 'PAYDAYS' : return Feature('PaymentTerms',30);
@@ -2251,7 +2251,7 @@ function Trade_F_Action($Uid,$Action,$xtra='',$invid=0) { // Call from Invoicing
     $Trad = Get_Trader($Uid);
     $Trady = Get_Trade_Year($Uid);
     Trade_Action($Action,$Trad,$Trady,1,'', $xtra,$invid); // OLD CODE
-  } else if (preg_match('/(\D*)(\d*)\D$/',$Uid,$PCRec = [])) {
+  } else if (preg_match('/(\D*)(\d*)\D$/',$Uid,$PCRec)) {
     $Tid = $PCRec[1];
     $Trad = Get_Trader($Tid);
     $Trady = Get_Trade_Year($Tid);

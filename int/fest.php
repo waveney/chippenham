@@ -60,7 +60,7 @@ $Months = ['','Jan','Feb','Mar','Apr','May','June','July','Aug','Sep','Oct','Nov
 date_default_timezone_set('GMT');
 
 function Check_Login() {
-  global $db,$USER,$USERID,$Access_Type,$YEAR;
+  global $db,$USER,$USERID;
 
   if (isset($_COOKIE['FEST2'])) {
     $res=$db->query("SELECT * FROM FestUsers WHERE Yale='" . $_COOKIE['FEST2'] . "'");
@@ -90,7 +90,7 @@ function Check_Login() {
 }
 
 function Set_User() {
-  global $db,$USER,$USERID,$Access_Type,$YEAR;
+  global $USER,$USERID;
   if (isset($USER)) return;
   $USER = array();
   $USERID = 0;
@@ -109,8 +109,8 @@ function Set_User() {
 }
   
 function Is_SubType($Name) {
-  global $USER,$USERID,$Sections;
-  static $Stypes;
+  global $USERID,$Sections;
+  static $Stypes =[];
   if (empty($Stypes)) {
     $Ttypes = Gen_Get_All('UserCap',"WHERE User=$USERID");
     foreach($Ttypes as $T) $Stypes[$Sections[$T['Capability']]] = $T['Level'];
@@ -172,8 +172,7 @@ function Access($level,$subtype=0,$thing=0) {
 */
 
 function A_Check($level,$subtype=0,$thing=0) {
-  global $Access_Type,$USER,$USERID;
-  global $db;
+  global $USERID;
   Set_User();
   if (!$USERID) {
     include_once("int/Login.php");
@@ -196,7 +195,7 @@ function UserSetPref($pref,$val) {
 }
 
 function UserGetPref($pref) {
-  global $USER,$USERID;
+  global $USER;
   if (!$USER || !isset($USER['Prefs'])) return 0;
   if (preg_match("/$pref\:(.*)\n/",$USER['Prefs'],$rslt)) return trim($rslt[1]);
   return 0;
@@ -212,7 +211,7 @@ function rand_string($len) {
 
 function Get_User($who,&$newdata=0) {
   global $db;
-  static $Save_User;
+  static $Save_User =[];
 
   if (isset($Save_User[$who])) {
     $ret = $Save_User[$who];
@@ -291,7 +290,7 @@ function Get_Years() {
   $res = $db->query("SELECT * FROM General ORDER BY Year");
   $Gens = array();
   if ($res) {
-    while ($stuff = $res->fetch_assoc()) { $Gens[$stuff['Year']] = $stuff; };
+    while ($stuff = $res->fetch_assoc()) { $Gens[$stuff['Year']] = $stuff; }
   }
   return $Gens;
 }
@@ -430,7 +429,7 @@ function dostaffhead($title,$extras=[]) {
 
 // No Banner
 function dominimalhead($title,$extras=[]) { 
-  global $head_done,$CONF,$AdvancedHeaders,$FESTSYS;
+  global $head_done,$CONF,$FESTSYS;
   $pfx="";
   if (isset($CONF['TitlePrefix'])) $pfx = $CONF['TitlePrefix'];
   echo "<html><head>";
@@ -456,6 +455,4 @@ function dotail() {
   echo "</body></html>\n";
   exit;
 }
- 
 
-?>

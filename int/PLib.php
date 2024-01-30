@@ -2,8 +2,8 @@
 // Participant Display Lib - Generalises Show_Side etc
 
 function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank look at data to determine type.  Mode=0 for public, 1 for ctte
-  global $YEARDATA,$Side_Statuses,$Importance,$Surfaces,$Surface_Colours,$Noise_Levels,$Noise_Colours,$Share_Spots,$Mess,$Action,$ADDALL,$PLANYEAR,$YEAR;
-  global $OlapTypes,$OlapCats,$OlapDays,$PerfTypes,$ShowAvailOnly,$ADDALL,$PayTypes;
+  global $Side_Statuses,$Importance,$Surfaces,$Surface_Colours,$Noise_Levels,$Noise_Colours,$Share_Spots,$ADDALL,$PLANYEAR,$YEAR;
+  global $OlapTypes,$OlapDays,$PerfTypes,$ADDALL,$PayTypes;
   if ($CatT == '') {
     $CatT = ($Side['IsASide'] ? 'Side' : ($Side['IsAnAct'] ? 'Act' : 'Other')); // Probably needs adding other cats
   }
@@ -71,7 +71,6 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     }
     echo "Please keep this information up to date, even if you are not coming so we can invite you in the future.";
   }
-  $snum = $Side['SideId'];
   
   echo "<div id=ErrorMessage class=ERR></div>";
 
@@ -107,7 +106,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         echo fm_text(weblink(trim($Side['Website'])),$Side,'Website');
       } else {
         echo fm_text('Website',$Side,'Website');
-      };
+      }
       
       echo "<td>Recent Photo" . fm_DragonDrop(1, 'Photo','Perf',$snum,$Side,$Mode); // TODO  <td><a href=PhotoProcess.php?Cat=Perf&id=$snum>Edit/Change</a>";
     echo "<tr>";
@@ -115,7 +114,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         echo fm_text("<a href=" . videolink($Side['Video']) . ">Recent Video</a>",$Side,'Video',1,$Adv);
       } else {
         echo fm_text('Recent Video',$Side,'Video',1,$Adv);
-      };
+      }
       echo fm_text(Social_Link($Side,'Facebook' ),$Side,'Facebook');
       if (Access('SysAdmin')) echo fm_text1('Photo Link',$Side,'Photo',1,'class=NotSide','class=NotSide');
     if (!$Wide) echo "<tr>";
@@ -198,7 +197,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     if (!$Wide) echo "<tr class=AgentDetail $AgentTxt>";
       echo fm_text('Phone',$Side,'AgentPhone');
       echo fm_text('Mobile',$Side,'AgentMobile');
-      echo "<tr class=AgentDetail $AgentTxt>" . fm_text('Address',$Side,'AgentAddress',3) . fm_text('Post Code',$Side,'AgentPostCode');;
+      echo "<tr class=AgentDetail $AgentTxt>" . fm_text('Address',$Side,'AgentAddress',3) . fm_text('Post Code',$Side,'AgentPostCode');
 
     echo "<tr>" . fm_text('<span id=ContactLabel>Contact</span>',$Side,'Contact',1,'','','',($Wide?' rowspan=2':' rowspan=4 '));
       echo fm_text1('Email',$Side,'Email',2);
@@ -229,7 +228,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 
             echo "<span style='Background:" . $Surface_Colours[$st] . ";padding:4; white-space: nowrap;'>" .fm_checkbox($surf,$Side,"Surface_$surf") . "</span>";
           }
-        };
+        }
         if (!$Wide) echo "<tr>";
         echo "<td>Shared Spots:<td>" . fm_select($Share_Spots,$Side,'Share');
         if (!isset($Side['NoiseLevel'])) $Side['NoiseLevel']=0;
@@ -309,9 +308,9 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       $olaps = Get_Overlaps_For($snum);
 //var_dump($olaps);
       $rows = count($olaps)+1;
-      $SideList=Sides_All($snum);
-      $ActList=Act_All();
-      $OtherList=Other_All();
+ //     $SideList=Sides_All($snum);
+ //     $ActList=Act_All();
+ //     $OtherList=Other_All();
       $row = 0;
       echo "<tr id=OverlapRow$row class=NotSide><td rowspan=$rows class=NotSide>Overlap Rules: \n" . 
             help('OverlapRules'); //<button type=button onclick=AddOverlapRow()>+</button>\n";
@@ -396,8 +395,8 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
 
 
 function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at data to determine type.  Mode=0 for public, 1 for ctte
-  global $YEAR,$PLANYEAR,$YEARDATA,$Invite_States,$Coming_States,$Coming_Colours, $Mess,$Action,$ADDALL,$Invite_Type,$TickBoxes;
-  global $InsuranceStates,$Book_State,$Book_States,$Book_Colours,$ContractMethods,$Dance_Comp,$Dance_Comp_Colours,$PerfTypes,$ShowAvailOnly;
+  global $YEAR,$PLANYEAR,$YEARDATA,$Invite_States,$Coming_States,$Coming_Colours,$TickBoxes;
+  global $Book_State,$Book_States,$Book_Colours,$ContractMethods,$Dance_Comp,$Dance_Comp_Colours,$PerfTypes,$ShowAvailOnly;
   
   if ($year==0) $year=$YEAR;
 
@@ -412,7 +411,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   }
 
   $NotD = 0;
-  foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) if (($d[0] != 'IsASide') && $Side[$d[0]]) $NotD = 1;
+  foreach ($PerfTypes as $d) if (Capability("Enable" . $d[2])) if (($d[0] != 'IsASide') && $Side[$d[0]]) $NotD = 1;
 
   $Adv = '';
   $Imp = '';
@@ -754,7 +753,6 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         fm_number1('Sun',$Sidey,'CampSun', $campxtr,$campxtr2);
       break;
           
-      break;   
     case 3: // Chip style
       $syid = (isset($Sidey['syId'])?$Sidey['syId']:-1);
       $CampSites = Gen_Get_All('Campsites');
@@ -829,7 +827,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         if ($Sidey['CampFri']) echo "<td>Friday: " . $Sidey['CampFri'];
         if ($Sidey['CampSat']) echo "<td>Saturday: " . $Sidey['CampSat'];
         if ($Sidey['CampSun']) echo "<td>Sunday: " . $Sidey['CampSun'];
-      };
+      }
       break;   
     case 3: // Chip style
       $syid = (isset($Sidey['syId'])?$Sidey['syId']:-1);
@@ -889,7 +887,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       foreach($Evs as $e) {
         $Detail = ($Mode?"EventAdd":"EventShow");
         $vv = $e['Venue'];
-        if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; };
+        if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; }
         if (($e['Start'] != 0) && ($End != 0) && ($e['Duration'] == 0)) $e['Duration'] = timeadd2real($End, - $e['Start']);
         echo "<tr class=ContractShow hidden><td><a href=$Detail?e=" . $e['EventId'] . ">" . $e['SN'] . "</a>";
 //        echo "<td>" . $ETs[$e['Type']];
@@ -963,7 +961,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             echo "<span class=red>" . $CMess . "</span>"; 
           } else { 
             echo "The contract is not yet ready.";
-          };
+          }
         }
         break;
       case $Book_State['Contract Sent']:
@@ -984,7 +982,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             echo "<span class=red>" . $CMess . "</span>"; 
           } else { 
             echo "The contract is not yet complete, and hence can not be confirmed";
-          };
+          }
         }
         break;
       case $Book_State['Booking']:
@@ -992,7 +990,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         if ($CMess != '') {
           echo "<td colspan=3>";
           if ($Mode) { echo "The contract is not ready because: <span class=red>" . $CMess . "</span>"; }
-          else { echo "The contract is not yet complete, and hence can not be confirmed"; };
+          else { echo "The contract is not yet complete, and hence can not be confirmed"; }
         }
         break;
     
@@ -1040,5 +1038,3 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
 8) 
 
 */
-
-?>
