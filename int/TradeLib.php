@@ -1,15 +1,15 @@
 <?php
 
 // For Book -> Confirm -> Deposit ->Pay , if class begins with a - then not used/don't list
-$Trade_States = array('Not Submitted','Declined','Refunded','Cancelled','Submitted','Quoted','Accepted','Deposit Paid','Balance Requested','Fully Paid',
-  'Wait List','Requote','Change Aware','Refund Needed');
+$Trade_States = ['Not Submitted','Declined','Refunded','Cancelled','Submitted','Quoted','Accepted','Deposit Paid',
+                  'Balance Requested','Fully Paid','Wait List','Requote','Change Aware','Refund Needed'];
 $Trade_State = array_flip($Trade_States);
 //$Trade_StateClasses = array('TSNotSub','TSDecline','-TSRefunded','TSCancel','TSSubmit','TSInvite','TSConf','TSDeposit','TSInvoice','TSPaid','TSWaitList','TSRequote');
 // Put a - in front of colour to surpress it
 $Trade_State_Colours = ['white','red','grey','grey','yellow','lightyellow','cyan','lightblue','darkseagreen','LightGreen','#ffb380','#e6d9b2','Coral','Gold'];
 $Trade_State_Props = [3,0,0,0,3,2,2,2,0,0,3,2,0,0];
 
-$TS_Actions = array('Submit,Invite,Invite Better',
+$TS_Actions = ['Submit,Invite,Invite Better',
                 'Resend,Submit',
                 'Resend',
                 'Resend,Submit',
@@ -23,11 +23,11 @@ $TS_Actions = array('Submit,Invite,Invite Better',
                 'Resend,Quote,Cancel,Dates,FestC',
                 'Resend,Accept,Decline,Cancel,FestC',
                 'Resend,Cancel',
-                );
+                ];
                 
-$Trader_Status = array('Alive','Banned','Not trading');
+$Trader_Status = ['Alive','Banned','Not trading'];
 $Trader_State = array_flip($Trader_Status);
-$ButExtra = array(
+$ButExtra = [
         'Accept'=>'',
         'Decline'=>'title="Decline this trader, if in doubt Hold Them"',
         'Submit'=>'title="Submit application"',
@@ -51,7 +51,7 @@ $ButExtra = array(
         'LastWeek'=>'title="Last week of Quote"',
         'Dates'=>'Festival Changed Dates',
         'FestC'=>'Festival Cancelled this year',
-        ); 
+        ]; 
         
 $ButTraderTips = [ // Overlay of diferent tips for traders 
         'Accept'=>'title="The invitation or quote"',
@@ -134,7 +134,7 @@ function Put_Trade_Pitch(&$now) {
 
 
 function Get_Trade_Types($tup=0) { // 0 just base names, 1 all data
-  global $db,$PLANYEAR;
+  global $db;
   $full = array();
   if ($tup) {
     $res = $db->query("SELECT * FROM TradePrices ORDER BY ListOrder");
@@ -163,7 +163,7 @@ function Put_Trade_Type(&$now) {
 }
 
 function Get_Sponsors($tup=0) { // 0 Current, 1 all data
-  global $db,$SHOWYEAR,$YEARDATA;
+  global $db;
   $full = array();
   $yr = ($tup ?"" :" WHERE Year!=0 ");
   $res = $db->query("SELECT * FROM Sponsors $yr ORDER BY SN ");
@@ -173,7 +173,7 @@ function Get_Sponsors($tup=0) { // 0 Current, 1 all data
 
 function Get_Sponsor_Names() {
   $data = Get_Sponsors();
-  foreach ($data as $i=>$sp) $ans[$sp['id']]=$sp['SN'];
+  foreach ($data as $sp) $ans[$sp['id']]=$sp['SN'];
   return $ans;
 }
 
@@ -247,7 +247,7 @@ function Get_Traders_Coming($type=0,$SortBy='SN') { // 0=names, 1=all
 }
 
 function Get_All_Traders($type=0) { // 0=names, 1=all
-  global $db,$YEAR,$Trade_State;
+  global $db;
   $data = array();
   $qry = "SELECT * FROM Trade WHERE Status=0 AND IsTrader=1 ORDER BY SN";
   $res = $db->query($qry);
@@ -259,7 +259,7 @@ function Get_All_Traders($type=0) { // 0=names, 1=all
 }
 
 function Get_All_Businesses($type=0) { // 0=names, 1=all
-  global $db,$YEAR,$Trade_State;
+  global $db;
   $data = array();
   $qry = "SELECT * FROM Trade WHERE Status=0 AND IsTrader=0 ORDER BY SN";
   $res = $db->query($qry);
@@ -329,7 +329,7 @@ There will be an additional fee for power, that will be added to your final invo
 }
 
 function Pitch_Size_Def($type) {
-  global $YEAR,$TradeTypeData;
+  global $TradeTypeData;
   $DefPtch = (isset($TradeTypeData[$type]['DefaultSize'])?$TradeTypeData[$type]['DefaultSize']:'');
   if (!$DefPtch) $DefPtch = Feature('DefaultPitch','3Mx3M');
   return $DefPtch;
@@ -357,7 +357,7 @@ function PayCodeGen($Type,$TYid) { // Type = DEP, BAL, PAY
 }
 
 function PowerCost(&$Trady) {
-  static $TradePower;
+  static $TradePower = [];
   if (!$TradePower) $TradePower = Gen_Get_All("TradePower");
   $TotPowerCost = 0;
   
@@ -368,7 +368,7 @@ function PowerCost(&$Trady) {
 }
 
 function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Finance, 3=Biz general
-  global $YEAR,$ADDALL,$Mess,$Action,$Trader_Status,$TradeTypeData,$TradeLocData,$BizProps;
+  global $ADDALL,$Trader_Status,$TradeTypeData,$BizProps;
   Set_Trade_Help();
   $Props = 0;
 
@@ -407,7 +407,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         echo fm_text(weblink($Trad['Website']),$Trad,'Website',2);
       } else {
         echo fm_text('Website',$Trad,'Website',2);
-      };
+      }
       if ($Props &1) {
         if ($Tid >0) {
           echo "<tr><td>Recent Photo:" . fm_DragonDrop(1, 'Photo','Trade',$Tid,$Trad,$Mode); // TODO  <td><a href=PhotoProcess.php?Cat=Perf&id=$snum>Edit/Change</a>";
@@ -495,7 +495,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
            "<td class=NotSide>" . fm_checkbox("Is Other",$Trad,'IsOther',' onchange=this.form.submit() ');
       if ($Tid > 0 && Feature('NeedSageCode') && Access('Committee',"Finance")) {
         include_once("InvoiceLib.php");
-        if (isset($Trad['SN'])) $Scode = Sage_Code($Trad);
+        if (isset($Trad['SN'])) Sage_Code($Trad);
         echo fm_text("Sage Code",$Trad,'SageCode',1,'class=NotSide','class=NotSide');
       }
       if ($Tid > 0 && ($Trad['IsSponsor'] ?? 0)) echo "<td class=NotSide>" . fm_checkbox("Show Name and Logo",$Trad,'IandT');
@@ -516,7 +516,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
 }
 
 function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
-  global $YEAR,$PLANYEAR,$YEARDATA,$Trade_States,$Mess,$Action,$ADDALL,$Trade_State_Colours,$InsuranceStates,$Trade_State,$Trade_Days,$EType_States,$YEARDATA;
+  global $YEAR,$PLANYEAR,$YEARDATA,$Trade_States,$ADDALL,$Trade_State_Colours,$Trade_State,$Trade_Days;
   global $Trade_State_Props;
   $Trad = Get_Trader($Tid);
   if ($year==0) $year=$YEAR;
@@ -606,7 +606,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   $TotPowerCost = PowerCost($Trady);
   
   for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
-    $pwr = (isset($Trady["Power$i"])?$Trady["Power$i"]:0);
+ //   $pwr = (isset($Trady["Power$i"])?$Trady["Power$i"]:0);
     echo "<tr>" . fm_text1("",$Trady,"PitchSize$i",1,(!$Mode && ($Trady['Fee']??0))?" onchange=CheckReQuote($Tid)":"");
       if (!$Mode && ($Trady['Fee']??0)) echo "<br>Changing will result in a new quote.  Be patient.";
     
@@ -820,7 +820,7 @@ function Trade_Finance(&$Trad,&$Trady) { // Finance statement as part of stateme
 }
 
 function Trader_Details($key,&$data,$att=0) {
-  global $Trade_Days,$TradeLocData,$TradeTypeData,$Prefixes,$YEAR;
+  global $TradeLocData,$Prefixes,$YEAR;
   $Trad = &$data[0];
   if (isset($data[1])) $Trady = &$data[1];
   $host = "https://" . $_SERVER['HTTP_HOST'];
@@ -840,7 +840,7 @@ function Trader_Details($key,&$data,$att=0) {
     if ($Trady['PitchLoc1']) {
       if ($Trady['PitchLoc2']) { $Location .= ", " . $Locs[$Trady['PitchLoc1']]['SN']; }
       else { $Location .= " and " . $Locs[$Trady['PitchLoc1']]['SN']; }
-    };
+    }
     if ($Trady['PitchLoc2']) { $Location .= " and " . $Locs[$Trady['PitchLoc2']]['SN']; }
     return $Location;
   case 'PRICE':
@@ -865,7 +865,7 @@ function Trader_Details($key,&$data,$att=0) {
                         'On a wait list',
                         'Awaiting a requote after change'][$Trady['BookingState']] . "<P>";
   case 'BACSREF':
-    preg_match('/(\d*)\.pdf/',$att,$mtch);
+    preg_match('/(\d*)\.pdf/',$att,$mtch = []);
     return Sage_Code($Trad) . "/" . (isset($mtch[1]) ? $mtch[1] : '0000' );
   case 'FINANCIAL': return Trade_Finance($Trad,$Trady);
   case 'PAYDAYS' : return Feature('PaymentTerms',30);
@@ -901,7 +901,7 @@ function Trader_Details($key,&$data,$att=0) {
           "<br>Please pay: " . Print_Pence($Pay['Amount']) . " to:<br>" . 
           Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . "<p>Quote Reference: " .
           $Pay['Code'] . "<p>";
-    };
+    }
     return "";
   case 'VAT': if (Feature('FestVatNumber')) {
       return "Prices include VAT at " . Feature('VatRate') . "%<p>";
@@ -913,7 +913,9 @@ function Trader_Details($key,&$data,$att=0) {
     $box = 1;
     $txt = 'Click This';
     if (isset($bits[1])) $box = $bits[1];
-    if (isset($bits[2])) { $txt = $bits[2]; $txt = preg_replace('/_/',' ',$txt); }
+    if (isset($bits[2])) { 
+      $txt = preg_replace('/_/',' ',$bits[2]); 
+    }
     return "<a href='$host/int/Access?t=t&i=$Tid&TB=$box&k=" . $Trad['AccessKey'] . "&Y=$YEAR'><b>$txt</b></a>\n"; // NOT Y=YEAR?
 
 
@@ -979,7 +981,7 @@ function Send_Trade_Admin_Email(&$Trad,&$Trady,$messcat,$att=0) {
 
 //  Mark as submitted, email fest and trader, record data of submission
 function Submit_Application(&$Trad,&$Trady,$Mode=0) {  
-  global $Trade_State,$PLANYEAR,$USER,$Trade_Days;
+  global $PLANYEAR,$USER;
   $Trady['Date'] = time();
   if (!isset($Trady['History'])) $Trady['History'] = '';
   $Trady['History'] .= "Action: Submit on " . date('j M Y H:i') . " by " . ($Mode?$USER['Login']:'Trader') . ".\n";
@@ -987,7 +989,7 @@ function Submit_Application(&$Trad,&$Trady,$Mode=0) {
     Put_Trade_Year($Trady);
   } else { // Its new...
     $Trady['Year'] = $PLANYEAR;
-    $TYid = Insert_db_post('TradeYear',$Trady);
+    Insert_db_post('TradeYear',$Trady);
     $Trady = Get_Trade_Year($Trad['Tid']); // Read data to get all the 0's in place
   }
 
@@ -1076,7 +1078,7 @@ function Validate_Pitches(&$CurDat) {
             $DayTest = " AND ( Days!=1 ) ";
           }
           $qry = "SELECT * FROM TradeYear WHERE Year='$PLANYEAR' AND (( PitchLoc0=$pl AND PitchNum0=$ln ) || (PitchLoc1=$pl AND PitchNum1=$ln) " .
-                 " || (PitchLoc2=$pl AND PitchNum2=$ln)) $Daytest";
+                 " || (PitchLoc2=$pl AND PitchNum2=$ln)) $DayTest";
           $res = $db->query($qry);
           if ($res->num_rows != 0) {
             $dat = $res->fetch_assoc();
@@ -1091,7 +1093,7 @@ function Validate_Pitches(&$CurDat) {
 }
 
 function Trade_TickBox($Tid,&$Trad,&$Trady,$TB) {
-  global $YEARDATA,$PLANYEAR;
+  global $PLANYEAR;
   $Mode = 0;
   if (Access('Committee')) $Mode = 1;
 
@@ -1235,7 +1237,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
                   $_POST['PitchNum0'] != $Trady['PitchNum0'] || ($_POST['PitchNum1']??0) != $Trady['PitchNum1'] || ($_POST['PitchNum2']??0) != $Trady['PitchNum2'] ) {
                 $Mess = Validate_Pitches($Trady);
                 if ($Mess) echo "<h2 class=Err>$Mess</h2>";
-              };
+              }
             } 
 
             $same=1;
@@ -1258,7 +1260,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
               if ($c == 'PitchSize0' && $_POST[$c] == "3Mx3M") continue; // This is the only non blank default
               if (isset($_POST['Fee']) && ($_POST['Fee'] < 0) && ($_POST['BookingState'] >= $Trade_State['Accepted'])) $_POST['BookingState'] = $Trade_State['Fully Paid'];
               $_POST['Year'] = $PLANYEAR;
-              $TYid = Insert_db_post('TradeYear',$Trady);
+              Insert_db_post('TradeYear',$Trady);
               $Trady = Get_Trade_Year($Trad['Tid']);
               break;
             }
@@ -1474,7 +1476,7 @@ function Trade_Invoice_Code(&$Trad,&$Trady) {
 }
 
 function Trade_Deposit_Invoice(&$Trad,&$Trady,$Full='Full',$extra='',$Paid=0) {
-  global $Trade_Days,$PLANYEAR;
+  global $PLANYEAR;
   if (! Feature("AutoInvoices")) return 0;
   
   $Dep = T_Deposit($Trad);
@@ -1509,7 +1511,7 @@ function Trade_Deposit_Invoice(&$Trad,&$Trady,$Full='Full',$extra='',$Paid=0) {
 
 // Highly recursive set of actions - some trigger others amt = paid amount (0 = all)
 function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0) {
-  global $Trade_State,$TradeTypeData,$USER,$TradeLocData,$PLANYEAR,$Trade_States,$YEARDATA;
+  global $Trade_State,$TradeTypeData,$USER,$TradeLocData,$PLANYEAR,$Trade_States;
   include_once("InvoiceLib.php");
   $Tchng = $Ychng = 0;
   $PaidSoFar = (isset($Trady['TotalPaid']) ? $Trady['TotalPaid'] : 0);
@@ -1796,7 +1798,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $NewState = $Trade_State['Fully Paid'];
         $details = [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($Pwr) $details[]= ['Plus power',$Pwr*100];
-        $deails[]= ["Less your deposit payment",-$PaidBefore*100];
+        $details[]= ["Less your deposit payment",-$PaidBefore*100];
 
         $ipdf = New_Invoice($Trad,$details,
                            'Trade Stand Balance Charge',
@@ -1887,7 +1889,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     break;
 
   case 'Invite' :
-    if ($Fee = $Trady['Fee']) {
+    $Fee = $Trady['Fee'];
+    if ($Fee) {
       for($i=0;$i<3;$i++) $Trady["QuoteSize$i"] = $Trady["PitchSize$i"]; 
       $Ychng = 1;
       $NewState = $Trade_State['Quoted'];
@@ -1897,7 +1900,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     break;
 
   case 'Artisan Invite' :
-    if ($Fee = $Trady['Fee']) {
+    $Fee = $Trady['Fee'];
+    if ($Fee) {
       for($i=0;$i<3;$i++) $Trady["QuoteSize$i"] = $Trady["PitchSize$i"]; 
       $Ychng = 1;
       $NewState = $Trade_State['Quoted'];
@@ -1907,7 +1911,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     break;
 
   case 'Invite Better' :
-    if ($Fee = $Trady['Fee']) {
+    $Fee = $Trady['Fee'];
+    if ($Fee) {
       for($i=0;$i<3;$i++) $Trady["QuoteSize$i"] = $Trady["PitchSize$i"]; 
       $Ychng = 1;
       $NewState = $Trade_State['Quoted'];
@@ -1991,7 +1996,6 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         Send_Trader_Email($Trad,$Trady,'Trade_Statement');  // For info no action required
       }
     }
-    $Ychng = 1;
     $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
     break;
 
@@ -2102,8 +2106,6 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     $Trady['DateChange'] = 11;
     break;
 
-
-
   case 'DateHappy' :
     $Trady['DateChange'] = 3;
     $Dep = T_Deposit($Trad);
@@ -2159,7 +2161,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     }
    
     $Ychng = 1;
-    Send_Trader_Email($Trad,$NTrady,'Trade_Cancel_Happy');
+    Send_Trader_Email($Trad,$Trady,'Trade_Cancel_Happy');
     break;
   
   case 'CancelUnHappy' :
@@ -2249,7 +2251,7 @@ function Trade_F_Action($Uid,$Action,$xtra='',$invid=0) { // Call from Invoicing
     $Trad = Get_Trader($Uid);
     $Trady = Get_Trade_Year($Uid);
     Trade_Action($Action,$Trad,$Trady,1,'', $xtra,$invid); // OLD CODE
-  } else if (preg_match('/(\D*)(\d*)\D$/',$Uid,$PCRec)) {
+  } else if (preg_match('/(\D*)(\d*)\D$/',$Uid,$PCRec = [])) {
     $Tid = $PCRec[1];
     $Trad = Get_Trader($Tid);
     $Trady = Get_Trade_Year($Tid);
@@ -2294,7 +2296,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
   if (!$loc['MapImage']) return;
   $scale=$Scale*$loc['Showscale'];
   $Mapscale = $loc['Mapscale'];
-  $sp = $scale*100;
+//  $sp = $scale*100;
   $Factor = 20*$scale*$Mapscale;
 
   $TLocId = $loc['TLocId'];
@@ -2396,6 +2398,3 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
   echo "</svg>";
   echo "</div>";
 }
-
-
-?>

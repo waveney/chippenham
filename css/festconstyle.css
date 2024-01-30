@@ -1,7 +1,7 @@
 :root{
   --main-col:#fcb900;
   --main-col-dark:#993300;
-  --main-contrast(:black);
+  --main-contrast:black;
 }
 
 .ERR {
@@ -144,7 +144,6 @@ textarea {
 }
 
 .Adv {
-//  display:none;
 }
 
 .NotSide {
@@ -223,8 +222,8 @@ input[type=password] {
   width: 610px;
   height: 600px;
   position: fixed;
-  top 0;
-  left 0;
+  top:0;
+  left:0;
   border: 1px solid #000;
   background: #efefef;
   overflow: hidden;
@@ -242,8 +241,8 @@ input[type=password] {
   width: calc(100% - 385px); /*70vw;*/
   height: 69vh;
   position: fixed;
-  top 0;
-  left 0;
+  top:0;
+  left:0;
   border: 1px solid #000;
   background: #efefef;
   overflow: hidden;
@@ -297,7 +296,7 @@ input[type=password] {
 */
 
 .SideListWrapper {
-  width: 370px
+  width: 370px;
   height: 360px; 
   overflow: hidden;
   position: fixed;
@@ -413,7 +412,7 @@ div.whileDragging {
 }
 
 .InfoWrapper {
-  width: 500px
+  width: 500px;
   height: 29vh; 
   max-height: 29vh; 
   overflow: hidden;
@@ -431,7 +430,7 @@ div.whileDragging {
 }
 
 .DPControls {
-  width: 400px
+  width: 400px;
   height:230px;
   position: fixed;
   left:50.1vw;
@@ -486,8 +485,8 @@ div.dataTables_wrapper {
   width: 610px;
   height: 400px;
   position: fixed;
-  top 0;
-  left 0;
+  top:0;
+  left:0;
   border: 1px solid #000;
   background: #efefef;
   overflow: hidden;

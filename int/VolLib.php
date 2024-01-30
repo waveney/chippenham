@@ -637,7 +637,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
 
       if ($cp & VOL_Exp){ 
         $rows++; 
-        $Ctxt .= "\n<tr class=$cls $Hide $Colour>" . fm_textarea("Please outline your experience with us or other festivals", $VCY,'Experience',3,-3,
+        $Ctxt .= "\n<tr class=$cls $Hide $Colour>" . fm_textarea("Please outline your relevant experience", $VCY,'Experience',3,-3,
                     " class=$cls $Hide $Colour",'',"Experience:$Catid:$PLANYEAR"); 
       };
       for ($i=1; $i<5; $i++) {
