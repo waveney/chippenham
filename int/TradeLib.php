@@ -307,7 +307,7 @@ function Put_Trade_Year(&$now) {
 }
 
 function Set_Trade_Help() {
-  static $t = array(
+  static $t = [
         'Website'=>'If you would like to be listed on the Folk Festival Website, please supply your website (if you have one) and an Image and tick the box',
         'GoodsDesc'=>'Describe your goods and business.  Essential for Traders, optional otherwise.  At least 20 words please, but not more than 500 characters.  
 For traders, this is used both to decide whether to accept a Traders booking and as words to accompany your Image on the festival website.',
@@ -323,8 +323,9 @@ There will be an additional fee for power, that will be added to your final invo
         'PublicHealth'=>'Please give the NAME of the local authority your registered with',
         'IsTrader'=>'Used to indicate the business is a trader (useful for finance) do not touch (normally)',
         'BankDetails'=>'Needed for suppliers, very rarely needed for others when doing a refund',
+        'Extras'=>'Some locations have extras',
 
-  );
+  ];
   Set_Help_Table($t);
 }
 
@@ -543,6 +544,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   if (isset($Trady['TYid']) && $Trady['TYid']) echo fm_hidden('TYid',$Trady['TYid']);
 
   $TradeLocs = Get_Trade_Locs(0,'WHERE InUse=1');
+  $TradeLocFull = Get_Trade_Locs(1);
+  echo fm_hidden('TradeLocData',json_encode($TradeLocFull));
   $Trade_Prop = $Trade_State_Props[$Trady['BookingState'] ?? 0];
   $TradePower = Gen_Get_All("TradePower");
   $Powers = [];
@@ -606,14 +609,15 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   $TotPowerCost = PowerCost($Trady);
   
   for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
+    $Prop = ($TradeLocFull[$Trady["PitchLoc$i"]?? 0]['Props'] ?? 0);
  //   $pwr = (isset($Trady["Power$i"])?$Trady["Power$i"]:0);
     echo "<tr>" . fm_text1("",$Trady,"PitchSize$i",1,(!$Mode && ($Trady['Fee']??0))?" onchange=CheckReQuote($Tid)":"");
       if (!$Mode && ($Trady['Fee']??0)) echo "<br>Changing will result in a new quote.  Be patient.";
     
     if ($Mode) { // Festival
-      echo "<td id=PowerFor$i>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1,"onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")"); // TODO Looks WRONG
+      echo "<td id=PowerFor$i>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1,"onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")"); // 
     } else if ($Trade_Prop & 1) { // Change Pos
-      echo "<td>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1);   
+      echo "<td>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1, "onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")");  
     } else if ($Trady['PitchLoc0'] ?? 0) {  // Assigned
       echo "<td>" . $TradeLocs[$Trady["PitchLoc$i"]];
     } else { // Not assigned
@@ -623,6 +627,11 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     if (Feature("TradePower")) {
       echo fm_radio('',$Powers,$Trady,"Power$i"," colspan=2 onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")",3); // Add actions to propgate cost 
     }
+    
+    if (Feature('TradeExtras')) {
+      echo "<td><span id=TradeTable$i" . (($Prop &1)?'':' hidden') . ">" . fm_checkbox('Table &amp;<br>2 chairs',$Trady,"Tables$i") . "</span>";
+    }
+    
     if ($Mode) {
 
       echo fm_text1("",$Trady,"PitchNum$i",1,'class=NotCSide','class=NotCSide onchange=PitchNumChange(' . ($Trady["PitchNum$i"]??0) . ')');

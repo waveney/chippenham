@@ -103,7 +103,6 @@ function Set_User() {
     $USERID = $USER['UserId'] = $crumbs[2];
     if ($USERID) return;
     $USER = array();
-    $USERID = 0;
   }
   Check_Login();
 }

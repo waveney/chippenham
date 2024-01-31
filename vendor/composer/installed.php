@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'c0e24887796a9cf7d910065ca0e7eaf5b6dac19b',
+        'reference' => '7a619bfed9c8e62e6014df35b0213bdfcff5df10',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'c0e24887796a9cf7d910065ca0e7eaf5b6dac19b',
+            'reference' => '7a619bfed9c8e62e6014df35b0213bdfcff5df10',
             'dev_requirement' => false,
         ),
         'chrisjean/php-ico' => array(

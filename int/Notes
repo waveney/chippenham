@@ -66,8 +66,6 @@
 117d) Overlay record - indexed by sidenum + fest + year?, if image set overrides, if blurb set ovverides, if desc set overrides
 117e) Images need to be stored in a diff way for this
 119) Volunteer emails
-122) Trade Power and extras
-124) Power and requoting
 125) Trade days
 126) Tables
 127) Validate Trade (& Power)

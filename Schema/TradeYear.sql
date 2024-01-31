@@ -36,5 +36,8 @@ CREATE TABLE `TradeYear` (
   `QuoteSize0` text COLLATE utf8mb4_general_ci NOT NULL,
   `QuoteSize1` text COLLATE utf8mb4_general_ci NOT NULL,
   `QuoteSize2` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Tables0` int NOT NULL,
+  `Tables1` int NOT NULL,
+  `Tables2` int NOT NULL,
   PRIMARY KEY (`TYid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

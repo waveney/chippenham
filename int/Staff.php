@@ -617,7 +617,7 @@
       if ($xtra) {
         $txt .= "<li><a href=UpdateSystem $xtra>Update the system after pull</a> \n";
         $txt .= "<li class=smalltext><a href=UpdateSystem?MarkDone>Just mark done</a><p> \n";
-      };
+      }
       $txt .= "<li><a href=SystemData>Festival System Data Settings</a><p> \n";
       
       $txt .= "<li><a href=RareAdmin>Rare Admin Tasks</a> \n";      
@@ -649,5 +649,3 @@
   echo "</h3><br>";
   echo $txt;
   dotail();
-?>
-

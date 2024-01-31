@@ -144,24 +144,40 @@ function Trader_Insurance_Upload() {
   document.getElementById('InsuranceButton').click();
 }
 
-function UpdatePower(pno,pitchfee) {
+function UpdatePower(pno, pitchfee) {
   debugger;
+  
+  var TLoc = document.getElementById('TradeLocData').value;
+  var TLocCont = JSON.parse(TLoc);
+  var LocSel = document.getElementById('PitchLoc' + pno).value;
+  var Props = TLocCont[LocSel]['Props'];
+  
+  if (Props &1) {
+    $('#TradeTable' + pno).show();
+  } else {
+    $('#TradeTable' + pno).hide();
+  }
+    
   if (pitchfee == 0) {
     $('.Powerelems').hide();
     return; 
   }
-  var psel = document.querySelector('input[name="Power' + pno + '"]:checked').value;
-  var label = document.querySelector('label[for="Power' + pno + psel + '"]').innerHTML;
-  var powercost = 0;
-  pwr = label.match(/£(\d*)/);
-  if (pwr) powercost = pwr[1];
-  if (powercost) {
-    var cost = Number(pitchfee) + Number(powercost);
-    $('#PowerFee').text('£' + cost );
-    $('.Powerelems').show();
-  } else {
-    $('.Powerelems').hide();
+  var Pselect = document.querySelector('input[name="Power' + pno + '"]:checked');
+  if (Pselect) {
+    var psel = Pselect.value;
+    var label = document.querySelector('label[for="Power' + pno + psel + '"]').innerHTML;
+    var powercost = 0;
+    pwr = label.match(/£(\d*)/);
+    if (pwr) powercost = pwr[1];
+    if (powercost) {
+      var cost = Number(pitchfee) + Number(powercost);
+      $('#PowerFee').text('£' + cost );
+      $('.Powerelems').show();
+    } else {
+      $('.Powerelems').hide();
+    }
   }
+  
 }
 
 function PitchNumChange(oldval) {

@@ -14,5 +14,6 @@ CREATE TABLE `TradeLocs` (
   `Showscale` double NOT NULL,
   `NoList` tinyint NOT NULL,
   `PowerOffset` int NOT NULL,
+  `Props` int NOT NULL,
   PRIMARY KEY (`TLocId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
