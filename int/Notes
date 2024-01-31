@@ -29,7 +29,6 @@
 75) Volunteer Schedualling
 77) Accomadation record keeping
 78) Accomadation Payments
-79) InvoiceLib - size of address
 80) Business list (build on Trade Organisations etc)
 81) Secure all non staff inputs against hacking (consider staff as well?)
 82) Personalised timetables (for App only?)
@@ -59,13 +58,16 @@
 113) Volunteer availability - hide irrelevant days
 115) Click to put link in clipboard (Perfs, Trade, Vols)
 116) Block out Venues
+
 117) Photos and Blurbs per Isa Cats & per fest option
 117a) Has Overlays Flag
 117b) Overlay data creation, access and management
 117c) Fns for Image, Blurb, desc
 117d) Overlay record - indexed by sidenum + fest + year?, if image set overrides, if blurb set ovverides, if desc set overrides
 117e) Images need to be stored in a diff way for this
-119) Volunteer emails
+117f) Select format for lineup displays
+118g) What to do with public perf pages
+
 125) Trade days
 127) Validate Trade (& Power)
 

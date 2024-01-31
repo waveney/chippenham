@@ -48,7 +48,7 @@ function Sides_Name_List() {
 }
 
 function Sides_All($Except=-1,$All=1,$Include1=0,$Include2=0,$Include3=0,$Include4=0) {
-  global $db,$YEAR,$Coming_Type;
+  global $db;
   static $Sides_All = array();
   static $Sides_Loaded = 0;
   if ($All) {
@@ -70,7 +70,7 @@ function Sides_All($Except=-1,$All=1,$Include1=0,$Include2=0,$Include3=0,$Includ
   if ($slist) while ($row = $slist->fetch_assoc()) {
     if ($row['SideId'] != $Except) $Sides_All[$row['SideId']] = $row['SN'];
   }
-  $sides_Loaded = $Except;
+  $Sides_Loaded = $Except;
   return $Sides_All;
 }
 
@@ -110,7 +110,6 @@ function Select_Come_Day($Day,$xtr='') {
 
 function &Select_Come_All($extra='') {
   global $db,$YEAR,$Coming_Type;
-  static $Come_Loaded = 0;
   static $Coming;
   if ($Coming) return $Coming;
   $qry = "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND y.Coming=" . $Coming_Type['Y'] .
@@ -267,8 +266,6 @@ function Get_Side($who) {
 }
 
 function Put_Side(&$data) {
-  global $db;
-
   global $Save_Sides;
   
   if (!isset($Save_Sides[$data['SideId']])) Get_Side($data['SideId']);
@@ -330,7 +327,6 @@ function RecordPerfChanges(&$now,&$Cur,$Up) {
 }
 
 function Put_SideYear(&$data,$Force=0) {
-  global $db;
   global $Save_SideYears,$YEAR;
   if (!$data) return;
   if ($Force) {
@@ -445,6 +441,7 @@ IF you wish to remove a performer type tell Richard - there are many small chang
         'EmailLog'=>'View the system email log to (and from) this performer - if there is one',
         'BookDirect'=>'Tick this to bypass the agent and email the performer drectly',
         'NotPerformer'=>'People in the database that are not performing and should not appear in lists of performers',
+        'HasOverlays'=>'Enables separate public info for performers in multiple categories - ask Richard',
   );
   Set_Help_Table($t);
 }
@@ -593,7 +590,7 @@ function Put_Overlap($now) {
 }
 
 function Put_Overlaps(&$Ovs) {
-  foreach($Ovs as $i=>$o) {
+  foreach($Ovs as $o) {
     if ($o['id']) {
       Put_Overlap($o);
     } else {
@@ -603,7 +600,6 @@ function Put_Overlaps(&$Ovs) {
 }
   
 function UpdateOverlaps($snum) {
-  global $PerfTypes;
   $Exist = Get_Overlaps_For($snum);
 
 //  for($i=1; $i<5; $i++) {
@@ -671,7 +667,7 @@ function EventCmp($a,$b) {
 /  otherwise get programmes for all overlaps and merge together and list as a timetable
 / */
 function Extended_Prog($type,$id,$all=0) { 
-    global $YEARDATA,$OlapCats;
+    global $OlapCats;
     $Olaps = Get_Active_Overlaps_For($id,1);
     if (!$Olaps) return "";
 
@@ -754,8 +750,8 @@ function Extended_Prog($type,$id,$all=0) {
             $str .= "<a href=$host/int/$VenueLink?v=" . $e['Venue'] . ">" . VenName($Venues[$e['Venue']]) ;
             $str .= "</a><td $cls>";
             if ($PrevI || $NextI) $str .= "In position $Position";
-            if ($PrevI) { $str .= ", After " . SAO_Report($PrevI); };
-            if ($NextI) { $str .= ", Before " . SAO_Report($NextI); };
+            if ($PrevI) { $str .= ", After " . SAO_Report($PrevI); }
+            if ($NextI) { $str .= ", Before " . SAO_Report($NextI); }
             $str .= "\n";
           } else { // Normal Event
             $str .= "<tr><td $cls>" . DayList($e['Day']) . "<td $cls>" . timecolon($e['Start']) . "-" . timecolon(($e['SubEvent'] < 0 ? $e['SlotEnd'] : $e['End'] )) .
@@ -799,7 +795,7 @@ function Extended_Prog($type,$id,$all=0) {
 
 
 function Dance_Email_Details($key,&$data,&$att=0) {
-  global $Trade_Days,$TradeLocData,$TradeTypeData,$YEAR,$PLANYEAR,$Book_State;
+  global $YEAR,$PLANYEAR,$Book_State;
   include_once("ProgLib.php");
   $Side = &$data[0];
   if (isset($data[1])) $Sidey = &$data[1];
@@ -889,7 +885,7 @@ function Dance_Email_Details($key,&$data,&$att=0) {
 }
 
 function Dance_Email_Details_Callback($mescat,$data) {
-  global $Trade_Days,$TradeLocData,$TradeTypeData,$YEAR,$PLANYEAR,$Book_State;
+  global $Book_State;
 // $str = "In Callback - $mescat<p>";
   switch ($mescat) {
   case 'Music_Contract':
@@ -913,7 +909,7 @@ function Dance_Email_Details_Callback($mescat,$data) {
 
 
 function Dance_Record_Change($id,$prefix) { // Mark Change on old record if not set, create new record if needed, add message and set invited appropriately
-  global $YEAR,$SHOWYEAR,$PLANYEAR,$YEARDATA;
+  global $YEAR,$PLANYEAR,$YEARDATA;
   
 //  echo "Called DRC<p>";
   
@@ -965,5 +961,3 @@ function Dance_Record_Change($id,$prefix) { // Mark Change on old record if not 
     Put_SideYear($SideNY);
   }
 }
-
-?>

@@ -26,7 +26,6 @@
   $Sizes = [5,4,3,2,2,1,1];
   $ShortDesc = 0;
   
-  $PerfTs = Get_Perf_Types(1);
   if ($YEAR != $PLANYEAR || $FORCE) {
     $PState = 1;
   } else {
@@ -148,7 +147,7 @@
 
   $Slist = [];
   if ($SideQ) while($side = $SideQ->fetch_assoc()) $Slist[] = $side;
-  formatLineups($Slist,'ShowPerf',$Sizes,$ShortDesc);
+  formatLineups($Slist,'ShowPerf',$Sizes,$T,$ShortDesc);
   
   echo "<div style='clear:both;'>";
   $Prev = Feature('PrevRealFest',$YEARDATA['PrevFest']);
