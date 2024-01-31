@@ -1,0 +1,92 @@
+<?php
+
+// Library for Side overlays
+
+function Get_Overlay(&$Side,$Isa) {
+  static $Overlays = [];
+  
+  if (isset($Overlays[$Side['SideId']][$Isa])) return $Overlays[$Side['SideId']][$Isa];
+  
+  $Olay = Gen_Get_Cond1('SideOverlays',"SideId=" . $Side['id'] . " AND Isa=$Isa");
+  return $Overlays[$Side['SideId']][$Isa] = $Olay;
+}
+
+function OvPhoto(&$Side,$Isa='') {
+  if ($Side['HasOverlays'] && $Isa) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['Photo'] ?? $Side['Photo'];
+    }
+  }
+  
+  return $Side['Photo'];
+}
+
+function OvDesc(&$Side,$Isa='') {
+  if ($Side['HasOverlays'] && $Isa) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['Description'] ?? $Side['Description'];
+    }
+  }
+  
+  return $Side['Description'];
+}
+
+function OvBlurb(&$Side,$Isa='') {
+  if ($Side['HasOverlays'] && $Isa) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['Blurb'] ?? $Side['Blurb'];
+    }
+  }
+  
+  return $Side['Blurb'];
+}
+
+function OvTwitter(&$Side,$Isa='') {
+  if ($Side['HasOverlays'] && $Isa) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['Twitter'] ?? $Side['Twitter'];
+    }
+  }
+  
+  return $Side['Twitter'];
+}
+
+function OvFacebook(&$Side,$Isa='') {
+  if ($Side['HasOverlays'] && $Isa) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['Facebook'] ?? $Side['Facebook'];
+    }
+  }
+  
+  return $Side['Facebook'];
+}
+
+function OvInstagram(&$Side,$Isa='') {
+  if ($Side['HasOverlays'] && $Isa) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['Instagram'] ?? $Side['Instagram'];
+    }
+  }
+  
+  return $Side['Instagram'];
+}
+
+function OvWebsite(&$Side,$Isa='') {
+  if ($Side['HasOverlays'] && $Isa) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['Website'] ?? $Side['Website'];
+    }
+  }
+  
+  return $Side['Website'];
+}
+
+
+
