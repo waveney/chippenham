@@ -767,6 +767,7 @@ function Get_Trade_Details(&$Trad,&$Trady) {
   if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum0']) $Body .= "Pitch Number "  . $Trady['PitchNum0'];
   if ($Trady['Power0']) $Body .= " with " . ($Trady["Power0"]> 0 ? $Power[$Trady['Power0']]['Amps'] . " Amps\n" : " own Euro 4 silent generator\n");
   if (isset($Trady['QuoteSize0']) && ($Trady['QuoteSize0'] != $Trady['PitchSize0'])) $Body .= "<b>WAS " . $Trady['QuoteSize0'] . "</b>\n";
+  if ($Trady['Tables0'] ?? 0) $Body .= "Request Table and 2 chairs\n";
 
   if ($Trady['PitchSize1']) {
     $Body .= "\nPitch 2:" . $Trady['PitchSize1'];
@@ -774,14 +775,16 @@ function Get_Trade_Details(&$Trad,&$Trady) {
     if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum1']) $Body .= "Pitch Number "  . $Trady['PitchNum1'];
     if ($Trady['Power1']) $Body .= " with " . $Power[$Trady['Power1']]['Amps'] . " Amps\n";
     if (isset($Trady['QuoteSize1']) && ($Trady['QuoteSize1'] != $Trady['PitchSize1'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
-  }
+    if ($Trady['Tables1'] ?? 0) $Body .= "Request Table and 2 chairs\n";
+    }
   if ($Trady['PitchSize2']) {
     $Body .= "\nPitch 3:" . $Trady['PitchSize2'];
     if ($Trady['PitchLoc2']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc2']]['SN'];
     if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum2']) $Body .= "Pitch Number "  . $Trady['PitchNum2'];
     if ($Trady['Power2']) $Body .= " with " . $Power[$Trady['Power2']]['Amps'] . " Amps\n";
     if (isset($Trady['QuoteSize2']) && ($Trady['QuoteSize2'] != $Trady['PitchSize2'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
-  }
+    if ($Trady['Tables2'] ?? 0) $Body .= "Request Table and 2 chairs\n";
+    }
 
   if ($Trady['Fee']) {
     if ($Trady['Fee'] < 0 ) {
