@@ -1,5 +1,5 @@
 <?php
-// Participant Display Lib - Generalises Show_Side etc
+// Participant Display Lib - Generalises Show_Side 
 
 function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank look at data to determine type.  Mode=0 for public, 1 for ctte
   global $Side_Statuses,$Importance,$Surfaces,$Surface_Colours,$Noise_Levels,$Noise_Colours,$Share_Spots,$ADDALL,$PLANYEAR,$YEAR;
@@ -148,7 +148,21 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         if ($PerfTC > 1) echo " " . fm_checkbox("Diff Imp",$Side,'DiffImportance'); 
 //        echo " " . fm_text0("Rel Order",$Side,'RelOrder',1,'class=NotSide','class=NotSide size=4');  // Unused
         echo fm_text1('Where found',$Side,'Pre2017',1,'class=NotSide','class=NotSide'); 
-        if (($PerfTC > 1) || $Side['HasOverlays']) echo "<td>" . fm_checkbox("Overlays",$Side,'HasOverlays');
+        if (($PerfTC > 1) || $Side['HasOverlays']) { 
+          include_once("SideOverLib.php");
+          echo "<td class=NotSide>" . fm_checkbox("Overlays",$Side,'HasOverlays');
+          if ($Side['HasOverlays']) {
+            echo "<tr><td class=NotSide>Overlays:" . help('Overlays');
+            foreach ($PerfTypes as $p=>$d) {
+              if ($Side[$d[0]]) {
+                $Ov = Get_Overlay($Side,$d[2]);
+                echo "<td class=NotSide><a href=SideOverlay?id=$snum&pc='" . $d[2] . "'>" . 
+                  ($Ov?'Edit':'Create') . " overlay for: " . $d[2] . "</a>";
+              }  
+            }
+          }
+        }
+            
 //      $IsAs = 0;
 //      foreach($PerfTypes as $t=>$p) if ($Side[$p[0]]) $IsAs++;
       if (!$Wide) echo "<tr><td class=NotSide>Performer type:";//<td class=NotSide>";

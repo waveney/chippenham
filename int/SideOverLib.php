@@ -7,8 +7,12 @@ function Get_Overlay(&$Side,$Isa) {
   
   if (isset($Overlays[$Side['SideId']][$Isa])) return $Overlays[$Side['SideId']][$Isa];
   
-  $Olay = Gen_Get_Cond1('SideOverlays',"SideId=" . $Side['id'] . " AND Isa=$Isa");
+  $Olay = Gen_Get_Cond1('SideOverlays',"SideId=" . $Side['SideId'] . " AND IsType='$Isa'");
   return $Overlays[$Side['SideId']][$Isa] = $Olay;
+}
+
+function Put_Overlay(&$Olay) {
+  Gen_Put('SideOverlays',$Olay);
 }
 
 function OvPhoto(&$Side,$Isa='') {

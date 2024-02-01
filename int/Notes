@@ -64,9 +64,11 @@
 117b) Overlay data creation, access and management
 117c) Fns for Image, Blurb, desc
 117d) Overlay record - indexed by sidenum + fest + year?, if image set overrides, if blurb set ovverides, if desc set overrides
-117e) Images need to be stored in a diff way for this
+117e) Images need to be stored in a diff way for this  images/Sides/Isa/sid.ftype
 117f) Select format for lineup displays
-118g) What to do with public perf pages
+117g) What to do with public perf pages
+117h) Photo editing etc
+118i) Printed programme impact
 
 125) Trade days
 127) Validate Trade (& Power)

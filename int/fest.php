@@ -435,7 +435,7 @@ function dominimalhead($title,$extras=[]) {
   echo "<title>$pfx " . Feature('ShortName') . " | $title</title>\n";
   echo "<script src=/js/jquery-3.2.1.min.js></script>";
   if ($extras) doextras($extras);
-  if ($FESTSYS['Analytics']) echo "<script>" . $FESTSYS['Analytics'] . "</script>";
+  if ($FESTSYS['Analytics']) echo $FESTSYS['Analytics'];
   echo "</head><body>\n";
   $head_done = 2;
 }

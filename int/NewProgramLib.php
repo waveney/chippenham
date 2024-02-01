@@ -14,7 +14,7 @@ function Prog_Headers($Public='',$headers=1,$What='Dance') {
 }
 
 function Grab_Data($day='',$Media='Dance') {
-  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$SlotSize,$OffGrid;
+  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$OffGrid;
 
 //  $cats = ['Side','Act','Comedy','Ch Ent','Other'];
   $Times = array();
@@ -27,7 +27,7 @@ function Grab_Data($day='',$Media='Dance') {
   $Sand = 0;
   $UsedTimes = [];
   $OffGrid = [];
-  if (isset($_REQUES['SAND'])) $Sand = 1;
+  if (isset($_REQUEST['SAND'])) $Sand = 1;
 
   if ($day) { $DAY=$day;
   } else if (isset($_GET['d'])) { $DAY = $_GET['d']; } else { $DAY='Sat'; }
@@ -370,12 +370,12 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
   foreach ($Times as $t) {
     if ($condense && ($t < $Earliest || $t >= $Latest)) continue;
     echo "<tr><th rowspan=4 width=60 valign=top id=RowTime$t>" . sprintf('%04d',$t);
-    if ($drag && $lineLimit[$t]<4) {
+    if ($drag && ($lineLimit[$t]??0)<4) {
       echo "<button class=botx onclick=UnhideARow($t) id=AddRow$t>+</button>";
     }
 
     for ($line=$StartLine; $line < 4; $line++) {
-      $sl = "S" .($line+1);
+//      $sl = "S" .($line+1);
       if ($line) echo "<tr>";
       $OtherLoc = '';
       foreach ($VenueList as $v) {
@@ -535,7 +535,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
 }
 
 function Side_List() {
-  global $DAY,$Sides,$SideCounts,$Sand,$SlotSize,$OffGrid;
+  global $DAY,$Sides,$SideCounts,$Sand;
   echo "<div class=SideListWrapper><div class=SideListContainer>";
   echo "<table border id=SideList>";
 //  echo "<thead><tr><th>Side<th>i<th>W<th>H</thead><tbody>\n";
@@ -557,7 +557,7 @@ function Side_List() {
 }
 
 function Controls($level=0,$condense=0) {
-  global $InfoLevels,$DAY,$Sand,$YEAR,$SlotSize,$OffGrid;
+  global $InfoLevels,$DAY,$Sand,$YEAR;
   if (!isset($_GET['EInfo'])) $_GET['EInfo'] = $level;
   echo "<div class=DPControls><center>";
   echo "Programming Controls";
@@ -630,7 +630,6 @@ function Grab_Music_Data($day='') {
   $SideCounts = array();
   $EV = array();
   $VenueUse = array();
-  $evs = array();
   $Sand = 0;
   if (isset($_REQUEST['SAND'])) $Sand = 1;
 
@@ -656,8 +655,8 @@ function Grab_Music_Data($day='') {
       $v = $ev['Venue'];
       $VenueUse[$v] = 1;
       $t = timeround($ev['Start'],15);
-      if ($ev['SubEvent'] < 0) { $et = $ev['SlotEnd']; } else { $et = $ev['End']; };
-      $duration = timeround(timeadd2($ev['Start'],-$st),15);
+      if ($ev['SubEvent'] < 0) { $et = $ev['SlotEnd']; } else { $et = $ev['End']; }
+      $duration = timeround(timeadd2($ev['Start'],-$t),15);
       
       $EV[$v][$t]['e'] = $ei;
       $EV[$v][$t]['d'] = $duration;

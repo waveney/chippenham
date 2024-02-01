@@ -70,7 +70,7 @@ var InfoPaneDefault = '';
 
   function CopyErrorCount() {
     var src = $("#DanceErrsSrc");
-    var dst = $("#DanceErrsDest")
+    var dst = $("#DanceErrsDest");
     
     dst.html(src.html());
   }
@@ -111,7 +111,7 @@ var InfoPaneDefault = '';
 // Prob ok - changed ?? .id
   function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
-    Dragged = ev.target
+    Dragged = ev.target;
   }
 
 // Prob ok - changed
