@@ -477,8 +477,9 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         }
       if ($Mode) echo fm_checkbox('Previous Festival Trader',$Trad,'Previous');
       echo fm_text('Charity Number',$Trad,'Charity',1,'class=Charity ' . ($TradeTypeData[$Trad['TradeType']]['NeedCharityNum']?'':'hidden'));
-      if ($Mode) echo "<td class=NotSide colspan=2>" . fm_radio("",$Trader_Status,$Trad,'Status','',0);
-      }
+   
+      if ($Mode) echo "<tr><td class=NotSide colspan=2>" . fm_radio("",$Trader_Status,$Trad,'Status','',0);
+    }
     if (Access('SysAdmin') && isset($Trad['AccessKey'])) {
       echo "<tr>";
         if ($Tid > 0) echo "<td class=NotSide>Id: $Tid";
@@ -486,8 +487,8 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         if (isset($Trad['AccessKey'])) {
           echo "<td class=NotSide><a href=Direct?id=$Tid&t=trade&key=" . $Trad['AccessKey'] . ">Use</a>" . help('Testing');
         }
-//      echo "  <td class=NotSide><button name=Action value=Delete onClick=\"javascript:return confirm('are you sure you want to delete this?');\">Delete</button>\n";
-    }
+        echo "  <td class=NotSide><button name=Action value=Delete onClick=\"javascript:return confirm('are you sure you want to delete this?');\">Delete</button>\n";
+    }   
     if ($Mode && Capability("EnableFinance")) {
       echo "<tr><td class=NotSide>" . fm_checkbox("Is a Trader",$Trad,'IsTrader',' onchange=this.form.submit() ') . 
            "<td class=NotSide>" . fm_checkbox("Is a Sponsor",$Trad,'IsSponsor',' onchange=this.form.submit() ') .
