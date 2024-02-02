@@ -39,7 +39,7 @@
       if ($check == false) {
         echo "<div class=Err>$tmpFilePath is not an image</div>";
       } else {
-        if ((!$_POST['NoReSize']) && ($check[0] > 800 || $check[1] > 536)) { // Need to resize
+        if ((!($_POST['NoReSize']??0)) && ($check[0] > 800 || $check[1] > 536)) { // Need to resize
           $move = Image_Convert($tmpFilePath,800,536, $target_file);
         } else {
           $move = move_uploaded_file($tmpFilePath, $target_file);

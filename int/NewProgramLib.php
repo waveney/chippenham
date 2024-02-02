@@ -580,7 +580,7 @@ function Controls($level=0,$condense=0) {
   echo "</table>";
   echo "<div id=DanceErrsDest> </div>";
   echo "<button onclick=clearHL()>Clear Highlights</button><br>";
-//  echo "<input type=submit id=smallsubmit value=Refresh>";
+  echo "<input type=submit id=smallsubmit value=Refresh>";
   echo "</form>\n";
   echo "<h2><a href=Staff>Staff Tools</a></h2></center>";
   echo "</div>\n";
@@ -656,7 +656,8 @@ function Grab_Music_Data($day='') {
       $VenueUse[$v] = 1;
       $t = timeround($ev['Start'],15);
       if ($ev['SubEvent'] < 0) { $et = $ev['SlotEnd']; } else { $et = $ev['End']; }
-      $duration = timeround(timeadd2($ev['Start'],-$t),15);
+//      $duration = timeround(timeadd2($ev['Start'],-$t),15);
+      $duration = timeround(timeadd2($et,-$ev['Start'],),15);
       
       $EV[$v][$t]['e'] = $ei;
       $EV[$v][$t]['d'] = $duration;

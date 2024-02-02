@@ -297,7 +297,7 @@ input[type=password] {
 
 .SideListWrapper {
   width: 370px;
-  height: 360px; 
+  height: 69vh;
   overflow: hidden;
   position: fixed;
   top:0;
@@ -308,8 +308,8 @@ input[type=password] {
 
 .SideListContainer {
   overflow-y: auto;
-  height: 70vh; /* 440px; */
-  width: 370px; 
+  height: 68vh; /* 440px; */
+  width: 366px; 
   font-size:12px;
 }
 
@@ -442,7 +442,7 @@ div.whileDragging {
   position: fixed;
   top:71vh;
   left: 5;
-  width: 70vw;
+  width: 50vw;
   height:10vh;
 }
 

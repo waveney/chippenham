@@ -448,16 +448,16 @@
                 "</form>\n";
 
     $txt .= "<p>";
-    $txt .= "<li class=smalltext><a href=PaperProg?ALPHA=1>Lineups for Printed Program</a> (Even if not public)";    
-    $txt .= "<li class=smalltext><a href=PaperTime>Events for Printed Program</a> (Even if not public)";    
-    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat>Sat Dance Grid for Printed Program</a>";    
-    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun>Sun Dance Grid for Printed Program</a>";    
-    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon>Mon Dance Grid for Printed Program</a>";    
+    $txt .= "<li class=smalltext><a href=PaperProg?ALPHA=1&$YEAR>Lineups for Printed Program</a> (Even if not public)";    
+    $txt .= "<li class=smalltext><a href=PaperTime?$YEAR>Events for Printed Program</a> (Even if not public)";    
+    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat&$YEAR>Sat Dance Grid for Printed Program</a>";    
+    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun&$YEAR>Sun Dance Grid for Printed Program</a>";    
+    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon&$YEAR>Mon Dance Grid for Printed Program</a>";    
     
     $txt .= "<p class=smalltext>";
-    $txt .= "<li><a href=/PerfChanges>Performer Changes since programme went to print</a>";    
-    $txt .= "<li><a href=/EventChanges>Event Changes since programme went to print</a>";    
-    if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=PerfEventPrint>Event and Performer Changes to be printed</a>";    
+    $txt .= "<li><a href=/PerfChanges?$YEAR>Performer Changes since programme went to print</a>";    
+    $txt .= "<li><a href=/EventChanges?$YEAR>Event Changes since programme went to print</a>";    
+    if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=PerfEventPrint?$YEAR>Event and Performer Changes to be printed</a>";    
     if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=Analytics>Analyse Google Analytics</a>";
     $txt .= "<li><a href=QRMake>Generate a QR code</a><p>\n";     
     

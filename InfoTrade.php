@@ -1,18 +1,18 @@
 <?php
   include_once("int/fest.php");
 
-  dohead("Trade Stands",[],'https://wimbornefolk.co.uk/int/images/gallery/2018/Around/14_HSJX8086_14-2048-STEPHENAJONES.jpg');
+  dohead("Trade Stands",[]);
 
   global $PLANYEAR;
   echo "<div class=biodiv>
-<img src=/images/Chutney-Trader-2016.jpg alt='Wimborne Minster Folk Festival' class=bioimg>
-<p>One of our traders.</p>
+<img src=/images/ArticleImgs/Traders.jpeg class=bioimg>
+<p>Some of our traders.</p>
 </div>
 <h2>Trade in " . substr($PLANYEAR,0,4) . " </h2>
 Applications for trading at the festival, which will be held over the weekend of " . FestDate(0,'L') . " to " . FestDate(2,'L') . " are <a href=/int/Trader>OPEN</a>.<p>
 
 Prices for $PLANYEAR trade stands are listed below.  See also the <a href=/int/TradeFAQ><strong>Trade FAQ</strong></a>.  
-Any queries should be sent to <a href='mailto:trade@wimbornefolk.co.uk'><strong>trade@wimbornefolk.co.uk</strong></a>.<p>
+Any queries should be sent to <a href='mailto:trade@chippfolk.co.uk'><strong>trade@chippfolk.co.uk</strong></a>.<p>
 
 Trade Stands are not allocated on a first come first served basis, each application is assessed on the choice, quality, 
 origin and pricing structure to ensure a fair and varied amount of traders are offered a place.<p>

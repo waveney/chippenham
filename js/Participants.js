@@ -95,7 +95,7 @@ function CheckContract() {
        (document.getElementById('CampSat') && document.getElementById('CampSat').value > 0 ) || 
        (document.getElementById('CampSun') && document.getElementById('CampSun').value > 0 ) ||
        (document.getElementById('OtherPayment') && document.getElementById('OtherPayment').value !='' ) ||
-       document.getElementById('ContractAnyway').checked)
+       (document.getElementById('ContractAnyway') && document.getElementById('ContractAnyway').checked))
        { 
 //    if ((document.getElementById('OtherPayment') && document.getElementById('OtherPayment').value !='' )) 
 
