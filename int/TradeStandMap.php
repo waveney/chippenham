@@ -18,11 +18,5 @@
   $tloc = Get_Trade_Loc($loc);
   
   if (Access('Staff')) echo "Any Trader in White has not PAID<p>";
-  Pitch_Map($tloc,$Pitches,$Traders,1,1);
+  Pitch_Map($tloc,$Pitches,$Traders,1,1); 
   dotail();
-   
-?>
-
-
-
-

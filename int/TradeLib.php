@@ -338,7 +338,7 @@ function Pitch_Size_Def($type) {
 
 function Default_Trade($id,$type=1) {
   global $YEAR;
-  return array('Year'=>$YEAR,'Tid'=>$id,'PitchSize0'=>Pitch_Size_Def($type),'Power0'=>0,'BookingState'=>0);
+  return array('Year'=>$YEAR,'Tid'=>$id,'PitchSize0'=>Pitch_Size_Def($type),'Power0'=>1,'BookingState'=>0);
 }
 
 // OLD CODE DELETE
@@ -611,6 +611,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   
   for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
     $Prop = ($TradeLocFull[$Trady["PitchLoc$i"]?? 0]['Props'] ?? 0);
+    if ($Trady["Power$i"] == 0)$Trady["Power$i"] = 1;
  //   $pwr = (isset($Trady["Power$i"])?$Trady["Power$i"]:0);
     echo "<tr>" . fm_text1("",$Trady,"PitchSize$i",1,(!$Mode && ($Trady['Fee']??0))?" onchange=CheckReQuote($Tid)":"");
       if (!$Mode && ($Trady['Fee']??0)) echo "<br>Changing will result in a new quote.  Be patient.";
@@ -2369,8 +2370,12 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
       echo "<a>";
       $Lopen = 1;
     }
-    echo "<rect x=" . ($Pitch['X'] * $Factor) . " y=" . ($Pitch['Y'] * $Factor) . " width=" . ($Pitch['Xsize'] * $Factor) . " height=" . ($Pitch['Ysize'] * $Factor);
-    echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:($TT[$Posn]>=0?($Name?$TradeTypeData[$TT[$Posn]]['Colour']  : "yellow"):"white")) . ";stroke:black;";
+    
+//    var_dump($Pitch,$TradeTypeData,$TT);
+    echo "<rect x=" . ($Pitch['X'] * $Factor) . " y=" . ($Pitch['Y'] * $Factor) . " width=" . ($Pitch['Xsize'] * $Factor) . 
+         " height=" . ($Pitch['Ysize'] * $Factor);
+    echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
+         ";stroke:black;";
     if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);" ;
 
     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present

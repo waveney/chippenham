@@ -465,7 +465,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
             echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
           }
         } else if ($line == 0  && !empty($G['n'])) {
-//          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
+          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
           echo "$OtherLoc<td id=$id $DRAG $dev data-d='N' class=DPNamed>";
           if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
           if (!empty($G['n']) ) echo $G['n'];
@@ -475,7 +475,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           echo "$OtherLoc<td id=$id $DRAG $dev hidden class=$class>&nbsp;";
           if (isset($G['n'])) echo $G['n'];
         } else if (isset($G["S" . ($line+(isset($G['n'])?0:1))])) {
-//          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
+          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
           $si = $G["S" . ($line + (isset($G['n'])?0:1))];
           if (!isset($Sides[$si])) {
             $Sidessi = Get_Side($si);

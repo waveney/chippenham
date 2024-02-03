@@ -8,10 +8,10 @@
   echo TnC('MailingListIntro');
   
   echo "<div class=trader-app-link><a href=int/MailListMgr>Click Here to Sign up</a></div>";
-  echo "The mailing list is run by Mail Octopus, this is just a front end allowing us to check you are real.<p>";
+  echo "The mailing list is managed by our festival team using Mail Octopus. " .
+       "This is a front end allowing us to check that you are a real person.<p>";
   echo "The check is manual so may take a few days, please be patient.<p>";
 
 
 
   dotail();
-?>

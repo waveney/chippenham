@@ -34,7 +34,8 @@ function formatminimax(&$side,$link,$mnat=2,$sdisp=1) {
   echo "</div></div>\n";
 }
 
-function formatLineups(&$perfs,$link,&$Sizes,$sdisp=1) {
+function formatLineups(&$perfs,$link,&$Sizes,$PerfCat,$sdisp=1) {
+  include_once("SideOverLib.php");
 // Link, if (text) Title, pic, text else Pic Title
 // If size = small then fit 5, else fit 3 - if fit change br
 // Float boxes with min of X and Max of Y
@@ -52,7 +53,8 @@ function formatLineups(&$perfs,$link,&$Sizes,$sdisp=1) {
     }
     echo "<div class='LineupFit$LastSize LineUpBase' onmouseover=AddLineUpHighlight($Id) onmouseout=RemoveLineUpHighlight($Id) id=LineUp$Id>";
     echo "<a href=/int/$link?id=$Id&Y=$YEAR>";
-    $Photo = $perf['Photo'];
+     
+    $Photo = OvPhoto($perf,$PerfCat);
     if (!$Photo) $Photo = '/images/icons/user2.png';
     if ($sdisp) {
       echo "<div class=LineUpFitTitle style='font-size:" . (18+$Imp) . "px'>" . $perf['SN'] . "</div>";
@@ -363,7 +365,7 @@ function Expand_Special(&$Art,$future=0) {
     $NYear = substr($YEARDATA['NextFest'],0,4);
 
     Expand_Many($Art,'((s.IsASide AND y.Coming=' . $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsCeilidh=1)))', 
-       'Performer', "Next Years Festival - $NYear",0,$future,$YEAR+($YEAR==$PLANYEAR?0:1),"We are already planning next year's festival from " . 
+       'Performer', "Next Year's Festival - $NYear",0,$future,$YEAR+($YEAR==$PLANYEAR?0:1),"We are already planning next year's festival from " . 
         "$NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) . "</sup> $NMonth $NYear and " );
     return;
   
@@ -374,7 +376,7 @@ function Expand_Special(&$Art,$future=0) {
     $Month = $Months[$YEARDATA['MonthFri']];
 
     Expand_Many($Art,'((s.IsASide AND y.Coming=' . $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsCeilidh=1)))', 
-       'Performer', "This Years Festival",0,$future,$YEAR,"We are already planning this year's festival from " . 
+       'Performer', "This Year's Festival",0,$future,$YEAR,"We are already planning this year's festival from " . 
         "$From<sup>" . ordinal($From) . "</sup> - $To<sup>" . ordinal($To) . "</sup> $Month $PLANYEAR and " );
     return;
 
