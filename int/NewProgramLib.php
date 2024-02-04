@@ -160,7 +160,7 @@ function Grab_Data($day='',$Media='Dance') {
   $Back_Times = array_reverse($Times);
 //var_dump($UsedTimes,$Times); exit;
 
-//var_dump($lineLimit);exit;
+//  var_dump($lineLimit);exit;
 }
 
 /*
@@ -329,12 +329,13 @@ function Test_Dump() { // far far from complete
   ? = special
 */
 
-function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dance',) {
+function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dance',$Public=0) {
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList;
   global $Earliest,$Latest,$SlotSize,$OffGrid;
 
-//var_dump($grid);
+//var_dump($grid);exit;
 //var_dump($Earliest,$Latest);
+//  var_dump($lineLimit);exit;
   $links = $condense && !$types && $Links;
 //var_dump($links, $condense, $types ,$Links);
   if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
@@ -346,6 +347,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
   }
 
   $All_Times = Feature('AllDanceTimes');
+  $RowSet = 4; //($All_Times?5:4);
   $StartLine = 0;
 //  if ($condense && $All_Times) $StartLine = -1;
   
@@ -369,11 +371,11 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
   $WDRAG = ($drag)?"ondrop=drop(event,$Sand) ondragover=allow(event)":"";
   foreach ($Times as $t) {
     if ($condense && ($t < $Earliest || $t >= $Latest)) continue;
-    echo "<tr><th rowspan=4 width=60 valign=top id=RowTime$t>" . sprintf('%04d',$t);
+    echo "<tr><th rowspan=$RowSet width=60 valign=top id=RowTime$t>" . sprintf('%04d',$t);
     if ($drag && ($lineLimit[$t]??0)<4) {
       echo "<button class=botx onclick=UnhideARow($t) id=AddRow$t>+</button>";
     }
-
+    
     for ($line=$StartLine; $line < 4; $line++) {
 //      $sl = "S" .($line+1);
       if ($line) echo "<tr>";
@@ -417,7 +419,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
         $class = 'DPGridDisp';
 
         $dev = '';
-        if ($line < 0) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
+//        if ($line < 0) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
         if ($line == 0 && $G) $dev = 'data-e=' . (empty($G['e'])?0:$G['e']) . ':' . (empty($G['d'])?0:$G['d']);
         if (!$G || ($v<0 && !($G['S1'] || !$G['S2'] || $G['n']))) {
           if ($v > 0 && $condense==0) $class = "DPGridGrey";
@@ -426,18 +428,16 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           } else if (!isset($OtherInUse[-$v])) {
             echo "$OtherLoc<td id=$id class=$class $DRAG data-d=X>&nbsp;";
           }
-        } else if (empty($lineLimit[$t])) {
-          echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
-        } else if ($line >= $lineLimit[$t]) {
-          echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
+        } else if ($line >= ($lineLimit[$t]??0)) {
+          echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp";
         } else if (!empty($G['h'])) {
           echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
-        } else if ($All_Times || (!empty($G['d']) && $G['d'] > $Round)) {
+        } else if (($All_Times && ($line == 0)) || (!empty($G['d']) && $G['d'] > $Round)) {
           if ($line == 0) {
-            $rows = (isset($G['r'])?($G['r']+1):1)*4; // intval(ceil($G['d']/$Round))*4; // WRONG
+            $rows = (isset($G['r'])?($G['r']+1):1); // Rounding?? *$RowSet; // intval(ceil($G['d']/$Round))*$RowSet; // WRONG
             // Need to create a wrapped event - not editble here currently
             $cls = (empty($G['n'])?'':'class=DPNamed ');
-            echo "$OtherLoc<td id=$id $WDRAG $dev $cls rowspan=$rows valign=top data-d=W>";
+            echo "$OtherLoc<td id=$id $WDRAG $dev $cls " . (($rows > 1)?"rowspan=$rows":'') . " valign=top data-d=W>";
             if (!empty($G['n'])) {
               if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
               echo $G['n'];
@@ -462,20 +462,20 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
               }
             }
           } else {
-            echo "$OtherLoc<td hidden id=$id $DRAG $dev class=$class>&nbsp;";
+            echo "$OtherLoc<td " . ((1 || $Public)?'hidden':'') . " id=$id $DRAG $dev class=$class>&nbsp;";
           }
         } else if ($line == 0  && !empty($G['n'])) {
-          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
+//          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
           echo "$OtherLoc<td id=$id $DRAG $dev data-d='N' class=DPNamed>";
           if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
           if (!empty($G['n']) ) echo $G['n'];
           if ($links) echo "</a>";
           echo "<br>";
         } else if ($line != 0 && isset($G['w'])) {
-          echo "$OtherLoc<td id=$id $DRAG $dev hidden class=$class>&nbsp;";
+          echo "$OtherLoc<td id=$id $DRAG $dev hidden class=$class>DD&nbsp;";
           if (isset($G['n'])) echo $G['n'];
         } else if (isset($G["S" . ($line+(isset($G['n'])?0:1))])) {
-          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
+//          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
           $si = $G["S" . ($line + (isset($G['n'])?0:1))];
           if (!isset($Sides[$si])) {
             $Sidessi = Get_Side($si);
@@ -489,7 +489,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
             if (!$condense) $txt = "<span class=Cancel>ERR (" . Side_ShortName($si) . ")</span>";
           }
           $class .= " Side$si";
-          $rows = (empty($G['w'])?'':('rowspan=' . (4-$line)));
+          $rows = (empty($G['w'])?'':('rowspan=' . ($RowSet-$line)));
           echo "$OtherLoc<td id=$id $DRAG $dev data-d=$si $rows class='$class'>";
           if ($links) echo "<a href=/int/ShowPerf?id=$si>";
           echo $txt;

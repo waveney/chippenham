@@ -56,7 +56,8 @@ function formatLineups(&$perfs,$link,&$Sizes,$PerfCat,$sdisp=1) {
      
     $Photo = OvPhoto($perf,$PerfCat);
     if (!$Photo) $Photo = '/images/icons/user2.png';
-    if ($sdisp) {
+    if (0 && $sdisp) {
+      debug_print_backtrace();
       echo "<div class=LineUpFitTitle style='font-size:" . (18+$Imp) . "px'>" . $perf['SN'] . "</div>";
       echo "<img src=$Photo>";
       echo "<div class=LineUptxt>" . $perf['Description'] . "</div>";

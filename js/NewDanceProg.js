@@ -189,7 +189,7 @@ function ClearHL() {
     if (sidlight[hl]) {
       var oc=hlights[sidlight[hl]];
       $('.'+oc).removeClass(oc);
-      hlights[id]='';
+      hlights[hl]='';
     }
   }
   sidlight = [];
