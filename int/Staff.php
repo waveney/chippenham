@@ -462,6 +462,7 @@
     $txt .= "<li><a href=QRMake>Generate a QR code</a><p>\n";     
     
     $txt .= "<li><a href=MailListMgr?A=ListForms>Mailing List Manager</a><p>\n";
+    $txt .= "<li><a href=PerformerList?$YEAR>List of Performers</a><p>\n";
     $txt .= "</ul>\n";
   }
 
