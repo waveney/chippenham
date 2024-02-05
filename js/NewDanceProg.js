@@ -27,7 +27,7 @@ var InfoPaneDefault = '';
       var rwst = $("#RowTime" + t);
       var vens = [];
       var elem = rwst[0];
-      while (elem = elem.nextSibling) vens.push((elem.id.match(/G:(\d*):(\d*):(\d*)/))[1]);
+      while ((elem = elem.nextSibling)) vens.push((elem.id.match(/G:(\d*):(\d*):(\d*)/))[1]);
 
       for (var v in vens) {
         var id = "G:" + vens[v] + ":" + t + ":0";
@@ -157,7 +157,7 @@ var InfoPaneDefault = '';
     var rwst = $("#RowTime" + t);
     var vens = [];
     var elem = rwst[0];
-    while (elem = elem.nextSibling) vens.push((elem.id.match(/G:(\d*):(\d*):(\d*)/))[1]);
+    while ((elem = elem.nextSibling)) vens.push((elem.id.match(/G:(\d*):(\d*):(\d*)/))[1]);
 
     for (var v in vens) {
       var id = "G:" + vens[v] + ":" + t + ":0";

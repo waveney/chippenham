@@ -412,7 +412,7 @@ div.whileDragging {
 }
 
 .InfoWrapper {
-  width: 500px;
+  width: 30vw;
   height: 29vh; 
   max-height: 29vh; 
   overflow: hidden;
@@ -425,12 +425,12 @@ div.whileDragging {
 
 .InfoContainer {
   overflow-y: auto;
-  width: 500px; 
+  width: 30vw; 
   height: 29vh; 
 }
 
 .DPControls {
-  width: 400px;
+  width: 20vw;
   height:230px;
   position: fixed;
   left:50.1vw;

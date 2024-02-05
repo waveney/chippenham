@@ -4,7 +4,7 @@
 
 include_once("ViewLib.php");
 
-function Upload_Init($Dir='') {
+function Upload_Init($Dir='',$SubDir='') {
   global $YEAR,$Side,$Sidey,$Put,$Puty,$snum;
 
 //var_dump($_POST);
@@ -15,9 +15,15 @@ function Upload_Init($Dir='') {
   if ($Dir == '' || $Dir == 'Side' || $Dir == 'Act' || $Dir == 'Other' || $Dir == 'Sides' || $Dir == 'Acts' || $Dir == 'Others' || $Dir == 'Perf') {
     $snum = $_POST['Id'];
     $Side = Get_Side($snum);
-    $Put = "Put_Side";
-    $Sidey = Get_SideYear($snum);
-    $Puty = 'Put_SideYear';
+    if ($SubDir) {
+      $Side = Get_Overlay($Side,$SubDir);
+      $Put = 'Put_Overlay';
+    } else {
+      $Side = Get_Side($snum);
+      $Put = "Put_Side";
+      $Sidey = Get_SideYear($snum);
+      $Puty = 'Put_SideYear';
+    }
   } else if ($Dir == 'Trade') {
     $snum = $_POST['Tid'];
     $type = 'Trade';

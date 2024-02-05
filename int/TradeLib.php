@@ -2338,13 +2338,13 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
   
   $ImgHt = 1200;
   $ImgWi = 700;
-  $stuff = getimagesize($loc['MapImage']);
+  $stuff = getimagesize(ltrim($loc['MapImage'],'/'));
   if ($stuff) {
     $ImgHt = $stuff[1];
     $ImgWi = $stuff[0];
   }
 
-//var_dump($TNum);
+// var_dump($ImgHt,$ImgWi);
 
 //  echo "scale=$scale sp=$sp Ht=$ImgHt Mapscale=$Mapscale <br>";
   echo "<div class=img-overlay-wrap>";
