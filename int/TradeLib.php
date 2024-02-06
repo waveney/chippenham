@@ -2316,6 +2316,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
 
   $TLocId = $loc['TLocId'];
   $FSize = 10*$scale;
+
+  $PitchesByName = [];
+  foreach ($Pitches as $Pi) if ($Pi['Type'] == 0) $PitchesByName[$Pi['SN'] ?? $Pi['Posn']] = $Pi;
   
   $Usage = [];$TT = [];$TNum = [];
   if ($Traders) {
@@ -2324,7 +2327,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
         if ($Trad["PitchLoc$i"] == $TLocId) {
           $list = explode(',',$Trad["PitchNum$i"]);
           foreach ($list as $p) {
-            $Usage[$p] = (isset($Usage[$p])?"CLASH!":$Trad['SN']);
+            if (!$p) continue;
+            if (!is_numeric($p)) $p = $PitchesByName[$p]['Posn'];
+            if ($p) $Usage[$p] = (isset($Usage[$p])?"CLASH!":$Trad['SN']);
             if ( $Trad['BookingState'] == $Trade_State['Deposit Paid'] || 
                  $Trad['BookingState'] == $Trade_State['Balance Requested'] || 
                  $Trad['BookingState'] == $Trade_State['Fully Paid'] ) {
@@ -2336,6 +2341,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
           }
         }
   }
+  
+//  var_dump($Usage,$TT);
   
   $ImgHt = 1200;
   $ImgWi = 700;
@@ -2398,7 +2405,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
     // Lowercase 
     // Spilt at words of poss, otherwise at length (for now)
     
-      $ChSize = floor($Pitch['Xsize']*($Pitch['Type']?18:34)*$Mapscale/($Pitch['Font']+10));
+      $ChSize = floor($Pitch['Xsize']*($Pitch['Type']?18:32)*$Mapscale/($Pitch['Font']+10));
       $Ystart = ($Pub?0.6:1.2) *($Pitch['Type']?2:1);
       $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - ($Pub?1:2));
 //      $Name = preg_replace('/.*t\/a (.*)/',

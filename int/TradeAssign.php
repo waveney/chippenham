@@ -19,8 +19,8 @@
       foreach ($Traders as $Trad) {
         $tid = $Trad['Tid'];
         echo "<tr><td draggable=true class='TradeName Trader$tid' id=TradeN$tid ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) " .
-             "style='background:" . ($Trad['PAID'] ? $Trade_Types[$Trad['TradeType']]['Colour'] : 'white' ) . "'>" . $Trad['SN'];
-        if (!$Trad['PAID']) {
+             "style='background:" . (($Trad['PAID']??0) ? $Trade_Types[$Trad['TradeType']]['Colour'] : 'white' ) . "'>" . $Trad['SN'];
+        if (!($Trad['PAID']??0)) {
           echo " <span class=err>" . ($Trad['BookingState'] == $Trade_State['Quoted'] ?"NOT ACCEPTED": "NOT PAID") .  "</span>";
         }
         echo "<td><img src=/images/icons/information.png width=20 title='" . $Trad['GoodsDesc'] . "'><td>";          
@@ -64,7 +64,7 @@
   // All traders have a pitch
   
   function Validate_Pitches_At($Loc) {
-    global $Traders,$Pitches,$tloc,$Trade_State;
+    global $Traders,$Pitches,$tloc,$Trade_State,$PitchesByName;
     
     $Usage = [];$TT = [];
     $NotAssign = '';
@@ -83,10 +83,11 @@
             foreach ($list as $p) {
               if (!$p) continue;
               if (!$Traders[$idx]['PAID']) continue;
-              if (!isset($Pitches[$p])) return $Trad['SN'] . " assigned to an invalid pitch number $p";
+              if ((!isset($PitchesByName[$p])) && (!isset($Pitches[$p]))) return $Trad['SN'] . " assigned to an invalid pitch number $p";
+//              $Pid = $PitchesByName[$p]['id'];
               if (isset($Usage[$p])) return "Clash on pitch $p - " . $Usage[$p] . " and " . $Trad['SN'];
-              if ($Pitches[$p]['Type']) return $Trad['SN'] . " assigned to a non pitch";
-              $Usage[$p] = $Trad['SN'];
+//              if ($Pitches[$Pid]['Type']) return $Trad['SN'] . " assigned to a non pitch";
+              if ($Trad['SN']) $Usage[$p] = $Trad['SN'];
               $TT[$p] = $Trad['TradeType'];
               $Found = $p;
             }
@@ -102,6 +103,8 @@
   $loc = $_REQUEST['i'];
   if (isset($_POST['Update'])) Update_Pitches(); // Note this can't use Update Many as weird format of ids
   $Pitches = Get_Trade_Pitches($loc);
+  $PitchesByName = [];
+  foreach ($Pitches as $Pi) if ($Pi['Type'] == 0) $PitchesByName[$Pi['SN'] ?? $Pi['Posn']] = $Pi;
   $tloc = Get_Trade_Loc($loc);
   
   $Traders = Get_Traders_For($loc,1);
