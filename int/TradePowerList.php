@@ -39,8 +39,13 @@
          "<td>" . $Powers[$t['Power0']]['Amps'] . " Amps\n";
   }
 
-    echo "<tr><th colspan=6><h2>Infrastructure</h2>Comming soon";
-
+    echo "<tr><th colspan=6><h2>Infrastructure</h2>";
+    
+  $Infs = Gen_Get_Cond('Infrastructure',"Power>1");
+  
+  foreach ($Infs as $In) {
+    echo "<tr><td>" . $In['Name'] . "<td><td><td><td><td>" .  $Powers[$In['Power']]['Amps'] . " Amps\n";
+  }
   
   echo "</table></div>\n";
   echo "</div>";

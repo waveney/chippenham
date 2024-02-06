@@ -403,6 +403,9 @@
       $txt .= "<li><a href=FoodDrink>Food and Drink</a>\n";    
       $txt .= "<li><a href=WaterManage>Water Refills</a>\n";
     }
+    
+    $txt .= "<li><a href=Infra?Y=$YEAR>Infrastructure</a>\n";
+
     $txt .= "</ul>\n";
   }
 
