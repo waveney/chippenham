@@ -13,6 +13,7 @@
         "Icons"=>"images/icons",
         "Sponsors"=>"images/Sponsors",
         'General Images'=>'images',
+        'Trade Maps'=>'images/TradeMaps',
         );
   $Pflip = array_flip($Places);
 

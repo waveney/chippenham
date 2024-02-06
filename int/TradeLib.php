@@ -66,7 +66,7 @@ $RestrictButs = array('Paid','Dep Paid'); // If !AutoInvoice or SysAdmin
 $Trade_Days = array('All','Saturday only','Sunday only','Saturday and Sunday','Monday','Saturday and Monday','All'); // TODO
 $Prefixes = array ('in','in the','by the');
 // $TaxiAuthorities = array('East Dorset','Poole','Bournemouth','BCP','Dorset');
-$TradeMapPoints = ['Trade','Other'];
+$TradeMapPoints = ['Trade','Other','text'];
 
 $BizProps = ['IsTrader'=>1,'IsSponsor'=>2,'IsAdvertiser'=>4,'IsSupplier'=>0,'IsOther'=>0]; // bit 0 = Image, 2=Logo, 3=Advert
 $SponTypes = ['General','Venue','Event','Performer'];

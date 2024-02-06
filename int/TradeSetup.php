@@ -54,7 +54,7 @@
   // START HERE
   if (isset($_POST['Update'])) {
 //    var_dump($_POST);
-    if (UpdateMany('TradePitch','Put_Trade_Pitch',$Pitches,1,'','','X',0)) $Pitches = Get_Trade_Pitches($loc,$YEAR);
+    if (UpdateMany('TradePitch','Put_Trade_Pitch',$Pitches,1,'','','X',-9)) $Pitches = Get_Trade_Pitches($loc,$YEAR);
   }
   if (isset($_REQUEST['COPY'])) {
     foreach($Pitches as $Pitch) {
@@ -87,6 +87,7 @@
     echo "<a href=TradeSetup?COPY&i=$loc&Y=$LYear>Copy $LYear to Current</a>,";
   }
   echo " <a href=TradeLocs?Y=$YEAR>Trade Locs</a></h2>";
+  echo "To delete an item put the X to -9<p>";
   dotail();
  
   

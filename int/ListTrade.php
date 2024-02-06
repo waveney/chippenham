@@ -7,6 +7,7 @@
   include_once("TradeLib.php");
 
   $Orgs = isset($_REQUEST['ORGS']);
+  $ShowLinks = (Access('Committee') || Access('Steward','Trade'));
   
   if ($Orgs) {
     echo "<h2>List Businesses and Organisions</h2>\n"; 
@@ -59,7 +60,11 @@
       $tt = $fetch['TradeType'];
       $Tid = $fetch['Tid'];
       if ($tt == 0) $tt=1;
-      echo "<tr><td width=300><a href=Trade?id=$Tid" . ($Orgs?"&ORGS":"") . ">" . ($fetch['SN']?$fetch['SN']:'No Name Given') . "</a>";
+      if ($ShowLinks) {
+        echo "<tr><td width=300><a href=Trade?id=$Tid" . ($Orgs?"&ORGS":"") . ">" . ($fetch['SN']?$fetch['SN']:'No Name Given') . "</a>";
+      } else {
+        echo "<tr><td width=300>" . ($fetch['SN']?$fetch['SN']:'No Name Given');        
+      }
       if (!$Orgs) echo "<td style='background:" . $Trade_Types[$tt]['Colour'] . ";'>" . $Trade_Types[$tt]['SN'];
       if (!$Orgs) echo "<td width=400>" . $fetch['GoodsDesc'];
       echo "<td>" . $fetch['Contact'];

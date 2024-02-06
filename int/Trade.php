@@ -1,6 +1,13 @@
 <?php
   include_once("fest.php");
-  A_Check('Committee','Trade');
+  
+  if (Access('Committee')) {
+    if (!Access('Committee','Trade')) {
+      fm_addall('disabled readonly');
+    }
+  } else if (Access('Steward','Trade')) {
+      fm_addall('disabled readonly');
+  }
 
   dostaffhead("Trade Stall Booking", ["/js/Trade.js","js/dropzone.js",'js/emailclick.js',"/js/clipboard.min.js","css/dropzone.css"]);
 
