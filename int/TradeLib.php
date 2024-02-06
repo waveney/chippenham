@@ -850,12 +850,12 @@ function Trader_Details($key,&$data,$att=0) {
   case 'LOCATION': 
     $Locs = Get_Trade_Locs(1);
     $Location = '';
-    if ($Trady['PitchLoc0']) $Location = $Locs[$Trady['PitchLoc0']]['SN'];
+    if ($Trady['PitchLoc0']) $Location = $Trady['PitchSize0'] . " in " . $Locs[$Trady['PitchLoc0']]['SN'];
     if ($Trady['PitchLoc1']) {
-      if ($Trady['PitchLoc2']) { $Location .= ", " . $Locs[$Trady['PitchLoc1']]['SN']; }
-      else { $Location .= " and " . $Locs[$Trady['PitchLoc1']]['SN']; }
+      if ($Trady['PitchLoc2']) { $Location .= ", " .  $Trady['PitchSize1'] . " in " . $Locs[$Trady['PitchLoc1']]['SN']; }
+      else { $Location .= " and " .  $Trady['PitchSize1'] . " in " . $Locs[$Trady['PitchLoc1']]['SN']; }
     }
-    if ($Trady['PitchLoc2']) { $Location .= " and " . $Locs[$Trady['PitchLoc2']]['SN']; }
+    if ($Trady['PitchLoc2']) { $Location .= " and " .  $Trady['PitchSize2'] . " in " . $Locs[$Trady['PitchLoc2']]['SN']; }
     return $Location;
   case 'PRICE':
     $Price = $Trady['Fee'];
@@ -2305,6 +2305,7 @@ function Get_Traders_For($loc,$All=0 ) {
    */
 
 function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Links 0:none, 1:traders, 2:Trade areas
+  // Pub 0 = not,1 public, 2 only pitch#s
   global $TradeTypeData,$Trade_State;
   
   if (!$loc['MapImage']) return;
@@ -2386,8 +2387,11 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
     echo " style='";
     if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);" ;
     echo "font-size:10px;'>";
-    if (!$Pub) echo "#" . $Posn;
-    if ($Name) {
+    if (!$Pub) {
+      echo "#" . $Posn;
+      if (($Pitch['Type'] == 0) && $Pitch['SN']) echo " - " . ($Pitch['SN']??'');
+    } else if (($Pub == 2) && ($Pitch['SN']??'')) echo $Pitch['SN'];
+    if ($Name && ($Pub!=2)) {
     // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
     // Chunking - split to Words then add words to full - if no words split word (hard)
     // Remove x t/a 
