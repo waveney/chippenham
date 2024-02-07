@@ -98,7 +98,7 @@ function fm_number1($Name,&$data=0,$field,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
   $str = "<td $extra1>";
-  if ($Name) $str .= "$Name: ";
+  if ($Name) $str .= "<label for=$field2>$Name:</label> ";
   $str .= help($field) . "<input type=number name=$field2 id=$field2 $extra2";
   if ($data) if (isset($data[$field])) $str .= " value=\"" . htmlspec($data[$field]) . "\"";
   if ($AutoADD) $str .=  " oninput=AutoInput('$field2') ";
@@ -109,7 +109,7 @@ function fm_number($Name,&$data=0,$field,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
   $str = "<td $extra1>";
-  if ($Name) $str .= "$Name: ";
+  if ($Name) $str .= "<label for=$field2>$Name:</label> ";
   $str .= help($field) . "<td $extra1><input type=number name=$field2 id=$field2 $extra2";
   if ($data) if (isset($data[$field])) $str .= " value=\"" . htmlspec($data[$field]) . "\"";
   if ($AutoADD) $str .=  " oninput=AutoInput('$field2') ";

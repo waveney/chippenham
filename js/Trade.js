@@ -153,9 +153,9 @@ function UpdatePower(pno, pitchfee) {
   var Props = TLocCont[LocSel]['Props'];
   
   if (Props &1) {
-    $('#TradeTable' + pno).show();
+    $('#Table0' + pno).show();
   } else {
-    $('#TradeTable' + pno).hide();
+    $('#Table0' + pno).hide();
   }
     
   if (pitchfee == 0) {
@@ -166,11 +166,20 @@ function UpdatePower(pno, pitchfee) {
   if (Pselect) {
     var psel = Pselect.value;
     var label = document.querySelector('label[for="Power' + pno + psel + '"]').innerHTML;
-    var powercost = 0;
-    pwr = label.match(/£(\d*)/);
+    var powercost = tablecost = 0;
+    var pwr = label.match(/£(\d*)/);
     if (pwr) powercost = pwr[1];
-    if (powercost) {
-      var cost = Number(pitchfee) + Number(powercost);
+    
+    var tablebox = document.getElementById('Tables' + pno);
+    if (tablebox) {
+      var tables = tablebox.value;
+      var label = document.querySelector('label[for="Tables' + pno + '"]').innerHTML;
+      if (label) var cst = label.match(/£(\d*)/);
+      if (cst) var tablecost = tables * cst[1];
+    }
+   
+    if (powercost || tablecost) {
+      var cost = Number(pitchfee) + Number(powercost) + Number(tablecost);
       $('#PowerFee').text('£' + cost );
       $('.Powerelems').show();
     } else {

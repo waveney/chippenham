@@ -66,7 +66,7 @@ $RestrictButs = array('Paid','Dep Paid'); // If !AutoInvoice or SysAdmin
 $Trade_Days = array('All','Saturday only','Sunday only','Saturday and Sunday','Monday','Saturday and Monday','All'); // TODO
 $Prefixes = array ('in','in the','by the');
 // $TaxiAuthorities = array('East Dorset','Poole','Bournemouth','BCP','Dorset');
-$TradeMapPoints = ['Trade','Other','text'];
+$TradeMapPoints = ['Trade','Other']; //,'text']; // text TODO
 
 $BizProps = ['IsTrader'=>1,'IsSponsor'=>2,'IsAdvertiser'=>4,'IsSupplier'=>0,'IsOther'=>0]; // bit 0 = Image, 2=Logo, 3=Advert
 $SponTypes = ['General','Venue','Event','Performer'];
@@ -368,6 +368,15 @@ function PowerCost(&$Trady) {
   return $TotPowerCost;
 }
 
+function TableCost(&$Trady) {
+  $Tables = 0;
+  
+  for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
+    if ($Trady["Tables$i"]??0) $Tables += $Trady["Tables$i"];
+  }
+  return $Tables * Feature('TableCost');  
+}
+
 function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Finance, 3=Biz general
   global $ADDALL,$Trader_Status,$TradeTypeData,$BizProps;
   Set_Trade_Help();
@@ -608,6 +617,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
 
   echo "<td>Pitch Number";
   $TotPowerCost = PowerCost($Trady);
+  $TableCost = TableCost($Trady);
   
   for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
     $Prop = ($TradeLocFull[$Trady["PitchLoc$i"]?? 0]['Props'] ?? 0);
@@ -631,7 +641,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     }
     
     if (Feature('TradeExtras')) {
-      echo "<td><span id=TradeTable$i" . (($Prop &1)?'':' hidden') . ">" . fm_checkbox('Table &amp;<br>2 chairs',$Trady,"Tables$i") . "</span>";
+      echo fm_number1('Table &amp;<br>2 chairs (£8)',$Trady,"Tables$i", (($Prop &1)?'':' hidden') ,
+         " min=0 max=4 onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")" );
     }
     
     if ($Mode) {
@@ -679,8 +690,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo "<tr>";
     if ($Mode) {
       echo fm_text("Pitch Fee, put -1 for free",$Trady,'Fee',1,'class=NotCSide','class=NotCSide onchange=FeeChange()');
-      if ($TotPowerCost && $Trady['Fee'] ) {
-        echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . (($Trady['Fee'] ?? 0) + $TotPowerCost);
+      if (($TotPowerCost || $TableCost) && $Trady['Fee'] ) {
+        echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . (($Trady['Fee'] ?? 0) + $TotPowerCost + $TableCost);
       } else {
         echo "<td class=Powerelems hidden >Total Fee:<td  class=Powerelems id=PowerFee hidden >";
       }
@@ -693,8 +704,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
         echo "Free";
       } else  {
         echo "&pound;" . $Trady['Fee'];
-        if ($TotPowerCost) {
-          echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . (($Trady['Fee'] ?? 0) + $TotPowerCost);
+        if ($TotPowerCost || $TableCost) {
+          echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . (($Trady['Fee'] ?? 0) + $TotPowerCost + $TableCost);
         } else {
           echo "<td class=Powerelems hidden >Total Fee:<td  class=Powerelems id=PowerFee hidden >";
         }

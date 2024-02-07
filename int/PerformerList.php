@@ -47,7 +47,7 @@
     if ($Set && ($Set != $SetNum++)) continue;
     if ($csv) {
       header('Content-Type: text/csv; charset=utf-8');
-      header('Content-Disposition: attachment; filename=Traders.csv');
+      header('Content-Disposition: attachment; filename=Performers.csv');
 
       fputcsv($output, [$Title]);
     } else {
