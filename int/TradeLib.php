@@ -690,7 +690,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo "<tr>";
     if ($Mode) {
       echo fm_text("Pitch Fee, put -1 for free",$Trady,'Fee',1,'class=NotCSide','class=NotCSide onchange=FeeChange()');
-      if (($TotPowerCost || $TableCost) && $Trady['Fee'] ) {
+      if ($TotPowerCost || $TableCost || $Trady['Fee'] ) {
         echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . (($Trady['Fee'] ?? 0) + $TotPowerCost + $TableCost);
       } else {
         echo "<td class=Powerelems hidden >Total Fee:<td  class=Powerelems id=PowerFee hidden >";
