@@ -162,6 +162,9 @@ function UpdatePower(pno, pitchfee) {
 //    $('.Powerelems').hide();
 //    return; 
 //  }
+
+  if (pitchfee < 0) pitchfee = 0;
+  
   var Pselect = document.querySelector('input[name="Power' + pno + '"]:checked');
   if (Pselect) {
     var psel = Pselect.value;
