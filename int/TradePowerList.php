@@ -42,9 +42,11 @@
     echo "<tr><th colspan=6><h2>Infrastructure</h2>";
     
   $Infs = Gen_Get_Cond('Infrastructure',"Power>1");
+  echo "<tr><td>Name<td><td><td>From<td>To<td>Amps\n";
   
   foreach ($Infs as $In) {
-    echo "<tr><td>" . $In['Name'] . "<td><td><td><td><td>" .  $Powers[$In['Power']]['Amps'] . " Amps\n";
+    echo "<tr><td>" . $In['Name'] . "<td><td><td>" . ($In['PowerFrom']??'') . "<td>" . ($In['PowerTo']??'') . "<td>" .
+         $Powers[$In['Power']]['Amps'] . " Amps\n";
   }
   
   echo "</table></div>\n";
