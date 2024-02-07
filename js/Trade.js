@@ -158,10 +158,10 @@ function UpdatePower(pno, pitchfee) {
     $('#Table0' + pno).hide();
   }
     
-  if (pitchfee == 0) {
-    $('.Powerelems').hide();
-    return; 
-  }
+//  if (pitchfee == 0) {
+//    $('.Powerelems').hide();
+//    return; 
+//  }
   var Pselect = document.querySelector('input[name="Power' + pno + '"]:checked');
   if (Pselect) {
     var psel = Pselect.value;
