@@ -622,7 +622,6 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
     $Prop = ($TradeLocFull[$Trady["PitchLoc$i"]?? 0]['Props'] ?? 0);
     if ($Trady["Power$i"] == 0)$Trady["Power$i"] = 1;
- //   $pwr = (isset($Trady["Power$i"])?$Trady["Power$i"]:0);
     echo "<tr>" . fm_text1("",$Trady,"PitchSize$i",1,(!$Mode && ($Trady['Fee']??0))?" onchange=CheckReQuote($Tid)":"");
       if (!$Mode && ($Trady['Fee']??0)) echo "<br>Changing will result in a new quote.  Be patient.";
     
@@ -641,7 +640,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     }
     
     if (Feature('TradeExtras')) {
-      echo fm_number1('Table &amp;<br>2 chairs (£8)',$Trady,"Tables$i", (($Prop &1)?'':' hidden') ,
+      echo fm_number1('Table &amp;<br>2 chairs (£' . Feature('TableCost',9) . ')',$Trady,"Tables$i", '' ,
          " min=0 max=4 onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")" );
     }
     
@@ -690,7 +689,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo "<tr>";
     if ($Mode) {
       echo fm_text("Pitch Fee, put -1 for free",$Trady,'Fee',1,'class=NotCSide','class=NotCSide onchange=FeeChange()');
-      if ($TotPowerCost || $TableCost || $Trady['Fee'] ) {
+      if ($TotPowerCost || $TableCost || ($Trady['Fee']??0) ) {
         echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . (($Trady['Fee'] ?? 0) + $TotPowerCost + $TableCost);
       } else {
         echo "<td class=Powerelems hidden >Total Fee:<td  class=Powerelems id=PowerFee hidden >";
