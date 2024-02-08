@@ -35,7 +35,7 @@ function formatminimax(&$side,$link,$mnat=2,$sdisp=1) {
 }
 
 function formatLineups(&$perfs,$link,&$Sizes,$PerfCat,$sdisp=1) {
-  include_once("SideOverLib.php");
+//  include_once("int/SideOverLib.php");
 // Link, if (text) Title, pic, text else Pic Title
 // If size = small then fit 5, else fit 3 - if fit change br
 // Float boxes with min of X and Max of Y
@@ -52,19 +52,19 @@ function formatLineups(&$perfs,$link,&$Sizes,$PerfCat,$sdisp=1) {
       echo "<div class=LineupFit" . $LastSize . "Wrapper>";
     }
     echo "<div class='LineupFit$LastSize LineUpBase' onmouseover=AddLineUpHighlight($Id) onmouseout=RemoveLineUpHighlight($Id) id=LineUp$Id>";
-    echo "<a href=/int/$link?id=$Id&Y=$YEAR>";
+    echo "<a href=/int/$link?id=$Id&Y=$YEAR&C=$PerfCat>";
      
     $Photo = OvPhoto($perf,$PerfCat);
     if (!$Photo) $Photo = '/images/icons/user2.png';
-    if (0 && $sdisp) {
-      debug_print_backtrace();
-      echo "<div class=LineUpFitTitle style='font-size:" . (18+$Imp) . "px'>" . $perf['SN'] . "</div>";
+    if ($sdisp) {
+      if (Access('SysAdmin')) debug_print_backtrace();
+      echo "<div class=LineUpFitTitle style='font-size:" . (18+$Imp) . "px'>" . OvName($perf,$PerfCat) . "</div>";
       echo "<img src=$Photo>";
-      echo "<div class=LineUptxt>" . $perf['Description'] . "</div>";
+      echo "<div class=LineUptxt>" . OvDesc($perf,$PerfCat) . "</div>";
        
     } else {
       echo "<img src=$Photo>";
-      echo "<br><div class=LineUpFitTitle style='font-size:" . (18+$Imp*3) . "px'>" . $perf['SN'] . "</div></a>";
+      echo "<br><div class=LineUpFitTitle style='font-size:" . (18+$Imp*3) . "px'>" . OvName($perf,$PerfCat) . "</div></a>";
     }
     echo "</div>";
   }

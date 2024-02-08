@@ -43,7 +43,7 @@
     exit;
   } 
 
-  if ($USER['AccessLevel'] == $Access_Type['Participant']) {
+  if (($USER['AccessLevel']??0) == $Access_Type['Participant']) {
     $Tid = $USERID;
     Trade_Main(0,'TraderPage',$Tid);
   } else {

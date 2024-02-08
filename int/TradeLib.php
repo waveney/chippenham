@@ -731,7 +731,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     if (Access('SysAdmin')) {
       echo "<tr>" . fm_textarea('History',$Trady,'History',6,2,'class=NotSide',"class='NotSide ScrollEnd'");
     } else {
-      $hist = $Trady['History'];
+      $hist = ($Trady['History']?? '');
       echo "<tr><td class=NotSide>History:<td colspan=8 class=NotSide>";
       if ($hist) {
         $hist = preg_replace('/\n/','<br>\n"',$hist);
@@ -778,24 +778,24 @@ function Get_Trade_Details(&$Trad,&$Trady) {
   $Partial = (array_flip($EType_States))['Partial'];
   if ($Trady['PitchLoc0']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc0']]['SN'];
   if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum0']) $Body .= "Pitch Number "  . $Trady['PitchNum0'];
-  if ($Trady['Power0']) $Body .= " with " . ($Trady["Power0"]> 0 ? $Power[$Trady['Power0']]['Amps'] . " Amps\n" : " own Euro 4 silent generator\n");
-  if (isset($Trady['QuoteSize0']) && ($Trady['QuoteSize0'] != $Trady['PitchSize0'])) $Body .= "<b>WAS " . $Trady['QuoteSize0'] . "</b>\n";
+  if (!empty($Trady['Power0'])) $Body .= " with " . ($Trady["Power0"]> 0 ? $Power[$Trady['Power0']]['Amps'] . " Amps\n" : " own Euro 4 silent generator\n");
+  if (!empty($Trady['QuoteSize0']) && ($Trady['QuoteSize0'] != $Trady['PitchSize0'])) $Body .= "<b>WAS " . $Trady['QuoteSize0'] . "</b>\n";
   if ($Trady['Tables0'] ?? 0) $Body .= "Request Table and 2 chairs\n";
 
   if ($Trady['PitchSize1']) {
     $Body .= "\nPitch 2:" . $Trady['PitchSize1'];
     if ($Trady['PitchLoc1']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc1']]['SN'];
     if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum1']) $Body .= "Pitch Number "  . $Trady['PitchNum1'];
-    if ($Trady['Power1']) $Body .= " with " . $Power[$Trady['Power1']]['Amps'] . " Amps\n";
-    if (isset($Trady['QuoteSize1']) && ($Trady['QuoteSize1'] != $Trady['PitchSize1'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
+    if (!empty($Trady['Power1'])) $Body .= " with " . $Power[$Trady['Power1']]['Amps'] . " Amps\n";
+    if (!empty($Trady['QuoteSize1']) && ($Trady['QuoteSize1'] != $Trady['PitchSize1'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
     if ($Trady['Tables1'] ?? 0) $Body .= "Request Table and 2 chairs\n";
     }
   if ($Trady['PitchSize2']) {
     $Body .= "\nPitch 3:" . $Trady['PitchSize2'];
     if ($Trady['PitchLoc2']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc2']]['SN'];
     if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum2']) $Body .= "Pitch Number "  . $Trady['PitchNum2'];
-    if ($Trady['Power2']) $Body .= " with " . $Power[$Trady['Power2']]['Amps'] . " Amps\n";
-    if (isset($Trady['QuoteSize2']) && ($Trady['QuoteSize2'] != $Trady['PitchSize2'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
+    if (!empty($Trady['Power2'])) $Body .= " with " . $Power[$Trady['Power2']]['Amps'] . " Amps\n";
+    if (!empty($Trady['QuoteSize2']) && ($Trady['QuoteSize2'] != $Trady['PitchSize2'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
     if ($Trady['Tables2'] ?? 0) $Body .= "Request Table and 2 chairs\n";
     }
 
@@ -1547,6 +1547,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
 //echo "<p>DOING Trade_ACtion $Action<p>";
 // var_dump($Action);
 
+  $SaveAction = $Action;
   switch ($Action) {
   case 'Create' :
     break;
@@ -1970,7 +1971,6 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     $Dep = T_Deposit($Trad);
     if ($CurState != $Trade_State['Requote']){
       $NewState = $Trady['BookingState'] = $Trade_State['Quoted'];
-      for($i=0;$i<3;$i++) $Trady["QuoteSize$i"] = $Trady["PitchSize$i"];
       Send_Trader_Email($Trad,$Trady,'Trade_Quote');    
     } elseif ($Trady['Fee'] <0) {
       $NewState = $Trady['BookingState'] = $Trade_State['Fully Paid'];
@@ -2223,10 +2223,10 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
 
   if ($Tchng && $Action) Put_Trader($Trad);
 // var_dump($Action,$Ychng,$CurState, $NewState,$Trady);
-  if ($Action && ($Ychng || $CurState != $NewState )) {
+  if (($SaveAction || $Action) && ($Ychng || $CurState != $NewState )) {
     $Trady['BookingState'] = $NewState; // Action test is to catch the moe errors
     $By = (isset($USER['Login'])) ? $USER['Login'] : 'Trader';
-    $Trady['History'] .= "Action: $Hist $Action $xtra on " . date('j M Y H:i') . " by $By.\n";
+    $Trady['History'] .= "Action: $Hist $SaveAction $xtra on " . date('j M Y H:i') . " by $By.\n";
     Put_Trade_Year($Trady);
   }
 }

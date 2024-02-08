@@ -33,7 +33,11 @@ function Pretty_Print_To($to) {
               break;
           }
         } else {
-          $str .= "to: $too";
+          if (is_array($too)) {
+            $str .= "to wierd array:" . implode(", ", $too);
+          } else {
+            $str .= "to: $too";            
+          }
         }
       }
     } else {

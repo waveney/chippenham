@@ -26,6 +26,17 @@ function OvPhoto(&$Side,$Isa='') {
   return $Side['Photo'];
 }
 
+function OvName(&$Side,$Isa='') {
+  if ($Side['HasOverlays'] && $Isa) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['SN'] ?? $Side['SN'];
+    }
+  }
+  
+  return $Side['SN'];
+}
+
 function OvDesc(&$Side,$Isa='') {
   if ($Side['HasOverlays'] && $Isa) {
     $Olay = Get_Overlay($Side,$Isa);

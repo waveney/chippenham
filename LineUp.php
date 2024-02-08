@@ -2,6 +2,7 @@
   include_once("int/fest.php");
   include_once("int/ProgLib.php");
   include_once("int/DispLib.php");
+  include_once("int/SideOverLib.php");
   include_once("int/DanceLib.php");
   include_once("int/MusicLib.php");
 

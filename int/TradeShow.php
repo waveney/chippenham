@@ -24,7 +24,7 @@
   $Traders = Get_Traders_Coming(1,"Fee DESC");
   $TTUsed = $LocUsed = $AllList = [];
   
-  foreach ($Traders as $ti=>$Trad) {
+  if ($Traders) foreach ($Traders as $ti=>$Trad) {
     if (!$Trad['ListMe'] && !Access('Staff')) continue;
     $TT = $Trad['TradeType'];
     $TTUsed[$TT][] = $ti;
