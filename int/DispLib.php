@@ -119,7 +119,7 @@ function Gallery($id,$embed=0) {
   if (is_numeric($id)) {
     $Gal = db_get('Galleries',"id='$id'");
   } else {
-    $nam = preg_replace('/_/',' ',$id);
+    $nam = preg_replace('/_/',' ',Sanitise($id));
     $Gal = db_get('Galleries',"SN='$nam'");
   }
 

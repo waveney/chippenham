@@ -135,7 +135,10 @@
               case 'FestC':
                 if (!Feature('EnableCancelMsg')) continue 2;
                 break;
-              
+              case 'Invite Better':
+                if (!Feature('InviteBetter')) continue 2;
+                break;
+                
               default:
               }
             if (($butcount++)%3 == 0) $str .= "<br>";

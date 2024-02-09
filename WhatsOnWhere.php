@@ -20,7 +20,7 @@
 
   echo "<h2>Select a Venue:</h2>";
   if ($YEAR == $PLANYEAR) {
-    if (Feature('NotAllPublic')) echo "All these venues have events schedualled, not all their events may be public yet.<p>";
+    if (Feature('NotAllPublic')) echo "These venues have published events, more are coming.<p>";
   } else {
     echo "All these venues had events.<p>";
   }

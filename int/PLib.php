@@ -588,10 +588,10 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
 //      echo "<tr><td class=NotSide>" . fm_checkbox('Tuesday',$Sidey,'Tue') . "<td class=NotSide>" . fm_checkbox('Wednesday',$Sidey,'Wed');
 //      echo "<td class=NotSide>" . fm_checkbox('Thursday',$Sidey,'Thur') . "<td class=NotSide>" . fm_checkbox('Monday',$Sidey,'Mon');
     } else {
-      if ($Sidey['Tue']) echo fm_hidden('Tue',1);
-      if ($Sidey['Wed']) echo fm_hidden('Wed',1);
-      if ($Sidey['Thur']) echo fm_hidden('Thur',1);
-      if ($Sidey['Mon']) echo fm_hidden('Mon',1);
+      if (!empty($Sidey['Tue'])) echo fm_hidden('Tue',1);
+      if (!empty($Sidey['Wed'])) echo fm_hidden('Wed',1);
+      if (!empty($Sidey['Thur'])) echo fm_hidden('Thur',1);
+      if (!empty($Sidey['Mon'])) echo fm_hidden('Mon',1);
     }
     if (Feature('DanceComp') && (isset($Side['Type']) && strstr($Side['Type'],'North West'))) {
       echo "<tr>" . fm_radio("Would you be interested taking part in a North West Morris dance competition?", $Dance_Comp,$Sidey,'DanceComp',
