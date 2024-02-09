@@ -977,3 +977,10 @@ table {
   padding: 0;
 }
 
+.TradeMore {
+  position: relative;
+  align:right;
+  bottom: 0;
+  right:0;
+  font-size:8pt;
+}

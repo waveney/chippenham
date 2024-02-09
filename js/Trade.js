@@ -146,7 +146,8 @@ function Trader_Insurance_Upload() {
 
 function UpdatePower(pno, pitchfee) {
   debugger;
-  
+
+  /*
   var TLoc = document.getElementById('TradeLocData').value;
   var TLocCont = JSON.parse(TLoc);
   var LocSel = document.getElementById('PitchLoc' + pno).value;
@@ -157,37 +158,38 @@ function UpdatePower(pno, pitchfee) {
   } else {
     $('#Table0' + pno).hide();
   }
-    
+    */
 //  if (pitchfee == 0) {
 //    $('.Powerelems').hide();
 //    return; 
 //  }
 
   if (pitchfee < 0) pitchfee = 0;
-  
-  var Pselect = document.querySelector('input[name="Power' + pno + '"]:checked');
-  if (Pselect) {
-    var psel = Pselect.value;
-    var label = document.querySelector('label[for="Power' + pno + psel + '"]').innerHTML;
-    var powercost = tablecost = 0;
-    var pwr = label.match(/£(\d*)/);
-    if (pwr) powercost = pwr[1];
+  var powercost = tablecost = 0;
+
+  for (var stall=0;stall<3;stall++) {
+    var Pselect = document.querySelector('input[name="Power' + stall + '"]:checked');
+    if (Pselect) {
+      var psel = Pselect.value;
+      var label = document.querySelector('label[for="Power' + stall + psel + '"]').innerHTML;
+      var pwr = label.match(/£(\d*)/);
+      if (pwr) powercost += Number(pwr[1]);
     
-    var tablebox = document.getElementById('Tables' + pno);
-    if (tablebox) {
-      var tables = tablebox.value;
-      var label = document.querySelector('label[for="Tables' + pno + '"]').innerHTML;
-      if (label) var cst = label.match(/£(\d*)/);
-      if (cst) var tablecost = tables * cst[1];
+      var tablebox = document.getElementById('Tables' + stall);
+      if (tablebox) {
+        var tables = tablebox.value;
+        var label = document.querySelector('label[for="Tables' + stall + '"]').innerHTML;
+        if (label) var cst = label.match(/£(\d*)/);
+        if (cst) tablecost += tables * Number(cst[1]);
+      }
     }
-   
-    if (powercost || tablecost) {
-      var cost = Number(pitchfee) + Number(powercost) + Number(tablecost);
-      $('#PowerFee').text('£' + cost );
-      $('.Powerelems').show();
-    } else {
-      $('.Powerelems').hide();
-    }
+  }
+  if (powercost || tablecost) {
+    var cost = Number(pitchfee) + Number(powercost) + Number(tablecost);
+    $('#PowerFee').text('£' + cost );
+    $('.Powerelems').show();
+  } else {
+    $('.Powerelems').hide();
   }
   
 }
@@ -216,6 +218,10 @@ function CheckReQuote(tid) {
   setTimeout(function(){
     window.location.reload();
   }, 100);
+}
+
+function MoreStalls(stall) {
+  $('#Stall' + (stall+1)).show(); 
 }
 
 /* copied code

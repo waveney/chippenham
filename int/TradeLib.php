@@ -362,7 +362,7 @@ function PowerCost(&$Trady) {
   if (!$TradePower) $TradePower = Gen_Get_All("TradePower");
   $TotPowerCost = 0;
   
-  for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
+  for ($i = 0; $i < 3; $i++) {
     if ($Trady["Power$i"]??0) $TotPowerCost += $TradePower[$Trady["Power$i"]]['Cost'];
   }
   return $TotPowerCost;
@@ -371,7 +371,7 @@ function PowerCost(&$Trady) {
 function TableCost(&$Trady) {
   $Tables = 0;
   
-  for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
+  for ($i = 0; $i < 3; $i++) {
     if ($Trady["Tables$i"]??0) $Tables += $Trady["Tables$i"];
   }
   return $Tables * Feature('TableCost');  
@@ -619,12 +619,19 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   $TotPowerCost = PowerCost($Trady);
   $TableCost = TableCost($Trady);
   
-  for ($i = 0; $i < Feature('TradeMaxPitches',3); $i++) {
+  for ($i = 0; $i < 3; $i++) { 
     $Prop = ($TradeLocFull[$Trady["PitchLoc$i"]?? 0]['Props'] ?? 0);
-    if ($Trady["Power$i"] == 0)$Trady["Power$i"] = 1;
-    echo "<tr>" . fm_text1("",$Trady,"PitchSize$i",1,(!$Mode && ($Trady['Fee']??0))?" onchange=CheckReQuote($Tid)":"");
+    $Hideme = (($i>0) && (empty($Trady["PitchLoc$i"])) && (empty($Trady["PitchSize$i"])));
+    $More = (($i<2) && (empty($Trady["PitchLoc" . ($i+1)])) && (empty($Trady["PitchSize" . ($i+1)])));
+
+    if (empty($Trady["Power$i"]))$Trady["Power$i"] = 1;
+    echo "<tr id=Stall$i " . ($Hideme?'hidden':'') . ">" . 
+      fm_text1("",$Trady,"PitchSize$i",1,(!$Mode && ($Trady['Fee']??0))?" onchange=CheckReQuote($Tid)":"");
       if (!$Mode && ($Trady['Fee']??0)) echo "<br>Changing will result in a new quote.  Be patient.";
-    
+      if (($i < 2) && $More) {
+        echo "<div class=TradeMore><button type=button class=TradeMore onclick=MoreStalls($i)>" . ($i?'3rd Stall':'2nd Stall') . "</button></div>";
+      }
+      
     if ($Mode) { // Festival
       echo "<td id=PowerFor$i>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1,"onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")"); // 
     } else if ($Trade_Prop & 1) { // Change Pos
