@@ -5,6 +5,7 @@
   include_once("DanceLib.php");
   include_once("MusicLib.php"); 
   include_once("PLib.php");
+  include_once("SideOverLib.php");
 
 // TODO change for all access types inc participant
   global $USER,$USERID,$Access_Type,$PerfTypes;
@@ -42,8 +43,21 @@
     break;
   }  
 
-  $Isa = $_REQUEST['pc'] ?? '';
-  if (!$Isa) Error_Page("No Category to overlay");
+  $Mode = Access('Staff');
+  $Isa = '';
+  $pc = $_REQUEST['pc'] ?? '';
+  
+//  var_dump($_REQUEST);
+  
+  if (empty($pc)) Error_Page("No Category to overlay");
+  foreach ($PerfTypes as $p=>$d) {
+    if ($pc == $d[2]) {
+      $Isa = $d[2];
+      break;
+    }
+  }
+  
+  if (empty($Isa))  Error_Page("Unknown Category");
 
   if (isset($_REQUEST['Action'])) {
     include_once("Uploading.php");
@@ -53,110 +67,68 @@
       $Mess = Upload_Photo('Side',$Isa);
       break;
     }
-    
+  }
+  
   dostaffhead("Add/Change Overlay", ["/js/clipboard.min.js", "/js/Participants.js","js/dropzone.js","css/dropzone.css", "js/InviteThings.js"]);
 
-  $Side = Get_Side($Snum);
+  $Side = Get_Side($snum);
   $Olay = Get_Overlay($Side, $Isa);
   
   echo "<form method=post action=SideOverlay>";
   if ($Olay) {
-    Register_AutoUpdate('SideOverlay', $Olay['id']);
     $Oid = $Olay['id'];
   } else {
-    $Oid = -1;
+    $Olay = ['SideId'=>$snum, 'IsType'=>$Isa];
+    $Oid = Gen_Put('SideOverlays',$Olay);
   }
   
+  Register_AutoUpdate('SideOverlays', $Oid);
+
   echo fm_hidden('id',$Oid); 
-  echo "<table><tr>"
- "
-   . "
-  
-  echo '<h2>Add/Edit Performer</h2>'; // TODO CHANGE
-  global $Mess,$Action,$Dance_TimeFeilds,$ShowAvailOnly;
-  $DateFlds = ['ReleaseDate'];
-// var_dump($_POST);
-// TODO Change this to not do changes at a distance and needing global things
-  $Action = ''; 
-  $Mess = '';
-  if (isset($_REQUEST['Action'])) {
-    include_once("Uploading.php");
-    $Action = $_REQUEST['Action'];
-    switch ($Action) {
-    case 'PASpecUpload':
-      $Mess = Upload_PASpec();
-      break;
-    case 'Insurance':
-      $Mess = Upload_Insurance();
-      break;
-    case 'Photo':
-      $Mess = Upload_Photo();
-      break;
-    case (preg_match('/DeleteOlap(\d*)/',$Action,$mtch)?true:false):
-      // Delete Olap
-      $snum=$_POST['SideId'];
-      $olaps = Get_Overlaps_For($snum);
-//      echo "<br>"; var_dump($olaps);
-      if (isset($olaps[$mtch[1]])) {
-        db_delete("Overlaps",$olaps[$mtch[1]]['id']);
-      } 
-      break;
-    case 'TICKBOX':
+  echo "<table border>";
+  echo "<tr><td>Performer:<td colspan=2><a href=AddPerf?id=$snum>" . $Side['SN'] . "</a>" . "<td>Type:" . ($Side['Type'] ?? '');
 
-      break; // Action is taken later after loading
-      
-    case 'Record as Non Performer' :
-      $Side = Get_Side($snum);
-      $Sidey = Get_SideYear($snum);
-      if (!$Sidey) $Sidey = Default_SY($snum);
-      $Side['NotPerformer'] = 1;
-      $Sidey['NoEvents'] = 1;
-      $Sidey['YearState'] = 2;
-      if (empty($Sidey['FreePerf'])) $Sidey['FreePerf'] = 1;
-      Put_Side($Side);
-      Put_SideYear($Sidey);
-      global $Save_Sides,$Save_SideYears;
-      $Save_SideYears = $Save_Sides = []; // Clears Cached values
-
-      $Side = Get_Side($snum); // Sets all the defaults
-      $Sidey = Get_SideYear($snum);
-// var_dump($Sidey);exit;
-      echo "<h1>Setup as a non performer</h1>";
-      $AllDone = 1;
-      break;
-      
-    case 'Create as Non Performer' :
-      $_POST['NotPerformer'] = 1;
-      $_POST['NoEvents'] = 1;
-      $_POST['YearState'] = 2;
-      if (empty($_POST['FreePerf'])) $_POST['FreePerf'] = 1;
-      
-      $proc = 1;
-      $Side = [];
-      if (!isset($_POST['SN'])) {
-        echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
-        $proc = 0;
-      }
-      $_POST['AccessKey'] = rand_string(40);
-      $_POST['SideId'] = $snum = Insert_db_post('Sides',$Side,$proc);
-      if ($snum) Insert_db_post('SideYear',$Sidey,$proc);
-      echo "<h1>Created as a non performer</h1>";
-      $Side = Get_Side($snum);
-      $Sidey = Get_SideYear($snum);
-
-      $AllDone = 1;
-      break; 
-
-
-    case 'Send Generic Contract':
-      SendProfEmail();
- //   'Dance_Final_Info',$snum,'FinalInfo','SendProfEmail')
-    
-    case 'Send Bespoke Contract':
-    
-    default:
-      $Mess = "!!!";
-    }
+  echo "<tr><td>Short Blurb:<td colspan=6>" . $Side['Description'];
+  echo "<tr><td>Blurb:<td colspan=6>" . $Side['Description'];
+  echo "<tr><td>Photo:<td>" . $Side['Photo'] . "<td><img src=" . ($Side['Photo']??'') . " height=100>";
+  echo "<tr><td>Website:<td>" . $Side['Website'];
+  echo     "<td>Video:<td>" . $Side['Video'];
+  echo "<tr><td>Facebook:<td>" . $Side['Facebook'];
+  echo     "<td>Twitter / X:<td>" . $Side['Twitter'];
+  echo     "<td>Instagram:<td>" . $Side['Instagram'];
+  echo "<tr><td>Performer Types:<td>";
+    foreach ($PerfTypes as $t=>$p) {
+      if (Capability("Enable" . $p[2]) && $Side[$p[0]]) echo $t . ", ";
   }
-//  echo "<!-- " . var_dump($_POST) . " -->\n";
-  if ($AllDone) {
+  echo "<tr><td colspan=6><h2>Overlays for $Isa</h2>Only fill in those items that need different values from the main performer data";
+  
+  echo "<tr>" . fm_text('Name',$Olay,'SN',2);
+  echo "<tr>" . fm_textarea('Short Blurb <span id=DescSize></span>',$Olay,'Description',5,1,
+                        "maxlength=200 oninput=SetDSize('DescSize',200,'Description')"); 
+  echo "<tr>" . fm_textarea('Blurb for web',$Olay,'Blurb',5,2,'','size=2000' ) . "\n";
+  echo "<tr>";
+      if (isset($Olay['Website']) && strlen($Olay['Website'])>1) {
+        echo fm_text(weblink(trim($Olay['Website'])),$Olay,'Website');
+      } else {
+        echo fm_text('Website',$Olay,'Website');
+      }
+      
+  echo "<td>Recent Photo" . fm_DragonDrop(1, 'Photo', "Overlay:$Isa", $Oid, $Olay, $Mode);
+  echo "<tr>";
+    if (isset($Olay['Video']) && $Olay['Video'] != '') {
+      echo fm_text("<a href=" . videolink($Olay['Video']) . ">Recent Video</a>",$Olay,'Video',1);
+    } else {
+      echo fm_text('Recent Video',$Olay,'Video',1);
+    }
+    if (Access('SysAdmin')) echo fm_text1('Photo Link',$Olay,'Photo',1,'class=NotSide','class=NotSide');
+
+  echo "<tr>" . fm_text(Social_Link($Olay,'Facebook' ),$Olay,'Facebook');
+      echo fm_text(Social_Link($Olay,'Twitter'  ),$Olay,'Twitter');
+      echo fm_text(Social_Link($Olay,'Instagram'),$Olay,'Instagram');
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+
+  echo "</table>";
+  
+  echo "<h2><a href=AddPerf?id=$snum> Back to " . $Side['SN'] . " Main Page</a></h2>";
+ 
+  dotail();

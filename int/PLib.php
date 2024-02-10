@@ -156,7 +156,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
             foreach ($PerfTypes as $p=>$d) {
               if ($Side[$d[0]]) {
                 $Ov = Get_Overlay($Side,$d[2]);
-                echo "<td class=NotSide><a href=SideOverlay?id=$snum&pc='" . $d[2] . "'>" . 
+                echo "<td class=NotSide><a href=SideOverlay?id=$snum&pc=" . $d[2] . ">" . 
                   ($Ov?'Edit':'Create') . " overlay for: " . $d[2] . "</a>";
               }  
             }

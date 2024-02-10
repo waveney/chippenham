@@ -86,7 +86,7 @@
           echo "#$loc#PerfThumb#$loc#";
         }
         exit;
-      };
+      }
       echo "1, Not a recognisable image";
       exit;
     } else if ($field == 'ReleaseDate') {
@@ -169,7 +169,7 @@
           echo "#$loc#TradThumb#$loc#";
         }
         exit;
-      };
+      }
       echo "1, Not a recognisable image";
       exit;
     }
@@ -292,8 +292,7 @@
       }
     } 
     break;
-    exit;
-  
+    
   case 'Sponsorship':
     if (preg_match('/Id(\d*)/',$field,$mtch)?true:false) {        
       $field = 'ThingId';
@@ -315,7 +314,6 @@
     $N = Gen_Get($type,$id);
     $N[$field] = hexdec($Value);
     return Gen_Put($type,$N);
-    break;
      
   default:
     break;
@@ -327,8 +325,3 @@
   $N[$field] = $Value;
 //var_dump($N);
   return Gen_Put($type,$N,$idx);
- 
-  exit;
-  
-?>
-

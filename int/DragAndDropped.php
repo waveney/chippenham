@@ -26,7 +26,9 @@ $Class = (isset($_REQUEST['Class'])?$_REQUEST['Class'] :"");
 $DDd = $DDdata[$Type];
 $Name = $Type;
 if (isset($DDd['Name'])) $Name = $DDd['Name'];
-$PathCat = $Cat;
+$PutCat = $PathCat = $Cat;
+
+// var_dump($_REQUEST);
 
 switch ($Cat) {
 case 'Sides':
@@ -66,6 +68,14 @@ case 'FoodAndDrink':
   $Data = Gen_Get($Cat,$id);
   $Put = 'Gen_Put';
   $PathCat = $Cat;
+  break;
+
+case (preg_match('/Overlay:(.*)/',$Cat,$mtch)?true:false):
+  $Isa = $mtch[1];
+  $Data = Gen_Get('SideOverlays',$id);
+  $Put = 'Gen_Put';
+  $PutCat = 'SideOverlays';
+  $PathCat = "Sides/Overlay/$Isa";
   break;
   
 case 'Venue':
@@ -155,7 +165,7 @@ if (preg_match('/Image|Photo/',$Type,$mtch)) {
 $Mess = ''; 
 // "Here with: " . var_export($Data,1);
 if ($Put == 'Gen_Put') {
-  Gen_Put($Cat,$Data);
+  Gen_Put($PutCat,$Data);
 } else {
   $Put($Data);
 }
