@@ -14,6 +14,8 @@
   if (UpdateMany('TradePower','',$Trads,0)) $Trads=Gen_Get_All('TradePower');
 
   echo "This is for Power.  Properties bit map of locns<p>\n";
+  
+  echo "If cosst <0 then not available as a trade option<p>\n";
 
   
   $coln = 0;

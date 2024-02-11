@@ -559,7 +559,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   $Trade_Prop = $Trade_State_Props[$Trady['BookingState'] ?? 0];
   $TradePower = Gen_Get_All("TradePower");
   $Powers = [];
-  foreach ($TradePower as $i=>$P) $Powers[$i] = $P['Name'] . (($P['Cost']??0)? " (£" . $P['Cost'] . ")" :'');
+  foreach ($TradePower as $i=>$P) if ($P['Cost'] >=0) $Powers[$i] = $P['Name'] . (($P['Cost']??0)? " (£" . $P['Cost'] . ")" :'');
   
 //  var_dump($Powers);
   
@@ -784,7 +784,7 @@ function Get_Trade_Details(&$Trad,&$Trady) {
   $Partial = (array_flip($EType_States))['Partial'];
   if ($Trady['PitchLoc0']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc0']]['SN'];
   if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum0']) $Body .= "Pitch Number "  . $Trady['PitchNum0'];
-  if (!empty($Trady['Power0'])) $Body .= " with " . ($Trady["Power0"]> 0 ? $Power[$Trady['Power0']]['Amps'] . " Amps\n" : " own Euro 4 silent generator\n");
+  if (!empty($Trady['Power0']) || ($Trady['Power0']>1)) $Body .= " with " . ($Trady["Power0"]> 0 ? $Power[$Trady['Power0']]['Amps'] . " Amps\n" : " own Euro 4 silent generator\n");
   if (!empty($Trady['QuoteSize0']) && ($Trady['QuoteSize0'] != $Trady['PitchSize0'])) $Body .= "<b>WAS " . $Trady['QuoteSize0'] . "</b>\n";
   if ($Trady['Tables0'] ?? 0) $Body .= "Request Table and 2 chairs\n";
 
@@ -792,7 +792,7 @@ function Get_Trade_Details(&$Trad,&$Trady) {
     $Body .= "\nPitch 2:" . $Trady['PitchSize1'];
     if ($Trady['PitchLoc1']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc1']]['SN'];
     if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum1']) $Body .= "Pitch Number "  . $Trady['PitchNum1'];
-    if (!empty($Trady['Power1'])) $Body .= " with " . $Power[$Trady['Power1']]['Amps'] . " Amps\n";
+    if (!empty($Trady['Power1']) || ($Trady['Power1']>1)) $Body .= " with " . $Power[$Trady['Power1']]['Amps'] . " Amps\n";
     if (!empty($Trady['QuoteSize1']) && ($Trady['QuoteSize1'] != $Trady['PitchSize1'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
     if ($Trady['Tables1'] ?? 0) $Body .= "Request Table and 2 chairs\n";
     }
@@ -800,7 +800,7 @@ function Get_Trade_Details(&$Trad,&$Trady) {
     $Body .= "\nPitch 3:" . $Trady['PitchSize2'];
     if ($Trady['PitchLoc2']) $Body .= " at " . $TradeLocData[$Trady['PitchLoc2']]['SN'];
     if ($YEARDATA['TradeState']>= $Partial && $Trady['PitchNum2']) $Body .= "Pitch Number "  . $Trady['PitchNum2'];
-    if (!empty($Trady['Power2'])) $Body .= " with " . $Power[$Trady['Power2']]['Amps'] . " Amps\n";
+    if (!empty($Trady['Power2']) || ($Trady['Power2']>1)) $Body .= " with " . $Power[$Trady['Power2']]['Amps'] . " Amps\n";
     if (!empty($Trady['QuoteSize2']) && ($Trady['QuoteSize2'] != $Trady['PitchSize2'])) $Body .= "<b>WAS " . $Trady['QuoteSize1'] . "</b>\n";
     if ($Trady['Tables2'] ?? 0) $Body .= "Request Table and 2 chairs\n";
     }
@@ -1257,12 +1257,12 @@ function Trade_Main($Mode,$Program,$iddd=0) {
           if (isset($Trady) && $Trady) {
             $OldFee = $Trady['Fee'];
             if ($Mode && isset($Trady['BookingState'])) {
-              if ($Trady['BookingState'] != $_POST['BookingState']) {
+              if ($Trady['BookingState'] != ($_POST['BookingState']??0)) {
                 $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']] . " on " . date('j M Y H:i') . " by " . $USER['Login'] . ".\n";
               }
-              if ($_POST['Fee'] < 0 && $_POST['BookingState'] == $Trade_State['Deposit Paid']) {
+              if (($_POST['Fee'] < 0) && (($_POST['BookingState']??0) == $Trade_State['Deposit Paid'])) {
                 $_POST['BookingState'] = $Trade_State['Fully Paid'];
-                $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']] . " on " . date('j M Y H:i') . " by " . $USER['Login'] . ".\n";
+                $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']??0] . " on " . date('j M Y H:i') . " by " . $USER['Login'] . ".\n";
               } 
               if ($_POST['PitchLoc0'] != $Trady['PitchLoc0'] || ($_POST['PitchLoc1']??0) != $Trady['PitchLoc1'] || ($_POST['PitchLoc2']??0) != $Trady['PitchLoc2'] ||
                   $_POST['PitchNum0'] != $Trady['PitchNum0'] || ($_POST['PitchNum1']??0) != $Trady['PitchNum1'] || ($_POST['PitchNum2']??0) != $Trady['PitchNum2'] ) {
@@ -2232,7 +2232,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
   if (($SaveAction || $Action) && ($Ychng || $CurState != $NewState )) {
     $Trady['BookingState'] = $NewState; // Action test is to catch the moe errors
     $By = (isset($USER['Login'])) ? $USER['Login'] : 'Trader';
-    $Trady['History'] .= "Action: $Hist $SaveAction $xtra on " . date('j M Y H:i') . " by $By.\n";
+    $Trady['History'] .= "Action: $Hist $SaveAction $xtra " . $Trade_States[$Trady['BookingState']] . " on " . date('j M Y H:i') . " by $By.\n";
     Put_Trade_Year($Trady);
   }
 }
