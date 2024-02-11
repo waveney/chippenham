@@ -428,8 +428,12 @@ function SName(&$What) {
 }
 
 function Social_Link(&$data,$site,$mode=0,$text='') { // mode:0 Return Site as text, mode 1: return blank/icon
-  if (! isset($data[$site]) || strlen($data[$site]) < 5) return ($mode? '' :$site);
-  $link = $data[$site];
+  if (is_array($data)) {
+    $link = $data[$site];
+  } else {
+    $link = $data;
+  }
+  if (empty($link) || strlen($link) < 5) return ($mode? '' :$site);
   if (preg_match("/$site/i",$link)) {
     $follow = ($text? $text . $site :'');
     return " " . weblink($link,($mode? ( "<img src=/images/icons/$site.jpg title='$follow'> $follow") : $site)) . ($mode?"<br>":"");
@@ -636,19 +640,22 @@ global $DDdata;
 $DDdata = [
     'Insurance' => [ 'UseYear'=>1, 'AddState'=>1, 'tr'=>1, 'SetValue'=>1, 'cols'=>[2,2], 'view'=>1 ],
     'RiskAssessment' => [ 'UseYear'=>1, 'AddState'=>1, 'Name' => 'Risk Assessment', 'tr'=>1, 'SetValue'=>1, 'cols'=>[2,2], 'view'=>1 ],
-    'StagePA'  => [ 'UseYear'=>0, 'AddState'=>0, 'Name'=>'PA requirements', 'tr'=>0, 'SetValue'=>'@@FILE@@', 'cols'=>[2,2], 'path'=>'PAspecs', 'view'=>1 ],
-    'Photo'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[2,2], 'path'=>'images', 'Show'=>1 ], 
+    'StagePA'  => [ 'UseYear'=>0, 'AddState'=>0, 'Name'=>'PA requirements', 'tr'=>0, 'SetValue'=>'@@FILE@@', 'cols'=>[2,2], 'path'=>'PAspecs', 
+                    'view'=>1 ],
+    'Photo'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[2,2], 
+                    'path'=>'images', 'Show'=>1 ], 
     'NewPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1, 
                  'Extra'=>"acceptedFiles: 'image/*',", 'Show'=>1,'Name'=>'Photo'],
     'NewImage' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1, 
                  'Extra'=>"acceptedFiles: 'image/*',",'Name'=>'Image'],
-    'Image'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>1 ], 
-    'MobPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>2,
-                 'Name'=>'Photo', 'NotTable'=>1 ], 
-    'Logo'     => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>1,
-                 'Name'=>'Logo' ], 
-    'Advert'   => [ 'UseYear'=>1, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 'path'=>'images', 'Show'=>1,
-                 'Name'=>'Advert' ], 
+    'Image'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 
+                 'path'=>'images', 'Show'=>1 ], 
+    'MobPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 
+                 'path'=>'images', 'Show'=>2, 'Name'=>'Photo', 'NotTable'=>1 ], 
+    'Logo'     => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 
+                 'path'=>'images', 'Show'=>1, 'Name'=>'Logo' ], 
+    'Advert'   => [ 'UseYear'=>1, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 
+                 'path'=>'images', 'Show'=>1, 'Name'=>'Advert' ], 
 
 ];
 

@@ -89,7 +89,7 @@
   echo "<tr><td>Performer:<td colspan=2><a href=AddPerf?id=$snum>" . $Side['SN'] . "</a>" . "<td>Type:" . ($Side['Type'] ?? '');
 
   echo "<tr><td>Short Blurb:<td colspan=6>" . $Side['Description'];
-  echo "<tr><td>Blurb:<td colspan=6>" . $Side['Description'];
+  echo "<tr><td>Blurb:<td colspan=6>" . $Side['Blurb'];
   echo "<tr><td>Photo:<td>" . $Side['Photo'] . "<td><img src=" . ($Side['Photo']??'') . " height=100>";
   echo "<tr><td>Website:<td>" . $Side['Website'];
   echo     "<td>Video:<td>" . $Side['Video'];

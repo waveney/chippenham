@@ -39,9 +39,11 @@ function formatLineups(&$perfs,$link,&$Sizes,$PerfCat,$sdisp=1) {
 // Link, if (text) Title, pic, text else Pic Title
 // If size = small then fit 5, else fit 3 - if fit change br
 // Float boxes with min of X and Max of Y
-  global $YEAR;
+  global $YEAR,$PerfTypes;
   $LastSize = -1;
-  
+  $LinkCat = preg_replace('/ /','_',$PerfCat);
+  Expand_PerfTypes();
+
   foreach ($perfs as $perf) {
     if ($perf['NotPerformer'] ) continue;
     $Imp = $perf['EffectiveImportance'];
@@ -52,7 +54,7 @@ function formatLineups(&$perfs,$link,&$Sizes,$PerfCat,$sdisp=1) {
       echo "<div class=LineupFit" . $LastSize . "Wrapper>";
     }
     echo "<div class='LineupFit$LastSize LineUpBase' onmouseover=AddLineUpHighlight($Id) onmouseout=RemoveLineUpHighlight($Id) id=LineUp$Id>";
-    echo "<a href=/int/$link?id=$Id&Y=$YEAR&C=$PerfCat>";
+    echo "<a href=/int/$link?id=$Id&Y=$YEAR&C=$LinkCat>";
      
     $Photo = OvPhoto($perf,$PerfCat);
     if (!$Photo) $Photo = '/images/icons/user2.png';

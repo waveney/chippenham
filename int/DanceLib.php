@@ -138,17 +138,28 @@ function Get_SideAndYear($snum) {
   return 0;  
 }
 
-function Show_Side($snum,$Message='',$price=0) {
+function Show_Side($snum,$Message='',$price=0,$Pcat='') {
   include_once("ProgLib.php");
-  global $YEAR, $Coming_Type,$db;
+  include_once("SideOverLib.php");
+  global $YEAR, $Coming_Type,$db,$PerfTypes;
   if (is_numeric($snum) && ($side = Get_Side($snum))) {
     $syear = Get_SideYear($snum,$YEAR);
+    Expand_PerfTypes();
+
+    $HasOverlay = ($side['HasOverlays'] ?? 0);
+    $Isa = 0;
+    if ($HasOverlay && $Pcat) {
+      $is = $PerfTypes[$Pcat][0];
+      if ($side[$is]) $Isa = $Pcat;
+    }
 
     $Banner = 1;
-    if ($side['Photo'] && Feature('PerformerBanners')) $Banner = $side['Photo'];
+    if (Feature('PerformerBanners') && OvPhoto($side,$Isa)) $Banner = OvPhoto($side,$Isa);
     dohead($side['SN'],[],$Banner);
     if ($Message) echo "<h2 class=ERR>$Message</h2>"; 
 
+    $txt = '';
+    $BlobNum = 0;
 
 //    if ($side['IsASide'] && $side['ShortName']) echo "( Appearing in the Dance grids as:" . $side['ShortName'] . " )<br>";
 
@@ -157,22 +168,23 @@ function Show_Side($snum,$Message='',$price=0) {
     
 
     
-    echo "<div id=Blob0>";
-    if ($side['Description']) {
+    $txt .= "<div id=Blob" . ($BlobNum++) . ">";
+    $txt .=  "<h2>" . OvName($side,$Isa) . "</h2>";
+    if (OvDesc($side,$Isa)) {
 //      if ($side['OneBlurb']==0 || 
-      if (strlen($side['Description']) > strlen($side['Blurb'])) echo $side['Description'] . "<p>";
+      if (strlen(OvDesc($side,$Isa)) > strlen(OvBlurb($side,$Isa))) $txt .=  OvDesc($side,$Isa) . "<p>";
     }
 
     if (isset($syear) && isset($syear['Coming'])) {
       switch ($syear['Coming']) {
         case $Coming_Type['N']:
         case $Coming_Type['NY']:
-          echo "Not Coming this year";
+          $txt .=  "Not Coming this year";
           break;
         case $Coming_Type['Y']:
-          echo "Coming";
+          $txt .=  "Coming";
           if ($syear['Fri'] || $syear['Sat'] || $syear['Sun']) {
-            echo " on ";
+            $txt .=  " on ";
             $lst = array();
             if ($syear['Tue']) $lst[] = 'Tuesday';
             if ($syear['Wed']) $lst[] = 'Wednesday';
@@ -181,13 +193,13 @@ function Show_Side($snum,$Message='',$price=0) {
             if ($syear['Sat']) $lst[] = 'Saturday';
             if ($syear['Sun']) $lst[] = 'Sunday';
             if ($syear['Mon']) $lst[] = 'Monday';
-            echo FormatList($lst);
+            $txt .=  FormatList($lst);
           }
           break;
         case $Coming_Type['P']:
-          echo "Probably coming";
+          $txt .=  "Probably coming";
           if ($syear['Fri'] || $syear['Sat'] || $syear['Sun']) {
-            echo " on ";
+            $txt .=  " on ";
             $lst = array();
             if ($syear['Tue']) $lst[] = 'Tuesday';
             if ($syear['Wed']) $lst[] = 'Wednesday';
@@ -196,7 +208,7 @@ function Show_Side($snum,$Message='',$price=0) {
             if ($syear['Sat']) $lst[] = 'Saturday';
             if ($syear['Sun']) $lst[] = 'Sunday';
             if ($syear['Mon']) $lst[] = 'Monday';
-            echo FormatList($lst);
+            $txt .=  FormatList($lst);
           }
           break;
         case $Coming_Type['R']:
@@ -204,32 +216,40 @@ function Show_Side($snum,$Message='',$price=0) {
         default:
 //          echo "Invited";
       }
-      echo "<p>";
+      $txt .=  "<p>";
     }
-    if ($side['Blurb']) echo $side['Blurb'];
-    echo "</div>";
+    if (OvBlurb($side,$Isa)) $txt .=  $side['Blurb'];
+    $txt .=  "</div>";
     
-    if ($side['Photo']) echo "<div id=Blob2><img src=" . $side['Photo'] . " width=100%></div>\n";
+    if (OvPhoto($side,$Isa)) $txt .=  "<div id=Blob" . ($BlobNum++) . "><img src=" . OvPhoto($side,$Isa) . " width=100%></div>\n";
     
     if ($syear['SponsoredBy'] ?? 0) {
-      echo "<div id=Blob5>";
-      SponsoredBy($syear,$side['SN'],3,$snum);
-      echo "</div>";
+      $txt .=  "<div id=Blob" . ($BlobNum++) . ">";
+      SponsoredBy($syear,OvName($side,$Isa),3,$snum);
+      $txt .= "</div>";
     }
     
-    if ( $side['Video']) echo "<div id=Blob3  style='max-width:100%; object-fit:contain;overflow:hidden'>" . embedvideo($side['Video']) . "</div>";
+    if ( OvVideo($side,$Isa)) $txt .=  "<div id=Blob" . ($BlobNum++) . "  style='max-width:100%; object-fit:contain;overflow:hidden'>" . embedvideo(OvVideo($side,$Isa)) . "</div>";
 
-    if ($side['Website'] || $side['Facebook'] || $side['Twitter'] || $side['Instagram']) {
-      echo "<div id=Blob4>";
-      if ( $side['Website'] ) echo "<img src=/images/icons/web.svg width=24 class=Limited> " . weblink($side['Website'],"<b>" . $side['SN'] . "'s website</b>") . "<br>";
+    if (OvWebsite($side,$Isa) || OvFacebook($side,$Isa) || $side['Twitter'] || $side['Instagram']) {
+      $txt .=  "<div id=Blob" . ($BlobNum++) . ">";
+      if ( $side['Website'] ) $txt .=  "<img src=/images/icons/web.svg width=24 class=Limited> " . weblink(OvWebsite($side,$Isa),"<b>" . $side['SN'] . "'s website</b>") . "<br>";
       $follow = "Follow " . $side['SN'] . " on ";
-      echo  Social_Link($side,'Facebook',1,$follow);
-      echo  Social_Link($side,'Twitter',1,$follow);
-      echo  Social_Link($side,'Instagram',1,$follow);
-      echo "</div>";
+      $txt .=   Social_Link(OvFacebook($side,$Isa),'Facebook',1,$follow);
+      $txt .=   Social_Link(OvTwitter($side,$Isa),'Twitter',1,$follow);
+      $txt .=   Social_Link(OvInstagram($side,$Isa),'Instagram',1,$follow);
+      $txt .=  "</div>";
     }
 
-    echo "</div><div class=OneCol id=TwoCols2></div></div>";
+    $txt .=  "</div>";
+    
+    if ($HasOverlay) {
+      
+    }
+    
+    echo "<div class=TwoCols><script>Register_Onload(Set_ColBlobs,'Blob'," . $BlobNum . ")</script>";
+    echo "<div class=OneCol id=TwoCols1>$txt";
+    echo "<div class=OneCol id=TwoCols2></div></div>";
 
     if ($prog = Show_Prog('Side',$snum,0,$price)) {
       echo $prog;

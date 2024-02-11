@@ -17,7 +17,7 @@ function Put_Overlay(&$Olay) {
 
 function OvPhoto(&$Side,$Isa='') {
   global $PerfTypes;
-  if ($Side['HasOverlays'] && $Side[$PerfTypes[$Isa][0]]) {
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
     $Olay = Get_Overlay($Side,$Isa);
     if ($Olay) {
       return $Olay['Photo'] ?? $Side['Photo'];
@@ -29,7 +29,7 @@ function OvPhoto(&$Side,$Isa='') {
 
 function OvName(&$Side,$Isa='') {
   global $PerfTypes;
-  if ($Side['HasOverlays'] && $Side[$PerfTypes[$Isa][0]]) {
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
     $Olay = Get_Overlay($Side,$Isa);
     if ($Olay) {
       return $Olay['SN'] ?? $Side['SN'];
@@ -41,7 +41,7 @@ function OvName(&$Side,$Isa='') {
 
 function OvDesc(&$Side,$Isa='') {
   global $PerfTypes;
-  if ($Side['HasOverlays'] && $Side[$PerfTypes[$Isa][0]]) {
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
     $Olay = Get_Overlay($Side,$Isa);
     if ($Olay) {
       return $Olay['Description'] ?? $Side['Description'];
@@ -53,7 +53,7 @@ function OvDesc(&$Side,$Isa='') {
 
 function OvBlurb(&$Side,$Isa='') {
   global $PerfTypes;
-  if ($Side['HasOverlays'] && $Side[$PerfTypes[$Isa][0]]) {
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
     $Olay = Get_Overlay($Side,$Isa);
     if ($Olay) {
       return $Olay['Blurb'] ?? $Side['Blurb'];
@@ -63,21 +63,21 @@ function OvBlurb(&$Side,$Isa='') {
   return $Side['Blurb'];
 }
 
-function OvTwitter(&$Side,$Isa='') {
+function &OvTwitter(&$Side,$Isa='') {
   global $PerfTypes;
-  if ($Side['HasOverlays'] && $Side[$PerfTypes[$Isa][0]]) {
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
     $Olay = Get_Overlay($Side,$Isa);
     if ($Olay) {
-      return $Olay['Twitter'] ?? $Side['Twitter'];
+      return ($Olay['Twitter'] ?? $Side['Twitter']);
     }
   }
   
   return $Side['Twitter'];
 }
 
-function OvFacebook(&$Side,$Isa='') {
+function &OvFacebook(&$Side,$Isa='') {
   global $PerfTypes;
-  if ($Side['HasOverlays'] && $Side[$PerfTypes[$Isa][0]]) {
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
     $Olay = Get_Overlay($Side,$Isa);
     if ($Olay) {
       return $Olay['Facebook'] ?? $Side['Facebook'];
@@ -87,9 +87,9 @@ function OvFacebook(&$Side,$Isa='') {
   return $Side['Facebook'];
 }
 
-function OvInstagram(&$Side,$Isa='') {
+function &OvInstagram(&$Side,$Isa='') {
   global $PerfTypes;
-  if ($Side['HasOverlays'] && $Side[$PerfTypes[$Isa][0]]) {
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
     $Olay = Get_Overlay($Side,$Isa);
     if ($Olay) {
       return $Olay['Instagram'] ?? $Side['Instagram'];
@@ -101,7 +101,7 @@ function OvInstagram(&$Side,$Isa='') {
 
 function OvWebsite(&$Side,$Isa='') {
   global $PerfTypes;
-  if ($Side['HasOverlays'] && $Side[$PerfTypes[$Isa][0]]) {
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
     $Olay = Get_Overlay($Side,$Isa);
     if ($Olay) {
       return $Olay['Website'] ?? $Side['Website'];
@@ -111,5 +111,25 @@ function OvWebsite(&$Side,$Isa='') {
   return $Side['Website'];
 }
 
+function OvVideo(&$Side,$Isa='') {
+  global $PerfTypes;
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['Video'] ?? $Side['Video'];
+    }
+  }
+  
+  return $Side['Video'];
+}
 
 
+function Expand_PerfTypes() {
+  static $Expanded;
+  global $PerfTypes;
+  if ($Expanded) return;
+  $OldP = array_keys($PerfTypes);
+// var_dump($OldP);exit;
+  foreach ($OldP as $p) $PerfTypes[$PerfTypes[$p][2]] = $PerfTypes[$p];
+  $Expanded = 1;
+}
