@@ -1401,7 +1401,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
          $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) $Acts[] = 'Artisan Invite';
       foreach($Acts as $ac) {
         if ($Mode==0 && !in_array($ac,$ButTrader)) continue;
-        if ($Mode==1 && !Access('SysAdmin') && !in_array($ac,$ButAdmin)) continue;
+        if ($Mode==1 && !Access('Committee','Trade') && !in_array($ac,$ButAdmin)) continue;
         if (!isset($Trady['Fee'])) $Trady['Fee'] = 0;
         if (Feature('AutoInvoices') && !Access('SysAdmin') && in_array($ac,$RestrictButs)) continue;  // Normal people cant hit Paid have to be through the invoice
         $xtra = '';
