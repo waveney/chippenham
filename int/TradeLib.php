@@ -751,8 +751,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
       echo fm_date('Invite Sent',$Trady,'SentInvite');
     }
   }
-//  if (Access('SysAdmin')) 
-  echo "<tr><td class=NotSide>Debug<td colspan=6 class=NotSide><textarea id=Debug></textarea>";
+
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=6 class=NotSide><textarea id=Debug></textarea>";
   echo "</table></div>\n";
 }
 
