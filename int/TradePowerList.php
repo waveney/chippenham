@@ -30,23 +30,24 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Location</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Stall</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Amps</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Phases</a>\n";
   echo "</thead><tbody>";
   
   echo "<tr><th colspan=6><h2>Traders</h2>";
   if ($Trads) foreach($Trads as $t) {
     echo "<tr><td>" . $t['SN'] . "<td>" . $TradeTypeData[$t['TradeType']]['SN'] . "<td>" . $Trade_States[$t['BookingState']] .
          "<td>" . $TradeLocData[$t['PitchLoc0']]['SN'] . "<td>" . (empty($t['PitchNum0'])?'Not Assigned':$t['PitchNum0']) . 
-         "<td>" . $Powers[$t['Power0']]['Amps'] . " Amps\n";
+         "<td>" . $Powers[$t['Power0']]['Amps'] . "<td>" . $Powers[$t['Power0']]['Phases'] . "\n";
   }
 
     echo "<tr><th colspan=6><h2>Infrastructure</h2>";
     
   $Infs = Gen_Get_Cond('Infrastructure',"Power>1");
-  echo "<tr><td>Name<td><td><td>From<td>To<td>Amps\n";
+  echo "<tr><td>Name<td><td>From<td>To<td>Number<td>Amps<td>Phases\n";
   
   foreach ($Infs as $In) {
-    echo "<tr><td>" . $In['Name'] . "<td><td><td>" . ($In['PowerFrom']??'') . "<td>" . ($In['PowerTo']??'') . "<td>" .
-         $Powers[$In['Power']]['Amps'] . " Amps\n";
+    echo "<tr><td>" . $In['Name'] . "<td><td>" . ($In['PowerFrom']??'') . "<td>" . ($In['PowerTo']??'') . "<td>" . $In['NumberPower'] . "<td>" .
+         $Powers[$In['Power']]['Amps'] . "<td>" . $Powers[$In['Power']]['Phases'] . "\n";
   }
   
   echo "</table></div>\n";

@@ -11,6 +11,7 @@ CREATE TABLE `Infrastructure` (
   `Angle` float NOT NULL,
   `MapColour` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Power` int NOT NULL,
+  `NumberPower` int NOT NULL DEFAULT '1',
   `Whose` text COLLATE utf8mb4_general_ci NOT NULL,
   `VenueId` int NOT NULL,
   `Source` text COLLATE utf8mb4_general_ci NOT NULL,
