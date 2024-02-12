@@ -314,7 +314,9 @@
 //      $txt .= "<li><a href=/admin/trade/index>Old Trade Stand Section</a>\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=Trade2CSV?Y=$YEAR>Traders as CSV</a>\n";
     }
-    $txt .= "<li><a href=TradePowerList>Show all power</a>\n";
+    $txt .= "<li><a href=TradePowerList?T=Power>Show all power</a>\n";
+    $txt .= "<li><a href=TradePowerList?T=Tables>Show all tables</a>\n";
+
     
     if (Capability('EnableTrade') && !Capability('EnableFinance')) $txt .= "<li><a href=InvoiceManage?Y=$YEAR>Invoice/Payment Management</a>\n";
     if (Access('SysAdmin')) {

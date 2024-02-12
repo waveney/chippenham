@@ -568,12 +568,13 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   if (isset($Trady['TYid'])) echo fm_hidden('TYid',$Trady['TYid']);
 
   if ($Mode) {
+    $Field = (Access('SysAdmin')?'BookingState':'BookingStatus');
     echo "<td class=NotCSide>Booking State:" . help('BookingState') . "<td colspan=3 class=NotCSide>";
       foreach ($Trade_States as $i=>$ts) {
         if( preg_match('/^-/',$Trade_State_Colours[$i])) continue;
         $cls = " style='background:" . $Trade_State_Colours[$i] . ";padding:4; white-space: nowrap;'";
         echo " <div class=KeepTogether $cls>$ts: ";
-        echo " <input type=radio name=BookingState $ADDALL value=$i ";
+        echo " <input type=radio name=$Field $ADDALL value=$i ";
         if (!Access('SysAdmin')) echo " readonly disabled ";
         if (isset($Trady['BookingState']) && ($Trady['BookingState'] == $i)) echo " checked";
         echo ">&nbsp;</div>\n ";
@@ -1256,14 +1257,18 @@ function Trade_Main($Mode,$Program,$iddd=0) {
           $same = 1;
           if (isset($Trady) && $Trady) {
             $OldFee = $Trady['Fee'];
-            if ($Mode && isset($Trady['BookingState'])) {
-              if ($Trady['BookingState'] != ($_POST['BookingState']??0)) {
-                $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']] . " on " . date('j M Y H:i') . " by " . $USER['Login'] . ".\n";
+            if ($Mode) {
+              if (isset($Trady['BookingState'])) {
+                if ($Trady['BookingState'] != ($_POST['BookingState']??0)) {
+                  $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']] . " on " . date('j M Y H:i') . 
+                                       " by " . $USER['Login'] . ".\n";
+                }
+                if (($_POST['Fee'] < 0) && (($_POST['BookingState']??0) == $Trade_State['Deposit Paid'])) {
+                  $_POST['BookingState'] = $Trade_State['Fully Paid'];
+                  $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']??0] . " on " . date('j M Y H:i') . 
+                    " by " . $USER['Login'] . ".\n";
+                }
               }
-              if (($_POST['Fee'] < 0) && (($_POST['BookingState']??0) == $Trade_State['Deposit Paid'])) {
-                $_POST['BookingState'] = $Trade_State['Fully Paid'];
-                $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']??0] . " on " . date('j M Y H:i') . " by " . $USER['Login'] . ".\n";
-              } 
               if ($_POST['PitchLoc0'] != $Trady['PitchLoc0'] || ($_POST['PitchLoc1']??0) != $Trady['PitchLoc1'] || ($_POST['PitchLoc2']??0) != $Trady['PitchLoc2'] ||
                   $_POST['PitchNum0'] != $Trady['PitchNum0'] || ($_POST['PitchNum1']??0) != $Trady['PitchNum1'] || ($_POST['PitchNum2']??0) != $Trady['PitchNum2'] ) {
                 $Mess = Validate_Pitches($Trady);

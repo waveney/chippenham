@@ -46,6 +46,7 @@ include_once("fest.php");
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Num</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power From</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power To</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Tables</a>\n";
 
   
   echo "</thead><tbody>";
@@ -60,7 +61,7 @@ include_once("fest.php");
     echo fm_text1("",$t,'Xsize',0.20,'','',"Xsize$i") . fm_text1("",$t,'Ysize',0.20,'','',"Ysize$i");
     echo "<td>". fm_select($Powers,$t,'Power','','',"Power$i") . fm_text1('',$t,'NumberPower',0.1,'','',"NumberPower$i");
     echo fm_text1("",$t,'PowerFrom',1,'','',"PowerFrom$i") . fm_text1("",$t,'PowerTo',1,'','',"PowerTo$i");
-
+    echo fm_text1('',$t,'Tables',0.1,'','',"Tables$i");
     echo "\n";
   }
   $t = ['NumberPower'=>1];
@@ -74,6 +75,7 @@ include_once("fest.php");
     echo fm_text1("",$t,'Xsize',0.20,'','',"Xsize$i") . fm_text1("",$t,'Ysize',0.20,'','',"Ysize$i");
     echo "<td>". fm_select($Powers,$t,'Power','','',"Power$i") . fm_text1('',$t,'NumberPower',0.1,'','',"NumberPower$i");
     echo fm_text1("",$t,'PowerFrom',1,'','',"PowerFrom$i") . fm_text1("",$t,'PowerTo',1,'','',"PowerTo$i");
+    echo fm_text1('',$t,'Tables',0.1,'','',"Tables$i");
 
   echo "</table></div>\n";
   
