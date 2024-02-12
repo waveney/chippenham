@@ -406,7 +406,10 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
   if (!isset($Trad['TradeType']) || ($Trad['TradeType'] == 0)) $Trad['TradeType'] = 1;
 
   echo "<form method=post id=mainform enctype='multipart/form-data' action=$Form>";
-  if ($Tid>0) Register_AutoUpdate('Trader',$Tid);
+  if ($Tid>0) {
+    Register_AutoUpdate('Trader',$Tid);
+    echo "<input type=submit hidden>";
+  }
   if (isset($_REQUEST['ORGS'])) echo fm_hidden('ORGS',1);
   echo "<div class=tablecont><table width=90% border class=SideTable>\n";
     echo "<tr><th colspan=8><b>Public Information</b>" . Help('PublicInfo');

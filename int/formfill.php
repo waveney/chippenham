@@ -148,8 +148,9 @@
         echo Put_SideYear($Perfy);
         exit;
       }
-    // SHOULD never get here...
-
+    // SHOULD never get here... (but it did!)
+    trigger_error("Updating a form confused - $field:$Value:$id:$type");
+    exit;
         
   case 'Trader': 
     include_once("TradeLib.php");
