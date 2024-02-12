@@ -59,6 +59,7 @@
       } else {
         Insert_db('Overlaps',$O); 
       }
+      exit;
     } else if (preg_match('/^Perf(\d+)_Side(\d+)/',$field,$match)) { // Overlaps are a special case
       $Exist = Get_Overlaps_For($id);
       $ORule = $match[2];
@@ -70,6 +71,7 @@
       } else {
         Insert_db('Overlaps',$O); 
       }
+      exit;
     } else if ($field == 'Photo' && (preg_match('/^\s*https?:\/\//i',$Value ))) { // Remote Photos are a special case - look for localisation
       $Perf = Get_Side($id);
       include_once("ImageLib.php");
@@ -148,6 +150,13 @@
         echo Put_SideYear($Perfy);
         exit;
       }
+    
+    $flds = table_fields('Sides');
+      if (isset($flds[$field])) {
+        $Perf[$field] = $Value;
+        echo Put_Side($Perf);
+        exit;
+      }  
     // SHOULD never get here... (but it did!)
     trigger_error("Updating a form confused - $field:$Value:$id:$type");
     exit;
