@@ -391,6 +391,10 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
     echo ", press control-V afterwards to paste the standard link." ;// <button type=button onclick=Copy2Div('Email$Tid','SideLink$Tid')>standard link</button>";
     echo "<p>\n";
   }
+  if ($Mode && !empty($Trad['AccessKey'])) {
+    echo "This traders link: <b><span class=NotSide>https://" . $_SERVER['HTTP_HOST'] . "/int/Direct?t=Trade&id=$Tid&key=" . $Trad['AccessKey'] . 
+         "</b></span><br>";
+  }
 
   $Adv = '';
   $Imp = '';
@@ -822,8 +826,8 @@ function Get_Trade_Details(&$Trad,&$Trady) {
   $Body .= "*PAYCODES*\n";
   
   if ($Trady['YNotes']) $Body .= "Notes: " . $Trady['YNotes'] . "\n";
-  if ($Trady['Insurance']) $Body .= "Insurance already upload\n";
-  if ($Trady['RiskAssessment']) $Body .= "Risk Assessment already upload\n";
+  if ($Trady['Insurance']) $Body .= "Insurance already uploaded\n";
+  if ($Trady['RiskAssessment']) $Body .= "Risk Assessment already uploaded\n";
 
   $Body = preg_replace('/\n/',"<br>\n",$Body);
   return $Body;
