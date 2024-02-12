@@ -391,7 +391,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
     echo ", press control-V afterwards to paste the standard link." ;// <button type=button onclick=Copy2Div('Email$Tid','SideLink$Tid')>standard link</button>";
     echo "<p>\n";
   }
-  if ($Mode && !empty($Trad['AccessKey'])) {
+  if ($Mode && !empty($Trad['AccessKey']) && Access('Committee','Trade')) {
     echo "This traders link: <b><span class=NotSide>https://" . $_SERVER['HTTP_HOST'] . "/int/Direct?t=Trade&id=$Tid&key=" . $Trad['AccessKey'] . 
          "</b></span><br>";
   }
