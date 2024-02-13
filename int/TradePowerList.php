@@ -94,7 +94,7 @@
     if ($Trads) foreach($Trads as $t) {
       for ($i =0; $i<3; $i++) if ($t["Power$i"]) {
         echo "<tr><td>" . $t['SN'] . "<td>" . $TradeTypeData[$t['TradeType']]['SN'] . "<td>" . $Trade_States[$t['BookingState']] .
-             "<td>" . $TradeLocData[$t["PitchLoc$i"]]['SN'] . "<td>" . (empty($t["PitchNum$i"])?'Not Assigned':$t["PitchNum$i"]) . 
+             "<td>" . ($t["PitchLoc$i"]?$TradeLocData[$t["PitchLoc$i"]]['SN']:'') . "<td>" . (empty($t["PitchNum$i"])?'Not Assigned':$t["PitchNum$i"]) . 
              "<td>" . $Powers[$t["Power$i"]]['Amps'] . "<td>" . $Powers[$t["Power$i"]]['Phases'] . "\n";
       }
     }
