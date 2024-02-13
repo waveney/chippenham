@@ -1588,7 +1588,7 @@ function VolAction($Action,$csv=0) {
       }
     
     echo "<h2>Thankyou for letting us know</h2>";
-    break;
+    dotail();
     
   case 'Delete': // Delete Volunteer
   case 'Remove me from the festival records':

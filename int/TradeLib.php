@@ -391,7 +391,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
     echo ", press control-V afterwards to paste the standard link." ;// <button type=button onclick=Copy2Div('Email$Tid','SideLink$Tid')>standard link</button>";
     echo "<p>\n";
   }
-  if ($Mode && !empty($Trad['AccessKey']) && Access('Committee','Trade')) {
+  if (Access('Committee','Trade') && !empty($Trad['AccessKey'])) {
     echo "This traders link: <b><span class=NotSide>https://" . $_SERVER['HTTP_HOST'] . "/int/Direct?t=Trade&id=$Tid&key=" . $Trad['AccessKey'] . 
          "</b></span><br>";
   }
@@ -1231,8 +1231,8 @@ function Trade_Main($Mode,$Program,$iddd=0) {
     }
   }
 
-  if (isset($_POST['Tid'])) { /* Response to update button */
-    $Tid = $_POST['Tid'];
+  if (isset($_REQUEST['Tid'])) { /* Response to update button */
+    $Tid = $_REQUEST['Tid'];
 
 //    A_Check('Participant','Trader',$Tid); // Check Surpressed until access resolved
 
@@ -1313,7 +1313,9 @@ function Trade_Main($Mode,$Program,$iddd=0) {
       } else { // Mode ==2 || Orgs
 //        if (isset($_POST['ACTION'])) Invoice_Action($_POST['ACTION'],$Trad);
       }
-    } else { // New trader 
+    } else { // New trader
+      
+ //     var_dump($_REQUEST);exit;
       $_POST['AccessKey'] = rand_string(40);
       $Tid = Insert_db_post('Trade',$Trad);
       if ($Tid && !$Orgs && $Trad['IsTrader'] ) {
