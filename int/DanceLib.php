@@ -1,9 +1,9 @@
 <?php
 // Common Dance Library
 
-global $Noise_Levels, $Noise_Colours, $Coming_States, $Coming_Colours, $Coming_idx, $Coming_Type, $Invite_States, $Invite_Type, $Dance_Comp, $Dance_Comp_Colours;
-global $Surfaces, $Surface_Colours, $Side_Statuses, $Share_Spots, $Share_Type, $Dance_TimeFeilds, $OlapTypes, $OlapDays, $OlapCats, $Proforma_Colours, $TickBoxes;
-global $PayTypes;
+global $Noise_Levels, $Noise_Colours, $Coming_States, $Coming_Colours, $Coming_idx, $Coming_Type, $Invite_States, $Invite_Type, $Dance_Comp;
+global $Surfaces, $Surface_Colours, $Side_Statuses, $Share_Spots, $Share_Type, $Proforma_Colours, $TickBoxes;
+global $PayTypes, $Dance_Comp_Colours, $Dance_TimeFeilds, $OlapTypes, $OlapDays, $OlapCats ;
 
 $Noise_Levels = array("Middling","Quiet","Noisy");
 $Noise_Colours = ['lightgreen','yellow','Orange'];
@@ -23,13 +23,13 @@ $Share_Type = array_flip($Share_Spots);
 $PayTypes = ['BACS','Cheque'];
 
 $Dance_TimeFeilds = array('SatArrive','SatDepart','SunArrive','SunDepart');
-$OlapTypes = array('Dancer','Musician','Avoid');
+$OlapTypes = array('Dancer','Musician','Avoid','Also is');
 $OlapDays = array('All','Sat Only','Sun Only','None');
 $OlapCats = array('Side','Act','Comedy','Family','Other');
-$Proforma_Colours = ['Decide'=>'DarkOrange','Details'=>'Magenta','Program'=>'Yellow','ProgChk'=>'lightsalmon','NewProg'=>'yellow','FinalInfo'=>'LawnGreen',
-'FinalInfo2'=>'MediumSeaGreen', 'Invite'=>'Beige','Remind'=>'khaki', 'Change'=>'DarkOrange', 'Reinvite'=>'Beige','Cancel'=>'lightgrey',
-'SpecInvite'=>'Beige','SpecPoss'=>'Khaki','MorrisTickets' =>'Beige'];
-$TickBoxes = [['Seen Programme','Invited','YHAS','Program:','D',2]]; //,NULL,NULL,['Date Change','TickBox4','NVAL',0,'MCFO',5]]; // Year -> Name',Criteria, test , value, Usage [DMCFO],size=2
+$Proforma_Colours = ['Decide'=>'DarkOrange','Details'=>'Magenta','Program'=>'Yellow','ProgChk'=>'lightsalmon','NewProg'=>'yellow',
+  'FinalInfo'=>'LawnGreen', 'FinalInfo2'=>'MediumSeaGreen', 'Invite'=>'Beige','Remind'=>'khaki', 'Change'=>'DarkOrange', 'Reinvite'=>'Beige',
+  'Cancel'=>'lightgrey', 'SpecInvite'=>'Beige','SpecPoss'=>'Khaki','MorrisTickets' =>'Beige'];
+$TickBoxes = [['Seen Programme','Invited','YHAS','Program:','D',2]]; 
 $PerfListStates = ['Not Open','Open'];
 
 
@@ -152,6 +152,8 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
       $is = $PerfTypes[$Pcat][0];
       if ($side[$is]) $Isa = $Pcat;
     }
+    
+    $AlsoIs = Get_Active_Overlaps_For($snum,3);
 
     $Banner = 1;
     if (Feature('PerformerBanners') && OvPhoto($side,$Isa)) $Banner = OvPhoto($side,$Isa);
@@ -229,22 +231,39 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
       $txt .= "</div>";
     }
     
-    if ( OvVideo($side,$Isa)) $txt .=  "<div id=Blob" . ($BlobNum++) . "  style='max-width:100%; object-fit:contain;overflow:hidden'>" . embedvideo(OvVideo($side,$Isa)) . "</div>";
+    if ( OvVideo($side,$Isa)) $txt .=  "<div id=Blob" . ($BlobNum++) . "  style='max-width:100%; object-fit:contain;overflow:hidden'>" . 
+      embedvideo(OvVideo($side,$Isa)) . "</div>";
 
     if (OvWebsite($side,$Isa) || OvFacebook($side,$Isa) || $side['Twitter'] || $side['Instagram']) {
       $txt .=  "<div id=Blob" . ($BlobNum++) . ">";
-      if ( $side['Website'] ) $txt .=  "<img src=/images/icons/web.svg width=24 class=Limited> " . weblink(OvWebsite($side,$Isa),"<b>" . $side['SN'] . "'s website</b>") . "<br>";
+      if ( $side['Website'] ) $txt .=  "<img src=/images/icons/web.svg width=24 class=Limited> " . weblink(OvWebsite($side,$Isa),"<b>" . 
+        $side['SN'] . "'s website</b>") . "<br>";
       $follow = "Follow " . $side['SN'] . " on ";
       $txt .=   Social_Link(OvFacebook($side,$Isa),'Facebook',1,$follow);
       $txt .=   Social_Link(OvTwitter($side,$Isa),'Twitter',1,$follow);
       $txt .=   Social_Link(OvInstagram($side,$Isa),'Instagram',1,$follow);
       $txt .=  "</div>";
     }
+    
+    if ($AlsoIs) {
+ //       var_dump($AlsoIs);
+
+      $AlsoList = [];
+      foreach($AlsoIs as $Also) {
+        $Aid = (($Also['Sid1'] == $snum)?$Also['Sid2']:$Also['Sid1']);
+        $Aside = Get_Side($Aid);
+  //      $AYear = Get_SideYear($Aid);
+        if ($Aside) $AlsoList []= "<a href=ShowPerf?id=" . $Aside['SideId'] . ">" . $Aside['SN'] . "</a>";
+      }
+      if ($AlsoList) {
+        $txt .= "<div id=Blob" . ($BlobNum++) . "><b>" . $side['SN'] . "</b> Is also: " . implode(', ', $AlsoList) . "</b></div>";
+      }
+    }
 
     $txt .=  "</div>";
     
     if ($HasOverlay) {
-      
+      // Not written yet
     }
     
     echo "<div class=TwoCols><script>Register_Onload(Set_ColBlobs,'Blob'," . $BlobNum . ")</script>";
@@ -413,10 +432,13 @@ function Set_Side_Help() {
         'SN'=>'To appear on website and in the programme',
         'ShortName'=>'IF the name is more than 20 characters, give a short form to appear on the Grids.',
         'Type'=>'For example North West, Border, Folk, Jazz',
-        'Importance'=>'Only raise the importance for those that really need it.  They get front billing and bigger fonts in publicity.  Under normal circumstances at most 3 should be Very High. Higher values are for the late addition of surprise headline acts and can only be set by Richard.',
+        'Importance'=>'Only raise the importance for those that really need it.  They get front billing and bigger fonts in publicity.  ' .
+                      'Under normal circumstances at most 3 should be Very High. Higher values are for the late addition of surprise headline ' .
+                      'acts and can only be set by Richard.',
         'OverlapsD'=>'Sides that share Dancers - Where possible, there will be a 30 minute gap between any spot by any of these sides',
         'OverlapsM'=>'Sides that share Musicians - These can perform at the same spot at the same time, or consecutive times',
-        'Blurb'=>'Longer description, for the webpage on the festival website about the side/act/performer, only seen when a user clicks a link for more info on them - OPTIONAL',
+        'Blurb'=>'Longer description, for the webpage on the festival website about the side/act/performer, only seen when a user clicks a link ' .
+                 'for more info on them - OPTIONAL',
         'CostumeDesc'=>'Short description of costume and where in the country they are from, for the programme book',
         'Description'=>'The entry in the programme book will be based on this',
         'Website'=>'If more than one seperate with spaces (mainly for music acts)',
@@ -439,8 +461,8 @@ function Set_Side_Help() {
         'Workshops'=>'That the side could run',
         'Overlaps'=>('Do you overlap with any dance sides, musicians or other performers who might be at' . Feature('FestName') . 
                     ', if so please describe in detail and we will try and prevent clashes'),
-        'OverlapRules'=>'Dancer - must have break between spots, Musician allowed to play at same spot for two periods - then must break, Avoid - Dont put these together.
-Major - major error, minor avoid if you can',
+        'OverlapRules'=>'Dancer - must have break between spots, Musician allowed to play at same spot for two periods - then must break, ' .
+                    'Avoid - Dont put these together, Also is - Same performer different profile. Major - major error, minor avoid if you can',
         'Contact'=>'Main Contact',
         'AgentName'=>'Main Contact',
         'DirContact'=>'Direct Performer Contact',
@@ -454,8 +476,9 @@ Major - major error, minor avoid if you can',
         'RelOrder'=>'To give finer control than Importance, can be negative',
         'ManageFiles'=>'Use this to upload, download, view and delete as manay files as you wish about this performer',
         'Testing'=>'Testing Only',
-        'PerfTypes'=>'You MUST Save changes after any changes to Performer Types, to refresh the page.
-IF you wish to remove a performer type tell Richard - there are many small changes that may be needed that are not yet automated',
+        'PerfTypes'=>'You MUST Save changes after any changes to Performer Types, to refresh the page. ' .
+                     'IF you wish to remove a performer type tell Richard - there are many small changes ' .
+                     'that may be needed that are not yet automated',
         'OneBlurb'=>'Select this to surpress showing the Short Blurb and the Long Blurb at the same time',
         'DiffImportance'=>'IF needs to have different Importances for performer types, select this and SAVE CHANGES',
         'EmailLog'=>'View the system email log to (and from) this performer - if there is one',
@@ -472,7 +495,8 @@ function Set_Side_Year_Help() {
         'FriEve'=>'Would you like to have some dancing on Friday Evening?',
         'SatEve'=>'Would you like to have some dancing on Saturday Evening?',
         'FriDance'=>'Number of Dance spots requested on Friday, the default assumption is 0',
-        'SatDance'=>'How many Dance spots would you like on Saturday, the minimum for a performers wristband is 3 shared spots plus the procession or 4 shared spots or 3 solo spots',
+        'SatDance'=>'How many Dance spots would you like on Saturday, the minimum for a performers wristband is 3 shared spots plus the ' .
+           'procession or 4 shared spots or 3 solo spots',
         'SunDance'=>'How many Dance spots would you like on Sunday, the minimum for a performers wristband is 4 shared spots or 3 solo spots',
         'Share'=>'Do you like shared or dedicated dance spots?', 
         'CarPark'=>'Number of free car park tickets for parking at QE school (10 minute walk to square)',
@@ -482,7 +506,8 @@ function Set_Side_Year_Help() {
         'SunDepart'=>'The end of the last spot (eg 1700).  If blank no restictions are assumed.',
         'BudgetArea0'=>'In MOST cases nothing needs setting here as Music acts will default to Music and Dance to Dance.  
                 * IF you need to assign to a different budget change the area
-                * IF you need part of the fee to come under a different budget, you set up to 2 areas to have parts of the Fee and the amount to assign',
+                * IF you need part of the fee to come under a different budget, you set up to 2 areas to have parts of the Fee and the amount ' .
+           'to assign',
         'OtherPayment' => 'Eg A bottle of Rum',
         'OtherPayCost' => 'Cost of the other payment, eg the bottle of Rum',
         'ReleaseDate' => 'If set, do not show to public until after this date/time',
@@ -494,7 +519,8 @@ Contract Signed - Enables listing to public.',
         'Rider'=>'Additional text to be added to the Contract',
         'EnableCamp' => 'Note this will be added to the fee as part of your budget',
         'GreenRoom' => 'If ticked, their contract will inform them of the Green Room',
-        'ReportTo' => 'For the arrival statement in contract.  Most will report to the Infomation Point, None means no statement in contract, Green Room will say report to Green Room',
+        'ReportTo' => 'For the arrival statement in contract.  Most will report to the Infomation Point, None means no statement in contract, ' .
+           'Green Room will say report to Green Room',
         'Coming' => 'Please indicate you have got the invite and then update when you have made a decision',
         'Messages' => 'To Edit ask Richard (for now)',
         'ContractAnyway' => 'Forces contract even if none are needed',
@@ -581,18 +607,18 @@ function Has_Info(&$data) {
   return 0;
 } 
 
-function Get_Overlaps_For($id,$act=0) { // if act only active
+function Get_Overlaps_For($id,$act=0,$type='') { // if act only active
   global $db;
   $Os = [];
-  $res = $db->query("SELECT * FROM Overlaps WHERE (Sid1=$id OR Sid2=$id)" . ($act?' AND Active=1':''));
+  $res = $db->query("SELECT * FROM Overlaps WHERE (Sid1=$id OR Sid2=$id)" . ($act?' AND Active=1':'') . ($type?" AND OType=$type":''));
   if ($res) while ($o = $res->fetch_assoc()) $Os[] = $o;
   return $Os;
 }
 
-function Get_Active_Overlaps_For($id) { // if act only active
+function Get_Active_Overlaps_For($id,$type='') { // if act only active
   global $db;
   $Os = [];
-  $res = $db->query("SELECT * FROM Overlaps WHERE (Sid1=$id OR Sid2=$id) AND Sid1!=0 AND Sid2!=0 AND Active=1");
+  $res = $db->query("SELECT * FROM Overlaps WHERE (Sid1=$id OR Sid2=$id) AND Sid1!=0 AND Sid2!=0 AND Active=1"  . ($type?" AND OType=$type":''));
   if ($res) while ($o = $res->fetch_assoc()) $Os[] = $o;
   return $Os;
 }
@@ -763,7 +789,8 @@ function Extended_Prog($type,$id,$all=0) {
                 break;
               }
             }
-            $str .= "<tr><td $cls>" . DayList($e['Day']) . "<td $cls>" . timecolon($e['Start']) . "-" . timecolon(($e['SubEvent'] < 0 ? $e['SlotEnd'] : $e['End'] )) .
+            $str .= "<tr><td $cls>" . DayList($e['Day']) . 
+              "<td $cls>" . timecolon($e['Start']) . "-" . timecolon(($e['SubEvent'] < 0 ? $e['SlotEnd'] : $e['End'] )) .
                         "<td>" . SAO_Report($e['ActAs']) .
                         "<td $cls><a href=$host/int/$EventLink?e=" . $e['EventId'] . ">" . $e['SN'] . "</a><td $cls>";
             if ($VenC) $str .= " starting from ";
@@ -774,7 +801,8 @@ function Extended_Prog($type,$id,$all=0) {
             if ($NextI) { $str .= ", Before " . SAO_Report($NextI); }
             $str .= "\n";
           } else { // Normal Event
-            $str .= "<tr><td $cls>" . DayList($e['Day']) . "<td $cls>" . timecolon($e['Start']) . "-" . timecolon(($e['SubEvent'] < 0 ? $e['SlotEnd'] : $e['End'] )) .
+            $str .= "<tr><td $cls>" . DayList($e['Day']) . "<td $cls>" . timecolon($e['Start']) . "-" . 
+              timecolon(($e['SubEvent'] < 0 ? $e['SlotEnd'] : $e['End'] )) .
                         "<td>" . SAO_Report($e['ActAs']) .
                         "<td $cls><a href=$host/int/$EventLink?e=" . $e['EventId'] . ">" . $e['SN'] . 
                         "</a><td $cls><a href=$host/int/$VenueLink?v=" . $e['Venue'] . ">" . VenName($Venues[$e['Venue']]) . "</a>";
@@ -842,9 +870,8 @@ function Dance_Email_Details($key,&$data,&$att=0) {
       $count++;
       }
     if (Feature('PerformerTickets') && $Sidey['Performers'] == 0) {
-      $str .= '<li><b>Performer Numbers</b> which is the number of performers wristbands you require.  If none of your team want to go to any of the paid events, ' .
-              'then put -1 (which means none are required).<p>';
-              // '  You can edit this number at any time until the wristbands are mailed, which is about 2 weeks before the festival.<p>';
+      $str .= '<li><b>Performer Numbers</b> which is the number of performers wristbands you require.  If none of your team want to go to ' .
+        'any of the paid events, then put -1 (which means none are required).<p>';
       $count++;
       }
     if (Feature('DanceNeedAddress') && $Sidey['Performers']>=0 && !$Side['Address']) {
@@ -872,7 +899,8 @@ function Dance_Email_Details($key,&$data,&$att=0) {
         $ConAns = Contract_Check($snum,1,1);
         switch ($ConAns) {
           case 0: // Ready
-            $str = '<b>Please confirm your contract by following *LINK* and clicking on the "Green Confirm" button near the bottom of the page.</b><p>';
+            $str = '<b>Please confirm your contract by following *LINK* and clicking on the "Green Confirm" button near the ' .
+              'bottom of the page.</b><p>';
             $p = 0;
             $AddC = 1;
             break;
@@ -928,7 +956,7 @@ function Dance_Email_Details_Callback($mescat,$data) {
 }
 
 
-function Dance_Record_Change($id,$prefix) { // Mark Change on old record if not set, create new record if needed, add message and set invited appropriately
+function Dance_Record_Change($id,$prefix) { 
   global $YEAR,$PLANYEAR,$YEARDATA;
   
 //  echo "Called DRC<p>";
