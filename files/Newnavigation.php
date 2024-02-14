@@ -56,7 +56,7 @@
         'Festival Software'=>'InfoSoftware',
         ],
       '-Get Involved'=>[
-        'Volunteer'=>'InfoStewards',
+        'Volunteer'=>'InfoVolunteers',
         'Talking Folk Mailing List'=>'InfoMailingList',
         'Sponsorship'=>'InfoSponsors',
         'New Dance Side Registration'=>'int/Register',
