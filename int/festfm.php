@@ -770,7 +770,7 @@ XXX;
   }
   if ($Mess) $str .= "<$Table class='Result$Type $tdclass' $hid>$Mess</$Table>";
   
-  if ($Call == 0) $str .= "<script>Refresh_Image_After_Upload('$Type','" . $Data[$Type] . "');</script>";
+  if (($Call == 0) && is_array($Data) && isset($Data[$Type]) ) $str .= "<script>Refresh_Image_After_Upload('$Type','" . $Data[$Type] . "');</script>";
   return $str;
 }
 
