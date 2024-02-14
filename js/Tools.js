@@ -25,7 +25,7 @@ function ToolSelect(e,c) { // e= event, c = colnum
 
 function PCatSel(e,pname='PCAT') {
   $('[id^=MPC_').hide();
-  var selectedOption = $("input:radio[name=" + pname + "]:checked").val()
+  var selectedOption = $("input:radio[name=" + pname + "]:checked").val();
   $('#MPC_' + selectedOption).show();
 }
 
@@ -156,7 +156,7 @@ $(document).ready(function() {
   if ($('#MenuDonate')) MenuWidths = MenuWidthsDonate;
   MenuResize();
   window.addEventListener('resize',MenuResize);  
-})
+});
 
 
 function ShowHoverMenu() {
@@ -259,6 +259,7 @@ function Register_AfterInput(fun,p1,p2) {
 
 function DoAfterInputs() {
 //  debugger;
+  var fun,p1,p2;
   if (!AfterInputs) return;
   for (var f in AfterInputs) {
     [fun,p1,p2] = AfterInputs[f];
@@ -288,11 +289,11 @@ function AutoInput(f,after) {
     var m = data.match(/^\s*?@(.*)@/);
     if (m) {
       elem.newid = elem.name = m[1];
-    } else if (m = data.match(/^\s*?#(.*)#/)) { // Photo update 
-      m = data.split('#')
+    } else if ((m = data.match(/^\s*?#(.*)#/))) { // Photo update 
+      m = data.split('#');
       elem.value = m[1];
       document.getElementById(m[2]).src = m[3];
-    } else if (m = data.match(/^\s*!(.*)!/)) $('#ErrorMessage').html( m[1] );
+    } else if ((m = data.match(/^\s*!(.*)!/))) $('#ErrorMessage').html( m[1] );
 
     var dbg = document.getElementById('Debug');
     if (dbg) $('#Debug').html( data) ;  
@@ -311,7 +312,7 @@ function AutoInput(f,after) {
         }, 100);
     } else if (data.match(/CALLxxAFTER/m)) {
       after(f);
-    } else if (m=data.match(/REPLACE_ID_WITH:(.*) /m)) {
+    } else if ((m=data.match(/REPLACE_ID_WITH:(.*) /m))) {
      if (document.getElementById(f)) document.getElementById(f).id = m[1];    
     }
   });
@@ -336,7 +337,7 @@ function AutoCheckBoxInput(f) {
 
   var dbg = document.getElementById('Debug');
   if (dbg) {
-    $.post("formfill.php", Paras , function( data ) { $('#Debug').html( data)});
+    $.post("formfill.php", Paras , function( data ) { $('#Debug').html( data);});
   } else {
     $.post("formfill.php", Paras );
   }
@@ -388,16 +389,17 @@ function Register_Onload(fun,p1,p2) {
 }
 
 function Refresh_Image_After_Upload(T,V) {
-  if (s=document.getElementById(T)) s.value = V;
+  if ((s=document.getElementById(T))) s.value = V;
 } 
 
 $(document).ready(function() {
 //  debugger;
+  var fun,p1,p2;
   if (!LoadStack) return;
   for (var f in LoadStack) {
     [fun,p1,p2] = LoadStack[f];
     fun(p1,p2);
   }
-})
+});
 
 

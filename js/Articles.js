@@ -18,7 +18,7 @@ $(document).ready(function() {
     
     if (WorkWidth > (2*MinWidth+PadWidth)) ColCount = Math.min(Math.floor(WorkWidth/(MinWidth+PadWidth)),MaxColns);
     var ActOutColWidth = Math.min(Math.floor((WorkWidth - ColCount*PadWidth)/ColCount) - 5,MaxWidth);
-    var ActColWidth = ActOutColWidth-PadWidth
+    var ActColWidth = ActOutColWidth-PadWidth;
 
     // Create columns
     Show.append('<div class=ArtBanner id=ArtBanners></div><div id=ArtCols></div>');
@@ -38,7 +38,7 @@ $(document).ready(function() {
       clone = clone.replace(/id="Art/g,'id="SArt');
       switch ($(Art).data('format')) {
       case 0: // Large - image display width is actcolwidth, image display height = acthieght*actcolwith/origheight
-        var cloneimg = $('#ArtImg' + ArtNum)
+        var cloneimg = $('#ArtImg' + ArtNum);
         var imgwd = cloneimg.data('width');
         var imght = cloneimg.data('height');
         var newwidth = ActColWidth;
@@ -48,7 +48,7 @@ $(document).ready(function() {
         break;
         
       case 1: // Small- image display width is actcolwidth*.45, image display height = acthieght*actcolwith*.45/(origheight) - img =45%, pad =5% txt =50%
-        var cloneimg = $('#ArtImg' + ArtNum)
+        var cloneimg = $('#ArtImg' + ArtNum);
         var imgwd = cloneimg.data('width');
         var imght = cloneimg.data('height');
         var newwidth = Math.floor(ActColWidth*.45);
@@ -121,7 +121,7 @@ $(document).ready(function() {
         // TODO
       
       case 8: // middle image below text
-        var cloneimg = $('#ArtImg' + ArtNum)
+        var cloneimg = $('#ArtImg' + ArtNum);
         var imgwd = cloneimg.data('width');
         var imght = cloneimg.data('height');
         var newwidth = Math.floor(ActColWidth*.45);
@@ -131,7 +131,7 @@ $(document).ready(function() {
         break;
       
       case 9: // V Small image to right of heading
-        var cloneimg = $('#ArtImg' + ArtNum)
+        var cloneimg = $('#ArtImg' + ArtNum);
         var imgwd = cloneimg.data('width');
         var imght = cloneimg.data('height');
         var newwidth = Math.floor(ActColWidth*.45);
@@ -142,7 +142,7 @@ $(document).ready(function() {
         break;
       
       }
-      ArtNum++
+      ArtNum++;
     }
   }
   

@@ -7,7 +7,7 @@ $(document).ready(function() {
   CC = ($('#image').cropper({ 
         aspectRatio: asprat,
         viewMode:1,
-        autoCropArea:1,
+        autoCropArea:1
   }));
 
   document.getElementById('crop_button').addEventListener('click', function(){
@@ -35,11 +35,11 @@ $(document).ready(function() {
             var finalloc = $('#FinalLoc').html();
             $('#NewImage').html(finalloc);
             },
-          error: function (resp) { console.log(resp); document.getElementById('Feedback').innerHTML = resp; },
+          error: function (resp) { console.log(resp); document.getElementById('Feedback').innerHTML = resp; }
           });
         });
     });
-})
+});
 
 $(document).ready(function() {
   $(window).keydown(function(event){

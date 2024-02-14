@@ -9,11 +9,11 @@ function TL_ShowHide() {
 
   var Tsks = '';
   
-  if      ($("#OpenTasks").hasClass("PurpButton")) Tsks = 'Open'
-  else if ($("#NextMonth").hasClass("PurpButton")) Tsks = 'Month'
-  else if ($("#CompleteTasks").hasClass("PurpButton")) Tsks = 'Complete'
-  else if ($("#OverdueTasks").hasClass("PurpButton")) Tsks = 'Overdue'
-  else if ($("#AllTasks").hasClass("PurpButton")) Tsks = 'All';
+  if      ($("#OpenTasks").hasClass("PurpButton")) { Tsks = 'Open'; }
+  else if ($("#NextMonth").hasClass("PurpButton")) { Tsks = 'Month'; }
+  else if ($("#CompleteTasks").hasClass("PurpButton")) { Tsks = 'Complete'; }
+  else if ($("#OverdueTasks").hasClass("PurpButton")) { Tsks = 'Overdue'; }
+  else if ($("#AllTasks").hasClass("PurpButton")) { Tsks = 'All'; };
   // More
   
   $(".TL").each(function(index) {

@@ -41,8 +41,8 @@ function ProformaSend(name,snum,label,link,AlwaysBespoke=0,AltEmail='',UpdateId=
     newwin.onbeforeunload = function(){
       setTimeout(function(){$("#" + UpdateId).load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // , function() {
 //       $("#" + UpdateId).scrollTop(1E6+ProformasSent*100)}
-      },500)
-    }
+      },500);
+    };
   }
 
 //  ProformasSent++;
@@ -60,7 +60,7 @@ function MList_ProformaSend(name,snum,label,link,AlwaysBespoke=0,AltEmail='',Upd
 //        $.get("setfields.php", "I=" + snum + "&O=Z&Y=" + year, function(data) { $("#BookState" + snum).replaceWith(data);});
 
         $("#BookState" + snum).load("setfields.php", "I=" + snum + "&O=Z&Y=" + year);  // needs to change what it loads into
-      },500)};
+      },500);};
   } else {
   
     $("#DebugPane").load("sendMproforma.php", "I=" + snum + "&N=" + name +"&E=" +AltEmail); // the callback should change YearState
@@ -76,14 +76,14 @@ function MProformaSend(name,snum,label,link,AlwaysBespoke=0) { // Actions on Per
   var year = $("#Year").val();
   
   if (AlwaysBespoke == 2) {
-    var newwin = window.open((link + "?I=" + snum + "&N=" + name + "&L=" + label + "&E=" + AltEmail),"Bespoke Message " + snum);
+    var newwin = window.open((link + "?I=" + snum + "&N=" + name + "&L=" + label + "&E=" + 'AltEmail'),"Bespoke Message " + snum);
     newwin.onbeforeunload = function(){ // the callback should change YearState
       setTimeout(function(){
         $("#Invited").load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by window call
         $('input[name="YearState"]').filter("[value='5']").prop('checked', true); 
-      },500)};
+      },500);};
   } else {  
-    $("#DebugPane").load("sendMproforma.php", "I=" + snum + "&N=" + name +"&E=" +AltEmail); // the callback should change YearState
+    $("#DebugPane").load("sendMproforma.php", "I=" + snum + "&N=" + name +"&E=" +'AltEmail'); // the callback should change YearState
     $("#Invited").load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by sendMproforma
     $('input[name="YearState"]').filter("[value='5']").prop('checked', true); 
   } 

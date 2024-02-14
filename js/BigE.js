@@ -57,7 +57,7 @@
 
   function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
-    Dragged = ev.target.id
+    Dragged = ev.target.id;
   }
 
   function drop(ev) {
@@ -88,7 +88,7 @@
       nsrcp.innerHTML = "<input type=text size=30 id=I" + srcmtch[2] + ":: value=''>";
       nsrcp.setAttribute('id','N' + srcmtch[2] + '::');
     } else {
-      Note = ''
+      Note = '';
     }
 
     switch (dstmtch[1]) {

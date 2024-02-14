@@ -26,7 +26,7 @@ function newemailclk(id,type,xtra) {
     clipboard.copy(txt);
     var lnk=data.link;
     window.open(lnk,'_blank');
-  })
+  });
 }
 
 function emailclk(lnk,cpid) {

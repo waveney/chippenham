@@ -12,7 +12,7 @@ function ShowDay(d) {
 function ShowAll() {
   var days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   if ($('#ShowAll').text() == 'Expand All') {
-    for (d in days) {
+    for (var d in days) {
       $('.Day'+days[d]).show();
       $('#DayClick'+days[d]).text('Close');
     }

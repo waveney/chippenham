@@ -83,7 +83,7 @@ for(var i=0, len=arrayOfRows.length; i<len; i++) {
 	newTableBody.appendChild(rows[arrayOfRows[i].oldIndex].cloneNode(true));
 	}
 table.replaceChild(newTableBody,tbody);// replace->append for testing
-setTimeout(function(){DoingTableSort = 0},1000);
+setTimeout(function(){DoingTableSort = 0;},1000);
 } // function SortTable()
 
 function CompareRowOfText(a,b) {

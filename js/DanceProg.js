@@ -41,7 +41,7 @@ var hlights = [];
     var s = srcId.match(/SideN(\d*)/);
     if (s) {
       var SideNum = s[1]; 
-    } else if (srcmtch = srcId.match(/G(\d*):(\d*):(\d*):(\d*):(\d*)/)) {
+    } else if ((srcmtch = srcId.match(/G(\d*):(\d*):(\d*):(\d*):(\d*)/))) {
       var SideNum = srcmtch[5]; 
       RemoveGrid(src,srcmtch);
     } 
@@ -58,7 +58,7 @@ var hlights = [];
 
   function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
-    Dragged = ev.target.id
+    Dragged = ev.target.id;
   }
 
   function drop(ev,sand) {

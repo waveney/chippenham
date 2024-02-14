@@ -35,7 +35,7 @@ function ShowAdv(ev) {
 
 // Where el is the DOM element you'd like to test for visibility
 function isHidden(el) {
-  return (el === null || el.offsetParent === null)
+  return (el === null || el.offsetParent === null);
 }
 
 function updateimps() {
@@ -56,7 +56,7 @@ function updateimps() {
   }
   if (document.getElementsByName('Ignored')[0] != undefined) if (document.getElementsByName('Ignored')[0].checked) imps++; // Insurance TODO Check
   if (0 && !isHidden(document.getElementById('BankDetail'))) {
-    $impt++;
+    impt++;
     if ( (document.getElementsByName('SortCode')[0].value.length >= 6) && (document.getElementsByName('Account')[0].value.length >= 8) &&
          (document.getElementsByName('AccountName')[0].value.length >= 6)) imps++;
   }
@@ -68,7 +68,7 @@ function updateimps() {
     $('#AllImpsDone').hide();
     $('.Imp').css('color','Black');
   } else {
-    $('#AllImpsDone').show()
+    $('#AllImpsDone').show();
     $('.Imp').css('color','red');
   };
 }
@@ -99,8 +99,8 @@ function CheckContract() {
        { 
 //    if ((document.getElementById('OtherPayment') && document.getElementById('OtherPayment').value !='' )) 
 
-    $('.ContractShow').show()
-  } else { $('.ContractShow').hide() }
+    $('.ContractShow').show();
+  } else { $('.ContractShow').hide(); }
 
   updateimps();
 }
@@ -108,10 +108,10 @@ function CheckContract() {
 function ComeAnyWarning() {
   var Come = $("input[name='Coming']:checked");
   if (Come && Come.val() != 2 && ($("[Name=Fri]").is(":checked") || $("[Name=Sat]").is(":checked") || $("[Name=Sun]").is(":checked") || 
-     $("[Name=Mon]").is(":checked"))) { $('#ComeAny').show(); $('#WhatDays').hide() } 
+     $("[Name=Mon]").is(":checked"))) { $('#ComeAny').show(); $('#WhatDays').hide(); } 
   else if (Come && Come.val() == 2 && (!$("[Name=Fri]").is(":checked") && !$("[Name=Sat]").is(":checked") && !$("[Name=Sun]").is(":checked")  && 
-     !$("[Name=Mon]").is(":checked"))) { $('#ComeAny').hide(); $('#WhatDays').show() } 
-  else { $('#ComeAny').hide(); ; $('#WhatDays').hide() }
+     !$("[Name=Mon]").is(":checked"))) { $('#ComeAny').hide(); $('#WhatDays').show(); } 
+  else { $('#ComeAny').hide(); ; $('#WhatDays').hide(); }
 } 
 
 function CheckDiscount() {

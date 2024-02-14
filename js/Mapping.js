@@ -20,10 +20,10 @@ var MapDataDate = 0;
 $.getJSON("/cache/mapptypes.json?" + MapDataDate).done (function(json1) {
   $.each(json1,function(key,data) {
     mtypes[data.id] = data;
-  })
+  });
   mtypready = 1;
   if (mtypready == 1 && docready == 1) initMap();
-})
+});
 
 function CloseDir() {
 //  debugger;
@@ -49,7 +49,7 @@ function ShowDirect(MarkId) { // Open directions window from current loc (me) to
       origin: (direct && me && me.position)?me.position:dfltloc,
       destination: markers[MarkId].position,
       travelMode: (zoom < 15?'DRIVING':'WALKING'),
-      unitSystem: 1, //IMPERIAL
+      unitSystem: 1 //IMPERIAL
     };
     dirServ.route(DSrequest, function(response, status) {
       if (status == 'OK') {
@@ -95,7 +95,7 @@ function initMap() {
     center: Center,
     mapTypeId: (MapZoom>13?'hybrid':'roadmap'),
     zoom: MapZoom,
-    styles: customStyled,
+    styles: customStyled
     });
 
   $.getJSON("/cache/mappoints.json?" + MapDataDate).done ( function(json1) {
@@ -124,7 +124,7 @@ function initMap() {
           position: latLng,
           title: data.name,
           importance: ((MapFeatures == 4)?"15-36":data.imp),
-          dirExtra:data.extra,
+          dirExtra:data.extra
         });
         if (MapFeatures == 4) minz=15;
         if ((MapFeatures == 9) && (data.icon == 9)) minz=14;
@@ -147,7 +147,7 @@ function initMap() {
           cont += '</div>';
           var infowindow = new google.maps.InfoWindow({
             content: cont,
-            zIndex: 2000,
+            zIndex: 2000
           });
 
           marker.addListener('click', function() {
@@ -166,7 +166,7 @@ function initMap() {
           minZoom: minz,
           maxZoom: maxz,
           map: map,
-          zIndex:1000,
+          zIndex:1000
         });
       }
     });
@@ -184,7 +184,7 @@ function initMap() {
         } else {
           hide = (zoom >= mtch[1]);
         }
-      } else { hide = (zoom >= 16) };
+      } else { hide = (zoom >= 16); };
       markers[i].setVisible(hide);
     }
     if (zoom == 13) map.setMapTypeId('roadmap');
@@ -199,13 +199,13 @@ function initMap() {
       me = new google.maps.Marker({
         position: pos,
         icon: '/images/icons/me20.png',
-        map: map,
+        map: map
       });
       setInterval(function() { 
         direct.getCurrentPosition(function(position) {
           var pos = { lat: position.coords.latitude, lng: position.coords.longitude };
           me.setPosition(pos);
-        })
+        });
       }, 10000);
     });
   }
@@ -216,5 +216,5 @@ function initMap() {
 $(document).ready(function() {
   docready = 1;
   if (mtypready == 1 && docready == 1) initMap();
-})
+});
 

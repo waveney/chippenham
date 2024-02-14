@@ -4,7 +4,7 @@ var Teams = [];
 var PlanYear;
 
 function TeamsSelected() {
-  Teams.forEach((team,idx)=> { team['Selected'] = $('#Props:' +team['id'] + ':' +PlanYear).is(':checked')});
+  Teams.forEach((team,idx)=> { team['Selected'] = $('#Props:' +team['id'] + ':' +PlanYear).is(':checked');});
   var a=1;
 }
 
@@ -84,9 +84,9 @@ function VolListFilter() {
   $(".Volunteer").each(function() {
     if (Show == 0) $(this).show();
     if (Show > 0) {
-      if ($(this).hasClass("VolCat" + Show)) { $(this).show() } else { $(this).hide() };
+      if ($(this).hasClass("VolCat" + Show)) { $(this).show(); } else { $(this).hide(); };
     }
-  })
+  });
 }
 
 function AcceptTeam(id,catid) {

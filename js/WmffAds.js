@@ -7,7 +7,7 @@ function setHeadRow() {
 
   if (ww < 1000) {
     if (ww < 500) {
-      scale = 250
+      scale = 250;
     } else {
       scale = Math.floor(ww*250/(550+864+25+25));
     }
@@ -28,4 +28,4 @@ function setHeadRow() {
 $(document).ready(function() {
   setHeadRow();
   window.onresize = setHeadRow;
-})
+});
