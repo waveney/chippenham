@@ -15,5 +15,3 @@
   echo "</div>";
   
   dotail();
-
-?>

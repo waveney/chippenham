@@ -127,5 +127,3 @@
   }
 
   if (!$Poster) dotail();
-
-?>

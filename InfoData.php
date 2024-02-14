@@ -19,4 +19,4 @@
     echo "<input type=submit name=CHECK value=CHECK>\n";
   }
   dotail();
-?>
+

@@ -5,4 +5,4 @@
   dohead($Subject);
   echo TnC($Subject);
   dotail();
-?>
+

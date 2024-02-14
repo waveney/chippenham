@@ -33,4 +33,3 @@ indicate which local authority they are registered with.<p>
   echo "<div class=trader-app-link><a href=/int/Trader>Traders application Form</a></div>\n";
 
   dotail();
-?>

@@ -21,4 +21,3 @@
        ", Zoom in for more detail.  Every marker shows a venue for something, click on the marker for more info.<p>\n";
   
   dotail();
-?>

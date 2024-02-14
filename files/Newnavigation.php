@@ -60,7 +60,7 @@
         'Talking Folk Mailing List'=>'InfoMailingList',
         'Sponsorship'=>'InfoSponsors',
         'New Dance Side Registration'=>'int/Register',
-       'Trade Stand Applications'=>'InfoTrade', 
+        'Trade Stand Applications'=>'InfoTrade', 
 //        'Art Show Application' => 'int/ArtForm',
 //        '*Live and Loud'=>'LiveNLoud',
 //        '*Buskers Bash'=>'BuskersBash',
@@ -181,7 +181,6 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         $text = substr($text,1);
         $Bar[$text] = $link;
         continue 2;
-        break;
         
       case '~' : // Only if Event Changes recorded, move to end
         $text = substr($text,1);
@@ -194,7 +193,6 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         if (Feature('RecordPerfChanges') !=2) continue 2;
         if (Gen_Get_Cond1('PerfChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
         continue 2;
-        break;
                 
       default:
     }

@@ -55,5 +55,4 @@
    
   Show_Articles_For($Arts,0,'400,700,20,3');
   
-  dotail();  
-?>
+  dotail();

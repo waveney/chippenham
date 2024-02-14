@@ -59,4 +59,3 @@ This is a list of Taxi firms.<p>
 </div>
 <?php 
   dotail();
-?>

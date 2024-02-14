@@ -4,4 +4,3 @@
   dohead("Terms and Conditions");
   echo TnC("TicketTnC");
   dotail();
-?>

@@ -182,6 +182,3 @@
     echo "<h3><a href=Sherlock?t=$Type&Y=" . ($YEAR-1) . "> $Types in " . ($YEAR-1) . "</h3></a>";
   }
   dotail();
-
-?>
-

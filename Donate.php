@@ -24,4 +24,3 @@
 
   echo "<p class=smaller>Donations handled through Paypal, all major credit cards accepted<p>";
   dotail();
-?>

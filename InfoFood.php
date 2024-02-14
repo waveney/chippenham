@@ -37,4 +37,3 @@ echo "</table></div>";
 
 echo TnC('Food_And_Drink_Tail');
   dotail();
-?>

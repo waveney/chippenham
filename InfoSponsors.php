@@ -69,4 +69,3 @@
   echo "</div>";
 
   dotail();
-?>
