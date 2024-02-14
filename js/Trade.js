@@ -11,7 +11,7 @@ var Dragged ;
 
     var s = src.id.match(/TradeN(\d*)/);
     if (s) {
-      var TradeNum = s[1]
+      var TradeNum = s[1];
     } else if (src.id.match(/Posn(\d*)/)) {
       var TradeNum = src.getAttribute("data-d");
       RemoveTrade(src);
@@ -22,7 +22,7 @@ var Dragged ;
 
   function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
-    Dragged = ev.target
+    Dragged = ev.target;
   }
 
 
@@ -122,8 +122,8 @@ document.getElementById('original').onmouseover = function () {
 
 function SetTradeType(p,c,i,r,d,dc,ps) {
 //  debugger;
-  if (p) { $('.PublicHealth').show() } else { $('.PublicHealth').hide() };
-  if (c) { $('.Charity').show() } else { $('.Charity').hide() };
+  if (p) { $('.PublicHealth').show(); } else { $('.PublicHealth').hide(); };
+  if (c) { $('.Charity').show(); } else { $('.Charity').hide(); };
   $('#TTDescription').text(d);
   $('#TTDescription').css('background',dc);
   $('.DefaultPitch').text(ps);
@@ -133,9 +133,9 @@ function SetTradeType(p,c,i,r,d,dc,ps) {
 function PowerChange(t,i) {
 //  debugger;
   if (t!=2) { 
-    $('#Power' + i).val('') 
+    $('#Power' + i).val('') ;
   } else { 
-    $('#PowerTypeRequest' + i).attr('checked',true) 
+    $('#PowerTypeRequest' + i).attr('checked',true) ;
   }
 }
 
@@ -206,7 +206,7 @@ function FeeChange() {
   var buts = ['Quote','ArtInvite','Invite','InviteBetter'];
   var bb;
   buts.forEach((but) => { 
-    if (bb = $('#' + but + 'Button')) {
+    if ((bb = $('#' + but + 'Button'))) {
       bb.show();
     }
   });  

@@ -27,8 +27,12 @@
   $Trade_Types = Get_Trade_Types(1);
   $TrMon = $TrRec = $TrSub = $TrState = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
   foreach ($TradeLocData as $i=>$TLoc) {
-    $TradeLocData[$i]['ReceiveTot'] = $TradeLocData[$i]['AcceptTot'] = $TradeLocData[$i]['QuoteTot'] = 0;
+    $TradeLocData[$i]['ReceiveTot'] = $TradeLocData[$i]['AcceptTot'] = $TradeLocData[$i]['QuoteTot'] = 
+      $TradeLocData[$i]['UsedWidth'] = $TradeLocData[$i]['QuoteWidth']= 0;
   }
+      $TradeLocData[0]['ReceiveTot'] = $TradeLocData[0]['AcceptTot'] = $TradeLocData[0]['QuoteTot'] = 
+      $TradeLocData[0]['UsedWidth'] = $TradeLocData[0]['QuoteWidth']= 0;
+
   $TradeLocData[0]['ReceiveTot'] = $TradeLocData[0]['AcceptTot'] = $TradeLocData[0]['QuoteTot'] = 0;
   $TradeLocData[0]['SN'] = 'HOMELESS';
   $TradeLocData[0]['TLocId'] = 0;
@@ -263,6 +267,18 @@
           $TradeLocData[0]['ReceiveTot'] += $fetch['TotalPaid'];
         }          
       }
+      
+      if ($stat > $Trade_State['Submitted'] && $stat != $Trade_State['Wait List']) {
+        for ($i = 0; $i <3; $i++) {
+          if ($fetch["PitchLoc$i"] && $fetch["PitchSize$i"]) {
+            if (preg_match('/^(\d*)/',$fetch["PitchSize$i"],$mtchs) ) {
+              $Used = $mtchs[1];
+              $TradeLocData[$fetch["PitchLoc$i"]]['QuoteWidth'] += $Used;
+              if ($stat != $Trade_State['Quoted']) $TradeLocData[$fetch["PitchLoc$i"]]['UsedWidth'] += $Used;
+            }              
+          }
+        }
+      }
     }
     $str .= "</tbody></table></div>\n";
   }
@@ -280,11 +296,17 @@
     }
     echo "<tr><td>Total Fees<td>" . Print_Pound($totrec) . "<td>" . Print_Pound($totsub) . "<td>" . Print_Pound($totfee) . "<td>\n";
     echo "</table></div><br>";
-    echo "<div class=Scrolltable><table border id=narrowtable><tr><td>Location<td>Received<td>Total Accept<td>Total inc Quoted<td>Details\n";
+    echo "<div class=Scrolltable><table border id=narrowtable><tr><td>Location<td>Received<td>Total Accept<td>Total inc Quoted" .
+         "<td>Width Avail<td>Width Quote<td>Width Accept<td>Details\n";
     foreach ($TradeLocData as $TLoc) {
       if (!isset($TLoc['QuoteTot']) || $TLoc['QuoteTot'] == 0) continue;
       echo "<tr><td>" . $TLoc['SN'];
       echo "<td>" . Print_Pound($TLoc['ReceiveTot']) . "<td>" . Print_Pound($TLoc['AcceptTot']) . "<td>" . Print_Pound($TLoc['QuoteTot']);
+      if (!isset($TLoc['TotalWidth'])) $TLoc['TotalWidth'] = 0;
+      $Limit = ($TLoc['TotalWidth'] == 0?1000000:$TLoc['TotalWidth']);
+      echo "<td>" . $TLoc['TotalWidth'] . "<td " . ($TLoc['QuoteWidth']>$Limit?' class=red>':">") . $TLoc['QuoteWidth'] . 
+        "<td" . ($TLoc['UsedWidth']>$Limit?' class=red>':">") . $TLoc['UsedWidth'];
+      
       echo "<td><a href=ListDTrade?l=" . $TLoc['TLocId'] . ">Details</a>\n";
       $TotLRec += $TLoc['ReceiveTot'];
       $TotLAcc += $TLoc['AcceptTot'];

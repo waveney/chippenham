@@ -13,11 +13,12 @@
   
   echo "Artisan Messages trigger local Artisan related emails<p>Only set the Invoice Code for locations that override normal trade type invoice codes<p>";
   
-  echo "Set No List to exclude from venues on Show Trade<p>";
+  echo "Set No List to exclude from venues on Show Trade<br>";
   
 //  echo "Power Offset - Bit number for power properties<p>";
   
-  echo "Properties bit 0 = table, 1=Power<p>";
+  echo "Properties bit 0 = table, 1=Power<br>";
+  echo "Width if >0, total usage is calculated<p>";
   
   $Locs=Get_Trade_Locs(1);
   
@@ -42,6 +43,7 @@
   echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'T')>Invoice Code</a>\n";
 //  echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Power Offset</a>\n";
   echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Props</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Total Width</a>\n";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Map</a>\n";
@@ -63,6 +65,7 @@
     echo "<td class=FullD hidden>" . fm_select($InvCodes,$t,'InvoiceCode',1,'',"InvoiceCode$i");
 //    echo fm_number1('',$t,'PowerOffset',' class=FullD hidden','',"PowerOffset$i");
     echo fm_number1('',$t,'Props',' class=FullD hidden','',"Props$i");
+    echo fm_text1('',$t,'TotalWidth',0.25,'','',"TotalWidth$i");
     echo fm_text1('',$t,'Notes',1,'','',"Notes$i");
     echo fm_text1('',$t,'MapImage',1,'','',"MapImage$i");
     echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale$i");
@@ -82,6 +85,8 @@
   echo "<td class=FullD hidden>" . fm_select($InvCodes,$t,'InvoiceCode',1,'',"InvoiceCode0");
 //  echo fm_number1('',$t,'PowerOffset',' class=FullD hidden','',"PowerOffset0");
   echo fm_number1('',$t,'Props',' class=FullD hidden','',"Props0");
+  echo fm_text1('',$t,'TotalWidth',0.25,'','',"TotalWidth0");
+
   echo "<td><input type=text name=Notes0 >";
   echo "<td><input type=text name=MapImage0 >";
   echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale0"); 

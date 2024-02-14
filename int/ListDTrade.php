@@ -100,7 +100,7 @@
               }
             if ($Act == 'FestC' && !Feature('EnableCancelMsg')) continue 2;
             if ($Act == 'Dates' && !Feature('EnableDateChange')) continue 2;
-            $str .= "<button class=floatright name=ACTION value='$ac' type=submit " . $ButExtra[$ac] . " >$ac</button>";
+            $str .= "<button class=floatright name=ACTION value='$ac' type=submit " . ($ButExtra[$ac]??'') . " >$ac</button>";
           }
           $str .= "</form>";
         }
@@ -111,19 +111,19 @@
       $tot = $fetch['TotalPaid'];
       if ($Dep == 0) {
         if ($fee < 0) { $ftxt = "Free"; $Bal = 0; }
-        else { $Bal = $fee; };
+        else { $Bal = $fee; }
       } else {
         if ($fee < 0) { $Bal = $fee = 0; }
         else { $Bal = max($fee - $Dep, $fee-$tot); }
       }
       $Hist = $fetch['History'];
-      if (preg_match_all('/Action: *Dep Paid *of *(.*? on .*?) by /',$Hist,$mtchs)) {
+      if (preg_match_all('/Action: *Deposit Paid (\d*? on .*?) by /',$Hist,$mtchs)) {
         $DepDet = implode('<br>',$mtchs[1]);
       } else {
         $DepDet = '';
       }
 
-      if (preg_match_all('/Action: *Paid *(.*? on .*?) by /',$Hist,$mtchs)) {
+      if (preg_match_all('/Action: *Paid (\d*? on .*?) by /',$Hist,$mtchs)) {
         $BalDet = implode('<br>',$mtchs[1]);
       } else {
         $BalDet = '';
@@ -142,10 +142,10 @@
       $str .= "<td>" . Print_Pound($Dep);
       $str .= "<td>" . Print_Pound(($Dep <= $tot)?$Dep:$tot);
       
-      $str .= "<td>" . Print_Pound($DepDet);
+      $str .= "<td>" . $DepDet;
       $str .= "<td>" . Print_Pound($Bal);
       $str .= "<td>" . Print_Pound(($tot >= $Dep)?($tot-$Dep):0);
-      $str .= "<td>" . Print_Pound($BalDet);
+      $str .= "<td>" . $BalDet;
 
       $str .= "<td>" . Print_Pound($tot);
 

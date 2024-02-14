@@ -355,9 +355,6 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
           $pi++;
         }
                
-//                fm_select($SideList,$O,$Other,1,"id=OlapSide$i " .($O[$OtherCat]>0?'hidden':''),"OlapSide$i") . 
-//                fm_select($ActList,$O,$Other,1,"id=OlapAct$i " .($O[$OtherCat]!=1?'hidden':''),"OlapAct$i") . 
-//                fm_select($OtherList,$O,$Other,1,"id=OlapOther$i " .($O[$OtherCat]!=2?'hidden':''),"OlapOther$i") .
         echo "&nbsp;On&nbsp;Days: " . fm_select($OlapDays,$O,'Days',0,'',"OlapDays$i") . 
                 fm_checkbox("Rule Active",$O,'Active','',"OlapActive$i") . "\n";
         if ($i != ($rows-1)) echo " <button name=Action value=DeleteOlap$i type=submit>Del</a>"; 
