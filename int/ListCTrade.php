@@ -56,17 +56,17 @@
   } else if (isset($_GET['SUB'])) { 
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a> </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>=" . $Trade_State['Submitted'] .
-           " ORDER BY SN";  
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>=" . 
+           $Trade_State['Submitted'] . " ORDER BY SN";  
   } else if (isset($_GET['ONLY'])) { 
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Submitted</a> </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState=" . $Trade_State['Submitted'] .
-           " ORDER BY SN";  
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState=" . 
+           $Trade_State['Submitted'] . " ORDER BY SN";  
   } else {  
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR&SUB>Include Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a> </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>" . $Trade_State['Submitted'] . 
-      " ORDER BY SN";
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>" . 
+           $Trade_State['Submitted'] . " ORDER BY SN";
   }
 
   $res = $db->query($qry);
@@ -245,7 +245,8 @@
           $TrMon[$fetch['TradeType']] += $fee;
         }
         $TrRec[$fetch['TradeType']] += $fetch['TotalPaid'];
-        if ($stat >= $Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] && $stat != $Trade_State['Wait List'] && $stat != $Trade_State['Requote']) {
+        if ($stat >$Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] && 
+            $stat != $Trade_State['Wait List'] && $stat != $Trade_State['Requote']) {
           $TrSub[$fetch['TradeType']] += $fee;
           $totsub += $fee;
         }
@@ -254,7 +255,8 @@
         if ($pitches) {
           for ($i = 0; $i < 3; $i++) {
             if ($fetch["PitchLoc$i"]) {
-              if ($stat >= $Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] && $stat != $Trade_State['Wait List']  && $stat != $Trade_State['Requote']) {
+              if ($stat > $Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] && 
+                  $stat != $Trade_State['Wait List'] && $stat != $Trade_State['Requote']) {
                 $TradeLocData[$fetch["PitchLoc$i"]]['AcceptTot'] += $fee/$pitches;
               }
               $TradeLocData[$fetch["PitchLoc$i"]]['QuoteTot'] += $fee/$pitches;
@@ -262,7 +264,8 @@
             }
           }
         } else if ($fee) {
-          if ($stat >= $Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] && $stat != $Trade_State['Wait List']) $TradeLocData[0]['AcceptTot'] += $fee;
+          if ($stat > $Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] && 
+              $stat != $Trade_State['Wait List']) $TradeLocData[0]['AcceptTot'] += $fee;
           $TradeLocData[0]['QuoteTot'] += $fee;
           $TradeLocData[0]['ReceiveTot'] += $fetch['TotalPaid'];
         }          
@@ -318,8 +321,8 @@
     echo "</table></div><br>\n";
     echo "<div class=Scrolltable><table border id=narrowtable><tr><td>State<td>Number\n";
     foreach ($Trade_States as $i=>$state) {
-      if (isset($TrState[$i]) && $TrState[$i]>0) echo "<tr><td style='background:" . $Trade_State_Colours[$i] . ";padding:4; white-space: nowrap;'>$state<td>" .
-         $TrState[$i];
+      if (isset($TrState[$i]) && $TrState[$i]>0) echo "<tr><td style='background:" . $Trade_State_Colours[$i] . 
+         ";padding:4; white-space: nowrap;'>$state<td>" . $TrState[$i];
     }
     echo "</table></div>";
     echo "<p>";
