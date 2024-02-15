@@ -19,5 +19,3 @@ $To = $Vol['Email'];
 //$to = $Side['Email']; // Temp value
 //var_dump($_REQUEST);
 echo Email_Proforma(1,$id, $too,$proforma,$subject,'Vol_Details',$Vol,'Volunteers');
-
-?>

@@ -12,4 +12,3 @@
 //  Social_Links();
 
   dotail();
-?>

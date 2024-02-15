@@ -19,4 +19,3 @@ case 'Accept1':
 default:
   echo "$Action unrecognised";
 }
-?>

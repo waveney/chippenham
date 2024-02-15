@@ -35,4 +35,3 @@
 
   echo json_encode(array('link' => $link,'paste' => $paste));
 
-?>

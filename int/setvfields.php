@@ -47,4 +47,3 @@ case 'VNC':
 
 default:
 }
-?>

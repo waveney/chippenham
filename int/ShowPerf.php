@@ -22,5 +22,3 @@
   Show_Side($id,'',1);
 
   dotail();
-?>
-

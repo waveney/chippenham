@@ -71,4 +71,3 @@ if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
     }
     Put_SideYear($Sidey);
 //echo $Res;
-?>

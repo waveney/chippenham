@@ -21,5 +21,3 @@ if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
             ['replyto',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom]];
 //$to = $Side['Email']; // Temp value
 echo Email_Proforma(1,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],'Dance');
-
-?>

@@ -27,4 +27,3 @@ case 'RQ':
 
 default:
 }
-?>

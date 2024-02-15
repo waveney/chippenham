@@ -37,22 +37,22 @@
   if ($datay['Fri']) {
     echo "<tr><td>Fri:<td>Yes ";
     if ($t == 'Side') echo "- Spots " . $datay["FriDance"];
-  };
+  }
   if ($datay['Sat']) {
     echo "<tr><td>Sat:<td>Yes ";
     if ($t == 'Side') echo "- Spots " . $datay["SatDance"];
     if (Feature("Procession") && $datay['ProcessionSat']) echo ' ' . Feature("Procession"," Procession");
-  };
+  }
   if ($datay['Sun']) {
     echo "<tr><td>Sun:<td>Yes ";
     if ($t == 'Side') echo "- Spots " . $datay["SunDance"];
     if (Feature("Procession") && $datay['ProcessionSun']) echo ' ' . Feature("Procession"," Procession");
-  };
+  }
   if ($datay['Mon']) {
     echo "<tr><td>Mon:<td>Yes ";
     if ($t == 'Side') echo "- Spots " . $datay["MonDance"];
     if (Feature("Procession") && $datay['ProcessionMon']) echo ' ' . Feature("Procession"," Procession");
-  };
+  }
    
   if ($datay['Sat']) {
     if ($datay['SatArrive']) echo "<tr><td>Sat Start<td>" . $datay['SatArrive'];
@@ -85,5 +85,3 @@
   if ($data['NoiseLevel']) echo "<tr><td>Noise:<td>" . $Noise_Levels[$data['NoiseLevel']];
 
   echo "</table></div>\n</body></html>";
-
-?>

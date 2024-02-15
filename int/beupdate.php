@@ -102,6 +102,3 @@ function RecordBeEventChanges($Ev) {
   $Ei    = $_GET['E'];  // Used for return info
 //  echo "fred";
   CheckDance($Ei);
-  
-?>
-

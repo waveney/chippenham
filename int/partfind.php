@@ -16,5 +16,3 @@
     $res[$ans['SideId']] = $ans['SN'];
   }
   echo json_encode($res);
-
-?>

@@ -79,7 +79,7 @@ case 'TP':
   $tl['Progress'] = $_GET['V'];
   if ($tl['Progress'] == 100) {
     $tl['Completed'] = time();
-  };
+  }
   Put_TLent($tl);
   break;
   
@@ -118,4 +118,3 @@ default:
   $Side[$_GET['F']]=$_GET['V'];
   Put_Side($Side);
 }
-?>
