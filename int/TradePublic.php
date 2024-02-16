@@ -2,6 +2,7 @@
 
   include_once "fest.php";
   include_once "TradeLib.php";
+  include_once "Email.php";
 
   global $db;
 
@@ -27,7 +28,10 @@ function Trade_Type_Table($class='') {
   }
   echo "</table></div><p>";
 
-  echo TnC('TradeTypeTrailer');
+  $trail = TnC('TradeTypeTrailer');
+  Parse_Proforma($trail);
+  echo $trail;
+  
 /*
   foreach ($tts as $tt) {
     if (!$tt['Addition']) continue;
