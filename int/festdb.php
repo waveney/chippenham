@@ -37,6 +37,8 @@ function Gen_Get($Table,$id, $idx='id') {
 }
 
 function Gen_Put($Table, &$now, $idx='id') {
+//  if ($Table == 'TradeYear') {var_dump($now);  debug_backtrace();}
+  
   if (!empty($now[$idx])) {
     $e=$now[$idx];
     $Cur = Gen_Get($Table,$e,$idx);
@@ -186,6 +188,7 @@ function Update_db($table,&$old,&$new,$proced=1) {
   global $TableIndexes;
   global $UpdateLog;
 
+ // if ($table == 'TradeYear') {   var_dump($new);    debug_print_backtrace();}
   $Flds = table_fields($table);
   $indxname = (isset($TableIndexes[$table])?$TableIndexes[$table]:'id');
   $newrec = "UPDATE $table SET ";
@@ -220,6 +223,8 @@ function Update_db($table,&$old,&$new,$proced=1) {
       } 
     }
   }
+
+//    if ($table == 'TradeYear') {   var_dump($newrec);    debug_print_backtrace();}
 
 //echo "$fcnt<p>";
   if ($proced && $fcnt) {

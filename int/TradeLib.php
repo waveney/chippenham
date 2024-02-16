@@ -363,7 +363,7 @@ function PowerCost(&$Trady) {
   $TotPowerCost = 0;
   
   for ($i = 0; $i < 3; $i++) {
-    if ($Trady["Power$i"]??0) $TotPowerCost += $TradePower[$Trady["Power$i"]]['Cost'];
+    if (($Trady["Power$i"]??0) && isset($TradePower[$Trady["Power$i"]]))  $TotPowerCost += $TradePower[$Trady["Power$i"]]['Cost'];
   }
   return $TotPowerCost;
 }
@@ -586,6 +586,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
         if (isset($Trady['BookingState']) && ($Trady['BookingState'] == $i)) echo " checked";
         echo ">&nbsp;</div>\n ";
       }
+      if (!Access('SysAdmin')) echo fm_hidden('BookingState',$Trady['BookingState']);
 //    echo fm_radio("Booking State",$Trade_States,$Trady,'BookingState','class=NotCSide',1,'colspan=2 class=NotCSide');
     echo "<td class=NotSide>" . fm_checkbox('Local Auth Checked',$Trady,'HealthChecked');
     if (Access('Internal')) echo ($Trady['TYid'] ?? -1);
@@ -760,7 +761,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     }
   }
 
-  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=6 class=NotSide><textarea id=Debug></textarea>";
+  if (1 || Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=6 class=NotSide><textarea id=Debug></textarea>";
   echo "</table></div>\n";
 }
 
@@ -1266,7 +1267,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
             $OldFee = $Trady['Fee'];
             if ($Mode) {
               if (isset($Trady['BookingState'])) {
-                if ($Trady['BookingState'] != ($_POST['BookingState']??0)) {
+                if (isset($_POST['BookingState']) && ($Trady['BookingState'] != ($_POST['BookingState']??0))) {
                   $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']] . " on " . date('j M Y H:i') . 
                                        " by " . $USER['Login'] . ".\n";
                 }
