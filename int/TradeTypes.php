@@ -11,7 +11,7 @@
   echo "<div class=content><h2>Manage Trade Types and Prices</h2>\n";
   
   $Trads = Get_Trade_Types(1);
-  if (UpdateMany('TradePrices','Put_Trade_Type',$Trads,0)) $Trads=Get_Trade_Types(1);
+  if (UpdateMany('TradePrices','Put_Trade_Type',$Trads,1,'','','BasePrice',-1)) $Trads=Get_Trade_Types(1);
 
   echo "This is for the basic types and their base prices.  Power is an add on which has its own base price.<p>\n";
 
@@ -20,10 +20,12 @@
   echo "Artisan Messages trigger local Artisan related emails<p>Invoice Coode can be overridden by the location<p>";
   
   echo "Set Default Size to override general default<p>";
+  
+  echo "Set Base price to -1 to delete<p>";
   $coln = 0;
   $InvCodes =  Get_InvoiceCodes();
   $t = [];
-  
+
   echo "<form method=post>";
   echo "<div class=Scrolltable+><table id=indextable border>\n";
   echo "<thead><tr>";

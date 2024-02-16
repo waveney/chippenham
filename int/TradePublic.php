@@ -27,11 +27,12 @@ function Trade_Type_Table($class='') {
   }
   echo "</table></div><p>";
 
+  echo TnC('TradeTypeTrailer');
+/*
   foreach ($tts as $tt) {
     if (!$tt['Addition']) continue;
     echo "In addition, " . $tt['SN'] . " is available at some locations from &pound;" . $tt['BasePrice'] . "<p>\n";
   }
-
+*/
 }
 
-?>
