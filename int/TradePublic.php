@@ -32,11 +32,5 @@ function Trade_Type_Table($class='') {
   Parse_Proforma($trail);
   echo $trail;
   
-/*
-  foreach ($tts as $tt) {
-    if (!$tt['Addition']) continue;
-    echo "In addition, " . $tt['SN'] . " is available at some locations from &pound;" . $tt['BasePrice'] . "<p>\n";
-  }
-*/
 }
 

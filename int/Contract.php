@@ -35,7 +35,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
              ];
     $Booked = Get_User(4);
     $kwd = 'Dummy ';
-    if ($Venues) foreach($Venues as $i=>$v) { $Ven = $i; break;};
+    if ($Venues) foreach($Venues as $i=>$v) { $Ven = $i; break;}
     $Evs = [['SN' => 'Concert','Type' => 5, 'Day'=> 1, 'Start'=>1900, 'End'=>2000, 'Setup' => 10, 'Venue'=>($Ven??0), 'SubEvent' => 0, 'Duration'=>60]];
   }
 
@@ -65,7 +65,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     foreach($Evs as $e) {
       if ($ETs[$e['Type']]['Public'] == 0 || $ETs[$e['Type']]['DontList'] == 1) $SoundChecks = 1;
       $evc++;
-      if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; };
+      if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; }
       if (($e['Start'] != 0) && ($End != 0) && ($e['Duration'] == 0)) $e['Duration'] = timeadd2real($End, - $e['Start']);
       $Evstr .= "<tr><td>$evc<td>" . $e['SN'] . "<td>" . FestDate($e['Day'],'L');
       if ($ctype == 1 ) $Evstr .= "<td>" . ($e['Start']? ( timecolon(timeadd2($e['Start'],- $e['Setup']) )) : "TBD" ) ;
@@ -204,7 +204,6 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $str .= "</div>";  
 
     return $str;  
-    break;
     
   case 'Wimborne':
   default:

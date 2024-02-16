@@ -132,31 +132,32 @@
     }
 
     $Perfy = Get_SideYear($id);
-      if (!$Perfy) {
-        $flds = table_fields('SideYear');
-        if (isset($flds[$field])) {
-          $Perfy = Default_SY($id);
-          $Perfy[$field] = $Value;
-          
-          echo Put_SideYear($Perfy);
-          exit;
-        }
-      }
-      if (isset($Perfy[$field])) {
-        $Perfy[$field] = $Value;
+    $flds = table_fields('SideYear');
 
-        if ((1 || !Access('Staff')) && strstr($field,'Performers')) $Perfy['PerfNumChange'] = 1;
-//        var_dump($Perfy);
+    if (!$Perfy) {
+      if (isset($flds[$field])) {
+        $Perfy = Default_SY($id);
+        $Perfy[$field] = $Value;
+          
         echo Put_SideYear($Perfy);
         exit;
       }
+    }
+    if (isset($Perfy[$field]) || isset($flds[$field])) {
+      $Perfy[$field] = $Value;
+
+      if ((1 || !Access('Staff')) && strstr($field,'Performers')) $Perfy['PerfNumChange'] = 1;
+//        var_dump($Perfy);
+      echo Put_SideYear($Perfy);
+      exit;
+    }
     
-    $flds = table_fields('Sides');
-      if (isset($flds[$field])) {
-        $Perf[$field] = $Value;
-        echo Put_Side($Perf);
-        exit;
-      }  
+    $sflds = table_fields('Sides');
+    if (isset($sflds[$field])) {
+      $Perf[$field] = $Value;
+      echo Put_Side($Perf);
+      exit;
+    }  
     // SHOULD never get here... (but it did!)
     trigger_error("Updating a form confused - $field:$Value:$id:$type");
     exit;
