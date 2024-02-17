@@ -228,7 +228,7 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
     $str.= (($done && abs($tabs) >= 2) ? "<br>" : " ");
     $done = 1;
     if ($colours) {
-      $col = (isset($colours[$i])?$colours[$i]:$colours[rand(0,7)]);
+      $col = (isset($colours[$i])?$colours[$i]:($colours[rand(0,7)]??'white'));
       $str .= "<span style='background:$col;padding:4; white-space: nowrap;'>";
     }
     if (abs($tabs) < 3) {
