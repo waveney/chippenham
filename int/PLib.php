@@ -417,7 +417,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   
   $Mstate = ($PLANYEAR == gmdate('Y') && $PLANYEAR == $YEAR);  // TODO?
 
-  if ($year < $PLANYEAR) { // Then it is historical - no changes allowed
+  if (($year < $PLANYEAR) && !Access('Internal') && !isset($_REQUEST['FORCE'])) { // Then it is historical - no changes allowed
     fm_addall('disabled readonly');
   }
 

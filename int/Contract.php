@@ -54,7 +54,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
   $pkvens = array();
   $SoundChecks = 0;
   $pking = "";
-  if (!$Evs) return "No Contract Yet";  // With no events there is no conract, not even a draft
+  if (!$Evs && !($Sidey['NoEvents']??0)) return "No Contract Yet";  // With no events there is no conract, not even a draft
 
     $Evstr = "<div class=tablecont><table border>";
     if ($ctype == 1) { 
