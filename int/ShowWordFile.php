@@ -6,7 +6,7 @@
 
   global $USERID;
 
-  $file = $_GET['l'];
+  $file = $_REQUEST['l'];
   $sfx = pathinfo($file,PATHINFO_EXTENSION);
 
   system("rm Temp/$USERID.*");

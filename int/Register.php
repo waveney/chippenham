@@ -437,15 +437,15 @@ function Ignore($id) {
         if (empty($_REQUEST['YouTube']) || strlen($_REQUEST['YouTube']) < 10 ) WhoYouAre('We need a Video');
         if (empty($_REQUEST['Mobile']) || strlen($_REQUEST['Mobile']) < 11) WhoYouAre('We need a Mobile Phone number');
          
-        $_POST['State'] = 1;
-        $_POST['DateSubmitted'] = time();
+        $_REQUEST['State'] = 1;
+        $_REQUEST['DateSubmitted'] = time();
         $id = Insert_db_post('SideRegister',$Reg);
         Send_MgrMessage($Reg,"Potential new side");
         Thankyou();
     
     case 'NoEmail':
-        $_POST['State'] = 2;
-        $_POST['DateSubmitted'] = time();
+        $_REQUEST['State'] = 2;
+        $_REQUEST['DateSubmitted'] = time();
         $id = Insert_db_post('SideRegister',$Reg);
         Send_MgrMessage($Reg,"Email address for side without one");
         Thankyou();
@@ -463,15 +463,15 @@ function Ignore($id) {
         dotail();
                   
     case 'NowMe':
-        $_POST['State'] = 3;
-        $_POST['DateSubmitted'] = time();
+        $_REQUEST['State'] = 3;
+        $_REQUEST['DateSubmitted'] = time();
         $id = Insert_db_post('SideRegister',$Reg);
         Send_MgrMessage($Reg,"New Email address for side");
         Thankyou();
 
     case 'NowMeAlt':
-        $_POST['State'] = 4;
-        $_POST['DateSubmitted'] = time();
+        $_REQUEST['State'] = 4;
+        $_REQUEST['DateSubmitted'] = time();
         $id = Insert_db_post('SideRegister',$Reg);
         Send_MgrMessage($Reg,"New Alternative Email address for side");
         Thankyou();
@@ -529,9 +529,9 @@ function Ignore($id) {
        "Be patient please, there are humans in the loop.<p>";
   
   echo "<form method=post action=Register>";
-  echo "<table border><tr>" . fm_text('Your Name',$_POST,'Contact',4);
-  echo "<tr>" . fm_text('Name of Dance Side',$_POST,'SN',4);
-  echo "<tr>" . fm_text('Email Address',$_POST,'Email',4);
+  echo "<table border><tr>" . fm_text('Your Name',$_REQUEST,'Contact',4);
+  echo "<tr>" . fm_text('Name of Dance Side',$_REQUEST,'SN',4);
+  echo "<tr>" . fm_text('Email Address',$_REQUEST,'Email',4);
   echo "</table>";
   echo "<input type=submit name=ACTION value='Check'></form>";
 

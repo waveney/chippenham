@@ -8,8 +8,7 @@
 
   $TTTid = 0;
   
-  if (isset($_GET['id'])) $TTTid = $_GET['id'];
-  if (isset($_POST['id'])) $TTTid = $_POST['id'];
+  if (isset($_REQUEST['id'])) $TTTid = $_REQUEST['id'];
   Trade_Main(0,'TraderPage',$TTTid);
 
   dotail();

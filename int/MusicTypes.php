@@ -7,20 +7,20 @@
 
   $Types=Get_Music_Types(1);
 
-  if (isset($_POST['Update'])) {
+  if (isset($_REQUEST['Update'])) {
     foreach($Types as $i=>$t) {
-      if ($_POST["SN$i"] != $t['SN'] || $_POST["Imp$i"] != $t['Importance'] ) {
-        if ($_POST["SN$i"] == '') {
+      if ($_REQUEST["SN$i"] != $t['SN'] || $_REQUEST["Imp$i"] != $t['Importance'] ) {
+        if ($_REQUEST["SN$i"] == '') {
           db_delete('MusicTypes',$t['TypeId']);
         } else {
-          $t['SN'] = $_POST["SN$i"];
-            $t['Importance'] = $_POST["Imp$i"];
+          $t['SN'] = $_REQUEST["SN$i"];
+            $t['Importance'] = $_REQUEST["Imp$i"];
           Put_Music_Type($t);
         }
       }
     }
-    if ($_POST["SN0"]) {
-      $t = array('SN'=> $_POST['SN0'], 'Importance' => $_POST['Imp0']);
+    if ($_REQUEST["SN0"]) {
+      $t = array('SN'=> $_REQUEST['SN0'], 'Importance' => $_REQUEST['Imp0']);
       Insert_db('MusicTypes',$t);
     }
     $Types=Get_Music_Types(1);

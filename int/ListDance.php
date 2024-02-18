@@ -181,7 +181,7 @@
           $Htext = htmlspec($fetch['Notes'] . "\n" . $fetch['YNotes'] . "\n" . $fetch['PrivNotes'] . "\n" . $fetch['Likes']	);
           echo "<img src=images/icons/LetterN.jpeg width=20 title=\"$Htext\">";
         }
-        if (($_GET['SEL'] == 'Coming') && $fetch['PerfNumChange']) echo " <b>P</b>";
+        if (($_REQUEST['SEL'] == 'Coming') && $fetch['PerfNumChange']) echo " <b>P</b>";
 
       } 
       if ($col5 == "Invite") {
@@ -294,7 +294,7 @@
         }
         
         if ($fetch['Email']) {
-          if (!$IsComp && ($_GET['SEL'] == 'Coming')) {
+          if (!$IsComp && ($_REQUEST['SEL'] == 'Coming')) {
             echo "<button type=button id=Detail$snum class=ProfButton onclick=ProformaSend('Dance_Details',$snum,'Details','SendProfEmail')" . 
                  Proforma_Background('Details') . ">Details!</button>"; 
           }    
@@ -346,11 +346,11 @@
     if ($col10) {
       $Dtypes = Get_Dance_Types(0);
       echo "<div id=SelTools data-t1=Tool_Type,2 data-t2=Tool_Invite,8 data-t3=Tool_Coming,10 data-t4=Tool_Coming_Last,7></div>"; // Encode all tools below selectname,col to test
-      echo "<b>Select: Type=" . fm_select($Dtypes,$_POST,'Tool_Type',1,' oninput=ToolSelect(event)') ;
-      echo " Invite=" . fm_select($Invite_States,$_POST,'Tool_Invite',1,' oninput=ToolSelect(event)') ;    
-      echo " Coming $PLANYEAR=" . fm_select($Coming_States,$_POST,'Tool_Coming',1,' oninput=ToolSelect(event)') ;    
-      echo " Coming $LastYear=" . fm_select($Coming_States,$_POST,'Tool_Coming_Last',1,' oninput=ToolSelect(event)') . "</b><p>";    
-//      echo " Day=" . fm_select($Coming_States,$_POST,'Tool_Coming',1,' oninput=ToolSelect(event)') . "</b><p>";    
+      echo "<b>Select: Type=" . fm_select($Dtypes,$_REQUEST,'Tool_Type',1,' oninput=ToolSelect(event)') ;
+      echo " Invite=" . fm_select($Invite_States,$_REQUEST,'Tool_Invite',1,' oninput=ToolSelect(event)') ;    
+      echo " Coming $PLANYEAR=" . fm_select($Coming_States,$_REQUEST,'Tool_Coming',1,' oninput=ToolSelect(event)') ;    
+      echo " Coming $LastYear=" . fm_select($Coming_States,$_REQUEST,'Tool_Coming_Last',1,' oninput=ToolSelect(event)') . "</b><p>";    
+//      echo " Day=" . fm_select($Coming_States,$_REQUEST,'Tool_Coming',1,' oninput=ToolSelect(event)') . "</b><p>";    
     }
     
     if ($col8 == "Missing") {

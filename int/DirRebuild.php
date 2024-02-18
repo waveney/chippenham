@@ -77,7 +77,7 @@ function Scan_Documents($Act) {
         break;
         
       case 3: // Fix selected - Files master
-        if (isset($_POST["DIR1I$d"]) && $_POST["DIR1I$d"]) {
+        if (isset($_REQUEST["DIR1I$d"]) && $_REQUEST["DIR1I$d"]) {
           $D['State'] = 1; 
           echo "Directory $d which should be " .htmlspec($fullpath) . " has been deleted<br>";
           Put_DirInfo($D);
@@ -85,7 +85,7 @@ function Scan_Documents($Act) {
         break;
         
       case 4: // Fix selected - Database master - Not written yet dir to be created
-        if (isset($_POST["DIR1I$d"]) && $_POST["DIR1I$d"]) {
+        if (isset($_REQUEST["DIR1I$d"]) && $_REQUEST["DIR1I$d"]) {
           mkdir($fullpath,0777,1);
           echo "Directory $d which should be " .htmlspec($fullpath) . " has been created<br>";
         }       
@@ -132,7 +132,7 @@ function Scan_Documents($Act) {
             break;
             
           case 3: // Create DB for selected directories 
-            if (isset($_POST["DIR2I$dirindex"]) && $_POST["DIR2I$dirindex"]) {
+            if (isset($_REQUEST["DIR2I$dirindex"]) && $_REQUEST["DIR2I$dirindex"]) {
               $Parent = dirname($path);
               $leaf = basename($path);
               $Parentid = $RevD[$Parent];
@@ -145,7 +145,7 @@ function Scan_Documents($Act) {
             break;
             
           case 4: // Delete selected directories
-            if (isset($_POST["DIR2I$dirindex"]) && $_POST["DIR2I$dirindex"]) {
+            if (isset($_REQUEST["DIR2I$dirindex"]) && $_REQUEST["DIR2I$dirindex"]) {
               // Need to stack these and do in reverse order
               $DeleteStack[] = $path;
               echo htmlspec($path) . " Has been stacked for deletion<br>";
@@ -171,7 +171,7 @@ function Scan_Documents($Act) {
             break;
             
           case 4: // Delete selected directories
-            if (isset($_POST["DIR2I$dirindex"]) && $_POST["DIR2I$dirindex"]) {
+            if (isset($_REQUEST["DIR2I$dirindex"]) && $_REQUEST["DIR2I$dirindex"]) {
               // Need to stack these and do in reverse order
               $DeleteStack[] = $path;
               echo htmlspec($path) . " Has been stacked for deletion<br>";
@@ -224,7 +224,7 @@ function Scan_Documents($Act) {
         break;
         
       case 3: // Fix selected - Files master
-        if (isset($_POST["DIR3I$d"]) && $_POST["DIR3I$d"]) {
+        if (isset($_REQUEST["DIR3I$d"]) && $_REQUEST["DIR3I$d"]) {
           $Doc['State'] = 1;
           Put_DocInfo($Doc,1);
           echo "$fullpath has been removed from the database<br>";         
@@ -232,7 +232,7 @@ function Scan_Documents($Act) {
         break;
         
       case 4: // Fix selected - Database master - Not written yet dir to be created
-        if (isset($_POST["DIR3I$d"]) && $_POST["DIR3I$d"]) {
+        if (isset($_REQUEST["DIR3I$d"]) && $_REQUEST["DIR3I$d"]) {
           echo "It is not meaningful to make $fullpath<br>";
         }       
         break;
@@ -252,7 +252,7 @@ function Scan_Documents($Act) {
         break;
         
       case 3: // Fix selected - Files master
-        if (isset($_POST["DIR3IA$d"]) && $_POST["DIR3IA$d"]) {
+        if (isset($_REQUEST["DIR3IA$d"]) && $_REQUEST["DIR3IA$d"]) {
           $Doc['State'] = 1;
           Put_DocInfo($Doc,1);
           echo "The database entry for $fullpath has been removed as it is a directory.<br>";
@@ -260,7 +260,7 @@ function Scan_Documents($Act) {
         break;
         
       case 4: // Fix selected - Database master - Not written yet dir to be created
-        if (isset($_POST["DIR3IA$d"]) && $_POST["DIR3IA$d"]) {
+        if (isset($_REQUEST["DIR3IA$d"]) && $_REQUEST["DIR3IA$d"]) {
           echo "It is not meaningful to make $fullpath - there is a directory of that name anyway<br>";
         }       
         break;
@@ -280,7 +280,7 @@ function Scan_Documents($Act) {
         break;
         
       case 3: // Fix selected - Files master
-        if (isset($_POST["DIR3IB$d"]) && $_POST["DIR3IB$d"]) {
+        if (isset($_REQUEST["DIR3IB$d"]) && $_REQUEST["DIR3IB$d"]) {
           $Doc['filesize'] = filesize($fullpath);
           Put_DocInfo($Doc,1);
           echo "Database updated with correct file size for $fullpath <br>";
@@ -288,7 +288,7 @@ function Scan_Documents($Act) {
         break;
         
       case 4: // Fix selected - Database master - Not meaning full
-        if (isset($_POST["DIR3IB$d"]) && $_POST["DIR3IB$d"]) {
+        if (isset($_REQUEST["DIR3IB$d"]) && $_REQUEST["DIR3IB$d"]) {
         }       
         break;
       }  
@@ -328,7 +328,7 @@ function Scan_Documents($Act) {
             break;
         
           case 3: // Fix selected - Files master - add to db
-            if (isset($_POST["DIR4I$fildex"]) && $_POST["DIR4I$fildex"]) {
+            if (isset($_REQUEST["DIR4I$fildex"]) && $_REQUEST["DIR4I$fildex"]) {
               $Docid = Doc_create($entry,$RevD[$dir],filesize($path)); 
               $RevDoc[$path]= $Docid;
               echo "$path has been added to the Database<br>";
@@ -336,7 +336,7 @@ function Scan_Documents($Act) {
           break;
         
          case 4: // Fix selected - Database master - delete file
-           if (isset($_POST["DIR4I$fildex"]) && $_POST["DIR4I$fildex"]) {
+           if (isset($_REQUEST["DIR4I$fildex"]) && $_REQUEST["DIR4I$fildex"]) {
              unlink($path);
              echo "Document $path has been deleted<br>";
            }       
@@ -368,12 +368,12 @@ function Scan_Documents($Act) {
   
   // Start Here
   
-  if (isset($_POST['FIXFI'])) Scan_Documents(3);
-  if (isset($_POST['FIXDB'])) Scan_Documents(4);
+  if (isset($_REQUEST['FIXFI'])) Scan_Documents(3);
+  if (isset($_REQUEST['FIXDB'])) Scan_Documents(4);
 
-  if (isset($_GET['SC'])) Scan_Documents(0);
-  if (isset($_GET['FI'])) Scan_Documents(1);
-  if (isset($_GET['DB'])) Scan_Documents(2);
+  if (isset($_REQUEST['SC'])) Scan_Documents(0);
+  if (isset($_REQUEST['FI'])) Scan_Documents(1);
+  if (isset($_REQUEST['DB'])) Scan_Documents(2);
     
 
   echo "<h2><a href=DirRebuild?SC>Re Scan</h2>\n";

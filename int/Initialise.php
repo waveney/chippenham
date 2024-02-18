@@ -38,17 +38,17 @@ function Create_Config() {
   global $CONF;
   if (Get_Config()) return;
   
-  if (!isset($_POST['dbase']) || !isset($_POST['user'])) {
+  if (!isset($_REQUEST['dbase']) || !isset($_REQUEST['user'])) {
     echo "Set up the database and user, with all privalages, so they can add and change the database later.<p>";
     
     echo "<html><head><title>Festival System Setup</title></head><body>";
     echo "<form method=post><div class=tablecont><table border>\n";
-    echo "<tr>" . fm_text("Host Name - usually localhost",$_POST,'host');
-    echo "<tr>" . fm_text("Database Name - must be unique to server",$_POST,'dbase');
-    echo "<tr>" . fm_text("Database User - Must be already setup, and be able to add, drop, update and create databases and tables",$_POST,'user');
-    echo "<tr>" . fm_text("Database Password (if any)",$_POST,'passwd');
-    echo "<tr>" . fm_text("Testing mode - blank for live, 1 for simple test (no emails), an email address to divert all emails too",$_POST,'testing');
-    echo "<tr>" . fm_text("Title Prefix - for test/stage/dev sites only",$_POST,'TitlePrefix');
+    echo "<tr>" . fm_text("Host Name - usually localhost",$_REQUEST,'host');
+    echo "<tr>" . fm_text("Database Name - must be unique to server",$_REQUEST,'dbase');
+    echo "<tr>" . fm_text("Database User - Must be already setup, and be able to add, drop, update and create databases and tables",$_REQUEST,'user');
+    echo "<tr>" . fm_text("Database Password (if any)",$_REQUEST,'passwd');
+    echo "<tr>" . fm_text("Testing mode - blank for live, 1 for simple test (no emails), an email address to divert all emails too",$_REQUEST,'testing');
+    echo "<tr>" . fm_text("Title Prefix - for test/stage/dev sites only",$_REQUEST,'TitlePrefix');
     echo "</table></div><input type=submit></form>\n";
     echo "</body></html>\n";
     exit;
@@ -64,24 +64,24 @@ function Create_Config() {
 ; comments start with ;
 
 ; host - usually localhost
-host=" . $_POST['host'] . "
+host=" . $_REQUEST['host'] . "
 
 ; username for the database
-user=" . $_POST['user'] . "
+user=" . $_REQUEST['user'] . "
 
 ; password for the database
-passwd='" . $_POST['passwd'] . "'
+passwd='" . $_REQUEST['passwd'] . "'
 
 ; database to be used
-dbase=" . $_POST['dbase'] . "
+dbase=" . $_REQUEST['dbase'] . "
 
 ; testing - if not set the system will send emails normally
 ; if it contains an @ it is treated as an email address to send all emails to
 ; otherwise no emails are sent
-testing='" . $_POST['testing'] . "'
+testing='" . $_REQUEST['testing'] . "'
 
 ; Title Prefix - prepended to Title string - useful for test environments
-TitlePrefix=" . $_POST['TitlePrefix'] . "
+TitlePrefix=" . $_REQUEST['TitlePrefix'] . "
 
 ; everything else is configured from with the festival software itself
 ";
@@ -504,9 +504,9 @@ function Check_Sysadmin() {
   if ($isasys) return;  // There is a sysadmin setup - skip
   
   echo "<form method=post><h2>Setup a sysadmin account</h2>";
-  echo "<div class=tablecont><table><tr>" . fm_text("Login",$_POST,'login');
-  echo "<tr>" . fm_text("Password",$_POST,'password');
-  echo "<tr>" . fm_text("Full Name",$_POST,'SN');
+  echo "<div class=tablecont><table><tr>" . fm_text("Login",$_REQUEST,'login');
+  echo "<tr>" . fm_text("Password",$_REQUEST,'password');
+  echo "<tr>" . fm_text("Full Name",$_REQUEST,'SN');
   echo "</table><div><p>";
   echo "<input type=submit name=SETUPSYS value=SETUP>";
   exit;
@@ -523,7 +523,7 @@ function Setup_Sysadmin() {
   if ($Users) foreach($Users as $U) if ($U['AccessLevel'] == $Access_Type['SysAdmin']) $isasys = 1;
   if ($isasys) return;  // There is a sysadmin setup - skip
 
-  $user = ['Login'=>$_POST['login'], 'AccessLevel'=> $Access_Type['SysAdmin'], 'password'=> crypt($_POST['password'],"WM"), 'SN'=>$_POST['SN']];
+  $user = ['Login'=>$_REQUEST['login'], 'AccessLevel'=> $Access_Type['SysAdmin'], 'password'=> crypt($_REQUEST['password'],"WM"), 'SN'=>$_REQUEST['SN']];
   $userid = Insert_db('FestUsers',$user,$ans);
   echo "SysAdmin setup.<p>";
   $ans['UserId'] = $userid;
@@ -543,7 +543,7 @@ function Setup_Map_Data() {
   
 }
 
-if (isset($_POST['SETUPSYS'])) {
+if (isset($_REQUEST['SETUPSYS'])) {
   include_once("fest.php");
   Setup_Sysadmin();
 } else {

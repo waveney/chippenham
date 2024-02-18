@@ -3,11 +3,11 @@
 include_once("fest.php");
 include_once("TradeLib.php");
 
-$Tid = $_GET['I'];
-$Action = $_GET['A'];
+$Tid = $_REQUEST['I'];
+$Action = $_REQUEST['A'];
 
 //echo "In Setfields";
-//var_dump($_GET);
+//var_dump($_REQUEST);
 
 switch ($Action) {
 

@@ -112,20 +112,20 @@ function Image_Cache_Update_POST(&$Datas,$field='Photo',$path='') {
   foreach ($Datas as $Data) {
     $id = $Data['id'];
     $fld = $field . $id;
-    if (isset($_POST[$fld])) {
-      $Cur = $_POST[$fld];
+    if (isset($_REQUEST[$fld])) {
+      $Cur = $_REQUEST[$fld];
       if ($Cur) {
         preg_match('/\.(jpg|jpeg|gif|png)/i',$Cur,$mtch);
 
         if ($mtch) {
           $sfx = $mtch[1];
           $loc = "$path/$id.$sfx"; 
-          $res = Localise_Image($Cur,$_POST, $loc, $fld);
+          $res = Localise_Image($Cur,$_REQUEST, $loc, $fld);
         } else {
           $sfx = Find_Hidden_Image_Type($Cur);
           if ($sfx) {
             $loc = "$path/$id.$sfx"; 
-            $res = Localise_Image($Cur,$_POST,$loc, $fld);
+            $res = Localise_Image($Cur,$_REQUEST,$loc, $fld);
           }
         }        
       }

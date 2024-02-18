@@ -8,7 +8,7 @@
   global $YEAR;
 
   $snum=0;
-  if (isset($_GET['sidenum'])) $snum = $_GET['sidenum'];
+  if (isset($_REQUEST['sidenum'])) $snum = $_REQUEST['sidenum'];
 
   $Side = Get_Side($snum);
   $ctype = ($Side['IsAnAct']?1:0);
@@ -18,7 +18,7 @@
   $IssNum = $Sidey['Contracts']; 
   if ($Sidey['YearState'] == $Book_State['Contract Signed']) $Opt += 1;
   if ($Sidey['Contracts']) $Opt +=2;
-  if (isset($_GET{'I'})) { $IssNum = $_GET['I']; $Opt += 4; }
+  if (isset($_REQUEST{'I'})) { $IssNum = $_REQUEST['I']; $Opt += 4; }
 
   switch ($Opt) {
   case 0:

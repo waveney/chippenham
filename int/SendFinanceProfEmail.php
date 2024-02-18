@@ -13,12 +13,12 @@ $id = $_REQUEST['id'];
 
 $inv = Get_Invoice($id);
 $subject = Feature('FestName') . " $PLANYEAR and " . $inv['BZ'];
-$Mess = (isset($_POST['Message'])?$_POST['Message']:$inv['CoverNote']);
+$Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:$inv['CoverNote']);
 $inv['CoverNote'] = $Mess;
 
-if (isset($_POST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
+if (isset($_REQUEST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
 
-if (isset($_POST['SEND'])) {
+if (isset($_REQUEST['SEND'])) {
   $too = [['to',$inv['Email'],$Side['Contact']],
           ['from','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance'],
           ['replyto','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance']];
@@ -30,13 +30,13 @@ if (isset($_POST['SEND'])) {
   exit;
 }
 
-if (isset($_POST['SAVE'])) {
+if (isset($_REQUEST['SAVE'])) {
   Put_Invoice($inv);
 }
 
 dominimalhead("Email for " . $inv['BZ'],["css/festconstyle.css"]);
 echo "<h2>Email for " . $inv['BZ'] . " - " . $inv['Contact'] . "</h2>";
-if (isset($_POST['PREVIEW'])) {
+if (isset($_REQUEST['PREVIEW'])) {
   echo "<p><h3>Preview...</h2>";
   $MessP = $Mess;
   Parse_Proforma($MessP,$helper='Invoice_Email_Details',$inv);

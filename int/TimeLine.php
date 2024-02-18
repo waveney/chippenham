@@ -50,8 +50,8 @@ Coming ...
   }
 //var_dump($All[3]);
 
-  if (isset($_POST['ACTION'])) {
-    if ($_POST['ACTION'] == "Copy Recuring to $PLANYEAR") {
+  if (isset($_REQUEST['ACTION'])) {
+    if ($_REQUEST['ACTION'] == "Copy Recuring to $PLANYEAR") {
       $res = $db->query("SELECT * FROM TimeLine WHERE Recuring=1 AND NextYearId=0 AND Year='$YEAR' AND Progress>=0 ");
       if ($res) while ($tl = $res->fetch_assoc()) {
         $Ntl = $tl;
@@ -69,12 +69,12 @@ Coming ...
         Put_TLent($tl);
       }
     } else {
-      foreach ($_POST as $f=>$v) {
+      foreach ($_REQUEST as $f=>$v) {
         if (preg_match('/E(\d*)/',$f,$res)) {
           $tl=$res[1];
           $tle = Get_TLent($tl);
 
-          switch ($_POST['ACTION']) {
+          switch ($_REQUEST['ACTION']) {
             case 'Cancel':
               $tle['Progress'] = -1;
               $tle['History'] .= " Cancelled by " . $USER['Login'] . " on " . date('d/m/Y');
@@ -85,7 +85,7 @@ Coming ...
               $tle['History'] .= " Completed by " . $USER['Login'] . " on " . date('d/m/Y');
               break;
             case 'Re Assign to':
-              $tle['Assigned'] = $_POST['ReAssign'];
+              $tle['Assigned'] = $_REQUEST['ReAssign'];
               $tle['History'] .= " Reassign to " . $AllActive[$tle['Assigned']] . " by " . $USER['Login'] . " on " . date('d/m/Y');
               break;
             case 'Set Recuring':
@@ -113,7 +113,7 @@ Coming ...
     }
   }
 
-  $V = isset($_GET['V'])? $_GET['V'] : "";
+  $V = isset($_REQUEST['V'])? $_REQUEST['V'] : "";
 /*  switch ($V) {
     case 'OPEN': echo "- All Open Tasks"; break;
     case 'ALL': echo "- All Tasks"; break;
@@ -217,7 +217,7 @@ Coming ...
       echo "Selected: <input type=Submit name=ACTION value=Cancel " .
            " onClick=\"javascript:return confirm('are you sure you want to cancel these?');\">, "; 
       echo "<input type=Submit name=ACTION value='Completed'>, ";
-      echo "<input type=Submit name=ACTION value='Re Assign to'>: " . fm_select($AllActive,$_POST,'ReAssign',1);
+      echo "<input type=Submit name=ACTION value='Re Assign to'>: " . fm_select($AllActive,$_REQUEST,'ReAssign',1);
       echo "<input type=Submit name=ACTION value='Copy to $PLANYEAR' class=FullD hidden> ";
       echo "<input type=Submit name=ACTION value='Set Recuring' class=FullD hidden> ";
 

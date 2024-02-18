@@ -6,17 +6,16 @@
   include_once("NewProgramLib.php");
 
   $Cond = 0;
-  if (isset($_GET['Cond'])) $Cond = $_GET['Cond'];
-  if (isset($_POST['Cond'])) $Cond = $_POST['Cond'];
+  if (isset($_REQUEST['Cond'])) $Cond = $_REQUEST['Cond'];
 
   $day = "All";
-  if (isset($_GET['Day'])) $day = $_GET['Day'];
+  if (isset($_REQUEST['Day'])) $day = $_REQUEST['Day'];
 
   $head = 1;
-  if (isset($_GET['Head'])) $head = $_GET['Head'];
+  if (isset($_REQUEST['Head'])) $head = $_REQUEST['Head'];
 
   $Public='';
-  if (isset($_GET['Pub'])) $Public=1;
+  if (isset($_REQUEST['Pub'])) $Public=1;
 
   Prog_Headers($Public,$head,'Music');
   if ($day != 'Fri') {

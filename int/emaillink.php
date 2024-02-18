@@ -4,9 +4,9 @@
   include_once("DanceLib.php");
   global $USER,$USERID;
 
-  $id = $_GET['id'];
-  $x = (isset($_GET['x']) ? $_GET['x'] : '');
-  $t = (isset($_GET['t']) ? $_GET['t'] : 'Side');
+  $id = $_REQUEST['id'];
+  $x = (isset($_REQUEST['x']) ? $_REQUEST['x'] : '');
+  $t = (isset($_REQUEST['t']) ? $_REQUEST['t'] : 'Side');
 
   $data = Get_Side($id);
 

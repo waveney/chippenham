@@ -3,9 +3,9 @@
 include_once("fest.php");
 include_once("VolLib.php");
 
-$id = $_GET['id'];
-$Action = $_GET['A'];
-$Catid = $_GET['Catid'];
+$id = $_REQUEST['id'];
+$Action = $_REQUEST['A'];
+$Catid = $_REQUEST['Catid'];
 
 
 

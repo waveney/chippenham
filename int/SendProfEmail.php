@@ -46,21 +46,21 @@ if (isset($_REQUEST['REEDIT'])) {
   $Side = Get_Side($id);
   $Sidey = Get_SideYear($id);
   $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
-  $Mess = (isset($_POST['Message'])?$_POST['Message']:(Get_Email_Proforma($proforma))['Body']);
+  $Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:(Get_Email_Proforma($proforma))['Body']);
   $To = $Side['Email'];
   if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
     $To = $Side[$_REQUEST['E']];
   }
 
-  if (isset($_POST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
+  if (isset($_REQUEST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
 
-  if (isset($_POST['SEND'])) {
+  if (isset($_REQUEST['SEND'])) {
     $DanceEmailsFrom = Feature('DanceEmailsFrom','Dance');
     $too = [['to',$To,$Side['Contact']],
             ['from',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom],
             ['replyto',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom]];
-    if ($_POST['CCs']) {
-      $CCs = explode("\n",$_POST['CCs']);
+    if ($_REQUEST['CCs']) {
+      $CCs = explode("\n",$_REQUEST['CCs']);
       foreach ($CCs as $CC) {
         if (!strstr($CC,'@')) continue;
         Clean_Email($CC);
@@ -99,7 +99,7 @@ dominimalhead("Email for " . $Side['SN'],["css/festconstyle.css"]);
 Replace_Help('Dance',1);
 
 echo "<h2>Email for " . $Side['SN'] . " - " . $Side['Contact'] . "</h2>";
-if (isset($_POST['PREVIEW'])) {
+if (isset($_REQUEST['PREVIEW'])) {
   echo "<p><h3>Preview...</h2>";
   $MessP = $Mess;
   Parse_Proforma($MessP,$helper='Dance_Email_Details',[$Side,$Sidey],1);
@@ -109,7 +109,7 @@ echo "<h3>Edit the message below, then click Preview, Send or Cancel</h3>";
 echo "Put &lt;p&gt; for paras, &lt;br&gt; for line break, &lt;b&gt;<b>Bold</b>&lt;/b&gt;, &amp;amp; for &amp;, &amp;pound; for &pound; <p> ";
 
 echo "<form method=post>" . fm_hidden('id',$id) . fm_hidden('L',$label);
-echo fm_textarea("CC",$_POST,'CCs',6,1); 
+echo fm_textarea("CC",$_REQUEST,'CCs',6,1); 
 if (isset($Atts) && $Atts) {
   echo " Attached: ";
   foreach ($Atts as $A) {

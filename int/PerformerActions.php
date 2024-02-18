@@ -10,7 +10,7 @@
   include_once("Email.php"); 
 
 
-  $Type = (isset($_GET['T'])? $_GET['T'] : 'M' );
+  $Type = (isset($_REQUEST['T'])? $_REQUEST['T'] : 'M' );
   if ($Type == 'Z') {
     $TypeSel = " IsASide=0 AND IsAnAct=0 AND IsFunny=0 AND IsFamily=0 AND IsCeilidh=0 AND IsOther=0 ";
     $Perf = "Uncategorised performers";

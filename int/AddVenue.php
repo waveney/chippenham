@@ -14,30 +14,30 @@
 
   echo "<div class='content'><h2>Add/Edit Venues</h2>\n";
   echo "<form method=post action='AddVenue'>\n";
-  if (isset($_POST['VenueId'])) { /* Response to update button */
-    $vid = $_POST['VenueId'];
+  if (isset($_REQUEST['VenueId'])) { /* Response to update button */
+    $vid = $_REQUEST['VenueId'];
     if ($vid > 0) {                                 // existing Venue
       $Venue = Get_Venue($vid);
       Update_db_post('Venues',$Venue);
     } else { /* New */
       $proc = 1;
-      if (empty($_POST['SN'])) {
+      if (empty($_REQUEST['SN'])) {
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $proc = 0;
       }
-      $_POST['AccessKey'] = rand_string(40);
+      $_REQUEST['AccessKey'] = rand_string(40);
       $vid = Insert_db_post('Venues',$Venue,$proc);
     }
     Update_MapPoints(); 
-  } elseif (isset($_GET['v'])) {
-    $vid = $_GET['v'];
+  } elseif (isset($_REQUEST['v'])) {
+    $vid = $_REQUEST['v'];
     $Venue = Get_Venue($vid);
-  } elseif (isset($_GET['Copy'])) {
-    $cvid = $_GET['Copy'];
+  } elseif (isset($_REQUEST['Copy'])) {
+    $cvid = $_REQUEST['Copy'];
     $Venue = Get_Venue($cvid);
     $vid = -1;
-  } elseif (isset($_GET['Delete'])) {
-    $cvid = $_GET['Delete'];
+  } elseif (isset($_REQUEST['Delete'])) {
+    $cvid = $_REQUEST['Delete'];
     db_delete("Venues",$cvid);
     echo "Venue Deleted.";
     dotail();

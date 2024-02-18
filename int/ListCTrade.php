@@ -7,7 +7,7 @@
   global $YEAR,$PLANYEAR,$Trade_States,$Trade_State_Colours,$Trade_State,$TS_Actions,$ButAdmin,$AdminExtra,$TradeLocData;
   include_once("TradeLib.php");
 
-  $Sum = isset($_GET['SUM']);
+  $Sum = isset($_REQUEST['SUM']);
   if ($Sum) {
     echo "<h2>Traders Summary $YEAR</h2>\n";
   } else {
@@ -41,24 +41,24 @@
   $PowerTypes[0] = '';
   foreach ($TradePowers as $TP) $PowerTypes[$TP['id']] = $TP['Name'];
 
-  if (isset($_GET['ACTION'])) {
-    $Tid = $_GET['id'];
+  if (isset($_REQUEST['ACTION'])) {
+    $Tid = $_REQUEST['id'];
     $Trady = Get_Trade_Year($Tid,$YEAR);
     $Trad = Get_Trader($Tid);
-    Trade_Action($_GET['ACTION'],$Trad,$Trady,1);
+    Trade_Action($_REQUEST['ACTION'],$Trad,$Trady,1);
   }
 
-  if (isset($_GET['INC'])) {
+  if (isset($_REQUEST['INC'])) {
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Not Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&SUB>Include Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a>, </h2>";
     $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' ORDER BY SN";
-  } else if (isset($_GET['SUB'])) { 
+  } else if (isset($_REQUEST['SUB'])) { 
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a> </h2>";
     $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>=" . 
            $Trade_State['Submitted'] . " ORDER BY SN";  
-  } else if (isset($_GET['ONLY'])) { 
+  } else if (isset($_REQUEST['ONLY'])) { 
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Submitted</a> </h2>";
     $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState=" . 
            $Trade_State['Submitted'] . " ORDER BY SN";  
@@ -288,7 +288,7 @@
 
   if (!$Sum && isset($str)) echo $str;
 
-  if (!isset($_GET['ONLY'])) {
+  if (!isset($_REQUEST['ONLY'])) {
     echo "<p><div class=Scrolltable><table border id=narrowtable><tr><td>Type<td>Received<td>Total Accept<td>Total inc Quoted<td>Details\n";
     foreach ($Trade_Types as $t) {
       if (isset($TrMon[$t['id']]) && $TrMon[$t['id']]) {

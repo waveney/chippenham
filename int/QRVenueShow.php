@@ -104,7 +104,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   if ($Poster) {
     doheadpart("Venue Details",["js/qrcode.js","css/festconstyle.css"]);
     echo "</head><body>\n";
-    $Pictures = (isset($_POST['Pics']) && ($_POST['Pics'] == 'on'));
+    $Pictures = (isset($_REQUEST['Pics']) && ($_REQUEST['Pics'] == 'on'));
     echo "<div id=Poster>"; 
     echo "<center>";
     echo "<h2 class=subtitle id=Postertitle>";
@@ -215,7 +215,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 
   $xtr = $Mode?'':"AND (e.Public=1 OR (e.Type=t.ETypeNo AND t.State>1 AND e.Public<2 )) AND t.Public=1 ";
   if ($Poster) {
-    if ($_POST['DAYS'] >0 ) $xtr .= " AND Day=" . $_POST['DAYS'];
+    if ($_REQUEST['DAYS'] >0 ) $xtr .= " AND Day=" . $_REQUEST['DAYS'];
   }
 
   $VenList[] = $V;

@@ -4,7 +4,7 @@
   include_once("Email.php");
 
   $csv = 0;
-  if (isset($_GET['F'])) $csv = $_GET['F'];
+  if (isset($_REQUEST['F'])) $csv = $_REQUEST['F'];
 
   dostaffhead("Mailing List Management",["/js/Volunteers.js","js/dropzone.js","css/dropzone.css",'/js/InviteThings.js' ]);
  

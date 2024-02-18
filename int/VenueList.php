@@ -7,7 +7,7 @@
   $yn = array('','Y');
   include_once("ProgLib.php");
   include_once("DanceLib.php");
-  $venues = ((isset($_GET['ALL'])) ? Get_Venues(1) : Get_AVenues(1));
+  $venues = ((isset($_REQUEST['ALL'])) ? Get_Venues(1) : Get_AVenues(1));
   $VYear = Gen_Get_Cond('VenueYear',"Year=$YEAR");
   if ($VYear) foreach($VYear as $VY) {
     $Spid = $VY['SponsoredBy'];
@@ -20,7 +20,7 @@
     $venues[$VY['VenueId']]['QRCount'] = ($VYear['QRCount'] ?? 0);
   }
 
-  if (!isset($_GET['ALL'])) echo "<h2>Click <a href=VenueList?ALL>All</a> to see not in use Venues</h2>";
+  if (!isset($_REQUEST['ALL'])) echo "<h2>Click <a href=VenueList?ALL>All</a> to see not in use Venues</h2>";
   $edit = Access('Staff','Venues');
   $coln = 0;
   echo "<div class=Scrolltable><table id=indextable border>\n";

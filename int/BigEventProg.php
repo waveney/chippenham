@@ -10,14 +10,14 @@
 //  include_once("PartLib.php");
   global $YEAR,$SelectPerf,$Sides,$Order,$things;
 
-  if (isset($_GET['e'])) { $Eid = $_GET['e']; } else { Error_Page('Big Event without Event'); };
+  if (isset($_REQUEST['e'])) { $Eid = $_REQUEST['e']; } else { Error_Page('Big Event without Event'); };
   $Event = Get_Event($Eid);
   if (!$Event['BigEvent']) Error_Page('Not A Big Event');
   $DAY = $Event['Day'];
   $Day = DayList($DAY);
   $YEAR = $Event['Year'];
 
-  if (!isset($_GET['EInfo'])) $_GET['EInfo'] = 0;
+  if (!isset($_REQUEST['EInfo'])) $_REQUEST['EInfo'] = 0;
   $extra = $extra2 = '';
   if (Feature("Procession") && (preg_match('/' . Feature("Procession") . '/',$Event['SN']))) {
     $extra = " AND y.Procession$Day=1 AND y.$Day=1";
@@ -129,7 +129,7 @@ function Controls() {
   echo "<form method=get action=BigEventProg>";
   echo fm_hidden('EV',$Eid);
   echo "<table>";
-  echo "<tr>" . fm_radio("Info",$InfoLevels,$_GET,'EInfo',"onchange=UpdateInfo()");
+  echo "<tr>" . fm_radio("Info",$InfoLevels,$_REQUEST,'EInfo',"onchange=UpdateInfo()");
   echo "</table></form>\n";
   echo "<h2><a href=Staff>Main Page</a></h2></center>";
   echo "</div>\n";
@@ -138,7 +138,7 @@ function Controls() {
 include_once ("CheckDance.php");
 function ErrorPane() {
   echo "<div class=ErrorWrapper><div class=ErrorContainer id=InformationPane>";
-  CheckDance($_GET['EInfo']);
+  CheckDance($_REQUEST['EInfo']);
   echo "</div></div>\n";
 }
 

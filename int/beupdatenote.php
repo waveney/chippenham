@@ -19,10 +19,10 @@
 
   include_once("fest.php");
 
-  if (isset($_GET['D'])) {
-    $dstId = $_GET['D'];  
-    $note = $_GET['N'];  
-    $Ev   = $_GET['EV'];
+  if (isset($_REQUEST['D'])) {
+    $dstId = $_REQUEST['D'];  
+    $note = $_REQUEST['N'];  
+    $Ev   = $_REQUEST['EV'];
 
     preg_match('/(.)(\d*):(.*):(\d*)/',$dstId,$dstmtch);
 

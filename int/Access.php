@@ -10,12 +10,12 @@
   include_once("ProgLib.php");
   include_once("VolLib.php");
 
-  if ( !isset($_GET['i']) || !isset($_GET['k']) || !isset($_GET['t'])) Error_Page("Invalid link"); // No return
+  if ( !isset($_REQUEST['i']) || !isset($_REQUEST['k']) || !isset($_REQUEST['t'])) Error_Page("Invalid link"); // No return
 
-  $id = $_GET['i'];
-  $key = $_GET['k'];
-  $t = $_GET['t'];
-  if (isset($_REQUEST['TB'])) $_POST['TICKBOX'] = $_REQUEST['TB'];
+  $id = $_REQUEST['i'];
+  $key = $_REQUEST['k'];
+  $t = $_REQUEST['t'];
+  if (isset($_REQUEST['TB'])) $_REQUEST['TICKBOX'] = $_REQUEST['TB'];
 
 // Hacking prevention
   if (strlen($id)>6 || strlen($key)!=40 || strlen($t)>6 || preg_match('/[^A-Z]/',$key) || !is_numeric($id) ) {
@@ -85,7 +85,7 @@
   $USER['Subtype'] = $CakeTypes[$t];
   $USER['UserId'] = $USERID = $id;
 
-  $_GET['id'] = $id;
+  $_REQUEST['id'] = $id;
   if ($DoHead[$t]) dostaffhead($CakeTypes[$t],["/js/clipboard.min.js", "/js/emailclick.js", "/js/Participants.js","js/dropzone.js","css/dropzone.css"]);
   include_once($includes[$t]); // Should not return
   dotail();

@@ -323,7 +323,7 @@ function Photo_Show() {
 
     echo "<input type=submit name=ACTION value='Rotate'>";
     if ($PM_Data['Mode']) {  
-      echo fm_select($Shapes,$_POST,'Shape') . " " . "<input type=submit name=ACTION value='Set Crop Shape'>";
+      echo fm_select($Shapes,$_REQUEST,'Shape') . " " . "<input type=submit name=ACTION value='Set Crop Shape'>";
       // Add Selection tools if allowed
     }
   echo "</div>";

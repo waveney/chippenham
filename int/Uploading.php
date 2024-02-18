@@ -7,13 +7,13 @@ include_once("ViewLib.php");
 function Upload_Init($Dir='',$SubDir='') {
   global $YEAR,$Side,$Sidey,$Put,$Puty,$snum;
 
-//var_dump($_POST);
+//var_dump($_REQUEST);
 
 // NEED TO MAKE THIS WORK FOR TRADE
 
 // echo "Upload Init $Dir<p>";
   if ($Dir == '' || $Dir == 'Side' || $Dir == 'Act' || $Dir == 'Other' || $Dir == 'Sides' || $Dir == 'Acts' || $Dir == 'Others' || $Dir == 'Perf') {
-    $snum = $_POST['Id'];
+    $snum = $_REQUEST['Id'];
     $Side = Get_Side($snum);
     if ($SubDir) {
       $Side = Get_Overlay($Side,$SubDir);
@@ -25,14 +25,14 @@ function Upload_Init($Dir='',$SubDir='') {
       $Puty = 'Put_SideYear';
     }
   } else if ($Dir == 'Trade') {
-    $snum = $_POST['Tid'];
+    $snum = $_REQUEST['Tid'];
     $type = 'Trade';
     $Side = Get_Trader($snum);
     $Sidey = Get_Trade_Year($snum,$YEAR);
     $Puty = 'Put_Trade_Year';
     $Put = 'Put_Trader';
   } else if ($Dir == 'News') {
-    $snum = $_POST['id'];
+    $snum = $_REQUEST['id'];
     $type = 'News';
     $Side = Get_News($snum);
     $Put = 'Put_News';
@@ -82,7 +82,7 @@ function Upload_Insurance($Dir='Sides') {
   } else {
     if (move_uploaded_file($_FILES["InsuranceForm"]["tmp_name"], $target_file)) {
       $Sidey['Insurance'] = 1;
-      $_POST['Insurance'] = 1;
+      $_REQUEST['Insurance'] = 1;
       if ($Puty($Sidey)) {
         return "The Insurance file ". basename( $_FILES["InsuranceForm"]["name"]). " has been uploaded.";
       } else {
@@ -132,11 +132,11 @@ function Upload_Image($Dir='Sides',$fld) {
       } 
       if ($Side) {
         if (isset($Side[$fld]) && $Side[$fld] == "/" . $target_file) {
-          $Side[$fld] = $_POST[$fld] = "/" . $target_file . "?" . rand();
+          $Side[$fld] = $_REQUEST[$fld] = "/" . $target_file . "?" . rand();
           $Put($Side);
           return "The photo has been replaced by ". basename( $_FILES["PhotoForm"]["name"]) ;
         } else {
-          $Side[$fld] = $_POST[$fld] = "/" . $target_file . "?" . rand();
+          $Side[$fld] = $_REQUEST[$fld] = "/" . $target_file . "?" . rand();
           if ($Put($Side)) {
             return "The file ". basename( $_FILES["PhotoForm"]["name"]). " has been uploaded.";
           } else {

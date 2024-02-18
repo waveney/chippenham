@@ -9,7 +9,7 @@
   include_once("Uploading.php");
   include_once("DateTime.php");
    
-//var_dump($_POST);
+//var_dump($_REQUEST);
   $Dates = array('StartDate','StopDate','RestartDate');
   
   if (isset($_REQUEST['ACTION'])) { /* Response to create/update button */
@@ -29,8 +29,8 @@
         $stuff = getimagesize($img);
       }
       if ($stuff) {
-        $_POST['ImageWidth'] = $stuff[0];
-        $_POST['ImageHeight'] = $stuff[1];
+        $_REQUEST['ImageWidth'] = $stuff[0];
+        $_REQUEST['ImageHeight'] = $stuff[1];
       }
     }
 
@@ -53,9 +53,9 @@
     } elseif ($_REQUEST['ACTION'] == 'COPY') {
       $id = $_REQUEST['id'];
       $Art = Get_Article($id);
-      $_POST['StartDate'] = time()+7*24*3600;
+      $_REQUEST['StartDate'] = time()+7*24*3600;
       unset($Art['id']);
-      $_POST['SN'] .= " COPY OF ";
+      $_REQUEST['SN'] .= " COPY OF ";
       $id = Insert_db_post('Articles',$Art);
     } elseif ($_REQUEST['ACTION'] == 'DELETE') {
       $id = $_REQUEST['id'];
@@ -66,10 +66,10 @@
       $Art = Get_Article($id);
       Update_db_post('Articles',$Art);
       $Art['StopDate'] = 0;
-      $Art['StartDate'] = (isset($_POST['RestartDate'])?$_POST['RestartDate']:0);
+      $Art['StartDate'] = (isset($_REQUEST['RestartDate'])?$_REQUEST['RestartDate']:0);
       Put_Article($Art);
     } elseif ($_REQUEST['ACTION'] == 'CREATE') {
-      if (empty($_POST['StartDate'])) $_POST['StartDate'] = time()+7*24*3600;    
+      if (empty($_REQUEST['StartDate'])) $_REQUEST['StartDate'] = time()+7*24*3600;    
       $id = Insert_db_post('Articles',$Art);
     } 
   } elseif (isset($_REQUEST['id'])) {

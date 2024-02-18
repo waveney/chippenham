@@ -64,7 +64,6 @@ function Get_BandMember($mid) {
 }
 
 function Put_BandMember($memb) {
-  global $db;
   $cur = Get_BandMember($memb['BandMemId']);
   Update_db('BandMembers',$cur,$memb);
 }
@@ -80,12 +79,12 @@ function UpdateBand($id) {
 //  echo "UpdateBand Called...";
 //var_dump(debug_backtrace());
 //  var_dump($CurBand);
-//  var_dump($_POST);
+//  var_dump($_REQUEST);
 // Updates
   $bi = 0;
   if ($CurBand) foreach ($CurBand as $b) {
-    if (isset($_POST["BandMember$bi:" . $b['BandMemId']]) && ($b['SN'] != $_POST["BandMember$bi:" . $b['BandMemId']])) {
-      $b['SN'] = $_POST["BandMember$bi:" . $b['BandMemId']];
+    if (isset($_REQUEST["BandMember$bi:" . $b['BandMemId']]) && ($b['SN'] != $_REQUEST["BandMember$bi:" . $b['BandMemId']])) {
+      $b['SN'] = $_REQUEST["BandMember$bi:" . $b['BandMemId']];
       if ($b['SN']) {
         Put_BandMember($b);
       } else {
@@ -97,9 +96,9 @@ function UpdateBand($id) {
     $bi++;
   }
 // New Entries
-  foreach(array_keys($_POST) as $idx) {
+  foreach(array_keys($_REQUEST) as $idx) {
     if (preg_match('/BandMember\d+:0/',$idx)) {
-      if (strlen($_POST[$idx])) Add_BandMember($id,$_POST[$idx]);
+      if (strlen($_REQUEST[$idx])) Add_BandMember($id,$_REQUEST[$idx]);
     }
   }
 
@@ -391,9 +390,9 @@ function Contract_Save(&$Side,&$Sidey,$Reason,$exist=0) {
   if (!empty($Cont)) {
     $IssNum = abs($Sidey['Contracts'])+ ($exist?0:1);// . "x$S.$Ret.$R.$Reason";
     if ($Reason < 0) $IssNum .= "D";
-    $_POST['Contracts'] = $IssNum;
-    $_POST['ContractDate'] = time();
-    $_POST['YearState'] = $Book_State['Contract Signed'];
+    $_REQUEST['Contracts'] = $IssNum;
+    $_REQUEST['ContractDate'] = time();
+    $_REQUEST['YearState'] = $Book_State['Contract Signed'];
     if (!file_exists("Contracts/$PLANYEAR")) mkdir("Contracts/$PLANYEAR",0775,true);
     file_put_contents("Contracts/$PLANYEAR/$snum.$IssNum.html",$Cont);
     exec("html2pdf Contracts/$PLANYEAR/$snum.$IssNum.html Contracts/$PLANYEAR/$snum.$IssNum.pdf");
@@ -404,10 +403,10 @@ function Contract_Save(&$Side,&$Sidey,$Reason,$exist=0) {
 
 function Contract_Decline($Side,$Sidey,$Reason) {
   global $PLANYEAR,$Book_State;
-  $Sidey['YearState'] = $_POST['YearState'] = $Book_State['Declined'];
+  $Sidey['YearState'] = $_REQUEST['YearState'] = $Book_State['Declined'];
   $Note = ", Contract Declined " . date('d/m/Y');
   $Sidey['PrivNotes'] .= $Note;
-  if (isset($_POST['PrivNotes'])) $_POST['PrivNotes'] .= $Note;
+  if (isset($_REQUEST['PrivNotes'])) $_REQUEST['PrivNotes'] .= $Note;
   put_SideYear($Sidey);
   return 1;
 }

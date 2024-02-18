@@ -9,13 +9,13 @@
 // If access then edit trader info
 // If not ask are you a previous trader -> give email to give direct edit link, if found otherwise new trader
 // else new Trader - note if new check old records...
-  if (isset($_GET['Email'])) {
-    $qry = "SELECT * FROM Trade WHERE Email LIKE '%" . $_GET['Email'] . "%' ORDER BY Tid DESC";
+  if (isset($_REQUEST['Email'])) {
+    $qry = "SELECT * FROM Trade WHERE Email LIKE '%" . $_REQUEST['Email'] . "%' ORDER BY Tid DESC";
     $res = $db->query($qry);
     if ($res->num_rows == 0) {
       echo "<h3>Sorry, that email address is not in the database.</h3>";
       echo "<form >";
-      echo "Try Again:" . fm_text1('',$_GET,'Email');
+      echo "Try Again:" . fm_text1('',$_REQUEST,'Email');
       echo "<input type=submit name=go value=Go>";
       echo "</form>\n";
       echo "Or<p>";
@@ -37,7 +37,7 @@
     exit;
   }
 
-  if (isset($_GET['NEW'])) {
+  if (isset($_REQUEST['NEW'])) {
     Trade_Main(0,'TraderPage',-1);
     dotail();
     exit;
@@ -49,7 +49,7 @@
   } else {
     echo "<h3>Have you filled in an application form for trading at the " . Feature('FestName') . "?</h3>";
     echo "<form >";
-    echo "If so please give your email address:" . fm_text1('',$_GET,'Email');
+    echo "If so please give your email address:" . fm_text1('',$_REQUEST,'Email');
     echo "<input type=submit name=go value=Go>";
     echo "</form>\n";
     echo "And we will email you a link to directly book again and/or edit your details.<p>";

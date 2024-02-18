@@ -4,7 +4,7 @@
   A_Check('Committee');
   $Manage = 0;
   if (Access('Committee','Finance')) $Manage = 1;
-  if (isset($_GET['VIEW'])) $Manage = 0;
+  if (isset($_REQUEST['VIEW'])) $Manage = 0;
 
   dostaffhead(($Manage?"Manage":"View") . " Budget Items");
 
@@ -21,7 +21,7 @@
   global $YEAR,$PLANYEAR,$BUDGET;
 
   echo "<h2>Manage Budget - $YEAR</h2>\n";
-  $_POST['Year0'] = $PLANYEAR;
+  $_REQUEST['Year0'] = $PLANYEAR;
   
   if (UpdateMany('BudgetAreas','Put_BudgetItem',$BUDGET)) $BUDGET = Get_Budget();
 

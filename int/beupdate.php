@@ -35,11 +35,11 @@ function RecordBeEventChanges($Ev) {
 
 
 
-//var_dump($_GET);
-  if (isset($_GET['D'])) {
-    $dstId = $_GET['D'];  
-    $srcId = $_GET['S'];  
-    $Ev   = $_GET['EV'];
+//var_dump($_REQUEST);
+  if (isset($_REQUEST['D'])) {
+    $dstId = $_REQUEST['D'];  
+    $srcId = $_REQUEST['S'];  
+    $Ev   = $_REQUEST['EV'];
   
     preg_match('/(.)(\d*):(.*):(\d*)/',$dstId,$dstmtch);
     preg_match('/(.)(\d*):(.*):(\d*)/',$srcId,$srcmtch);
@@ -99,6 +99,6 @@ function RecordBeEventChanges($Ev) {
   }
  // Return setup
    
-  $Ei    = $_GET['E'];  // Used for return info
+  $Ei    = $_REQUEST['E'];  // Used for return info
 //  echo "fred";
   CheckDance($Ei);

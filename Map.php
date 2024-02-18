@@ -14,7 +14,7 @@
   echo "<div id=map></div></div>";
   
   $Feat = 0;
-  if (isset($_GET['F'])) $Feat = $_GET['F'];
+  if (isset($_REQUEST['F'])) $Feat = $_REQUEST['F'];
 //  echo "<button class=PurpButton onclick=ShowDirect()>Directions</button> (From the " . Feature('DirectionDefault','Square') . " if it does not know your location)\n";
   Init_Map(-1,0,Feature('MapStartZoom',17),$Feat);
   echo "Zoom out to find " . Feature('FestHomeName','Wimborne') . 

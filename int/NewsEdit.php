@@ -12,9 +12,9 @@
   
   $Action = 0; 
   $Mess = '';
-  if (isset($_POST['Action'])) {
+  if (isset($_REQUEST['Action'])) {
     include_once("Uploading.php");
-    $Action = $_POST['Action'];
+    $Action = $_REQUEST['Action'];
     switch ($Action) {
     case 'Photo':
       $Mess = Upload_Image('News','image');
@@ -24,12 +24,12 @@
     }
   }
 
-  if (isset($_POST['id'])) {
-    $n = Get_News($_POST['id']);
-    $_POST['created'] = Date_BestGuess($_POST['created']);
+  if (isset($_REQUEST['id'])) {
+    $n = Get_News($_REQUEST['id']);
+    $_REQUEST['created'] = Date_BestGuess($_REQUEST['created']);
     Update_db_post('News',$n);
   } else {
-    $n = Get_News($_GET['n']);
+    $n = Get_News($_REQUEST['n']);
   }
 
   echo "<form method=post action=NewsEdit enctype='multipart/form-data' ><div class=tablecont><table border>\n";

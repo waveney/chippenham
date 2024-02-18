@@ -24,37 +24,37 @@
 
   echo "<div class='content'><h2>Add/Edit Time Line Items</h2>\n";
 
-  if (isset($_POST['TLid'])) { // Response to update button
-    $tl = $_POST['TLid'];
+  if (isset($_REQUEST['TLid'])) { // Response to update button
+    $tl = $_REQUEST['TLid'];
     if ($tl > 0) {
       $tle = Get_TLent($tl);
       $proc = 1;
-      if (isset($_POST['ACTION'])) {
-        $otl = Get_TLent($_POST['TLid']);
+      if (isset($_REQUEST['ACTION'])) {
+        $otl = Get_TLent($_REQUEST['TLid']);
         
-        switch ($_POST['ACTION']) {
+        switch ($_REQUEST['ACTION']) {
           case 'Completed':
-            $_POST['Progress'] = 100;
-            $_POST['Completed'] = $now;
-            $_POST['History'] .= " Completed by " . $USER['Login'] . " on " . date('d/m/Y');
+            $_REQUEST['Progress'] = 100;
+            $_REQUEST['Completed'] = $now;
+            $_REQUEST['History'] .= " Completed by " . $USER['Login'] . " on " . date('d/m/Y');
             break;
           case 'Re Open':
-            $_POST['Progress'] = (($otl['Progress']>50)?50:0);
-            $_POST['History'] .= " Re Opened by " . $USER['Login'] . " on " . date('d/m/Y');
+            $_REQUEST['Progress'] = (($otl['Progress']>50)?50:0);
+            $_REQUEST['History'] .= " Re Opened by " . $USER['Login'] . " on " . date('d/m/Y');
             break;
           case 'Cancel':
-            $_POST['Progress'] = -1;
-            $_POST['History'] .= " Cancelled by " . $USER['Login'] . " on " . date('d/m/Y');
+            $_REQUEST['Progress'] = -1;
+            $_REQUEST['History'] .= " Cancelled by " . $USER['Login'] . " on " . date('d/m/Y');
             break;
           case "Copy to $PLANYEAR":
-            $_POST['TLid'] = -1;
-            $_POST['Year'] = $PLANYEAR;
-            $_POST['Progress'] = 0;
-            $_POST['Created'] = $now;
-            $_POST['CreatedBy'] = $USERID;
-            $_POST['Start'] =  ((isset($_POST['Start']) && $_POST['Start']>0) ? strtotime(date("Y-m-d",$_POST['Start']) . " + 365 day") : $now);
-            $_POST['Due'] =  strtotime(date("Y-m-d", ((isset($_POST['Due']) && $_POST['Due'] > 0) ? $_POST['Due']: $now)) . " + 365 day");
-            $_POST['ProgText'] = $_POST['History'] = '';
+            $_REQUEST['TLid'] = -1;
+            $_REQUEST['Year'] = $PLANYEAR;
+            $_REQUEST['Progress'] = 0;
+            $_REQUEST['Created'] = $now;
+            $_REQUEST['CreatedBy'] = $USERID;
+            $_REQUEST['Start'] =  ((isset($_REQUEST['Start']) && $_REQUEST['Start']>0) ? strtotime(date("Y-m-d",$_REQUEST['Start']) . " + 365 day") : $now);
+            $_REQUEST['Due'] =  strtotime(date("Y-m-d", ((isset($_REQUEST['Due']) && $_REQUEST['Due'] > 0) ? $_REQUEST['Due']: $now)) . " + 365 day");
+            $_REQUEST['ProgText'] = $_REQUEST['History'] = '';
             $tl = Insert_db_post('TimeLine',$tle,$proc);
             $otl['NextYearId'] = $tl;
             Put_TLent($otl);
@@ -64,24 +64,24 @@
         }
       }
       if ($proc) {
-        $_POST['Start'] = Date_BestGuess($_POST['NewStart']);
-        $_POST['Due'] = Date_BestGuess($_POST['NewDue']);
+        $_REQUEST['Start'] = Date_BestGuess($_REQUEST['NewStart']);
+        $_REQUEST['Due'] = Date_BestGuess($_REQUEST['NewDue']);
         Update_db_post('TimeLine',$tle);
       }
     } else { // New
       $proc = 1;
-      $_POST['Created'] = $now;
-      $_POST['CreatedBy'] = $USERID;
-      $_POST['Start'] = Date_BestGuess($_POST['NewStart']);
-      $_POST['Due'] = Date_BestGuess($_POST['NewDue']);
-      if (!isset($_POST['Title'])  || strlen($_POST['Title']) < 2) { // 
+      $_REQUEST['Created'] = $now;
+      $_REQUEST['CreatedBy'] = $USERID;
+      $_REQUEST['Start'] = Date_BestGuess($_REQUEST['NewStart']);
+      $_REQUEST['Due'] = Date_BestGuess($_REQUEST['NewDue']);
+      if (!isset($_REQUEST['Title'])  || strlen($_REQUEST['Title']) < 2) { // 
         echo "<h2 class=ERR>NO TITLE GIVEN</h2>\n";
         $proc = 0;
       }
       $tl = Insert_db_post('TimeLine',$tle,$proc); 
     }
-  } elseif (isset($_GET['TLid'])) {
-    $tl = $_GET['TLid'];
+  } elseif (isset($_REQUEST['TLid'])) {
+    $tl = $_REQUEST['TLid'];
     $tle = Get_TLent($tl);
   } else {
     $tl = -1;

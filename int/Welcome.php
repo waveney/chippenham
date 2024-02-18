@@ -6,8 +6,8 @@
   include_once("UserLib.php");
   include_once("Email.php");
 
-  if (isset($_GET['U'])) {
-    $uid = $_GET['U'];
+  if (isset($_REQUEST['U'])) {
+    $uid = $_REQUEST['U'];
     $User = Get_User($uid);
 
     if (!$User['Email']) {

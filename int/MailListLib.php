@@ -100,11 +100,11 @@ function Email_Sub(&$Sub,$Message) {
 function MailFormFilled() {
   global $StatusMail;
   if (!isset($_REQUEST['id'])) {
-    Sanitise($_POST['Email'],'email');
-    Sanitise($_POST['FirstName']);
-    Sanitise($_POST['LastName']);
-    $_POST['SubmitTime'] = time();
-    $_POST['AccessKey'] = rand_string(40);
+    Sanitise($_REQUEST['Email'],'email');
+    Sanitise($_REQUEST['FirstName']);
+    Sanitise($_REQUEST['LastName']);
+    $_REQUEST['SubmitTime'] = time();
+    $_REQUEST['AccessKey'] = rand_string(40);
     $SubId = Insert_db_post('MailingListRequest',$Sub);
   } else {
     $SubId = $_REQUEST['id'];

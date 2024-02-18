@@ -3,11 +3,11 @@
 include_once("fest.php");
 include_once("VolLib.php");
 
-$id = $_GET['I'];
-$Opt = $_GET['O'];
+$id = $_REQUEST['I'];
+$Opt = $_REQUEST['O'];
 
 //echo "In Setfields";
-//var_dump($_GET);
+//var_dump($_REQUEST);
 
 switch ($Opt) {
 
@@ -30,9 +30,9 @@ case 'VC':
 case 'VYM':
   $VY = Get_Vol_Year($id);
   if (isset($VY['MessMap'])) {
-    $VY['MessMap'] .= $_GET['C'];
+    $VY['MessMap'] .= $_REQUEST['C'];
   } else {
-    $VY['MessMap'] = $_GET['C'];  
+    $VY['MessMap'] = $_REQUEST['C'];  
   }
   Put_Vol_Year($VY);
   echo $VY['MessMap'];

@@ -2,9 +2,9 @@
   include_once("fest.php");
   A_Check('Committee','Dance');
 
-  if (!isset($_GET['Lines'])) {
+  if (!isset($_REQUEST['Lines'])) {
     dostaffhead("Starting Label Offset");
-    echo "<form>" . fm_text("Starting Label Offset 0-7",$_GET,'Lines') . "</form>";
+    echo "<form>" . fm_text("Starting Label Offset 0-7",$_REQUEST,'Lines') . "</form>";
     dotail();
     exit;
   }
@@ -13,7 +13,7 @@
   include_once("DanceLib.php");
 
   $Lines = 0;
-  if (isset($_GET['Lines'])) $Lines = $_GET['Lines'];
+  if (isset($_REQUEST['Lines'])) $Lines = $_REQUEST['Lines'];
 
 /* 
   Select Sides to print

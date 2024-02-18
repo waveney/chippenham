@@ -649,25 +649,25 @@ function UpdateOverlaps($snum) {
   $Exist = Get_Overlaps_For($snum);
 
 //  for($i=1; $i<5; $i++) {
-//    $_POST["Side$i"] = $_POST["Perf" . $_POST["PerfType$i"] . "_Side$i"];
+//    $_REQUEST["Side$i"] = $_REQUEST["Perf" . $_REQUEST["PerfType$i"] . "_Side$i"];
 //  }  
 
 // Scan each existing and any added rules
   $Rule = 0;
   while (1) {
     $r = $Rule++;
-    if (!isset($_POST["Olap$r" . "Cat"])) break;
-    $cat = $_POST["Olap$r" . "Cat"];
-    $sid = $_POST["Perf$cat" . "_Side$r"];
+    if (!isset($_REQUEST["Olap$r" . "Cat"])) break;
+    $cat = $_REQUEST["Olap$r" . "Cat"];
+    $sid = $_REQUEST["Perf$cat" . "_Side$r"];
   
-    if (!$sid || !isset($_POST["OlapActive$r"]) || !isset($_POST["OlapMajor$r"])) continue;
+    if (!$sid || !isset($_REQUEST["OlapActive$r"]) || !isset($_REQUEST["OlapMajor$r"])) continue;
     $O = $StO = (isset($Exist[$r]) ? $Exist[$r] : ['Sid1'=>$snum,'Cat2'=>0]);
     $Other = ($O['Sid1'] == $snum)?'Sid2':'Sid1'; 
     $OtherCat = ($O['Sid1'] == $snum)?'Cat2':'Cat1';
-    $O['OType'] = $_POST["OlapType$r"];
-    $O['Major'] = (isset($_POST["OlapMajor$r"]) ? $_POST["OlapMajor$r"] :0);
-    $O['Days'] = $_POST["OlapDays$r"];
-    $O['Active'] = (isset($_POST["OlapActive$r"]) ? $_POST["OlapActive$r"] :0);
+    $O['OType'] = $_REQUEST["OlapType$r"];
+    $O['Major'] = (isset($_REQUEST["OlapMajor$r"]) ? $_REQUEST["OlapMajor$r"] :0);
+    $O['Days'] = $_REQUEST["OlapDays$r"];
+    $O['Active'] = (isset($_REQUEST["OlapActive$r"]) ? $_REQUEST["OlapActive$r"] :0);
     $O[$OtherCat] = $cat;
     $O[$Other] = $sid;
 

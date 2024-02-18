@@ -33,7 +33,7 @@ function EmailImp_Volunteer(&$vol,$messcat,$whoto) {
     echo "Test Only: <input type=checkbox name=TestFull checked><br>";
     echo "<input type=submit name=Import value=Import><br></form>\n";
   } else {
-    $TestOnly = $_POST['TestFull'] ?? 0;
+    $TestOnly = $_REQUEST['TestFull'] ?? 0;
     $F = fopen($_FILES["CSVfile"]["tmp_name"],"r");
     $headers = fgetcsv($F);
     foreach($headers as $i=>$d) $hindx[$d] = $i;

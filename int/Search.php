@@ -9,17 +9,17 @@
 */
   $table = 0;
   $lsted = array();
-  if (isset($_POST['Search'])) {
+  if (isset($_REQUEST['Search'])) {
     $xtr = '';
     $from = $until = '';
-    if ($_POST['Who']) $xtr = ' AND Who=' . $_POST['Who'];
-    if ($_POST['From']) $from = Extract_Date($_POST['From']);
-    if ($_POST['Until']) $until = Extract_Date($_POST['Until']);
-    $targ = $_POST['Target'];
-    if (isset($_POST['Titles']) || !isset($_POST['Cont'])) {
+    if ($_REQUEST['Who']) $xtr = ' AND Who=' . $_REQUEST['Who'];
+    if ($_REQUEST['From']) $from = Extract_Date($_REQUEST['From']);
+    if ($_REQUEST['Until']) $until = Extract_Date($_REQUEST['Until']);
+    $targ = $_REQUEST['Target'];
+    if (isset($_REQUEST['Titles']) || !isset($_REQUEST['Cont'])) {
       if ($from) $xtr .= " AND Created>$from ";
       if ($until) $xtr .= " AND Created<$until ";
-      if ($_POST['Search_Loc']) $xtr .= " AND Dir=" . $_POST['Search_Dir'];
+      if ($_REQUEST['Search_Loc']) $xtr .= " AND Dir=" . $_REQUEST['Search_Dir'];
       $qry = "SELECT * FROM Documents WHERE SN COLLATE UTF8_GENERAL_CI LIKE '%$targ%' $xtr";
       $res = $db->query($qry);
       if ($res && $res->num_rows) {
@@ -32,9 +32,9 @@
       }
     }
 
-    if (isset($_POST['Cont'])) {
-      if ($_POST['Search_Loc']) {
-        $path = Dir_FullPName($_POST['Search_Dir'],32);
+    if (isset($_REQUEST['Cont'])) {
+      if ($_REQUEST['Search_Loc']) {
+        $path = Dir_FullPName($_REQUEST['Search_Dir'],32);
         exec("grep -lir '" . $targ . "' Store/$path", $greplst);
       } else {
         exec("grep -lir '" . $targ . "' Store", $greplst);
@@ -44,7 +44,7 @@
           $doc = Find_Doc_For($file);
           if (!$doc) continue;
 //echo "from = $from until = $until now =" . time() . "doc= ". var_dump($doc) . "<P>";
-          if ($_POST['Who']) if ($doc['Who'] != $_POST['Who']) continue;
+          if ($_REQUEST['Who']) if ($doc['Who'] != $_REQUEST['Who']) continue;
           if ($from) if ($doc['Created'] < $from) continue;
           if ($until) if ($doc['Created'] > $until) continue;
           if (isset($lsted[$doc['DocId']])) continue;

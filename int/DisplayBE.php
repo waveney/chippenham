@@ -7,7 +7,7 @@
   include_once("MusicLib.php");
   global $YEAR;
 
-  if (isset($_GET['e'])) { $Eid = $_GET['e']; } else { Error_Page('Big Event without Event'); };
+  if (isset($_REQUEST['e'])) { $Eid = $_REQUEST['e']; } else { Error_Page('Big Event without Event'); };
   $Event = Get_Event($Eid);
   if (!$Event['BigEvent']) Error_Page('Not A Big Event');
   $YEAR = $Event['Year'];

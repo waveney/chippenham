@@ -412,7 +412,7 @@ function Spon_Validate() {
     echo "<h2 class=Err>Please select the " . $SponTypes[$_REQUEST['ThingType']] . " being sponsored</h2>";
     return 0;
   }
-  $_POST['ThingId'] = $_REQUEST["Id" . $_REQUEST['ThingType']];
+  $_REQUEST['ThingId'] = $_REQUEST["Id" . $_REQUEST['ThingType']];
   return 1;
 }
 
@@ -480,7 +480,7 @@ function Spon_Validate() {
           // Already exists just allow edits
           Add_Spon_Request($_REQUEST['Spid']);
         } else if (Spon_Validate()) {
-          $_POST['Year'] = $YEAR;
+          $_REQUEST['Year'] = $YEAR;
           $S=[];
           $Spid = Insert_db_post('Sponsorship',$S);
           echo "<h1>Sponsorship record created</h1>";

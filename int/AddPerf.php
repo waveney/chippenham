@@ -55,7 +55,7 @@
   echo '<h2>Add/Edit Performer</h2>'; // TODO CHANGE
   global $Mess,$Action,$Dance_TimeFeilds,$ShowAvailOnly;
   $DateFlds = ['ReleaseDate'];
-// var_dump($_POST);
+// var_dump($_REQUEST);
 // TODO Change this to not do changes at a distance and needing global things
   $Action = ''; 
   $Mess = '';
@@ -74,7 +74,7 @@
       break;
     case (preg_match('/DeleteOlap(\d*)/',$Action,$mtch)?true:false):
       // Delete Olap
-      $snum=$_POST['SideId'];
+      $snum=$_REQUEST['SideId'];
       $olaps = Get_Overlaps_For($snum);
 //      echo "<br>"; var_dump($olaps);
       if (isset($olaps[$mtch[1]])) {
@@ -106,19 +106,19 @@
       break;
       
     case 'Create as Non Performer' :
-      $_POST['NotPerformer'] = 1;
-      $_POST['NoEvents'] = 1;
-      $_POST['YearState'] = 2;
-      if (empty($_POST['FreePerf'])) $_POST['FreePerf'] = 1;
+      $_REQUEST['NotPerformer'] = 1;
+      $_REQUEST['NoEvents'] = 1;
+      $_REQUEST['YearState'] = 2;
+      if (empty($_REQUEST['FreePerf'])) $_REQUEST['FreePerf'] = 1;
       
       $proc = 1;
       $Side = [];
-      if (!isset($_POST['SN'])) {
+      if (!isset($_REQUEST['SN'])) {
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $proc = 0;
       }
-      $_POST['AccessKey'] = rand_string(40);
-      $_POST['SideId'] = $snum = Insert_db_post('Sides',$Side,$proc);
+      $_REQUEST['AccessKey'] = rand_string(40);
+      $_REQUEST['SideId'] = $snum = Insert_db_post('Sides',$Side,$proc);
       if ($snum) Insert_db_post('SideYear',$Sidey,$proc);
       echo "<h1>Created as a non performer</h1>";
       $Side = Get_Side($snum);
@@ -138,12 +138,12 @@
       $Mess = "!!!";
     }
   }
-//  echo "<!-- " . var_dump($_POST) . " -->\n";
+//  echo "<!-- " . var_dump($_REQUEST) . " -->\n";
   if ($AllDone) {
-  } else if (isset($_POST['SideId']) ) { // Response to update button 
+  } else if (isset($_REQUEST['SideId']) ) { // Response to update button 
     
-    Clean_Email($_POST['Email']);
-    Clean_Email($_POST['AltEmail']);
+    Clean_Email($_REQUEST['Email']);
+    Clean_Email($_REQUEST['AltEmail']);
     Parse_TimeInputs($Dance_TimeFeilds);    
     Parse_DateInputs($DateFlds);
  
@@ -157,26 +157,26 @@
         echo "<h2 class=ERR>Could not find Performer $snum</h2>\n";
       }
 
-      if (isset($_POST['InviteAct']) || isset($_POST['ReminderAct'])) {
+      if (isset($_REQUEST['InviteAct']) || isset($_REQUEST['ReminderAct'])) {
 
-        if (strlen($_POST['Invited'])) $_POST['Invited'] .= ", ";
-        $_POST['Invited'] .= date('j/n');
-      } elseif (isset($_POST['NewAccessKey'])) {
-        $_POST['AccessKey'] = rand_string(40);
-      } elseif (isset($_POST['Contract'])) { 
+        if (strlen($_REQUEST['Invited'])) $_REQUEST['Invited'] .= ", ";
+        $_REQUEST['Invited'] .= date('j/n');
+      } elseif (isset($_REQUEST['NewAccessKey'])) {
+        $_REQUEST['AccessKey'] = rand_string(40);
+      } elseif (isset($_REQUEST['Contract'])) { 
         Contract_Save($Side,$Sidey,2); 
-      } elseif (isset($_POST['Contract2'])) { 
+      } elseif (isset($_REQUEST['Contract2'])) { 
         Contract_Save($Side,$Sidey,2,1); 
-      } elseif (isset($_POST['Decline'])) { 
+      } elseif (isset($_REQUEST['Decline'])) { 
         Contract_Decline($Side,$Sidey,2); 
-      } elseif (isset($_POST['Delete'])) { 
+      } elseif (isset($_REQUEST['Delete'])) { 
         db_delete('Sides', $snum);
         echo "<h2>Deleted</h2>";
         dotail();
       }
 
       Update_db_post('Sides',$Side);
-      if (isset($_POST['Year']) && ($_POST['Year'] >= $PLANYEAR)) {
+      if (isset($_REQUEST['Year']) && ($_REQUEST['Year'] >= $PLANYEAR)) {
 //      var_dump($Sidey);
         if (isset($Sidey) && $Sidey && isset($Sidey['syId']) && $Sidey['syId']){
           Update_db_post('SideYear',$Sidey);
@@ -184,7 +184,7 @@
           $Sidey['Year'] = $PLANYEAR;
           $syId = Insert_db_post('SideYear',$Sidey);
           $Sidey['syID'] = $syId;
-        };
+        }
       }
 //      UpdateBand($snum);
       Report_Log("Dance"); // TODO Dance needs to depend on IsAs
@@ -192,11 +192,11 @@
     } else { //New Side
       $proc = 1;
       $Side = array();
-      if (!isset($_POST['SN'])) {
+      if (!isset($_REQUEST['SN'])) {
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $proc = 0;
       }
-      $_POST['AccessKey'] = rand_string(40);
+      $_REQUEST['AccessKey'] = rand_string(40);
       $snum = Insert_db_post('Sides',$Side,$proc);
       if ($snum) Insert_db_post('SideYear',$Sidey,$proc);
     }
@@ -213,10 +213,10 @@
         $Sidey = Default_SY($snum);
       }
       
-      if (isset($_POST['TICKBOX'])) {
-        switch ($_POST['TICKBOX']) {
+      if (isset($_REQUEST['TICKBOX'])) {
+        switch ($_REQUEST['TICKBOX']) {
         case 1: case 2: case 3: case 4:
-          $Sidey["TickBox" . $_POST['TICKBOX']] = 1;
+          $Sidey["TickBox" . $_REQUEST['TICKBOX']] = 1;
           break;
           
         case 'Rec': 
@@ -233,7 +233,7 @@
           echo "<script>$(document).ready(function() {var elmnt = document.getElementById('Availability');elmnt.scrollIntoView(true);})</script>";
           break;  
           
-        case (preg_match('/FCV(.)/',$_POST['TICKBOX'],$mtch)?true:false):
+        case (preg_match('/FCV(.)/',$_REQUEST['TICKBOX'],$mtch)?true:false):
           $Sidey['TickBox4'] = $mtch[1]+1;
           Put_SideYear($Lasty);
           // Swap to current info

@@ -6,17 +6,17 @@
   include_once("TradeLib.php");
   include_once("InvoiceLib.php");
 
-  if ( !isset($_GET['id']) || !isset($_GET['key'])) Error_Page("Invalid link"); // No return
+  if ( !isset($_REQUEST['id']) || !isset($_REQUEST['key'])) Error_Page("Invalid link"); // No return
 
-  if (isset($_GET['t']) && strtolower($_GET['t']) == 'trade') { 
-    $Tid = $_GET['id'];
+  if (isset($_REQUEST['t']) && strtolower($_REQUEST['t']) == 'trade') { 
+    $Tid = $_REQUEST['id'];
     if (!is_numeric($Tid)) Error_Page("Invalid Identifier");
     $Trad = Get_Trader($Tid);
 
-    if ($_GET['key'] == '') {
+    if ($_REQUEST['key'] == '') {
 
     } 
-    elseif ($Trad['AccessKey'] != $_GET['key']) Error_Page("Sorry - This is not the right key");  // No return
+    elseif ($Trad['AccessKey'] != $_REQUEST['key']) Error_Page("Sorry - This is not the right key");  // No return
 
     $Cake = sprintf("%s:%d:%06d",'Trader',$Access_Type['Participant'],$Tid ); 
     $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');
@@ -45,19 +45,19 @@
     }
     exit;
   } else { 
-    $SideId = $_GET['id'];
+    $SideId = $_REQUEST['id'];
     if (!is_numeric($SideId)) Error_Page("Invalid Identifier");
     $Side = Get_Side($SideId);
-    if (isset($_GET['t'])) {
-      $Type = $_GET['t'];
+    if (isset($_REQUEST['t'])) {
+      $Type = $_REQUEST['t'];
     } else {
       $Type = 'Perf'; //($Side['IsASide']?'Side': ($Side['IsAnAct'] ? 'Act' : 'Other'));
     }
 
-//    echo "Key should be: " . $Side['AccessKey'] . " is " . $_GET['key'] ."<p>";
+//    echo "Key should be: " . $Side['AccessKey'] . " is " . $_REQUEST['key'] ."<p>";
 //    var_dump($Side);
     
-    if ($Side['AccessKey'] != $_GET['key']) Error_Page("Sorry - This is not the right key");  // No return
+    if ($Side['AccessKey'] != $_REQUEST['key']) Error_Page("Sorry - This is not the right key");  // No return
 
     $Cake = sprintf("%s:%d:%06d",$Type,$Access_Type['Participant'],$SideId ); 
     $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');

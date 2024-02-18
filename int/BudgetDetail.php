@@ -19,12 +19,12 @@
 
   Budget_Scan(1);
   
-  echo "<h2>Manage Budget - $YEAR - " . $BUDGET[$_GET['b']]['SN'] . "</h2>\n";
+  echo "<h2>Manage Budget - $YEAR - " . $BUDGET[$_REQUEST['b']]['SN'] . "</h2>\n";
 //  if (UpdateMany('BudgetAreas','Put_BudgetItem',$BUDGET)) $BUDGET = Get_Budget();
 
 
   
-  if (isset($BUDGET[$_GET['b']]['Detail'])) $Bitem = $BUDGET[$_GET['b']]['Detail']; 
+  if (isset($BUDGET[$_REQUEST['b']]['Detail'])) $Bitem = $BUDGET[$_REQUEST['b']]['Detail']; 
   
     
 //var_dump($BUDGET);

@@ -13,10 +13,10 @@ function Logon(&$use=0) {
   global $YEAR,$USER,$USERID;
   $Rem = 0;
   if (!$use) {
-    $user = $_POST['UserName'];
+    $user = $_REQUEST['UserName'];
     if (!ctype_alnum($user))  return 'No Hacking';
-    $pwd = $_POST['password'];
-    if (isset($_POST['RememberMe'])) $Rem = $_POST['RememberMe'];
+    $pwd = $_REQUEST['password'];
+    if (isset($_REQUEST['RememberMe'])) $Rem = $_REQUEST['RememberMe'];
     $ans = Get_User($user);
   }
   if ($use || $ans) { // using crypt rather than password_hash so it works on php 3.3
@@ -63,7 +63,7 @@ function ActAs() {
 
 function Forgot() {
   $rand_hash = rand_string(40);
-  $user = $_POST['UserName'];
+  $user = $_REQUEST['UserName'];
   if (strlen($user) > 2) {
     if ($ans = Get_User($user)) {
       if ($ans['UserId'] > 9 ) { 
@@ -105,8 +105,8 @@ function Set_Password($user,$msg='') {
     echo "<tr><td>Password:<td><input type=password Name=password>\n";
     echo fm_hidden('UserId',$user) . fm_hidden('AccessKey',$rand_hash);
     echo "<tr><td>Confirm:<td><input type=password Name=confirm>\n";
-    $_POST['RememberMe'] = 1;
-    echo "<tr><td>" . fm_checkbox("Remember Me",$_POST,'RememberMe') . "</table></div><p>\n";
+    $_REQUEST['RememberMe'] = 1;
+    echo "<tr><td>" . fm_checkbox("Remember Me",$_REQUEST,'RememberMe') . "</table></div><p>\n";
     echo "<input type=submit Name=ACTION value='Set New Password'><p>\n";
     echo "</form></div>\n";
 
@@ -117,8 +117,8 @@ function Set_Password($user,$msg='') {
 }
 
 function Limited() {
-  $who = $_GET['U'];
-  $hash = $_GET['A'];
+  $who = $_REQUEST['U'];
+  $hash = $_REQUEST['A'];
 
   if ($ans = Get_User($who)) {
     if ($ans['AccessKey'] == $hash && ($ans['ChangeSent']+36000 > time())) {
@@ -145,8 +145,8 @@ function Login($errmsg='', $message='') {
   echo "<form method=post action=Login>";
   echo "<div class=tablecont><table class=simpletable><tr><td>User Name or Email:<td><input type=text Name=UserName>\n";
   echo "<tr><td>Password:<td><input type=password Name=password>\n";
-  $_POST['RememberMe'] = 1;
-  echo "<tr><td>" . fm_checkbox("Remember Me",$_POST,'RememberMe') . "- This will use a cookie";
+  $_REQUEST['RememberMe'] = 1;
+  echo "<tr><td>" . fm_checkbox("Remember Me",$_REQUEST,'RememberMe') . "- This will use a cookie";
   echo "</table></div>\n";
   echo "<p><input type=submit Name=ACTION value=Logon><p>\n";
 
@@ -159,30 +159,30 @@ function Login($errmsg='', $message='') {
 
 function NewPasswd() {
   global $YEAR,$USER,$USERID;
-  $user = $_POST['UserId']; 
+  $user = $_REQUEST['UserId']; 
   if (!$user) $user = $USERID;
   if (!($ans = Get_User($user) )) Login("User not known");
   
-  if ($ans['AccessKey'] != $_POST['AccessKey']) Login("Link invalid ");
+  if ($ans['AccessKey'] != $_REQUEST['AccessKey']) Login("Link invalid ");
   
   if ($ans['ChangeSent']+36000 < time()) Login("Link timed out");
   
-  if ($_POST['password'] != $_POST['confirm']) Set_Password($user,"Password and Confirm did not match");
+  if ($_REQUEST['password'] != $_REQUEST['confirm']) Set_Password($user,"Password and Confirm did not match");
   
-  if (strlen($_POST['password']) < 8) Set_Password($user,"Password too short");
+  if (strlen($_REQUEST['password']) < 8) Set_Password($user,"Password too short");
   
-  if (!preg_match('/[0-9]/',$_POST['password']) || 
-      !preg_match('/[a-z]/',$_POST['password']) ||
-      !preg_match('/[A-Z]/',$_POST['password']) ||
-      !preg_match('/\W/',$_POST['password'])) Set_Password($user,"Password must have a digit, a lower case character, an uppercase and a special character");
+  if (!preg_match('/[0-9]/',$_REQUEST['password']) || 
+      !preg_match('/[a-z]/',$_REQUEST['password']) ||
+      !preg_match('/[A-Z]/',$_REQUEST['password']) ||
+      !preg_match('/\W/',$_REQUEST['password'])) Set_Password($user,"Password must have a digit, a lower case character, an uppercase and a special character");
 
   // using crypt rather than password_hash so it works on php 3.3
-  $hash = crypt($_POST['password'],"WM");
+  $hash = crypt($_REQUEST['password'],"WM");
   $ans['password'] = $hash;
   $ans['Yale'] = rand_string(40);
   $USER = $ans;
   $USERID = $user;
-  setcookie('FEST2',$ans['Yale'],($_POST['RememberMe'] ? mktime(0,0,0,1,1,gmdate('Y')+1) : 0 ),'/');
+  setcookie('FEST2',$ans['Yale'],($_REQUEST['RememberMe'] ? mktime(0,0,0,1,1,gmdate('Y')+1) : 0 ),'/');
   Put_User($ans);
   include ("Staff.php"); // no return wanted
   exit;
@@ -191,11 +191,11 @@ function NewPasswd() {
 /* MAIN CODE HERE */
   global $USERID,$CONF;
   Set_User();
-  if(!isset($_GET['ACTION'])) {
-    if (!isset($_POST['ACTION'])) Login(); // No Return
-    $act = $_POST['ACTION'];
+  if(!isset($_REQUEST['ACTION'])) {
+    if (!isset($_REQUEST['ACTION'])) Login(); // No Return
+    $act = $_REQUEST['ACTION'];
   } else {
-    $act = $_GET['ACTION'];
+    $act = $_REQUEST['ACTION'];
   }
 
 //  echo "<!-- " . var_dump($act) . " -->\n";

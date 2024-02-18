@@ -210,16 +210,16 @@ function timecolon($time) { // format as x:0y
 
 function Parse_TimeInputs(&$feilds,&$minflds=NULL) {
   foreach($feilds as $fld) {
-    if (isset($_POST[$fld])) $_POST[$fld] = Time_BestGuess($_POST[$fld]);
+    if (isset($_REQUEST[$fld])) $_REQUEST[$fld] = Time_BestGuess($_REQUEST[$fld]);
   }
   if ($minflds) foreach($minflds as $fld) {
-    if (isset($_POST[$fld])) $_POST[$fld] = Time_BestGuess($_POST[$fld],1);
+    if (isset($_REQUEST[$fld])) $_REQUEST[$fld] = Time_BestGuess($_REQUEST[$fld],1);
   }
 }
 
 function Parse_DateInputs(&$feilds,$All=0) {
   foreach($feilds as $fld) {
-    if (isset($_POST[$fld])) $_POST[$fld] = Date_BestGuess($_POST[$fld],$All);
+    if (isset($_REQUEST[$fld])) $_REQUEST[$fld] = Date_BestGuess($_REQUEST[$fld],$All);
   }
 }
 

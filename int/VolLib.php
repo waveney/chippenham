@@ -1324,7 +1324,7 @@ function Email_Form_Only($Vol,$mess='',$xtra='') {
 
 function Check_Unique() { // Is email Email already registered - if so send new email back with link to update
   $adr = Sanitise($_REQUEST['Email'],40,'email');
-  if (!filter_var($adr,FILTER_VALIDATE_EMAIL)) Email_Form_Only($_POST,"Please give an email address");
+  if (!filter_var($adr,FILTER_VALIDATE_EMAIL)) Email_Form_Only($_REQUEST,"Please give an email address");
   $EVols = Gen_Get_Cond('Volunteers',"Email LIKE '%$adr%'");
 
   if (!$EVols) return;
@@ -1490,22 +1490,22 @@ function VolAction($Action,$csv=0) {
 
   case 'NewStage2': 
     if (isset($_REQUEST['Second'])) {
-      $Os = ['Email'=>$_POST['Email'], 'id'=> -1 ];
+      $Os = ['Email'=>$_REQUEST['Email'], 'id'=> -1 ];
       $OVs = OtherVols($Os);
-      $Name = Sanitise($_POST['SN']);
+      $Name = Sanitise($_REQUEST['SN']);
       if ($OVs) foreach($OVs as $OV) if ($OV['SN'] == $Name) {
         echo "<span class=Err>$Name is already in the system</span><br>";
         $Vol = $OV;
         $M($Vol);     
       }
-      $Vol = ['Year'=>$PLANYEAR, 'SN'=>$Name, 'Email'=>$_POST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40), 'Address'=>$_POST['Address'] ];
+      $Vol = ['Year'=>$PLANYEAR, 'SN'=>$Name, 'Email'=>$_REQUEST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40), 'Address'=>$_REQUEST['Address'] ];
       $Volid = Gen_Put('Volunteers',$Vol);
       $M($Vol);
     }
     Check_Unique(); // Deliberate drop through
 
   case 'Form': // New stage 2
-    $Vol = ['Year'=>$PLANYEAR, 'SN'=>$_POST['SN'], 'Email'=>$_POST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40)];
+    $Vol = ['Year'=>$PLANYEAR, 'SN'=>$_REQUEST['SN'], 'Email'=>$_REQUEST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40)];
     $Volid = Gen_Put('Volunteers',$Vol);
     $M($Vol);
     break;

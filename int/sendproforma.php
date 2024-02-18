@@ -5,8 +5,8 @@ include_once("DanceLib.php");
 include_once("Email.php");
 global $PLANYEAR;
 
-$id = $_GET['I'];
-$proforma = $_GET['N'];
+$id = $_REQUEST['I'];
+$proforma = $_REQUEST['N'];
 
 $Side = Get_Side($id);
 $Sidey = Get_SideYear($id);

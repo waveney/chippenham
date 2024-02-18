@@ -333,11 +333,11 @@ function Get_Art_Details(&$art) {
   if (isset($art['Social']) && $art['Social']) $Body .= "Social: " . $art['Social'] . "\n";
 
   if (isset($art['Instr1']) && $art['Instr1']) $Body .= "Clubs/Societies: " . $art['Instr1'] . "\n\n";
-  if ($art['Tickbox1']) $Body .= "Selling or Displaying: " . $ArtClasses[$_POST['Tickbox1']] . "\n\n";
+  if ($art['Tickbox1']) $Body .= "Selling or Displaying: " . $ArtClasses[$_REQUEST['Tickbox1']] . "\n\n";
   if (isset($art['Instr3']) && $art['Instr3']) $Body .= "Want to achieve: " . $art['Instr3'] . "\n\n";
-  if ($art['Tickbox2']) $Body .= "This is a " . $ArtValues[$_POST['Tickbox2']] . "\n\n";
+  if ($art['Tickbox2']) $Body .= "This is a " . $ArtValues[$_REQUEST['Tickbox2']] . "\n\n";
   if (isset($art['Style']) && $art['Style']) $Body .= "Genre: " . $art['Style'] . "\n\n";
-  if ($art['Tickbox3']) $Body .= "Position: " . $ArtPosition[$_POST['Tickbox3']] . "\n\n"; 
+  if ($art['Tickbox3']) $Body .= "Position: " . $ArtPosition[$_REQUEST['Tickbox3']] . "\n\n"; 
   if (isset($art['Instr4']) && $art['Instr4']) $Body .= "Workshops: " . $art['Instr4'] . "\n\n";  
 
   $Body .= "\n\n";

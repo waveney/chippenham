@@ -53,8 +53,8 @@
   $Pitches = Get_Trade_Pitches($loc,$YEAR);  
 //  var_dump($Pitches);
   // START HERE
-  if (isset($_POST['Update'])) {
-//    var_dump($_POST);
+  if (isset($_REQUEST['Update'])) {
+//    var_dump($_REQUEST);
     if (UpdateMany('TradePitch','Put_Trade_Pitch',$Pitches,1,'','','X',-9)) $Pitches = Get_Trade_Pitches($loc,$YEAR);
   }
   if (isset($_REQUEST['COPY'])) {

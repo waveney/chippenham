@@ -18,7 +18,7 @@
 
 function Parse_Perf_Selection() {
   for($i=1; $i<5; $i++) {
-    if (isset($_POST["PerfType$i"])) $_POST["Side$i"] = $_POST["Perf" . $_POST["PerfType$i"] . "_Side$i"];
+    if (isset($_REQUEST["PerfType$i"])) $_REQUEST["Side$i"] = $_REQUEST["Perf" . $_REQUEST["PerfType$i"] . "_Side$i"];
   }  
 }
 
@@ -77,15 +77,15 @@ A similar feature will appear eventually for music.<p>
 
   echo "<h2>Add/Edit Events</h2>\n";
   echo "<form method=post action='EventAdd'>\n";
-  if (isset($_POST['EventId'])) { // Response to update button
-    $eid = $_POST['EventId'];
+  if (isset($_REQUEST['EventId'])) { // Response to update button
+    $eid = $_REQUEST['EventId'];
     if ($eid > 0) $Event = Get_Event($eid);
-    if (isset($_POST['ACTION'])) {
-      switch ($_POST['ACTION']) {
+    if (isset($_REQUEST['ACTION'])) {
+      switch ($_REQUEST['ACTION']) {
       case 'Divide':
         //echo fm_smalltext('Divide into ','SlotSize',30,2) . fm_smalltext(' minute slots with ','SlotSetup',0,2) . " minute setup";
-        $slotsize  = $_POST['SlotSize'];
-        $slotsetup = $_POST['SlotSetup'];
+        $slotsize  = $_REQUEST['SlotSize'];
+        $slotsetup = $_REQUEST['SlotSetup'];
         $se = $Event['SubEvent'];
         $SubEvent = $Event;
         for ($i=1;$i<5;$i++) { $SubEvent["Side$i"] = $SubEvent["Act$i"] = $SubEvent["Other$i"] = 0; };
@@ -144,7 +144,7 @@ A similar feature will appear eventually for music.<p>
         break;
 
       case 'Add': // Add N Subevents starting and ending at current ends - if a subevent, parent is ses parent
-        $AddIn = $_POST['Slots'];
+        $AddIn = $_REQUEST['Slots'];
         $Se = $Event['SubEvent'];
         $SubEvent = $Event;
         $SubEvent['End'] = $SubEvent['Start'];
@@ -191,7 +191,7 @@ A similar feature will appear eventually for music.<p>
       $CurEvent=$Event;
       Parse_TimeInputs($EventTimeFields,$EventTimeMinFields);
       Parse_Perf_Selection();
-//      var_dump($_POST);
+//      var_dump($_REQUEST);
       Update_db_post('Events',$Event);
       Check_4Changes($CurEvent,$Event);
       $OtherValid = 1;
@@ -202,8 +202,8 @@ A similar feature will appear eventually for music.<p>
           if ($ov['Identifier'] == 0) continue;
           if ($ov['Type'] == 'Venue') {
             $id = $ov['BigEid'];
-            if ($_POST["VEN$id"] != $ov['Identifier']) {
-              $ven = $_POST["VEN$id"];
+            if ($_REQUEST["VEN$id"] != $ov['Identifier']) {
+              $ven = $_REQUEST["VEN$id"];
               if ($ven != 0 ) {
                       if ($Event['Venue'] == $ven) $err = 1;
                 foreach ($Other as $ii=>$oov) if ($ov['Type'] == 'Venue' && $oov['Identifier'] == $ven) $err=1;
@@ -217,44 +217,44 @@ A similar feature will appear eventually for music.<p>
             }
           }
         }
-        if ($err==0 && isset($_POST['NEWVEN']) && $_POST['NEWVEN'] > 0) { // Add venue
-          if ($Other) foreach ($Other as $i=>$ov) if ($ov['Type'] == 'Venue' && $ov['Identifier'] == $_POST['NEWVEN']) $err++;
-          if ($err == 0 && $Event['Venue'] == $_POST['NEWVEN']) $err++; 
+        if ($err==0 && isset($_REQUEST['NEWVEN']) && $_REQUEST['NEWVEN'] > 0) { // Add venue
+          if ($Other) foreach ($Other as $i=>$ov) if ($ov['Type'] == 'Venue' && $ov['Identifier'] == $_REQUEST['NEWVEN']) $err++;
+          if ($err == 0 && $Event['Venue'] == $_REQUEST['NEWVEN']) $err++; 
           if ($err == 0) {
-            $BigE = array('Event'=>$eid, 'Type'=>'Venue', 'Identifier'=>$_POST['NEWVEN']);
+            $BigE = array('Event'=>$eid, 'Type'=>'Venue', 'Identifier'=>$_REQUEST['NEWVEN']);
             New_BigEvent($BigE);
             $OtherValid = 0;
           }
         }
-        if ($err) echo "<h2 class=ERR>The Event already has Venue " . $Venues[$_POST['NEWVEN']] . "</h2>\n";
+        if ($err) echo "<h2 class=ERR>The Event already has Venue " . $Venues[$_REQUEST['NEWVEN']] . "</h2>\n";
         if (!$OtherValid) unset($Other);
       }  
     } else { // New
       $proc = 1;
-      if (!isset($_POST['SN']) || strlen($_POST['SN']) < 2) { 
+      if (!isset($_REQUEST['SN']) || strlen($_REQUEST['SN']) < 2) { 
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
-        $Event = $_POST;
+        $Event = $_REQUEST;
         $proc = 0;
       }
-      if (empty($_POST['Venue'])) { 
+      if (empty($_REQUEST['Venue'])) { 
         echo "<h2 class=ERR>NO VENUE GIVEN</h2>\n";
-        $Event = $_POST;
+        $Event = $_REQUEST;
         $proc = 0;
       }
 
-      if (empty($_POST['Owner'])) $_POST['Owner'] = $USERID;
+      if (empty($_REQUEST['Owner'])) $_REQUEST['Owner'] = $USERID;
       Parse_TimeInputs($EventTimeFields,$EventTimeMinFields);
       
       Parse_Perf_Selection();
-      $_POST['Year'] = $YEAR;
-//var_dump($_POST);
+      $_REQUEST['Year'] = $YEAR;
+//var_dump($_REQUEST);
       $eid = Insert_db_post('Events',$Event,$proc); //
       $empty = [];
       if (Feature('RecordEventChanges')) RecordEventChanges($Event,$empty,1);      
       Check_4Changes($empty,$Event);
     }
-  } elseif (isset($_GET['COPY'])) {
-    $oeid = $_GET['COPY'];
+  } elseif (isset($_REQUEST['COPY'])) {
+    $oeid = $_REQUEST['COPY'];
     $Event = Get_Event($oeid);
     $eid = -1;
     $Event['EventId'] = 0;
@@ -263,8 +263,8 @@ A similar feature will appear eventually for music.<p>
     } else {
       Error_Page("Insufficient Privilages");
     }
-  } elseif (isset($_GET['e'])) {
-    $eid = $_GET['e'];
+  } elseif (isset($_REQUEST['e'])) {
+    $eid = $_REQUEST['e'];
     $Event = Get_Event($eid);
     if (Access('Staff','Events') || $Event['Owner'] == $USERID || $Event['Owner2'] == $USERID) { // Proceed
     } else {
@@ -273,7 +273,7 @@ A similar feature will appear eventually for music.<p>
   } else {
     $eid = -1;
     $Event = array();
-    if (isset($_GET['Act'])) $Event['Side1'] = $_GET['Act'];
+    if (isset($_REQUEST['Act'])) $Event['Side1'] = $_REQUEST['Act'];
   }
 
 // $Event_Types = array('Dance','Music','Workshop','Craft','Mixed','Other');
@@ -311,7 +311,7 @@ A similar feature will appear eventually for music.<p>
         if (Access('SysAdmin')) echo fm_text0('Year',$Event,'Year');
       } else {
         echo fm_hidden('EventId',-1);
-        if (!isset($_GET['COPY'])) $Event['Day'] = 1;
+        if (!isset($_REQUEST['COPY'])) $Event['Day'] = 1;
       }
       $se = isset($Event['SubEvent'])? $Event['SubEvent'] : 0;
 //      echo fm_text('SE',$Event,'SubEvent');

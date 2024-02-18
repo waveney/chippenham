@@ -243,7 +243,7 @@ function Update_db($table,&$old,&$new,$proced=1) {
 }
 
 function Update_db_post($table, &$data, $proced=1) { 
-  return Update_db($table,$data,$_POST,$proced);
+  return Update_db($table,$data,$_REQUEST,$proced);
 }
 
 function Insert_db($table, &$from, &$data=0, $proced=1) {
@@ -296,7 +296,7 @@ function Insert_db($table, &$from, &$data=0, $proced=1) {
 
 function Insert_db_post($table,&$data,$proced=1) {
   $data['Dummy'] = 1;
-  return Insert_db($table,$_POST,$data,$proced);  
+  return Insert_db($table,$_REQUEST,$data,$proced);  
 }
 
 function db_delete($table,$entry) {
@@ -374,7 +374,7 @@ function set_ShowYear($last=0) { // Overrides default above if not set by a Y ar
     $YEAR = $SHOWYEAR;
     $YEARDATA = Get_General($YEAR);
     Feature_Reset();
-  } else if (!isset($_POST['Y']) && !isset($_GET['Y'])) {
+  } else if (!isset($_REQUEST['Y'])) {
     $YEAR = $last;
     $YEARDATA = Get_General($YEAR);
     Feature_Reset();
@@ -398,11 +398,11 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
 
 //var_dump($_REQUEST);
 //return;
-  if (isset($_POST['Update'])) {
+  if (isset($_REQUEST['Update'])) {
     if ($data) foreach($data as $t) {
       $i = $t[$indxname];
       if ($i) {
-        if (isset($_POST["$Mstr$i"]) && $_POST["$Mstr$i"] == $MstrNot) {
+        if (isset($_REQUEST["$Mstr$i"]) && $_REQUEST["$Mstr$i"] == $MstrNot) {
           if ($Deletes) {
 //          echo "Would delete " . $t[$indxname] . "<br>";
               db_delete($table,$t[$indxname]);
@@ -414,16 +414,16 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
           foreach ($Flds as $fld=>$ftyp) {
             if ($fld == $indxname) continue;
             if (in_array($fld,$DateFlds)) {
-              $t[$fld] = Date_BestGuess($_POST["$fld$i"]);
+              $t[$fld] = Date_BestGuess($_REQUEST["$fld$i"]);
               $recpres = 1;
             } else if (in_array($fld,$TimeFlds)) {
-              $t[$fld] = Time_BestGuess($_POST["$fld$i"]);
+              $t[$fld] = Time_BestGuess($_REQUEST["$fld$i"]);
               $recpres = 1;
             } else if (in_array($fld,$HexFlds)) {
-              $t[$fld] = hexdec($_POST["$fld$i"]);
+              $t[$fld] = hexdec($_REQUEST["$fld$i"]);
               $recpres = 1;
-            } else if (isset($_POST["$fld$i"])) {
-              $t[$fld] = $_POST["$fld$i"];
+            } else if (isset($_REQUEST["$fld$i"])) {
+              $t[$fld] = $_REQUEST["$fld$i"];
               $recpres = 1;
             } else {
               $t[$fld] = 0;
@@ -441,20 +441,20 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
         }
       }
     }
-    if (isset($_POST[$Mstr . "0"] ) && $_POST[$Mstr . "0"] != $MstrNot) {
+    if (isset($_REQUEST[$Mstr . "0"] ) && $_REQUEST[$Mstr . "0"] != $MstrNot) {
 //echo "Here";
       $t = array();
       foreach ($Flds as $fld=>$ftyp) {
         if ($fld == $indxname) continue;
-        if (isset($_POST[$fld . "0"])) {
+        if (isset($_REQUEST[$fld . "0"])) {
           if (in_array($fld,$DateFlds)) {
-            $t[$fld] = Date_BestGuess($_POST[$fld . "0"]);
+            $t[$fld] = Date_BestGuess($_REQUEST[$fld . "0"]);
           } else if (in_array($fld,$TimeFlds)) {
-            $t[$fld] = Time_BestGuess($_POST[$fld . "0"]);
+            $t[$fld] = Time_BestGuess($_REQUEST[$fld . "0"]);
           } else if (in_array($fld,$HexFlds)) {
-            $t[$fld] = hexdec($_POST[$fld . "0"]);
+            $t[$fld] = hexdec($_REQUEST[$fld . "0"]);
           } else {
-            $t[$fld] = $_POST[$fld . "0"];
+            $t[$fld] = $_REQUEST[$fld . "0"];
           }
         }
       }

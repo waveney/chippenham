@@ -44,7 +44,7 @@
 
   function Update_Pitches() {
     $Change = 0;
-    foreach($_POST as $P=>$V) {
+    foreach($_REQUEST as $P=>$V) {
       if (preg_match('/PitchNum(\d):(\d+)/',$P,$matches)) {
         $Tid = $matches[2];
         $Tpn = $matches[1];
@@ -101,7 +101,7 @@
   
 
   $loc = $_REQUEST['i'];
-  if (isset($_POST['Update'])) Update_Pitches(); // Note this can't use Update Many as weird format of ids
+  if (isset($_REQUEST['Update'])) Update_Pitches(); // Note this can't use Update Many as weird format of ids
   $Pitches = Get_Trade_Pitches($loc);
   $PitchesByName = [];
   foreach ($Pitches as $Pi) if ($Pi['Type'] == 0) $PitchesByName[$Pi['SN'] ?? $Pi['Posn']] = $Pi;

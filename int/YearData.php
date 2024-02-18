@@ -24,7 +24,7 @@
     switch ($_REQUEST['ACTION']) {
     case 'Update' :
       Parse_DateInputs($Dates);
-      $Gen = $Gens[$_POST['Year']];
+      $Gen = $Gens[$_REQUEST['Year']];
       Update_db_post('General',$Gen);
       $ynum = $Gen['Year'];
       break;

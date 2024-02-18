@@ -3,7 +3,7 @@
   include_once("VolLib.php");
 
   $csv = 0;
-  if (isset($_GET['F'])) $csv = $_GET['F'];
+  if (isset($_REQUEST['F'])) $csv = $_REQUEST['F'];
 
   if ($csv) {
     header('Content-Type: text/csv; charset=utf-8');

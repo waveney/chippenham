@@ -14,7 +14,7 @@
   $AllActive = array();
   foreach ($AllU as $id=>$name) if ($AllA[$id] >= 2 && $AllA[$id] <= 6) $AllActive[$id]=$name;
 
-  if (isset($_GET['OLD'])) {
+  if (isset($_REQUEST['OLD'])) {
     $res = $db->query("SELECT * FROM Bugs ORDER BY Severity DESC");
   } else {
     $res = $db->query("SELECT * FROM Bugs WHERE State<" . $Bug_Type['Finalised'] . " ORDER BY Severity DESC");

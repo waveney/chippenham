@@ -3,8 +3,8 @@
 
   include_once("ImageLib.php");
 
-  $id = $_GET['g'];
-  $start = (isset($_GET['s'])?$_GET['s']:0);
+  $id = $_REQUEST['g'];
+  $start = (isset($_REQUEST['s'])?$_REQUEST['s']:0);
 // Get gallery and start (default 0)
 // Setup show and start it
   if (strlen($id)<10) {

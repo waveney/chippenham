@@ -12,7 +12,7 @@
   Print_Grid();
   Side_List();
   Controls();
-  $lvl = (isset($_GET['EInfo'])? $_GET['EInfo'] : 0 );
+  $lvl = (isset($_REQUEST['EInfo'])? $_REQUEST['EInfo'] : 0 );
   ErrorPane($lvl);
   InfoPane();
   Notes_Pane()

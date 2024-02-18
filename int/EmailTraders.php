@@ -21,7 +21,7 @@
   };
 
 //var_dump($_REQUEST);
-  if (!isset($_POST['SEND'])) {
+  if (!isset($_REQUEST['SEND'])) {
     // Basic message text
     // Select (BID &/ TC), Previous (not BID/TC), All
     // Select list?
@@ -31,7 +31,7 @@
     echo "This is the message that will be sent.<p>"; 
     echo "The Message here is editable to send, but the edited form is not stored.<p>";
 
-    $Messkey = isset($_GET['MessNum'])?$_GET['MessNum']:1;
+    $Messkey = isset($_REQUEST['MessNum'])?$_REQUEST['MessNum']:1;
 
     echo "<h2>";
     foreach ($Messages as $mes) {
@@ -50,22 +50,22 @@
     echo "<h3>Select subset of traders - if no States/Locations/types are selected that category is treated as all</h3><p>";
     echo "<form method=post><div class=Scrolltable><table class=Devemail>";
     
-    echo "<tr height=100>" . fm_radio("State",$Trade_States,$_POST,'Tr_State','',1,'','',$Trade_State_Colours,1);
-    echo "<tr height=30>" . fm_radio("Location",$Trade_Loc_Names,$_POST,'Tr_Loc','',1,'','',null,1);
-    echo "<tr height=30>" . fm_radio("Trade Type",$Trade_Type_Names,$_POST,'Tr_Type','',1,'','',$Trade_Type_Colours,1);
-    echo "<tr>" . fm_text('Or List of Tids',$_POST,'Tr_List',6) . "<tr><td>Sep by commas";
+    echo "<tr height=100>" . fm_radio("State",$Trade_States,$_REQUEST,'Tr_State','',1,'','',$Trade_State_Colours,1);
+    echo "<tr height=30>" . fm_radio("Location",$Trade_Loc_Names,$_REQUEST,'Tr_Loc','',1,'','',null,1);
+    echo "<tr height=30>" . fm_radio("Trade Type",$Trade_Type_Names,$_REQUEST,'Tr_Type','',1,'','',$Trade_Type_Colours,1);
+    echo "<tr>" . fm_text('Or List of Tids',$_REQUEST,'Tr_List',6) . "<tr><td>Sep by commas";
     echo "</table></div><p>";
     
     if (!isset($Mess)) $Mess = $Messages[1]['Body'];
     $Sender = $USER['SN'];
     $Mess = preg_replace('/\$PLANYEAR/',$PLANYEAR,$Mess);
 
-    $_POST['Mess'] = preg_replace('/\*SENDER\*/',$Sender,$Mess);
+    $_REQUEST['Mess'] = preg_replace('/\*SENDER\*/',$Sender,$Mess);
 
     echo "<form method=post><div class=Scrolltable><table class=Devemail>";
-    echo "<tr><td colspan=8>" . fm_checkbox("Just list who it would go to do not actually send anything",$_POST,'JustList');
-    echo "<tr>" . fm_text('Start at', $_POST,'STARTAT');
-    echo "<tr>" . fm_textarea('Message',$_POST,'Mess',10,25);
+    echo "<tr><td colspan=8>" . fm_checkbox("Just list who it would go to do not actually send anything",$_REQUEST,'JustList');
+    echo "<tr>" . fm_text('Start at', $_REQUEST,'STARTAT');
+    echo "<tr>" . fm_textarea('Message',$_REQUEST,'Mess',10,25);
     echo "<input type=submit name=SEND value=Send>\n";
     
     echo "</table></div><form>\n";
@@ -75,9 +75,9 @@
 
     if (empty($_REQUEST['Tr_List'])) {
       $ts  = $lt = $ttt = [];
-      foreach ($Trade_States as $i=>$n) if (isset($_POST["Tr_State$i"] )) $ts[] = $i;
-      foreach ($Trade_Loc_Names as $i=>$n) if (isset($_POST["Tr_Loc$i"] )) $lt[] = $i;
-      foreach ($TradeTypeData as $i=>$td) if (isset($_POST["Tr_Type$i"] )) $ttt[] = $i;
+      foreach ($Trade_States as $i=>$n) if (isset($_REQUEST["Tr_State$i"] )) $ts[] = $i;
+      foreach ($Trade_Loc_Names as $i=>$n) if (isset($_REQUEST["Tr_Loc$i"] )) $lt[] = $i;
+      foreach ($TradeTypeData as $i=>$td) if (isset($_REQUEST["Tr_Type$i"] )) $ttt[] = $i;
     
       if (empty($ts) && empty($lt) && empty($ttt)) {
         $qry = "SELECT t.* FROM Trade t WHERE t.IsTrader=1 AND t.status=0";   
@@ -98,10 +98,10 @@
       
 //echo "<P>";    var_dump($TR_List);
       
-    $Mess = $_POST['Mess'];
+    $Mess = $_REQUEST['Mess'];
 
     $Sent_Count = 0;
-    $StartAt = (isset($_POST['STARTAT']) ? ($_POST['STARTAT']?$_POST['STARTAT']:0) : 0);
+    $StartAt = (isset($_REQUEST['STARTAT']) ? ($_REQUEST['STARTAT']?$_REQUEST['STARTAT']:0) : 0);
 
     $EndAt = $StartAt +5;// Batch size 5 for testing 20 in real life  // TODO review that
 
@@ -136,7 +136,7 @@
       };
 
       if ($Sent_Count >= $StartAt && $Sent_Count < $EndAt) {
-        if ($_POST['JustList'] ?? 0) {
+        if ($_REQUEST['JustList'] ?? 0) {
           echo "Would Send to " . $Trad['SN'] . "<br>";
         } else {
           if (0 && $Trad['Tid'] != 681) { // Diagnostic code
@@ -152,14 +152,14 @@
     }
     if ($Sent_Count > $EndAt) {
       echo "<P><form method=post>";
-      echo fm_hidden('STARTAT', $EndAt+1) . fm_hidden('Mess',$Mess) . fm_hidden('SEND',$_POST['SEND']) ; 
+      echo fm_hidden('STARTAT', $EndAt+1) . fm_hidden('Mess',$Mess) . fm_hidden('SEND',$_REQUEST['SEND']) ; 
 
-      foreach ($Trade_States as $i=>$n) if (isset($_POST["Tr_State$i"] )) echo fm_hidden("Tr_State$i",$i);
-      foreach ($Trade_Loc_Names as $i=>$n) if (isset($_POST["Tr_Loc$i"] )) echo fm_hidden("Tr_Loc$i",$i);
-      foreach ($TradeTypeData as $i=>$td) if (isset($_POST["Tr_Type$i"] )) echo fm_hidden("Tr_Type$i",$i);
+      foreach ($Trade_States as $i=>$n) if (isset($_REQUEST["Tr_State$i"] )) echo fm_hidden("Tr_State$i",$i);
+      foreach ($Trade_Loc_Names as $i=>$n) if (isset($_REQUEST["Tr_Loc$i"] )) echo fm_hidden("Tr_Loc$i",$i);
+      foreach ($TradeTypeData as $i=>$td) if (isset($_REQUEST["Tr_Type$i"] )) echo fm_hidden("Tr_Type$i",$i);
       echo fm_hidden('Tr_List',$_REQUEST['Tr_List']);
       
-      if (isset($_POST['JustList'])) echo fm_hidden('JustList',$_POST['JustList']);
+      if (isset($_REQUEST['JustList'])) echo fm_hidden('JustList',$_REQUEST['JustList']);
       echo "<input type=submit name=MORE value='Next batch " . ($EndAt-1) . "'>\n";
     } else {
       echo "All Done";

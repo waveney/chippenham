@@ -4,8 +4,8 @@
   include_once("MusicLib.php");
 
   global $YEAR,$OlapTypes,$OlapDays,$OlapCats,$Share_Spots;
-  $t = $_GET['T'];
-  $s = $_GET['S'];
+  $t = $_REQUEST['T'];
+  $s = $_REQUEST['S'];
 
   $data = Get_Side($s);
   $datay = Get_SideYear($s,$YEAR);

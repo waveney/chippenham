@@ -1046,41 +1046,41 @@ function Validate_Trade($Mode=0) { // Mode 1 for Staff Submit, less stringent
   global $TradeTypeData;
   $Orgs = isset($_REQUEST['ORGS']);
       $proc = 1;
-      if (!isset($_POST['SN']) || strlen($_POST['SN']) < 3 ) {
+      if (!isset($_REQUEST['SN']) || strlen($_REQUEST['SN']) < 3 ) {
         echo "<h2 class=ERR>No Business Name Given</h2>\n";
         $proc = 0;
       }
       
-      if ($Orgs==0 && $Mode == 0 && ($TradeTypeData[$_POST['TradeType']]['TOpen'] == 0)) {
+      if ($Orgs==0 && $Mode == 0 && ($TradeTypeData[$_REQUEST['TradeType']]['TOpen'] == 0)) {
         echo "<h2 class=ERR>Sorry that category is full for this year</h2>\n";
         $proc = 0;
       }
 
-      if (!isset($_POST['Contact']) || strlen($_POST['Contact']) < 4 ) {
+      if (!isset($_REQUEST['Contact']) || strlen($_REQUEST['Contact']) < 4 ) {
         echo "<h2 class=ERR>No Contact Name Given</h2>\n";
         $proc = 0;
       }
-      if ($Orgs==0 && (!isset($_POST['Phone']) && !isset($_POST['Mobile'])) || (strlen($_POST['Phone']) < 6 && strlen($_POST['Mobile']) < 6)) {
+      if ($Orgs==0 && (!isset($_REQUEST['Phone']) && !isset($_REQUEST['Mobile'])) || (strlen($_REQUEST['Phone']) < 6 && strlen($_REQUEST['Mobile']) < 6)) {
         echo "<h2 class=MERR>No Phone/Mobile Numbers Given</h2>\n";
         if (!$Mode) $proc = 0;
       }
-      if (!isset($_POST['Email']) || strlen($_POST['Email']) < 8) {
+      if (!isset($_REQUEST['Email']) || strlen($_REQUEST['Email']) < 8) {
         echo "<h2 class=MERR>No Email Given</h2>\n";
         if (!$Mode) $proc = 0;
       }
-      if ($Orgs==0 && !isset($_POST['Address']) || strlen($_POST['Address']) < 10) {
+      if ($Orgs==0 && !isset($_REQUEST['Address']) || strlen($_REQUEST['Address']) < 10) {
         echo "<h2 class=MERR>No Address Given</h2>\n";
         if (!$Mode) $proc = 0;
       }
       if ($Orgs==0 ) {
-      } else if (!isset($_POST['GoodsDesc'])) {
+      } else if (!isset($_REQUEST['GoodsDesc'])) {
         echo "<h2 class=ERR>No Products Description Given</h2>\n";
         $proc = 0;
-      } else if ((strlen($_POST['GoodsDesc']) < 30) && ($Mode == 0)){
+      } else if ((strlen($_REQUEST['GoodsDesc']) < 30) && ($Mode == 0)){
         echo "<h2 class=ERR>The Product Description is too short</h2>\n";
         $proc = 0;
       }
-      if ($Orgs==0 && (!isset($_POST['PublicHealth']) || strlen($_POST['PublicHealth']) < 4) && ($TradeTypeData[$_POST['TradeType']]['NeedPublicHealth']) && ($Mode == 0)) {
+      if ($Orgs==0 && (!isset($_REQUEST['PublicHealth']) || strlen($_REQUEST['PublicHealth']) < 4) && ($TradeTypeData[$_REQUEST['TradeType']]['NeedPublicHealth']) && ($Mode == 0)) {
         echo "<h2 class=ERR>No Public Health Authority Given</h2>\n";
         $proc = 0;
       }
@@ -1105,11 +1105,11 @@ function Validate_Pitches(&$CurDat) {
   
   global $db,$PLANYEAR,$TradeLocData;
   for ($pn=0; $pn<3; $pn++) {
-    if ($_POST["PitchLoc$pn"] != $CurDat["PitchLoc$pn"] || $_POST["PitchNum$pn"] != $CurDat["PitchNum$pn"]) {
-      if ($_POST["PitchLoc$pn"]) {
-        if ($_POST["PitchNum$pn"]) { // Loc & NUm set, lets check them
-          $pl = $_POST["PitchLoc$pn"];
-          $ln = $_POST["PitchNum$pn"];
+    if ($_REQUEST["PitchLoc$pn"] != $CurDat["PitchLoc$pn"] || $_REQUEST["PitchNum$pn"] != $CurDat["PitchNum$pn"]) {
+      if ($_REQUEST["PitchLoc$pn"]) {
+        if ($_REQUEST["PitchNum$pn"]) { // Loc & NUm set, lets check them
+          $pl = $_REQUEST["PitchLoc$pn"];
+          $ln = $_REQUEST["PitchNum$pn"];
           if ($CurDat['Days'] == 0) {
             $DayTest = '';
           } else if ($CurDat['Days'] == 1) {
@@ -1198,9 +1198,9 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   
   $Action = 0; 
   $Mess = '';
-  if (isset($_POST['Action'])) {
+  if (isset($_REQUEST['Action'])) {
     include_once("Uploading.php");
-    $Action = $_POST['Action'];
+    $Action = $_REQUEST['Action'];
     switch ($Action) {
     case 'PASpecUpload':
       $Mess = Upload_PASpec();
@@ -1213,7 +1213,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
       break;
     case 'Delete':
       if (Access('SysAdmin')) {
-        $Tid = $_POST['Tid'];
+        $Tid = $_REQUEST['Tid'];
         db_delete('Trade',$Tid);
         include_once("Staff.php");  // No return
       }
@@ -1224,11 +1224,11 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   }
 
   if ($iddd != 0) {
-    unset($_POST['Tid']);
+    unset($_REQUEST['Tid']);
     if ($iddd > 0) {
-      $_GET['id'] = $iddd;
+      $_REQUEST['id'] = $iddd;
     } else {
-      unset($_GET['id']);
+      unset($_REQUEST['id']);
     }
   }
 
@@ -1238,9 +1238,9 @@ function Trade_Main($Mode,$Program,$iddd=0) {
 //    A_Check('Participant','Trader',$Tid); // Check Surpressed until access resolved
 
     if (!$Orgs) {
-//      if (Feature("TradePower")) for ($i=0;$i<3;$i++) if (($_POST["PowerType$i"]??0)==1) $_POST["Power$i"] = -1; // TODO
-      Clean_Email($_POST['Email']);
-//    Clean_Email($_POST['AltEmail']);
+//      if (Feature("TradePower")) for ($i=0;$i<3;$i++) if (($_REQUEST["PowerType$i"]??0)==1) $_REQUEST["Power$i"] = -1; // TODO
+      Clean_Email($_REQUEST['Email']);
+//    Clean_Email($_REQUEST['AltEmail']);
       $proc = Validate_Trade($Mode);
     }
 
@@ -1256,38 +1256,38 @@ function Trade_Main($Mode,$Program,$iddd=0) {
         echo "<h2 class=ERR>Could not find Trader $Tid</h2>\n";
       }
 
-      if (isset($_POST['NewAccessKey'])) $_POST['AccessKey'] = rand_string(40);
+      if (isset($_REQUEST['NewAccessKey'])) $_REQUEST['AccessKey'] = rand_string(40);
 
       Update_db_post('Trade',$Trad);
       if (Feature('LogAllTrade')) Report_Log('Trade');
-      if ($Mode < 2 && !$Orgs && isset($_POST['Year'])) {
-        if ($_POST['Year'] == $PLANYEAR) {
+      if ($Mode < 2 && !$Orgs && isset($_REQUEST['Year'])) {
+        if ($_REQUEST['Year'] == $PLANYEAR) {
           $same = 1;
           if (isset($Trady) && $Trady) {
             $OldFee = $Trady['Fee'];
             if ($Mode) {
               if (isset($Trady['BookingState'])) {
-                if (isset($_POST['BookingState']) && ($Trady['BookingState'] != ($_POST['BookingState']??0))) {
-                  $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']] . " on " . date('j M Y H:i') . 
+                if (isset($_REQUEST['BookingState']) && ($Trady['BookingState'] != ($_REQUEST['BookingState']??0))) {
+                  $_REQUEST['History'] .= "Action: " . $Trade_States[$_REQUEST['BookingState']] . " on " . date('j M Y H:i') . 
                                        " by " . $USER['Login'] . ".\n";
                 }
-                if (($_POST['Fee'] < 0) && (($_POST['BookingState']??0) == $Trade_State['Deposit Paid'])) {
-                  $_POST['BookingState'] = $Trade_State['Fully Paid'];
-                  $_POST['History'] .= "Action: " . $Trade_States[$_POST['BookingState']??0] . " on " . date('j M Y H:i') . 
+                if (($_REQUEST['Fee'] < 0) && (($_REQUEST['BookingState']??0) == $Trade_State['Deposit Paid'])) {
+                  $_REQUEST['BookingState'] = $Trade_State['Fully Paid'];
+                  $_REQUEST['History'] .= "Action: " . $Trade_States[$_REQUEST['BookingState']??0] . " on " . date('j M Y H:i') . 
                     " by " . $USER['Login'] . ".\n";
                 }
               }
-              if ($_POST['PitchLoc0'] != $Trady['PitchLoc0'] || ($_POST['PitchLoc1']??0) != $Trady['PitchLoc1'] || ($_POST['PitchLoc2']??0) != $Trady['PitchLoc2'] ||
-                  $_POST['PitchNum0'] != $Trady['PitchNum0'] || ($_POST['PitchNum1']??0) != $Trady['PitchNum1'] || ($_POST['PitchNum2']??0) != $Trady['PitchNum2'] ) {
+              if ($_REQUEST['PitchLoc0'] != $Trady['PitchLoc0'] || ($_REQUEST['PitchLoc1']??0) != $Trady['PitchLoc1'] || ($_REQUEST['PitchLoc2']??0) != $Trady['PitchLoc2'] ||
+                  $_REQUEST['PitchNum0'] != $Trady['PitchNum0'] || ($_REQUEST['PitchNum1']??0) != $Trady['PitchNum1'] || ($_REQUEST['PitchNum2']??0) != $Trady['PitchNum2'] ) {
                 $Mess = Validate_Pitches($Trady);
                 if ($Mess) echo "<h2 class=Err>$Mess</h2>";
               }
             } 
 
             $same=1;
-            foreach(["PitchSize0","PitchSize1","PitchSize2","Days"] as $cc) if ($Trady[$cc] != ($_POST[$cc]??0)) $same = 0; 
-            if ($Trad['TradeType'] != $_POST['TradeType']) $same = 0; 
-            foreach(["Power0","Power1","Power2"] as $cc) if ($Trady[$cc] && $_POST[$cc] && $Trady[$cc] != ($_POST[$cc]??0)) $same = 0; // TODO THIS NEEDS CHANGE
+            foreach(["PitchSize0","PitchSize1","PitchSize2","Days"] as $cc) if ($Trady[$cc] != ($_REQUEST[$cc]??0)) $same = 0; 
+            if ($Trad['TradeType'] != $_REQUEST['TradeType']) $same = 0; 
+            foreach(["Power0","Power1","Power2"] as $cc) if ($Trady[$cc] && $_REQUEST[$cc] && $Trady[$cc] != ($_REQUEST[$cc]??0)) $same = 0; // TODO THIS NEEDS CHANGE
 
             if (!$Mess) Update_db_post('TradeYear',$Trady);
             if (!$Mess && $same == 0 && $Trady['BookingState'] > $Trade_State['Submitted']) {
@@ -1300,24 +1300,24 @@ function Trade_Main($Mode,$Program,$iddd=0) {
           } else {
             $chks = ['Insurance','RiskAssessment','PitchSize0','PitchSize1','PitchSize2','Power0','Power1','Power2','YNotes','BookingState','Submit',
                      'Days','Fee','PitchLoc0','PitchLoc1','PitchLoc2','ACTION'];
-            foreach($chks as $c) if (isset($_POST[$c]) && $_POST[$c]) {
-              if ($c == 'PitchSize0' && $_POST[$c] == "3Mx3M") continue; // This is the only non blank default
-              if (isset($_POST['Fee']) && ($_POST['Fee'] < 0) && ($_POST['BookingState'] >= $Trade_State['Accepted'])) $_POST['BookingState'] = $Trade_State['Fully Paid'];
-              $_POST['Year'] = $PLANYEAR;
+            foreach($chks as $c) if (isset($_REQUEST[$c]) && $_REQUEST[$c]) {
+              if ($c == 'PitchSize0' && $_REQUEST[$c] == "3Mx3M") continue; // This is the only non blank default
+              if (isset($_REQUEST['Fee']) && ($_REQUEST['Fee'] < 0) && ($_REQUEST['BookingState'] >= $Trade_State['Accepted'])) $_REQUEST['BookingState'] = $Trade_State['Fully Paid'];
+              $_REQUEST['Year'] = $PLANYEAR;
               Insert_db_post('TradeYear',$Trady);
               $Trady = Get_Trade_Year($Trad['Tid']);
               break;
             }
           }
         }
-        if ($proc && isset($_POST['ACTION'])) Trade_Action($_POST['ACTION'],$Trad,$Trady,$Mode);
+        if ($proc && isset($_REQUEST['ACTION'])) Trade_Action($_REQUEST['ACTION'],$Trad,$Trady,$Mode);
       } else { // Mode ==2 || Orgs
-//        if (isset($_POST['ACTION'])) Invoice_Action($_POST['ACTION'],$Trad);
+//        if (isset($_REQUEST['ACTION'])) Invoice_Action($_REQUEST['ACTION'],$Trad);
       }
     } else { // New trader
       
  //     var_dump($_REQUEST);exit;
-      $_POST['AccessKey'] = rand_string(40);
+      $_REQUEST['AccessKey'] = rand_string(40);
       $Tid = Insert_db_post('Trade',$Trad);
       if ($Tid && !$Orgs && $Trad['IsTrader'] ) {
         Insert_db_post('TradeYear',$Trady);
@@ -1326,15 +1326,15 @@ function Trade_Main($Mode,$Program,$iddd=0) {
       }
 
       if ($Mode == 2 || $Orgs) {
-//        if (isset($_POST['ACTION'])) Invoice_Action($_POST['ACTION'],$Trad);
+//        if (isset($_REQUEST['ACTION'])) Invoice_Action($_REQUEST['ACTION'],$Trad);
       } else {
-        if ($proc && isset($_POST['ACTION'])) Trade_Action($_POST['ACTION'],$Trad,$Trady,$Mode);
+        if ($proc && isset($_REQUEST['ACTION'])) Trade_Action($_REQUEST['ACTION'],$Trad,$Trady,$Mode);
       }
     }
-    if ($Mode !== 2 && $proc && isset($_POST['Submit'])) Submit_Application($Trad,$Trady,$Mode);
+    if ($Mode !== 2 && $proc && isset($_REQUEST['Submit'])) Submit_Application($Trad,$Trady,$Mode);
 
-  } elseif (isset($_GET['id'])) { // Link from elsewhere 
-    $Tid = $_GET['id'];
+  } elseif (isset($_REQUEST['id'])) { // Link from elsewhere 
+    $Tid = $_REQUEST['id'];
     $Trad = Get_Trader($Tid);
     if ($Trad && $Trad['IsTrader'] && !$Orgs) {
       $Tradyrs = Get_Trade_Years($Tid);

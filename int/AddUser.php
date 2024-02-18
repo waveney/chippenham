@@ -11,8 +11,8 @@
 
   echo "<h2>Add/Edit Fest Con Users</h2>\n";
   echo "<form method=post action='AddUser'>\n";
-  if (isset($_POST['UserId'])) { /* Response to update button */
-    $unum = $_POST['UserId'];
+  if (isset($_REQUEST['UserId'])) { /* Response to update button */
+    $unum = $_REQUEST['UserId'];
     if ($unum > 0) {                                 // existing User
     
       $Stypes = [];
@@ -21,10 +21,10 @@
       foreach($Ttypes as $T) $Stypes[$T['Capability']] = $T['Level'];
     
       $User = Get_User($unum);
-      if (isset($_POST['ACTION'])) {
-        switch ($_POST['ACTION']) {
+      if (isset($_REQUEST['ACTION'])) {
+        switch ($_REQUEST['ACTION']) {
         case 'Set Password' :
-          $hash = crypt($_POST['NewPass'],"WM");
+          $hash = crypt($_REQUEST['NewPass'],"WM");
           $User['password'] = $hash;
           $a = Put_User($User);
           break;
@@ -42,23 +42,23 @@
       }
     } else { /* New User */
       $proc = 1;
-      if (!isset($_POST['SN'])) {
+      if (!isset($_REQUEST['SN'])) {
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $proc = 0;
       }
-      if ($proc && !isset($_POST['Login'])) {
+      if ($proc && !isset($_REQUEST['Login'])) {
         echo "<h2 class=ERR>NO login GIVEN</h2>\n";
         $proc = 0;
       }
-      $Exist = Gen_Get_Cond('FestUsers',"Login='" . $_POST['Login'] ."'",'UserId');
+      $Exist = Gen_Get_Cond('FestUsers',"Login='" . $_REQUEST['Login'] ."'",'UserId');
       if ($proc && !empty($Exist)) {
         echo "<h2 class=ERR>Username not unique</h2>\n";
         $proc = 0;      
       }
       $unum = Insert_db_post('FestUsers',$User,$proc);
     }
-  } elseif (isset($_GET['usernum']) && $_GET['usernum']) {
-    $unum = $_GET['usernum'];
+  } elseif (isset($_REQUEST['usernum']) && $_REQUEST['usernum']) {
+    $unum = $_REQUEST['usernum'];
     $User = Get_User($unum);
   } else {
     $unum = -1;

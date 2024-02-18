@@ -7,12 +7,12 @@
   include_once("ProgLib.php");
   include_once("CheckDance.php");
 
-  if (isset($_GET['D'])) {
-    $dstId = $_GET['D'];  
-    $srcId = $_GET['S'];  
-    $Day   = $_GET['A'];
+  if (isset($_REQUEST['D'])) {
+    $dstId = $_REQUEST['D'];  
+    $srcId = $_REQUEST['S'];  
+    $Day   = $_REQUEST['A'];
     $DayN  = $Day_Type[$Day];
-    $sSide   = $_GET['I'];
+    $sSide   = $_REQUEST['I'];
   
     if (preg_match('/SideN(\d*)/',$srcId,$sres)) {
       $src=0;
@@ -54,7 +54,7 @@
   }
  // Return setup
  
-//var_dump($_GET);
-  $Ei    = $_GET['E'];  // Used for return info
-  if (isset($_GET['P'])) UserSetPref('ProgErr',$Ei);
+//var_dump($_REQUEST);
+  $Ei    = $_REQUEST['E'];  // Used for return info
+  if (isset($_REQUEST['P'])) UserSetPref('ProgErr',$Ei);
   CheckDance($Ei);

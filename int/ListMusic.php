@@ -13,7 +13,7 @@
   echo fm_hidden('Year',$YEAR);
   $YearTab = 'SideYear';
 
-  $Type = (isset($_GET['T'])? $_GET['T'] : 'M' );
+  $Type = (isset($_REQUEST['T'])? $_REQUEST['T'] : 'M' );
   if ($Type == 'Z') {
     $TypeSel = " IsASide=0 AND IsAnAct=0 AND IsFunny=0 AND IsFamily=0 AND IsCeilidh=0 AND IsOther=0 ";
     $Perf = "Uncategorised performers";
@@ -43,19 +43,19 @@
   echo "If you click on the email link, press control-V afterwards to paste the standard link into message.<p>";
   $col5 = $col6 = $col7 = $col8 = $col9 = $col10 = $col11 = '';
 
-  if (isset($_GET['ACTION'])) {
-    $sid = $_GET['SideId'];
+  if (isset($_REQUEST['ACTION'])) {
+    $sid = $_REQUEST['SideId'];
     $side = Get_Side($sid);
     $sidey = Get_SideYear($sid);
-    Music_Actions($_GET['ACTION'],$side,$sidey);
+    Music_Actions($_REQUEST['ACTION'],$side,$sidey);
   }
 
-  if ($_GET['SEL'] == 'ALL') {
+  if ($_REQUEST['SEL'] == 'ALL') {
     $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.Year='$YEAR' WHERE $TypeSel AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
     if (substr($YEAR,0,4) == '2020') $col10 = 'Change';
-  } else if ($_GET['SEL'] == 'INV') {
+  } else if ($_REQUEST['SEL'] == 'INV') {
     $LastYear = $PLANYEAR-1;
     $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.Year='$PLANYEAR' WHERE $TypeSel AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Invited $LastYear";
@@ -63,12 +63,12 @@
     $col7 = "Invite $PLANYEAR";
     $col8 = "Invited $PLANYEAR";
     $col9 = "Coming $PLANYEAR";
-  } else if ($_GET['SEL'] == 'Coming') {
+  } else if ($_REQUEST['SEL'] == 'Coming') {
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.$DiffFld,s.Importance) AS EffectiveImportance FROM Sides AS s, $YearTab as y " .
                 "WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND y.YearState=" . 
                 $Book_State['Contract Signed'] . " ORDER BY EffectiveImportance DESC, SN"); 
     $col5 = "Complete?";
-  } else if ($_GET['SEL'] == 'Booking') {
+  } else if ($_REQUEST['SEL'] == 'Booking') {
     $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND ( y.YearState>0 || y.TickBox4>0)" . 
                 " AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
@@ -80,7 +80,7 @@
     if (substr($YEAR,0,4) == '2020') $col11 = 'Change';
     echo "Under <b>Actions</b> various errors are reported, the most significant error is indicated.  Please fix these before issuing the contracts.<p>\n";
     echo "Missing: P - Needs Phone, E Needs Email, T Needs Tech Spec, B Needs Bank (Only if fees), I Insurance.<p>";
-  } else if ($_GET['SEL'] == 'Avail') {
+  } else if ($_REQUEST['SEL'] == 'Avail') {
     $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s, $YearTab as y WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";
@@ -89,7 +89,7 @@
     $col9 = 'Messages';
 //    $col9 = "Prev Fest State";
  
-  } else if ($_GET['SEL'] == 'BookingLastYear') {
+  } else if ($_REQUEST['SEL'] == 'BookingLastYear') {
 
     $PrevYear = '2021'; // TODO fix fudge
     echo "<div class=content><h2>List $Perf $PrevYear</h2>\n";
@@ -115,7 +115,7 @@
     echo "<thead><tr>";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";
-    if ($_GET['SEL']) {
+    if ($_REQUEST['SEL']) {
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contact</a>\n";
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
 //      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Link</a>\n";
@@ -152,7 +152,7 @@
       } else {
         echo "<td>" . $fetch['Type'];// . $fetch['syId'];
       }
-      if ($_GET['SEL']) {
+      if ($_REQUEST['SEL']) {
         echo "<td>" . ($fetch['HasAgent']?$fetch['AgentName']:$fetch['Contact']);
         echo "<td>" . linkemailhtml($fetch,'Act',(!$fetch['Email'] && $fetch['AltEmail']? 'Alt' : '' ));
       } 
@@ -189,7 +189,7 @@
           $acts = $Book_Actions[$Book_States[$State]];
           if ($acts) {
             $acts = array_reverse(preg_split('/,/',$acts) );
-//            echo "<form method=Post Action=PerformerActions>" . fm_Hidden('SEL',$_GET['SEL']) . fm_hidden('SideId',$fetch['SideId']) . fm_hidden('T',$Type) . 
+//            echo "<form method=Post Action=PerformerActions>" . fm_Hidden('SEL',$_REQUEST['SEL']) . fm_hidden('SideId',$fetch['SideId']) . fm_hidden('T',$Type) . 
 //                  fm_hidden('Y',$YEAR). fm_hidden('SideId',$fetch['SideId']);
             foreach($acts as $ac) {
               switch ($ac) {

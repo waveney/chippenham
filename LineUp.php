@@ -9,7 +9,7 @@
   $T = 'Dance';
   $FORCE = isset($_REQUEST['FORCE']);
   
-  if (isset($_GET['T'])) $T = $_GET['T'];
+  if (isset($_REQUEST['T'])) $T = $_REQUEST['T'];
   if (strlen($T) > 12 || preg_match('/\W/',$T)) $T = 'Dance';  
 
   $PerfTs = Get_Perf_Types(1);

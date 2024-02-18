@@ -18,7 +18,7 @@
 
   $ThumbSize = $_REQUEST['Thumb'] ?? 75;
   $Gals = Get_Gallery_Names(1);
-  $Galid = (isset($_GET['g'])? $_GET['g'] : (isset($_POST['g'])? $_POST['g']:0 ));
+  $Galid (isset($_REQUEST['g'])? $_REQUEST['g']:0 );
   if (strlen($Galid) > 4) $Galid=0;
   $GalName = $Gals[$Galid];
   
@@ -72,8 +72,8 @@
     }
     
   }
-  if (isset($_POST['IMPORT'])) { 
-    $Prefix = $_POST['FilePrefix'];
+  if (isset($_REQUEST['IMPORT'])) { 
+    $Prefix = $_REQUEST['FilePrefix'];
     $ImpLog = '';
     $ImpCount = 0;
     if (is_dir("../$Prefix")) { // Directory
@@ -150,7 +150,7 @@
     Register_AutoUpdate('Galleries',$Galid);
     echo fm_hidden('g',$Galid);
     echo "<h3>Import Photos</h3>Give Name of Directory (All Images will be imported) or Full Prefix (Any File with that Prefix will be imported): ";
-    echo fm_textinput('FilePrefix',isset($_POST['FilePrefix'])?$_POST['FilePrefix']:"");
+    echo fm_textinput('FilePrefix',isset($_REQUEST['FilePrefix'])?$_REQUEST['FilePrefix']:"");
     echo "<input type=submit name=IMPORT value=Import>";
     echo "</form><p>";
 

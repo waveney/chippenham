@@ -3,7 +3,7 @@
   include_once("int/NewsLib.php");
   dohead("News Item",[],1);
   
-  $n = $_GET['id'];
+  $n = $_REQUEST['id'];
   if (!is_numeric($n)) exit("Invalid News Item ");
   $n = Get_News($n);
 

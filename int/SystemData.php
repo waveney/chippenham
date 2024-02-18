@@ -10,7 +10,7 @@
 
 //var_dump($_REQUEST);
 
-  if (isset($_POST['Update'])) Update_db_post('SystemData',$FESTSYS);
+  if (isset($_REQUEST['Update'])) Update_db_post('SystemData',$FESTSYS);
   echo "<form method=post>\n";
   Register_AutoUpdate('SystemData',1);
   echo "<div class=tablecont><table>";

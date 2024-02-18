@@ -30,9 +30,9 @@ function Grab_Data($day='',$Media='Dance') {
   if (isset($_REQUEST['SAND'])) $Sand = 1;
 
   if ($day) { $DAY=$day;
-  } else if (isset($_GET['d'])) { $DAY = $_GET['d']; } else { $DAY='Sat'; }
+  } else if (isset($_REQUEST['d'])) { $DAY = $_REQUEST['d']; } else { $DAY='Sat'; }
 
-  if (!isset($_GET['EInfo'])) $_GET['EInfo'] = 0;
+  if (!isset($_REQUEST['EInfo'])) $_REQUEST['EInfo'] = 0;
 /*
   for ($t=9;$t<($Media=='Dance'?18:24);$t++) { // TODO fix for non 30 minute slots TODO Start and end from Master
     $Times[] = $t*100;
@@ -558,7 +558,7 @@ function Side_List() {
 
 function Controls($level=0,$condense=0) {
   global $InfoLevels,$DAY,$Sand,$YEAR;
-  if (!isset($_GET['EInfo'])) $_GET['EInfo'] = $level;
+  if (!isset($_REQUEST['EInfo'])) $_REQUEST['EInfo'] = $level;
   echo "<div class=DPControls><center>";
   echo "Programming Controls";
   echo "<form method=get action=''>";
@@ -574,9 +574,9 @@ function Controls($level=0,$condense=0) {
   echo "<input type=submit name=d value=Sat $classSat> ";
   echo "<input type=submit name=d value=Sun $classSun> ";
   echo "<input type=submit name=d value=Mon $classMon>\n";
-  $_GET['EInfo'] = UserGetPref('ProgErr');
+  $_REQUEST['EInfo'] = UserGetPref('ProgErr');
   
-  echo "<tr>" . fm_radio("Errors",$InfoLevels,$_GET,'EInfo',"onchange=SaveAndUpdateInfo()");
+  echo "<tr>" . fm_radio("Errors",$InfoLevels,$_REQUEST,'EInfo',"onchange=SaveAndUpdateInfo()");
   echo "</table>";
   echo "<div id=DanceErrsDest> </div>";
   echo "<button onclick=clearHL()>Clear Highlights</button><br>";
@@ -634,9 +634,9 @@ function Grab_Music_Data($day='') {
   if (isset($_REQUEST['SAND'])) $Sand = 1;
 
   if ($day) { $DAY=$day;
-  } else if (isset($_GET['d'])) { $DAY = $_GET['d']; } else { $DAY='Sat'; }
+  } else if (isset($_REQUEST['d'])) { $DAY = $_REQUEST['d']; } else { $DAY='Sat'; }
 
-  if (!isset($_GET['EInfo'])) $_GET['EInfo'] = 0;
+  if (!isset($_REQUEST['EInfo'])) $_REQUEST['EInfo'] = 0;
   for ($t=10;$t<24;$t++) {
     $Times[] = $t*100;
     $Times[] = $t*100+15;

@@ -115,7 +115,7 @@ function ImpCount($imps) {
 function Gallery($id,$embed=0) {
   global $YEAR;
   include_once("ImageLib.php");
-  $PS = (isset($_GET['S']) ? $_GET['S'] : 50);
+  $PS = (isset($_REQUEST['S']) ? $_REQUEST['S'] : 50);
 
 
   if (is_numeric($id)) {
@@ -160,7 +160,7 @@ function Gallery($id,$embed=0) {
       $PStr = "<div class=floatright><a href=ShowGallery?g=$PGal>Up to " . $Gal['GallerySet'] . "</a></div>";
     }
     if ($ImgCount > $PS) {
-      $Page = (isset($_GET['p']) ? $_GET['p'] : 1);
+      $Page = (isset($_REQUEST['p']) ? $_REQUEST['p'] : 1);
       $lastP = ceil($ImgCount/$PS);
       if ($Page > $lastP) $Page = $lastP;
       $PStr .= "<div class=gallerypage>Page : ";

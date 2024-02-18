@@ -18,13 +18,13 @@
   $VenY=Get_VenueYears($YEAR);
   $Vens=Get_AVenues(1);
 
-  if (isset($_POST['Update'])) {
+  if (isset($_REQUEST['Update'])) {
     $Change = 0;
     foreach ($Vens as $v) {
       $vid = $v['VenueId'];
       $SaveSet = $NewSet = 0;
       if (isset($VenY[$vid])) $SaveSet = $VenY[$vid]['Complete'];
-      if (isset($_POST["Complete$vid"])) $NewSet = 1;
+      if (isset($_REQUEST["Complete$vid"])) $NewSet = 1;
       if ($SaveSet != $NewSet) {
         if (isset($VenY[$vid])) {
           $VenY[$vid]['Complete'] = $NewSet;

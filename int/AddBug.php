@@ -18,11 +18,11 @@
 
   echo "<div class='content'><h2>Add/Edit Bugs</h2>\n";
   echo "<form method=post action='AddBug'>\n";
-  if (isset($_POST['BugId'])) { // Response to update button
-    $b = $_POST['BugId'];
+  if (isset($_REQUEST['BugId'])) { // Response to update button
+    $b = $_REQUEST['BugId'];
     if ($b > 0) $Bug = Get_Bug($b);
-    if (isset($_POST['ACTION'])) {
-      switch ($_POST['ACTION']) {
+    if (isset($_REQUEST['ACTION'])) {
+      switch ($_REQUEST['ACTION']) {
       case 'Divide':
         break;
       case 'Delete':
@@ -32,8 +32,8 @@
       Update_db_post('Bugs',$Bug);
     } else { // New
       $proc = 1;
-      $_POST['Created'] = time();
-      if (!isset($_POST['SN'])  || strlen($_POST['SN']) < 2) { // 
+      $_REQUEST['Created'] = time();
+      if (!isset($_REQUEST['SN'])  || strlen($_REQUEST['SN']) < 2) { // 
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $proc = 0;
       }
@@ -44,8 +44,8 @@
       $em = Get_Emails('Bugs');
       if ($em) NewSendEmail(0,0,$em,"WMFF Bug report by " .$USER['SN'],$je);
     }
-  } elseif (isset($_GET['b'])) {
-    $b = $_GET['b'];
+  } elseif (isset($_REQUEST['b'])) {
+    $b = $_REQUEST['b'];
     $Bug = Get_Bug($b);
   } else {
     $b = -1;

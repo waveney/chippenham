@@ -6,7 +6,7 @@
   echo '<script> function uploaddocs(dir) { location.href="Dir.php?"; } </script>';
 
 //  echo var_dump($_COOKIE) . "<P>";
-// if ($_POST) var_dump($_POST);
+// if ($_REQUEST) var_dump($_REQUEST);
 
   include_once("DocLib.php");
   if (isset($_REQUEST['d'])) {
@@ -32,7 +32,7 @@
   switch ($Act) {
     case 'Create': 
       if ($dir) {
-        $NewDir = $_POST['DirName'];
+        $NewDir = $_REQUEST['DirName'];
         if (strlen($NewDir) < 2) {
           $ErrMess = "Directory name too short"; 
         } else {
@@ -69,7 +69,7 @@
           echo '<form action="Dir" method="post">';
           echo fm_hidden('d', $d);
         echo "<h2>Rename " . htmlspec($dir['SN']) . "</h2>";
-          echo fm_simpletext('as new name ',$_POST,'DirName');
+          echo fm_simpletext('as new name ',$_REQUEST,'DirName');
           echo '<input type="submit" value="Rename" name="Action">';
           echo "</form>\n";
         $skip = 1;
@@ -79,7 +79,7 @@
       break;
     case 'Rename':
       if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
-        $NewDir = $_POST['DirName'];
+        $NewDir = $_REQUEST['DirName'];
         if ($dir['SN'] == $NewDir) break;
         $fullname = Dir_FullName($d);
           $fullpath = dirname($fullname);
@@ -109,7 +109,7 @@
       break;
     case 'Move':
       if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
-        $NewDir = $_POST['NewDir'];
+        $NewDir = $_REQUEST['NewDir'];
         $name = $dir['SN'];
         if ($dir['Parent'] == $NewDir) break;
         $fullname = Dir_FullName($d);
@@ -141,7 +141,7 @@
       break;
     case 'Chown':
       if ($d > 0 && Access('Committee','Docs')) {
-        $dir['Who'] = $_POST['Who'];
+        $dir['Who'] = $_REQUEST['Who'];
         Put_DirInfo($dir);
       } else {
         $ErrMess = "Insufficient Priviledge";
@@ -168,9 +168,9 @@
       break;
     case 'Restrict': // Change access restrictions
       if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
-        $dir['AccessLevel'] = $_POST['AccessLevel'];
+        $dir['AccessLevel'] = $_REQUEST['AccessLevel'];
         $sects = [];
-        foreach ($Sections as $Sect) if (isset($_POST["Section_$Sect"]) && $_POST["Section_$Sect"]) $sects[] = $Sect;
+        foreach ($Sections as $Sect) if (isset($_REQUEST["Section_$Sect"]) && $_REQUEST["Section_$Sect"]) $sects[] = $Sect;
         $dir['AccessSections'] = ($sects ? implode(",",$sects) : ''); 
         Put_DirInfo($dir);                 
       } else {
@@ -203,7 +203,7 @@
             echo '<form action="Dir" method="post">';
             echo fm_hidden('d', $d) . fm_hidden('f', $f);
           echo "<h2>Rename " . htmlspec($finf['SN']) . "</h2>";
-            echo fm_simpletext('as new name ',$_POST,'DocName');
+            echo fm_simpletext('as new name ',$_REQUEST,'DocName');
             echo '<input type="submit" value="Rename" name="FileAction">';
             echo "</form>\n";
           $skip = 1;
@@ -213,7 +213,7 @@
         break;
       case 'Rename':
         if (Access('Committee','Docs') || $finf['Who'] == $USERID || $dir['Who'] == $USERID ) {
-          $NewDoc = $_POST['DocName'];
+          $NewDoc = $_REQUEST['DocName'];
           if ($finf['SN'] == $NewDoc) break;
           $fullname = File_FullName($f);
             $fullpath = dirname($fullname);
@@ -243,7 +243,7 @@
         break;
       case 'Move':
         if (Access('Committee','Docs') || $finf['Who'] == $USERID || $dir['Who'] == $USERID ) {
-          $NewDir = $_POST['NewDir'];
+          $NewDir = $_REQUEST['NewDir'];
           $name = $finf['SN'];
           if ($finf['Dir'] == $NewDir) break;
           $fullname = File_FullName($f);
@@ -274,7 +274,7 @@
         break;
       case 'Chown':
         if (Access('Committee','Docs')) {
-           $finf['Who'] = $_POST['Who'];
+           $finf['Who'] = $_REQUEST['Who'];
           Put_DocInfo($finf);
         } else {
           $ErrMess = "Insufficient Priviledge";
@@ -394,7 +394,7 @@ XXX;
 //    echo "</form>\n";
     echo '<form action="Dir" method="post">';
     echo fm_hidden('d', $d);
-    echo fm_simpletext('New Directory',$_POST,'DirName');
+    echo fm_simpletext('New Directory',$_REQUEST,'DirName');
     echo '<input type="submit" value="Create" name="Action">';
     echo "</form>\n";
     SearchForm($d);

@@ -404,6 +404,7 @@ function Find_Dir_For($dname) {
 }
 
 function Make_dir_Path($Path,$User=1) {
+  global $USERID;
   umask(0);
   $chunks = preg_split('/\//',$dname);
   if ($chunk[0] != 'Store') array_unshift($chunks,'Store');
@@ -413,13 +414,12 @@ function Make_dir_Path($Path,$User=1) {
   foreach ($chunks as $chunk) {
     $CurP .= "/$chunk";
     if (!file_exists($CurP)) {
+      umask(0);
+      $ans = mkdir ($CurP,0777,1);
+//      $newrec = array('SN'=>addslashes($NewDir), 'Who'=>$USERID, 'Created'=>time(), 'Parent'=> $d);
+//      Insert_db('Directories',$newrec);  // TODO These two lines are WRONG
     }
   }
-              umask(0);
-            $ans = mkdir ($ndir,0777,1);
-            $newrec = array('SN'=>addslashes($NewDir), 'Who'=>$USERID, 'Created'=>time(), 'Parent'=> $d);
-            Insert_db('Directories',$newrec);
-
 }
 
 function Dir_File_Count($dir) {
@@ -431,19 +431,19 @@ function Dir_File_Count($dir) {
 
 function SearchForm($where=0) {
   $SearchLocs = ['Everywhere','Here'];
-  if (!isset($_POST['Titles']) && !isset($_POST['Cont'])) { $_POST['Titles'] = 1; }
-  elseif (!$_POST['Titles'] && !$_POST['Cont']) $_POST['Titles'] = 1;
+  if (!isset($_REQUEST['Titles']) && !isset($_REQUEST['Cont'])) { $_REQUEST['Titles'] = 1; }
+  elseif (!$_REQUEST['Titles'] && !$_REQUEST['Cont']) $_REQUEST['Titles'] = 1;
   echo "<form action=Search method=post>";
   echo fm_hidden('Search_Dir',$where);
-  echo "Search " . fm_checkbox("Titles",$_POST,'Titles');
-  echo fm_checkbox("Content",$_POST,'Cont');
-  echo fm_simpletext("for",$_POST,'Target');
+  echo "Search " . fm_checkbox("Titles",$_REQUEST,'Titles');
+  echo fm_checkbox("Content",$_REQUEST,'Cont');
+  echo fm_simpletext("for",$_REQUEST,'Target');
   $AllU = Get_AllUsers();
-  echo " by " . fm_select($AllU,$_POST,'Who',1);
-  echo fm_simpletext("From",$_POST,'From','size=10');
-  echo fm_simpletext("Until",$_POST,'Until','size=10');
-  if (!isset($_POST['Search_Loc'])) $_POST['Search_Loc'] = 0;
-  echo fm_radio('',$SearchLocs,$_POST,'Search_Loc','',0);
+  echo " by " . fm_select($AllU,$_REQUEST,'Who',1);
+  echo fm_simpletext("From",$_REQUEST,'From','size=10');
+  echo fm_simpletext("Until",$_REQUEST,'Until','size=10');
+  if (!isset($_REQUEST['Search_Loc'])) $_REQUEST['Search_Loc'] = 0;
+  echo fm_radio('',$SearchLocs,$_REQUEST,'Search_Loc','',0);
   echo "<input type=submit name=Search value=Search>";
   echo "</form>";
 }

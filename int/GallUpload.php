@@ -13,13 +13,13 @@
         "Sponsors"=>"images/Sponsors");
   $Pflip = array_flip($Places);
 
-// var_dump($_POST);
+// var_dump($_REQUEST);
 // var_dump($_FILES);
   
-  if (isset($_POST['Action'])) {
-    if (!$_POST['Where']) $_POST['Where'] = "images";
-    $target_dir = "" . $_POST['Where'];
-    $prefix = $_POST['Prefix'];
+  if (isset($_REQUEST['Action'])) {
+    if (!$_REQUEST['Where']) $_REQUEST['Where'] = "images";
+    $target_dir = "" . $_REQUEST['Where'];
+    $prefix = $_REQUEST['Prefix'];
     umask(0);
     if (!file_exists($target_dir)) mkdir($target_dir,0775,true);
     // Count # of uploaded files in array
@@ -47,8 +47,8 @@
   }
   echo "<h2>Upload no more than 6 photos at once or more than 16M of photos</h2>";
   echo "<form method=post action=PhotoUpload enctype='multipart/form-data' id=Photosform>";
-  echo fm_radio("Where to put them",$Pflip,$_POST,'Where','',0) . "<p>";
-  echo fm_text("Prefix - if it has a / it will make any necessary directories",$_POST,'Prefix') . "<br>\n";
+  echo fm_radio("Where to put them",$Pflip,$_REQUEST,'Where','',0) . "<p>";
+  echo fm_text("Prefix - if it has a / it will make any necessary directories",$_REQUEST,'Prefix') . "<br>\n";
   echo fm_hidden('Action', 'Upload');
 
   echo "Select Photo files to upload:";

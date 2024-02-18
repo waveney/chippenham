@@ -6,28 +6,28 @@
   global $USER,$USERID,$db,$PLANYEAR,$StewClasses,$Relations,$Days;
   
 function Submit_Steward() {
-  if (strlen($_POST['SN']) < 2) { echo "<p class=Err>Please give your name\n"; $err=1; };
-  if (strlen($_POST['Email']) < 6) { echo "<p class=Err>Please give your Email\n"; $err=1; };
-  if (strlen($_POST['Phone']) < 6) { echo "<p class=Err>Please give your Phone number(s)\n"; $err=1; };
-  if (strlen($_POST['Address']) < 20) { echo "<p class=Err>Please give the contacts Address\n"; $err=1; };
-  if (strlen($_POST['Birthday']) < 4) { echo "<p class=Err>Please give your birthday\n"; $err=1; };
+  if (strlen($_REQUEST['SN']) < 2) { echo "<p class=Err>Please give your name\n"; $err=1; };
+  if (strlen($_REQUEST['Email']) < 6) { echo "<p class=Err>Please give your Email\n"; $err=1; };
+  if (strlen($_REQUEST['Phone']) < 6) { echo "<p class=Err>Please give your Phone number(s)\n"; $err=1; };
+  if (strlen($_REQUEST['Address']) < 20) { echo "<p class=Err>Please give the contacts Address\n"; $err=1; };
+  if (strlen($_REQUEST['Birthday']) < 4) { echo "<p class=Err>Please give your birthday\n"; $err=1; };
 
   $Clss=0;
-  foreach ($StewClasses as $c=>$exp) if ($_POST["SC_$c"]) $Clss++;
+  foreach ($StewClasses as $c=>$exp) if ($_REQUEST["SC_$c"]) $Clss++;
   if ($Clss == 0) { echo "<p class=Err>Please select at least once team\n"; $err=1; };
 
   $Avail=0;
-  foreach ($Days as $d=>$ld) if (strlen($_POST["Avail$d"]) > 1) $Avail++;
+  foreach ($Days as $d=>$ld) if (strlen($_REQUEST["Avail$d"]) > 1) $Avail++;
 
   if ($Avail == 0) { echo "<p class=Err>Please give your availabilty\n"; $err=1; };
-  if (strlen($_POST['ContactName']) < 2) { echo "<p class=Err>Please give an emergency contact\n"; $err=1; };
-  if (strlen($_POST['ContactPhone']) < 6) { echo "<p class=Err>Please give emergency Phone number(s)\n"; $err=1; };
+  if (strlen($_REQUEST['ContactName']) < 2) { echo "<p class=Err>Please give an emergency contact\n"; $err=1; };
+  if (strlen($_REQUEST['ContactPhone']) < 6) { echo "<p class=Err>Please give emergency Phone number(s)\n"; $err=1; };
 
-  Clean_Email($_POST['Email']);
+  Clean_Email($_REQUEST['Email']);
   if (!$err) {
 //      echo "<P>VALID...<P>";
-    $_POST['AccessKey'] = rand_string(40);
-    $_POST['Year'] = $PLANYEAR;
+    $_REQUEST['AccessKey'] = rand_string(40);
+    $_REQUEST['Year'] = $PLANYEAR;
     $id = Insert_db_post('Stewards',$stew);
     
     Email_Steward($stew,'Stew_Application',$stew['Email']);
@@ -40,10 +40,10 @@ function Submit_Steward() {
 
  
   if (isset($_REQUEST['ACTION'])) { /* Response to Action button */
-    $id = $_POST['id'];
+    $id = $_REQUEST['id'];
     $stew = Get_Steward($id);
     A_Check('Participant','Steward',$id);
-    Clean_Email($_POST['Email']);
+    Clean_Email($_REQUEST['Email']);
     Update_db_post('Stewards',$stew);
     switch ($_REQUEST['ACTION']) {
     case 'Submit':
@@ -54,8 +54,8 @@ function Submit_Steward() {
     case 'Update':
       break;
     }
-  } else if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+  } else if (isset($_REQUEST['id'])) {
+    $id = $_REQUEST['id'];
     A_Check('Participant','Steward',$id);
     $stew = Get_Steward($id);
   } else { // New

@@ -12,27 +12,27 @@
   $ETNames = [];
   foreach($Event_Types as $E) $ETNames[$E['ETypeNo']] = $E['SN'];
 
-//var_dump($_POST);
+//var_dump($_REQUEST);
 //var_dump($Event_Types);
 
-  if (isset($_POST['ACTION']) && Access('Staff','Events')) {
-    foreach ($_POST as $f=>$v) {
+  if (isset($_REQUEST['ACTION']) && Access('Staff','Events')) {
+    foreach ($_REQUEST as $f=>$v) {
       if (preg_match('/E(\d*)/',$f,$res)) {
         $ev=$res[1];
         $Event = Get_Event($ev);
 
-        switch ($_POST['ACTION']) {
+        switch ($_REQUEST['ACTION']) {
         case 'Delete' :
           $Event['Year'] -= 1000;
           $Event['SubEvent'] = 0;
           break;
 
         case 'Rename as':
-          $Event['SN'] = $_POST['NewName'];
+          $Event['SN'] = $_REQUEST['NewName'];
           break;
 
         case 'Move by':
-          if ($delta = $_POST['Minutes']) {
+          if (($delta = $_REQUEST['Minutes'])) {
             $Event['Start'] = timeadd($Event['Start'],$delta);
             $Event['End'] = timeadd($Event['End'],$delta);
             if ($Event['SlotEnd']) $Event['SlotEnd'] = timeadd($Event['SlotEnd'],$delta);
@@ -40,11 +40,11 @@
           break;
 
         case 'Move to':
-          if ($v = $_POST['v']) $Event['Venue'] = $v;
+          if (($v = $_REQUEST['v'])) $Event['Venue'] = $v;
           break;
           
         case 'Chown to':
-          $Event['Owner'] = $_POST['W'];
+          $Event['Owner'] = $_REQUEST['W'];
           break;
           
         case 'Public':
@@ -66,23 +66,19 @@
   }
 
   $Venues = Get_Real_Venues();
-  if (isset($_POST['V'])) {
+  if (isset($_REQUEST['V'])) {
     $se = 0;
-    $V = $_POST['V'];
+    $V = $_REQUEST['V'];
     $Ven = Get_Venue($V);
     $SubE = " SubEvent<=0 AND Year='$YEAR' AND Venue=$V";
     echo "<h2>List Events at " . $Ven['SN'] . "</h2>";
 
-  } else if (isset($_POST['LIST'])) {
+  } else if (isset($_REQUEST['LIST'])) {
     $se = 0;
     $SubE = " Year='$YEAR' ";
     echo "<h2>List All Events</h2>";
-  } else if (isset($_GET['se'])) {
-    $se = $_GET['se'];
-    $SubE = " ( SubEvent='$se' OR EventId='$se' )";
-    echo "<h2>List Sub Events</h2>";
-  } else if (isset($_POST['se'])) {
-    $se = $_POST['se'];
+  } else if (isset($_REQUEST['se'])) {
+    $se = $_REQUEST['se'];
     $SubE = " ( SubEvent='$se' OR EventId='$se' )";
     echo "<h2>List Sub Events</h2>";
   } else {
@@ -153,9 +149,9 @@
       echo "<td>$i<td>";
 //      if (Access('Staff','Events') || $evnt['Owner']==$USERID || $evnt['Owner2']==$USERID) 
       echo "<a href=EventAdd?e=$i$PFX>";
-      if (strlen($evnt['SN']) >2) { echo $evnt['SN'] . "</a>"; } else { echo "Nameless</a>"; };
+      if (strlen($evnt['SN']) >2) { echo $evnt['SN'] . "</a>"; } else { echo "Nameless</a>"; }
       echo "<td>" . DayList($evnt['Day']) . "<td>" . timecolon($evnt['Start']) . "<td>";
-      if ($se > 0 && $evnt['SubEvent'] < 0) { echo timecolon($evnt['SlotEnd']); } else { echo timecolon($evnt['End']); }; 
+      if ($se > 0 && $evnt['SubEvent'] < 0) { echo timecolon($evnt['SlotEnd']); } else { echo timecolon($evnt['End']); }
       echo "<td>" . (isset($Venues[$evnt['Venue']]) ? $Venues[$evnt['Venue']] : "Unknown");
       echo "<td>" . ($evnt['Status'] == 1 ? "<div class=Cancel>Cancelled</div> " : "") . 
             (isset($Event_Types[$evnt['Type']]['SN']) ? $Event_Types[$evnt['Type']]['SN'] : "?" );
@@ -233,4 +229,3 @@
     }
   }
   dotail();
-?>

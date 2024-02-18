@@ -8,7 +8,7 @@
   include_once("NewsLib.php");
   include_once("Uploading.php");
   
-//var_dump($_POST);
+//var_dump($_REQUEST);
 
   $Arts = Get_All_Articles(1);
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Articles</button><button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Current/Future Articles Only</button> ";

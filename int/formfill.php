@@ -1,13 +1,13 @@
 <?php
   include_once("fest.php");
-  $field = $_POST['F'];
-  $Value = $_POST['V'];
-  $id    = $_POST['I'];
-  $type  = $_POST['D'];
+  $field = $_REQUEST['F'];
+  $Value = $_REQUEST['V'];
+  $id    = $_REQUEST['I'];
+  $type  = $_REQUEST['D'];
 
   global $PLANYEAR,$YEARDATA;
 
-//var_dump($_POST,$YEARDATA);  
+//var_dump($_REQUEST,$YEARDATA);  
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':

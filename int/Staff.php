@@ -334,7 +334,7 @@
   }
   
 // *********************** VENUES & EVENTS *******************************************************
-  $_POST['DAYS'] = 0; $_POST['Pics'] = 1;
+  $_REQUEST['DAYS'] = 0; $_REQUEST['Pics'] = 1;
   if ($x = StaffTable('Events','Events',2)) {
     $txt .= $x;
     $Vens = Get_AVenues();
@@ -381,7 +381,7 @@
 //    if (Access('SysAdmin')) $txt .= "<li><a href=ConvertEvents>Convert Old Format Events to New Format Events</a>\n";
     $txt .= "<li><form method=Post action=/WhatsOnNow class=staffform>";
       $txt .= "<input type=submit name=a value='Whats On At ' id=staffformid>" . 
-                fm_hidden('Y',$YEAR) . fm_text0('',$_POST,'AtTime') .' on ' . fm_text0('',$_POST,'AtDate') . "</form>\n";
+                fm_hidden('Y',$YEAR) . fm_text0('',$_REQUEST,'AtTime') .' on ' . fm_text0('',$_REQUEST,'AtDate') . "</form>\n";
     if (Access('SysAdmin')) {
       $txt .= "<li class=smalltext><a href=CopyEvent2This?Y=$YEAR>Create/Copy Last years music Events to this year</a>";    
       $txt .= "<li class=smalltext><a href=SubEvWoParents?Y=$YEAR>Find Subevents Without Parents</a>";    
@@ -389,7 +389,7 @@
     $txt .= "</ul>\n";
   }
 // *********************** Venues *****************************************************************
-  $_POST['DAYS'] = 0; $_POST['Pics'] = 1;
+  $_REQUEST['DAYS'] = 0; $_REQUEST['Pics'] = 1;
   if ($x = StaffTable('Events','Venues')) {
     $txt .= $x;
     $Vens = Get_AVenues();
@@ -451,7 +451,7 @@
       $txt .= "<input type=submit name=a value='Poster For' id=Posterid>" . 
                 fm_hidden('Y',$YEAR) . 
                 fm_select($Vens,0,'v',0," onchange=this.form.submit()") . "<br>" .
-                fm_radio('',$Days,$_POST,'DAYS','',0) . fm_checkbox('Pics',$_POST,'Pics') .
+                fm_radio('',$Days,$_REQUEST,'DAYS','',0) . fm_checkbox('Pics',$_REQUEST,'Pics') .
                 "</form>\n";
 
     $txt .= "<p>";

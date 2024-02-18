@@ -22,7 +22,7 @@
   }
   
   $F = fopen($_FILES["CSVfile"]["tmp_name"],"r");  
-  $TestOnly = (isset($_POST['TestFull'])?1:0);
+  $TestOnly = (isset($_REQUEST['TestFull'])?1:0);
   $orgs = [];
   $orgs_used = [];
   

@@ -5,9 +5,9 @@ include_once("VolLib.php");
 include_once("Email.php");
 global $PLANYEAR;
 
-$id = $_GET['I'];
-$proforma = $_GET['N'];
-$Code = $_GET['C'];
+$id = $_REQUEST['I'];
+$proforma = $_REQUEST['N'];
+$Code = $_REQUEST['C'];
 
 $Vol = Get_Volunteer($id);
 $subject = Feature('FestName') . " $PLANYEAR and " . $Vol['SN'];

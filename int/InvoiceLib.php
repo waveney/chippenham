@@ -20,7 +20,7 @@ include_once("SignupLib.php");
 
 function Parse_MoneyInputs(&$feilds) {
   foreach($feilds as $fld) {
-    if (isset($_POST[$fld])) $_POST[$fld] = round($_REQUEST[$fld]*100);
+    if (isset($_REQUEST[$fld])) $_REQUEST[$fld] = round($_REQUEST[$fld]*100);
   }
 }
 
@@ -838,9 +838,9 @@ function Bespoke_Inv_CoverNote($id,&$inv) {
 
    
   $subject = Feature('FestName') . " " . substr($PLANYEAR,0,4) . " and " . $inv['BZ'];
-  $inv['CoverNote'] = $Mess = (isset($_POST['Message'])?$_POST['Message']:$inv['CoverNote']);
+  $inv['CoverNote'] = $Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:$inv['CoverNote']);
 
-  if (isset($_POST['SEND'])) {
+  if (isset($_REQUEST['SEND'])) {
     $pdf = Get_Invoice_Pdf($id,'',$inv['Revision']);
     echo Email_Proforma(3,$inv['SourceId'],$too,$Mess,$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
   
@@ -850,7 +850,7 @@ function Bespoke_Inv_CoverNote($id,&$inv) {
   }
   Replace_Help('Invoices',1);
   echo "<h2>Email for " . $inv['BZ'] . " - " . $inv['Contact'] . "</h2>";
-  if (isset($_POST['PREVIEW'])) {
+  if (isset($_REQUEST['PREVIEW'])) {
     echo "<p><h3>Preview...</h2>";
     $MessP = $Mess;
     Parse_Proforma($MessP,$helper='Invoice_Email_Details',$inv);

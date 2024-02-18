@@ -3,11 +3,11 @@
 include_once("fest.php");
 include_once("DanceLib.php");
 
-$id = $_GET['I'];
-$Opt = $_GET['O'];
+$id = $_REQUEST['I'];
+$Opt = $_REQUEST['O'];
 
 //echo "In Setfields";
-//var_dump($_GET);
+//var_dump($_REQUEST);
 
 switch ($Opt) {
 case 'I':
@@ -15,7 +15,7 @@ case 'J': // Dont Save
   $Sidey = Get_SideYear($id);
   if (!$Sidey) $Sidey = Default_SY($id);
   $prefix = '';
-  $label = (isset($_GET['L'])?$_GET['L']:'');
+  $label = (isset($_REQUEST['L'])?$_REQUEST['L']:'');
   
   if ($label) $prefix .= "<span " . Proforma_Background($label) . ">$label:";
   $prefix .= date('j/n/y');
@@ -41,7 +41,7 @@ case 'L': // Dont Save
   $Sidey = Get_SideYear($id);
   if (!$Sidey) $Sidey = Default_SY($id);
   $prefix = '';
-  $label = (isset($_GET['L'])?$_GET['L']:'');
+  $label = (isset($_REQUEST['L'])?$_REQUEST['L']:'');
   
   if ($label) $prefix .= "<span " . Music_Proforma_Background($label) . ">$label:";
   $prefix .= date('j/n/y');
@@ -63,20 +63,20 @@ case 'L': // Dont Save
   
 case 'R': // Read SideYear
   $Sidey = Get_SideYear($id);
-  echo $Sidey[$_GET['F']];
+  echo $Sidey[$_REQUEST['F']];
   break;  
   
 case 'Y':
   $Sidey = Get_SideYear($id);
   if (!$Sidey) $Sidey = Default_SY($id);
-  $Sidey[$_GET['F']]=$_GET['V'];
+  $Sidey[$_REQUEST['F']]=$_REQUEST['V'];
   Put_SideYear($Sidey);
   break;
   
 case 'TP':
   include_once("TLLib.php");
   $tl = Get_TLent($id);
-  $tl['Progress'] = $_GET['V'];
+  $tl['Progress'] = $_REQUEST['V'];
   if ($tl['Progress'] == 100) {
     $tl['Completed'] = time();
   }
@@ -115,6 +115,6 @@ case 'NC':
 
 default:
   $Side = Get_Side($id);
-  $Side[$_GET['F']]=$_GET['V'];
+  $Side[$_REQUEST['F']]=$_REQUEST['V'];
   Put_Side($Side);
 }
