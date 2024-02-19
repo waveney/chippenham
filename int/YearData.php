@@ -153,7 +153,7 @@
     $Prev = $Gen['PrevFest'];
     if (isset($Gens[$Prev])) echo "<a href=YearData?yearnum=$Prev>$Prev</a>, ";
     echo $ynum;
-    $Next = $Gen['NextFest'];
+    $Next = ($Gen['NextFest']??0);
     if (isset($Gens[$Next])) echo ", <a href=YearData?yearnum=$Next>$Next</a> ";
     echo ", <input type=Submit name=ACTION value='Setup'</a>";
 

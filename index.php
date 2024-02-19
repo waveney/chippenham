@@ -1,7 +1,7 @@
 <?php
   include_once("int/fest.php");
   set_ShowYear();  
-  global $YEARDATA,$NEXTYEARDATA,$PLANYEARDATA,$Months,$SHOWYEAR,$PLANYEAR;
+  global $YEARDATA,$PLANYEARDATA,$Months,$SHOWYEAR,$PLANYEAR;
   include_once("int/TradeLib.php");
   include_once("int/NewsLib.php");
   include_once("int/DispLib.php");
@@ -17,83 +17,76 @@
   $DFrom = ($YEARDATA['DateFri']+$YEARDATA['FirstDay']);
   $DTo = ($YEARDATA['DateFri']+$YEARDATA['LastDay']);
   $DMonth = $Months[$YEARDATA['MonthFri']];
-
-  $NFrom = $DFrom = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['FirstDay']);
-  $NTo = $DTo = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['LastDay']);
-  $NMonth = $DMonth = $Months[$PLANYEARDATA['MonthFri']];
-  $NYear = $PLANYEARDATA['NextFest']; 
-
-
+  
+  $D2F = Days2Festival();
+  
+  $ShowDates = 0;
+  if ($SHOWYEAR == $PLANYEAR) $ShowDates+=1;
+  if ($D2F > -4) $ShowDates +=2;
+  if (!empty($YEARDATA['NextFest'])) $ShowDates+=4;
+  if ($YEARDATA['Years2Show'] == 0) $ShowDates+=8;
+  
+  $ShowActions = [1,0,1,0,3,3,4,4,1,1,1,0,1,1,1,0];
+  
 //  var_dump($YEARDATA);
   if (($YEARDATA['Years2Show'] > 0)) {
+    $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);
+//    var_dump($NEXTYEARDATA);
     $NFrom = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['FirstDay']);
     $NTo = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['LastDay']);
     $NMonth = $Months[$NEXTYEARDATA['MonthFri']];
     $NYear = substr($YEARDATA['NextFest'],0,4);
   }
 
-  if ($PLANYEARDATA['Years2Show'] > 0) {
-    $NFrom = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['FirstDay']);
-    $NTo = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['LastDay']);
-    $NMonth = $Months[$NEXTYEARDATA['MonthFri']];
-    $NYear = $YEARDATA['NextFest'];
-  }   
-
 
   $Sy = substr($PLANYEAR,0,4);
   $TopBans = Get_All_Articles(0,'TopPageBanner',$future);
 
-  if ($TopBans) {
+  $Banner  = "<div class=WMFFBanner400>";
+  
+  if ($TopBans) { // Not modified for ShowDates (Yet)
     $Imgs = explode("\n",$TopBans[0]['Text']);
     
-    $Banner  = "<div class=WMFFBanner400>";
+
     $Banner .= '<div class="rslides_container" style="margin:0;"><ul class="rslides" id="slider1">';
     
     foreach ($Imgs as $img) {
       $Banner .= "<li><img src='$img' class=WMFFBannerDefault>";
     }
     $Banner .= '</ul></div><script>$(function() { $(".rslides").responsiveSlides(); });</script>';
-    $Banner .= "<div class=BanOverlay>" . Feature('BannerOverlay');
-    $Banner .= "<img src=/images/icons/underline.png?1>";
-    $Banner .= "</div>";
-
-    if ($PLANYEARDATA['Years2Show'] > 0) {  
-      $Banner .= "<div class=BanDates2>Next Year: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
-                 "</sup> $NMonth $NYear<p><div class=BanNotice></div></div>";
-    } else {
-      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . 
-        "</sup> $DMonth $Sy</a>";   
-    }
-
-    $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
-    $Banner .= "</div>";
-
-    dohead("$DFrom -YY- $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js", "/js/responsiveslides.js", "/css/responsiveslides.css"],$Banner ); 
   } else {
     $Banner  = "<div class=WMFFBanner400><img src=" . Feature('DefaultPageBanner') . " class=WMFFBannerDefault>";
-    $Banner .= "<div class=BanOverlay>" . Feature('BannerOverlay');
-    $Banner .= "</div>";
+  }
+  $Banner .= "<div class=BanOverlay>" . Feature('BannerOverlay');
+  $Banner .= "</div>";
 
-    if ($PLANYEARDATA['Years2Show'] == 0) {  
-      $Banner .= "<div class=BanDates2>Diary date: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
-                 "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
-    } else if ($PLANYEARDATA['TicketControl'] == 1) {
-      $Banner .= "<a href=/Tickets class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</a>";     
-    } else {
-      $Banner .= "<span class=BanDates>$DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) . "</sup> $DMonth $Sy</span>"; 
-    }
+  switch ($ShowActions[$ShowDates]) {
+    case 0: // This year
+        $Banner .= "<div class=BanDates2>Diary date: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
+               "</sup> $DMonth $Sy<div class=BanNotice></div></div>";
+        break;
 
-    $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
-    $Banner .= "</div>";
-//    if (Days2Festival() > -7) {
-      dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner ); 
-      
-//      var_dump($PLANYEARDATA);
-//    } else {
-//      dohead("$NFrom -XX- $NTo $NMonth $NYear", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner );     
-//    }
+    case 1: // This year past
+        $Banner .= "<div class=BanDates2>The festal was: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
+               "</sup> $DMonth $Sy<div class=BanNotice></div></div>";
+        break;
+
+    case 3: // Both, this has past
+        $Banner .= "<div class=BanDates2>The festal was: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
+               "</sup> $DMonth $Sy<div class=BanNotice></div>";
+        $Banner .= "Next year's dates: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
+               "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
+
+    case 4: // Both in future
+        $Banner .= "<div class=BanDates2>Diary date: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
+               "</sup> $DMonth $Sy<div class=BanNotice></div>";
+        $Banner .= "Next year's dates: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
+               "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
   }
 
+  $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
+  $Banner .= "</div>";
+  dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner ); 
 
   $TopShow = "Top";
   if ( !Show_Articles_For($TopShow,$future)) {
@@ -125,4 +118,3 @@
   }
 
   dotail();
-?>

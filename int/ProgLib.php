@@ -513,7 +513,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
 //var_dump($sy); echo "<P>";
                   if (is_array($sy)) {
                     $s = array_merge($s, $sy);  
-                    $s['NotComing'] = ((($s['Coming'] != 2) && ($s['YearState'] < 2)) || $YEAR<$SHOWYEAR);
+                    $s['NotComing'] = ((($s['Coming'] != 2) && ($s['YearState'] < 2)) );
                   } else $s['NotComing'] = 1;
                   if ($s && ($sy['ReleaseDate'] < $now) || ( Access('Committee') && $Mode)) {
                     $Imp2Use = $s['Importance'];

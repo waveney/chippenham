@@ -369,7 +369,7 @@ function TnC($Name,$default='') {  // Return value of T and C if set from TsAndC
 }
 
 function set_ShowYear($last=0) { // Overrides default above if not set by a Y argument
-  global $YEAR,$SHOWYEAR,$YEARDATA,$NEXTYEARDATA;
+  global $YEAR,$SHOWYEAR,$YEARDATA;
   if ($last == 0 && !isset($_REQUEST['Y'])) {
     $YEAR = $SHOWYEAR;
     $YEARDATA = Get_General($YEAR);
@@ -378,9 +378,6 @@ function set_ShowYear($last=0) { // Overrides default above if not set by a Y ar
     $YEAR = $last;
     $YEARDATA = Get_General($YEAR);
     Feature_Reset();
-  }
-  if ($YEARDATA['Years2Show'] > 0) {
-    $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);
   }
 }
 

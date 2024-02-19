@@ -6,7 +6,7 @@
   
   dostaffhead("Copy Trade Year to New Trade Year - Only to be used after a cancelled festival");
 
-  global $db,$YEAR,$NEXTYEARDATA;
+  global $db,$YEAR;
   $res = $db->query("SELECT * FROM TradeYear WHERE DateChange=12");
  
   while ($ty = $res->fetch_assoc()) {
@@ -23,5 +23,3 @@
   echo "Finished<p>";
   
   dotail();
-?>
-
