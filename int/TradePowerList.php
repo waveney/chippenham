@@ -68,7 +68,7 @@
     $Powers = Gen_Get_All('TradePower');
     $qry = "SELECT y.*, t.* FROM Trade AS t LEFT JOIN TradeYear AS y ON t.Tid=y.Tid AND y.Year='$PLANYEAR' " .
            "WHERE (y.BookingState=6 OR y.BookingState=7 OR y.BookingState=8 OR y.BookingState=9 OR y.BookingState=11) AND " .
-           "( y.Power0>0 OR y.Power1>0 OR y.Power2>0 ) ORDER BY SN";
+           "( y.Power0>0 OR y.Power1>0 OR y.Power2>0 OR y.ExtraPowerDesc!='' ) ORDER BY SN";
 
     $Trads = $db->query($qry);
 
@@ -92,10 +92,16 @@
 
     echo "<tr><th colspan=7><h2>Traders</h2>";
     if ($Trads) foreach($Trads as $t) {
-      for ($i =0; $i<3; $i++) if ($t["Power$i"]) {
+      for ($i =0; $i<3; $i++) if (($t["Power$i"]??0)>1) {
         echo "<tr><td>" . $t['SN'] . "<td>" . $TradeTypeData[$t['TradeType']]['SN'] . "<td>" . $Trade_States[$t['BookingState']] .
              "<td>" . ($t["PitchLoc$i"]?$TradeLocData[$t["PitchLoc$i"]]['SN']:'') . "<td>" . (empty($t["PitchNum$i"])?'Not Assigned':$t["PitchNum$i"]) . 
              "<td>" . $Powers[$t["Power$i"]]['Amps'] . "<td>" . $Powers[$t["Power$i"]]['Phases'] . "\n";
+      }
+      if ($t['ExtraPowerDesc']) {
+          echo "<tr><td>" . $t['SN'] . "<td>" . $TradeTypeData[$t['TradeType']]['SN'] . "<td>" . $Trade_States[$t['BookingState']] .
+             "<td>" . ($t["PitchLoc0"]?$TradeLocData[$t["PitchLoc0"]]['SN']:'') . "<td>" . (empty($t["PitchNum0"])?'Not Assigned':$t["PitchNum0"]) . 
+             "<td>" . $t['ExtraPowerDesc'] . "<td>See description";
+      
       }
     }
 

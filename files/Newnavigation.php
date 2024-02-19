@@ -266,6 +266,7 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
   $NYear = $PLANYEARDATA['NextFest']; 
 
   if ($PLANYEARDATA['Years2Show'] > 0) {
+    $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);
     $NFrom = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['FirstDay']);
     $NTo = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['LastDay']);
     $NMonth = $Months[$NEXTYEARDATA['MonthFri']];

@@ -166,6 +166,12 @@ function UpdatePower(pno, pitchfee) {
 
   if (pitchfee < 0) pitchfee = 0;
   var powercost = tablecost = 0;
+  var xtraPwr;
+  
+  if ((xtraPwr = document.getElementById('ExtraPowerCost'))) {
+    var cst = xtraPwr.value.match(/(\d*)/);
+    powercost += Number(cst[1]);
+  }
 
   for (var stall=0;stall<3;stall++) {
     var Pselect = document.querySelector('input[name="Power' + stall + '"]:checked');
@@ -202,7 +208,7 @@ function PitchNumChange(oldval) {
   }
 }
 
-function FeeChange() {
+function FeeChange(x=0,y=0) {
   var buts = ['Quote','ArtInvite','Invite','InviteBetter'];
   var bb;
   buts.forEach((but) => { 
@@ -210,6 +216,7 @@ function FeeChange() {
       bb.show();
     }
   });  
+  UpdatePower(x,y);
 }
 
 function CheckReQuote(tid) {

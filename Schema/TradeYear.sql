@@ -39,5 +39,9 @@ CREATE TABLE `TradeYear` (
   `Tables0` int NOT NULL,
   `Tables1` int NOT NULL,
   `Tables2` int NOT NULL,
+  `ExtraPower` int NOT NULL,
+  `ExtraPowerNumber` int NOT NULL,
+  `ExtraPowerCost` int NOT NULL DEFAULT '0',
+  `ExtraPowerDesc` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`TYid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

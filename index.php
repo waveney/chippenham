@@ -28,7 +28,6 @@
   
   $ShowActions = [1,0,1,0,3,3,4,4,1,1,1,0,1,1,1,0];
   
-//  var_dump($YEARDATA);
   if (($YEARDATA['Years2Show'] > 0)) {
     $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);
 //    var_dump($NEXTYEARDATA);
@@ -62,7 +61,7 @@
 
   switch ($ShowActions[$ShowDates]) {
     case 0: // This year
-        $Banner .= "<div class=BanDates2>Diary date: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
+        $Banner .= "<div class=BanDates2>Diary dates: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
                "</sup> $DMonth $Sy<div class=BanNotice></div></div>";
         break;
 
@@ -78,7 +77,7 @@
                "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
 
     case 4: // Both in future
-        $Banner .= "<div class=BanDates2>Diary date: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
+        $Banner .= "<div class=BanDates2>Diary dates: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
                "</sup> $DMonth $Sy<div class=BanNotice></div>";
         $Banner .= "Next year's dates: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
                "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
