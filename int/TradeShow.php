@@ -43,7 +43,7 @@
   foreach ($Locs as $loc) if ($loc['SN'] == 'Overview') $Overview = $loc;
 
 function ShowForm($Dir='H') {
-  global $Locs,$LocUsed,$YEAR;
+  global $Locs,$LocUsed,$YEAR, $TTypes, $TTUsed;
 // Work OUt the selection form
   $ShowForm = "<form>" . fm_hidden('Y',$YEAR);
   $ShowForm .= "<div class=tablecont><table class=InfoTable>";
@@ -56,12 +56,14 @@ function ShowForm($Dir='H') {
         $ShowForm .=  "<input type=submit name=SEL value='" . $loc['SN'] . "'> ";
       }
     }
-//    $ShowForm .=  "<td>";
-/*
-    foreach($TTypes as $typ) {
-      if (!$typ['Addition'] && isset($TTUsed[$typ['id']])) echo '<input type=submit name=SEL value="' . $typ['SN'] . '" style="background:' . $typ['Colour'] . ';color:black;"> ';
-    }
-*/
+  $ShowForm .=  "<tr><td>Show by Type:";
+
+  $ShowForm .=  (($Dir=='H')?"<td>":"");
+
+  foreach($TTypes as $typ) {
+    if (!$typ['Addition'] && isset($TTUsed[$typ['id']])) echo '<input type=submit name=SEL value="' . $typ['SN'] . '" style="background:' . $typ['Colour'] . ';color:black;"> ';
+  }
+
   $ShowForm .=  (($Dir=='H')?"<td>":"<tr><td>");
   $ShowForm .=  "<input type=submit name=SEL value='Show All'> ";
   $ShowForm .=  "</table></div></form><p>";

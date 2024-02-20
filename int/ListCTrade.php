@@ -10,6 +10,7 @@
   $Sum = isset($_REQUEST['SUM']);
   if ($Sum) {
     echo "<h2>Traders Summary $YEAR</h2>\n";
+//    echo "Note the totals exclude any extras such as power and tables.<p>";
   } else {
     echo "<div class=content><h2>List Traders $YEAR</h2>\n";
 
@@ -170,6 +171,8 @@
         $fee = $fetch['Fee'];
         $Pwr = PowerCost($fetch);
         if ($fee>0) $fee+=$Pwr;
+        if ($fetch['ExtraPowerDesc']) $fee+=$fetch['ExtraPowerCost'];
+        for($i=0;$i<3;$i++) if ($fetch["Tables$i"]) $fee+=$fetch["Tables$i"]*Feature('TableCost');
         if ($Dep == 0) {
           if ($fee < 0) { $str .= "Free"; }
           else if ($fee == 0) { $str .= "?"; }
