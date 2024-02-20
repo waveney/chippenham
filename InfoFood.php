@@ -38,11 +38,10 @@ if ($Food) {
 } else {
   $Food = Gen_Get_Cond('FoodAndDrink', "Year=" . ($PLANYEAR-1) . " ORDER By Importance DESC, SN");
   if ($Food) {
-    echo "<h2>These are last year's supporters</h2>";
-    foreach ($Food as $f) {
-      echo "<div class=Scrolltable><table class=InfoTable><tr class=FoodHead><td>Name<td>Address<td>Post Code<td>" .
+    echo "These are last year's supporters<Br>";
+    echo "<div class=Scrolltable><table class=InfoTable><tr class=FoodHead><td>Name<td>Address<td>Post Code<td>" .
         "Phone<td>What's on offer over the festival<td>Directions";
-
+    foreach ($Food as $f) {
       echo "<tr><td>" . $f['SN'] . "<td>" . $f['Address'] . "<td>" . $f['PostCode'] . "<td>" . $f['Phone'] .
            "<td>" . $f['Description'] . "<td><button onclick=ShowDirect(" . (2000000 + $f['id']) . ")>Directions</button>\n";
     }
