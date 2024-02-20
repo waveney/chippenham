@@ -651,7 +651,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
       echo "<td id=PowerFor$i>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1,"onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")"); // 
     } else if ($Trade_Prop & 1) { // Change Pos
       echo "<td>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1, "onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")");  
-    } else if ($Trady['PitchLoc0'] ?? 0) {  // Assigned
+    } else if ($Trady["PitchLoc$i"] ?? 0) {  // Assigned
       echo "<td>" . $TradeLocs[$Trady["PitchLoc$i"]];
     } else { // Not assigned
       echo "<td>";
