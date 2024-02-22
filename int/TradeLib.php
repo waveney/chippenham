@@ -571,7 +571,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     if ($P['Cost'] >=0) {
       $PowerOpts[$i] = $Powers[$i] = $P['Name'] . (($P['Cost']??0)? " (£" . $P['Cost'] . ")" :'');
     } else {
-      $PowerOpts[$i] = $Powers[$i] = $P['Name'];
+      $PowerOpts[$i] = $P['Name'];
     }
   }
 //  var_dump($Powers);
