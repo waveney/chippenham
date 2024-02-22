@@ -2415,19 +2415,22 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
   if ($XtraInfra) {
     foreach($XtraInfra as $Inf) {  
       //    var_dump($Pitch,$TradeTypeData,$TT);
-      echo "<rect x=" . ($Inf['X'] * $Factor) . " y=" . ($Inf['Y'] * $Factor) . " width=" . ($Inf['Xsize'] * $Factor) . 
-           " height=" . ($Inf['Ysize'] * $Factor);
+      $Xpos = ($Inf['X'] * $Factor);
+      $Ypos = ($Inf['Y'] * $Factor);
+      $Xwidth = ($Inf['Xsize'] * $Factor);
+      $Yheight = ($Inf['Ysize'] * $Factor);
+      echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
       echo " style='fill:" . ($Inf['Colour']??'White') . ";stroke:black;";
-      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg);" ;
-      $Name = $Inf['ShortName'] ?? $Inf['Name'] ?? '?';
+      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;"; // $Xpos $Ypos);" ;
 //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
       echo "'/>"; 
 
+      $Name = $Inf['ShortName'] ?? $Inf['Name'] ?? '?';
       echo "<title>$Name</title>";
 
       echo "<text x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . ((($Inf['Y']+0.7)/$Mapscale) * $Factor);
       echo " style='";
-      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg);" ;
+      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;";
       echo "font-size:10px;'>";
       if ($Name && ($Pub!=2)) {
       // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
@@ -2436,9 +2439,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
       // Lowercase 
       // Spilt at words of poss, otherwise at length (for now)
 
-        $ChSize = floor($Inf['Xsize']*36*$Mapscale/($Inf['Font']+10));
-        $Ystart = ($Pub?0.6:0.8);
-        $MaxCnk = floor(($Inf['Ysize']*2.5*$Mapscale) - ($Pub?1:2));
+        $ChSize = max(floor($Inf['Xsize']*45*$Mapscale/($Inf['Font']+10)),2);
+        $Ystart = ($Pub?0.6:0.8)*($Inf['Font']+10)/10 -0.2;
+        $MaxCnk = max(floor(($Inf['Ysize']*2.5*$Mapscale)),1);
   //      $Name = preg_replace('/.*t\/a (.*)/',
   //      $Chunks = str_split($Name,$ChSize);
         $Chunks = ChunkSplit($Name,$ChSize,$MaxCnk);
@@ -2478,11 +2481,16 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
     }
     
 //    var_dump($Pitch,$TradeTypeData,$TT);
-    echo "<rect x=" . ($Pitch['X'] * $Factor) . " y=" . ($Pitch['Y'] * $Factor) . " width=" . ($Pitch['Xsize'] * $Factor) . 
-         " height=" . ($Pitch['Ysize'] * $Factor);
+    $Xpos = ($Inf['X'] * $Factor);
+    $Ypos = ($Inf['Y'] * $Factor);
+    $Xwidth = ($Inf['Xsize'] * $Factor);
+    $Yheight = ($Inf['Ysize'] * $Factor);
+
+
+    echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
     echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
          ";stroke:black;";
-    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);" ;
+    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;";
 
     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
 
@@ -2490,7 +2498,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
 
     echo "<text x=" . (($Pitch['X']+0.2) * $Factor)  . " y=" . (($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor);
     echo " style='";
-    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);" ;
+    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;";
     echo "font-size:10px;'>";
     if (!$Pub) {
       echo "#" . $Posn;
