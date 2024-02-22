@@ -2,7 +2,7 @@
 
 // List of Infrastructure and where it is and power needs
 
-// Quick hack for power first
+// Quick hack for power first, only currently for Island park (trade locs), will generalise late for others
 
 include_once("fest.php");
 //include_once("TradeLib.php");
@@ -33,9 +33,10 @@ include_once("fest.php");
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>ShortName</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Category</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Location</a>\n";
+//  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Colour</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Font</a>\n";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>X pos</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Y pos</a>\n";
@@ -53,9 +54,10 @@ include_once("fest.php");
   if ($Things) foreach($Things as $t) {
     $i = $t['id'];
     echo "<tr><td>$i" . fm_text1("",$t,'Name',1,'','',"Name$i") . fm_text1("",$t,'ShortName',1,'','',"ShortName$i");
-    echo "<td>"; // Category
-    echo fm_number1('',$t,'Status','','',"Status$i");
+    echo "<td>Island Park"; // Category
+//    echo fm_number1('',$t,'Status','','',"Status$i");
     echo fm_text1("",$t,'MapColour',1,'','',"MapColour$i");
+    echo fm_text1("",$t,'Font',0.20,'','',"Font$i");
     echo fm_text1("",$t,'X',0.20,'','',"X$i") . fm_text1("",$t,'Y',0.20,'','',"Y$i");
     echo fm_text1("",$t,'Angle',0.20,'','',"Angle$i");
     echo fm_text1("",$t,'Xsize',0.20,'','',"Xsize$i") . fm_text1("",$t,'Ysize',0.20,'','',"Ysize$i");
@@ -67,9 +69,10 @@ include_once("fest.php");
   $t = ['NumberPower'=>1];
   $i = 0;
     echo "<tr><td>$i" . fm_text1("",$t,'Name',1,'','',"Name$i") . fm_text1("",$t,'ShortName',1,'','',"ShortName$i");
-    echo "<td>"; // Category
-    echo fm_number1('',$t,'Status','','',"Status$i");
+    echo "<td>Island Park"; // Category
+//    echo fm_number1('',$t,'Status','','',"Status$i");
     echo fm_text1("",$t,'MapColour',1,'','',"MapColour$i");
+    echo fm_text1("",$t,'Font',0.20,'','',"Font$i");
     echo fm_text1("",$t,'X',0.20,'','',"X$i") . fm_text1("",$t,'Y',0.20,'','',"Y$i");
     echo fm_text1("",$t,'Angle',0.20,'','',"Angle$i");
     echo fm_text1("",$t,'Xsize',0.20,'','',"Xsize$i") . fm_text1("",$t,'Ysize',0.20,'','',"Ysize$i");

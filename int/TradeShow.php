@@ -42,10 +42,13 @@
   $Overview = 0;
   foreach ($Locs as $loc) if ($loc['SN'] == 'Overview') $Overview = $loc;
 
-function ShowForm($Dir='H') {
+function ShowForm($Dir='H',$Loc=0,$Type=0) {
   global $Locs,$LocUsed,$YEAR, $TTypes, $TTUsed;
 // Work OUt the selection form
   $ShowForm = "<form>" . fm_hidden('Y',$YEAR);
+  if ($Loc) echo fm_hidden('CurLoc',$Loc);
+  if ($Type) echo fm_hidden('CurType',$Type);
+
   $ShowForm .= "<div class=tablecont><table class=InfoTable>";
   $ShowForm .=  "<tr><td>Show by Location:"; // <td>Show by Type
 
@@ -53,19 +56,23 @@ function ShowForm($Dir='H') {
     foreach($Locs as $loc) {
       if ($loc['InUse'] && isset($LocUsed[$loc['TLocId']]) && !$loc['NoList']) {
         $ShowForm .=  (($Dir=='H')?"":"<tr><td>");
-        $ShowForm .=  "<input type=submit name=SEL value='" . $loc['SN'] . "'> ";
+        $ShowForm .=  "<input type=submit name=SELLOC value='" . $loc['SN'] . "'> ";
       }
     }
+  $ShowForm .=  (($Dir=='H')?"<td>":"<tr><td>");
+  $ShowForm .=  "<input type=submit name=SELLoc value='Show All Locations'> ";
+
   $ShowForm .=  "<tr><td>Show by Type:";
 
   $ShowForm .=  (($Dir=='H')?"<td>":"");
 
   foreach($TTypes as $typ) {
-    if (!$typ['Addition'] && isset($TTUsed[$typ['id']])) echo '<input type=submit name=SEL value="' . $typ['SN'] . '" style="background:' . $typ['Colour'] . ';color:black;"> ';
+    if (!$typ['Addition'] && isset($TTUsed[$typ['id']])) 
+      echo '<input type=submit name=SELType value="' . $typ['SN'] . '" style="background:' . $typ['Colour'] . ';color:black;"> ';
   }
 
   $ShowForm .=  (($Dir=='H')?"<td>":"<tr><td>");
-  $ShowForm .=  "<input type=submit name=SEL value='Show All'> ";
+  $ShowForm .=  "<input type=submit name=SELType value='Show All Types'> ";
   $ShowForm .=  "</table></div></form><p>";
   return $ShowForm;
 }
@@ -76,9 +83,9 @@ function ShowForm($Dir='H') {
   $Title = '';
   $Scale = 1;
 
-  if (isset($_REQUEST['SEL'])) {
-    $sel = $_REQUEST['SEL'];
-    if ($sel == 'Show All') {
+  if (isset($_REQUEST['SELLoc'])) {
+    $sel = $_REQUEST['SELLoc'];
+    if ($sel == 'Show All Locations') {
       $List = $AllList;
       $Title = 'All Traders';
       $Scale = 0.5;
@@ -202,4 +209,3 @@ function ShowForm($Dir='H') {
 */
   echo "<br clear=all>";
   dotail();
-?>

@@ -77,7 +77,12 @@
 
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   
-  Pitch_Map($tloc,$Pitches);
+  $infra = [];
+  if ($tloc['SN'] == 'Island Park') {
+    $infra = Gen_Get_All('Infrastructure'); 
+  }
+  
+  Pitch_Map($tloc,$Pitches,0,0,1,0,$infra);
   PitchList();
   
   echo "<h2>";

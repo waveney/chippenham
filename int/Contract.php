@@ -107,9 +107,9 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
   switch ($ContractFormat) {
   
   case 'Chip2023':
-    $DFrom = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['FirstDay']);
-    $DTo = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['LastDay']);
-    $DMonth = $Months[$PLANYEARDATA['MonthFri']];
+    $DFrom = ($YEARDATA['DateFri']+$YEARDATA['FirstDay']);
+    $DTo = ($YEARDATA['DateFri']+$YEARDATA['LastDay']);
+    $DMonth = $Months[$YEARDATA['MonthFri']];
 
     $str .= "<center>This Document forms the Agreement between<p>";
     
@@ -117,7 +117,7 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $str .= "<h2>" .$Side['SN'] . "</h2>(known as <i>The Artist</i>)<p>";
   
     $str .= "<i>The Festival</i> and <i>The Artist</i> are to performances and associated sound checks at the Festival in<br>" .
-            "$DFrom - $DTo $DMonth $PLANYEAR inclusive (known as <i>The Booking</i>)<p>";
+            "$DFrom - $DTo $DMonth $YEAR inclusive (known as <i>The Booking</i>)<p>";
             
     $str .= "In respect of <i>The Booking<i>, <i>The Festival</i> agrees to pay <i>The Artist</i> the sum of<p>";
     

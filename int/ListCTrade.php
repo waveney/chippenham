@@ -267,7 +267,7 @@
             }
           }
         } else if ($fee) {
-          if ($stat > $Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] && 
+          if ($stat > $Trade_State['Submitted'] && // $stat != $Trade_State['Quoted'] && 
               $stat != $Trade_State['Wait List']) $TradeLocData[0]['AcceptTot'] += $fee;
           $TradeLocData[0]['QuoteTot'] += $fee;
           $TradeLocData[0]['ReceiveTot'] += $fetch['TotalPaid'];

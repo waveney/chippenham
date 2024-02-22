@@ -2356,7 +2356,7 @@ function Get_Traders_For($loc,$All=0 ) {
    plot the pitches
    */
 
-function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Links 0:none, 1:traders, 2:Trade areas
+function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInfra=0) {  // Links 0:none, 1:traders, 2:Trade areas
   // Pub 0 = not,1 public, 2 only pitch#s
   global $TradeTypeData,$Trade_State;
   
@@ -2371,7 +2371,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
 
   $PitchesByName = [];
   foreach ($Pitches as $Pi) if ($Pi['Type'] == 0) $PitchesByName[$Pi['SN'] ?? $Pi['Posn']] = $Pi;
-  
+ 
+//  var_dump($PitchesByName);
   $Usage = [];$TT = [];$TNum = [];
   if ($Traders) {
     foreach ($Traders as $Trad) 
@@ -2380,7 +2381,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
           $list = explode(',',$Trad["PitchNum$i"]);
           foreach ($list as $p) {
             if (!$p) continue;
-            if (!is_numeric($p)) $p = $PitchesByName[$p]['Posn'];
+            if (!is_numeric($p) && isset($PitchesByName[$p])) $p = $PitchesByName[$p]['Posn'];
             if ($p) $Usage[$p] = (isset($Usage[$p])?"CLASH!":$Trad['SN']);
             if ( $Trad['BookingState'] == $Trade_State['Deposit Paid'] || 
                  $Trad['BookingState'] == $Trade_State['Balance Requested'] || 
@@ -2410,6 +2411,51 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  // Li
   echo "<div class=img-overlay-wrap>";
   echo "<img src=" . $loc['MapImage'] . " width=" . ($ImgWi*$scale) . ">";
   echo "<svg width=" . ($ImgWi*$scale) . " height=" . ($ImgHt*$scale) . ">";
+  
+  if ($XtraInfra) {
+    foreach($XtraInfra as $Inf) {  
+      //    var_dump($Pitch,$TradeTypeData,$TT);
+      echo "<rect x=" . ($Inf['X'] * $Factor) . " y=" . ($Inf['Y'] * $Factor) . " width=" . ($Inf['Xsize'] * $Factor) . 
+           " height=" . ($Inf['Ysize'] * $Factor);
+      echo " style='fill:" . ($Inf['Colour']??'White') . ";stroke:black;";
+      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg);" ;
+      $Name = $Inf['ShortName'] ?? $Inf['Name'] ?? '?';
+//?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
+      echo "'/>"; 
+
+      echo "<title>$Name</title>";
+
+      echo "<text x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . ((($Inf['Y']+0.7)/$Mapscale) * $Factor);
+      echo " style='";
+      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg);" ;
+      echo "font-size:10px;'>";
+      if ($Name && ($Pub!=2)) {
+      // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
+      // Chunking - split to Words then add words to full - if no words split word (hard)
+      // Remove x t/a 
+      // Lowercase 
+      // Spilt at words of poss, otherwise at length (for now)
+
+        $ChSize = floor($Inf['Xsize']*36*$Mapscale/($Inf['Font']+10));
+        $Ystart = ($Pub?0.6:0.8);
+        $MaxCnk = floor(($Inf['Ysize']*2.5*$Mapscale) - ($Pub?1:2));
+  //      $Name = preg_replace('/.*t\/a (.*)/',
+  //      $Chunks = str_split($Name,$ChSize);
+        $Chunks = ChunkSplit($Name,$ChSize,$MaxCnk);
+
+        foreach ($Chunks as $i=>$Chunk) {
+          if ($i>=$MaxCnk) break; 
+   //       $Chunk = substr($Name,0,$ChSize);
+          echo "<tspan x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . (($Inf['Y']+$Ystart/$Mapscale) * $Factor) . 
+               " style='font-size:" . (10+$Inf['Font']*2) . "px;'>$Chunk</tspan>";
+          $Ystart += 1.2*(10+$Inf['Font']*2.1)/20;
+        }
+      }
+      echo "</text>";
+    }
+  }
+  
+  
   foreach ($Pitches as $Pitch) {
     $Posn = $Pitch['Posn'];
     $Name = '';

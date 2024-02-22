@@ -379,7 +379,7 @@ function &Other_All() {
 
 function Contract_Save(&$Side,&$Sidey,$Reason,$exist=0) {
 //echo "Contract Save:$Reason<p>";
-  global $PLANYEAR,$Book_State;
+  global $PLANYEAR,$Book_State,$YEAR;
   include_once("Contract.php");
   $snum = $Side['SideId'];
 //  $S = $Reason;
@@ -393,10 +393,10 @@ function Contract_Save(&$Side,&$Sidey,$Reason,$exist=0) {
     $_REQUEST['Contracts'] = $IssNum;
     $_REQUEST['ContractDate'] = time();
     $_REQUEST['YearState'] = $Book_State['Contract Signed'];
-    if (!file_exists("Contracts/$PLANYEAR")) mkdir("Contracts/$PLANYEAR",0775,true);
-    file_put_contents("Contracts/$PLANYEAR/$snum.$IssNum.html",$Cont);
-    exec("html2pdf Contracts/$PLANYEAR/$snum.$IssNum.html Contracts/$PLANYEAR/$snum.$IssNum.pdf");
-    return "Contracts/$PLANYEAR/$snum.$IssNum.pdf";
+    if (!file_exists("Contracts/$YEAR")) mkdir("Contracts/$YEAR",0775,true);
+    file_put_contents("Contracts/$YEAR/$snum.$IssNum.html",$Cont);
+    exec("html2pdf Contracts/$YEAR/$snum.$IssNum.html Contracts/$YEAR/$snum.$IssNum.pdf");
+    return "Contracts/$YEAR/$snum.$IssNum.pdf";
   }
   return '';
 }
