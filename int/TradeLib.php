@@ -2427,7 +2427,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
       $Xwidth = ($Inf['Xsize'] * $Factor);
       $Yheight = ($Inf['Ysize'] * $Factor);
       echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
-      echo " style='fill:" . ($Inf['MapColour']??'White') . ";stroke:black;";
+      echo " style='fill:" . (empty($Inf['MapColour'])?'White':$Inf['MapColour']) . ";stroke:black;";
       if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;"; // $Xpos $Ypos);" ;
 //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
       echo "'/>"; 
