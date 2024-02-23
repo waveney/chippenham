@@ -2345,8 +2345,8 @@ function Get_Traders_For($loc,$All=0 ) {
   global $db, $Trade_State,$YEAR;
   $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE " . 
         ($All? ("y.BookingState>= " . $Trade_State['Submitted'] ) : 
-          ( "(y.BookingState=" . $Trade_State['Deposit Paid'] . " OR y.BookingState=" . $Trade_State['Balance Requested'] . 
-            " OR y.BookingState=" . $Trade_State['Fully Paid'] . ")" ) ) . 
+          ( "(y.BookingState=" . $Trade_State['Accepted'] . " OR y.BookingState=" . $Trade_State['Deposit Paid'] . 
+            " OR y.BookingState=" . $Trade_State['Balance Requested'] . " OR y.BookingState=" . $Trade_State['Fully Paid'] . ")" ) ) . 
          " AND t.Tid = y.Tid AND y.Year='$YEAR' AND (y.PitchLoc0=$loc OR y.PitchLoc1=$loc OR y.PitchLoc2=$loc ) ORDER BY SN";
 
   $res = $db->query($qry);
@@ -2519,7 +2519,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
     // Spilt at words of poss, otherwise at length (for now)
     
       $ChSize = floor($Pitch['Xsize']*($Pitch['Type']?18:32)*$Mapscale/($Pitch['Font']+10));
-      $Ystart = ($Pub?0.6:1.2) *($Pitch['Type']?2:1);
+      $Ystart = ($Pub?0.6:1.2) *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10 -0.2;;
       $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - ($Pub?1:2));
 //      $Name = preg_replace('/.*t\/a (.*)/',
 //      $Chunks = str_split($Name,$ChSize);

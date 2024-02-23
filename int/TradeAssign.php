@@ -28,6 +28,7 @@
         for ($i=0; $i<3; $i++) 
           if ($Trad["PitchLoc$i"] == $loc) {
             if ($pitched) {
+              if (preg_match('/^(\d*)/',$Trad["PitchSize$i"],$mtch) && ($mtch[1]==0)) continue;
               echo "<tr><td><td>&amp;<td>";
             }
             echo $Trad["PitchSize$i"] . "<td id=PitchLoc$i>";
@@ -107,7 +108,7 @@
   foreach ($Pitches as $Pi) if ($Pi['Type'] == 0) $PitchesByName[$Pi['SN'] ?? $Pi['Posn']] = $Pi;
   $tloc = Get_Trade_Loc($loc);
   
-  $Traders = Get_Traders_For($loc,1);
+  $Traders = Get_Traders_For($loc,0); // Only those who have accepted/paid 1);
   
   echo "<form method=post>";
   echo fm_hidden('i',$loc);
@@ -115,11 +116,16 @@
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   $Message = Validate_Pitches_At($loc);
 
-  Pitch_Map($tloc,$Pitches,$Traders);
+  $infra = [];
+  if ($tloc['SN'] == 'Island Park') {
+    $infra = Gen_Get_All('Infrastructure'); 
+  }
+  
+  Pitch_Map($tloc,$Pitches,$Traders,0,1,0,$infra);
+
+//  Pitch_Map($tloc,$Pitches,$Traders);
   TraderList($Message);
   echo "<h2><a href=TradeLocs?Y=$YEAR>Trade Locs</a></h2>";
   dotail();
  
-  
-?>
 

@@ -4,6 +4,8 @@
 
 // Quick hack for power first, only currently for Island park (trade locs), will generalise late for others
 
+// to Delete set Xsize to 0
+
 include_once("fest.php");
 //include_once("TradeLib.php");
   A_Check('Committee','Venues');
@@ -20,8 +22,7 @@ include_once("fest.php");
   echo "This is a short term hack, better and more coming.<p>";
   
   $Things = Gen_Get_All('Infrastructure');
-  if (UpdateMany('Infrastructure','',$Things,0)) $Things=Gen_Get_All('Infrastructure');
-
+  if (UpdateMany('Infrastructure','',$Things,1,'','','Xsize',0)) $Things=Gen_Get_All('Infrastructure');
   
   $coln = 0;
   $t = [];
