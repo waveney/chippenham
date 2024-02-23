@@ -2427,7 +2427,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
       $Xwidth = ($Inf['Xsize'] * $Factor);
       $Yheight = ($Inf['Ysize'] * $Factor);
       echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
-      echo " style='fill:" . ($Inf['Colour']??'White') . ";stroke:black;";
+      echo " style='fill:" . ($Inf['MapColour']??'White') . ";stroke:black;";
       if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;"; // $Xpos $Ypos);" ;
 //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
       echo "'/>"; 
@@ -2488,16 +2488,16 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
     }
     
 //    var_dump($Pitch,$TradeTypeData,$TT);
-    $Xpos = ($Inf['X'] * $Factor);
-    $Ypos = ($Inf['Y'] * $Factor);
-    $Xwidth = ($Inf['Xsize'] * $Factor);
-    $Yheight = ($Inf['Ysize'] * $Factor);
+    $Xpos = ($Pitch['X'] * $Factor);
+    $Ypos = ($Pitch['Y'] * $Factor);
+    $Xwidth = ($Pitch['Xsize'] * $Factor);
+    $Yheight = ($Pitch['Ysize'] * $Factor);
 
 
     echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
     echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
          ";stroke:black;";
-    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;";
+    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
 
     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
 
@@ -2505,7 +2505,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
 
     echo "<text x=" . (($Pitch['X']+0.2) * $Factor)  . " y=" . (($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor);
     echo " style='";
-    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;";
+    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
     echo "font-size:10px;'>";
     if (!$Pub) {
       echo "#" . $Posn;
