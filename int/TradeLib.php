@@ -683,11 +683,18 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     }
   }
   
-  echo "<tr class=NotCSide>";
+  
   if ($Mode) {
+    $Xtra = '';
+    if (empty($Trady['ExtraPowerDesc'])) {
+      echo "<tr class=XtraPower><td><button type=button onclick=EnableXtraPower()>Extra Power!</button>";
+      $Xtra = 'hidden';
+    }
+    echo "<tr class='NotCSide XtraPower' $Xtra>";
     echo  fm_text('Extra Power Description',$Trady,'ExtraPowerDesc',2,'class=NotCSide') .
           fm_text('Cost',$Trady,'ExtraPowerCost',1,'class=NotCSide', 'class=NotCSide onchange=FeeChange(0,' . ($Trady['Fee'] ?? 0) .")");
   } else if (($Trady['ExtraPower']??0) > 1) {
+    echo "<tr class=NotCSide>";
     echo "<td class=NotCSide>Extra Power - Type:<td>" . $PowerOpts[$Trady['ExtraPower']] . "<td>Number:<td>" . $Trady['ExtraPowerNumber'] . 
           "<td>Cost:<td id=ExtraPowerCost>£" . $Trady['ExtraPowerCost'];
   }
@@ -719,9 +726,9 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo "<tr>";
     if ($Mode) {
       echo fm_text("Pitch Fee, put -1 for free",$Trady,'Fee',1,'class=NotCSide','class=NotCSide onchange=FeeChange(0,' . ($Trady['Fee'] ?? 0) .")");
-      if ($TotPowerCost || $TableCost || $Trady['ExtraPowerCost'] || ($Trady['Fee']??0) ) {
+      if ($TotPowerCost || $TableCost || ($Trady['ExtraPowerCost']??0) || ($Trady['Fee']??0) ) {
         echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . 
-          (($Trady['Fee'] ?? 0) +  $Trady['ExtraPowerCost'] + $TotPowerCost + $TableCost);
+          (($Trady['Fee'] ?? 0) +  ($Trady['ExtraPowerCost']??0) + $TotPowerCost + $TableCost);
       } else {
         echo "<td class=Powerelems hidden >Total Fee:<td  class=Powerelems id=PowerFee hidden >";
       }
@@ -734,9 +741,9 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
         echo "Free";
       } else  {
         echo "&pound;" . $Trady['Fee'];
-        if ($TotPowerCost || $TableCost || $Trady['ExtraPowerCost']) {
+        if ($TotPowerCost || $TableCost || ($Trady['ExtraPowerCost']??0)) {
           echo "<td class=Powerelems >Total Fee:<td  class=Powerelems id=PowerFee>£" . 
-            (($Trady['Fee'] ?? 0) + $TotPowerCost +  $Trady['ExtraPowerCost'] + $TableCost);
+            (($Trady['Fee'] ?? 0) + $TotPowerCost +  ($Trady['ExtraPowerCost']??0) + $TableCost);
         } else {
           echo "<td class=Powerelems hidden >Total Fee:<td  class=Powerelems id=PowerFee hidden >";
         }

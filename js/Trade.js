@@ -231,6 +231,9 @@ function MoreStalls(stall) {
   $('#Stall' + (stall+1)).show(); 
 }
 
+function EnableXtraPower() {
+  $('.XtraPower').toggle();
+}
 /* copied code
 
 var nexthl = 0;
