@@ -2443,12 +2443,19 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
         echo "<a href=" . $Inf['HasLink'] . ">";
         $Lopen = 1;
       }
-      
+  
+      $Name = $Inf['ShortName'] ?? $Inf['Name'] ?? '?';
+
       echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
-      $fill = 'White'; $stroke = 'black';
+      $fill = 'White'; $stroke = 'black'; $Pen = 'black';
       if (isset($Inf['MapColour'])) {
         if ($Inf['MapColour'] != '/') {
           $fill = $Inf['MapColour'];
+          
+          if (1 && $Name[0] == "~") {
+            $Pen = 'White';
+            $Name = substr($Name,1);
+          }
         } else {
           $fill = "url(#diagonalHatch)";
           $stroke = 'LightSeaGreen';
@@ -2459,13 +2466,12 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
 //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
       echo "'/>"; 
 
-      $Name = $Inf['ShortName'] ?? $Inf['Name'] ?? '?';
       echo "<title>$Name</title>";
 
       echo "<text x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . ((($Inf['Y']+0.7)/$Mapscale) * $Factor);
       echo " style='";
       if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg);";
-      echo "font-size:10px;'>";
+      echo "fill:$Pen; font-size:10px;'>";
       if ($Name && ($Pub!=2)) {
       // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
       // Chunking - split to Words then add words to full - if no words split word (hard)
@@ -2484,7 +2490,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
           if ($i>=$MaxCnk) break; 
    //       $Chunk = substr($Name,0,$ChSize);
           echo "<tspan x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . (($Inf['Y']+$Ystart/$Mapscale) * $Factor) . 
-               " style='font-weight:bold; font-size:" . (10+$Inf['Font']*2) . "px;'>$Chunk</tspan>";
+               " style=' font-weight:bold; font-size:" . (10+$Inf['Font']*2) . "px;'>$Chunk</tspan>";
           $Ystart += 1.2*(10+$Inf['Font']*2.1)/20;
         }
       }

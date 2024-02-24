@@ -195,7 +195,7 @@
         if ($fetch['PitchSize1']) $str .= "<br>" . $fetch['PitchSize1'];
         if ($fetch['PitchSize2']) $str .= "<br>" . $fetch['PitchSize2'];
       if (Feature("TradePower")) {
-        $str .= "<td>" . $PowerTypes[$fetch['Power0']];
+        $str .= "<td>" . $PowerTypes[max(1,$fetch['Power0'])];
         if ($fetch['PitchSize1']) {
           $str .= "<br>";
           $str .= $PowerTypes[$fetch['Power1']];
