@@ -82,9 +82,13 @@
           $str .= " style='background:" . $Trade_State_Colours[$stat] . ";padding:4; white-space: nowrap;'>";
         }
         $Act = $TS_Actions[$stat];
+        $str .= $Trade_States[$stat];
+
         if ($ActsEnable && $Act ) {
           $Acts = preg_split('/,/',$Act); 
-          $str .= "<form>" . fm_Hidden('id',$Tid);
+          $str .= "<br><form>" . fm_Hidden('id',$Tid);
+          $butcount = 0;
+
           foreach($Acts as $ac) {
             switch ($ac) {
               case 'Quote':
@@ -96,15 +100,27 @@
               case 'Paid':
                 if ($fetch['Fee'] == 0) continue 2;
                 break;
-              default:
+              case 'Dates':
+                if (!Feature('EnableDateChange')) continue 2;
+                break;
+              case 'FestC':
+                if (!Feature('EnableCancelMsg')) continue 2;
+                break;
+              case 'Invite Better':
+                if (!Feature('InviteBetter')) continue 2;
+                break;
+
+                default:
               }
-            if ($Act == 'FestC' && !Feature('EnableCancelMsg')) continue 2;
-            if ($Act == 'Dates' && !Feature('EnableDateChange')) continue 2;
-            $str .= "<button class=floatright name=ACTION value='$ac' type=submit " . ($ButExtra[$ac]??'') . " >$ac</button>";
+//            if ($Act == 'FestC' && !Feature('EnableCancelMsg')) continue 2;
+//            if ($Act == 'Dates' && !Feature('EnableDateChange')) continue 2;
+              
+              if ((($butcount++)%3) == 0) $str .= "<p>";
+
+              $str .= "<button class=floatright name=ACTION value='$ac' type=submit " . ($ButExtra[$ac]??'') . " >$ac</button>";
           }
           $str .= "</form>";
         }
-        $str .= $Trade_States[$stat];
 
       $Dep = T_Deposit($fetch);
       $fee = $ftxt = $fetch['Fee'];

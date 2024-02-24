@@ -146,7 +146,7 @@
                 
               default:
               }
-            if (($butcount++)%3 == 0) $str .= "<br>";
+            if ((($butcount++)%3) == 0) $str .= "<br>";
             $str .= "<button name=ACTION value='$ac' type=submit " . (isset($ButExtra[$ac])?$ButExtra[$ac]:"") . " >$ac</button>";
           }
           $str .= "</form></div>";
