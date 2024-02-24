@@ -27,6 +27,7 @@
   
     
   Pitch_Map($tloc,$Pitches,$Traders,1,1,1,$infra);
-  if ($loc != Feature('TradeBaseMap')) echo "<h2><a href=TradeStandMap>Return to Main map</a></h2>";
+  if ($loc != Feature('TradeBaseMap')) echo "<h2><a href=TradeStandMap>Return to main map</a></h2>";
 
   dotail();
+  

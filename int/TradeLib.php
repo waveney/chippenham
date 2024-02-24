@@ -1214,7 +1214,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   include_once("DateTime.php"); 
   echo "<div class=content><h2>Add/Edit " . ($Mode<2?'Trade Stall Booking':'Business or Organisation') . "</h2>";
 
-//var_dump($_REQUEST);
+//  var_dump($_REQUEST);
 /*
   $file = fopen("LogFiles/moeslog",'a+');
   fwrite($file,json_encode($_REQUEST));
@@ -1285,7 +1285,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
 
       if (isset($_REQUEST['NewAccessKey'])) $_REQUEST['AccessKey'] = rand_string(40);
 
-      Update_db_post('Trade',$Trad);
+      if (!isset($_REQUEST['ACTION']) || ($_REQUEST['ACTION'] == 'Save') ) Update_db_post('Trade',$Trad);
       if (Feature('LogAllTrade')) Report_Log('Trade');
       if ($Mode < 2 && !$Orgs && isset($_REQUEST['Year'])) {
         if ($_REQUEST['Year'] == $PLANYEAR) {
@@ -1316,7 +1316,9 @@ function Trade_Main($Mode,$Program,$iddd=0) {
             if ($Trad['TradeType'] != $_REQUEST['TradeType']) $same = 0; 
             foreach(["Power0","Power1","Power2"] as $cc) if ($Trady[$cc] && $_REQUEST[$cc] && $Trady[$cc] != ($_REQUEST[$cc]??0)) $same = 0; // TODO THIS NEEDS CHANGE
 
-            if (!$Mess) Update_db_post('TradeYear',$Trady);
+            if (!$Mess) {
+               if (!isset($_REQUEST['ACTION']) || ($_REQUEST['ACTION'] == 'Save') ) Update_db_post('TradeYear',$Trady);
+            }
             if (!$Mess && $same == 0 && $Trady['BookingState'] > $Trade_State['Submitted']) {
               Send_Trade_Admin_Email($Trad,$Trady,'Trade_Changes');
               $Trady['BookingState'] = $Trade_State['Requote'];
@@ -1405,9 +1407,9 @@ function Trade_Main($Mode,$Program,$iddd=0) {
   
   if ($Mode == 0 && !$Orgs) {
     echo "<h2>The action buttons to click on are below the Terms and conditions</h2>";
-    echo "<Center>";
+ /*   echo "<Center>";
     if (Access('SysAdmin')) echo "<input type=Submit name='Update' value='Save Changes'>";
-    echo "</Center>";    
+    echo "</Center>";    */
     echo TnC('TradeTnC');
     echo TnC('TradeTimes');
     echo TnC('TradeFAQ');
@@ -1593,7 +1595,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
   $InvPay = Feature("TradeInvoicePay"); // Switch Invoice or Just Paycodes
 
 //echo "<p>DOING Trade_ACtion $Action<p>";
-// var_dump($Action);
+//var_dump($Trady);
 
   $SaveAction = $Action;
   switch ($Action) {
@@ -1623,6 +1625,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       return;
     }
      
+//    var_dump($CurState);
     if ($CurState >= $Trade_State['Accepted'] && $CurState < $Trade_State['Wait List']) {
       echo "<h3>This has already been accepted</h3>";
       return;
@@ -2545,7 +2548,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
     // Spilt at words of poss, otherwise at length (for now)
     
       $ChSize = floor($Pitch['Xsize']*($Pitch['Type']?18:32)*$Mapscale/($Pitch['Font']+10));
-      $Ystart = ($Pub?0.6:1.2) *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10 -0.2;;
+      $Ystart = ($Pub?0.6:1.2) *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10 -0.2;
       $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - ($Pub?1:2));
 //      $Name = preg_replace('/.*t\/a (.*)/',
 //      $Chunks = str_split($Name,$ChSize);
