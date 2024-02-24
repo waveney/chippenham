@@ -560,7 +560,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo fm_hidden('Year',$year);
   if (isset($Trady['TYid']) && $Trady['TYid']) echo fm_hidden('TYid',$Trady['TYid']);
 
-  $TradeLocs = Get_Trade_Locs(0,'WHERE InUse=1');
+  $TradeLocs = Get_Trade_Locs(0,'WHERE InUse=1 AND NoList=0');
   $TradeLocFull = Get_Trade_Locs(1);
   echo fm_hidden('TradeLocData',json_encode($TradeLocFull));
   $Trade_Prop = $Trade_State_Props[$Trady['BookingState'] ?? 0];
@@ -2368,6 +2368,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
   global $TradeTypeData,$Trade_State;
   
   if (!$loc['MapImage']) return;
+  
+//  var_dump($loc,$Traders,$Pub,$Scale,$Links);
   $scale=$Scale*$loc['Showscale'];
   $Mapscale = $loc['Mapscale'];
 //  $sp = $scale*100;
@@ -2419,6 +2421,13 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
   echo "<img src=" . $loc['MapImage'] . " width=" . ($ImgWi*$scale) . ">";
   echo "<svg width=" . ($ImgWi*$scale) . " height=" . ($ImgHt*$scale) . ">";
   
+  echo '<pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
+          <path d="M-1,1 l2,-2
+           M0,4 l4,-4
+           M3,5 l2,-2" 
+           style="stroke:LightSeaGreen; stroke-width:1" />
+        </pattern>';
+  
   if ($XtraInfra) {
     foreach($XtraInfra as $Inf) {  
       //    var_dump($Pitch,$TradeTypeData,$TT);
@@ -2426,9 +2435,24 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
       $Ypos = ($Inf['Y'] * $Factor);
       $Xwidth = ($Inf['Xsize'] * $Factor);
       $Yheight = ($Inf['Ysize'] * $Factor);
+      $Lopen = 0;
+      if ($Links && !empty($Inf['HasLink'])) {
+        echo "<a href=" . $Inf['HasLink'] . ">";
+        $Lopen = 1;
+      }
+      
       echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
-      echo " style='fill:" . (empty($Inf['MapColour'])?'White':$Inf['MapColour']) . ";stroke:black;";
-      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;"; // $Xpos $Ypos);" ;
+      $fill = 'White'; $stroke = 'black';
+      if (isset($Inf['MapColour'])) {
+        if ($Inf['MapColour'] != '/') {
+          $fill = $Inf['MapColour'];
+        } else {
+          $fill = "url(#diagonalHatch)";
+          $stroke = 'LightSeaGreen';
+        }
+      }
+      echo " style='fill:$fill;stroke:$stroke;";
+      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";
 //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
       echo "'/>"; 
 
@@ -2437,7 +2461,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
 
       echo "<text x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . ((($Inf['Y']+0.7)/$Mapscale) * $Factor);
       echo " style='";
-      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); transform-origin:  $Xpos $Ypos;";
+      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg);";
       echo "font-size:10px;'>";
       if ($Name && ($Pub!=2)) {
       // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
@@ -2457,11 +2481,12 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
           if ($i>=$MaxCnk) break; 
    //       $Chunk = substr($Name,0,$ChSize);
           echo "<tspan x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . (($Inf['Y']+$Ystart/$Mapscale) * $Factor) . 
-               " style='font-size:" . (10+$Inf['Font']*2) . "px;'>$Chunk</tspan>";
+               " style='font-weight:bold; font-size:" . (10+$Inf['Font']*2) . "px;'>$Chunk</tspan>";
           $Ystart += 1.2*(10+$Inf['Font']*2.1)/20;
         }
       }
       echo "</text>";
+      if ($Lopen) echo "</a>";
     }
   }
   
@@ -2493,16 +2518,17 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
     $Xwidth = ($Pitch['Xsize'] * $Factor);
     $Yheight = ($Pitch['Ysize'] * $Factor);
 
+    if ($Pitch['Type'] != 2) {
+      echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
+      echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
+           ";stroke:black;";
+      if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
 
-    echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
-    echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
-         ";stroke:black;";
-    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
+      echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
 
-    echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
-
-    echo "<title>$Name</title>";
-
+      echo "<title>$Name</title>";
+    }
+    
     echo "<text x=" . (($Pitch['X']+0.2) * $Factor)  . " y=" . (($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor);
     echo " style='";
     if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";

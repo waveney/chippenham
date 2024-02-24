@@ -18,5 +18,11 @@
   $tloc = Get_Trade_Loc($loc);
   
   if (Access('Staff')) echo "Any Trader in White has not PAID<p>";
-  Pitch_Map($tloc,$Pitches,$Traders,1,1); 
+  
+  $infra = [];
+    if ($tloc['SN'] == 'Island Park') {
+    $infra = Gen_Get_All('Infrastructure',' ORDER BY PlaceOrder,id'); 
+  }
+    
+  Pitch_Map($tloc,$Pitches,$Traders,1,1,1,$infra);
   dotail();

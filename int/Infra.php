@@ -22,7 +22,7 @@ include_once("fest.php");
   echo "This is a short term hack, better and more coming.<p>";
   
   $Things = Gen_Get_All('Infrastructure');
-  if (UpdateMany('Infrastructure','',$Things,1,'','','Xsize',0)) $Things=Gen_Get_All('Infrastructure');
+  if (UpdateMany('Infrastructure','',$Things,1,'','','Name')) $Things=Gen_Get_All('Infrastructure');
   
   $coln = 0;
   $t = [];
@@ -49,6 +49,8 @@ include_once("fest.php");
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power From</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power To</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Tables</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Link</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Order</a>\n";
 
   
   echo "</thead><tbody>";
@@ -65,6 +67,8 @@ include_once("fest.php");
     echo "<td>". fm_select($Powers,$t,'Power','','',"Power$i") . fm_text1('',$t,'NumberPower',0.1,'','',"NumberPower$i");
     echo fm_text1("",$t,'PowerFrom',1,'','',"PowerFrom$i") . fm_text1("",$t,'PowerTo',1,'','',"PowerTo$i");
     echo fm_text1('',$t,'Tables',0.1,'','',"Tables$i");
+    echo fm_text1('',$t,'HasLink',1,'','',"HasLink$i");
+    echo fm_text1('',$t,'PlaceOrder',1,'','',"PlaceOrder$i");
     echo "\n";
   }
   $t = ['NumberPower'=>1];
@@ -80,7 +84,10 @@ include_once("fest.php");
     echo "<td>". fm_select($Powers,$t,'Power','','',"Power$i") . fm_text1('',$t,'NumberPower',0.1,'','',"NumberPower$i");
     echo fm_text1("",$t,'PowerFrom',1,'','',"PowerFrom$i") . fm_text1("",$t,'PowerTo',1,'','',"PowerTo$i");
     echo fm_text1('',$t,'Tables',0.1,'','',"Tables$i");
+    echo fm_text1('',$t,'HasLink',1,'','',"HasLink0");
+    echo fm_text1('',$t,'PlaceOrder',1,'','',"PlaceOrder0");
 
+    
   echo "</table></div>\n";
   
   echo "<input type=submit name=Update value=Update>\n";

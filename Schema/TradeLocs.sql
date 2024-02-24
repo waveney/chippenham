@@ -16,5 +16,6 @@ CREATE TABLE `TradeLocs` (
   `PowerOffset` int NOT NULL,
   `Props` int NOT NULL,
   `TotalWidth` int NOT NULL,
+  `HasLink` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`TLocId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

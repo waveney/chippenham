@@ -393,11 +393,12 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
   $indxname = (isset($TableIndexes[$table])?$TableIndexes[$table]:'id');
   if (!isset($Flds['SN']) && isset($Flds['Name'])) $Mstr='Name';
 
-//var_dump($_REQUEST);
+// var_dump($Flds);
 //return;
   if (isset($_REQUEST['Update'])) {
     if ($data) foreach($data as $t) {
       $i = $t[$indxname];
+
       if ($i) {
         if (isset($_REQUEST["$Mstr$i"]) && $_REQUEST["$Mstr$i"] == $MstrNot) {
           if ($Deletes) {
@@ -426,7 +427,7 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
               $t[$fld] = 0;
             }
           }
-//          var_dump($recpres,$t);exit;
+// if ($i==15)  {       var_dump($recpres,$t);exit; };
 //          return;
           if ($recpres) {
             if ($Putfn) {

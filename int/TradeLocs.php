@@ -21,7 +21,8 @@
   echo "Width if >0, total usage is calculated<p>";
   
   $Locs=Get_Trade_Locs(1);
-  
+
+//  var_dump($_REQUEST);
 
   if (UpdateMany('TradeLocs','Put_Trade_Loc',$Locs,0)) $Locs=Get_Trade_Locs(1);
 
@@ -44,6 +45,7 @@
 //  echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Power Offset</a>\n";
   echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Props</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Total Width</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Link</a>\n";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Map</a>\n";
@@ -66,6 +68,8 @@
 //    echo fm_number1('',$t,'PowerOffset',' class=FullD hidden','',"PowerOffset$i");
     echo fm_number1('',$t,'Props',' class=FullD hidden','',"Props$i");
     echo fm_text1('',$t,'TotalWidth',0.25,'','',"TotalWidth$i");
+    echo fm_text1('',$t,'HasLink',1,'','',"HasLink$i");
+
     echo fm_text1('',$t,'Notes',1,'','',"Notes$i");
     echo fm_text1('',$t,'MapImage',1,'','',"MapImage$i");
     echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale$i");
@@ -86,15 +90,18 @@
 //  echo fm_number1('',$t,'PowerOffset',' class=FullD hidden','',"PowerOffset0");
   echo fm_number1('',$t,'Props',' class=FullD hidden','',"Props0");
   echo fm_text1('',$t,'TotalWidth',0.25,'','',"TotalWidth0");
+  echo fm_text1('',$t,'HasLink',1,'','',"Link0");
 
   echo "<td><input type=text name=Notes0 >";
   echo "<td><input type=text name=MapImage0 >";
   echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale0"); 
   echo fm_text1('',$t,'Showscale',0.5,'','',"Showscale0"); 
+  
+  // if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=10 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+
   echo "</table></div>\n";
   echo "<input type=submit name=Update value=Update>\n";
   echo "</form></div>";
 
   dotail();
 
-?>
