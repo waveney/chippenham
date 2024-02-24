@@ -8,8 +8,7 @@
 
   global $Pitches,$tloc,$loc,$YEARDATA,$EType_States,$Traders;
 
-  if (!isset($_REQUEST['l'])) Error_Page("No Location Requested");
-  $loc = $_REQUEST['l'];
+  $loc = $_REQUEST['l'] ?? Feature('TradeBaseMap');
   if (!is_numeric($loc)) Error_Page("No Hacking please");
   $Traders = [];
   if (Access('Staff') || $YEARDATA['TradeState']>= (array_flip($EType_States))['Partial']) $Traders = Get_Traders_For($loc, (Access('Staff')?1:0));
@@ -17,12 +16,17 @@
 
   $tloc = Get_Trade_Loc($loc);
   
+  if(!$tloc) Error_Page("Unknown Map");
+  
   if (Access('Staff')) echo "Any Trader in White has not PAID<p>";
   
   $infra = [];
     if ($tloc['SN'] == 'Island Park') {
-    $infra = Gen_Get_All('Infrastructure',' ORDER BY PlaceOrder,id'); 
+    $infra = Gen_Get_All('Infrastructure',' ORDER BY PlaceOrder ASC,id'); 
   }
+  
     
   Pitch_Map($tloc,$Pitches,$Traders,1,1,1,$infra);
+  if ($loc != Feature('TradeBaseMap')) echo "<h2><a href=TradeStandMap>Return to Main map</a></h2>";
+
   dotail();
