@@ -3,7 +3,7 @@
   A_Check('Committee','Trade');
 
   dostaffhead("Manage Trade Locations");
-  global $YEAR;
+  global $YEAR,$LocTypes;
 
   include_once("TradeLib.php");
   include_once("InvoiceLib.php");
@@ -17,14 +17,16 @@
   
 //  echo "Power Offset - Bit number for power properties<p>";
   
-  echo "Properties bit 0 = table, 1=Power<br>";
-  echo "Width if >0, total usage is calculated<p>";
+  echo "Properties bit 0 = table, 1=Power - not in use<br>";
+  echo "Width if >0, total usage is calculated<br>";
+  echo "Type 0- Trade, 1-Infra structure, 2-other<P>";
   
   $Locs=Get_Trade_Locs(1);
+  $LocNames = Get_Trade_Locs(0);
 
 //  var_dump($_REQUEST);
 
-  if (UpdateMany('TradeLocs','Put_Trade_Loc',$Locs,0)) $Locs=Get_Trade_Locs(1);
+  if (UpdateMany('TradeLocs','Put_Trade_Loc',$Locs,1)) $Locs=Get_Trade_Locs(1);
 
   $coln = 0;
   $InvCodes =  Get_InvoiceCodes();
@@ -36,7 +38,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Index</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Prefix</a>\n";
-//  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Has Power</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>No List</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>In Use</a>\n";
   echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'T')>Days</a>\n";
@@ -58,7 +60,7 @@
     $i = $t['TLocId'];
     echo "<tr " . ($t['InUse']?'': " class=FullD hidden") . "><td>$i" . fm_text1("",$t,'SN',1,'','',"SN$i");
     echo "<td>" . fm_select($Prefixes,$t,"prefix",0,'',"prefix$i");
-//    echo "<td>" . fm_checkbox('',$t,'HasPower','',"HasPower$i");
+    echo "<td>" . fm_select($LocTypes,$t,'Type',0,'',"Type$i");
     echo "<td>" . fm_checkbox('',$t,'NoList','',"NoList$i");
 //    echo fm_text1('',$t,'Pitches',0.25,'','',"Pitches$i");
     echo "<td>" . fm_checkbox('',$t,'InUse','',"InUse$i");
@@ -80,7 +82,7 @@
   }
   echo "<tr><td><td><input type=text name=SN0 >";
   echo "<td>" . fm_select2($Prefixes,0,'prefix0');
-//  echo "<td><input type=checkbox name=HasPower0>";
+  echo "<td>" . fm_select($LocTypes,$t,'Type',0,'',"Type0");
 //  echo fm_text1('',$t,'Pitches',0.25,'','',"Pitches0");
   echo "<td><input type=checkbox name=NoList0>";
   echo "<td><input type=checkbox name=InUse0>";

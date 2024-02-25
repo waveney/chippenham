@@ -447,4 +447,3 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
   } else {
     dotail();
   }
-?>

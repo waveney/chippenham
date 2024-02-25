@@ -19,14 +19,8 @@
   if(!$tloc) Error_Page("Unknown Map");
   
   if (Access('Staff')) echo "Any Trader in White has not PAID<p>";
-  
-  $infra = [];
-    if ($tloc['SN'] == 'Island Park') {
-    $infra = Gen_Get_All('Infrastructure',' ORDER BY PlaceOrder ASC,id'); 
-  }
-  
-    
-  Pitch_Map($tloc,$Pitches,$Traders,1,1,1,$infra);
+      
+  Pitch_Map($tloc,$Pitches,$Traders,1,1,1);
   if ($loc != Feature('TradeBaseMap')) echo "<h2><a href=TradeStandMap>Return to main map</a></h2>";
 
   dotail();

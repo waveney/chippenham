@@ -72,6 +72,7 @@ $BizProps = ['IsTrader'=>1,'IsSponsor'=>2,'IsAdvertiser'=>4,'IsSupplier'=>0,'IsO
 $SponTypes = ['General','Venue','Event','Performer'];
 $SponStates = ['Raised','Invoiced','Paid','Paid in Kind'];
 $TradeTypeStates = ['Private','Open','Closed']; // Private - not shown on site
+$LocTypes = ['Trade','Infra','Other'];
 
 function Get_Trade_Locs($tup=0,$Cond='') { // 0 just names, 1 all data
   global $db;
@@ -2366,11 +2367,15 @@ function Get_Traders_For($loc,$All=0 ) {
    plot the pitches
    */
 
-function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInfra=0) {  // Links 0:none, 1:traders, 2:Trade areas
-  // Pub 0 = not,1 public, 2 only pitch#s
+function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  
+  // Links 0:none, 1:traders, 2:Trade areas
+  // Pub 0 = not,1 public, 2 only pitch#s, 3 with cat 1 items (not public), 4 public with cat 1
   global $TradeTypeData,$Trade_State;
   
   if (!$loc['MapImage']) return;
+  
+  $TLocId = $loc['TLocId'];
+  $XtraInfra = Gen_Get_Cond('Infrastructure',"Location=$TLocId  ORDER BY PlaceOrder ASC,id");
   
 //  var_dump($loc,$Traders,$Pub,$Scale,$Links);
   $scale=$Scale*$loc['Showscale'];
@@ -2378,7 +2383,6 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
 //  $sp = $scale*100;
   $Factor = 20*$scale*$Mapscale;
 
-  $TLocId = $loc['TLocId'];
   $FSize = 10*$scale;
 
   $PitchesByName = [];
@@ -2452,9 +2456,12 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0,&$XtraInf
         if ($Inf['MapColour'] != '/') {
           $fill = $Inf['MapColour'];
           
-          if (1 && $Name[0] == "~") {
+          if ($Name[0] == "~") {
             $Pen = 'White';
             $Name = substr($Name,1);
+          } else if ($Name[0] == "/") {
+            $fill =  "url($Name)";
+            $Name= '';
           }
         } else {
           $fill = "url(#diagonalHatch)";

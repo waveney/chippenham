@@ -116,12 +116,7 @@
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   $Message = Validate_Pitches_At($loc);
 
-  $infra = [];
-  if ($tloc['SN'] == 'Island Park') {
-    $infra = Gen_Get_All('Infrastructure',' ORDER BY PlaceOrder ASC,id'); 
-  }
-  
-  Pitch_Map($tloc,$Pitches,$Traders,0,1,0,$infra);
+  Pitch_Map($tloc,$Pitches,$Traders,0,1,0);
 
 //  Pitch_Map($tloc,$Pitches,$Traders);
   TraderList($Message);

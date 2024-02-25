@@ -1,5 +1,6 @@
 CREATE TABLE `Infrastructure` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `Location` int NOT NULL,
   `Name` text COLLATE utf8mb4_general_ci NOT NULL,
   `ShortName` text COLLATE utf8mb4_general_ci NOT NULL,
   `Category` int NOT NULL,

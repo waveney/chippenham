@@ -7,6 +7,7 @@
 // to Delete set Xsize to 0
 
 include_once("fest.php");
+include_once("TradeLib.php");
 //include_once("TradeLib.php");
   A_Check('Committee','Venues');
 
@@ -17,9 +18,13 @@ include_once("fest.php");
   $Powers = [];
   foreach ($TradePower as $i=>$P) $Powers[$i] = $P['Name'];
 
+  $Locs=Get_Trade_Locs(1);
+  $LocNames = Get_Trade_Locs(0);
+
   
   echo "<div class=content><h2>Manage Infrastructure</h2>\n";
-  echo "This is a short term hack, better and more coming.<p>";
+  echo "This is a short term hack, better and more coming.<br>";
+  echo "Cat 0- All, 1 = Special<p>";
   
   $Things = Gen_Get_All('Infrastructure');
   if (UpdateMany('Infrastructure','',$Things,1,'','','Name')) $Things=Gen_Get_All('Infrastructure');
@@ -35,7 +40,7 @@ include_once("fest.php");
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>ShortName</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Location</a>\n";
-//  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Cat</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Colour</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Font</a>\n";
 
@@ -57,7 +62,8 @@ include_once("fest.php");
   if ($Things) foreach($Things as $t) {
     $i = $t['id'];
     echo "<tr><td>$i" . fm_text1("",$t,'Name',1,'','',"Name$i") . fm_text1("",$t,'ShortName',1,'','',"ShortName$i");
-    echo "<td>Island Park"; // Category
+    echo "<td>" . fm_select($LocNames,$t,'Location',0,'',"Location$i"); 
+    echo fm_text1('',$t,'Category',0.1,'','',"Category$i");// Category
 //    echo fm_number1('',$t,'Status','','',"Status$i");
     echo fm_text1("",$t,'MapColour',1,'','',"MapColour$i");
     echo fm_text1("",$t,'Font',0.20,'','',"Font$i");
@@ -74,7 +80,8 @@ include_once("fest.php");
   $t = ['NumberPower'=>1];
   $i = 0;
     echo "<tr><td>$i" . fm_text1("",$t,'Name',1,'','',"Name$i") . fm_text1("",$t,'ShortName',1,'','',"ShortName$i");
-    echo "<td>Island Park"; // Category
+    echo "<td>" . fm_select($LocNames,$t,'Location',0,'',"Location$i"); 
+    echo fm_text1('',$t,'Category',0.1,'','',"Category$i");// Category
 //    echo fm_number1('',$t,'Status','','',"Status$i");
     echo fm_text1("",$t,'MapColour',1,'','',"MapColour$i");
     echo fm_text1("",$t,'Font',0.20,'','',"Font$i");
