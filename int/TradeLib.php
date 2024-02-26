@@ -2491,6 +2491,14 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
   //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
         echo "'/>"; 
         
+        // Fire Ex?
+        if ($Inf['FireEx']) { // TODO and display type for cat 2's
+           echo "<rect x=" . ($Xpos + $Xwidth - $Factor) . " y=" . ($Ypos + $Factor-2 ) . " width=$Factor height=$Factor ";
+           echo " style='fill:red; stroke:red; ";
+           if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";        
+           echo "' />";
+        }
+        
         break;
         
       case '1': // Text no action
