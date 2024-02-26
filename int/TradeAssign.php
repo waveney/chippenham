@@ -116,7 +116,7 @@
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   $Message = Validate_Pitches_At($loc);
 
-  Pitch_Map($tloc,$Pitches,$Traders,0,1,0);
+  Pitch_Map($tloc,$Pitches,$Traders,0,1,1);
 
 //  Pitch_Map($tloc,$Pitches,$Traders);
   TraderList($Message);

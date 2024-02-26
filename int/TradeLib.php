@@ -73,7 +73,7 @@ $SponTypes = ['General','Venue','Event','Performer'];
 $SponStates = ['Raised','Invoiced','Paid','Paid in Kind'];
 $TradeTypeStates = ['Private','Open','Closed']; // Private - not shown on site
 $LocTypes = ['Trade','Infra','Other'];
-$ObjectTypes = ['rect','text','circle','arrow'];
+$ObjectTypes = ['rect','text','circle','arrow','image'];
 
 function Get_Trade_Locs($tup=0,$Cond='') { // 0 just names, 1 all data
   global $db;
@@ -2385,6 +2385,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
   $Factor = 20*$scale*$Mapscale;
 
   $FSize = 10*$scale;
+  $Key = [];
 
   $PitchesByName = [];
   foreach ($Pitches as $Pi) if ($Pi['Type'] == 0) $PitchesByName[$Pi['SN'] ?? $Pi['Posn']] = $Pi;
@@ -2497,6 +2498,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
            echo " style='fill:red; stroke:red; ";
            if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";        
            echo "' />";
+           $Key []= 'FireEx';
         }
         
         break;
@@ -2536,6 +2538,13 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
       case '3': // arrow
         echo "<line x1=$Xpos y1=$Ypos x2=$Xwidth y2=$Yheight stroke=$stroke marker-end=url(#arrow) />";
         break;
+      
+      case '4': // Image
+        echo "<image x=$Xpos y=$Ypos width=$Xwidth height=$Yheight href=$Name ";
+        if ($Inf['Angle']) echo "style='transform: rotate(" . $Inf['Angle'] . "Deg);' ";        
+        
+        echo " />";
+        $Name = '';
       }
       
       // Now do any text
