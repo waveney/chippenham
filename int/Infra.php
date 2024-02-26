@@ -55,6 +55,8 @@ include_once("TradeLib.php");
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power From</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power To</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Tables</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>FireEx</a>\n";
+
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Link</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Order</a>\n";
 
@@ -75,6 +77,9 @@ include_once("TradeLib.php");
     echo "<td>". fm_select($Powers,$t,'Power','','',"Power$i") . fm_text1('',$t,'NumberPower',0.1,'','',"NumberPower$i");
     echo fm_text1("",$t,'PowerFrom',1,'','',"PowerFrom$i") . fm_text1("",$t,'PowerTo',1,'','',"PowerTo$i");
     echo fm_text1('',$t,'Tables',0.1,'','',"Tables$i");
+    echo fm_text1('',$t,'FireEx',0.1,'','',"FireEx$i");
+
+
     echo fm_text1('',$t,'HasLink',1,'','',"HasLink$i");
     echo fm_text1('',$t,'PlaceOrder',1,'','',"PlaceOrder$i");
     echo "\n";
@@ -92,7 +97,9 @@ include_once("TradeLib.php");
     echo fm_text1("",$t,'Xsize',0.20,'','',"Xsize$i") . fm_text1("",$t,'Ysize',0.20,'','',"Ysize$i");
     echo "<td>". fm_select($Powers,$t,'Power','','',"Power$i") . fm_text1('',$t,'NumberPower',0.1,'','',"NumberPower$i");
     echo fm_text1("",$t,'PowerFrom',1,'','',"PowerFrom$i") . fm_text1("",$t,'PowerTo',1,'','',"PowerTo$i");
+
     echo fm_text1('',$t,'Tables',0.1,'','',"Tables$i");
+    echo fm_text1('',$t,'FireEx',0.1,'','',"FireEx$i");
     echo fm_text1('',$t,'HasLink',1,'','',"HasLink0");
     echo fm_text1('',$t,'PlaceOrder',1,'','',"PlaceOrder0");
 
@@ -104,4 +111,3 @@ include_once("TradeLib.php");
 
   dotail();
 
-?>

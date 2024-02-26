@@ -6,8 +6,12 @@
   global $PLANYEAR,$TradeTypeStates,$Trade_States,$db;
 
   include_once("TradeLib.php");
+
+  $TradeTypeData = Get_Trade_Types(1);
+  $TradeLocData = Get_Trade_Locs(1); 
   
-  if (($_REQUEST['T']??'') == 'Tables') {
+  switch ($_REQUEST['T']??'Powr') {
+  case 'Tables':
     echo "<div class=content><h2>List of Table Requirements</h2>\n";
 
     $qry = "SELECT y.*, t.* FROM Trade AS t LEFT JOIN TradeYear AS y ON t.Tid=y.Tid AND y.Year='$PLANYEAR' " .
@@ -16,8 +20,6 @@
 
     $Trads = $db->query($qry);
 
-    $TradeTypeData = Get_Trade_Types(1);
-    $TradeLocData = Get_Trade_Locs(1); 
     $TableTotal = 0;
 
     $coln = 0;
@@ -61,7 +63,39 @@
 
     dotail();
     
-  } else {// Power
+  case 'FireEx':
+    echo "<div class=content><h2>List of Fire Ex Requirements</h2>\n";
+
+    $FireExTotal = 0;
+
+    $coln = 0;
+    $t = [];
+
+    $Infs = Gen_Get_Cond('Infrastructure',"FireEx>0");
+    echo "<div class=Scrolltable+><table id=indextable border>\n";
+    echo "<thead><tr>";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Location</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Fire Extinguishers</a>\n";
+    echo "</thead><tbody>";
+
+    
+
+    foreach ($Infs as $In) {
+    echo "<tr><td>" . $In['Name'] . "<td>" . $TradeLocData[$In['Location']]['SN'] . "<td>" . $In['FireEx'] . "\n";
+      $FireExTotal += $In["FireEx"];
+      }
+
+    echo "</table></div>\n";
+    
+    echo "Total Fire extinguisher locations: $FireExTotal";
+    echo "</div>";
+
+    dotail();
+    
+    
+  case 'Power':
+  default:
   
     echo "<div class=content><h2>List of Power Requirements</h2>\n";
 
@@ -120,4 +154,5 @@
     echo "</div>";
 
     dotail();
+    
   }

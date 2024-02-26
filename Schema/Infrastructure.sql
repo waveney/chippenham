@@ -28,5 +28,6 @@ CREATE TABLE `Infrastructure` (
   `HasLink` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `PlaceOrder` int NOT NULL DEFAULT '0',
   `ObjectType` int NOT NULL DEFAULT '0',
+  `FireEx` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
