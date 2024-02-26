@@ -73,6 +73,7 @@ $SponTypes = ['General','Venue','Event','Performer'];
 $SponStates = ['Raised','Invoiced','Paid','Paid in Kind'];
 $TradeTypeStates = ['Private','Open','Closed']; // Private - not shown on site
 $LocTypes = ['Trade','Infra','Other'];
+$ObjectTypes = ['rect','text','circle','arrow'];
 
 function Get_Trade_Locs($tup=0,$Cond='') { // 0 just names, 1 all data
   global $db;
@@ -2433,7 +2434,21 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
            M0,4 l4,-4
            M3,5 l2,-2" 
            style="stroke:LightSeaGreen; stroke-width:1" />
-        </pattern>';
+        </pattern>
+        <defs>
+          <!-- A marker to be used as an arrowhead -->
+          <marker
+          id="arrow"
+          viewBox="0 0 10 10"
+          refX="5"
+          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+      </defs>
+';
   
   if ($XtraInfra) {
     foreach($XtraInfra as $Inf) {  
@@ -2449,29 +2464,71 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
       }
   
       $Name = $Inf['ShortName'] ?? $Inf['Name'] ?? '?';
-
-      echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
       $fill = 'White'; $stroke = 'black'; $Pen = 'black';
-      if (isset($Inf['MapColour'])) {
-        if ($Inf['MapColour'] != '/') {
-          $fill = $Inf['MapColour'];
-          
-          if ($Name[0] == "~") {
-            $Pen = 'White';
-            $Name = substr($Name,1);
-          } else if ($Name[0] == "/") {
-            $fill =  "url($Name)";
-            $Name= '';
+      
+      switch ($Inf['ObjectType']) {
+      case 0: // Rectangle
+        echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
+        if (!empty($Inf['MapColour'])) {
+          if ($Inf['MapColour'] != '/') {
+            $fill = $Inf['MapColour'];
+
+            if ($Name[0] == "~") {
+              $Pen = 'White';
+              $Name = substr($Name,1);
+            } else if ($Name[0] == "/") {
+              $fill =  "url($Name)";
+              $Name= '';
+            }
+          } else {
+            $fill = "url(#diagonalHatch)";
+            $stroke = 'LightSeaGreen';
           }
-        } else {
-          $fill = "url(#diagonalHatch)";
-          $stroke = 'LightSeaGreen';
         }
+        echo " style='fill:$fill;stroke:$stroke;";
+        if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";
+  //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
+        echo "'/>"; 
+        
+        break;
+        
+      case '1': // Text no action
+        $Xwidth = 1000; $Yheight = 1000;
+        break;
+      
+      case '2': // Circle
+        echo "<circle cx=$Xpos cy=$Ypos r=$Xwidth ";
+        if (!empty($Inf['MapColour'])) {
+          if ($Inf['MapColour'] != '/') {
+            $fill = $Inf['MapColour'];
+
+            if ($Name[0] == "~") {
+              $Pen = 'White';
+              $Name = substr($Name,1);
+            } else if ($Name[0] == "/") {
+              $fill =  "url($Name)";
+              $Name= '';
+            }
+          } else {
+            $fill = "url(#diagonalHatch)";
+            $stroke = 'LightSeaGreen';
+          }
+        }
+        echo " style='fill:$fill;stroke:$stroke;";
+        if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";
+  //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
+        echo "'/>"; 
+        $Inf['X'] -= $Inf['Xsize']; // For text positioning
+        $Inf['Y'] -= $Inf['Ysize']/2; // For text positioning
+      
+        break;
+      
+      case '3': // arrow
+        echo "<line x1=$Xpos y1=$Ypos x2=$Xwidth y2=$Yheight stroke=$stroke marker-end=url(#arrow) />";
+        break;
       }
-      echo " style='fill:$fill;stroke:$stroke;";
-      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";
-//?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
-      echo "'/>"; 
+      
+      // Now do any text
 
       echo "<title>$Name</title>";
 
@@ -2524,8 +2581,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
         $Lopen = 1;
       }
     } else {
-      echo "<a>";
-      $Lopen = 1;
+//      echo "<a>";
+//      $Lopen = 1;
     }
     
 //    var_dump($Pitch,$TradeTypeData,$TT);

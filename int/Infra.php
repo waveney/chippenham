@@ -12,7 +12,7 @@ include_once("TradeLib.php");
   A_Check('Committee','Venues');
 
   dostaffhead("Manage Other Infrastructure");
-  global $PLANYEAR;
+  global $PLANYEAR,$ObjectTypes;
 
   $TradePower = Gen_Get_All("TradePower");
   $Powers = [];
@@ -38,9 +38,10 @@ include_once("TradeLib.php");
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Index</a>\n";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>ShortName</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Display Text</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Location</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Cat</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Object</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Colour</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Font</a>\n";
 
@@ -64,7 +65,8 @@ include_once("TradeLib.php");
     echo "<tr><td>$i" . fm_text1("",$t,'Name',1,'','',"Name$i") . fm_text1("",$t,'ShortName',1,'','',"ShortName$i");
     echo "<td>" . fm_select($LocNames,$t,'Location',0,'',"Location$i"); 
     echo fm_text1('',$t,'Category',0.1,'','',"Category$i");// Category
-//    echo fm_number1('',$t,'Status','','',"Status$i");
+    echo "<td>" . fm_select($ObjectTypes,$t,'ObjectType',0,'',"ObjectType$i"); 
+
     echo fm_text1("",$t,'MapColour',1,'','',"MapColour$i");
     echo fm_text1("",$t,'Font',0.20,'','',"Font$i");
     echo fm_text1("",$t,'X',0.20,'','',"X$i") . fm_text1("",$t,'Y',0.20,'','',"Y$i");
@@ -82,7 +84,7 @@ include_once("TradeLib.php");
     echo "<tr><td>$i" . fm_text1("",$t,'Name',1,'','',"Name$i") . fm_text1("",$t,'ShortName',1,'','',"ShortName$i");
     echo "<td>" . fm_select($LocNames,$t,'Location',0,'',"Location$i"); 
     echo fm_text1('',$t,'Category',0.1,'','',"Category$i");// Category
-//    echo fm_number1('',$t,'Status','','',"Status$i");
+    echo "<td>" . fm_select($ObjectTypes,$t,'ObjectType',0,'',"ObjectType$i"); 
     echo fm_text1("",$t,'MapColour',1,'','',"MapColour$i");
     echo fm_text1("",$t,'Font',0.20,'','',"Font$i");
     echo fm_text1("",$t,'X',0.20,'','',"X$i") . fm_text1("",$t,'Y',0.20,'','',"Y$i");
