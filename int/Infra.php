@@ -79,7 +79,7 @@ include_once("TradeLib.php");
     echo fm_text1('',$t,'PlaceOrder',1,'','',"PlaceOrder$i");
     echo "\n";
   }
-  $t = ['NumberPower'=>1];
+  $t = ['NumberPower'=>1, 'Location'=>Feature('TradeBaseMap')];
   $i = 0;
     echo "<tr><td>$i" . fm_text1("",$t,'Name',1,'','',"Name$i") . fm_text1("",$t,'ShortName',1,'','',"ShortName$i");
     echo "<td>" . fm_select($LocNames,$t,'Location',0,'',"Location$i"); 

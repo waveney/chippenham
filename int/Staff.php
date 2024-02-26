@@ -284,6 +284,7 @@
   if ($x = StaffTable('Trade','Trade')) {
     $txt .= $x;
     $Tlocs = Get_Trade_Locs(0,"WHERE InUse=1");
+    $ld = ['l'=>Feature('TradeBaseMap')];
     $txt .= "<ul>\n";
     $txt .= "<li><a href=ListCTrade?Y=$YEAR>List Active Traders This Year</a>\n";
     $txt .= "<li><a href=ListTrade?Y=$YEAR>List All Traders</a>\n";
@@ -293,15 +294,15 @@
     $txt .= "<li><form method=Post action=TradeStandMap class=staffform>";
       $txt .= "<input type=submit name=l value='Trade Stand Map' id=staffformid>" . 
                 fm_hidden('Y',$YEAR) .
-                fm_select($Tlocs,0,'l',0," onchange=this.form.submit()") . "</form>\n";
+                fm_select($Tlocs,$ld,'l',0," onchange=this.form.submit()") . "</form>\n";
 
     $txt .= "<li><a href=TradeShow>Trade Show</a>\n";
     if (Access('Committee','Trade')) {
       $txt .= "<li><a href=Trade?Y=$YEAR>Add Trader</a>\n";
       $txt .= "<li><form method=Post action=TradeAssign class=staffform>";
-      $txt .= "<input type=submit name=l value='Trade Pitch Assign' id=staffformid>" . 
+      $txt .= "<input type=submit name=ll value='Trade Pitch Assign' id=staffformid>" . 
                 fm_hidden('Y',$YEAR) .
-                fm_select($Tlocs,0,'i',0," onchange=this.form.submit()") . "</form>\n";
+                fm_select($Tlocs,$ld,'l',0," onchange=this.form.submit()") . "</form>\n";
 
       $txt .= "<li><a href=TradeLocs?Y=$YEAR>Trade Locations</a>\n";
 //      $txt .= "<li><a href=TradeSetup>Trade Pitch Setup</a>\n";

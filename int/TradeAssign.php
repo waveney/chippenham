@@ -101,7 +101,7 @@
   }
   
 
-  $loc = $_REQUEST['i'];
+  $loc = $_REQUEST['l'];
   if (isset($_REQUEST['Update'])) Update_Pitches(); // Note this can't use Update Many as weird format of ids
   $Pitches = Get_Trade_Pitches($loc);
   $PitchesByName = [];
@@ -111,7 +111,7 @@
   $Traders = Get_Traders_For($loc,0); // Only those who have accepted/paid 1);
   
   echo "<form method=post>";
-  echo fm_hidden('i',$loc);
+  echo fm_hidden('l',$loc);
 
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   $Message = Validate_Pitches_At($loc);

@@ -2521,7 +2521,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
         echo "'/>"; 
         $Inf['X'] -= $Inf['Xsize']; // For text positioning
         $Inf['Y'] -= $Inf['Ysize']/2; // For text positioning
-        $TxtXf = 2;
+        $TxtXf = $TxtYf = 2;
       
         break;
       
