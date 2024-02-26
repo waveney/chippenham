@@ -101,14 +101,17 @@
   }
   
 
-  $loc = $_REQUEST['l'];
+  $trloc = $loc = $_REQUEST['l'];
   if (isset($_REQUEST['Update'])) Update_Pitches(); // Note this can't use Update Many as weird format of ids
   $Pitches = Get_Trade_Pitches($loc);
   $PitchesByName = [];
   foreach ($Pitches as $Pi) if ($Pi['Type'] == 0) $PitchesByName[$Pi['SN'] ?? $Pi['Posn']] = $Pi;
   $tloc = Get_Trade_Loc($loc);
+  if ($tloc['PartOf']) {
+    $trloc = $tloc['PartOf'];
+  }
   
-  $Traders = Get_Traders_For($loc,0); // Only those who have accepted/paid 1);
+  $Traders = Get_Traders_For($trloc,0); // Only those who have accepted/paid 1);
   
   echo "<form method=post>";
   echo fm_hidden('l',$loc);
