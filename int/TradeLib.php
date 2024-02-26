@@ -2465,6 +2465,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
   
       $Name = $Inf['ShortName'] ?? $Inf['Name'] ?? '?';
       $fill = 'White'; $stroke = 'black'; $Pen = 'black';
+      $TxtXf = $TxtYf = 1;
       
       switch ($Inf['ObjectType']) {
       case 0: // Rectangle
@@ -2520,6 +2521,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
         echo "'/>"; 
         $Inf['X'] -= $Inf['Xsize']; // For text positioning
         $Inf['Y'] -= $Inf['Ysize']/2; // For text positioning
+        $TxtXf = 2;
       
         break;
       
@@ -2543,9 +2545,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
       // Lowercase 
       // Spilt at words of poss, otherwise at length (for now)
 
-        $ChSize = max(floor($Inf['Xsize']*45*$Mapscale/($Inf['Font']+10)),2);
+        $ChSize = max(floor($Inf['Xsize']*45*$Mapscale/($Inf['Font']+10))*$TxtXf,2);
         $Ystart = ($Pub?0.6:0.8)*($Inf['Font']+10)/10 -0.2;
-        $MaxCnk = max(floor(($Inf['Ysize']*2.5*$Mapscale)),1);
+        $MaxCnk = max(floor(($Inf['Ysize']*2.5*$Mapscale))*$TxtYf,1);
   //      $Name = preg_replace('/.*t\/a (.*)/',
   //      $Chunks = str_split($Name,$ChSize);
         $Chunks = ChunkSplit($Name,$ChSize,$MaxCnk);
