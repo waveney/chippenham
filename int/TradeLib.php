@@ -2384,7 +2384,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
   // Pub 0 = Public map, 1 = Trade (may be same as 0), 2 = Trader Only before public, 3 = Setup, 4=Assign, 5=EMP, 5=Infra Only
   global $TradeTypeData,$Trade_State;
   $CatMask = [1,1,1,3,1,3,2];
-  $ShowPich = [0,0,1,1,1,0,0];
+  $ShowPitch = [0,0,1,1,1,0,0];
   
   if (!$loc['MapImage']) return;
   
@@ -2642,7 +2642,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     echo " style='";
     if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
     echo "font-size:10px;'>";
-    if ($ShowPich[$Pub]) {
+    if ($ShowPitch[$Pub]) {
       echo "#" . $Posn;
       if (($Pitch['Type'] == 0) && $Pitch['SN']) echo " - " . ($Pitch['SN']??'');
     } else if (($Pub == 2) && ($Pitch['SN']??'')) echo $Pitch['SN'];

@@ -9,8 +9,8 @@
   global $Pitches,$tloc,$loc,$Traders,$Trade_State,$db,$Trade_Types,$Trade_Types;
   $Trade_Types = Get_Trade_Types(1);
 
-  function TraderList($Message='') {
-    global $Pitches,$tloc,$loc,$Traders,$Trade_Types,$Trade_State;
+  function TraderList($Message='',$trloc) {
+    global $Pitches,$tloc,$Traders,$Trade_Types,$Trade_State;
     echo "<div class=PitchWrap><div class=PitchCont>";
     if (!$Traders) {
       echo "No Traders Here Yet";
@@ -26,7 +26,7 @@
         echo "<td><img src=/images/icons/information.png width=20 title='" . $Trad['GoodsDesc'] . "'><td>";          
         $pitched = 0;
         for ($i=0; $i<3; $i++) 
-          if ($Trad["PitchLoc$i"] == $loc) {
+          if ($Trad["PitchLoc$i"] == $trloc) {
             if ($pitched) {
               if (preg_match('/^(\d*)/',$Trad["PitchSize$i"],$mtch) && ($mtch[1]==0)) continue;
               echo "<tr><td><td>&amp;<td>";
@@ -119,10 +119,10 @@
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   $Message = Validate_Pitches_At($loc);
 
-  Pitch_Map($tloc,$Pitches,$Traders,0,4,'TradeAssign');
+  Pitch_Map($tloc,$Pitches,$Traders,4,'TradeAssign');
 
 //  Pitch_Map($tloc,$Pitches,$Traders);
-  TraderList($Message);
+  TraderList($Message,$trloc);
   echo "<h2><a href=TradeLocs?Y=$YEAR>Trade Locs</a></h2>";
   dotail();
  
