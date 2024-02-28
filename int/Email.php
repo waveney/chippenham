@@ -538,6 +538,7 @@ function Replace_Help($Area='',$Right=0) {
   ['*CONTRACT*','Attach Contract to the message','Performers'],
   ['*COLLECTINFO*','Collection Information','Dance, Volunteers'],
   ['*FEAT:Name:Default*','Include value of Feature(Name,Default)','All'],
+  ['*TRADEORG*','Organiser(s) of Trade','Trade'],
   ];
 
   echo "<span " . ($Right?' class=floatright':'') . " id=largeredsubmit onclick=($('.HelpDiv').toggle()) >Click to toggle Standard Replacements Help</span>";

@@ -985,6 +985,10 @@ function Trader_Details($key,&$data,$att=0) {
     } else {
       return "";
     }
+  
+  case 'TRADEORG':
+    return Feature('TradeOrg');
+    
   case (preg_match('/TICKBOX(.*)/',$key,$mtch)?true:false):
     $bits = preg_split('/:/',$mtch[1],3);
     $box = 1;
@@ -2379,7 +2383,7 @@ function Get_Traders_For($loc,$All=0 ) {
 function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {  
   // Pub 0 = Public map, 1 = Trade (may be same as 0), 2 = Trader Only before public, 3 = Setup, 4=Assign, 5=EMP, 5=Infra Only
   global $TradeTypeData,$Trade_State;
-  $CatLimits = [2,2,2,3,2,3,1];
+  $CatLimits = [1,1,1,2,1,2,0];
   $ShowPich = [0,0,1,1,1,0,0];
   
   if (!$loc['MapImage']) return;
