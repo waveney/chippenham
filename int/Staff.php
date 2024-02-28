@@ -412,6 +412,7 @@
     
     $txt .= "<li><a href=TradeStandMap?t=6&Y=$YEAR>Infrastructure Map</a>\n";
     $txt .= "<li><a href=TradeStandMap?t=0&Y=$YEAR>Island Park General Map</a>\n";
+    $txt .= "<li><a href=TradeStandMap?t=5&Y=$YEAR>Island Park EMP Map</a>\n";
 
 
     $txt .= "</ul>\n";
