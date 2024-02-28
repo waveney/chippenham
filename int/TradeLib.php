@@ -2383,7 +2383,7 @@ function Get_Traders_For($loc,$All=0 ) {
 function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {  
   // Pub 0 = Public map, 1 = Trade (may be same as 0), 2 = Trader Only before public, 3 = Setup, 4=Assign, 5=EMP, 5=Infra Only
   global $TradeTypeData,$Trade_State;
-  $CatLimits = [1,1,1,2,1,2,0];
+  $CatMask = [1,1,1,3,1,3,2];
   $ShowPich = [0,0,1,1,1,0,0];
   
   if (!$loc['MapImage']) return;
@@ -2467,7 +2467,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
   
   if ($XtraInfra) {
     foreach($XtraInfra as $Inf) {  
-      if ($Inf['Category'] > $CatLimits[$Pub]) continue; // Not needed in this case
+      if ($Inf['Category'] !=0 && (($Inf['Category'] & $CatMask[$Pub]) == 0)) continue; // Not needed in this case
       //    var_dump($Pitch,$TradeTypeData,$TT);
       $Xpos = ($Inf['X'] * $Factor);
       $Ypos = ($Inf['Y'] * $Factor);

@@ -22,7 +22,7 @@
   
   $ShowTraders = 0;
   
-  $Type = ($REQUEST['t']??0); 
+  $Type = ($_REQUEST['t']??0); 
   
   switch ($Type) {
     case 0: // Public, Setup, EMP, Infrastructure
