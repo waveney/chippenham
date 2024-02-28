@@ -227,6 +227,14 @@ function Get_Trader($who) {
   return $data;
 }
 
+function Get_Trader_All($who) {
+  global $db,$YEAR;
+  $res = $db->query("SELECT t.*,y.* FROM Trade AS t, TradeYear AS y WHERE t.Tid='$who' AND t.Tid=y.Tid AND y.YEAR=$YEAR");
+  if (!$res || $res->num_rows == 0) return 0;
+  $data = $res->fetch_assoc();
+  return $data;
+}
+
 function Get_TraderByName($who) {
   global $db;
   $res = $db->query("SELECT * FROM Trade WHERE SN LIKE '$who'");
@@ -2368,21 +2376,23 @@ function Get_Traders_For($loc,$All=0 ) {
    plot the pitches
    */
 
-function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {  
-  // Links 0:none, 1:traders, 2:Trade areas
-  // Pub 0 = not,1 public, 2 only pitch#s, 3 with cat 1 items (not public), 4 public with cat 1
+function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {  
+  // Pub 0 = Public map, 1 = Trade (may be same as 0), 2 = Trader Only before public, 3 = Setup, 4=Assign, 5=EMP, 5=Infra Only
   global $TradeTypeData,$Trade_State;
+  $CatLimits = [2,2,2,3,2,3,1];
+  $ShowPich = [0,0,1,1,1,0,0];
   
   if (!$loc['MapImage']) return;
   
   $TLocId = $loc['TLocId'];
   $XtraInfra = Gen_Get_Cond('Infrastructure',"Location=$TLocId  ORDER BY PlaceOrder ASC,id");
   
-//  var_dump($loc,$Traders,$Pub,$Scale,$Links);
+//  var_dump($loc,$Pub,$Scale,$LinkRoot);
   $scale=$Scale*$loc['Showscale'];
   $Mapscale = $loc['Mapscale'];
 //  $sp = $scale*100;
   $Factor = 20*$scale*$Mapscale;
+  $Links=1;
 
   $FSize = 10*$scale;
   $Key = [];
@@ -2453,6 +2463,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
   
   if ($XtraInfra) {
     foreach($XtraInfra as $Inf) {  
+      if ($Inf['Category'] > $CatLimits[$Pub]) continue; // Not needed in this case
       //    var_dump($Pitch,$TradeTypeData,$TT);
       $Xpos = ($Inf['X'] * $Factor);
       $Ypos = ($Inf['Y'] * $Factor);
@@ -2460,7 +2471,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
       $Yheight = ($Inf['Ysize'] * $Factor);
       $Lopen = 0;
       if ($Links && !empty($Inf['HasLink'])) {
-        echo "<a href=" . $Inf['HasLink'] . ">";
+        $lnk = $Inf['HasLink'];
+        if ($LinkRoot) $lnk = preg_replace('/TradeStandMap/',$LinkRoot,$lnk);
+        echo "<a href=$lnk>";
         $Lopen = 1;
       }
   
@@ -2555,7 +2568,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
       echo " style='";
       if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg);";
       echo "fill:$Pen; font-size:10px;'>";
-      if ($Name && ($Pub!=2)) {
+      if ($Name) {
       // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
       // Chunking - split to Words then add words to full - if no words split word (hard)
       // Remove x t/a 
@@ -2563,7 +2576,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
       // Spilt at words of poss, otherwise at length (for now)
 
         $ChSize = max(floor($Inf['Xsize']*45*$Mapscale/($Inf['Font']+10))*$TxtXf,2);
-        $Ystart = ($Pub?0.6:0.8)*($Inf['Font']+10)/10 -0.2;
+        $Ystart = 0.6*($Inf['Font']+10)/10 -0.2;
         $MaxCnk = max(floor(($Inf['Ysize']*2.5*$Mapscale))*$TxtYf,1);
   //      $Name = preg_replace('/.*t\/a (.*)/',
   //      $Chunks = str_split($Name,$ChSize);
@@ -2625,7 +2638,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
     echo " style='";
     if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
     echo "font-size:10px;'>";
-    if (!$Pub) {
+    if ($ShowPich[$Pub]) {
       echo "#" . $Posn;
       if (($Pitch['Type'] == 0) && $Pitch['SN']) echo " - " . ($Pitch['SN']??'');
     } else if (($Pub == 2) && ($Pitch['SN']??'')) echo $Pitch['SN'];
@@ -2637,8 +2650,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$Links=0) {
     // Spilt at words of poss, otherwise at length (for now)
     
       $ChSize = floor($Pitch['Xsize']*($Pitch['Type']?18:32)*$Mapscale/($Pitch['Font']+10));
-      $Ystart = ($Pub?0.6:1.2) *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10 -0.2;
-      $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - ($Pub?1:2));
+      $Ystart = 0.6 *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10 -0.2;
+      $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - 1);
 //      $Name = preg_replace('/.*t\/a (.*)/',
 //      $Chunks = str_split($Name,$ChSize);
       $Chunks = ChunkSplit($Name,$ChSize,$MaxCnk);

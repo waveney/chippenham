@@ -101,7 +101,7 @@
   }
   
 
-  $trloc = $loc = $_REQUEST['l'];
+  $trloc = $loc = ($_REQUEST['l'] ?? Feature('TradeBaseMap'));
   if (isset($_REQUEST['Update'])) Update_Pitches(); // Note this can't use Update Many as weird format of ids
   $Pitches = Get_Trade_Pitches($loc);
   $PitchesByName = [];
@@ -119,7 +119,7 @@
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   $Message = Validate_Pitches_At($loc);
 
-  Pitch_Map($tloc,$Pitches,$Traders,0,1,1);
+  Pitch_Map($tloc,$Pitches,$Traders,0,1,'TradeAssign');
 
 //  Pitch_Map($tloc,$Pitches,$Traders);
   TraderList($Message);

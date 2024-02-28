@@ -1,5 +1,5 @@
 <?php
-  include_once("int/fest.php");
+  include_once("int/fest.php"); 
 
   set_ShowYear();
   include_once("TradeLib.php");
@@ -110,12 +110,12 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
   if ($SLoc) {
     echo ShowForm();
     if ($Title) echo "<h2>$Title</h2>";
-    Pitch_Map($SLoc,$Pitches,$Traders,1,1,1) ;
+    Pitch_Map($SLoc,$Pitches,$Traders,0,1) ;
   } else if ($Overview) {
     $Pitches = Get_Trade_Pitches($Overview['TLocId']);
 //    echo "<div style='float:left;display:inline'>" . ShowForm(($Scale==1)?'V':'H') . " </div>"; 
     echo ShowForm();
-    Pitch_Map($Overview,$Pitches,0,1,$Scale,2);
+    Pitch_Map($Overview,$Pitches,0,0,$Scale);
 
   }
   echo "<br clear=all><p>";
