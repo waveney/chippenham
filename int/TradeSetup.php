@@ -45,7 +45,7 @@
     echo fm_hidden('Year0',$YEAR);
     echo "</table></div></div>";
     echo "<input type=submit name=Update value=Update> ";
-    echo "<a href=TradeAssign?i=$loc style='font-size:20;'>Assign</a>";
+    echo "<a href=TradeAssign?l=$loc style='font-size:20;'>Assign</a>";
     echo "</div>";
   }
 
