@@ -79,8 +79,8 @@
     echo fm_text1('',$t,'MapImage',1,'','',"MapImage$i");
     echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale$i");
     echo fm_text1('',$t,'Showscale',0.5,'','',"Showscale$i");
-    echo "<td><a href=TradeSetup?i=$i&Y=$YEAR>Setup</a>";
-    echo "<td><a href=TradeAssign?i=$i>Assign</a>";
+    echo "<td><a href=TradeSetup?l=$i&Y=$YEAR>Setup</a>";
+    echo "<td><a href=TradeAssign?l=$i>Assign</a>";
     echo "\n";
   }
   echo "<tr><td><td><input type=text name=SN0 >";

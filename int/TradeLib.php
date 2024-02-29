@@ -2663,9 +2663,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     // Spilt at words of poss, otherwise at length (for now)
     
       $ChSize = floor($Pitch['Xsize']*($Pitch['Type']?18:32)*$Mapscale/($Pitch['Font']+10));
-      $Ystart = 0.6 *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10 -0.2;
+      $Ystart = 0.6 *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10;
       if ($ShowPitch[$Pub]) {
-        $Ystart += ($Pitch['Type']?1.2:0.6)*(10+$Pitch['Font']*2.1)/10;
+        $Ystart += ($Pitch['Type']?1.2:0.6)*(10+$Pitch['Font']*2.1)/10+1.2;
       }
       $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - 1);
 //      $Name = preg_replace('/.*t\/a (.*)/',

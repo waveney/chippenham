@@ -13,11 +13,13 @@
   $ViewTrade = $TradeViews[$TradeState];
   
 
-  $loc = Get_Location(); 
+  $trloc = $loc = Get_Location(); 
 
   $tloc = Get_Trade_Loc($loc);
   
   if(!$tloc) Error_Page("Unknown Map");
+  
+  if ($tloc['PartOf']) $trloc = $tloc['PartOf'];
   
   $ShowTraders = 0;
   
@@ -45,7 +47,7 @@
   }
   
   if ($ShowTraders < 0) {
-    $Traders = Get_Traders_For($loc, (Access('Staff')?1:0));
+    $Traders = Get_Traders_For($trloc, (Access('Staff')?1:0));
   } else if($ShowTraders > 0) {
     $Traders = [Get_Trader_All($ShowTraders)];
   }
