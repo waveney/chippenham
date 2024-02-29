@@ -49,7 +49,7 @@
     echo "</div>";
   }
 
-  $loc = $_REQUEST['i'];
+  $loc = Get_Location(); 
   $Pitches = Get_Trade_Pitches($loc,$YEAR);  
 //  var_dump($Pitches);
   // START HERE

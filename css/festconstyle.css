@@ -984,3 +984,15 @@ table {
   right:0;
   font-size:8pt;
 }
+
+#TraderInfo {
+  width:50%;
+  height:150px;
+  border:1px solid black;
+  margin:2;
+  padding:2;
+}
+
+#TraderContent {
+  padding:2;      
+}

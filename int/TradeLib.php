@@ -120,6 +120,15 @@ function Get_Trade_Pitches($loc='',$Year=0) {
   return $full;
 }
 
+function Get_Location() {
+  $Loc = ($_REQUEST['l'] ?? Feature('TradeBaseMap'));
+  if (is_numeric($Loc)) return $Loc;
+  $Loc = preg_replace('/_/', ' ',$Loc);
+  $Locs = Gen_Get_Cond1('TradeLocs',"SN='$Loc'");
+  if ($Locs) return $Locs['TLocId'];
+  return Feature('TradeBaseMap');
+}
+
 function Get_Trade_Pitch($id) {
   global $db;
   $res = $db->query("SELECT * FROM TradePitch WHERE id=$id");
@@ -2655,6 +2664,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     
       $ChSize = floor($Pitch['Xsize']*($Pitch['Type']?18:32)*$Mapscale/($Pitch['Font']+10));
       $Ystart = 0.6 *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10 -0.2;
+      if ($ShowPitch[$Pub]) {
+        $Ystart += ($Pitch['Type']?1.2:0.6)*(10+$Pitch['Font']*2.1)/10;
+      }
       $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - 1);
 //      $Name = preg_replace('/.*t\/a (.*)/',
 //      $Chunks = str_split($Name,$ChSize);

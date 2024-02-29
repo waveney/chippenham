@@ -13,8 +13,7 @@
   $ViewTrade = $TradeViews[$TradeState];
   
 
-  $loc = $_REQUEST['l'] ?? Feature('TradeBaseMap');
-  if (!is_numeric($loc)) Error_Page("No Hacking please");
+  $loc = Get_Location(); 
 
   $tloc = Get_Trade_Loc($loc);
   

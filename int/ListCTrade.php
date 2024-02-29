@@ -278,8 +278,14 @@
         for ($i = 0; $i <3; $i++) {
           if ($fetch["PitchLoc$i"] && $fetch["PitchSize$i"]) {
             if (preg_match('/^(\d*)/',$fetch["PitchSize$i"],$mtchs) ) {
-              $Used = $mtchs[1];
-              $TradeLocData[$fetch["PitchLoc$i"]]['QuoteWidth'] += $Used;
+              $Qtd = $Used = $mtchs[1];
+
+              if ($stat == $Trade_State['Requote']) {
+                if (preg_match('/^(\d*)/',$fetch["QuoteSize$i"],$mtchs) ) {
+                  $Qtd = $mtchs[1];
+                }
+              }
+              $TradeLocData[$fetch["PitchLoc$i"]]['QuoteWidth'] += $Qtd;
               if ($stat != $Trade_State['Quoted']) $TradeLocData[$fetch["PitchLoc$i"]]['UsedWidth'] += $Used;
             }              
           }

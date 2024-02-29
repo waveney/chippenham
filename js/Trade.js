@@ -234,6 +234,12 @@ function MoreStalls(stall) {
 function EnableXtraPower() {
   $('.XtraPower').toggle();
 }
+
+function UpdateTraderInfo(t) {
+  $('#TraderContent').load('tradeinfo.php', 'I=' + t); 
+}
+
+
 /* copied code
 
 var nexthl = 0;

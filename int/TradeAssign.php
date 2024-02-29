@@ -10,7 +10,7 @@
   $Trade_Types = Get_Trade_Types(1);
 
   function TraderList($Message='',$trloc) {
-    global $Pitches,$tloc,$Traders,$Trade_Types,$Trade_State;
+    global $Pitches,$tloc,$loc,$Traders,$Trade_Types,$Trade_State;
     echo "<div class=PitchWrap><div class=PitchCont>";
     if (!$Traders) {
       echo "No Traders Here Yet";
@@ -23,7 +23,7 @@
         if (!($Trad['PAID']??0)) {
           echo " <span class=err>" . ($Trad['BookingState'] == $Trade_State['Quoted'] ?"NOT ACCEPTED": "NOT PAID") .  "</span>";
         }
-        echo "<td><img src=/images/icons/information.png width=20 title='" . $Trad['GoodsDesc'] . "'><td>";          
+        echo "<td><img src=/images/icons/information.png width=20 " /* title='" . $Trad['GoodsDesc'] . "' */ . " onclick=UpdateTraderInfo($tid)><td>";          
         $pitched = 0;
         for ($i=0; $i<3; $i++) 
           if ($Trad["PitchLoc$i"] == $trloc) {
@@ -36,11 +36,11 @@
             $pitched = 1;
           }
       }
-      echo "</table></div></div>";
+      echo "</table></div>";
       echo "<input type=submit name=Update value=Update> <span class=Err>$Message</span>";
       echo "<a href=TradeSetup?i=$loc style='font-size:20;'>Setup</a>";
     }
-    echo "</div>";
+    echo "</div></div>";
   }
 
   function Update_Pitches() {
@@ -101,7 +101,7 @@
   }
   
 
-  $trloc = $loc = ($_REQUEST['l'] ?? Feature('TradeBaseMap'));
+  $trloc = $loc = Get_Location(); 
   if (isset($_REQUEST['Update'])) Update_Pitches(); // Note this can't use Update Many as weird format of ids
   $Pitches = Get_Trade_Pitches($loc);
   $PitchesByName = [];
@@ -119,11 +119,14 @@
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   $Message = Validate_Pitches_At($loc);
 
-  Pitch_Map($tloc,$Pitches,$Traders,4,'TradeAssign');
+  Pitch_Map($tloc,$Pitches,$Traders,4,1,'TradeAssign');
 
 //  Pitch_Map($tloc,$Pitches,$Traders);
   TraderList($Message,$trloc);
   echo "<h2><a href=TradeLocs?Y=$YEAR>Trade Locs</a></h2>";
+  
+  echo "<div id=TraderInfo><div id=TraderContent>Info about a selected trader appears here</div></div>";
+  
   dotail();
  
 
