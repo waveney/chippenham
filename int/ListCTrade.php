@@ -6,7 +6,6 @@
 
   global $YEAR,$PLANYEAR,$Trade_States,$Trade_State_Colours,$Trade_State,$TS_Actions,$ButAdmin,$AdminExtra,$TradeLocData;
   include_once("TradeLib.php");
-
   $Sum = isset($_REQUEST['SUM']);
   if ($Sum) {
     echo "<h2>Traders Summary $YEAR</h2>\n";
@@ -277,13 +276,27 @@
       if ($stat > $Trade_State['Submitted'] && $stat != $Trade_State['Wait List']) {
         for ($i = 0; $i <3; $i++) {
           if ($fetch["PitchLoc$i"] && $fetch["PitchSize$i"]) {
-            if (preg_match('/^(\d*)/',$fetch["PitchSize$i"],$mtchs) ) {
+            $Locid = $fetch["PitchLoc$i"];
+            if (preg_match('/^(\d*).*?x.*?(\d*)/',$fetch["PitchSize$i"],$mtchs) ) {
               $Qtd = $Used = $mtchs[1];
+              $QDpth = $Dpth = $mtchs[2];
 
               if ($stat == $Trade_State['Requote']) {
-                if (preg_match('/^(\d*)/',$fetch["QuoteSize$i"],$mtchs) ) {
+                if (preg_match('/^(\d*).*?x.*?(\d*)/',$fetch["QuoteSize$i"],$mtchs) ) {
                   $Qtd = $mtchs[1];
+                  $QDpth = $mtchs[2];
                 }
+              }
+              if (($TradeLocData[$Locid]['NatDepth']??0)) {
+                $ND = $TradeLocData[$Locid]['NatDepth'];
+                if (($ND +0.1) < $Dpth) {
+
+                  $Qtd = $Used = $Used*(ceil($QDpth/($ND+0.1)));
+                }
+                if ($QDpth != $Dpth) {
+                  $Qtd = $Qtd * $QDpth/$Dpth;
+                }
+                
               }
               $TradeLocData[$fetch["PitchLoc$i"]]['QuoteWidth'] += $Qtd;
               if ($stat != $Trade_State['Quoted']) $TradeLocData[$fetch["PitchLoc$i"]]['UsedWidth'] += $Used;

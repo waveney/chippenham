@@ -18,7 +18,7 @@
 //  echo "Power Offset - Bit number for power properties<p>";
   
   echo "Properties bit 0 = table, 1=Power - not in use<br>";
-  echo "Width if >0, total usage is calculated<br>";
+  echo "Width if >0, total usage is calculated, if Nat Depth > 0 it is used to consume extra width<br>";
   echo "Type 0- Trade, 1-Infra structure, 2-other<P>";
   
   $Locs=Get_Trade_Locs(1);
@@ -47,6 +47,7 @@
 //  echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Power Offset</a>\n";
   echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Props</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Total Width</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Nat Depth</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Link</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Part of</a>\n";
 
@@ -71,6 +72,7 @@
 //    echo fm_number1('',$t,'PowerOffset',' class=FullD hidden','',"PowerOffset$i");
     echo fm_number1('',$t,'Props',' class=FullD hidden','',"Props$i");
     echo fm_text1('',$t,'TotalWidth',0.25,'','',"TotalWidth$i");
+    echo fm_text1('',$t,'NatDepth',0.25,'','',"NatDepth$i");
     echo fm_text1('',$t,'HasLink',1,'','',"HasLink$i");
     echo "<td>" . fm_select($LocNames,$t,'PartOf',1,'',"PartOf$i");
     echo fm_text1('',$t,'Notes',1,'','',"Notes$i");
@@ -93,6 +95,8 @@
 //  echo fm_number1('',$t,'PowerOffset',' class=FullD hidden','',"PowerOffset0");
   echo fm_number1('',$t,'Props',' class=FullD hidden','',"Props0");
   echo fm_text1('',$t,'TotalWidth',0.25,'','',"TotalWidth0");
+  echo fm_text1('',$t,'NatDepth',0.25,'','',"NatDepth0");
+
   echo fm_text1('',$t,'HasLink',1,'','',"Link0");
   echo "<td>" . fm_select($LocNames,$t,'PartOf',1,'',"PartOf0");
 

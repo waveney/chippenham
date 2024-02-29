@@ -19,5 +19,6 @@ CREATE TABLE `TradeLocs` (
   `HasLink` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Type` int NOT NULL DEFAULT '0',
   `PartOf` int NOT NULL,
+  `NatDepth` int NOT NULL,
   PRIMARY KEY (`TLocId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
