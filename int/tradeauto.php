@@ -14,16 +14,20 @@ switch ($Action) {
 case 'RQ':
   $Trad = Get_Trader($Tid);
   $Trady = Get_Trade_Year($Tid);
-//var_dump($Trady);
   if ( ($Trady['PitchSize0'] != ($Trady['QuoteSize0']??'')) || 
        ($Trady['PitchSize0'] != ($Trady['QuoteSize0']??'')) ||  
        ($Trady['PitchSize0'] != ($Trady['QuoteSize0']??''))) {
+//    echo "Requotingi<p>";
     $Trady['BookingState'] = $Trade_State['Requote'];
     Put_Trade_Year($Trady);
     Send_Trade_Admin_Email($Trad,$Trady,'Trade_Changes');
-    return 'ReQuote';
+    echo 'ReQuote';
+  } else {
+    echo $Trade_States[$Trady['BookingState']];
   }
-  return $Trade_States[$Trady['BookingState']];
+  
+  exit;
 
 default:
+  exit;
 }

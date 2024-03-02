@@ -71,7 +71,7 @@
   echo "<tr><td><td><input type=text size=16 name=SN0 >";
   echo "<td><input type=number min=0 max=1000 name=ListOrder0>";
   echo "<td><input type=text size=16 name=Colour0>";
-  echo "<td><input type=text size=8 name=BasePrice0>";
+  echo "<td><input type=text size=8 name=BasePrice0 value='-1'>";
   echo "<td><input type=checkbox name=PerDay0>";
   echo "<td><input type=number min=0 max=1000 name=Deposit0>";
   echo "<td><input type=checkbox name=Addition0>";

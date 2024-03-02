@@ -620,11 +620,11 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     if (!$stat) $stat = 0;
     echo fm_hidden('BookingState',$stat);
     if ($stat == $Trade_State['Fully Paid'] && ($Trady['Insurance'] == 0 || $Trady['RiskAssessment'] == 0)) {
-      echo "<td id=BookState>Booking State:" . help('BookingState') . "<td class=TSNoInsRA>Fully Paid";
+      echo "<td>Booking State:" . help('BookingState') . "<td id=BookState class=TSNoInsRA>Fully Paid";
       if ($Trady['Insurance'] ==0) echo ", no Insurance";
       if ($Trady['RiskAssessment'] ==0) echo ", no Risk Assessment";
     } else {
-        echo "<td id=BookState>Booking State:" . help('BookingState') . "<td ";
+        echo "<td>Booking State:" . help('BookingState') . "<td id=BookState ";
         if ($stat == $Trade_State['Fully Paid'] && ($Trady['Insurance'] == 0 || $Trady['RiskAssessment'] == 0)) {
           echo " class=TSNoInsRA>Paid";
           if ($Trady['Insurance'] ==0) echo ", no Insurance";
@@ -2056,7 +2056,6 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
 
       $DueDate = Trade_Date_Cutoff();
       if ($Invs) $invoice = Get_Invoice_Pdf($Invs[0]['id']);
-      
       if ($PaidSoFar < $Dep && $DueDate==0) {  // Need a deposit
         if ($Invs && $PaidSoFar==0 && $InvoicedTotal>=$Dep) { // For info no action required, existing deposit fine, repeat it
           $NewState = $Trady['BookingState'] = $Trade_State['Quoted'];
@@ -2647,7 +2646,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       echo "<title>$Name</title>";
     }
     
-    echo "<text x=" . (($Pitch['X']+0.2) * $Factor)  . " y=" . (($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor);
+    echo "<text x=" . ($Xpos+2)  . " y=" . ($Ypos+2); //(($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor -60);
+    $Ystart = $YAdd = (10+$Pitch['Font']*2.1)*.06;
+    
     echo " style='";
     if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
     echo "font-size:10px;'>";
