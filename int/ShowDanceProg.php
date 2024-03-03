@@ -70,14 +70,7 @@
     Create_Grid($Cond);
     Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
   }
- 
-  if (!$Public) {
-    Controls(0,$Cond);
-    ErrorPane(0);
-    echo "</body></html>\n";
-    exit;
-  }
-  
+   
   if ($Public && $head) {
     dotail();
   } else {
