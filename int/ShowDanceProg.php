@@ -62,15 +62,14 @@
     Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
   }
   if ($day == 'All' || $day == 'Mon') {
-    if ($Public) {
-      Grab_Data("Mon");
-      Scan_Data($Cond);
-      echo "<p id=Monday><h2>Monday " . $Event_Types[1]['Plural'] . "</h2></p>\n";
+    Grab_Data("Mon");
+    Scan_Data($Cond);
+    echo "<p id=Monday><h2>Monday " . $Event_Types[1]['Plural'] . "</h2></p>\n";
 //      echo "This will be easier to use on a small screen soon.<p>";
-      if ($Links) echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
-      Create_Grid($Cond);
-      Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
-    }
+    if ($Links) echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
+    Create_Grid($Cond);
+    Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
+  }
  
   if (!$Public) {
     Controls(0,$Cond);
@@ -84,3 +83,4 @@
   } else {
     echo "</body></html>\n";
   }
+  
