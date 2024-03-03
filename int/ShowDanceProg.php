@@ -30,7 +30,7 @@
   if (isset($_REQUEST['NoBackground'])) echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script>";
   
   if ($Public && $Links) {
-    echo "<h2 class='DanceMap Fakelink' onclick=$('.DanceMap').toggle()>Show Dance Locations</h2>";
+    echo "<h2 class='DanceMap FakeLink' onclick=$('.DanceMap').toggle()>Show Dance Locations</h2>";
     echo "<h2 class='DanceMap FakeLink' onclick=$('.DanceMap').toggle() hidden>Hide Dance Locations</h2>"; 
     echo "<div class=DanceMap hidden><div id=MapWrap>";
     echo "<div id=DirPaneWrap><div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div></div>";
@@ -53,19 +53,13 @@
     Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
   }
   if ($day == 'All' || $day == 'Sun') {
-    if ($Public) {
-      Grab_Data("Sun");
-      Scan_Data($Cond);
-      echo "<p id=Sunday><h2>Sunday " . $Event_Types[1]['Plural'] . "</h2></p>\n";
+    Grab_Data("Sun");
+    Scan_Data($Cond);
+    echo "<p id=Sunday><h2>Sunday " . $Event_Types[1]['Plural'] . "</h2></p>\n";
 //      echo "This will be easier to use on a small screen soon.<p>";
-      if ($Links) echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
-      Create_Grid($Cond);
-      Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
-    } else {
-      Controls(0,$Cond);
-      ErrorPane(0);
-      echo "</body></html>\n";
-    }
+    if ($Links) echo "Click on a team to learn more about them, click on a venue to find out where it is.<p>";
+    Create_Grid($Cond);
+    Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
   }
   if ($day == 'All' || $day == 'Mon') {
     if ($Public) {
@@ -77,14 +71,16 @@
       Create_Grid($Cond);
       Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
     }
+ 
+  if (!$Public) {
+    Controls(0,$Cond);
+    ErrorPane(0);
+    echo "</body></html>\n";
+    exit;
+  }
+  
+  if ($Public && $head) {
     dotail();
   } else {
-    if ($Public && $head) {
-      dotail();
-    } else {
-      echo "</body></html>\n";
-    }
+    echo "</body></html>\n";
   }
-
-?>
-
