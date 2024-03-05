@@ -49,7 +49,7 @@ function PostUpdate604() {
   foreach ($Tys as $Ty) {
     echo "Doing " . $Ty['TYid'] . "<br>";
     
-    if (preg_match('/Quote .* on (.*) by/',$Ty['History'],$rslt)) {
+    if (preg_match('/Quote.* on (.*) by/',$Ty['History'],$rslt)) {
       $when = Date_BestGuess($rslt[1]);
       $Ty['DateQuoted'] = $when;
       Gen_Put('TradeYear',$Ty,'TYid');
