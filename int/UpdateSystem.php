@@ -43,6 +43,22 @@ function PostUpdate429() {
   }
 }
 
+function PostUpdate604() {
+  // Update Date Quoted on Tradeyear data
+  $Tys = Gen_Get_Cond('TradeYear',"Year=2024 AND BookingState=5",'TYid');
+  foreach ($Tys as $Ty) {
+    echo "Doing " . $Ty['TYid'] . "<br>";
+    
+    if (preg_match('/Quote .* on (.*) by/',$Ty['History'],$rslt)) {
+      $when = Date_BestGuess($rslt[1]);
+      $Ty['DateQuoted'] = $when;
+      Gen_Put('TradeYear',$Ty,'TYid');
+      echo "<br>";
+    }
+  }
+}
+
+
 function PreUpdate436() {  // Corect mediumtext to text
   global $db,$CONF;
   $qry = "SELECT COLUMN_NAME, DATA_TYPE, TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='" . $CONF['dbase'] ."' AND DATA_TYPE='text'";

@@ -615,6 +615,14 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
 //    echo fm_radio("Booking State",$Trade_States,$Trady,'BookingState','class=NotCSide',1,'colspan=2 class=NotCSide');
     echo "<td class=NotSide>" . fm_checkbox('Local Auth Checked',$Trady,'HealthChecked');
     if (Access('Internal')) echo ($Trady['TYid'] ?? -1);
+    echo "<td class=NotSide>";
+    if ($Trady['BookingState'] == $Trade_State['Quoted']) {
+      if ($Trady['DateRemind']) {
+        echo "Reminded on: " . date('D d M', $Trady['DateRemind']);
+      } else {
+        echo "Quoted on: " . date('D d M', $Trady['DateQuoted']);
+      }
+    }
   } else {
     $stat = $Trady['BookingState'];
     if (!$stat) $stat = 0;
@@ -1521,6 +1529,15 @@ function Trade_Main($Mode,$Program,$iddd=0) {
             $xtra = " id=PitchChangeButton hidden ";
             break;
             
+          case 'LastWeek' :
+            if (($Trady['DateQuoted'] == 0) || ($Trady['DateRemind'] != 0) || 
+                (($Trady['DateQuoted'] + Feature('TradeLastWeek',14)*86400) > time())) continue 2;
+            break;
+
+          case 'UnQuote' :
+            if (($Trady['DateRemind'] == 0) || (($Trady['DateRemind'] + Feature('TradeUnQuote',14)*86400) > time())) continue 2;
+            break;
+            
           default:
         }
 //        var_dump($Mode, $ButTraderTips[$ac]);
@@ -1740,7 +1757,9 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     }
   
   case 'LastWeek' : // Send Last week message
-    Send_Trader_Email($Trad,$Trady,'Trade_Quote_WeekLeft');   
+    Send_Trader_Email($Trad,$Trady,'Trade_Quote_WeekLeft');
+    $Trady['DateRemind'] = time();
+    $Ychng = 1;
     break;
   
   case 'Resend Finance':
@@ -1997,6 +2016,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       Send_Trader_Email($Trad,$Trady,'Trade_Invitation');
       $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
     }
+    $Trady['DateQuoted'] = time();
     break;
 
   case 'Artisan Invite' :
@@ -2008,6 +2028,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       Send_Trader_Email($Trad,$Trady,'Trade_Artisan_Invite');
       $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
     }
+    $Trady['DateQuoted'] = time();
     break;
 
   case 'Invite Better' :
@@ -2019,6 +2040,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       Send_Trader_Email($Trad,$Trady,'Trade_InvitationBetter');
       $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
     }
+    $Trady['DateQuoted'] = time();
     break;
 
   case 'Quote' :
@@ -2095,6 +2117,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       }
     }
     $xtra = "Fee: $Fee " . " Size:" . $Trady['PitchSize0'];
+    $Trady['DateQuoted'] = time();
     break;
 
   case 'Resend' :

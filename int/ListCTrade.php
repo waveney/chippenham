@@ -39,6 +39,9 @@
   $TotLRec = $TotLAcc = $TotLQut = 0;
   $TradePowers = Gen_Get_All('TradePower');
   $PowerTypes[0] = '';
+  $LastWeekThresh = time() - Feature('TradeLastWeek',14)*86400;
+  $UnQuoteThresh = time() - Feature('TradeUnQuote',14)*86400;
+  
   foreach ($TradePowers as $TP) $PowerTypes[$TP['id']] = $TP['Name'];
 
   if (isset($_REQUEST['ACTION'])) {
@@ -141,6 +144,14 @@
                 break;
               case 'Invite Better':
                 if (!Feature('InviteBetter')) continue 2;
+                break;
+                
+              case 'LastWeek' :
+                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] != 0) || ($fetch['DateQuoted'] > $LastWeekThresh )) continue 2;  
+                break;
+                
+              case 'UnQuote' :
+                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] == 0) || ($fetch['DateRemind'] > $UnQuoteThresh )) continue 2;  
                 break;
                 
               default:

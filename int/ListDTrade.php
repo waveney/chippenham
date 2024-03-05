@@ -110,6 +110,15 @@
                 if (!Feature('InviteBetter')) continue 2;
                 break;
 
+                case 'LastWeek' :
+                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] != 0) || ($fetch['DateQuoted'] > $LastWeekThresh )) continue 2;  
+                break;
+                
+              case 'UnQuote' :
+                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] == 0) || ($fetch['DateRemind'] > $UnQuoteThresh )) continue 2;  
+                break;
+                
+
                 default:
               }
 //            if ($Act == 'FestC' && !Feature('EnableCancelMsg')) continue 2;
