@@ -13,6 +13,9 @@
   $TrMon = array();
   $TrRec = array();
   $TrSub = array();
+  $LastWeekThresh = time() - Feature('TradeLastWeek',14)*86400;
+  $UnQuoteThresh = time() - Feature('TradeUnQuote',14)*86400;
+
   $TrState = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
   $div = 0;
 

@@ -194,8 +194,9 @@ function Print_Participants($e,$when=0,$thresh=0) {
       $ct=0;
       foreach ($OtherVenues as $Ov) {
         $OVi = $Ov['Identifier'];
+        if (empty($OVens[$OVi])) continue;
         if ($ct++) echo ", ";
-        echo Venue_Parents($OVens,$OVi) . "<a href=VenueShow?v=$OVi>" . $OVens[$OVi] . "</a>";
+        echo Venue_Parents($OVens,$OVi) . "<a href=VenueShow?v=$OVi>" . ($OVens[$OVi]??"Not In Use") . "</a>";
       }
     } else if ($Ven['VenueId']) {
       echo "Where:<td width=750>" . Venue_Parents($OVens, $Ven['VenueId']) . "<a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
