@@ -819,6 +819,7 @@ function Get_Trade_Details(&$Trad,&$Trady) {
   global $Trade_Days,$TradeLocData,$TradeTypeData,$YEARDATA,$EType_States;
   $Pwr = PowerCost($Trady);
   $Power = Gen_Get_All('TradePower');
+  if ($Trady['Fee']<0) $Pwr = 0;
 
   $Body = "\nBusiness: " . $Trad['SN'] . "\n";
   $Body .= "Goods: " . $Trad['GoodsDesc'] . "\n\n";
@@ -871,6 +872,7 @@ function Get_Trade_Details(&$Trad,&$Trady) {
   if ($Trady['Fee']) {
     if ($Trady['Fee'] < 0 ) {
       $Body .= "\nFee: None.\n";
+      $Dep = 0;
     } else {
       $Dep = T_Deposit($Trad);
       if ($Pwr) $Body .= "Power Cost: &pound;$Pwr\n";
@@ -895,7 +897,9 @@ function Trade_Finance(&$Trad,&$Trady) { // Finance statement as part of stateme
   $Pwr = PowerCost($Trady) +  $Trady['ExtraPowerCost'];
   
   $Str = "Paid so far: &pound;$PaidSoFar<br>";
-  $Dep = T_Deposit($Trad);
+  $Dep = ($Trady['Fee']>0?T_Deposit($Trad):0);
+  if ($Trady['Fee']<0) $Pwr = 0;
+
   if ($Dep) $Str .= "The deposit is: &pound;$Dep<br>";
   if ($PaidSoFar) {
     if ($PaidSoFar < ($Trady['Fee'] + $Pwr)) $Str .= "There will be a balance of: &pound;" . ($Trady['Fee'] + $Pwr - $PaidSoFar) . "<br>";
@@ -1594,7 +1598,7 @@ function Trade_Deposit_Invoice(&$Trad,&$Trady,$Full='Full',$extra='',$Paid=0) {
   global $PLANYEAR;
   if (! Feature("AutoInvoices")) return 0;
   
-  $Dep = T_Deposit($Trad);
+  $Dep = ($Trady['Fee']>0?T_Deposit($Trad):0);
   $InvPay = Feature('TradeInvoicePay');
   if (!$InvPay ) {
     $PaidSoFar = (isset($Trady['TotalPaid']) ? $Trady['TotalPaid'] : 0);
@@ -1614,6 +1618,8 @@ function Trade_Deposit_Invoice(&$Trad,&$Trady,$Full='Full',$extra='',$Paid=0) {
   } else {
     $details = [["$Full fees for trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Trady['Fee']*100]];
     $Pwr = PowerCost($Trady) +  $Trady['ExtraPowerCost'];
+    if ($Trady['Fee']<0) $Pwr = 0;
+
     if ($Pwr) $details[]= ['Plus Power',$Pwr*100];
     if ($extra) $details[]=$extra; // Probably wrong
     $ipdf = New_Invoice($Trad,
@@ -1670,7 +1676,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       echo "<h3>This has already been accepted</h3>";
       return;
     }
-    $Dep = T_Deposit($Trad);
+    $Fee = $Trady['Fee'];
+    $Dep = ($Fee>0?T_Deposit($Trad):0);
     $NewState = $Trade_State['Accepted'];
     if ($Dep <= $PaidSoFar) {
       Trade_Action('Dep Paid',$Trad,$Trady,$Mode,"$Hist $Action");
@@ -1680,7 +1687,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
 
     $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? "Trade_Artisan_Accept" : "Trade_Accepted");
     $Pwr = PowerCost($Trady) +  $Trady['ExtraPowerCost'];
-    $Fee = $Trady['Fee'];
+    if ($Trady['Fee']<0) $Pwr = 0;
+
     if ($InvPay) { // Only for when Mandy was being awkward
       $DueDate = Trade_Date_Cutoff();
       if ($DueDate) { // Single Pay Request
@@ -1714,6 +1722,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       }
 
       $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+      if ($Trady['Fee']<0) $Pwr = 0;
+
       if ($CurState == $Trade_State['Fully Paid']) break; // should not be here...
       $Fee = $Trady['Fee'];
       if (($Fee + $Pwr) <= $PaidSoFar) { // Fully paid on depoist invoice - needs final invoice
@@ -1739,7 +1749,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       if ($CurState == $Trade_State['Fully Paid']) break; // should not be here...
       $Fee = $Trady['Fee'];
       $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
-    
+      if ($Trady['Fee']<0) $Pwr = 0;
+      
       if ($Fee <= $PaidSoFar) { // Fully paid on depoist invoice - needs final invoice
         $NewState = $Trade_State['Fully Paid']; // Should not be here...
         break; 
@@ -1807,6 +1818,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
 
   case 'Dep Paid' : 
     $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+    if ($Trady['Fee']<0) $Pwr = 0;
+
     if ($Trady['Fee'] < 0 || ($Trady['Fee'] + $Pwr) <= $PaidSoFar) {
       Trade_Action('Paid',$Trad,$Trady,$Mode,"$Hist $Action");
       return;
@@ -1829,6 +1842,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     $Trady['TotalPaid'] += $data;
     $Fee = $Trady['Fee'];
     $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+    if ($Trady['Fee']<0) $Pwr = 0;
+
     $InvCode = Trade_Invoice_Code($Trad,$Trady);
     $Ychng = 1;
     $xtra = $data;
@@ -1873,7 +1888,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     $Ychng = 1;
     $Dep = T_Deposit($Trad);
     $Fee = $Trady['Fee'];
-    $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+    if ($Fee<0) $Dep = 0;
+    $Pwr = ($Fee<0 ? PowerCost($Trady) + $Trady['ExtraPowerCost'] : 0);
     $InvCode = Trade_Invoice_Code($Trad,$Trady);
     $xtra = $data;
 /* 
@@ -1931,9 +1947,10 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
   
 
   case 'Paid' :
-    $Dep = T_Deposit($Trad);
     $fee = $Trady['Fee'];
+    $Dep = T_Deposit($Trad);
     $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+    if ($fee<0) $Dep = $Pwr = 0;
     if (($fee > 0) && (($fee + $Pwr) > $PaidSoFar)) {
       if (!$data) $data = $fee + $Pwr -$Dep;
 //var_dump($data);
@@ -2064,7 +2081,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
 //var_dump($Trady);
     $Ychng = 1;
     $Fee = $Trady['Fee'];
-    $Dep = T_Deposit($Trad);
+    $Dep = ($Fee>0 ?T_Deposit($Trad):0);
     if ($CurState != $Trade_State['Requote']){
       $NewState = $Trady['BookingState'] = $Trade_State['Quoted'];
       Send_Trader_Email($Trad,$Trady,'Trade_Quote');    
@@ -2094,6 +2111,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       } elseif ($DueDate) { // Issue /update final invoice
         $Fee = $Trady['Fee'];
         $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+        if ($Trady['Fee']<0) $Pwr = 0;
+
         if (Feature("AutoInvoices")) {
           $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
                             "Trade_Artisan_Final_Invoice" : "Trade_Final_Invoice");
@@ -2186,6 +2205,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     $Dep = T_Deposit($Trad);
     $fee = $Trady['Fee'];
     $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+    if ($Trady['Fee']<0) $Pwr = 0;
+
     $xtra = $data;
     if ($Trady['TotalPaid'] >= ($fee+$Pwr)) { // No change?
     } else if ($Trady['TotalPaid'] >= $Dep) {
@@ -2231,6 +2252,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     $Trady['DateChange'] = 3;
     $Dep = T_Deposit($Trad);
     $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+    if ($Trady['Fee']<0) $Pwr = 0;
+
     $Ychng = 1;
     if ($Dep <= $PaidSoFar) {
       if ($PaidSoFar >= ($Trady['Fee']+$Pwr)) {
@@ -2271,6 +2294,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
   case 'CancelHappy2' : // Actions on new year
     $Dep = T_Deposit($Trad);
     $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+    if ($Trady['Fee']<0) $Dep = $Pwr = 0;
     if ($Dep <= $PaidSoFar) {
       if ($PaidSoFar >= ($Trady['Fee']+$Pwr)) {
         $NewState = $Trade_State['Fully Paid'];
