@@ -352,6 +352,18 @@ function Get_Events_For($what,$Day) {
   }
 }
 
+function Get_All_Events() {
+  global $db,$YEAR;
+  $qry="SELECT DISTINCT e.* FROM Events e, BigEvent b, EventTypes t WHERE Year='$YEAR' " . 
+                " ORDER BY Day,Start";
+  $res = $db->query($qry);
+  if ($res) {
+    while($ev = $res->fetch_assoc()) $evs[$ev['EventId']] = $ev;
+    if (isset($evs)) return $evs;
+  }
+  return [];
+}
+
 function Get_All_Events_For($what,$wnum,$All=0) {// what is not used
   global $db,$YEAR;
   $qry="SELECT DISTINCT e.* FROM Events e, BigEvent b WHERE Year='$YEAR' " . ($All?'':"AND Public<2") . " AND ( " .
