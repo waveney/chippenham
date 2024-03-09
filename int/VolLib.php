@@ -1096,10 +1096,14 @@ function List_Vols() {
     
     echo "<td class=AvailD>" . (isset($VY['AvailBefore'])? ((strlen($VY['AvailBefore'])<12)? $VY['AvailBefore'] : ($link . "Expand</a>")):"");
     echo "<td class=AvailD>" . (isset($VY['AvailWeek'])? ((strlen($VY['AvailWeek'])<12)? $VY['AvailWeek'] : ($link . "Expand</a>")):"");
+    $HasSetAvail = 0;
     for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {
       $av = "Avail" . ($day <0 ? "_" . (-$day) : $day);
       echo "<td class=AvailD>";
-      if (isset($VY[$av])) echo ((strlen($VY[$av])<12)? $VY[$av] : ($link . "Expand</a>")) . "\n";
+      if (isset($VY[$av])) {
+        echo ((strlen($VY[$av])<12)? $VY[$av] : ($link . "Expand</a>")) . "\n";
+        $HasSetAvail = 1;
+      }
     }
     
     if (Access('SysAdmin')) {
@@ -1108,12 +1112,14 @@ function List_Vols() {
         echo "<b><a href=Volunteers?ACTION=Accept&id=$id class=Accept$id'>Accept All</a></b>\n";
       }
         $Mmap = $VY['MessMap'] ?? '';
-        if (($year == $PLANYEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U'))) {
+        if (($year == $PLANYEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U') && $HasSetAvail)) {
           $Msg = $EmailMsgs['U'];
           echo  " <button type=button id=VolSendEmailU$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'U')>$Msg</button>";
         }
         
-        if (($year != $PLANYEAR) && (!strstr($Mmap,'N')) && (!strstr($Mmap,'S'))) {
+        if ((($year != $PLANYEAR) && (!strstr($Mmap,'N')) && (!strstr($Mmap,'S'))) ||
+            (($year == $PLANYEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U') && ($HasSetAvail == 0)))) {
+       
 //          if ($Stew) {
 //            $Msg = $EmailMsgs['S'];
 //            echo  " <button type=button id=VolSendEmailS$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'S')>$Msg</button>";

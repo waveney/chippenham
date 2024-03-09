@@ -553,7 +553,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
 }
 
 function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
-  global $YEAR,$PLANYEAR,$YEARDATA,$Trade_States,$ADDALL,$Trade_State_Colours,$Trade_State,$Trade_Days;
+  global $YEAR,$PLANYEAR,$YEARDATA,$Trade_States,$ADDALL,$Trade_State_Colours,$Trade_State,$Trade_Days,$TradeTypeData;
   global $Trade_State_Props;
   $Trad = Get_Trader($Tid);
   if ($year==0) $year=$YEAR;
@@ -561,7 +561,6 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   if ($year != $PLANYEAR) { // Then it is historical - no changes allowed
     fm_addall('disabled readonly');
   }
-
   $Self = $_SERVER['PHP_SELF'];
   if ($year != $CurYear) {
     if ($Mode && Get_Trade_Year($Tid,$CurYear)) 
@@ -613,7 +612,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
       }
       if (!Access('SysAdmin')) echo fm_hidden('BookingState',$Trady['BookingState']);
 //    echo fm_radio("Booking State",$Trade_States,$Trady,'BookingState','class=NotCSide',1,'colspan=2 class=NotCSide');
-    echo "<td class=NotSide>" . fm_checkbox('Local Auth Checked',$Trady,'HealthChecked');
+    if ($TradeTypeData[$Trad['TradeType']]['NeedPublicHealth']) echo "<td class=NotSide>" . fm_checkbox('Local Auth Checked',$Trady,'HealthChecked');
     if (Access('Internal')) echo ($Trady['TYid'] ?? -1);
     echo "<td class=NotSide>";
     if ($Trady['BookingState'] == $Trade_State['Quoted']) {
@@ -660,6 +659,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo "<td>Pitch Number";
   $TotPowerCost = PowerCost($Trady);
   $TableCost = TableCost($Trady);
+  if (($Trady['Fee']??0) < 0) $TotPowerCost = $TableCost = 0;
   
   for ($i = 0; $i < 3; $i++) { 
     $Prop = ($TradeLocFull[$Trady["PitchLoc$i"]?? 0]['Props'] ?? 0);
@@ -1086,7 +1086,7 @@ function Submit_Application(&$Trad,&$Trady,$Mode=0) {
   global $PLANYEAR,$USER;
   $Trady['Date'] = time();
   if (!isset($Trady['History'])) $Trady['History'] = '';
-  $Trady['History'] .= "Action: Submit on " . date('j M Y H:i') . " by " . ($Mode?$USER['Login']:'Trader') . ".\n";
+  $Trady['History'] .= "Action: Submit on " . date('j M Y H:i') . " by " . ($Mode?$USER['Login']:'Trader') . ".<br>";
   if ($Trady['TYid']) {
     Put_Trade_Year($Trady);
   } else { // Its new...
@@ -1331,12 +1331,12 @@ function Trade_Main($Mode,$Program,$iddd=0) {
               if (isset($Trady['BookingState'])) {
                 if (isset($_REQUEST['BookingState']) && ($Trady['BookingState'] != ($_REQUEST['BookingState']??0))) {
                   $_REQUEST['History'] .= "Action: " . $Trade_States[$_REQUEST['BookingState']] . " on " . date('j M Y H:i') . 
-                                       " by " . $USER['Login'] . ".\n";
+                                       " by " . $USER['Login'] . ".<br>";
                 }
                 if (($_REQUEST['Fee'] < 0) && (($_REQUEST['BookingState']??0) == $Trade_State['Deposit Paid'])) {
                   $_REQUEST['BookingState'] = $Trade_State['Fully Paid'];
                   $_REQUEST['History'] .= "Action: " . $Trade_States[$_REQUEST['BookingState']??0] . " on " . date('j M Y H:i') . 
-                    " by " . $USER['Login'] . ".\n";
+                    " by " . $USER['Login'] . ".<br>";
                 }
               }
               if ($_REQUEST['PitchLoc0'] != $Trady['PitchLoc0'] || ($_REQUEST['PitchLoc1']??0) != $Trady['PitchLoc1'] || ($_REQUEST['PitchLoc2']??0) != $Trady['PitchLoc2'] ||
@@ -2346,7 +2346,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
   if (($SaveAction || $Action) && ($Ychng || $CurState != $NewState )) {
     $Trady['BookingState'] = $NewState; // Action test is to catch the moe errors
     $By = (isset($USER['Login'])) ? $USER['Login'] : 'Trader';
-    $Trady['History'] .= "Action: $Hist $SaveAction $xtra " . $Trade_States[$Trady['BookingState']] . " on " . date('j M Y H:i') . " by $By.\n";
+    $Trady['History'] .= "Action: $Hist $SaveAction $xtra " . $Trade_States[$Trady['BookingState']] . " on " . date('j M Y H:i') . " by $By.<br>";
     Put_Trade_Year($Trady);
   }
 }
