@@ -511,7 +511,9 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       $Coming_States[0] = 'None';
     }
     echo "<tr>";
-    echo fm_radio('Dancing Status',$Coming_States ,$Sidey,'Coming','',1,'colspan=4 id=Coming_states','',$Coming_Colours,0,'',' onchange=ComeAnyWarning()'); 
+    echo fm_radio('Dancing Status',$Coming_States ,$Sidey,'Coming','',1,'colspan=4 id=Coming_states','',$Coming_Colours,0,'',
+         ' onchange=ComeAnyWarning()'); 
+    echo fm_checkbox("No Dance Events",$Sidey,'NoDanceEvents');
   }
   if (Access('SysAdmin')) echo "<tr>" . fm_textarea('Messages' . Help('Messages'),$Sidey,'Invited',5,2,'class=NotSide','class=NotSide');
 

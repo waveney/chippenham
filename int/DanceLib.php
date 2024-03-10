@@ -485,6 +485,7 @@ function Set_Side_Help() {
         'BookDirect'=>'Tick this to bypass the agent and email the performer drectly',
         'NotPerformer'=>'People in the database that are not performing and should not appear in lists of performers',
         'HasOverlays'=>'Enables separate public info for performers in multiple categories - ask Richard',
+        'NoDanceEvents'=>'If the performer is not doing a dancing event, tick to surpress errors',
   );
   Set_Help_Table($t);
 }

@@ -50,17 +50,21 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
           if (isset($Sides[$s]) && ($Sides[$s][DayList($e['Day'])])) {
                 // No Action
           } else if (!isset($Sides[$s])) {
-            $NotSide = Get_Side($s);
+            $NotSide = Get_SideAndYear($s);
+            if (!$NotSide['NoDanceEvents']) {
 // var_dump($NotSide);
-            echo "<a href=AddPerf?id=$s>" . $NotSide['SN'] . "</a>: ";
-            echo "<span class=red>Is listed doing an <a href=EventAdd?e=" . $e['EventId'] . ">event</a> at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
-              " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span><br>\n";
-            $ErrC++;            
+              echo "<a href=AddPerf?id=$s>" . $NotSide['SN'] . "</a>: ";
+              echo "<span class=red>Is listed doing an <a href=EventAdd?e=" . $e['EventId'] . ">event</a> at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
+                " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span><br>\n";
+              $ErrC++;
+            }
           } else if ($Sides[$s]['IsASide']) { 
-            echo "<a href=AddPerf?id=$s>" . $sidenames[$s] . "</a>: ";
-            echo "<span class=red>Is listed doing an <a href=EventAdd?e=" . $e['EventId'] . ">event</a> at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
-              " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span><br>\n";
-            $ErrC++;
+            if (!$Sides[$s]['NoDanceEvents']) {
+              echo "<a href=AddPerf?id=$s>" . $sidenames[$s] . "</a>: ";
+              echo "<span class=red>Is listed doing an <a href=EventAdd?e=" . $e['EventId'] . ">event</a> at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
+                " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span><br>\n";
+              $ErrC++;
+            }
           }
         }
 /*
@@ -97,10 +101,13 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
             if (isset($Sides[$s])) {
               $dancing[$s][] = $eid;
             } else {
-              echo "<a href=AddPerf?id=$s>" . $sidenames[$s] . "</a>: ";
-              echo "<span class=red>Is listed doing an event at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
-                   " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span>";
-              $ErrC++;
+              $NotSide = Get_SideAndYear($s);
+              if (!$NotSide['NoDanceEvents']) {
+                echo "<a href=AddPerf?id=$s>" . $sidenames[$s] . "</a>: ";
+                echo "<span class=red>Is listed doing an event at " . $e['Start'] . " in " . SName($Venues[$e['Venue']]) .
+                     " on " . DayList($e['Day']) . ", but is <b>NOT</b> there that day</span>";
+                $ErrC++;
+              }
             }
           }
         }
