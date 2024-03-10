@@ -109,6 +109,11 @@
               case 'FestC':
                 if (!Feature('EnableCancelMsg')) continue 2;
                 break;
+              case 'Pitch Assign':
+              case 'Pitch Change':
+              case 'Moved':
+                if (empty($fetch['PitchNum0'])) continue 2;
+                break;  
               case 'Invite Better':
                 if (!Feature('InviteBetter')) continue 2;
                 break;

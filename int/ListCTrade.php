@@ -146,6 +146,12 @@
                 if (!Feature('InviteBetter')) continue 2;
                 break;
                 
+              case 'Pitch Assign':
+              case 'Pitch Change':
+              case 'Moved':
+                if (empty($fetch['PitchNum0'])) continue 2;
+                break;
+                
               case 'LastWeek' :
                 if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] != 0) || ($fetch['DateQuoted'] > $LastWeekThresh )) continue 2;  
                 break;

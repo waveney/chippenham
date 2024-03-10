@@ -258,13 +258,12 @@ function Create_Grid($condense=0,$Media='Dance') {
         $ev = 0;
       }
 
-//      if (!empty($ForwardUse[$v])) {
-      if ($ETime) {  
+      if (!empty($ForwardUse[$v]) || $ETime) {  
         if ($ev) {
           // find original forward point and mark overlap
           foreach($Back_Times as $bt) if (($bt < $t) && !empty($grid[$v][$t]) && ($grid[$v][$t]['c'] > 1)) { $grid[$v][$t]['err'] = 1; break; };
         }
-//        $ForwardUse[$v] = max(0,$ForwardUse[$v]-$Round);
+        $ForwardUse[$v] = max(0,$ForwardUse[$v]-$Round);
         if ($ETime > $t) {
           $grid[$v][$t]['h'] = 1;
           $RowSets++;
@@ -280,7 +279,7 @@ function Create_Grid($condense=0,$Media='Dance') {
       } else {
         if ($AllTimes || $ev['d'] > $Round) { // Blockout ahead and wrap this event
           $grid[$v][$t]['d'] = $ev['d'];
-//          $ForwardUse[$v] = $ev['d'] - $Round; // Wrong
+          $ForwardUse[$v] = $ev['d'] - $Round; // Wrong
           $ETime = timeadd($t,$ev['d']);
           $STime = $t;
         }
@@ -681,7 +680,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
   echo "</tr></thead><tbody>";
 
   $DRAG = ($drag)?"draggable=true ondragstart=drag(event) ondrop=drop(event,$Sand) ondragover=allow(event)":"";
-  $WDRAG = ($drag)?"ondrop=drop(event,$Sand) ondragover=allow(event)":"";
+//  $WDRAG = ($drag)?"ondrop=drop(event,$Sand) ondragover=allow(event)":"";
   foreach ($Times as $t) {
     if ($condense && ($t < $Earliest || $t >= $Latest)) continue;
     echo "<tr><th rowspan=$RowSet width=60 valign=top id=RowTime$t>" . sprintf('%04d',$t);
@@ -743,8 +742,8 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           }
         } else if ($line >= ($lineLimit[$t]??0)) {
           echo "$OtherLoc<td hidden id=$id data-x=C $DRAG $dev class=$class>&nbsp";
-//        } else if (!empty($G['h'])) {
-//          echo "$OtherLoc<td hidden id=$id data-x=C2 $DRAG $dev class=$class>&nbsp;";
+        } else if (!empty($G['h'])) {
+          echo "$OtherLoc<td hidden id=$id data-x=C2 $DRAG $dev class=$class>&nbsp;";
         } else if (($All_Times && ($line == 0)) || (($G['d']??0) > $Round)) {
           if ($line == 0) {
             $rows = (isset($G['r'])?($G['r']+1):1); // Rounding?? *$RowSet; // intval(ceil($G['d']/$Round))*$RowSet; // WRONG

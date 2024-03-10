@@ -90,7 +90,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
 */
       }
       if ($e['BigEvent']) {
-        if ($e['SN'] == Feature("Procession")) $Procession = $eid;
+        if (strtolower($e['SN']) == strtolower(Feature("Procession"))) $Procession = $eid;
         $Other = Get_Other_Things_For($eid);
         $sidcount = 1;
         $Events[$eid]['Other'] = $Other;
