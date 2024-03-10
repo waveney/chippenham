@@ -39,7 +39,7 @@ function CheckDance($level) { // 0 = None, 1 =Major, 2= All
   if (!isset($sidenames[$s])) echo "Side $s <a href=AddPerf?id=$s>" . $Sides['SN'] . "</a> not in names<br>";
 } */
 
-  $res = $db->query("SELECT e.* FROM Events e, EventTypes t WHERE Year='$YEAR' AND Status=0 AND e.EventType=t.ETypeNo AND t.HasDance=1 " .
+  $res = $db->query("SELECT e.* FROM Events e, EventTypes t WHERE Year='$YEAR' AND Status=0 AND e.Type=t.ETypeNo AND t.HasDance=1 " .
                     "ORDER BY Day, Start" );
   if ($res) {
     while ($e = $res->fetch_assoc()) {
