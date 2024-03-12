@@ -64,7 +64,7 @@
 //        'Art Show Application' => 'int/ArtForm',
 //        '*Live and Loud'=>'LiveNLoud',
 //        '*Buskers Bash'=>'BuskersBash',
-//        'Donate'=>'Donate',
+        '%Donate'=>'Donate',
          ],
       '-Gallery'=>[
         '@'=>1, //Special

@@ -106,7 +106,6 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
     if ($sel == 'Show All Locations') {
       $List = $AllList;
       $Title = 'All Traders';
-      $Scale = 0.5;
     } else {
       foreach($Locs as $loc) 
         if ($sel == $loc['SN']) {
@@ -131,7 +130,6 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
     if ($sel == 'Show All Types') {
       $List = $AllList;
       $Title = 'All Traders';
-      $Scale = 0.5;
     } else if (!$List) {
       foreach($TTypes as $typ) {
         if ($sel == $typ['SN']) {

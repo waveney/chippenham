@@ -5,7 +5,7 @@
  
   global $USER,$USERID,$db,$PLANYEAR;
 
-  A_Check('Staff'); // Will refine gate later
+  A_Check('Committee','Finance'); // Will refine gate later
   
 function Show_Don($Don,$Act='UPDATE') {
   echo "<table border>";
@@ -50,7 +50,7 @@ function ListDons() {
 
   foreach($Dons as $D) {
     $Did = $D['id'];
-    echo "<tr><td><a href=DonateTypes?ACTION=SHOW&id=Did>$Did</a><td><a href=DonateTypes?ACTION=SHOW&id=$Did>" . $D['Value'] . "</a><td>";
+    echo "<tr><td><a href=DonateTypes?ACTION=SHOW&id=$Did>$Did</a><td><a href=DonateTypes?ACTION=SHOW&id=$Did>" . $D['Value'] . "</a><td>";
     echo ['No','Yes'][$D['InUse']] . "<td>" . $D['Importance'] . "\n";
   }
   echo "</table></div>\n";

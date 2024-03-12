@@ -624,7 +624,7 @@
         }
       }
 //      $txt .= "<li><a href=BannerManage>Manage Banners</a> \n";
-      $txt .= "<li><a href=DonateTypes?Y=$YEAR>Donation Buttons Setup</a> \n";
+      if (Feature('Donate')) $txt .= "<li><a href=DonateTypes?Y=$YEAR>Donation Buttons Setup</a> \n";
       $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
       $txt .= "<li><a href=TsAndCs2?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";
