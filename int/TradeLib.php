@@ -2457,8 +2457,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
 //  $sp = $scale*100;
   $Factor = 20*$scale*$Mapscale;
   $Links=1;
+  $Staff = (isset($_REQUEST['STAFF'])?'&STAFF':'');
 
-  $FSize = 10*$scale;
   $Key = [];
 
   $PitchesByName = [];
@@ -2537,7 +2537,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       if ($Links && !empty($Inf['HasLink'])) {
         $lnk = $Inf['HasLink'];
         if ($LinkRoot) $lnk = preg_replace('/TradeStandMap/',$LinkRoot,$lnk);
-        echo "<a href=$lnk>";
+        echo "<a href=$lnk$Staff>";
         $Lopen = 1;
       }
   
@@ -2673,7 +2673,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
           $Lopen = 1;
         }
       } elseif ($Links == 2) {
-        echo "<a href='TradeShow?SEL=" . $Pitch['SN'] . "'>";
+        echo "<a href='TradeShow?SEL=" . $Pitch['SN'] . "$Staff'>";
         $Lopen = 1;
       }
     } else {
