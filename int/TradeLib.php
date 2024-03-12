@@ -1542,6 +1542,10 @@ function Trade_Main($Mode,$Program,$iddd=0) {
             if (($Trady['DateRemind'] == 0) || (($Trady['DateRemind'] + Feature('TradeUnQuote',14)*86400) > time())) continue 2;
             break;
             
+          case 'Cancel' :
+            if (!$Mode) $ac .= " Booking";
+            break;
+            
           default:
         }
 //        var_dump($Mode, $ButTraderTips[$ac]);
@@ -1989,6 +1993,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     break;
 
   case 'Cancel' : // If invoiced - credit note, free up fee and locations if set email moe need a reason field
+  case 'Cancel Booking' :
     if ($CurState == ($Trade_States['Change_Aware']??0)) {
       Trade_Action('DateUnHappy',$Trad,$Trady,"$Hist $Action");
       return;
@@ -2693,8 +2698,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       echo "<title>$Name</title>";
     }
     
-    echo "<text x=" . ($Xpos+2)  . " y=" . ($Ypos+2); //(($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor -60);
-    $Ystart = $YAdd = (10+$Pitch['Font']*2.1)*.06;
+    echo "<text x=" . ($Xpos+2)  . " y=" . ($Ypos+$loc['TextFudge']); //(($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor -60);
+    $YAdd = (11+$Pitch['Font']);
+    $Delta = 0;
     
     echo " style='";
     if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
@@ -2702,19 +2708,19 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     if ($ShowPitch[$Pub]) {
       echo "#" . $Posn;
       if (($Pitch['Type'] == 0) && $Pitch['SN']) echo " - " . ($Pitch['SN']??'');
-    } else if (($Pub == 2) && ($Pitch['SN']??'')) echo $Pitch['SN'];
-    if ($Name && ($Pub!=2)) {
+      $Delta = 11;
+    } else if (($Pub == 2) && ($Pitch['SN']??'')) {
+      echo $Pitch['SN'];
+      $Delta = 11;
+    }
+    if ($Name) {
     // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
     // Chunking - split to Words then add words to full - if no words split word (hard)
     // Remove x t/a 
     // Lowercase 
     // Spilt at words of poss, otherwise at length (for now)
     
-      $ChSize = floor($Pitch['Xsize']*($Pitch['Type']?18:32)*$Mapscale/($Pitch['Font']+10));
-      $Ystart = 0.6 *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10;
-      if ($ShowPitch[$Pub]) {
-        $Ystart += ($Pitch['Type']?1.2:0.6)*(10+$Pitch['Font']*2.1)/10+1.2;
-      }
+      $ChSize = floor($Pitch['Xsize']*35*$Mapscale/($Pitch['Font']+10));
       $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - 1);
 //      $Name = preg_replace('/.*t\/a (.*)/',
 //      $Chunks = str_split($Name,$ChSize);
@@ -2723,9 +2729,10 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       foreach ($Chunks as $i=>$Chunk) {
         if ($i>=$MaxCnk) break; 
  //       $Chunk = substr($Name,0,$ChSize);
-        echo "<tspan x=" . (($Pitch['X']+0.2) * $Factor)  . " y=" . (($Pitch['Y']+$Ystart/$Mapscale) * $Factor) . 
-             " style='font-size:" . (($Pitch['Type']?$FSize*2:$FSize)+$Pitch['Font']) . "px;'>$Chunk</tspan>";
-        $Ystart += ($Pitch['Type']?1.2:0.6)*(10+$Pitch['Font']*2.1)/10;
+        $tl = ((strlen($Chunk) > ($ChSize-3))?"textLength=" . ($Xwidth-2):'');
+        echo "<tspan x=" . ($Xpos+1) . " dy=$Delta $tl " .
+             " style='font-size:" . ($Pitch['Font']+10) . "px;'>$Chunk</tspan>";
+        $Delta = $YAdd;
       }
     }
     echo "</text>";

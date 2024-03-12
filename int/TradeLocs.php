@@ -50,6 +50,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Nat Depth</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Link</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Part of</a>\n";
+  echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'T')>Text Fudge</a>\n";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Map</a>\n";
@@ -75,6 +76,8 @@
     echo fm_text1('',$t,'NatDepth',0.25,'','',"NatDepth$i");
     echo fm_text1('',$t,'HasLink',1,'','',"HasLink$i");
     echo "<td>" . fm_select($LocNames,$t,'PartOf',1,'',"PartOf$i");
+    echo fm_text1('',$t,'TextFudge',0.25,' class=FullD hidden','',"TextFudge$i");
+
     echo fm_text1('',$t,'Notes',1,'','',"Notes$i");
     echo fm_text1('',$t,'MapImage',1,'','',"MapImage$i");
     echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale$i");
@@ -99,6 +102,7 @@
 
   echo fm_text1('',$t,'HasLink',1,'','',"Link0");
   echo "<td>" . fm_select($LocNames,$t,'PartOf',1,'',"PartOf0");
+  echo fm_text1('',$t,'TextFudge',0.25,' class=FullD hidden','',"TextFudge0");
 
   echo "<td><input type=text name=Notes0 >";
   echo "<td><input type=text name=MapImage0 >";
