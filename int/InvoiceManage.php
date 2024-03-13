@@ -241,6 +241,9 @@
       if ($inv['Source'] == 1) Trade_F_Action($inv['SourceId'],'UnPaid',$inv['Total']); 
       break;
     
+    case 'REMIND' : //Send reminder email
+      
+      break;
     }
 
   
@@ -349,9 +352,11 @@
     echo "<td>" . $inv['OurRef'] . '/' . $inv['id'];
     echo "<td>" . date('j/n/Y',$inv['IssueDate']);
     echo "<td>";
+    $Overdue = 0;
     if ($inv['Total'] > 0) {
       if  ($inv['PayDate'] == 0 && $inv['DueDate'] < $Now && $inv['PaidTotal']<$inv['Total']) {
         echo "<span class=red>" . date('j/n/Y',$inv['DueDate']) . "</span>";
+        $Overdue = 1;
       } else {
         echo date('j/n/Y',$inv['DueDate'] );
       }
@@ -395,6 +400,8 @@
         echo "<button name=ACTION value=DIFF onclick=diffprompt($id) >Paid Different</button> ";
         echo "<button name=ACTION value=CREDIT onclick=reasonprompt($id) >Cancel/credit</button> ";
       }
+      if ($Overdue) echo "<button name=ACTION value=REMIND >Remind</button> ";
+
       if ($All && Access('SysAdmin')) echo "<button name=ACTION value=DIFF onclick=diffprompt($id) >Paid Special</button> ";
       if ($All && Access('SysAdmin')) echo "<button name=ACTION value=DELETE onclick=diffprompt($id) >DELETE</button> ";
       echo "</form>";

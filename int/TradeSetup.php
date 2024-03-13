@@ -31,9 +31,9 @@
       echo fm_hidden("Year$i",$Pitch['Year']);
       $posn = max($posn, $Pitch['Posn']);
     }
+    $Pitch = [];
     $Pitch['Posn'] = $posn+1; 
     $Pitch['X'] = -9;
-    $Pitch['Y'] = $Pitch['Angle'] = 0;
     echo "<tr>" . fm_text1("",$Pitch,'Posn',0.08,'','',"Posn0");
     echo fm_text1("",$Pitch,'X',0.10,'','',"X0") . fm_text1("",$Pitch,'Y',0.10,'','',"Y0");
     echo fm_text1("",$Pitch,'Angle',0.10,'','',"Angle0");

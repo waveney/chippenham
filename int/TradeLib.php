@@ -256,7 +256,7 @@ function Get_Traders_Coming($type=0,$SortBy='SN') { // 0=names, 1=all
   global $db,$YEAR,$Trade_State;
   $data = array();
   $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>=" . $Trade_State['Deposit Paid'] .
-                " ORDER BY $SortBy";
+                " AND y.BookingState<" . $Trade_State['Wait List'] . " ORDER BY $SortBy";
   $res = $db->query($qry);
   if (!$res || $res->num_rows == 0) return 0;
   while ($tr=$res->fetch_assoc()) {
