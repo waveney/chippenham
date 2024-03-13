@@ -166,7 +166,7 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
   }
   echo "<br clear=all><p>";
 
-  if (!isset($_REQUEST['SELType']) && !isset($_REQUEST['SELLoc']) ) dotail();  
+  if (!$ShowTraders) dotail();  
    
   if ($YEAR != $PLANYEAR) {
     echo "These traders where at the Folk Festival.<p>";
@@ -182,7 +182,7 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
   if ($List) foreach($List as $ti) {
     $trad = $Traders[$ti];
     if (isset($Done[$ti])) continue;
-    $Doone[$ti]=1;
+    $Done[$ti]=1;
  //var_dump($ti,$trad);
     echo "<div class=TradeFlexCont id=Trader" . $trad['Tid'] .  ">";
     if ($trad['Website']) echo weblinksimple($trad['Website']);
