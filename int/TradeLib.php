@@ -2443,12 +2443,14 @@ function Get_Traders_For($loc,$All=0 ) {
 function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {  
   // Pub 0 = Public map, 1 = Trade (may be same as 0), 2 = Trader Only before public, 3 = Setup, 4=Assign, 5=EMP, 5=Infra Only
   global $TradeTypeData,$Trade_State;
-  $CatMask = [1,1,1,3,1,3,2];
+  $CatMask   = [1,1,1,3,1,3,2];
   $ShowPitch = [0,0,1,1,1,0,0];
+  $ShowLinks = [1,1,1,0,0,1,1];
   
   if (!$loc['MapImage']) return;
   
-  $TLocId = $loc['TLocId'];
+  $PLocId = $TLocId = $loc['TLocId'];
+  if ($loc['PartOf']) $PLocId = $loc['PartOf'];
   $XtraInfra = Gen_Get_Cond('Infrastructure',"Location=$TLocId  ORDER BY PlaceOrder ASC,id");
   
 //  var_dump($loc,$Pub,$Scale,$LinkRoot);
@@ -2456,7 +2458,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
   $Mapscale = $loc['Mapscale'];
 //  $sp = $scale*100;
   $Factor = 20*$scale*$Mapscale;
-  $Links=1;
+  $Links=$ShowLinks[$Pub];
   $Staff = (isset($_REQUEST['STAFF'])?'&STAFF':'');
 
   $Key = [];
@@ -2469,7 +2471,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
   if ($Traders) {
     foreach ($Traders as $Trad) 
       for ($i=0; $i<3; $i++) 
-        if ($Trad["PitchLoc$i"] == $TLocId) {
+        if ($Trad["PitchLoc$i"] == $PLocId) {
           $list = explode(',',$Trad["PitchNum$i"]);
           foreach ($list as $p) {
             if (!$p) continue;

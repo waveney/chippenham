@@ -36,6 +36,7 @@
       $L = $Trad["PitchLoc$i"];
       if ($L) {
         $LocUsed[$L][] = $ti;
+        if ($Locs[$L]['PartOf']) $LocUsed[$Locs[$L]['PartOf']][] = $ti;
       }
     }
     $AllList[] = $ti; 
@@ -86,16 +87,20 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
   $SLoc = 0;
   $Title = '';
   $Scale = 1;
+  $ShowTraders = 0;
 
   if (isset($_REQUEST['l'])) {
     if (is_numeric($_REQUEST['l'])) {
-      $LocId = $_REQUEST['l'];
-      $List = $LocUsed[$LocId];
+      $PLocId = $LocId = $_REQUEST['l'];
+      if ($Locs[$LocId]['PartOf']) $PLocId = $Locs[$LocId]['PartOf'];
+      $List = $LocUsed[$PLocId];
 
       $SLoc = $loc = $Locs[$LocId];
       $Title = 'All Traders ' . $Prefixes[$loc['prefix']] . ' ' . $loc['SN'];
       $Pitches = Get_Trade_Pitches($LocId);
-    } else {
+      $ShowTraders = 1;
+
+      } else {
       $_REQUEST['SELLoc'] = $_REQUEST['l'];
     }
   } 
@@ -106,19 +111,22 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
     if ($sel == 'Show All Locations') {
       $List = $AllList;
       $Title = 'All Traders';
-    } else {
+      $ShowTraders = 1; 
+      } else {
       foreach($Locs as $loc) 
         if ($sel == $loc['SN']) {
           $List = $LocUsed[$loc['TLocId']];
           $SLoc = $loc;
           $Title = 'All Traders ' . $Prefixes[$loc['prefix']] . ' ' . $loc['SN'];
           $Pitches = Get_Trade_Pitches($loc['TLocId']);
+          $ShowTraders = 1;
           break;
         }
       if (!$List) foreach($TTypes as $typ)
         if ($sel == $typ['SN']) {
           $List = $TTUsed[$typ['id']];
           $Title = 'All ' . $typ['SN'] . " Traders";
+          $ShowTraders = 1;
           break;
         }
     }
@@ -130,11 +138,14 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
     if ($sel == 'Show All Types') {
       $List = $AllList;
       $Title = 'All Traders';
-    } else if (!$List) {
+      $ShowTraders = 1;
+
+      } else if (!$List) {
       foreach($TTypes as $typ) {
         if ($sel == $typ['SN']) {
           $List = $TTUsed[$typ['id']];
           $Title = 'All ' . $typ['SN'] . " Traders";
+          $ShowTraders = 1;
           break;
         }
       }

@@ -23,7 +23,7 @@ function Show_Don($Don,$Act='UPDATE') {
   echo "<tr>" . fm_number('In Use',$Don,'InUse');
   echo "<tr>" . fm_number('Relative Importance',$Don,'Importance');
   echo "<tr>" . fm_text('Text',$Don,'Text',2);
-  echo "<tr>" . fm_text('Button Id',$Don,'ButtonId',2);
+  echo "<tr>" . fm_text('Button Id (from Paypal)',$Don,'ButtonId',2);
   echo "<tr>" . fm_text('Image',$Don,'Image',2); 
   if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
   echo "</table><br>\n";
