@@ -2464,7 +2464,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
   $Mapscale = $loc['Mapscale'];
 //  $sp = $scale*100;
   $Factor = 20*$scale*$Mapscale;
-  $Links=$ShowLinks[$Pub];
+  $Links = 1;  // For infra structure
   $Staff = (isset($_REQUEST['STAFF'])?'&STAFF':'');
 
   $Key = [];
@@ -2667,6 +2667,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     }
   }
   
+  $Links=$ShowLinks[$Pub];
+
   //var_dump($Pitches);
   foreach ($Pitches as $Pitch) {
     $Posn = $Pitch['Posn'];
