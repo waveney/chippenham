@@ -2450,6 +2450,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
   $CatMask   = [1,1,1,3,1,3,2];
   $ShowPitch = [0,0,1,1,1,0,0];
   $ShowLinks = [1,1,1,0,0,1,1];
+  $DragOver  = [0,0,0,0,1,0,0];
   $TradersInLoc = [];
   
   if (!$loc['MapImage']) return;
@@ -2701,7 +2702,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
            ";stroke:black;";
       if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
 
-      echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
+      if ($DragOver[$Pub]) echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
 
       echo "<title>$Name</title>";
     }
@@ -2711,7 +2712,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     $Delta = 0;
     
     echo " style='";
-    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
+    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg); ";
     echo "font-size:10px;'>";
     if ($ShowPitch[$Pub]) {
       echo "#" . $Posn;
@@ -2737,7 +2738,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       foreach ($Chunks as $i=>$Chunk) {
         if ($i>=$MaxCnk) break; 
  //       $Chunk = substr($Name,0,$ChSize);
-        $tl = ((strlen($Chunk) > ($ChSize-3))?"textLength=" . ($Xwidth-2):'');
+        $tl = ((strlen($Chunk) > ((($ChSize-3)*$Pitch['Xsize']/3)?"textLength=" . ($Xwidth-2):'');
         echo "<tspan x=" . ($Xpos+1) . " dy=$Delta $tl " .
              " style='font-size:" . ($Pitch['Font']+10) . "px;'>$Chunk</tspan>";
         $Delta = $YAdd;
