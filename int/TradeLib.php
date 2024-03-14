@@ -2667,7 +2667,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     }
   }
   
-  
+  //var_dump($Pitches);
   foreach ($Pitches as $Pitch) {
     $Posn = $Pitch['Posn'];
     $Name = '';
@@ -2697,17 +2697,20 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     $Yheight = ($Pitch['Ysize'] * $Factor);
 
     if ($Pitch['Type'] != 2) {
-      echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
+      echo "\n<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
       echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
            ";stroke:black;";
       if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
-
-      if ($DragOver[$Pub]) echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
+      if ($DragOver[$Pub]) {
+        echo " id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
+      } else {
+       echo "'/>"; 
+      }
 
       echo "<title>$Name</title>";
     }
     
-    echo "<text x=" . ($Xpos+2)  . " y=" . ($Ypos+$loc['TextFudge']); //(($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor -60);
+    echo "\n<text x=" . ($Xpos+2)  . " y=" . ($Ypos+$loc['TextFudge']); //(($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor -60);
     $YAdd = (11+$Pitch['Font']);
     $Delta = 0;
     
@@ -2738,8 +2741,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       foreach ($Chunks as $i=>$Chunk) {
         if ($i>=$MaxCnk) break; 
  //       $Chunk = substr($Name,0,$ChSize);
-        $tl = ((strlen($Chunk) > ((($ChSize-3)*$Pitch['Xsize']/3)?"textLength=" . ($Xwidth-2):'');
-        echo "<tspan x=" . ($Xpos+1) . " dy=$Delta $tl " .
+        $tl = ''; //((strlen($Chunk) > (($ChSize-3)*$Pitch['Xsize']/3))?"textLength=" . ($Xwidth-2):'');
+        echo "\n<tspan x=" . ($Xpos+1) . " dy=$Delta $tl " .
              " style='font-size:" . ($Pitch['Font']+10) . "px;'>$Chunk</tspan>";
         $Delta = $YAdd;
       }
