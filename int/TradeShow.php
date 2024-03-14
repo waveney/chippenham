@@ -88,10 +88,11 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
   $Title = '';
   $Scale = 1;
   $ShowTraders = 0;
+  $sel = $Selt = 0;
 
   if (isset($_REQUEST['l'])) {
     if (is_numeric($_REQUEST['l'])) {
-      $PLocId = $LocId = $_REQUEST['l'];
+      $sel = $PLocId = $LocId = $_REQUEST['l'];
       if ($Locs[$LocId]['PartOf']) $PLocId = $Locs[$LocId]['PartOf'];
       $List = $LocUsed[$PLocId];
 
@@ -133,8 +134,8 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
   }
   
   if (isset($_REQUEST['SELType'])) {
-    $sel = $_REQUEST['SELType'];
-    $sel = preg_replace('/_/',' ',$sel);
+    $selt = $_REQUEST['SELType'];
+    $selt = preg_replace('/_/',' ',$selt);
     if ($sel == 'Show All Types') {
       $List = $AllList;
       $Title = 'All Traders';
@@ -142,7 +143,7 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
 
       } else if (!$List) {
       foreach($TTypes as $typ) {
-        if ($sel == $typ['SN']) {
+        if ($selt == $typ['SN']) {
           $List = $TTUsed[$typ['id']];
           $Title = 'All ' . $typ['SN'] . " Traders";
           $ShowTraders = 1;
@@ -176,6 +177,9 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
   echo "To become a trader see the <a href=/InfoTrade>trade application page</a>.  ";
   echo "Only those traders who have paid their deposits are shown here.<p>";
 
+  if ($SLoc['PartOf']??0) {
+    $List = TradersInLoc();
+  }
  
   echo "<div id=flex>\n";
   $Done = [];

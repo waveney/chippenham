@@ -2432,6 +2432,10 @@ function Get_Traders_For($loc,$All=0 ) {
   return $Traders;
 }
 
+function &TradersInLoc() {
+  global $TradersInLoc;
+  return $TradersInLoc;
+}
 
 /* Get map size
    get scale 
@@ -2442,10 +2446,11 @@ function Get_Traders_For($loc,$All=0 ) {
 
 function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {  
   // Pub 0 = Public map, 1 = Trade (may be same as 0), 2 = Trader Only before public, 3 = Setup, 4=Assign, 5=EMP, 5=Infra Only
-  global $TradeTypeData,$Trade_State;
+  global $TradeTypeData,$Trade_State,$TradersInLoc;
   $CatMask   = [1,1,1,3,1,3,2];
   $ShowPitch = [0,0,1,1,1,0,0];
   $ShowLinks = [1,1,1,0,0,1,1];
+  $TradersInLoc = [];
   
   if (!$loc['MapImage']) return;
   
@@ -2673,6 +2678,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
         if (isset($TNum[$Posn])) {
           echo "<a href=#Trader" . $TNum[$Posn] . ">";
           $Lopen = 1;
+          $TradersInLoc[] = $TNum[$Posn];
         }
       } elseif ($Links == 2) {
         echo "<a href='TradeShow?SEL=" . $Pitch['SN'] . "$Staff'>";
