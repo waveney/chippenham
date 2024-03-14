@@ -242,6 +242,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
       $txt .=   Social_Link(OvFacebook($side,$Isa),'Facebook',1,$follow);
       $txt .=   Social_Link(OvTwitter($side,$Isa),'Twitter',1,$follow);
       $txt .=   Social_Link(OvInstagram($side,$Isa),'Instagram',1,$follow);
+      $txt .=   Social_Link(OvSpotify($side,$Isa),'Spotify',1,$follow);
       $txt .=  "</div>";
     }
     
@@ -445,6 +446,7 @@ function Set_Side_Help() {
         'Facebook'=>'If more than one seperate with spaces (mainly for music acts)',
         'Twitter'=>'If more than one seperate with spaces (mainly for music acts)',
         'Instagram'=>'If more than one seperate with spaces (mainly for music acts)',
+        'Spotify'=>'If more than one seperate with spaces (mainly for music acts)',
         'Video'=>'You can use a YouTube embed or share link',
         'Likes'=>'Venues prefered, sides like to share with',
         'Dislikes'=>'Venues disliked, sides do not want to share with - not in use',

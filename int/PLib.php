@@ -120,7 +120,10 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     if (!$Wide) echo "<tr>";
       echo fm_text(Social_Link($Side,'Twitter'  ),$Side,'Twitter');
       echo fm_text(Social_Link($Side,'Instagram'),$Side,'Instagram');
-
+/*
+      if (!$Wide) echo "<tr>";
+      echo fm_text(Social_Link($Side,'Spotify'  ),$Side,'Spotify');
+*/
 
 //********* PRIVATE
 

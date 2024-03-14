@@ -99,6 +99,18 @@ function &OvInstagram(&$Side,$Isa='') {
   return $Side['Instagram'];
 }
 
+function &OvSpotify(&$Side,$Isa='') {
+  global $PerfTypes;
+  if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {
+    $Olay = Get_Overlay($Side,$Isa);
+    if ($Olay) {
+      return $Olay['Spotify'] ?? $Side['Instagram'];
+    }
+  }
+  
+  return $Side['Instagram'];
+}
+
 function OvWebsite(&$Side,$Isa='') {
   global $PerfTypes;
   if ($Side['HasOverlays'] && $Isa && $Side[$PerfTypes[$Isa][0]]) {

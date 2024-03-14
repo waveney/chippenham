@@ -192,7 +192,7 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
     if ($trad['Website']) echo weblinksimple($trad['Website']);
 
     if ($trad['Photo']) echo "<img src=" . $trad['Photo'] . ">";
-    echo "<h2>" . $trad['SN'] . "</h2>";
+    echo "<h2>" . preg_replace('/\|/','',$trad['SN']) . "</h2>";
     if ($trad['Website']) echo "</a>";
     
     $txt = nl2br($trad['GoodsDesc']);
