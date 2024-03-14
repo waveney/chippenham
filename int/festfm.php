@@ -531,7 +531,7 @@ function FestDate($day,$format='M',$Year=0) {
 }
 
 function ChunkSplit($txt,$maxlen,$maxchnks) {
-  $Words = explode(' ',$txt);
+  $Words = preg_split('/[ |]/',$txt);
   $Res = [];
   $left = '';
   foreach ($Words as $w) {

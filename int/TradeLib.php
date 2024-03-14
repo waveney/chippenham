@@ -260,7 +260,7 @@ function Get_Traders_Coming($type=0,$SortBy='SN') { // 0=names, 1=all
   $res = $db->query($qry);
   if (!$res || $res->num_rows == 0) return 0;
   while ($tr=$res->fetch_assoc()) {
-    $data[$tr['Tid']] = ($type?$tr:$tr['SN']);
+    $data[$tr['Tid']] = ($type?$tr:preg_replace('/\|/','',$tr['SN']));
   }
   return $data;
 }
@@ -272,7 +272,7 @@ function Get_All_Traders($type=0) { // 0=names, 1=all
   $res = $db->query($qry);
   if (!$res || $res->num_rows == 0) return 0;
   while ($tr=$res->fetch_assoc()) {
-    $data[$tr['Tid']] = ($type?$tr:$tr['SN']);
+    $data[$tr['Tid']] = ($type?$tr:preg_replace('/\|/','',$tr['SN']));
   }
   return $data;
 }
@@ -284,7 +284,7 @@ function Get_All_Businesses($type=0) { // 0=names, 1=all
   $res = $db->query($qry);
   if (!$res || $res->num_rows == 0) return 0;
   while ($tr=$res->fetch_assoc()) {
-    $data[$tr['Tid']] = ($type?$tr:$tr['SN']);
+    $data[$tr['Tid']] = ($type?$tr:preg_replace('/\|/','',$tr['SN']));
   }
   return $data;
 }
@@ -821,7 +821,7 @@ function Get_Trade_Details(&$Trad,&$Trady) {
   $Power = Gen_Get_All('TradePower');
   if ($Trady['Fee']<0) $Pwr = 0;
 
-  $Body = "\nBusiness: " . $Trad['SN'] . "\n";
+  $Body = "\nBusiness: " . preg_replace('/\|/','',$Trad['SN']) . "\n";
   $Body .= "Goods: " . $Trad['GoodsDesc'] . "\n\n";
   $Body .= "Type: " . $TradeTypeData[$Trad['TradeType']]['SN'] . "\n\n";
   if (isset($Trad['Website']) && $Trad['Website']) $Body .= "Website: " . weblink($Trad['Website'],$Trad['Website']) . "\n\n";
@@ -924,7 +924,7 @@ function Trader_Details($key,&$data,$att=0) {
   $host = "https://" . $_SERVER['HTTP_HOST'];
   $Tid = $Trad['Tid'];
   switch ($key) {
-  case 'WHO':  return $Trad['Contact']? UpperFirstChr(firstword($Trad['Contact'])) : $Trad['SN'];
+  case 'WHO':  return $Trad['Contact']? UpperFirstChr(firstword($Trad['Contact'])) : preg_replace('/\|/','',$Trad['SN']);
   case 'LINK': return "<a href='$host/int/Direct?t=Trade&id=$Tid&key=" . $Trad['AccessKey'] . "'  style='background:lightblue;'><b>link</b></a>";
   case 'WMFFLINK': 
   case 'FESTLINK' : return "<a href='$host/int/Trade?id=$Tid'><b>link</b></a>";
@@ -1052,7 +1052,7 @@ function Send_Trader_Email(&$Trad,&$Trady,$messcat='Link',$att='') {
   if ($from) $from .= "@" . Feature('HostURL');
   if ($bccto) $bcc = ['bcc' , "$bccto@" . Feature('HostURL'),Feature('CopyTradeEmailsName')];
   Email_Proforma(2,$Trad['Tid'],[['to',$Trad['Email'],$Trad['Contact']],$bcc],
-    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att,0,$from);
+    $messcat,Feature('FestName') . " $PLANYEAR and " . preg_replace('/\|/','',$Trad['SN']),'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att,0,$from);
 }
 
 function Send_Trader_Simple_Email(&$Trad,$messcat='Link',$att='') {
@@ -1061,7 +1061,7 @@ function Send_Trader_Simple_Email(&$Trad,$messcat='Link',$att='') {
   $from = Feature('SendTradeEmailFrom');
   if ($from) $from .= "@" . Feature('HostURL');
   Email_Proforma(2,$Trad['Tid'],[$Trad['Email'],$Trad['Contact']],
-    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad],'TradeLog',$att,0,$from);
+    $messcat,Feature('FestName') . " $PLANYEAR and " . preg_replace('/\|/','',$Trad['SN']),'Trader_Details',[&$Trad],'TradeLog',$att,0,$from);
 }
 
 function Send_Trade_Finance_Email(&$Trad,&$Trady,$messcat,$att=0) {
@@ -1069,7 +1069,7 @@ function Send_Trade_Finance_Email(&$Trad,&$Trady,$messcat,$att=0) {
   include_once("Email.php");
 
   Email_Proforma(2,$Trad['Tid'],"treasurer@" . Feature('HostURL'),
-    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att);
+    $messcat,Feature('FestName') . " $PLANYEAR and " . preg_replace('/\|/','',$Trad['SN']),'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att);
 }
 
 function Send_Trade_Admin_Email(&$Trad,&$Trady,$messcat,$att=0) {
@@ -1078,7 +1078,7 @@ function Send_Trade_Admin_Email(&$Trad,&$Trady,$messcat,$att=0) {
   include_once("Email.php");
 
   Email_Proforma(2,$Trad['Tid'],"trade@" . Feature('HostURL'),
-    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Admin_Details',[&$Trad,&$Trady],'TradeLog',$att);
+    $messcat,Feature('FestName') . " $PLANYEAR and " . preg_replace('/\|/','',$Trad['SN']),'Trader_Admin_Details',[&$Trad,&$Trady],'TradeLog',$att);
 }
 
 //  Mark as submitted, email fest and trader, record data of submission
@@ -1151,7 +1151,7 @@ function Validate_Trade($Mode=0) { // Mode 1 for Staff Submit, less stringent
 
 function Trader_Name($Tid) {
   $Trad = Get_Trader($Tid);
-  return $Trad['SN'];
+  return preg_replace('/\|/','',$Trad['SN']);
 }
 
 function T_Deposit(&$Trad) {
@@ -1572,7 +1572,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
     $Invs = Get_Invoices(" OurRef='" . Sage_Code($Trad) . "'"," IssueDate DESC ");
     echo "<h2><a href=ListCTrade>List Traders Coming</a> ";
 //    var_dump($Invs);
-    if ($Invs) echo ", <a href=InvoiceManage?FOR=$Tid>Show All Invoices for " . $Trad['SN'] . "</a>";
+    if ($Invs) echo ", <a href=InvoiceManage?FOR=$Tid>Show All Invoices for " . preg_replace('/\|/','',$Trad['SN']) . "</a>";
     echo "</h2>";
   }
 }
@@ -1696,10 +1696,10 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     if ($InvPay) { // Only for when Mandy was being awkward
       $DueDate = Trade_Date_Cutoff();
       if ($DueDate) { // Single Pay Request
-        $Code = Pay_Rec_Gen("PAY",( $Fee + $Pwr)*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Full Payment',$DueDate);
+        $Code = Pay_Rec_Gen("PAY",( $Fee + $Pwr)*100,1,$Trad['Tid'],preg_replace('/\|/','',$Trad['SN']),'Trade Stand Full Payment',$DueDate);
         Send_Trader_Email($Trad,$Trady,$ProformaName . "_FullInvoice");    
       } else { // Deposit 
-        $Code = Pay_Rec_Gen("DEP",$Dep*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Deposit',Feature('PaymentTerms',30));
+        $Code = Pay_Rec_Gen("DEP",$Dep*100,1,$Trad['Tid'],preg_replace('/\|/','',$Trad['SN']),'Trade Stand Deposit',Feature('PaymentTerms',30));
         Send_Trader_Email($Trad,$Trady,$ProformaName . "_DepositPayment");        
       }
     } else {
@@ -1763,7 +1763,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $DueDate = Trade_Date_Cutoff();
         $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $Trady['PitchLoc0'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
                         "Trade_Artisan_FinalPayment" : "Trade_FinalPayment");
-        $Code = Pay_Rec_Gen("BAL",($Trady['Fee'] + $Pwr - $PaidSoFar)*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Balance Payment',$DueDate);
+        $Code = Pay_Rec_Gen("BAL",($Trady['Fee'] + $Pwr - $PaidSoFar)*100,1,$Trad['Tid'],preg_replace('/\|/','',$Trad['SN']),'Trade Stand Balance Payment',$DueDate);
 
         Send_Trader_Email($Trad,$Trady,$ProformaName);    
       }
@@ -2702,9 +2702,9 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
            ";stroke:black;";
       if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
       if ($DragOver[$Pub]) {
-        echo " id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
+        echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
       } else {
-       echo "'/>"; 
+        echo "'/>"; 
       }
 
       echo "<title>$Name</title>";
@@ -2732,8 +2732,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     // Lowercase 
     // Spilt at words of poss, otherwise at length (for now)
     
-      $ChSize = floor($Pitch['Xsize']*35*$Mapscale/($Pitch['Font']+10));
-      $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - 1);
+      $ChSize = ceil($Pitch['Xsize']*35*$Mapscale/($Pitch['Font']+10))*$scale;
+      $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale*$scale) - 1);
 //      $Name = preg_replace('/.*t\/a (.*)/',
 //      $Chunks = str_split($Name,$ChSize);
       $Chunks = ChunkSplit($Name,$ChSize,$MaxCnk);
@@ -2741,7 +2741,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       foreach ($Chunks as $i=>$Chunk) {
         if ($i>=$MaxCnk) break; 
  //       $Chunk = substr($Name,0,$ChSize);
-        $tl = ''; //((strlen($Chunk) > (($ChSize-3)*$Pitch['Xsize']/3))?"textLength=" . ($Xwidth-2):'');
+        $tl = ((strlen($Chunk) > (($ChSize-3)*$Pitch['Xsize']/3))?"textLength=" . ($Xwidth-2):'');
         echo "\n<tspan x=" . ($Xpos+1) . " dy=$Delta $tl " .
              " style='font-size:" . ($Pitch['Font']+10) . "px;'>$Chunk</tspan>";
         $Delta = $YAdd;

@@ -378,7 +378,7 @@ function Sage_Code(&$Whose) { // May only work for trade at the moment
 
   if (isset($Whose['SageCode']) && $Whose['SageCode']) return $Whose['SageCode'];
   // New code needed  
-  $Nam = $Whose['SN'];
+  $Nam = preg_replace('/\|/','',$Whose['SN']);
   $Nam = preg_replace('/The /i','',$Nam);
   $Nam = preg_replace('/ and /i','',$Nam);
   $Nam = preg_replace('/ /','',$Nam);
@@ -424,7 +424,8 @@ function New_Invoice($Whose,$Details,$Reason='',$InvCode=0,$Source=1,$DueDate=-1
   if ($DueDate < 0) $DueDate=Feature('PaymentTerms',30);
   $inv['Source'] = $Source;
   $inv['Year'] = $YEAR;
-  $inv['BZ'] = $Whose['SN'];
+  $inv['BZ'] = preg_replace('/\|/','',$Whose['SN']);
+
   $inv['Contact'] = $Whose['Contact'];
   $inv['Email'] = $Whose['Email'];
   $inv['Phone'] = $Whose['Phone'];

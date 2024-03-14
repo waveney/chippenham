@@ -74,7 +74,7 @@
       $Tid = $fetch['Tid'];
       $str .= "<tr><td>";
         $str .= "<a href=Trade?id=$Tid>";
-        $str .= ($fetch['SN']?$fetch['SN']:'No Name Given');
+        $str .= ($fetch['SN']?preg_replace('/\|/','',$fetch['SN']):'No Name Given');
         $str .= "</a>";
       $str .= "<td style='background:" . $Trade_Types[$fetch['TradeType']]['Colour'] . ";'>" . $Trade_Types[$fetch['TradeType']]['SN'];
       $str .= "<td id=TR$Tid";
