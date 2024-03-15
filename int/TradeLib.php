@@ -2087,7 +2087,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     $Ychng = 1;
     $Fee = $Trady['Fee'];
     $Dep = ($Fee>0 ?T_Deposit($Trad):0);
-    if ($CurState != $Trade_State['Requote']){
+  if ($CurState != $Trade_State['Requote'] || (($Trady['Fee'] > 0) && ($Trady['TotalPaid'] < $Trady['Fee']))){
       $NewState = $Trady['BookingState'] = $Trade_State['Quoted'];
       Send_Trader_Email($Trad,$Trady,'Trade_Quote');    
     } elseif ($Trady['Fee'] <0) {

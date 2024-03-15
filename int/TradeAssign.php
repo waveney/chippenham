@@ -39,7 +39,7 @@
       }
       echo "</table></div>";
       echo "<input type=submit name=Update value=Update> <span class=Err>$Message</span>";
-      echo "<a href=TradeSetup?i=$loc style='font-size:20;'>Setup</a>";
+      echo "<a href=TradeSetup?l=$loc style='font-size:20;'>Setup</a>";
     }
     echo "</div></div>";
   }
@@ -118,6 +118,7 @@
   echo fm_hidden('l',$loc);
 
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
+  echo "<b>Note Drag and drop is not working yet</b><br>\n";
   $Message = Validate_Pitches_At($loc);
 
   Pitch_Map($tloc,$Pitches,$Traders,4,1,'TradeAssign');

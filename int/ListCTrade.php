@@ -104,7 +104,7 @@
     while ($fetch = $res->fetch_assoc()) {
       $Tid = $fetch['Tid'];
       $str .= "<tr><td>";
-        if ($ActsEnable) $str .= "";
+        if ($ActsEnable) $str .= "<a href=Trade?id=$Tid>";
         $str .= ($fetch['SN']?preg_replace('/\|/','',$fetch['SN']):'No Name Given');
         if ($ActsEnable) $str .= "</a>";
       $str .= "<td style='background:" . $Trade_Types[$fetch['TradeType']]['Colour'] . ";'>" . $Trade_Types[$fetch['TradeType']]['SN'];
