@@ -3,6 +3,8 @@
 
   set_ShowYear();
   include_once("TradeLib.php");
+  include_once("PitchMap.php");
+ 
   global $db,$YEAR,$SHOWYEAR,$PLANYEAR,$Trade_States,$Trade_State,$YEAR,$Trade_Days,$Prefixes, $YEARDATA, $EType_States;
 
   dohead("Traders in $YEAR",['css/festconstyle.css'],'','T');

@@ -5,6 +5,7 @@
   dostaffhead("Manage Trade Pitches",['js/Trade.js']);
 
   include_once("TradeLib.php");
+  include_once("PitchMap.php");
 
   global $Pitches,$tloc,$loc,$Traders,$Trade_State,$db,$Trade_Types,$Trade_Types;
   $Trade_Types = Get_Trade_Types(1);

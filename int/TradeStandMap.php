@@ -4,6 +4,7 @@
   dostaffhead("Trade Stand Map");
 
   include_once("TradeLib.php");
+  include_once("PitchMap.php");
 /* If logged in or trade stae >=partial view actual traders, otherwise just the grid */
 
   global $Pitches,$tloc,$loc,$YEARDATA,$EType_States,$Traders,$USER,$USERID;

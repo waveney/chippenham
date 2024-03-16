@@ -5,6 +5,7 @@
   dostaffhead("Manage Trade Pitches");
 
   include_once("TradeLib.php");
+  include_once("PitchMap.php");
 
   // Work out pitch locs for a map
   // Map on left locs on right 
