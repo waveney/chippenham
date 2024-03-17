@@ -142,7 +142,6 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
         }
         echo " style='fill:$fill;stroke:$stroke;";
         if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";
-  //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
         echo "'/>"; 
         
         // Fire Ex?
@@ -267,7 +266,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     $Yheight = ($Pitch['Ysize'] * $Factor);
 
     if ($Pitch['Type'] != 2) {
-      echo "\n<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
+      $PitchName = (($Pitch['Type'] || empty($Pitch['SN']))? $Pitch['Posn'] : $Pitch['SN']);
+      echo "\n<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight id=Pitch:$PitchName";
       echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
            ";stroke:black;";
       if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
