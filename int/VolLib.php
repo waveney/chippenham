@@ -187,9 +187,9 @@ function Get_Vol_Year($Volid,$Year=0) {
   if ($Year == 0) $Year = $PLANYEAR;
   $VY = Gen_Get_Cond1('VolYear'," Volid=$Volid AND Year=$Year ");
 
-//var_dump($VY);
+  if (!isset($VY['History'])) $VY['History'] = "";
   if (isset($VY['id'])) return $VY;
-  return ['Volid'=>$Volid,'Year'=>$Year,'id'=>0, 'Status'=>0, 'CampNeed'=>0];
+  return ['Volid'=>$Volid,'Year'=>$Year,'id'=>0, 'Status'=>0, 'CampNeed'=>0, 'History' => ""];
 }
 
 function Put_Vol_Year(&$VY) {
@@ -453,6 +453,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$PLANYEAR");
       echo fm_text('Messages', $VYear,'MessMap');
       echo "<tr><td>Link:<td colspan=4>" . htmlspec(Vol_Details('INNERLINK',$Vol)) . "<br>" . Vol_Details('LINK',$Vol);
+      echo "<tr>" . fm_textarea('History',$VYear,'History',4,3);
     }
   echo "</table></div><p>";    
  
@@ -1467,7 +1468,7 @@ function Send_Accepts($Vol) {
 }
 
 function VolAction($Action,$csv=0) {
-  global $PLANYEAR,$VolCats,$M,$YearColour,$YearStatus;
+  global $PLANYEAR,$VolCats,$M,$YearColour,$YearStatus,$USER;
 
   if ($csv == 0) {
     dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css",'/js/InviteThings.js' ]);
@@ -1546,6 +1547,7 @@ function VolAction($Action,$csv=0) {
     }
     
     $VY['LastUpdate'] = time();
+    $VY['History'] .= "$Action by " . (isset($USER['Login'])?$USER['Login']:'Volunteer') . " on " . date('d/n/Y') . "\n";
 
     if ($VY['SubmitDate']) {
       Put_Vol_Year($VY);
@@ -1580,18 +1582,20 @@ function VolAction($Action,$csv=0) {
   case 'NotThisYear':
   case 'Sorry not this Year':
     $Vol = Get_Volunteer($_REQUEST['id']);
-      $VY = Get_Vol_Year($Vol['id']);
-      if (isset($VY['id'])) {
-        $VY['Status'] = 2;
-        Put_Vol_Year($VY);
+    $VY = Get_Vol_Year($Vol['id']);
+    if (isset($VY['id'])) {
+      $VY['Status'] = 2;
+      $VY['History'] .= "$Action by " . (isset($USER['Login'])?$USER['Login']:'Volunteer') . " on " . date('d/n/Y') . "\n";
 
-        $Vol = Get_Volunteer($id = $_REQUEST['id']);
-        $VY = Get_Vol_Year($Vol['id'],$PLANYEAR);
-        if (!empty($VY['id'])) {
-          Vol_Staff_Emails($Vol);
-          db_delete('VolYear',$VY['id']);
-        }
+      Put_Vol_Year($VY);
+
+      $Vol = Get_Volunteer($id = $_REQUEST['id']);
+      $VY = Get_Vol_Year($Vol['id'],$PLANYEAR);
+      if (!empty($VY['id'])) {
+        Vol_Staff_Emails($Vol);
+//        db_delete('VolYear',$VY['id']);
       }
+    }
     
     echo "<h2>Thankyou for letting us know</h2>";
     if (!Access('Staff')) dotail();
@@ -1627,6 +1631,8 @@ function VolAction($Action,$csv=0) {
         $Accepted++;
       }
     }
+    $VY['History'] .= "$Action by " . (isset($USER['Login'])?$USER['Login']:'Volunteer') . " on " . date('d/n/Y') . "\n";
+
     if ($Accepted) {
       $VY['Status'] = 3; // Accepted at least once
       Put_Vol_Year($VY);
@@ -1643,6 +1649,8 @@ function VolAction($Action,$csv=0) {
     $VCY['Status'] = 3; // Accepted
     Put_Vol_Cat_Year($VCY);
     $VY['Status'] = 3; // Accepted at least once
+    $VY['History'] .= "$Action by " . (isset($USER['Login'])?$USER['Login']:'Volunteer') . " on " . date('d/n/Y') . "\n";
+
     Put_Vol_Year($VY);
     Send_Accepts($Vol);
     echo "<span style='background:" . $YearColour[$VY['Status']] . ";'>" . $YearStatus[$VY['Status']] . "</span>" .
