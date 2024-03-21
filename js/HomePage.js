@@ -13,12 +13,14 @@ $(document).ready(function() {
   var maxi;
   var recent = -1;
   var ChangeTime = +$('#ChangeTime').val();
+  var SponImport = 0;
 
   function SetupSpons() {
     Spons = $('.SponsorsIds');
     if (!Spons) return 0;
     SponUse = [];
     SponPos = [];
+    
     var wid = $('#SponDisplay').width();
     for(var i=0;(i+1)*170<wid;i++) {
       var elem = Math.floor(Math.random() * Spons.length);

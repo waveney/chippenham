@@ -173,17 +173,23 @@ function Put_Trade_Type(&$now) {
   return Update_db('TradePrices',$Cur,$now);
 }
 
-function Get_Sponsors($tup=0) { // 0 Current, 1 all data
-  global $db;
-  $full = array();
-  $yr = ($tup ?"" :" WHERE Year!=0 ");
-  $res = $db->query("SELECT * FROM Sponsors $yr ORDER BY SN ");
+function Old_Get_Sponsors($tup=0) { // 0 Current, 1 all data
+  global $db,$YEAR,$YEARDATA;
+  $full = [];
+  if ($tup == 0) {
+    $res = $db->query("SELECT * FROM Sponsors WHERE Year='$YEAR' ORDER BY SN ");
+    if (!$res && !empty($YEARDATA['PrevFest'])) {
+      $res = $db->query("SELECT * FROM Sponsors WHERE Year='" . $YEARDATA['PrevFest'] . "' ORDER BY SN ");
+    }
+  } else {
+    $res = $db->query("SELECT * FROM Sponsors ORDER BY SN ");
+  }
   if ($res) while ($spon = $res->fetch_assoc()) $full[] = $spon;
   return $full;
 }
 
-function Get_Sponsor_Names() {
-  $data = Get_Sponsors();
+function Get_Sponsor_Names($tup=0) {
+  $data = Get_Sponsors($tup);
   foreach ($data as $sp) $ans[$sp['id']]=$sp['SN'];
   return $ans;
 }
