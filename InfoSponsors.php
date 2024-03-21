@@ -13,6 +13,7 @@
 
   include_once("int/TradeLib.php");
   include_once("int/Biz.php");
+  include_once("int/DispLib.php");
   $Spons = Get_Sponsors();
   shuffle($Spons);
 
