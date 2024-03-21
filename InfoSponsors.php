@@ -20,10 +20,10 @@
   foreach ($Spons as $s) {
     echo "<div class=sponflexcont>\n";
     if ($s['Website']) echo weblinksimple($s['Website']);
-    if ($s['Image']) echo "<img src='" . $s['Image'] . "' width=200>";
+    if (!empty($s['Photo']) || !empty($s['Logo'])) echo "<img src='" . (empty($s['Logo'])?$s['Photo']:$s['Logo']) . "' width=200>";
     echo "<div class=sponttl>" . $s['SN'] . "</div>";
     if ($s['Website']) echo "</a>";
-    if ($s['Description']) echo "<p>" . $s['Description'];
+    if ($s['GoodsDesc']) echo "<p>" . $s['GoodsDesc'];
     
     $Sponsrd = Gen_Get_Cond('Sponsorship',"Year=$SHOWYEAR AND SponsorId=" . $s['SponsorId'] . " ORDER BY Importance Desc");
     
