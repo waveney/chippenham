@@ -6,7 +6,7 @@
   include_once("TradeLib.php");
   include_once("DanceLib.php");
   include_once("ProgLib.php");
-  A_Check('Staff','Biz');
+//  A_Check('Staff','Biz');
   global $FESTSYS,$VERSION,$YEAR;
   dostaffhead("Business Admin",["js/dropzone.js"]);
 
@@ -380,6 +380,7 @@ function Add_Spon_Request($Spid=0) {
 
   echo "<table border>";
   echo "<tr>" . fm_number('Buisness Id',$S,'SponsorId') . "<tr><td>Name:<td>" . ($Trad['SN'] ?? 'Unknown') . fm_hidden('Tid',$Tid);
+  echo fm_text('Year',$S,'Year') . " if not current not used";
   echo "<tr><td colspan=2" . fm_radio('Sponsorship Type',$SponTypes,$S,'ThingType',"onclick=PCatSel(event,'ThingType')",0);
   $i=0;
   foreach($Lists as $cat=>$dog) {
@@ -425,6 +426,7 @@ function Spon_Validate() {
   if ($Tid) $Trad = Get_Trader($Tid);
 
   if (isset($_REQUEST['ACTION'])) {
+    A_Check('Staff','Biz');
     switch ($_REQUEST['ACTION']) {
       case 'Show':
         Show_Biz();
@@ -509,6 +511,3 @@ function Spon_Validate() {
   
   */
   
-  
-?>
-

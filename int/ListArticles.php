@@ -44,7 +44,7 @@ Click on the title to edit.<p>";
     echo "<td>" . (isset($mtch[1]) ? htmlspec($mtch[1]) : "") ;
     echo "<td>" . $Importance[$t['Importance']];
     echo "<td>" . $t['RelOrder'];
-    echo "<td>" . ($t['Image']?("<img src=" . $t['Image'] . " height=80>") : "");
+    echo "<td>" . ($t['Image']?("<img src='" . $t['Image'] . "' height=80>") : "");
     echo "<td>" . ($t['StartDate'] ? date('j/m/y',$t['StartDate']) : "" ) . " - " . ($t['StopDate'] ? date('j/m/y',$t['StopDate']) : "" ) ;
     echo "<td>" . $t['UsedOn'] . "\n";
   }

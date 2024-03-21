@@ -239,6 +239,35 @@ function UpdateTraderInfo(t) {
   $('#TraderContent').load('tradeinfo.php', 'I=' + t); 
 }
 
+var Dragged;
+
+function SetPitch(what,target) {
+  
+  
+}
+
+
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+  Dragged = ev.target;
+}
+
+// Prob ok - changed
+function drop(ev) {
+  ev.preventDefault();
+  SetPitch(Dragged,ev.target);    
+}
+
+// Need to make work for non shared use
+// Grey, Big = not ok,  data-d? (not = ok) - you have a hook to allow some large event adds using drop 
+function allow(ev) {
+  /*var dat = ev.target.getAttribute("data-d");
+  if (!dat) */
+  
+  ev.preventDefault();
+}    
+
 
 /* copied code
 
