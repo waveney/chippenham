@@ -559,10 +559,10 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
 function Get_Sponsors() { // New Code
   global $db,$YEAR,$YEARDATA;
   $full = [];
-  $res = $db->query("SELECT s.*, t.SN, t.Photo, t.Logo, t.Website, t.IandT FROM Sponsorship s, Trade t WHERE " .
+  $res = $db->query("SELECT s.*, t.SN, t.Photo, t.Logo, t.Website, t.IandT, t.Description FROM Sponsorship s, Trade t WHERE " .
     "s.SponsorId=t.Tid AND s.Year='$YEAR'");
   if (!$res->num_rows && !empty($YEARDATA['PrevFest'])) {
-    $res = $db->query("SELECT s.*, t.SN, t.Photo, t.Logo, t.Website, t.IandT FROM Sponsorship s, Trade t WHERE " .
+    $res = $db->query("SELECT s.*, t.SN, t.Photo, t.Logo, t.Website, t.IandT, t.Description FROM Sponsorship s, Trade t WHERE " .
       "s.SponsorId=t.Tid AND s.Year='" . $YEARDATA['PrevFest'] . "'");
     }
   if ($res) while ($spon = $res->fetch_assoc()) {
