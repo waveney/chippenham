@@ -101,7 +101,7 @@
   echo "<div hidden>" . fm_hidden('ChangeTime',Feature('SponsorTime',2000)); // IN msec
   foreach ($Spons as $s) {
     if ($s['Importance'] < 0) continue;
-    echo "<li class=SponsorsIds id=" .$s['id'] . "data-i=" . $s['Importance'] . "><div class=sponcontainer><div class=sponContent>";
+    echo "<li class=SponsorsIds id=" .$s['id'] . " data-i=" . ($s['Importance']+1) . "><div class=sponcontainer><div class=sponContent>";
     if ($s['Website']) echo weblinksimple($s['Website']);
     if (!empty($s['Logo']) || !empty($s['Photo'])) echo "<img src='" . (empty($s['Logo'])?$s['Photo']: $s['Logo']) . "' class=sponImage>";
     if ($s['IandT']) echo "<div class=sponText>" . $s['SN'] . "</div>";

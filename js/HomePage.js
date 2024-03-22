@@ -13,19 +13,33 @@ $(document).ready(function() {
   var maxi;
   var recent = -1;
   var ChangeTime = +$('#ChangeTime').val();
-  var SponImport = 0;
+  var SponIndexes = [];
+  var Spindexes = 0;
+  
+  
+  function Get_ASpon() {
+    return SponIndexes[Math.floor(Math.random() * SponIndexes.length)];
+  }
 
   function SetupSpons() {
     Spons = $('.SponsorsIds');
     if (!Spons) return 0;
     SponUse = [];
     SponPos = [];
+    SponIndexes = [];
+    Spindexes = 0;
+    
+    // Build indexes
+    Spons.each(function(spid){
+      var imptnc = $(this).attr("data-i");
+      for(var i=0; i<imptnc; i++) SponIndexes[Spindexes++] = spid;
+    });
     
     var wid = $('#SponDisplay').width();
-    for(var i=0;(i+1)*170<wid;i++) {
-      var elem = Math.floor(Math.random() * Spons.length);
+    for(i=0;(i+1)*170<wid;i++) {
+      var elem = Get_ASpon();
       var tries=1;
-      while (SponUse[elem] && tries++ <10) elem = Math.floor(Math.random() * Spons.length);
+      while (SponUse[elem] && tries++ <10) elem = Get_ASpon();
       SponUse[elem]=i+1;
       $('#SponsorRow').append( "<td id=#SponPos" + i + " class=HomePageSponsors>" + Spons[elem].innerHTML );
       SponPos[i] = elem;
@@ -37,9 +51,9 @@ $(document).ready(function() {
   function UpdateSpon() {
     var pos = Math.floor(Math.random() * (maxi+1));
     if (pos == recent) pos = Math.floor(Math.random() * maxi);
-    var elem = Math.floor(Math.random() * Spons.length);
+    var elem = Get_ASpon();
     var tries=1;
-    while (SponUse[elem] && tries++ <5) elem = Math.floor(Math.random() * Spons.length);
+    while (SponUse[elem] && tries++ <5) elem = Get_ASpon();
     SponUse[SponPos[pos]] = 0;
     SponPos[pos] = elem;
     SponUse[elem] = pos+1; 

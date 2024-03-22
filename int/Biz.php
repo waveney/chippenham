@@ -380,7 +380,8 @@ function Add_Spon_Request($Spid=0) {
 
   echo "<table border>";
   echo "<tr>" . fm_number('Buisness Id',$S,'SponsorId') . "<tr><td>Name:<td>" . ($Trad['SN'] ?? 'Unknown') . fm_hidden('Tid',$Tid);
-  echo fm_text('Year',$S,'Year') . " if not current not used";
+  echo "<tr>" . fm_text('Year',$S,'Year') . " if not current not used";
+  echo "<tr>" . fm_number('Importance',$S,'Importance','',' min=-1 max=5 ') . " if negative not listed, +ve number is boost level";
   echo "<tr><td colspan=2" . fm_radio('Sponsorship Type',$SponTypes,$S,'ThingType',"onclick=PCatSel(event,'ThingType')",0);
   $i=0;
   foreach($Lists as $cat=>$dog) {
@@ -390,7 +391,7 @@ function Add_Spon_Request($Spid=0) {
     }
     $i++;
   }
-  echo "<tr>" . fm_number('Value',$S,'Importance') . "<td colspan=3>Used to sort sponsors and in Invoices (May be ommitted)";
+ // echo "<tr>" . fm_number('Value',$S,'Importance') . "<td colspan=3>Used to sort sponsors and in Invoices (May be ommitted)";
 
   if (Access('SysAdmin')) {
     echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
