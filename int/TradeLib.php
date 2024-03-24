@@ -1111,17 +1111,19 @@ function Submit_Application(&$Trad,&$Trady,$Mode=0) {
 }
 
 function Validate_Trade($Mode=0) { // Mode 1 for Staff Submit, less stringent
-  global $TradeTypeData;
+  global $TradeTypeData,$Trade_State;
   $Orgs = isset($_REQUEST['ORGS']);
       $proc = 1;
       if (!isset($_REQUEST['SN']) || strlen($_REQUEST['SN']) < 3 ) {
         echo "<h2 class=ERR>No Business Name Given</h2>\n";
         $proc = 0;
       }
-      
+            
       if ($Orgs==0 && $Mode == 0 && ($TradeTypeData[$_REQUEST['TradeType']]['TOpen'] == 0)) {
-        echo "<h2 class=ERR>Sorry that category is full for this year</h2>\n";
-        $proc = 0;
+        if ($_REQUEST['BookingState'] < $Trade_State['Quoted'] || $_REQUEST['BookingState'] > $Trade_State['Fully Paid']) {
+          echo "<h2 class=ERR>Sorry that category is full for this year</h2>\n";
+          $proc = 0;
+        }
       }
 
       if (!isset($_REQUEST['Contact']) || strlen($_REQUEST['Contact']) < 4 ) {
