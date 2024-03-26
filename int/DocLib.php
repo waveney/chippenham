@@ -157,7 +157,7 @@ function Get_AllUsers4Perf($Sects,$also=-1) { // [Sect] = Music, Dance etc, incl
   foreach($Sects as $S) {
     if (isset($SNums[$S])) {
       $Snum = $SNums[$S];
-      foreach ($Caps as $C) if (($C['Capability'] == $Snum) && ($C['Level']>0)) $ans[$C['User']] = $Users[$C['User']];
+      foreach ($Caps as $C) if (isset($Users[$C['User']]) && ($C['Capability'] == $Snum) && ($C['Level']>0)) $ans[$C['User']] = $Users[$C['User']];
     }
   }
   return $ans;

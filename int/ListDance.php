@@ -287,7 +287,7 @@
       if ($col10 == "Proforma Emails") {
         echo "<td>"; 
 
-        if ($mess = Feature('DanceSpecialMessage')) {
+        if (($mess = Feature('DanceSpecialMessage'))) {
           $Mname = preg_replace('/ /', '',$mess);
           echo "<button type=button id=$Mname$snum class=ProfButton onclick=ProformaSend('Dance_$Mname',$snum,'$Mname','SendProfEmail')" . 
                  '#ffccff' . ">$mess</button>"; 
@@ -359,4 +359,3 @@
   }
   
   dotail();
-?>
