@@ -173,6 +173,10 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
           switch ($too[0]) {
             case 'to':
               $email->addAddress($a,$n);
+              if (empty($n)) {
+                trigger_error("Email address missing - $a - $n" );
+                exit;
+              }
               $To = "$n <$a>";
               break;
             case 'cc':

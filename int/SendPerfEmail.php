@@ -7,6 +7,7 @@ include_once("Email.php");
 global $PLANYEAR,$USER,$USERID,$PerfTypes,$CONF;
 
 A_Check("Staff");
+// var_dump($_REQUEST);
 
 if (isset($_REQUEST['REEDIT'])) {
   system("rm Temp/$USERID.*");
