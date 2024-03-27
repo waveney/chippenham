@@ -259,7 +259,7 @@
     $Side = ['SideId'=>$snum]; 
   }
 
-  Show_Part($Side,'Side',Access('Staff'),'AddPerf');
+  Show_Part($Side,'Side',Access('Staff'),'AddPerf');S
   Show_Perf_Year($snum,$Sidey,$YEAR,Access('Staff'));
 
   if ($snum > 0) {
@@ -284,15 +284,16 @@
     }
 
     if ( Access('Staff') && $capmatch) {
+      $E = ($Side['HasAgent']?'Agent':'');
       if ($Book_States[$Sidey['YearState']] == 'Contract Ready') {
-        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',1,'','Invited')" . 
+        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',1,$E)" . 
                      Music_Proforma_Background('Contract') . ">Email Generic Contract</button>"; 
-        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',2,'','Invited')" . 
+        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',2,$E)" . 
                      Music_Proforma_Background('Contract') . ">Email Bespoke Contract</button>"; 
       } elseif ($Book_States[$Sidey['YearState']] == 'Contract Sent') {
-        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',1,'','Invited')" . 
+        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',1,$E)" . 
                      Music_Proforma_Background('Contract') . ">Resend Generic Contract</button>"; 
-        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',2,'','Invited')" . 
+        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',2,$E)" . 
                      Music_Proforma_Background('Contract') . ">Resend Bespoke Contract</button>"; 
       } elseif ($Book_States[$Sidey['YearState']] == 'None') {
         echo "<input type=Submit name='Action' value='Record as Non Performer' class=Button$BUTTON >\n";
