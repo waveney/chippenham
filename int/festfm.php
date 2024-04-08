@@ -774,11 +774,11 @@ XXX;
   return $str;
 }
 
-function Register_Onload($FN,$P1=0,$P2=2) {
+function Register_Onload($FN,$P1=0,$P2=0) {
   echo "<script> Register_Onload($FN,$P1,$P2); </script>";
 }
 
-function Register_AfterInput($FN,$P1=0,$P2=2) {
+function Register_AfterInput($FN,$P1=0,$P2=0) {
   echo "<script> Register_AfterInput($FN,$P1,$P2); </script>";
 }
 

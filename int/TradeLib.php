@@ -349,6 +349,9 @@ There will be an additional fee for power, that will be added to your final invo
         'IsTrader'=>'Used to indicate the business is a trader (useful for finance) do not touch (normally)',
         'BankDetails'=>'Needed for suppliers, very rarely needed for others when doing a refund',
         'Extras'=>'Some locations have extras',
+        'NumberTickets'=>'Traders may request up to 2 tickets, which give access to the showers at the Olympiad and entrance to most events',
+        'NumberCarPass'=>'Traders may request up to 2 passes to park near the Olympiad after they have set up their pitches',
+        'CampNeed'=>'For '
 
   ];
   Set_Help_Table($t);
@@ -794,6 +797,24 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
 
 // Risc Assessment function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$tddata1='',$tdclass='',$hide=0) {
   echo fm_DragonDrop(1,'RiskAssessment','Trade',$Tid,$Trady,$Mode);
+  
+  echo "<tr>" . fm_text('Arival day/time',$Trady,'ArrivalTime');
+  if (Feature('TraderPasses')) echo fm_number('Trader Passes',$Trady,'NumberTickets','',' min=0 max=2');
+  if (Feature('TradeCarpark')) echo fm_number('Carpark passes',$Trady,'NumberCarPass','',' min=0 max=2');
+  
+  if (Feature('TradeCamping')) {
+    include_once 'VolLib.php';
+    global $CampType;
+      $camps = Get_Campsites('Trade',1);
+      unset($camps[1]);
+//var_dump($camps);exit;
+      echo "<tr>" . fm_radio("Do you want camping?",$camps,$Trady,'CampNeed','',3,' colspan=4','',
+        0,0,''," onchange=CampingTradeSet()");
+      echo "<tr id=CampPUB>" . fm_radio("If so for what?" ,$CampType,$Trady,'CampType','',1,' colspan=4');
+      echo "<tr id=CampREST>" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
+                    $Trady,'CampText',4);
+      Register_OnLoad('CampingTradeSet');
+  }
 
 // Notes - As Sides
   echo "<tr>" . fm_textarea('Notes/Requests',$Trady,'YNotes',6,2);

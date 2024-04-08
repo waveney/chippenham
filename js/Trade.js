@@ -246,6 +246,13 @@ function SetPitch(what,target) {
   
 }
 
+function CampingTradeSet() {
+  var CampVal = $("input[name='CampNeed']:checked").val();
+  if (!CampVal || CampVal < 10) { $('#CampPUB').hide(); $('#CampREST').hide(); }
+  else if (CampVal < 20) { $('#CampPUB').show(); $('#CampREST').hide(); }
+  else if (CampVal < 30) { $('#CampPUB').hide(); $('#CampREST').show(); }; 
+}
+
 
 
 function drag(ev) {
@@ -268,6 +275,9 @@ function allow(ev) {
   ev.preventDefault();
 }    
 
+$(document).ready(function() {
+  if ($('#CampNeed')) CampingTradeSet();
+});
 
 /* copied code
 

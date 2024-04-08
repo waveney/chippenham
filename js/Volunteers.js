@@ -46,6 +46,9 @@ $(document).ready(function() {
   var cats1 = $('#VolCatsRaw').val();
   var cats2 = atob(cats1);
   Teams = JSON.parse(cats2);
+  if ($('#CampNeed')) CampingVolSet();
+});
+
   
 //  ShowAvails();
 } );
@@ -58,8 +61,8 @@ function VolScanTeams() {
 
 }
 
-function CampingVolSet(name) {
-  var CampVal = $("input[name='" + name + "']:checked").val();
+function CampingVolSet() {
+  var CampVal = $("input[name='CampNeed']:checked").val();
   if (!CampVal || CampVal < 10) { $('#CampPUB').hide(); $('#CampREST').hide(); }
   else if (CampVal < 20) { $('#CampPUB').show(); $('#CampREST').hide(); }
   else if (CampVal < 30) { $('#CampPUB').hide(); $('#CampREST').show(); }; 

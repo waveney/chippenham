@@ -45,5 +45,11 @@ CREATE TABLE `TradeYear` (
   `ExtraPowerDesc` text COLLATE utf8mb4_general_ci NOT NULL,
   `DateQuoted` int NOT NULL,
   `DateRemind` int NOT NULL,
+  `NumberTickets` int NOT NULL,
+  `NumberCarPass` int NOT NULL,
+  `ArrivalTime` text COLLATE utf8mb4_general_ci NOT NULL,
+  `CampNeed` int NOT NULL,
+  `CampType` int NOT NULL,
+  `CampText` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`TYid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

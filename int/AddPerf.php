@@ -259,7 +259,7 @@
     $Side = ['SideId'=>$snum]; 
   }
 
-  Show_Part($Side,'Side',Access('Staff'),'AddPerf');S
+  Show_Part($Side,'Side',Access('Staff'),'AddPerf');
   Show_Perf_Year($snum,$Sidey,$YEAR,Access('Staff'));
 
   if ($snum > 0) {
@@ -285,6 +285,7 @@
 
     if ( Access('Staff') && $capmatch) {
       $E = ($Side['HasAgent']?'Agent':'');
+      echo "<div class=ContractShow hidden>";
       if ($Book_States[$Sidey['YearState']] == 'Contract Ready') {
         echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',1,$E)" . 
                      Music_Proforma_Background('Contract') . ">Email Generic Contract</button>"; 
@@ -300,6 +301,7 @@
       }
 //      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Generic Contract'>";
 //      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Bespoke Contract'>";  
+      echo "</div>";
     } else {
 //      var_dump( $Book_States[$Sidey['YearState']] , $capmatch);
     }

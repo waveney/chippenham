@@ -748,7 +748,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       if (!$Wide) echo "<tr>";
       echo "<td colspan=2 class=NotCSide>On arrival report to: " . fm_select($R2Venues,$Sidey,'ReportTo') .
            "<td class=NotCSide>" . fm_checkbox('Tell about Green Room',$Sidey,'GreenRoom');
-      if (empty($Sidey['TotalFee'])) echo "<td class=NotCSide>" . fm_checkbox('Need a contract even if no fee',$Sidey,'ContractAnyway');
+      if (empty($Sidey['TotalFee'])) echo "<td class=NotCSide>" . 
+        fm_checkbox('Need a contract even if no fee',$Sidey,'ContractAnyway',' onchange=CheckContract()');
 
     $campxtr = $campxtr2 = '';          
     switch ($CampMode) {
@@ -786,6 +787,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         $Add = '';
         $Csi = $CS['id'];
         if ($CS['Props'] & 2) {
+          continue;
           $Add = ' class=NotCSide ';
           if (($Mode == 0) && empty($Camp[$Csi])) continue;
         }
@@ -1003,7 +1005,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         break;
       case $Book_State['Booking']:
         $CMess = Contract_Check($snum);
-        if ($CMess != '') {
+        if (1 || $CMess != '') {
           echo "<td colspan=3>";
           if ($Mode) { echo "The contract is not ready because: <span class=red>" . $CMess . "</span>"; }
           else { echo "The contract is not yet complete, and hence can not be confirmed"; }

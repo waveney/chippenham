@@ -38,7 +38,7 @@ $EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','S'=>'Stew1','M'=>'Note2'];
 
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
 
-function Get_Campsites($Restrict=0,$Comments=1) {
+function Get_Campsites($Restrict='',$Comments=1) {
   global $CampStatus;
   $CList = $CampStatus;
   $Camps = Gen_Get_All('Campsites','ORDER BY Importance DESC');
@@ -46,8 +46,12 @@ function Get_Campsites($Restrict=0,$Comments=1) {
     $N = $C['Name'];
     if ($Comments && !empty($C['Comment'])) $N .= " (" . $C['Comment'] . ")";
     if ($C['Props'] & 2) {
-      if ($Restrict==0) continue;
-      $CList[$C['id']] = $N . " - " . $C['Restriction'];      
+      if (!$Restrict) continue;
+      if ($Restrict == 'All' || strstr($C['Restriction'],$Restrict)) {
+        $CList[$C['id']] = $N . " - " . $C['Restriction'];
+      } else {
+        continue;
+      }
     } else {
       $CList[$C['id']] = $N;
     }
@@ -122,7 +126,7 @@ function Get_Vol_Details(&$vol) {
   if (!empty($VY['Children'])) $Body .= "Children: " . $VY['Children'] . "<p>\n";
   if (!empty($VY['Youth'])) $Body .= "Youth: " . $VY['Youth'] . "<p>\n";
   
-  $camps = Get_Campsites(1);
+  $camps = Get_Campsites('All');
   
   if (Feature('Vol_Camping') && !empty($VY['CampNeed'])) {
     $Body .= "Camping: " . $camps[$VY['CampNeed']] . "<br>\n";
@@ -427,7 +431,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       if (Access('SysAdmin') || (isset($VYear['Adults']) && $VYear['Adults'] > 1)) echo "<tr>" . fm_text("Adults",$VYear,'Adults',4,'','',"Adults::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
-      $camps = Get_Campsites(1,1);
+      $camps = Get_Campsites('Task',1);
 //var_dump($camps);exit;
       echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$PLANYEAR",
         0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
@@ -707,7 +711,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
       echo "<tr>" . fm_text("Free Youth tickets (11 to 15 - please give their ages)",$VYear,'Youth',-4,'','',"Youth::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
-      $camps = Get_Campsites(1,1);
+      $camps = Get_Campsites('Task',1);
 //var_dump($camps);exit;
       echo "<tr><td>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',-3,'',"CampNeed::$PLANYEAR",
         0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
@@ -1212,8 +1216,8 @@ function List_Team($Team) {
     if ($CatP & VOL_Money) echo "<td>" . $yesno[$Vol['Money']];
     echo "<td>" . $Vol['Disabilities'];
     echo "<td>" . (empty($VY['Notes'])?'':$link . "Yes</a>");
-    echo "<td>" . $VY['Children'];
-    echo "<td>" . $VY['Youth'];
+    echo "<td>" . ($VY['Children']??0);
+    echo "<td>" . ($VY['Youth']??0);
 
     if ($CatP & VOL_Likes) echo "<td>" . $VCY['Likes'] ;
     if ($CatP & VOL_Dislikes) echo "<td>" . $VCY['Dislikes'] ;
