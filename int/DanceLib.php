@@ -883,6 +883,7 @@ function Dance_Email_Details($key,&$data,&$att=0) {
       }
 
     return ($count? "$str</ol><p>\n" : "");
+  case 'PERF': return $Side['SN'];
   case 'SIDE': return $Side['SN'];
   case 'DANCEORG': return Feature('DanceOrg','Richard Proctor');
   case (preg_match('/TICKBOX(.*)/',$key,$mtch)?true:false):
