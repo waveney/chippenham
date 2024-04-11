@@ -43,14 +43,42 @@ if (empty($Sidey['BookedBy'])) {
 }
 
 $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
-$To = $Side['Email'];
-if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
-  $To = $Side[$_REQUEST['E']];
-}
 
-    $too = [['to',$To,$Side['Contact']],
-//            ['from',$ReplyTo,Feature('ShortName')], // WRONG ANYWAY
-            ['replyto',$ReplyTo,Feature('ShortName')]];
+  $proforma = (isset($_REQUEST['N'])?$_REQUEST['N']:'');
+  $label = (isset($_REQUEST['L'])?$_REQUEST['L']:"");
+  $Atts = (isset($_REQUEST['ATTS'])?json_decode($_REQUEST['ATTS'],true):[]);
+
+//  var_dump($Atts);
+  $Side = Get_Side($id);
+  $Sidey = Get_SideYear($id);
+  $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
+  $To = $Side['Email'];
+  $Contact = $Side['Contact'];
+  
+  if (empty($_REQUEST['E'])) {
+    if ($Side['HasAgent'] && !$Side['BookDirect']) $_REQUEST['E'] = 'Agent';
+  }
+  
+
+  if (isset($_REQUEST['E'])) switch ($_REQUEST['E']) {
+      case 'Agent':
+        $To = $Side['AgentEmail'];
+        $Contact = $Side['AgentName'];
+        if (strstr($proforma,'Contract') && !strstr($proforma,'Agent')) $proforma .= "_Agent";
+        break;
+      case 'Alt':
+        $To = $Side['AltEmail'];
+        $Contact = $Side['AltContact'];
+        break;
+
+      default:
+        
+        break;
+    }
+  $Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:(Get_Email_Proforma($proforma))['Body']);
+
+  $too = [['to',$To,$Contact],
+          ['replyto',$ReplyTo,Feature('ShortName')]];
             
   $Atts = [];
 

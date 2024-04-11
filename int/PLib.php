@@ -537,6 +537,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     echo fm_hidden('YearState',$Sidey['YearState']);  
   }
   
+  echo fm_hidden('HiddenYearState',$Sidey['YearState']); 
   $DayCount = 0;
   for ($d= $YEARDATA['FirstDay']; $d<= $YEARDATA['LastDay']; $d++) $DayCount++;
 

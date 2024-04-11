@@ -705,14 +705,14 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     if ($Mode) {
 
       echo fm_text1("",$Trady,"PitchNum$i",1,'class=NotCSide','class=NotCSide onchange=PitchNumChange(' . ($Trady["PitchNum$i"]??0) . ')');
-      if (isset($Trady["PitchLoc$i"]) && $Trady["PitchLoc$i"]) echo " <a href=TradeStandMap?l=" . $Trady["PitchLoc$i"] . ">Map</a>";
+      if (isset($Trady["PitchLoc$i"]) && $Trady["PitchLoc$i"]) echo " <a href=TradeStandMap?t=2&l=" . $Trady["PitchLoc$i"] . ">Map</a>";
     } else {
 //      echo "<td>";
       if (isset($Trady["PitchLoc$i"])  && $Trady["PitchLoc$i"]) {
         echo $TradeLocs[$Trady["PitchLoc$i"]];
         echo fm_hidden("PitchLoc$i",$Trady["PitchLoc$i"]);
         echo "<td>";
-        if ($Trady["PitchNum$i"]) echo $Trady["PitchNum$i"] . " <a href=TradeStandMap?l=" . $Trady["PitchLoc$i"] . ">Map</a>"; // TODO Trade State testing for partial
+        if ($Trady["PitchNum$i"]) echo $Trady["PitchNum$i"] . " <a href=TradeStandMap?t=2&l=" . $Trady["PitchLoc$i"] . ">Map</a>"; // TODO Trade State testing for partial
       } else {
         echo "<td>";
       }
@@ -1001,8 +1001,9 @@ function Trader_Details($key,&$data,$att=0) {
         $plural = (strchr(',',$Trady["PitchNum$i"])?"Pitches numbered ":"Pitch number ");
         $MapLinks .= "You have been assigned $plural " . $Trady["PitchNum$i"] . " " . 
                      $Prefixes[$TradeLocData[$Trady["PitchLoc$i"]]['prefix']] . " " . $TradeLocData[$Trady["PitchLoc$i"]]['SN'] . 
-                     " please see this <a href='$host/int/TradeStandMap?l=" . $Trady["PitchLoc$i"] . "' style='background:lightblue;'>map</a> " .
-                     "- Note the formatting of the business names on this will be improved soon<p>";
+                     " please see this <a href='$host/int/TradeStandMap?l=" . $Trady["PitchLoc$i"] . "&t=2' style='background:lightblue;'>map</a> " .
+                     "<p>" .
+                     "Note the formatting of the business names on this will be improved soon<p>";
       }
     }
     if (!$MapLinks) return "";

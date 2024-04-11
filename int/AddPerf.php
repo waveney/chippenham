@@ -284,17 +284,17 @@
     }
 
     if ( Access('Staff') && $capmatch) {
-      $E = ($Side['HasAgent']?'Agent':'');
+      $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":'');
       echo "<div class=ContractShow hidden>";
       if ($Book_States[$Sidey['YearState']] == 'Contract Ready') {
-        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',1,$E)" . 
+        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','sendMproforma.php',1,$E)" . 
                      Music_Proforma_Background('Contract') . ">Email Generic Contract</button>"; 
-        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',2,$E)" . 
+        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail.php',2,$E)" . 
                      Music_Proforma_Background('Contract') . ">Email Bespoke Contract</button>"; 
       } elseif ($Book_States[$Sidey['YearState']] == 'Contract Sent') {
-        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',1,$E)" . 
+        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','sendMproforma.php',1,$E)" . 
                      Music_Proforma_Background('Contract') . ">Resend Generic Contract</button>"; 
-        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail',2,$E)" . 
+        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail.php',2,$E)" . 
                      Music_Proforma_Background('Contract') . ">Resend Bespoke Contract</button>"; 
       } elseif ($Book_States[$Sidey['YearState']] == 'None') {
         echo "<input type=Submit name='Action' value='Record as Non Performer' class=Button$BUTTON >\n";

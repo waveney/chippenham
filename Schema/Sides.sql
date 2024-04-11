@@ -84,6 +84,7 @@ CREATE TABLE `Sides` (
   `OneBlurb` tinyint NOT NULL,
   `NotPerformer` tinyint NOT NULL,
   `HasOverlays` tinyint NOT NULL,
+  `NoMarketing` tinyint NOT NULL,
   PRIMARY KEY (`SideId`),
   KEY `SideNum` (`SideId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

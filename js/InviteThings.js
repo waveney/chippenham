@@ -48,25 +48,21 @@ function ProformaSend(name,snum,label,link,AlwaysBespoke=0,AltEmail='',UpdateId=
 //  ProformasSent++;
 }
 
-function MList_ProformaSend(name,snum,label,link,AlwaysBespoke=0,AltEmail='',UpdateId='') { // Actions on List Pages
+function MList_ProformaSend(name,snum,label,link) { //,AlwaysBespoke=0,AltEmail='',UpdateId='') { // Actions on List Pages
   var year = $("#Year").val();
-  if (UpdateId == '') UpdateId = "Vited" + snum;
   
-  if ($('#BespokeMess').is(':visible') || AlwaysBespoke>0) {
-    var newwin = window.open((link + "?I=" + snum + "&N=" + name + "&L=" + label + "&E=" + AltEmail),"Bespoke Message " + snum);
+  if ($('#BespokeMess').is(':visible') ) {
+    var newwin = window.open((link + "?I=" + snum + "&N=" + name + "&L=" + label ),"Bespoke Message " + snum);
     newwin.onbeforeunload = function(){ // the callback should change YearState
       setTimeout(function(){
-        $("#" + UpdateId).load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by window call
-//        $.get("setfields.php", "I=" + snum + "&O=Z&Y=" + year, function(data) { $("#BookState" + snum).replaceWith(data);});
+        $("#Vited" + snum).load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by window call
 
         $("#BookState" + snum).load("setfields.php", "I=" + snum + "&O=Z&Y=" + year);  // needs to change what it loads into
       },500);};
   } else {
-  
-    $("#DebugPane").load("sendMproforma.php", "I=" + snum + "&N=" + name +"&E=" +AltEmail); // the callback should change YearState
+    $("#DebugPane").load("sendMproforma.php", "I=" + snum + "&N=" + name ); // the callback should change YearState
     setTimeout(function(){
-      $("#" + UpdateId).load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by sendMproforma
-//    $.get("setfields.php", "I=" + snum + "&O=Z&Y=" + year, function(data) { $("#BookState" + snum).replaceWith(data);});
+      $("#Vited" + snum).load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by sendMproforma
       $("#BookState" + snum).load("setfields.php", "I=" + snum + "&O=Z&Y=" + year); // needs to change what it loads into
     },500);
   }
@@ -76,14 +72,14 @@ function MProformaSend(name,snum,label,link,AlwaysBespoke=0,E='') { // Actions o
   var year = $("#Year").val();
   
   if (AlwaysBespoke == 2) {
-    var newwin = window.open((link + "?I=" + snum + "&N=" + name + "&L=" + label + (E?"&E=" + E + 'Email':'')),"Bespoke Message " + snum);
+    var newwin = window.open((link + "?I=" + snum + "&N=" + name + "&L=" + label + (E?"&E=" + E :'')),"Bespoke Message " + snum);
     newwin.onbeforeunload = function(){ // the callback should change YearState
       setTimeout(function(){
         $("#Invited").load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by window call
         $('input[name="YearState"]').filter("[value='5']").prop('checked', true); 
       },500);};
   } else {  
-    $("#DebugPane").load("sendMproforma.php", "I=" + snum + "&N=" + name + (E?"&E=" + E + 'Email':'')); // the callback should change YearState
+    $("#DebugPane").load(link, "I=" + snum + "&N=" + name + (E?"&E=" + E :'')); // the callback should change YearState
     $("#Invited").load("setfields.php", "I=" + snum + "&O=R&F=Invited"); // Read the messages - have been updated by sendMproforma
     $('input[name="YearState"]').filter("[value='5']").prop('checked', true); 
   } 

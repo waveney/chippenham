@@ -113,7 +113,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       if ($Links && !empty($Inf['HasLink'])) {
         $lnk = $Inf['HasLink'];
         if ($LinkRoot) $lnk = preg_replace('/TradeStandMap/',$LinkRoot,$lnk);
-        echo "<a href=$lnk$Staff>";
+        echo "<a href=$lnk$Staff&t=$Pub>";
         $Lopen = 1;
       }
   
