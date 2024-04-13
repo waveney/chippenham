@@ -172,15 +172,18 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
       "$evc performance" . ($evc>1?'s':'') . ", with a total duration of " . ($evv?"at least ":"") . DurationFormat($evd) . "<p>\n";
     $str .= "<tr><td>Current known times<br>See the festival website and/or festival information for more<td>" . $Evstr;
 
-    $PayTypes = ['BACS','Cheque'];
-    if (!Feature('PayByCheque')) $Side['WantCheque'] = 0;
-    $str .= "<tr><td><b>Payment by</b><td>" . $PayTypes[$Side['WantCheque']];
-    if ($Side['WantCheque']) {
-      $str .= "<br>Payable to: " . $Side['AccountName'] . "<p>\n";        
-    } else {
-      $str .= "<br>Sort Code: " . $Side['SortCode'] . " Account Number: " . $Side['Account'] . "<br>Account Name : " . $Side['AccountName'] . "<p>\n";    
+    
+    if ($Sidey['TotalFee']) {
+      $PayTypes = ['BACS','Cheque'];
+      if (!Feature('PayByCheque')) $Side['WantCheque'] = 0;
+      $str .= "<tr><td><b>Payment by</b><td>" . $PayTypes[$Side['WantCheque']];
+      if ($Side['WantCheque']) {
+        $str .= "<br>Payable to: " . $Side['AccountName'] . "<p>\n";        
+      } else {
+        $str .= "<br>Sort Code: " . $Side['SortCode'] . " Account Number: " . $Side['Account'] . "<br>Account Name : " . $Side['AccountName'] . "<p>\n";    
+      } 
     }
-
+    
     $str .= "</table><p>";
     
     $faq = TnC('PerfTnC');

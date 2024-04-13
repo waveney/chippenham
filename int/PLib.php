@@ -965,6 +965,13 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     switch ($Sidey['YearState']) {
       case $Book_State['Contract Signed']:
         echo "<td>Contract Confirmed " .$ContractMethods[$Sidey['ContractConfirm']] . " on " . date('d/m/y',$Sidey['ContractDate']) . "\n";
+        if ($Mode) {
+          $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":'');
+          echo "<td class=NotSide><button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract_Reissue',$snum,"
+                 . "'Contract','SendPerfEmail.php',2,$E)" . Music_Proforma_Background('Contract') . ">Reissue Contract</button>"; 
+        }
+//          echo "<td><input type=submit id=orangesubmit name=ReIssue value='Reissue Contract'>";
+
         break;
       case $Book_State['Contract Ready']:
         $CMess = Contract_Check($snum);
@@ -990,6 +997,10 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             echo "<td colspan=2><input type=submit id=greensubmit name=Contract value='Confirm Contract by Receipt of Confirmation Email'>";
             echo fm_hidden('ContractDate',time());
             echo "<td colspan=2><input type=submit id=redsubmit name=Decline value='Decline Contract by Clicking Here'>";
+            $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":'');
+            echo "<td class=NotSide><button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract_Reissue',$snum,"
+                 . "'Contract','SendPerfEmail.php',2,$E)" . Music_Proforma_Background('Contract') . ">Reissue Contract</button>";
+//            echo "<td><input type=submit id=orangesubmit name=ReIssue value='Reissue Contract'>";
           } else {
             echo "<td colspan=2><input type=submit id=greensubmit name=Contract value='Confirm Contract by Clicking Here'>";
             echo fm_hidden('ContractDate',time());
@@ -1016,8 +1027,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       default:
         break;
     }
-  } else {
-//    echo "<TR><TD>NO";
+  } else if ($Mode && ($Sidey['YearState'] == $Book_State['Booking'])) {
+    echo "<tr><td class=NotDSide colspan=4>No Contract is currently required - you need to either set a fee or to indicate 'Need a contract even if no fee:'";
   }
 
   // INsurance

@@ -54,6 +54,7 @@ $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
   $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
   $To = $Side['Email'];
   $Contact = $Side['Contact'];
+  if (empty($Contact)) $Contact = $Side['SN'];
   
   if (empty($_REQUEST['E'])) {
     if ($Side['HasAgent'] && !$Side['BookDirect']) $_REQUEST['E'] = 'Agent';
@@ -61,20 +62,20 @@ $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
   
 
   if (isset($_REQUEST['E'])) switch ($_REQUEST['E']) {
-      case 'Agent':
-        $To = $Side['AgentEmail'];
-        $Contact = $Side['AgentName'];
-        if (strstr($proforma,'Contract') && !strstr($proforma,'Agent')) $proforma .= "_Agent";
-        break;
-      case 'Alt':
-        $To = $Side['AltEmail'];
-        $Contact = $Side['AltContact'];
-        break;
+    case 'Agent':
+      $To = $Side['AgentEmail'];
+      if (!empty($Side['AgentName'])) $Contact = $Side['AgentName'];
+      if (strstr($proforma,'Contract') && !strstr($proforma,'Agent')) $proforma .= "_Agent";
+      break;
+    case 'Alt':
+      $To = $Side['AltEmail'];
+      if (!empty($Side['AltContact'])) $Contact = $Side['AltContact'];
+      break;
 
-      default:
-        
-        break;
-    }
+    default:
+
+      break;
+  }
   $Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:(Get_Email_Proforma($proforma))['Body']);
 
   $too = [['to',$To,$Contact],

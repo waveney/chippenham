@@ -50,7 +50,12 @@
     Music_Actions($_REQUEST['ACTION'],$side,$sidey);
   }
 
-  if ($_REQUEST['SEL'] == 'ALL') {
+
+  if ($_REQUEST['SEL'] == 'EVERYTHING') {
+    $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.Year='$YEAR' WHERE $TypeSel ORDER BY SN");
+    $col5 = "Book State";
+    $col6 = "Actions";
+  } else if ($_REQUEST['SEL'] == 'ALL') {
     $SideQ = $db->query("SELECT y.*, s.* FROM Sides AS s LEFT JOIN $YearTab as y ON s.SideId=y.SideId AND y.Year='$YEAR' WHERE $TypeSel AND s.SideStatus=0 ORDER BY SN");
     $col5 = "Book State";
     $col6 = "Actions";

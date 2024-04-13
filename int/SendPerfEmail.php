@@ -49,6 +49,7 @@ if (isset($_REQUEST['REEDIT'])) {
   $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
   $To = $Side['Email'];
   $Contact = $Side['Contact'];
+  if (empty($Contact)) $Contact = $Side['SN'];
   
   if (empty($_REQUEST['E'])) {
     if ($Side['HasAgent'] && !$Side['BookDirect']) $_REQUEST['E'] = 'Agent';
@@ -57,12 +58,12 @@ if (isset($_REQUEST['REEDIT'])) {
   if (isset($_REQUEST['E'])) switch ($_REQUEST['E']) {
       case 'Agent':
         $To = $Side['AgentEmail'];
-        $Contact = $Side['AgentName'];
+        if (!empty($Side['AgentName'])) $Contact = $Side['AgentName'];
         if (strstr($proforma,'Contract') && !strstr($proforma,'Agent')) $proforma .= "_Agent";
         break;
       case 'Alt':
         $To = $Side['AltEmail'];
-        $Contact = $Side['AltContact'];
+        if (!empty($Side['AltContact'])) $Contact = $Side['AltContact'];
         break;
 
       default:

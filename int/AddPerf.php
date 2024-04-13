@@ -173,6 +173,8 @@
         db_delete('Sides', $snum);
         echo "<h2>Deleted</h2>";
         dotail();
+      } elseif (isset($_REQUEST['ReIssue'])) { 
+        
       }
 
       Update_db_post('Sides',$Side);
