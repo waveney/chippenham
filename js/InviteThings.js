@@ -72,8 +72,7 @@ function MProformaSend(name,snum,label,link,AlwaysBespoke=0,E='',incissue=0) { /
   var year = $("#Year").val();
   
   if (incissue) {
-    $("#DebugPane").load("setfields.php?O=Y&I=" + snum + "&F=Contracts&V=" + incissue);
-//    $.get("setfields.php?O=Y&I=" + snum + "&F=Contracts&V=" + incissue);
+    $.get("setfields.php?O=Y&I=" + snum + "&F=Contracts&V=" + incissue);
     setTimeout(1000); // Give time for the new issue number to be saved
   }
   
