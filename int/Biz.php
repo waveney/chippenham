@@ -394,7 +394,7 @@ function Add_Spon_Request($Spid=0) {
  // echo "<tr>" . fm_number('Value',$S,'Importance') . "<td colspan=3>Used to sort sponsors and in Invoices (May be ommitted)";
 
   if (Access('SysAdmin')) {
-    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+    echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
   }
   echo "</table>";
   if ($Spid == 0) echo "<input type=submit name=ACTION value=Create>";

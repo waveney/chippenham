@@ -903,19 +903,20 @@ function Dance_Email_Details($key,&$data,&$att=0) {
         $ConAns = Contract_Check($snum,1,1);
         switch ($ConAns) {
           case 0: // Ready
+          case 1: /// No fee - acceptable sometimes
             $str = '<b>Please confirm your contract by following *LINK* and clicking on the "Green Confirm" button near the ' .
               'bottom of the page.</b><p>';
             $p = 0;
             $AddC = 1;
             break;
-          case 2: // Ok apart from bank account
-            $str = 'Please follow *LINK*, fill in your bank account details (so we can pay you), then click "Save Changes".<p> ' .
+          case 3: // Ok apart from bank account
+            $str = 'Please follow *LINK*, fill in your bank account details (so we can pay you).<p> ' .
                   'Then you will be able to view and confirm your contract, ' .
                   'by clicking on the "Green Confirm" button. (The button will only appear once you have input your bank account details ).<p>';
             $p = 0;
             $AddC = 2;
             break;
-          case 3: // No Cont
+          case 4: // No Cont
             break;
           default: // Add draft for info
             $AddC = 2;

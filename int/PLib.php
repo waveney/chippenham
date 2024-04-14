@@ -394,7 +394,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       
     }
   if (Access('SysAdmin')) {
-    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+    echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
 //    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p>" ; //<span id=DebugPane></span>";
   } else {
 //    echo "<div hidden><tr><td class=NotSide>Debug:<td colspan=5 class=NotSide><span id=DebugPane></span><p></div>"; 
@@ -530,6 +530,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     if ($Mode || Access('SysAdmin')) {
       echo fm_radio("Contract State",$Book_States,$Sidey,'YearState','class=NotSide',1,'colspan=3 class=NotSide','',$Book_Colours);
       echo "<td class=NotSide>" . fm_checkbox('No Events',$Sidey,'NoEvents');
+      if (Access('SysAdmin')) echo fm_number1('Contract Issue',$Sidey,'Contracts', 'class=NotStaff');
     } else {
       echo "<td class=NotSide>Booking State:" . help('YearState') . "<td class=NotSide>" . $Book_States[$Sidey['YearState']];
     }
@@ -967,8 +968,9 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         echo "<td>Contract Confirmed " .$ContractMethods[$Sidey['ContractConfirm']] . " on " . date('d/m/y',$Sidey['ContractDate']) . "\n";
         if ($Mode) {
           $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":'');
+          $Issue = $Sidey['Contracts']+1;
           echo "<td class=NotSide><button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract_Reissue',$snum,"
-                 . "'Contract','SendPerfEmail.php',2,$E)" . Music_Proforma_Background('Contract') . ">Reissue Contract</button>"; 
+                 . "'Contract','SendPerfEmail.php',2,$E,$Issue)" . Music_Proforma_Background('Contract') . ">Reissue Contract</button>"; 
         }
 //          echo "<td><input type=submit id=orangesubmit name=ReIssue value='Reissue Contract'>";
 
@@ -998,8 +1000,10 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             echo fm_hidden('ContractDate',time());
             echo "<td colspan=2><input type=submit id=redsubmit name=Decline value='Decline Contract by Clicking Here'>";
             $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":'');
+            $Issue = $Sidey['Contracts']+1;
+
             echo "<td class=NotSide><button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract_Reissue',$snum,"
-                 . "'Contract','SendPerfEmail.php',2,$E)" . Music_Proforma_Background('Contract') . ">Reissue Contract</button>";
+                 . "'Contract','SendPerfEmail.php',2,$E,$Issue)" . Music_Proforma_Background('Contract') . ">Reissue Contract</button>";
 //            echo "<td><input type=submit id=orangesubmit name=ReIssue value='Reissue Contract'>";
           } else {
             echo "<td colspan=2><input type=submit id=greensubmit name=Contract value='Confirm Contract by Clicking Here'>";

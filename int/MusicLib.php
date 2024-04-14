@@ -416,7 +416,7 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
 //echo "check $snum $YEAR<br>";
   $Check_Fails = array('',"No Fee", "Start Time","Bank Details missing",'Not Booked',"No Events","Venue Unknown","Duration not yet known","Events Clash"); 
   // Least to most critical
-  // 0=ok, 1 - lack times, 2 - no bank details, 3 - Not Booked, 4 - no events, 5 - no Ven, 6 - no dur,7 - clash
+  // 0=ok, 1 - No Fee, 2 - lack times, 3 - no bank details, 4 - Not Booked, 4 - no events, 6 - no Ven, 7 - no dur,8 - clash
   include_once('ProgLib.php');
 // All Events have - Venue, Start, Duration, Type - Start & End/Duration can be TBD if event-type has a not critical flag set
   $InValid = 5;

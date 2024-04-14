@@ -74,7 +74,7 @@ function Edit_Food($i,$e=1) {
   echo "<tr><td>Image:" . fm_DragonDrop(1, 'Photo','FoodAndDrink',$i,$f,1,'',1,'','Photo');
   echo "<tr>" . fm_textarea('Directions',$f,'Directions',3,1) . "<td colspan=2>to follow Google directions if necessary";;
   if (Access('SysAdmin')) {
-    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+    echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotStaff><textarea id=Debug></textarea><p><span id=DebugPane></span>";
   }
   echo "</table></div>\n";
   if (!$e) {

@@ -68,8 +68,14 @@ function MList_ProformaSend(name,snum,label,link) { //,AlwaysBespoke=0,AltEmail=
   }
 }
 
-function MProformaSend(name,snum,label,link,AlwaysBespoke=0,E='') { // Actions on Performer page
+function MProformaSend(name,snum,label,link,AlwaysBespoke=0,E='',incissue=0) { // Actions on Performer page
   var year = $("#Year").val();
+  
+  if (incissue) {
+    $("#DebugPane").load("setfields.php?O=Y&I=" + snum + "&F=Contracts&V=" + incissue);
+//    $.get("setfields.php?O=Y&I=" + snum + "&F=Contracts&V=" + incissue);
+    setTimeout(1000); // Give time for the new issue number to be saved
+  }
   
   if (AlwaysBespoke == 2) {
     var newwin = window.open((link + "?I=" + snum + "&N=" + name + "&L=" + label + (E?"&E=" + E :'')),"Bespoke Message " + snum);
