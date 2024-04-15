@@ -37,3 +37,4 @@ apple-touch*
 fred*
 */fred
 /nbproject/
+.DS_Store
