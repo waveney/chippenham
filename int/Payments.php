@@ -3,6 +3,7 @@
   include_once("fest.php");
   include_once("BudgetLib.php");
   include_once("DanceLib.php");
+  include_once("DocLib.php");
   
   A_Check('Committee','Finance');
 
@@ -28,7 +29,9 @@
     echo "Nothing to pay";
     dotail();
   }
-  
+
+  $AllActive = Get_AllUsers(0);
+
   if ($csv) {
     $heads = ['Name','Total Fee','Sort Code','Ac Number','Ac Name'];
     foreach($BUDGET as $i=>$b) {
@@ -49,6 +52,7 @@
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Sort Code</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Ac Number</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Ac Name</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Booked by</a>\n";
 
     foreach($BUDGET as $i=>$b) {
       if ($b['id']) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>" . $b['SN'] . "</a>\n";
@@ -82,6 +86,8 @@
       echo "<tr><td>" . $payee['SideId'] . "/" . $payee['syId'] . "<td><a href=AddPerf?id=" . $payee['SideId'] . ">" . $payee['SN'] . "</a>";
       echo "<td>" . $payee['TotalFee'];
       echo "<td>" . $payee['SortCode'] . "<td>" . $payee['Account'] . "<td>" . $payee['AccountName'];
+      echo "<td>" . ($AllActive[$payee['BookedBy']] ?? 'Unknown');
+      
     
       foreach($BUDGET as $i=>$b) {
         echo "<td>";

@@ -368,10 +368,10 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     if ($Mode) {
       echo "<tr>" . fm_text('Location',$Side,'Location',2,'class=NotSide');
       if (Access('SysAdmin')) {
-        if (!$Wide) echo "<tr>";
-        echo fm_nontext('Access Key',$Side,'AccessKey',3,'class=NotSide','class=NotSide'); 
+        if (!$Wide) echo "<tr class=NotStaff>";
+        echo fm_nontext('Access Key',$Side,'AccessKey',3,'class=NotStaff','class=NotStaff'); 
         if (isset($Side['AccessKey'])) {
-          echo "<td class=NotSide><a href=Direct?id=$snum&key=" . $Side['AccessKey'] . "&Y=$YEAR>Use</a>" . help('Testing');
+          echo "<td class=NotStaff><a href=Direct?id=$snum&key=" . $Side['AccessKey'] . "&Y=$YEAR>Use</a>" . help('Testing');
         }
       }
       echo "<tr>" . fm_textarea('Notes',$Side,'Notes',5,2,'class=NotSide','class=NotSide');

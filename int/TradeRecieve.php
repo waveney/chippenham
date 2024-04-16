@@ -43,8 +43,8 @@ global $YEAR,$db;
       
     } else { // Deposit and final
       $Dep = T_Deposit($fetch);
-      echo "<td>$Dep<td>" . $Invoices[0]['OurRef'] . "/" . $Invoices[0]['id'];
-      echo "<td>" . ($fetch['TotalPaid'] - $Dep) . "<td>" . $Invoices[1]['OurRef'] . "/" . $Invoices[1]['id'];      
+      echo "<td>$Dep<td>" . $Invoices[1]['OurRef'] . "/" . $Invoices[1]['id'];
+      echo "<td>" . ($fetch['TotalPaid'] - $Dep) . "<td>" . $Invoices[0]['OurRef'] . "/" . $Invoices[0]['id'];      
     }
   }
   
