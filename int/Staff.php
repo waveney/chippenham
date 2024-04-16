@@ -525,6 +525,7 @@
       $txt .= "<li><a href=InvoiceSummary?Y=$YEAR>Invoice Summary</a>\n";   
       $txt .= "<li><a href=OtherPaymentSummary?Y=$YEAR>Other Payment Summary</a>\n";   
       $txt .= "<li><a href=Payments?Y=$YEAR>List All Performer Payments</a>\n";  
+      $txt .= "<li><a href=TradeRecieve?Y=$YEAR>List Trader Payments</a>\n";  
     } elseif (Access('Committee')) {
       $txt .= "<li><a href=BudgetManage?Y=$YEAR>Budget View</a>\n";
       $txt .= "<li><a href=InvoiceManage?Y=$YEAR>Invoice Management</a>\n";
