@@ -392,6 +392,13 @@ function Refresh_Image_After_Upload(T,V) {
   if ((s=document.getElementById(T))) s.value = V;
 } 
 
+var ClickCount = 0;
+
+function PreventDouble() {
+  if (ClickCount++) return;
+  this.form.submit();
+}
+
 $(document).ready(function() {
 //  debugger;
   var fun,p1,p2;

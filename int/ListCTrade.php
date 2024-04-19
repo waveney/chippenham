@@ -23,7 +23,7 @@
 
     echo "The Resend action re-sends the last email to the trader (or a general status message if it does not make sense to resend).<p>";
   }
-
+  
   $Trade_Types = Get_Trade_Types(1);
   $TrMon = $TrRec = $TrSub = $TrState = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
   foreach ($TradeLocData as $i=>$TLoc) {

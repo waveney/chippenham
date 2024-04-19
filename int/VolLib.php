@@ -34,7 +34,7 @@ define('VOL_NoList',0x20000);
 define('VOL_Tins',0x40000);
 
 // Button Name, Vol_Button
-$EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','S'=>'Stew1','M'=>'Note2'];
+$EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','E' => Feature('Vol_Special_Mess'), 'S'=>'Stew1','M'=>'Note2'];
 
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
 
@@ -1125,15 +1125,15 @@ function List_Vols() {
         if ((($year != $PLANYEAR) && (!strstr($Mmap,'N')) && (!strstr($Mmap,'S'))) ||
             (($year == $PLANYEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U') && ($HasSetAvail == 0)))) {
        
-//          if ($Stew) {
-//            $Msg = $EmailMsgs['S'];
-//            echo  " <button type=button id=VolSendEmailS$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'S')>$Msg</button>";
-//          } else {
             $Msg = $EmailMsgs['N'];
             echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'N')>$Msg</button>";
 //          }
         }
 
+        $Msg = $EmailMsgs['E'];
+        if ($Msg && ($VY['Status'] == 0) && strstr($Mmap,'N') && !strstr($Mmap,'E') && ($HasSetAvail == 0)) {
+          echo  " <button type=button id=VolSendEmailE$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'E')>$Msg</button>";
+        }
       echo "<td id=MessMap$id>" . ($VY['MessMap'] ?? '');
     }
   }

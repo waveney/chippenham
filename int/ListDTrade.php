@@ -165,7 +165,7 @@
       $pitches = 0;
       for ($i = 0; $i<3; $i++) if ($fetch["PitchLoc$i"]) $pitches++;
 
-      if ($div && $pitches>1) {
+      if (0 && $div && $pitches>1) { // Duff 
         $Dep /= $pitches;
         $fee /= $pitches;
         $tot /= $pitches;
