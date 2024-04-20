@@ -50,7 +50,9 @@
     $Arts[] = ['SN' => $Cat['Name'],'Type'=>0, 'Link'=>'int/Volunteers?A=New', 'HideTitle'=>0, 'RedTitle'=>0,
                'Image'=>$Cat['Image'], 'ImageHeight'=>$Cat['ImageHeight'] , 'ImageWidth'=>$Cat['ImageWidth'],'Format'=>0,
                'Text'=> ($Cat['Description'] . "<p>" . $Cat['LongDesc'] . 
-                 "<a href=int/Volunteers?A=New><div class=VolButtonWrap><div class=VolButton>Please Volunteer for " . $Cat['Name'] . "</a></div></div>") ];
+                 ($Cat['Props']& 0x80000)?'<P>This team has all the volunteers it needs this year, please select another':
+                 "<a href=int/Volunteers?A=New><div class=VolButtonWrap><div class=VolButton>Please Volunteer for " . $Cat['Name'] . "</a></div></div>") 
+              ];
   }
    
   Show_Articles_For($Arts,0,'400,700,20,3');

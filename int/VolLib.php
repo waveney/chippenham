@@ -32,6 +32,7 @@ define('VOL_Other3',0x400);
 define('VOL_Other4',0x800);
 define('VOL_NoList',0x20000);
 define('VOL_Tins',0x40000);
+define('VOL_TeamFull',0x80000);
 
 // Button Name, Vol_Button
 $EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','E' => Feature('Vol_Special_Mess'), 'S'=>'Stew1','M'=>'Note2'];
@@ -334,7 +335,8 @@ function VolForm(&$Vol,$Err='',$View=0) {
       }
 
       $cp = $Cat['Props'];
-      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue;
+      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue; // Skip if team not listed
+      if ((!$VolMgr) && ($cp & VOL_TeamFull) && ($VCY['Status'] == 0)) continue; // Skip if team full
       
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
