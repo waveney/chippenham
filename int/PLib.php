@@ -967,7 +967,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       case $Book_State['Contract Signed']:
         echo "<td>Contract Confirmed " .$ContractMethods[$Sidey['ContractConfirm']] . " on " . date('d/m/y',$Sidey['ContractDate']) . "\n";
         if ($Mode) {
-          $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":"''");
+          $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":0);
           $Issue = $Sidey['Contracts']+1;
           echo "<td class=NotSide><button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract_Reissue',$snum,"
                  . "'Contract','SendPerfEmail.php',2,$E,$Issue)" . Music_Proforma_Background('Contract') . ">Reissue Contract</button>"; 
