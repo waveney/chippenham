@@ -23,7 +23,7 @@ function Get_Events($subEventId) {
             Events e
             INNER JOIN EventTypes t ON t.ETypeNo = e.Type
         WHERE
-            e.SubEvent=$subEventId
+            ".($subEventId <= 0 ? "e.SubEvent <= 0" : "e.SubEvent = $subEventId")."
             AND e.Year='$YEAR'
             AND e.Public <= 1 AND t.Public AND NOT t.DontList
         ";
