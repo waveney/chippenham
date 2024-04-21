@@ -17,7 +17,8 @@ function Get_Events($subEventId) {
             e.DoorPrice, e.SeasonTicketOnly, e.SponsoredBy,
             e.Side1, e.Side2, e.Side3, e.Side4,
             e.Roll1, e.Roll2, e.Roll3, e.Roll4,
-            t.SN as Type, e.ListDance, e.ListMusic, e.ListComedy, e.ListWorkshop, e.Family, e.Special
+            t.SN as Type, e.ListDance, e.ListMusic, e.ListComedy, e.ListWorkshop, e.Family, e.Special,
+            e.Venue
         FROM
             Events e
             INNER JOIN EventTypes t ON t.ETypeNo = e.Type
@@ -49,6 +50,7 @@ function Get_Events($subEventId) {
             unset($row['Roll3']);
             unset($row['Roll4']);
             unset($row['SponsoredBy']);
+            unset($row['Venue']);
 
             array_push($evs, $row);
         }
@@ -140,7 +142,7 @@ function API_Get_Venues($eventRow) {
     global $db;
     $venues = [];
 
-    $venue = API_Get_Venue($eventRow['Id']);
+    $venue = API_Get_Venue($eventRow['Venue']);
     if ($venue != null) { array_push($venues, $venue); }
 
     $bigEventVenues = Get_BigEventIds($eventRow['Id'], 'Venue');
