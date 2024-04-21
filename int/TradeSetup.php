@@ -78,7 +78,7 @@
 
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   
-  Pitch_Map($tloc,$Pitches,0,3,1,'TradeSetup');
+  echo Pitch_Map($tloc,$Pitches,0,3,1,'TradeSetup');
   PitchList();
   
   echo "<h2>";

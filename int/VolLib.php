@@ -608,8 +608,9 @@ function VolFormM(&$Vol,$Err='',$View=0) {
       }
 
       $cp = $Cat['Props'];
-      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue;
-      
+      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue; // Skip if team not listed
+      if ((!$VolMgr) && ($cp & VOL_TeamFull) && ($VCY['Status'] == 0)) continue; // Skip if team full
+            
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
       $rows = 1;

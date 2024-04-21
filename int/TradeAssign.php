@@ -122,7 +122,7 @@
   echo "<b>Note Drag and drop is not working yet</b><br>\n";
   $Message = Validate_Pitches_At($loc);
 
-  Pitch_Map($tloc,$Pitches,$Traders,4,1,'TradeAssign');
+  echo Pitch_Map($tloc,$Pitches,$Traders,4,1,'TradeAssign');
 
 //  Pitch_Map($tloc,$Pitches,$Traders);
   TraderList($Message,$trloc);

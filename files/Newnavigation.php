@@ -182,7 +182,7 @@ XXXX;*/
         case 0:
           foreach ($Event_Types as $ET) {
             if ($ET['DontList']) continue;
-            $Bar[$ET['Plural']] = ((empty($ET['Sherlock']) || is_numeric($ET['Sherlock']) || ($ET['State'] < 3))?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
+            $Bar[$ET['Plural']] = ((empty($ET['Sherlock']) || is_numeric($ET['Sherlock']) || ($ET['State'] <= 2))?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
           }
           break;
         case 1:

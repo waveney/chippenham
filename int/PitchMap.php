@@ -20,6 +20,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
   $ShowLinks = [1,1,1,0,0,1,1];
   $DragOver  = [0,0,0,0,1,0,0];
   $TradersInLoc = [];
+  $Map = '';
   
   if (!$loc['MapImage']) return;
   
@@ -75,12 +76,12 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
 
 // var_dump($ImgHt,$ImgWi);
 
-//  echo "scale=$scale sp=$sp Ht=$ImgHt Mapscale=$Mapscale <br>";
-  echo "<div class=img-overlay-wrap>";
-  echo "<img src=" . $loc['MapImage'] . " width=" . ($ImgWi*$scale) . ">";
-  echo "<svg width=" . ($ImgWi*$scale) . " height=" . ($ImgHt*$scale) . ">";
+//  $Map .= "scale=$scale sp=$sp Ht=$ImgHt Mapscale=$Mapscale <br>";
+  $Map .= "<div class=img-overlay-wrap>";
+  $Map .= "<img src=" . $loc['MapImage'] . " width=" . ($ImgWi*$scale) . ">";
+  $Map .= "<svg width=" . ($ImgWi*$scale) . " height=" . ($ImgHt*$scale) . ">";
   
-  echo '<pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
+  $Map .= '<pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
           <path d="M-1,1 l2,-2
            M0,4 l4,-4
            M3,5 l2,-2" 
@@ -113,7 +114,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       if ($Links && !empty($Inf['HasLink'])) {
         $lnk = $Inf['HasLink'];
         if ($LinkRoot) $lnk = preg_replace('/TradeStandMap/',$LinkRoot,$lnk);
-        echo "<a href=$lnk$Staff&t=$Pub>";
+        $Map .= "<a href=$lnk$Staff&t=$Pub>";
         $Lopen = 1;
       }
   
@@ -123,7 +124,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
       
       switch ($Inf['ObjectType']) {
       case 0: // Rectangle
-        echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
+        $Map .= "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
         if (!empty($Inf['MapColour'])) {
           if ($Inf['MapColour'] != '/') {
             $fill = $Inf['MapColour'];
@@ -140,16 +141,16 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
             $stroke = 'LightSeaGreen';
           }
         }
-        echo " style='fill:$fill;stroke:$stroke;";
-        if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";
-        echo "'/>"; 
+        $Map .= " style='fill:$fill;stroke:$stroke;";
+        if ($Inf['Angle']) $Map .= "transform: rotate(" . $Inf['Angle'] . "Deg); ";
+        $Map .= "'/>"; 
         
         // Fire Ex?
         if ($Inf['FireEx']) { // TODO and display type for cat 2's
-           echo "<rect x=" . ($Xpos + $Xwidth - $Factor) . " y=" . ($Ypos + $Factor-2 ) . " width=$Factor height=$Factor ";
-           echo " style='fill:red; stroke:red; ";
-           if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";        
-           echo "' />";
+           $Map .= "<rect x=" . ($Xpos + $Xwidth - $Factor) . " y=" . ($Ypos + $Factor-2 ) . " width=$Factor height=$Factor ";
+           $Map .= " style='fill:red; stroke:red; ";
+           if ($Inf['Angle']) $Map .= "transform: rotate(" . $Inf['Angle'] . "Deg); ";        
+           $Map .= "' />";
            $Key []= 'FireEx';
         }
         
@@ -160,7 +161,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
         break;
       
       case '2': // Circle
-        echo "<circle cx=$Xpos cy=$Ypos r=$Xwidth ";
+        $Map .= "<circle cx=$Xpos cy=$Ypos r=$Xwidth ";
         if (!empty($Inf['MapColour'])) {
           if ($Inf['MapColour'] != '/') {
             $fill = $Inf['MapColour'];
@@ -177,10 +178,10 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
             $stroke = 'LightSeaGreen';
           }
         }
-        echo " style='fill:$fill;stroke:$stroke;";
-        if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";
-  //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
-        echo "'/>"; 
+        $Map .= " style='fill:$fill;stroke:$stroke;";
+        if ($Inf['Angle']) $Map .= "transform: rotate(" . $Inf['Angle'] . "Deg); ";
+  //?     $Map .= "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
+        $Map .= "'/>"; 
         $Inf['X'] -= $Inf['Xsize']; // For text positioning
         $Inf['Y'] -= $Inf['Ysize']/2; // For text positioning
         $TxtXf = $TxtYf = 2;
@@ -188,25 +189,25 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
         break;
       
       case '3': // arrow
-        echo "<line x1=$Xpos y1=$Ypos x2=$Xwidth y2=$Yheight stroke=$stroke marker-end=url(#arrow) />";
+        $Map .= "<line x1=$Xpos y1=$Ypos x2=$Xwidth y2=$Yheight stroke=$stroke marker-end=url(#arrow) />";
         break;
       
       case '4': // Image
-        echo "<image x=$Xpos y=$Ypos width=$Xwidth height=$Yheight href=$Name ";
-        if ($Inf['Angle']) echo "style='transform: rotate(" . $Inf['Angle'] . "Deg);' ";        
+        $Map .= "<image x=$Xpos y=$Ypos width=$Xwidth height=$Yheight href=$Name ";
+        if ($Inf['Angle']) $Map .= "style='transform: rotate(" . $Inf['Angle'] . "Deg);' ";        
         
-        echo " />";
+        $Map .= " />";
         $Name = '';
       }
       
       // Now do any text
 
-      echo "<title>$Name</title>";
+      $Map .= "<title>$Name</title>";
 
-      echo "<text x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . ((($Inf['Y']+0.7)/$Mapscale) * $Factor);
-      echo " style='";
-      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg);";
-      echo "fill:$Pen; font-size:10px;'>";
+      $Map .= "<text x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . ((($Inf['Y']+0.7)/$Mapscale) * $Factor);
+      $Map .= " style='";
+      if ($Inf['Angle']) $Map .= "transform: rotate(" . $Inf['Angle'] . "Deg);";
+      $Map .= "fill:$Pen; font-size:10px;'>";
       if ($Name) {
       // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
       // Chunking - split to Words then add words to full - if no words split word (hard)
@@ -224,13 +225,13 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
         foreach ($Chunks as $i=>$Chunk) {
           if ($i>=$MaxCnk) break; 
    //       $Chunk = substr($Name,0,$ChSize);
-          echo "<tspan x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . (($Inf['Y']+$Ystart/$Mapscale) * $Factor) . 
+          $Map .= "<tspan x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . (($Inf['Y']+$Ystart/$Mapscale) * $Factor) . 
                " style=' font-weight:bold; font-size:" . (10+$Inf['Font']*2) . "px;'>$Chunk</tspan>";
           $Ystart += 1.2*(10+$Inf['Font']*2.1)/20;
         }
       }
-      echo "</text>";
-      if ($Lopen) echo "</a>";
+      $Map .= "</text>";
+      if ($Lopen) $Map .= "</a>";
     }
   }
   
@@ -246,16 +247,16 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     if ($Links) {
       if ($Links == 1 && !$Pitch['Type']) {
         if (isset($TNum[$Posn])) {
-          echo "<a href=#Trader" . $TNum[$Posn] . ">";
+          $Map .= "<a href=#Trader" . $TNum[$Posn] . ">";
           $Lopen = 1;
           $TradersInLoc[] = $TNum[$Posn];
         }
       } elseif ($Links == 2) {
-        echo "<a href='TradeShow?SEL=" . $Pitch['SN'] . "$Staff'>";
+        $Map .= "<a href='TradeShow?SEL=" . $Pitch['SN'] . "$Staff'>";
         $Lopen = 1;
       }
     } else {
-//      echo "<a>";
+//      $Map .= "<a>";
 //      $Lopen = 1;
     }
     
@@ -267,32 +268,32 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
 
     if ($Pitch['Type'] != 2) {
       $PitchName = (($Pitch['Type'] || empty($Pitch['SN']))? $Pitch['Posn'] : $Pitch['SN']);
-      echo "\n<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight id=Pitch:$PitchName";
-      echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
+      $Map .= "\n<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight id=Pitch:$PitchName";
+      $Map .= " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
            ";stroke:black;";
-      if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
+      if ($Pitch['Angle']) $Map .= "transform: rotate(" . $Pitch['Angle'] . "Deg);";
       if ($DragOver[$Pub]) {
-        echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
+        $Map .= "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
       } else {
-        echo "'/>"; 
+        $Map .= "'/>"; 
       }
 
-      echo "<title>$Name</title>";
+      $Map .= "<title>$Name</title>";
     }
     
-    echo "\n<text x=" . ($Xpos+2)  . " y=" . ($Ypos+$loc['TextFudge']); //(($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor -60);
+    $Map .= "\n<text x=" . ($Xpos+2)  . " y=" . ($Ypos+$loc['TextFudge']); //(($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor -60);
     $YAdd = (11+$Pitch['Font']);
     $Delta = 0;
     
-    echo " style='";
-    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg); ";
-    echo "font-size:10px;'>";
+    $Map .= " style='";
+    if ($Pitch['Angle']) $Map .= "transform: rotate(" . $Pitch['Angle'] . "Deg); ";
+    $Map .= "font-size:10px;'>";
     if ($ShowPitch[$Pub]) {
-      echo "#" . $Posn;
-      if (($Pitch['Type'] == 0) && $Pitch['SN']) echo " - " . ($Pitch['SN']??'');
+      $Map .= "#" . $Posn;
+      if (($Pitch['Type'] == 0) && $Pitch['SN']) $Map .= " - " . ($Pitch['SN']??'');
       $Delta = 11;
     } else if (($Pub == 2) && ($Pitch['SN']??'')) {
-      echo $Pitch['SN'];
+      $Map .= $Pitch['SN'];
       $Delta = 11;
     }
     if ($Name) {
@@ -312,15 +313,17 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
         if ($i>=$MaxCnk) break; 
  //       $Chunk = substr($Name,0,$ChSize);
         $tl = ((strlen($Chunk) > (($ChSize-3)*$Pitch['Xsize']/3))?"textLength=" . ($Xwidth-2):'');
-        echo "\n<tspan x=" . ($Xpos+1) . " dy=$Delta $tl " .
+        $Map .= "\n<tspan x=" . ($Xpos+1) . " dy=$Delta $tl " .
              " style='font-size:" . ($Pitch['Font']+10) . "px;'>$Chunk</tspan>";
         $Delta = $YAdd;
       }
     }
-    echo "</text>";
-    if ($Lopen) echo "</a>";
+    $Map .= "</text>";
+    if ($Lopen) $Map .= "</a>";
 
   }   
-  echo "</svg>";
-  echo "</div>";
+  $Map .= "</svg>";
+  $Map .= "</div>";
+  
+  return $Map;
 }

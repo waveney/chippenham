@@ -749,8 +749,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     echo "<tr class='NotCSide ContractShow' hidden>" . fm_textarea('Additional Riders',$Sidey,'Rider',2,1,'class=NotCSide') ."\n";
       if (!$Wide) echo "<tr>";
       echo "<td colspan=2 class=NotCSide>On arrival report to: " . fm_select($R2Venues,$Sidey,'ReportTo') .
-           "<td class=NotCSide>" . fm_checkbox('Tell about Green Room',$Sidey,'GreenRoom');
-      if (empty($Sidey['TotalFee'])) echo "<td class=NotCSide>" . 
+           "<td class=NotSide>" . fm_checkbox('Tell about Green Room',$Sidey,'GreenRoom');
+      if (empty($Sidey['TotalFee'])) echo "<td class=NotSide>" . 
         fm_checkbox('Need a contract even if no fee',$Sidey,'ContractAnyway',' onchange=CheckContract()');
 
     $campxtr = $campxtr2 = '';          

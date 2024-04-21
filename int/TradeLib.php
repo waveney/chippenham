@@ -366,7 +366,7 @@ function Pitch_Size_Def($type) {
 
 function Default_Trade($id,$type=1) {
   global $YEAR;
-  return array('Year'=>$YEAR,'Tid'=>$id,'PitchSize0'=>Pitch_Size_Def($type),'Power0'=>1,'BookingState'=>0);
+  return array('Year'=>$YEAR,'Tid'=>$id,'PitchSize0'=>Pitch_Size_Def($type),'Power0'=>1,'BookingState'=>0,'ExtraPowerCost'=>0, 'Fee'=>0);
 }
 
 // OLD CODE DELETE
@@ -1003,11 +1003,11 @@ function Trader_Details($key,&$data,$att=0) {
                      $Prefixes[$TradeLocData[$Trady["PitchLoc$i"]]['prefix']] . " " . $TradeLocData[$Trady["PitchLoc$i"]]['SN'] . 
                      " please see this <a href='$host/int/TradeStandMap?l=" . $Trady["PitchLoc$i"] . "&t=2' style='background:lightblue;'>map</a> " .
                      "<p>" .
-                     "Note the formatting of the business names on this will be improved soon<p>";
+                     "Note the formatting of the business names on this should be improved soon<p>";
       }
     }
     if (!$MapLinks) return "";
-    return "<b>Pitch assignments</b>.  The new layouts of many areas are for health and safety reasons and are not negotiable.<p> " . $MapLinks;
+    return "<b>Pitch assignments</b>.  The layouts of many areas are for health and safety reasons and are not negotiable.<p> " . $MapLinks;
   case 'WEBSITESTUFF':
     $webstuff = '';
     if (!$Trad['Photo']) {
@@ -1114,7 +1114,7 @@ function Submit_Application(&$Trad,&$Trady,$Mode=0) {
   global $PLANYEAR,$USER;
   $Trady['Date'] = time();
   if (!isset($Trady['History'])) $Trady['History'] = '';
-  $Trady['History'] .= "Action: Submit on " . date('j M Y H:i') . " by " . ($Mode?$USER['Login']:'Trader') . ".<br>";
+  $Trady['History'] .= "Action: Submit on " . date('j M Y H:i:s') . " by " . ($Mode?$USER['Login']:'Trader') . ".<br>";
   if ($Trady['TYid']) {
     Put_Trade_Year($Trady);
   } else { // Its new...
@@ -1580,7 +1580,8 @@ function Trade_Main($Mode,$Program,$iddd=0) {
         }
 //        var_dump($Mode, $ButTraderTips[$ac]);
         if (!$Mode && !empty($ButTraderTips[$ac])) $ButExtra[$ac] = $ButTraderTips[$ac];
-        echo "<input type=submit name=ACTION value='$ac' " . ($ButExtra[$ac] ??'') . " $xtra >";
+        echo "<input type=submit name=ACTION value='$ac' " . ($ButExtra[$ac] ??'') . " $xtra onlick=PreventDouble()>";
+  //        . "onclick=\"this.disabled=true;this.value='Submitting...'; this.form.submit();\">";
       }
     }
     if ($Mode == 0) { 

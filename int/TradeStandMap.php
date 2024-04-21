@@ -59,7 +59,7 @@
 
   if (Access('Staff') && $Traders) echo "Any Trader in White has NOT PAID<p>";
 
-  Pitch_Map($tloc,$Pitches,$Traders,$Type,1,'');
+  echo Pitch_Map($tloc,$Pitches,$Traders,$Type,1,'');
   if ($loc != Feature('TradeBaseMap')) echo "<h2><a href=TradeStandMap?$Staff>Return to main map</a></h2>";
 
   dotail();

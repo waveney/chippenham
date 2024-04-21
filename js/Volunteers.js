@@ -90,7 +90,14 @@ function VolListFilter() {
   });
 }
 
+var Clickids = [];
+
 function AcceptTeam(id,catid) {
+  var now = Date.now();
+  var clid = id + '/' + catid;
+  if (Clickids[clid] > (now -10000) ) return; // 10 Second window
+  Clickids[clid]= now;  
+  
   // Call Volunteer with appropriate paras  
   $("#YearStatus" + id).load("volaction.php", "A=Accept1&id=" + id + "&Catid=" + catid);
   // Hide all A buttons $("[id^=jander]")
