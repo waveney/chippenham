@@ -4,6 +4,7 @@
   dostaffhead("Trade Stand Map");
 
   include_once("TradeLib.php");
+  include_once("PitchMap.php");
 /* If logged in or trade stae >=partial view actual traders, otherwise just the grid */
 
   global $Pitches,$tloc,$loc,$YEARDATA,$EType_States,$Traders,$USER,$USERID;
@@ -11,6 +12,7 @@
   $TradeState = $YEARDATA['TradeState'];
   $TradeViews = [0,1,2,2,2];
   $ViewTrade = $TradeViews[$TradeState];
+  $Staff = (isset($_REQUEST['STAFF'])?'STAFF':'');
   
 
   $trloc = $loc = Get_Location(); 
@@ -28,7 +30,7 @@
   switch ($Type) {
     case 0: // Public, Setup, EMP, Infrastructure
     default:
-      
+      if (isset($_REQUEST['STAFF'])) $ShowTraders = -1;
       break;
     
     case 1: // Public with trade 
@@ -53,11 +55,12 @@
   }
     
   $Pitches = Get_Trade_Pitches($loc);  
+//  var_dump($ShowTraders,$Traders);
 
   if (Access('Staff') && $Traders) echo "Any Trader in White has NOT PAID<p>";
 
-  Pitch_Map($tloc,$Pitches,$Traders,$Type,1);
-  if ($loc != Feature('TradeBaseMap')) echo "<h2><a href=TradeStandMap>Return to main map</a></h2>";
+  echo Pitch_Map($tloc,$Pitches,$Traders,$Type,1,'');
+  if ($loc != Feature('TradeBaseMap')) echo "<h2><a href=TradeStandMap?$Staff>Return to main map</a></h2>";
 
   dotail();
   

@@ -33,5 +33,6 @@ CREATE TABLE `Trade` (
   `Account` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `AccountName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `IandT` tinyint NOT NULL,
+  `NoMarketing` tinyint NOT NULL,
   PRIMARY KEY (`Tid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

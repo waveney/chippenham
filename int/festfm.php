@@ -531,7 +531,7 @@ function FestDate($day,$format='M',$Year=0) {
 }
 
 function ChunkSplit($txt,$maxlen,$maxchnks) {
-  $Words = explode(' ',$txt);
+  $Words = preg_split('/[ |]/',$txt);
   $Res = [];
   $left = '';
   foreach ($Words as $w) {
@@ -774,11 +774,11 @@ XXX;
   return $str;
 }
 
-function Register_Onload($FN,$P1=0,$P2=2) {
+function Register_Onload($FN,$P1=0,$P2=0) {
   echo "<script> Register_Onload($FN,$P1,$P2); </script>";
 }
 
-function Register_AfterInput($FN,$P1=0,$P2=2) {
+function Register_AfterInput($FN,$P1=0,$P2=0) {
   echo "<script> Register_AfterInput($FN,$P1,$P2); </script>";
 }
 

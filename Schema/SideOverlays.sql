@@ -11,6 +11,7 @@ CREATE TABLE `SideOverlays` (
   `Twitter` text COLLATE utf8mb4_general_ci NOT NULL,
   `Facebook` text COLLATE utf8mb4_general_ci NOT NULL,
   `Instagram` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Spotify` text COLLATE utf8mb4_general_ci NOT NULL,
   `ImageHeight` int NOT NULL,
   `ImageWidth` int NOT NULL,
   PRIMARY KEY (`id`)

@@ -46,10 +46,11 @@ $(document).ready(function() {
   var cats1 = $('#VolCatsRaw').val();
   var cats2 = atob(cats1);
   Teams = JSON.parse(cats2);
+  if ($('#CampNeed')) CampingVolSet();
+});
+
   
 //  ShowAvails();
-} );
-
 
 
 function VolScanTeams() {
@@ -58,8 +59,8 @@ function VolScanTeams() {
 
 }
 
-function CampingVolSet(name) {
-  var CampVal = $("input[name='" + name + "']:checked").val();
+function CampingVolSet() {
+  var CampVal = $("input[name='CampNeed']:checked").val();
   if (!CampVal || CampVal < 10) { $('#CampPUB').hide(); $('#CampREST').hide(); }
   else if (CampVal < 20) { $('#CampPUB').show(); $('#CampREST').hide(); }
   else if (CampVal < 30) { $('#CampPUB').hide(); $('#CampREST').show(); }; 
@@ -89,7 +90,14 @@ function VolListFilter() {
   });
 }
 
+var Clickids = [];
+
 function AcceptTeam(id,catid) {
+  var now = Date.now();
+  var clid = id + '/' + catid;
+  if (Clickids[clid] > (now -10000) ) return; // 10 Second window
+  Clickids[clid]= now;  
+  
   // Call Volunteer with appropriate paras  
   $("#YearStatus" + id).load("volaction.php", "A=Accept1&id=" + id + "&Catid=" + catid);
   // Hide all A buttons $("[id^=jander]")

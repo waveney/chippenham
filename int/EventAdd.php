@@ -364,7 +364,6 @@ A similar feature will appear eventually for music.<p>
         echo "<td class=NotSide>" . fm_simpletext('Door Price (if different) &pound;',$Event,'DoorPrice');
         echo "<td class=NotSide>" . fm_simpletext('Ticket Code',$Event,'TicketCode');
       }
-
       echo "<tr>" . fm_radio("<b><span class=mday $hidemday>Start </span>Day</b>",$FestDays,$Event,'Day',
                     ($se > 0?'class=FullD hidden':''),1,($se > 0?'class=FullD hidden':''));
       echo "<td colspan=2><b>Times</b>: " . fm_smalltext2('Start:',$Event,'Start');

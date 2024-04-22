@@ -242,6 +242,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
       $txt .=   Social_Link(OvFacebook($side,$Isa),'Facebook',1,$follow);
       $txt .=   Social_Link(OvTwitter($side,$Isa),'Twitter',1,$follow);
       $txt .=   Social_Link(OvInstagram($side,$Isa),'Instagram',1,$follow);
+      $txt .=   Social_Link(OvSpotify($side,$Isa),'Spotify',1,$follow);
       $txt .=  "</div>";
     }
     
@@ -445,6 +446,7 @@ function Set_Side_Help() {
         'Facebook'=>'If more than one seperate with spaces (mainly for music acts)',
         'Twitter'=>'If more than one seperate with spaces (mainly for music acts)',
         'Instagram'=>'If more than one seperate with spaces (mainly for music acts)',
+        'Spotify'=>'If more than one seperate with spaces (mainly for music acts)',
         'Video'=>'You can use a YouTube embed or share link',
         'Likes'=>'Venues prefered, sides like to share with',
         'Dislikes'=>'Venues disliked, sides do not want to share with - not in use',
@@ -485,6 +487,7 @@ function Set_Side_Help() {
         'BookDirect'=>'Tick this to bypass the agent and email the performer drectly',
         'NotPerformer'=>'People in the database that are not performing and should not appear in lists of performers',
         'HasOverlays'=>'Enables separate public info for performers in multiple categories - ask Richard',
+        'NoDanceEvents'=>'If the performer is not doing a dancing event, tick to surpress errors',
   );
   Set_Help_Table($t);
 }
@@ -880,6 +883,7 @@ function Dance_Email_Details($key,&$data,&$att=0) {
       }
 
     return ($count? "$str</ol><p>\n" : "");
+  case 'PERF': return $Side['SN'];
   case 'SIDE': return $Side['SN'];
   case 'DANCEORG': return Feature('DanceOrg','Richard Proctor');
   case (preg_match('/TICKBOX(.*)/',$key,$mtch)?true:false):
@@ -899,19 +903,20 @@ function Dance_Email_Details($key,&$data,&$att=0) {
         $ConAns = Contract_Check($snum,1,1);
         switch ($ConAns) {
           case 0: // Ready
+          case 1: /// No fee - acceptable sometimes
             $str = '<b>Please confirm your contract by following *LINK* and clicking on the "Green Confirm" button near the ' .
               'bottom of the page.</b><p>';
             $p = 0;
             $AddC = 1;
             break;
-          case 2: // Ok apart from bank account
-            $str = 'Please follow *LINK*, fill in your bank account details (so we can pay you), then click "Save Changes".<p> ' .
+          case 3: // Ok apart from bank account
+            $str = 'Please follow *LINK*, fill in your bank account details (so we can pay you).<p> ' .
                   'Then you will be able to view and confirm your contract, ' .
                   'by clicking on the "Green Confirm" button. (The button will only appear once you have input your bank account details ).<p>';
             $p = 0;
             $AddC = 2;
             break;
-          case 3: // No Cont
+          case 4: // No Cont
             break;
           default: // Add draft for info
             $AddC = 2;

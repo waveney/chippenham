@@ -54,6 +54,7 @@ var InfoPaneDefault = '';
     $("#SideH"+Side).text(cur); 
     dst.innerHTML=text;
     dst.classList.add('Side' + Side);
+    dst.classList.add('DPGridDisp');
     if (hlights[Side]) dst.classList.add(hlights[Side]);
     dst.setAttribute('data-d',Side);
 

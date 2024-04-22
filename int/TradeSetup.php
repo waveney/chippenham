@@ -5,6 +5,7 @@
   dostaffhead("Manage Trade Pitches");
 
   include_once("TradeLib.php");
+  include_once("PitchMap.php");
 
   // Work out pitch locs for a map
   // Map on left locs on right 
@@ -31,9 +32,9 @@
       echo fm_hidden("Year$i",$Pitch['Year']);
       $posn = max($posn, $Pitch['Posn']);
     }
+    $Pitch = [];
     $Pitch['Posn'] = $posn+1; 
     $Pitch['X'] = -9;
-    $Pitch['Y'] = $Pitch['Angle'] = 0;
     echo "<tr>" . fm_text1("",$Pitch,'Posn',0.08,'','',"Posn0");
     echo fm_text1("",$Pitch,'X',0.10,'','',"X0") . fm_text1("",$Pitch,'Y',0.10,'','',"Y0");
     echo fm_text1("",$Pitch,'Angle',0.10,'','',"Angle0");
@@ -77,7 +78,7 @@
 
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
   
-  Pitch_Map($tloc,$Pitches,0,3,1,'TradeSetup');
+  echo Pitch_Map($tloc,$Pitches,0,3,1,'TradeSetup');
   PitchList();
   
   echo "<h2>";

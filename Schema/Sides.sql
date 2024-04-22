@@ -65,6 +65,7 @@ CREATE TABLE `Sides` (
   `Facebook` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Twitter` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Instagram` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Spotify` text COLLATE utf8mb4_general_ci NOT NULL,
   `ProcessionalDance` tinyint(1) NOT NULL,
   `NoiseLevel` tinyint(1) NOT NULL,
   `MinStage` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
@@ -83,6 +84,7 @@ CREATE TABLE `Sides` (
   `OneBlurb` tinyint NOT NULL,
   `NotPerformer` tinyint NOT NULL,
   `HasOverlays` tinyint NOT NULL,
+  `NoMarketing` tinyint NOT NULL,
   PRIMARY KEY (`SideId`),
   KEY `SideNum` (`SideId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

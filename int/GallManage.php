@@ -86,7 +86,7 @@
   }
 
   if (Access('SysAdmin')) {
-    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+    echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotStaff><textarea id=Debug></textarea><p><span id=DebugPane></span>";
   }
 
   echo "</table></div>\n";

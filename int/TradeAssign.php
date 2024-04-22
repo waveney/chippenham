@@ -5,6 +5,7 @@
   dostaffhead("Manage Trade Pitches",['js/Trade.js']);
 
   include_once("TradeLib.php");
+  include_once("PitchMap.php");
 
   global $Pitches,$tloc,$loc,$Traders,$Trade_State,$db,$Trade_Types,$Trade_Types;
   $Trade_Types = Get_Trade_Types(1);
@@ -19,7 +20,8 @@
       foreach ($Traders as $Trad) {
         $tid = $Trad['Tid'];
         echo "<tr><td draggable=true class='TradeName Trader$tid' id=TradeN$tid ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) " .
-             "style='background:" . (($Trad['PAID']??0) ? $Trade_Types[$Trad['TradeType']]['Colour'] : 'white' ) . "'>" . $Trad['SN'];
+             "style='background:" . (($Trad['PAID']??0) ? $Trade_Types[$Trad['TradeType']]['Colour'] : 'white' ) . "'>" . 
+             preg_replace('/\|/','',$Trad['SN']);
         if (!($Trad['PAID']??0)) {
           echo " <span class=err>" . ($Trad['BookingState'] == $Trade_State['Quoted'] ?"NOT ACCEPTED": "NOT PAID") .  "</span>";
         }
@@ -38,7 +40,7 @@
       }
       echo "</table></div>";
       echo "<input type=submit name=Update value=Update> <span class=Err>$Message</span>";
-      echo "<a href=TradeSetup?i=$loc style='font-size:20;'>Setup</a>";
+      echo "<a href=TradeSetup?l=$loc style='font-size:20;'>Setup</a>";
     }
     echo "</div></div>";
   }
@@ -117,9 +119,10 @@
   echo fm_hidden('l',$loc);
 
   echo "<h2>Pitch setup for " . $tloc['SN'] . "</h2>";
+  echo "<b>Note Drag and drop is not working yet</b><br>\n";
   $Message = Validate_Pitches_At($loc);
 
-  Pitch_Map($tloc,$Pitches,$Traders,4,1,'TradeAssign');
+  echo Pitch_Map($tloc,$Pitches,$Traders,4,1,'TradeAssign');
 
 //  Pitch_Map($tloc,$Pitches,$Traders);
   TraderList($Message,$trloc);

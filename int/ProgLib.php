@@ -709,7 +709,7 @@ function Price_Show(&$Ev,$Buy=0) {
 }
 
 function VenName(&$V) {
-  return ($V['ShortName']?$V['ShortName']:$V['SN']);
+  return (!empty($V['ShortName'])?$V['ShortName']:($V['SN']??'Unknown'));
 }
 
 function DayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBreak=0) {

@@ -154,6 +154,10 @@ textarea {
   background-color:	#FFd6d1;
 }
 
+.NotStaff {
+  background-color: RosyBrown;
+}
+
 input[type=text] {
   background-color:#E0E0E0;
 }

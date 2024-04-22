@@ -77,8 +77,6 @@ See the help on the Create Event page for more about this.<p>
 <h2>Users</h2><p>
 Initially, this is for the committee, but some parts of this system may be made available later to staff / stewards / others as appropriate.<p>
 
-Polly is an example of staff, who needs access to event, venue and participant information and the document storage.<p>
-
 <h2>Need a new table/feature?</h2><p>
 Ask Richard.  Most will be very quick to implement.<p>
 
@@ -86,10 +84,8 @@ Ask Richard.  Most will be very quick to implement.<p>
 <h2>Problems?</h2><p>
 If something goes wrong, or its not obvious or you wish it could do something extra. <p>
 
-Then either contact Richard (07718 511 432, Email: <a href=mailto:richard@wavwebs.com>Richard@wavwebs.com</a>)
-or <a href=AddBug>Raise a bug or Feature request</a>.<p>
-
+Then either contact Richard (07718 511 432, Email: <a href=mailto:richard@wavwebs.com>Richard@wavwebs.com</a>).
+  
 <?php 
-  dotail()  
-?>
-
+  dotail();
+  

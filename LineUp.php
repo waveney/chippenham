@@ -60,7 +60,8 @@
     }
     $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.DanceImportance,s.Importance) AS EffectiveImportance " .
              "FROM Sides AS s, SideYear AS y WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.Coming=" . $Coming_Type['Y'] . 
-             " AND s.IsASide=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
+             " AND s.IsASide=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 AND y.NoDanceEvents=0 " .
+             "ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
     $Sizes = [3,3,3,2,2,1,1];
     $ShortDesc = Feature('LinupShortDesc_Dance');
     break;

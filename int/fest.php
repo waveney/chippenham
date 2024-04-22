@@ -171,15 +171,7 @@ function Access($level,$subtype=0,$thing=0) {
 */
 
 function A_Check($level,$subtype=0,$thing=0) {
-  global $USERID;
-  Set_User();
-  if (!$USERID) {
-    include_once("int/Login.php");
-    Login();
-  }
   if (Access($level,$subtype,$thing)) return;
-//echo "Failed checking...";
-//exit;
   Error_Page("Insufficient Privilages");
 }
 

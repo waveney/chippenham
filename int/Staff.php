@@ -291,7 +291,7 @@
     $txt .= "<li><a href=TradeFAQ>Trade FAQ</a>\n";
     $txt .= "<li><a href=ListCTrade?Y=$YEAR&SUM>Traders Summary</a>\n";
 
-    $txt .= "<li><form method=Post action=TradeStandMap class=staffform>";
+    $txt .= "<li><form method=Post action=TradeStandMap?STAFF class=staffform>";
       $txt .= "<input type=submit name=l value='Trade Stand Map' id=staffformid>" . 
                 fm_hidden('Y',$YEAR) .
                 fm_select($Tlocs,$ld,'l',0," onchange=this.form.submit()") . "</form>\n";
@@ -305,14 +305,13 @@
                 fm_select($Tlocs,$ld,'l',0," onchange=this.form.submit()") . "</form>\n";
 
       $txt .= "<li><a href=TradeLocs?Y=$YEAR>Trade Locations</a>\n";
-//      $txt .= "<li><a href=TradeSetup>Trade Pitch Setup</a>\n";
+      $txt .= "<li><a href=TradeShow?STAFF>Trade Show</a> (even if not public)\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=TradeTypes>Trade Types and base Prices</a>\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=TradePower>Trade Power</a>\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=EmailTraders>Email Groups of Traders</a>\n"; // Old code needs lots of changes
 //      if (Access('SysAdmin')) $txt .= "<li><a href=TradeDateChange>Bump Trade Year Data to new dates</a>\n";
 
 //      if (Access('SysAdmin')) $txt .= "<li><a href=TradeImport3>Fix Access Keys</a>\n";
-//      $txt .= "<li><a href=/admin/trade/index>Old Trade Stand Section</a>\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=Trade2CSV?Y=$YEAR>Traders as CSV</a>\n";
     }
     $txt .= "<li><a href=TradePowerList?T=Power>Show all power</a>\n";
@@ -526,6 +525,7 @@
       $txt .= "<li><a href=InvoiceSummary?Y=$YEAR>Invoice Summary</a>\n";   
       $txt .= "<li><a href=OtherPaymentSummary?Y=$YEAR>Other Payment Summary</a>\n";   
       $txt .= "<li><a href=Payments?Y=$YEAR>List All Performer Payments</a>\n";  
+      $txt .= "<li><a href=TradeRecieve?Y=$YEAR>List Trader Payments</a>\n";  
     } elseif (Access('Committee')) {
       $txt .= "<li><a href=BudgetManage?Y=$YEAR>Budget View</a>\n";
       $txt .= "<li><a href=InvoiceManage?Y=$YEAR>Invoice Management</a>\n";
@@ -625,7 +625,7 @@
         }
       }
 //      $txt .= "<li><a href=BannerManage>Manage Banners</a> \n";
-      $txt .= "<li><a href=DonateTypes?Y=$YEAR>Donation Buttons Setup</a> \n";
+      if (Feature('Donate')) $txt .= "<li><a href=DonateTypes?Y=$YEAR>Donation Buttons Setup</a> \n";
       $txt .= "<li><a href=PerformerTypes?Y=$YEAR>Performer Types</a> \n";
       $txt .= "<li><a href=TsAndCs2?Y=$YEAR>Terms, Conditions, FAQs etc</a> \n";
       $txt .= "<li><a href=YearData?Y=$YEAR>General Year Settings</a> \n";

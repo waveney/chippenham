@@ -64,7 +64,7 @@
 //        'Art Show Application' => 'int/ArtForm',
 //        '*Live and Loud'=>'LiveNLoud',
 //        '*Buskers Bash'=>'BuskersBash',
-//        'Donate'=>'Donate',
+        '%Donate'=>'Donate',
          ],
       '-Gallery'=>[
         '@'=>1, //Special
@@ -158,13 +158,31 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
         if (!Feature('Donate')) continue 2;
         $xtra = "id=MenuDonate";
         $text = substr($text,1);
+/*        $text = <<< XXXX
+        <div id="donate-button-container">
+<div id="donate-button"></div>
+<script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
+<script>
+PayPal.Donation.Button({
+env:'production',
+hosted_button_id:'22BCWF5ZF97NA',
+image: {
+src:'https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif',
+alt:'Donate with PayPal button',
+title:'PayPal - The safer, easier way to pay online!',
+}
+}).render('#donate-button');
+</script>Donate
+</div>
+XXXX;*/
+        
         break;
       case '@' :
         switch ($link) {
         case 0:
           foreach ($Event_Types as $ET) {
             if ($ET['DontList']) continue;
-            $Bar[$ET['Plural']] = ((empty($ET['Sherlock']) || is_numeric($ET['Sherlock']) || ($ET['State'] < 3))?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
+            $Bar[$ET['Plural']] = ((empty($ET['Sherlock']) || is_numeric($ET['Sherlock']) || ($ET['State'] <= 2))?("Sherlock?t=" . $ET['SN']):$ET['Sherlock']);
           }
           break;
         case 1:

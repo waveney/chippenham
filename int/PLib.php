@@ -120,7 +120,10 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     if (!$Wide) echo "<tr>";
       echo fm_text(Social_Link($Side,'Twitter'  ),$Side,'Twitter');
       echo fm_text(Social_Link($Side,'Instagram'),$Side,'Instagram');
-
+/*
+      if (!$Wide) echo "<tr>";
+      echo fm_text(Social_Link($Side,'Spotify'  ),$Side,'Spotify');
+*/
 
 //********* PRIVATE
 
@@ -365,10 +368,10 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     if ($Mode) {
       echo "<tr>" . fm_text('Location',$Side,'Location',2,'class=NotSide');
       if (Access('SysAdmin')) {
-        if (!$Wide) echo "<tr>";
-        echo fm_nontext('Access Key',$Side,'AccessKey',3,'class=NotSide','class=NotSide'); 
+        if (!$Wide) echo "<tr class=NotStaff>";
+        echo fm_nontext('Access Key',$Side,'AccessKey',3,'class=NotStaff','class=NotStaff'); 
         if (isset($Side['AccessKey'])) {
-          echo "<td class=NotSide><a href=Direct?id=$snum&key=" . $Side['AccessKey'] . "&Y=$YEAR>Use</a>" . help('Testing');
+          echo "<td class=NotStaff><a href=Direct?id=$snum&key=" . $Side['AccessKey'] . "&Y=$YEAR>Use</a>" . help('Testing');
         }
       }
       echo "<tr>" . fm_textarea('Notes',$Side,'Notes',5,2,'class=NotSide','class=NotSide');
@@ -391,7 +394,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       
     }
   if (Access('SysAdmin')) {
-    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+    echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
 //    echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p>" ; //<span id=DebugPane></span>";
   } else {
 //    echo "<div hidden><tr><td class=NotSide>Debug:<td colspan=5 class=NotSide><span id=DebugPane></span><p></div>"; 
@@ -511,7 +514,9 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       $Coming_States[0] = 'None';
     }
     echo "<tr>";
-    echo fm_radio('Dancing Status',$Coming_States ,$Sidey,'Coming','',1,'colspan=4 id=Coming_states','',$Coming_Colours,0,'',' onchange=ComeAnyWarning()'); 
+    echo fm_radio('Dancing Status',$Coming_States ,$Sidey,'Coming','',1,'colspan=3 id=Coming_states','',$Coming_Colours,0,'',
+         ' onchange=ComeAnyWarning()'); 
+    if ($Mode) echo "<td class=NotSide>" . fm_checkbox("No Dance Events",$Sidey,'NoDanceEvents');
   }
   if (Access('SysAdmin')) echo "<tr>" . fm_textarea('Messages' . Help('Messages'),$Sidey,'Invited',5,2,'class=NotSide','class=NotSide');
 
@@ -525,6 +530,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     if ($Mode || Access('SysAdmin')) {
       echo fm_radio("Contract State",$Book_States,$Sidey,'YearState','class=NotSide',1,'colspan=3 class=NotSide','',$Book_Colours);
       echo "<td class=NotSide>" . fm_checkbox('No Events',$Sidey,'NoEvents');
+      if (Access('SysAdmin')) echo fm_number1('Contract Issue',$Sidey,'Contracts', 'class=NotStaff');
     } else {
       echo "<td class=NotSide>Booking State:" . help('YearState') . "<td class=NotSide>" . $Book_States[$Sidey['YearState']];
     }
@@ -532,6 +538,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     echo fm_hidden('YearState',$Sidey['YearState']);  
   }
   
+  echo fm_hidden('HiddenYearState',$Sidey['YearState']); 
   $DayCount = 0;
   for ($d= $YEARDATA['FirstDay']; $d<= $YEARDATA['LastDay']; $d++) $DayCount++;
 
@@ -742,8 +749,9 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     echo "<tr class='NotCSide ContractShow' hidden>" . fm_textarea('Additional Riders',$Sidey,'Rider',2,1,'class=NotCSide') ."\n";
       if (!$Wide) echo "<tr>";
       echo "<td colspan=2 class=NotCSide>On arrival report to: " . fm_select($R2Venues,$Sidey,'ReportTo') .
-           "<td class=NotCSide>" . fm_checkbox('Tell about Green Room',$Sidey,'GreenRoom');
-      if (empty($Sidey['TotalFee'])) echo "<td class=NotCSide>" . fm_checkbox('Need a contract even if no fee',$Sidey,'ContractAnyway');
+           "<td class=NotSide>" . fm_checkbox('Tell about Green Room',$Sidey,'GreenRoom');
+      if (empty($Sidey['TotalFee'])) echo "<td class=NotSide>" . 
+        fm_checkbox('Need a contract even if no fee',$Sidey,'ContractAnyway',' onchange=CheckContract()');
 
     $campxtr = $campxtr2 = '';          
     switch ($CampMode) {
@@ -781,6 +789,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         $Add = '';
         $Csi = $CS['id'];
         if ($CS['Props'] & 2) {
+          continue;
           $Add = ' class=NotCSide ';
           if (($Mode == 0) && empty($Camp[$Csi])) continue;
         }
@@ -957,6 +966,14 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     switch ($Sidey['YearState']) {
       case $Book_State['Contract Signed']:
         echo "<td>Contract Confirmed " .$ContractMethods[$Sidey['ContractConfirm']] . " on " . date('d/m/y',$Sidey['ContractDate']) . "\n";
+        if ($Mode) {
+          $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":0);
+          $Issue = $Sidey['Contracts']+1;
+          echo "<td class=NotSide><button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract_Reissue',$snum,"
+                 . "'Contract','SendPerfEmail.php',2,$E,$Issue)" . Music_Proforma_Background('Contract') . ">Reissue Contract</button>"; 
+        }
+//          echo "<td><input type=submit id=orangesubmit name=ReIssue value='Reissue Contract'>";
+
         break;
       case $Book_State['Contract Ready']:
         $CMess = Contract_Check($snum);
@@ -982,6 +999,12 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             echo "<td colspan=2><input type=submit id=greensubmit name=Contract value='Confirm Contract by Receipt of Confirmation Email'>";
             echo fm_hidden('ContractDate',time());
             echo "<td colspan=2><input type=submit id=redsubmit name=Decline value='Decline Contract by Clicking Here'>";
+            $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":0);
+            $Issue = $Sidey['Contracts']+1;
+
+            echo "<td class=NotSide><button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract_Reissue',$snum,"
+                 . "'Contract','SendPerfEmail.php',2,$E,$Issue)" . Music_Proforma_Background('Contract') . ">Reissue Contract</button>";
+//            echo "<td><input type=submit id=orangesubmit name=ReIssue value='Reissue Contract'>";
           } else {
             echo "<td colspan=2><input type=submit id=greensubmit name=Contract value='Confirm Contract by Clicking Here'>";
             echo fm_hidden('ContractDate',time());
@@ -998,7 +1021,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         break;
       case $Book_State['Booking']:
         $CMess = Contract_Check($snum);
-        if ($CMess != '') {
+        if (1 || $CMess != '') {
           echo "<td colspan=3>";
           if ($Mode) { echo "The contract is not ready because: <span class=red>" . $CMess . "</span>"; }
           else { echo "The contract is not yet complete, and hence can not be confirmed"; }
@@ -1008,8 +1031,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       default:
         break;
     }
-  } else {
-//    echo "<TR><TD>NO";
+  } else if ($Mode && ($Sidey['YearState'] == $Book_State['Booking'])) {
+    echo "<tr><td class=NotDSide colspan=4>No Contract is currently required - you need to either set a fee or to indicate 'Need a contract even if no fee:'";
   }
 
   // INsurance

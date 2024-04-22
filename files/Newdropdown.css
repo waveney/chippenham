@@ -229,6 +229,8 @@
   background:#b32d00;
   padding-left:20px;
   padding-right:20px;
+  color:white;
+
 }
 
 .fixedheader .navigation #MenuDonate {
@@ -237,7 +239,7 @@
 }
 
 .navigation #MenuDonate:hover {
-  background:#ff531a;
+  background:#e67300;
 }
 
 

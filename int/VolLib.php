@@ -32,13 +32,14 @@ define('VOL_Other3',0x400);
 define('VOL_Other4',0x800);
 define('VOL_NoList',0x20000);
 define('VOL_Tins',0x40000);
+define('VOL_TeamFull',0x80000);
 
 // Button Name, Vol_Button
-$EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','S'=>'Stew1','M'=>'Note2'];
+$EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','E' => Feature('Vol_Special_Mess'), 'S'=>'Stew1','M'=>'Note2'];
 
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
 
-function Get_Campsites($Restrict=0,$Comments=1) {
+function Get_Campsites($Restrict='',$Comments=1) {
   global $CampStatus;
   $CList = $CampStatus;
   $Camps = Gen_Get_All('Campsites','ORDER BY Importance DESC');
@@ -46,8 +47,12 @@ function Get_Campsites($Restrict=0,$Comments=1) {
     $N = $C['Name'];
     if ($Comments && !empty($C['Comment'])) $N .= " (" . $C['Comment'] . ")";
     if ($C['Props'] & 2) {
-      if ($Restrict==0) continue;
-      $CList[$C['id']] = $N . " - " . $C['Restriction'];      
+      if (!$Restrict) continue;
+      if ($Restrict == 'All' || strstr($C['Restriction'],$Restrict)) {
+        $CList[$C['id']] = $N . " - " . $C['Restriction'];
+      } else {
+        continue;
+      }
     } else {
       $CList[$C['id']] = $N;
     }
@@ -122,7 +127,7 @@ function Get_Vol_Details(&$vol) {
   if (!empty($VY['Children'])) $Body .= "Children: " . $VY['Children'] . "<p>\n";
   if (!empty($VY['Youth'])) $Body .= "Youth: " . $VY['Youth'] . "<p>\n";
   
-  $camps = Get_Campsites(1);
+  $camps = Get_Campsites('All');
   
   if (Feature('Vol_Camping') && !empty($VY['CampNeed'])) {
     $Body .= "Camping: " . $camps[$VY['CampNeed']] . "<br>\n";
@@ -187,9 +192,9 @@ function Get_Vol_Year($Volid,$Year=0) {
   if ($Year == 0) $Year = $PLANYEAR;
   $VY = Gen_Get_Cond1('VolYear'," Volid=$Volid AND Year=$Year ");
 
-//var_dump($VY);
+  if (!isset($VY['History'])) $VY['History'] = "";
   if (isset($VY['id'])) return $VY;
-  return ['Volid'=>$Volid,'Year'=>$Year,'id'=>0, 'Status'=>0, 'CampNeed'=>0];
+  return ['Volid'=>$Volid,'Year'=>$Year,'id'=>0, 'Status'=>0, 'CampNeed'=>0, 'History' => ""];
 }
 
 function Put_Vol_Year(&$VY) {
@@ -330,7 +335,8 @@ function VolForm(&$Vol,$Err='',$View=0) {
       }
 
       $cp = $Cat['Props'];
-      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue;
+      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue; // Skip if team not listed
+      if ((!$VolMgr) && ($cp & VOL_TeamFull) && ($VCY['Status'] == 0)) continue; // Skip if team full
       
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
@@ -427,7 +433,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       if (Access('SysAdmin') || (isset($VYear['Adults']) && $VYear['Adults'] > 1)) echo "<tr>" . fm_text("Adults",$VYear,'Adults',4,'','',"Adults::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
-      $camps = Get_Campsites(1,1);
+      $camps = Get_Campsites('Task',1);
 //var_dump($camps);exit;
       echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$PLANYEAR",
         0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
@@ -453,6 +459,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$PLANYEAR");
       echo fm_text('Messages', $VYear,'MessMap');
       echo "<tr><td>Link:<td colspan=4>" . htmlspec(Vol_Details('INNERLINK',$Vol)) . "<br>" . Vol_Details('LINK',$Vol);
+      echo "<tr>" . fm_textarea('History',$VYear,'History',4,3);
     }
   echo "</table></div><p>";    
  
@@ -601,8 +608,9 @@ function VolFormM(&$Vol,$Err='',$View=0) {
       }
 
       $cp = $Cat['Props'];
-      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue;
-      
+      if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue; // Skip if team not listed
+      if ((!$VolMgr) && ($cp & VOL_TeamFull) && ($VCY['Status'] == 0)) continue; // Skip if team full
+            
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
       $rows = 1;
@@ -706,7 +714,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
       echo "<tr>" . fm_text("Free Youth tickets (11 to 15 - please give their ages)",$VYear,'Youth',-4,'','',"Youth::$PLANYEAR");
     }
     if (Feature('Vol_Camping')) {
-      $camps = Get_Campsites(1,1);
+      $camps = Get_Campsites('Task',1);
 //var_dump($camps);exit;
       echo "<tr><td>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',-3,'',"CampNeed::$PLANYEAR",
         0,0,''," onchange=CampingVolSet('CampNeed::$PLANYEAR')");
@@ -1096,10 +1104,14 @@ function List_Vols() {
     
     echo "<td class=AvailD>" . (isset($VY['AvailBefore'])? ((strlen($VY['AvailBefore'])<12)? $VY['AvailBefore'] : ($link . "Expand</a>")):"");
     echo "<td class=AvailD>" . (isset($VY['AvailWeek'])? ((strlen($VY['AvailWeek'])<12)? $VY['AvailWeek'] : ($link . "Expand</a>")):"");
+    $HasSetAvail = 0;
     for ($day = $YEARDATA['FirstDay']-1; $day<= $YEARDATA['LastDay']+1; $day++) {
       $av = "Avail" . ($day <0 ? "_" . (-$day) : $day);
       echo "<td class=AvailD>";
-      if (isset($VY[$av])) echo ((strlen($VY[$av])<12)? $VY[$av] : ($link . "Expand</a>")) . "\n";
+      if (isset($VY[$av])) {
+        echo ((strlen($VY[$av])<12)? $VY[$av] : ($link . "Expand</a>")) . "\n";
+        $HasSetAvail = 1;
+      }
     }
     
     if (Access('SysAdmin')) {
@@ -1108,21 +1120,23 @@ function List_Vols() {
         echo "<b><a href=Volunteers?ACTION=Accept&id=$id class=Accept$id'>Accept All</a></b>\n";
       }
         $Mmap = $VY['MessMap'] ?? '';
-        if (($year == $PLANYEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U'))) {
+        if (($year == $PLANYEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U') && $HasSetAvail)) {
           $Msg = $EmailMsgs['U'];
           echo  " <button type=button id=VolSendEmailU$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'U')>$Msg</button>";
         }
         
-        if (($year != $PLANYEAR) && (!strstr($Mmap,'N')) && (!strstr($Mmap,'S'))) {
-//          if ($Stew) {
-//            $Msg = $EmailMsgs['S'];
-//            echo  " <button type=button id=VolSendEmailS$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'S')>$Msg</button>";
-//          } else {
+        if ((($year != $PLANYEAR) && (!strstr($Mmap,'N')) && (!strstr($Mmap,'S'))) ||
+            (($year == $PLANYEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U') && ($HasSetAvail == 0)))) {
+       
             $Msg = $EmailMsgs['N'];
             echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'N')>$Msg</button>";
 //          }
         }
 
+        $Msg = $EmailMsgs['E'];
+        if ($Msg && ($VY['Status'] == 0) && strstr($Mmap,'N') && !strstr($Mmap,'E') && ($HasSetAvail == 0)) {
+          echo  " <button type=button id=VolSendEmailE$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'E')>$Msg</button>";
+        }
       echo "<td id=MessMap$id>" . ($VY['MessMap'] ?? '');
     }
   }
@@ -1205,8 +1219,8 @@ function List_Team($Team) {
     if ($CatP & VOL_Money) echo "<td>" . $yesno[$Vol['Money']];
     echo "<td>" . $Vol['Disabilities'];
     echo "<td>" . (empty($VY['Notes'])?'':$link . "Yes</a>");
-    echo "<td>" . $VY['Children'];
-    echo "<td>" . $VY['Youth'];
+    echo "<td>" . ($VY['Children']??0);
+    echo "<td>" . ($VY['Youth']??0);
 
     if ($CatP & VOL_Likes) echo "<td>" . $VCY['Likes'] ;
     if ($CatP & VOL_Dislikes) echo "<td>" . $VCY['Dislikes'] ;
@@ -1461,7 +1475,7 @@ function Send_Accepts($Vol) {
 }
 
 function VolAction($Action,$csv=0) {
-  global $PLANYEAR,$VolCats,$M,$YearColour,$YearStatus;
+  global $PLANYEAR,$VolCats,$M,$YearColour,$YearStatus,$USER;
 
   if ($csv == 0) {
     dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css",'/js/InviteThings.js' ]);
@@ -1540,6 +1554,7 @@ function VolAction($Action,$csv=0) {
     }
     
     $VY['LastUpdate'] = time();
+    $VY['History'] .= "$Action by " . (isset($USER['Login'])?$USER['Login']:'Volunteer') . " on " . date('d/n/Y') . "\n";
 
     if ($VY['SubmitDate']) {
       Put_Vol_Year($VY);
@@ -1574,18 +1589,20 @@ function VolAction($Action,$csv=0) {
   case 'NotThisYear':
   case 'Sorry not this Year':
     $Vol = Get_Volunteer($_REQUEST['id']);
-      $VY = Get_Vol_Year($Vol['id']);
-      if (isset($VY['id'])) {
-        $VY['Status'] = 2;
-        Put_Vol_Year($VY);
+    $VY = Get_Vol_Year($Vol['id']);
+    if (isset($VY['id'])) {
+      $VY['Status'] = 2;
+      $VY['History'] .= "$Action by " . (isset($USER['Login'])?$USER['Login']:'Volunteer') . " on " . date('d/n/Y') . "\n";
 
-        $Vol = Get_Volunteer($id = $_REQUEST['id']);
-        $VY = Get_Vol_Year($Vol['id'],$PLANYEAR);
-        if (!empty($VY['id'])) {
-          Vol_Staff_Emails($Vol);
-          db_delete('VolYear',$VY['id']);
-        }
+      Put_Vol_Year($VY);
+
+      $Vol = Get_Volunteer($id = $_REQUEST['id']);
+      $VY = Get_Vol_Year($Vol['id'],$PLANYEAR);
+      if (!empty($VY['id'])) {
+        Vol_Staff_Emails($Vol);
+//        db_delete('VolYear',$VY['id']);
       }
+    }
     
     echo "<h2>Thankyou for letting us know</h2>";
     if (!Access('Staff')) dotail();
@@ -1621,6 +1638,8 @@ function VolAction($Action,$csv=0) {
         $Accepted++;
       }
     }
+    $VY['History'] .= "$Action by " . (isset($USER['Login'])?$USER['Login']:'Volunteer') . " on " . date('d/n/Y') . "\n";
+
     if ($Accepted) {
       $VY['Status'] = 3; // Accepted at least once
       Put_Vol_Year($VY);
@@ -1637,6 +1656,8 @@ function VolAction($Action,$csv=0) {
     $VCY['Status'] = 3; // Accepted
     Put_Vol_Cat_Year($VCY);
     $VY['Status'] = 3; // Accepted at least once
+    $VY['History'] .= "$Action by " . (isset($USER['Login'])?$USER['Login']:'Volunteer') . " on " . date('d/n/Y') . "\n";
+
     Put_Vol_Year($VY);
     Send_Accepts($Vol);
     echo "<span style='background:" . $YearColour[$VY['Status']] . ";'>" . $YearStatus[$VY['Status']] . "</span>" .

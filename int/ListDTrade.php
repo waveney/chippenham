@@ -74,7 +74,7 @@
       $Tid = $fetch['Tid'];
       $str .= "<tr><td>";
         $str .= "<a href=Trade?id=$Tid>";
-        $str .= ($fetch['SN']?$fetch['SN']:'No Name Given');
+        $str .= ($fetch['SN']?preg_replace('/\|/','',$fetch['SN']):'No Name Given');
         $str .= "</a>";
       $str .= "<td style='background:" . $Trade_Types[$fetch['TradeType']]['Colour'] . ";'>" . $Trade_Types[$fetch['TradeType']]['SN'];
       $str .= "<td id=TR$Tid";
@@ -109,6 +109,11 @@
               case 'FestC':
                 if (!Feature('EnableCancelMsg')) continue 2;
                 break;
+              case 'Pitch Assign':
+              case 'Pitch Change':
+              case 'Moved':
+                if (empty($fetch['PitchNum0'])) continue 2;
+                break;  
               case 'Invite Better':
                 if (!Feature('InviteBetter')) continue 2;
                 break;
@@ -160,7 +165,7 @@
       $pitches = 0;
       for ($i = 0; $i<3; $i++) if ($fetch["PitchLoc$i"]) $pitches++;
 
-      if ($div && $pitches>1) {
+      if (0 && $div && $pitches>1) { // Duff 
         $Dep /= $pitches;
         $fee /= $pitches;
         $tot /= $pitches;

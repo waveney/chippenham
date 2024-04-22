@@ -14,7 +14,7 @@ $TS_Actions = ['Submit,Invite,Invite Better',
                 'Resend',
                 'Resend,Submit',
                 'Resend,Quote,Accept,Invite,Decline,Hold,Cancel,Invite Better,Dates,FestC',
-                'Resend,Quote,Invite,Accept,Decline,UnQuote,LastWeek,Dates,FestC',
+                'Resend,Quote,Invite,Accept,Decline,UnQuote,LastWeek,Dates,FestC', // Overdue
                 'Resend,Cancel,Dates,FestC',
                 'Pitch Assign,Pitch Change,Moved,Resend,Send Bal,Cancel,Dates,FestC',
                 'Pitch Assign,Pitch Change,Moved,Resend,Chase,Cancel,Dates,FestC',
@@ -28,14 +28,14 @@ $TS_Actions = ['Submit,Invite,Invite Better',
 $Trader_Status = ['Alive','Banned','Not trading'];
 $Trader_State = array_flip($Trader_Status);
 $ButExtra = [
-        'Accept'=>'',
+        'Accept'=>'title=>"Accept the quote/invite"',
         'Decline'=>'title="Decline this trader, if in doubt Hold Them"',
         'Submit'=>'title="Submit application"',
         'Hold'=>'title="Hold for space available"',
         'Dep Paid'=>'title="Deposit Paid"', // Not Used 
         'Send Bal'=>'title="Send Balance Request"', // PAYCODE
         'Invoice'=>'title="Send Balance Request"', // Invoice
-        'Paid'=>'title=Full Fees Paid"', // Not Used
+        'Paid'=>'title="Full Fees Paid"', // Not Used
         'Quote'=>'title="Send or repeat Quote email"',
         'Invite'=>'title="Send or repeat the Invitation Email"',
         'Balance Requested'=>'title="Final Invoice Sent"',
@@ -49,8 +49,9 @@ $ButExtra = [
         'Moved'=>'title="Pitch Moved"',
         'Balance'=>'title="Send Balance Payment Request',
         'LastWeek'=>'title="Last week of Quote"',
-        'Dates'=>'Festival Changed Dates',
-        'FestC'=>'Festival Cancelled this year',
+        'Dates'=>'title="Festival Changed Dates"',
+        'FestC'=>'title="Festival Cancelled this year"',
+        'Overdue'=>'title="Total payment needed now"'
         ]; 
         
 $ButTraderTips = [ // Overlay of diferent tips for traders 
@@ -173,17 +174,23 @@ function Put_Trade_Type(&$now) {
   return Update_db('TradePrices',$Cur,$now);
 }
 
-function Get_Sponsors($tup=0) { // 0 Current, 1 all data
-  global $db;
-  $full = array();
-  $yr = ($tup ?"" :" WHERE Year!=0 ");
-  $res = $db->query("SELECT * FROM Sponsors $yr ORDER BY SN ");
+function Old_Get_Sponsors($tup=0) { // 0 Current, 1 all data
+  global $db,$YEAR,$YEARDATA;
+  $full = [];
+  if ($tup == 0) {
+    $res = $db->query("SELECT * FROM Sponsors WHERE Year='$YEAR' ORDER BY SN ");
+    if (!$res && !empty($YEARDATA['PrevFest'])) {
+      $res = $db->query("SELECT * FROM Sponsors WHERE Year='" . $YEARDATA['PrevFest'] . "' ORDER BY SN ");
+    }
+  } else {
+    $res = $db->query("SELECT * FROM Sponsors ORDER BY SN ");
+  }
   if ($res) while ($spon = $res->fetch_assoc()) $full[] = $spon;
   return $full;
 }
 
-function Get_Sponsor_Names() {
-  $data = Get_Sponsors();
+function Get_Sponsor_Names($tup=0) {
+  $data = Old_Get_Sponsors($tup);
   foreach ($data as $sp) $ans[$sp['id']]=$sp['SN'];
   return $ans;
 }
@@ -256,11 +263,11 @@ function Get_Traders_Coming($type=0,$SortBy='SN') { // 0=names, 1=all
   global $db,$YEAR,$Trade_State;
   $data = array();
   $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>=" . $Trade_State['Deposit Paid'] .
-                " ORDER BY $SortBy";
+                " AND y.BookingState<" . $Trade_State['Wait List'] . " ORDER BY $SortBy";
   $res = $db->query($qry);
   if (!$res || $res->num_rows == 0) return 0;
   while ($tr=$res->fetch_assoc()) {
-    $data[$tr['Tid']] = ($type?$tr:$tr['SN']);
+    $data[$tr['Tid']] = ($type?$tr:preg_replace('/\|/','',$tr['SN']));
   }
   return $data;
 }
@@ -272,7 +279,7 @@ function Get_All_Traders($type=0) { // 0=names, 1=all
   $res = $db->query($qry);
   if (!$res || $res->num_rows == 0) return 0;
   while ($tr=$res->fetch_assoc()) {
-    $data[$tr['Tid']] = ($type?$tr:$tr['SN']);
+    $data[$tr['Tid']] = ($type?$tr:preg_replace('/\|/','',$tr['SN']));
   }
   return $data;
 }
@@ -284,7 +291,7 @@ function Get_All_Businesses($type=0) { // 0=names, 1=all
   $res = $db->query($qry);
   if (!$res || $res->num_rows == 0) return 0;
   while ($tr=$res->fetch_assoc()) {
-    $data[$tr['Tid']] = ($type?$tr:$tr['SN']);
+    $data[$tr['Tid']] = ($type?$tr:preg_replace('/\|/','',$tr['SN']));
   }
   return $data;
 }
@@ -343,6 +350,9 @@ There will be an additional fee for power, that will be added to your final invo
         'IsTrader'=>'Used to indicate the business is a trader (useful for finance) do not touch (normally)',
         'BankDetails'=>'Needed for suppliers, very rarely needed for others when doing a refund',
         'Extras'=>'Some locations have extras',
+        'NumberTickets'=>'Traders may request up to 2 tickets, which give access to the showers at the Olympiad and entrance to most events',
+        'NumberCarPass'=>'Traders may request up to 2 passes to park near the Olympiad after they have set up their pitches',
+        'CampNeed'=>'For '
 
   ];
   Set_Help_Table($t);
@@ -357,7 +367,7 @@ function Pitch_Size_Def($type) {
 
 function Default_Trade($id,$type=1) {
   global $YEAR;
-  return array('Year'=>$YEAR,'Tid'=>$id,'PitchSize0'=>Pitch_Size_Def($type),'Power0'=>1,'BookingState'=>0);
+  return array('Year'=>$YEAR,'Tid'=>$id,'PitchSize0'=>Pitch_Size_Def($type),'Power0'=>1,'BookingState'=>0,'ExtraPowerCost'=>0, 'Fee'=>0);
 }
 
 // OLD CODE DELETE
@@ -553,7 +563,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
 }
 
 function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
-  global $YEAR,$PLANYEAR,$YEARDATA,$Trade_States,$ADDALL,$Trade_State_Colours,$Trade_State,$Trade_Days;
+  global $YEAR,$PLANYEAR,$YEARDATA,$Trade_States,$ADDALL,$Trade_State_Colours,$Trade_State,$Trade_Days,$TradeTypeData;
   global $Trade_State_Props;
   $Trad = Get_Trader($Tid);
   if ($year==0) $year=$YEAR;
@@ -561,7 +571,6 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   if ($year != $PLANYEAR) { // Then it is historical - no changes allowed
     fm_addall('disabled readonly');
   }
-
   $Self = $_SERVER['PHP_SELF'];
   if ($year != $CurYear) {
     if ($Mode && Get_Trade_Year($Tid,$CurYear)) 
@@ -613,7 +622,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
       }
       if (!Access('SysAdmin')) echo fm_hidden('BookingState',$Trady['BookingState']);
 //    echo fm_radio("Booking State",$Trade_States,$Trady,'BookingState','class=NotCSide',1,'colspan=2 class=NotCSide');
-    echo "<td class=NotSide>" . fm_checkbox('Local Auth Checked',$Trady,'HealthChecked');
+    if ($TradeTypeData[$Trad['TradeType']]['NeedPublicHealth']) echo "<td class=NotSide>" . fm_checkbox('Local Auth Checked',$Trady,'HealthChecked');
     if (Access('Internal')) echo ($Trady['TYid'] ?? -1);
     echo "<td class=NotSide>";
     if ($Trady['BookingState'] == $Trade_State['Quoted']) {
@@ -660,6 +669,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo "<td>Pitch Number";
   $TotPowerCost = PowerCost($Trady);
   $TableCost = TableCost($Trady);
+  if (($Trady['Fee']??0) < 0) $TotPowerCost = $TableCost = 0;
   
   for ($i = 0; $i < 3; $i++) { 
     $Prop = ($TradeLocFull[$Trady["PitchLoc$i"]?? 0]['Props'] ?? 0);
@@ -696,14 +706,14 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     if ($Mode) {
 
       echo fm_text1("",$Trady,"PitchNum$i",1,'class=NotCSide','class=NotCSide onchange=PitchNumChange(' . ($Trady["PitchNum$i"]??0) . ')');
-      if (isset($Trady["PitchLoc$i"]) && $Trady["PitchLoc$i"]) echo " <a href=TradeStandMap?l=" . $Trady["PitchLoc$i"] . ">Map</a>";
+      if (isset($Trady["PitchLoc$i"]) && $Trady["PitchLoc$i"]) echo " <a href=TradeStandMap?t=2&l=" . $Trady["PitchLoc$i"] . ">Map</a>";
     } else {
 //      echo "<td>";
       if (isset($Trady["PitchLoc$i"])  && $Trady["PitchLoc$i"]) {
         echo $TradeLocs[$Trady["PitchLoc$i"]];
         echo fm_hidden("PitchLoc$i",$Trady["PitchLoc$i"]);
         echo "<td>";
-        if ($Trady["PitchNum$i"]) echo $Trady["PitchNum$i"] . " <a href=TradeStandMap?l=" . $Trady["PitchLoc$i"] . ">Map</a>"; // TODO Trade State testing for partial
+        if ($Trady["PitchNum$i"]) echo $Trady["PitchNum$i"] . " <a href=TradeStandMap?t=2&l=" . $Trady["PitchLoc$i"] . ">Map</a>"; // TODO Trade State testing for partial
       } else {
         echo "<td>";
       }
@@ -788,6 +798,24 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
 
 // Risc Assessment function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$tddata1='',$tdclass='',$hide=0) {
   echo fm_DragonDrop(1,'RiskAssessment','Trade',$Tid,$Trady,$Mode);
+  
+  echo "<tr>" . fm_text('Arival day/time',$Trady,'ArrivalTime');
+  if (Feature('TraderPasses')) echo fm_number('Trader Passes',$Trady,'NumberTickets','',' min=0 max=2');
+  if (Feature('TradeCarpark')) echo fm_number('Carpark passes',$Trady,'NumberCarPass','',' min=0 max=2');
+  
+  if (Feature('TradeCamping')) {
+    include_once 'VolLib.php';
+    global $CampType;
+      $camps = Get_Campsites('Trade',1);
+      unset($camps[1]);
+//var_dump($camps);exit;
+      echo "<tr>" . fm_radio("Do you want camping?",$camps,$Trady,'CampNeed','',3,' colspan=4','',
+        0,0,''," onchange=CampingTradeSet()");
+      echo "<tr id=CampPUB>" . fm_radio("If so for what?" ,$CampType,$Trady,'CampType','',1,' colspan=4');
+      echo "<tr id=CampREST>" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
+                    $Trady,'CampText',4);
+      Register_OnLoad('CampingTradeSet');
+  }
 
 // Notes - As Sides
   echo "<tr>" . fm_textarea('Notes/Requests',$Trady,'YNotes',6,2);
@@ -821,7 +849,7 @@ function Get_Trade_Details(&$Trad,&$Trady) {
   $Power = Gen_Get_All('TradePower');
   if ($Trady['Fee']<0) $Pwr = 0;
 
-  $Body = "\nBusiness: " . $Trad['SN'] . "\n";
+  $Body = "\nBusiness: " . preg_replace('/\|/','',$Trad['SN']) . "\n";
   $Body .= "Goods: " . $Trad['GoodsDesc'] . "\n\n";
   $Body .= "Type: " . $TradeTypeData[$Trad['TradeType']]['SN'] . "\n\n";
   if (isset($Trad['Website']) && $Trad['Website']) $Body .= "Website: " . weblink($Trad['Website'],$Trad['Website']) . "\n\n";
@@ -924,7 +952,7 @@ function Trader_Details($key,&$data,$att=0) {
   $host = "https://" . $_SERVER['HTTP_HOST'];
   $Tid = $Trad['Tid'];
   switch ($key) {
-  case 'WHO':  return $Trad['Contact']? UpperFirstChr(firstword($Trad['Contact'])) : $Trad['SN'];
+  case 'WHO':  return $Trad['Contact']? UpperFirstChr(firstword($Trad['Contact'])) : preg_replace('/\|/','',$Trad['SN']);
   case 'LINK': return "<a href='$host/int/Direct?t=Trade&id=$Tid&key=" . $Trad['AccessKey'] . "'  style='background:lightblue;'><b>link</b></a>";
   case 'WMFFLINK': 
   case 'FESTLINK' : return "<a href='$host/int/Trade?id=$Tid'><b>link</b></a>";
@@ -974,12 +1002,13 @@ function Trader_Details($key,&$data,$att=0) {
         $plural = (strchr(',',$Trady["PitchNum$i"])?"Pitches numbered ":"Pitch number ");
         $MapLinks .= "You have been assigned $plural " . $Trady["PitchNum$i"] . " " . 
                      $Prefixes[$TradeLocData[$Trady["PitchLoc$i"]]['prefix']] . " " . $TradeLocData[$Trady["PitchLoc$i"]]['SN'] . 
-                     " please see this <a href='$host/int/TradeStandMap?l=" . $Trady["PitchLoc$i"] . "' style='background:lightblue;'>map</a> " .
-                     "- Note the formatting of the business names on this will be improved soon<p>";
+                     " please see this <a href='$host/int/TradeStandMap?l=" . $Trady["PitchLoc$i"] . "&t=2' style='background:lightblue;'>map</a> " .
+                     "<p>" .
+                     "Note the formatting of the business names on this should be improved soon<p>";
       }
     }
     if (!$MapLinks) return "";
-    return "<b>Pitch assignments</b>.  The new layouts of many areas are for health and safety reasons and are not negotiable.<p> " . $MapLinks;
+    return "<b>Pitch assignments</b>.  The layouts of many areas are for health and safety reasons and are not negotiable.<p> " . $MapLinks;
   case 'WEBSITESTUFF':
     $webstuff = '';
     if (!$Trad['Photo']) {
@@ -1052,7 +1081,7 @@ function Send_Trader_Email(&$Trad,&$Trady,$messcat='Link',$att='') {
   if ($from) $from .= "@" . Feature('HostURL');
   if ($bccto) $bcc = ['bcc' , "$bccto@" . Feature('HostURL'),Feature('CopyTradeEmailsName')];
   Email_Proforma(2,$Trad['Tid'],[['to',$Trad['Email'],$Trad['Contact']],$bcc],
-    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att,0,$from);
+    $messcat,Feature('FestName') . " $PLANYEAR and " . preg_replace('/\|/','',$Trad['SN']),'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att,0,$from);
 }
 
 function Send_Trader_Simple_Email(&$Trad,$messcat='Link',$att='') {
@@ -1061,7 +1090,7 @@ function Send_Trader_Simple_Email(&$Trad,$messcat='Link',$att='') {
   $from = Feature('SendTradeEmailFrom');
   if ($from) $from .= "@" . Feature('HostURL');
   Email_Proforma(2,$Trad['Tid'],[$Trad['Email'],$Trad['Contact']],
-    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad],'TradeLog',$att,0,$from);
+    $messcat,Feature('FestName') . " $PLANYEAR and " . preg_replace('/\|/','',$Trad['SN']),'Trader_Details',[&$Trad],'TradeLog',$att,0,$from);
 }
 
 function Send_Trade_Finance_Email(&$Trad,&$Trady,$messcat,$att=0) {
@@ -1069,7 +1098,7 @@ function Send_Trade_Finance_Email(&$Trad,&$Trady,$messcat,$att=0) {
   include_once("Email.php");
 
   Email_Proforma(2,$Trad['Tid'],"treasurer@" . Feature('HostURL'),
-    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att);
+    $messcat,Feature('FestName') . " $PLANYEAR and " . preg_replace('/\|/','',$Trad['SN']),'Trader_Details',[&$Trad,&$Trady],'TradeLog',$att);
 }
 
 function Send_Trade_Admin_Email(&$Trad,&$Trady,$messcat,$att=0) {
@@ -1078,7 +1107,7 @@ function Send_Trade_Admin_Email(&$Trad,&$Trady,$messcat,$att=0) {
   include_once("Email.php");
 
   Email_Proforma(2,$Trad['Tid'],"trade@" . Feature('HostURL'),
-    $messcat,Feature('FestName') . " $PLANYEAR and " . $Trad['SN'],'Trader_Admin_Details',[&$Trad,&$Trady],'TradeLog',$att);
+    $messcat,Feature('FestName') . " $PLANYEAR and " . preg_replace('/\|/','',$Trad['SN']),'Trader_Admin_Details',[&$Trad,&$Trady],'TradeLog',$att);
 }
 
 //  Mark as submitted, email fest and trader, record data of submission
@@ -1086,7 +1115,7 @@ function Submit_Application(&$Trad,&$Trady,$Mode=0) {
   global $PLANYEAR,$USER;
   $Trady['Date'] = time();
   if (!isset($Trady['History'])) $Trady['History'] = '';
-  $Trady['History'] .= "Action: Submit on " . date('j M Y H:i') . " by " . ($Mode?$USER['Login']:'Trader') . ".\n";
+  $Trady['History'] .= "Action: Submit on " . date('j M Y H:i:s') . " by " . ($Mode?$USER['Login']:'Trader') . ".<br>";
   if ($Trady['TYid']) {
     Put_Trade_Year($Trady);
   } else { // Its new...
@@ -1105,17 +1134,19 @@ function Submit_Application(&$Trad,&$Trady,$Mode=0) {
 }
 
 function Validate_Trade($Mode=0) { // Mode 1 for Staff Submit, less stringent
-  global $TradeTypeData;
+  global $TradeTypeData,$Trade_State;
   $Orgs = isset($_REQUEST['ORGS']);
       $proc = 1;
       if (!isset($_REQUEST['SN']) || strlen($_REQUEST['SN']) < 3 ) {
         echo "<h2 class=ERR>No Business Name Given</h2>\n";
         $proc = 0;
       }
-      
+            
       if ($Orgs==0 && $Mode == 0 && ($TradeTypeData[$_REQUEST['TradeType']]['TOpen'] == 0)) {
-        echo "<h2 class=ERR>Sorry that category is full for this year</h2>\n";
-        $proc = 0;
+        if ($_REQUEST['BookingState'] < $Trade_State['Quoted'] || $_REQUEST['BookingState'] > $Trade_State['Fully Paid']) {
+          echo "<h2 class=ERR>Sorry that category is full for this year</h2>\n";
+          $proc = 0;
+        }
       }
 
       if (!isset($_REQUEST['Contact']) || strlen($_REQUEST['Contact']) < 4 ) {
@@ -1151,7 +1182,7 @@ function Validate_Trade($Mode=0) { // Mode 1 for Staff Submit, less stringent
 
 function Trader_Name($Tid) {
   $Trad = Get_Trader($Tid);
-  return $Trad['SN'];
+  return preg_replace('/\|/','',$Trad['SN']);
 }
 
 function T_Deposit(&$Trad) {
@@ -1331,12 +1362,12 @@ function Trade_Main($Mode,$Program,$iddd=0) {
               if (isset($Trady['BookingState'])) {
                 if (isset($_REQUEST['BookingState']) && ($Trady['BookingState'] != ($_REQUEST['BookingState']??0))) {
                   $_REQUEST['History'] .= "Action: " . $Trade_States[$_REQUEST['BookingState']] . " on " . date('j M Y H:i') . 
-                                       " by " . $USER['Login'] . ".\n";
+                                       " by " . $USER['Login'] . ".<br>";
                 }
                 if (($_REQUEST['Fee'] < 0) && (($_REQUEST['BookingState']??0) == $Trade_State['Deposit Paid'])) {
                   $_REQUEST['BookingState'] = $Trade_State['Fully Paid'];
                   $_REQUEST['History'] .= "Action: " . $Trade_States[$_REQUEST['BookingState']??0] . " on " . date('j M Y H:i') . 
-                    " by " . $USER['Login'] . ".\n";
+                    " by " . $USER['Login'] . ".<br>";
                 }
               }
               if ($_REQUEST['PitchLoc0'] != $Trady['PitchLoc0'] || ($_REQUEST['PitchLoc1']??0) != $Trady['PitchLoc1'] || ($_REQUEST['PitchLoc2']??0) != $Trady['PitchLoc2'] ||
@@ -1542,11 +1573,15 @@ function Trade_Main($Mode,$Program,$iddd=0) {
             if (($Trady['DateRemind'] == 0) || (($Trady['DateRemind'] + Feature('TradeUnQuote',14)*86400) > time())) continue 2;
             break;
             
+          case 'Cancel' :
+            if (!$Mode) $ac .= " Booking";
+            break;
+            
           default:
         }
 //        var_dump($Mode, $ButTraderTips[$ac]);
         if (!$Mode && !empty($ButTraderTips[$ac])) $ButExtra[$ac] = $ButTraderTips[$ac];
-        echo "<input type=submit name=ACTION value='$ac' " . ($ButExtra[$ac] ??'') . " $xtra >";
+        echo "<input type=submit name=ACTION value='$ac' " . ($ButExtra[$ac] ??'') . " $xtra onlick=PreventDouble()>";
       }
     }
     if ($Mode == 0) { 
@@ -1568,7 +1603,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
     $Invs = Get_Invoices(" OurRef='" . Sage_Code($Trad) . "'"," IssueDate DESC ");
     echo "<h2><a href=ListCTrade>List Traders Coming</a> ";
 //    var_dump($Invs);
-    if ($Invs) echo ", <a href=InvoiceManage?FOR=$Tid>Show All Invoices for " . $Trad['SN'] . "</a>";
+    if ($Invs) echo ", <a href=InvoiceManage?FOR=$Tid>Show All Invoices for " . preg_replace('/\|/','',$Trad['SN']) . "</a>";
     echo "</h2>";
   }
 }
@@ -1692,10 +1727,10 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     if ($InvPay) { // Only for when Mandy was being awkward
       $DueDate = Trade_Date_Cutoff();
       if ($DueDate) { // Single Pay Request
-        $Code = Pay_Rec_Gen("PAY",( $Fee + $Pwr)*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Full Payment',$DueDate);
+        $Code = Pay_Rec_Gen("PAY",( $Fee + $Pwr)*100,1,$Trad['Tid'],preg_replace('/\|/','',$Trad['SN']),'Trade Stand Full Payment',$DueDate);
         Send_Trader_Email($Trad,$Trady,$ProformaName . "_FullInvoice");    
       } else { // Deposit 
-        $Code = Pay_Rec_Gen("DEP",$Dep*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Deposit',Feature('PaymentTerms',30));
+        $Code = Pay_Rec_Gen("DEP",$Dep*100,1,$Trad['Tid'],preg_replace('/\|/','',$Trad['SN']),'Trade Stand Deposit',Feature('PaymentTerms',30));
         Send_Trader_Email($Trad,$Trady,$ProformaName . "_DepositPayment");        
       }
     } else {
@@ -1759,7 +1794,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $DueDate = Trade_Date_Cutoff();
         $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $Trady['PitchLoc0'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ? 
                         "Trade_Artisan_FinalPayment" : "Trade_FinalPayment");
-        $Code = Pay_Rec_Gen("BAL",($Trady['Fee'] + $Pwr - $PaidSoFar)*100,1,$Trad['Tid'],$Trad['SN'],'Trade Stand Balance Payment',$DueDate);
+        $Code = Pay_Rec_Gen("BAL",($Trady['Fee'] + $Pwr - $PaidSoFar)*100,1,$Trad['Tid'],preg_replace('/\|/','',$Trad['SN']),'Trade Stand Balance Payment',$DueDate);
 
         Send_Trader_Email($Trad,$Trady,$ProformaName);    
       }
@@ -1989,6 +2024,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     break;
 
   case 'Cancel' : // If invoiced - credit note, free up fee and locations if set email moe need a reason field
+  case 'Cancel Booking' :
     if ($CurState == ($Trade_States['Change_Aware']??0)) {
       Trade_Action('DateUnHappy',$Trad,$Trady,"$Hist $Action");
       return;
@@ -2082,7 +2118,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     $Ychng = 1;
     $Fee = $Trady['Fee'];
     $Dep = ($Fee>0 ?T_Deposit($Trad):0);
-    if ($CurState != $Trade_State['Requote']){
+  if ($CurState != $Trade_State['Requote'] || (($Trady['Fee'] > 0) && ($Trady['TotalPaid'] < $Trady['Fee']))){
       $NewState = $Trady['BookingState'] = $Trade_State['Quoted'];
       Send_Trader_Email($Trad,$Trady,'Trade_Quote');    
     } elseif ($Trady['Fee'] <0) {
@@ -2346,7 +2382,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
   if (($SaveAction || $Action) && ($Ychng || $CurState != $NewState )) {
     $Trady['BookingState'] = $NewState; // Action test is to catch the moe errors
     $By = (isset($USER['Login'])) ? $USER['Login'] : 'Trader';
-    $Trady['History'] .= "Action: $Hist $SaveAction $xtra " . $Trade_States[$Trady['BookingState']] . " on " . date('j M Y H:i') . " by $By.\n";
+    $Trady['History'] .= "Action: $Hist $SaveAction $xtra " . $Trade_States[$Trady['BookingState']] . " on " . date('j M Y H:i') . " by $By.<br>";
     Put_Trade_Year($Trady);
   }
 }
@@ -2425,313 +2461,4 @@ function Get_Traders_For($loc,$All=0 ) {
   $Traders = [];
   if ($res) while ($trad = $res->fetch_assoc()) $Traders[] = $trad;
   return $Traders;
-}
-
-
-/* Get map size
-   get scale 
-   send the image
-   setup the svg
-   plot the pitches
-   */
-
-function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {  
-  // Pub 0 = Public map, 1 = Trade (may be same as 0), 2 = Trader Only before public, 3 = Setup, 4=Assign, 5=EMP, 5=Infra Only
-  global $TradeTypeData,$Trade_State;
-  $CatMask = [1,1,1,3,1,3,2];
-  $ShowPitch = [0,0,1,1,1,0,0];
-  
-  if (!$loc['MapImage']) return;
-  
-  $TLocId = $loc['TLocId'];
-  $XtraInfra = Gen_Get_Cond('Infrastructure',"Location=$TLocId  ORDER BY PlaceOrder ASC,id");
-  
-//  var_dump($loc,$Pub,$Scale,$LinkRoot);
-  $scale=$Scale*$loc['Showscale'];
-  $Mapscale = $loc['Mapscale'];
-//  $sp = $scale*100;
-  $Factor = 20*$scale*$Mapscale;
-  $Links=1;
-
-  $FSize = 10*$scale;
-  $Key = [];
-
-  $PitchesByName = [];
-  foreach ($Pitches as $Pi) if ($Pi['Type'] == 0) $PitchesByName[$Pi['SN'] ?? $Pi['Posn']] = $Pi;
- 
-//  var_dump($PitchesByName);
-  $Usage = [];$TT = [];$TNum = [];
-  if ($Traders) {
-    foreach ($Traders as $Trad) 
-      for ($i=0; $i<3; $i++) 
-        if ($Trad["PitchLoc$i"] == $TLocId) {
-          $list = explode(',',$Trad["PitchNum$i"]);
-          foreach ($list as $p) {
-            if (!$p) continue;
-            if (!is_numeric($p) && isset($PitchesByName[$p])) $p = $PitchesByName[$p]['Posn'];
-            if ($p) $Usage[$p] = (isset($Usage[$p])?"CLASH!":$Trad['SN']);
-            if ( $Trad['BookingState'] == $Trade_State['Deposit Paid'] || 
-                 $Trad['BookingState'] == $Trade_State['Balance Requested'] || 
-                 $Trad['BookingState'] == $Trade_State['Fully Paid'] ) {
-              $TT[$p] = $Trad['TradeType'];
-            } else {
-              $TT[$p] = -1;
-            }
-            $TNum[$p] = $Trad['Tid'];
-          }
-        }
-  }
-  
-//  var_dump($Usage,$TT);
-  
-  $ImgHt = 1200;
-  $ImgWi = 700;
-  $stuff = getimagesize(ltrim($loc['MapImage'],'/'));
-  if ($stuff) {
-    $ImgHt = $stuff[1];
-    $ImgWi = $stuff[0];
-  }
-
-// var_dump($ImgHt,$ImgWi);
-
-//  echo "scale=$scale sp=$sp Ht=$ImgHt Mapscale=$Mapscale <br>";
-  echo "<div class=img-overlay-wrap>";
-  echo "<img src=" . $loc['MapImage'] . " width=" . ($ImgWi*$scale) . ">";
-  echo "<svg width=" . ($ImgWi*$scale) . " height=" . ($ImgHt*$scale) . ">";
-  
-  echo '<pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
-          <path d="M-1,1 l2,-2
-           M0,4 l4,-4
-           M3,5 l2,-2" 
-           style="stroke:LightSeaGreen; stroke-width:1" />
-        </pattern>
-        <defs>
-          <!-- A marker to be used as an arrowhead -->
-          <marker
-          id="arrow"
-          viewBox="0 0 10 10"
-          refX="5"
-          refY="5"
-          markerWidth="6"
-          markerHeight="6"
-          orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" />
-        </marker>
-      </defs>
-';
-  
-  if ($XtraInfra) {
-    foreach($XtraInfra as $Inf) {  
-      if ($Inf['Category'] !=0 && (($Inf['Category'] & $CatMask[$Pub]) == 0)) continue; // Not needed in this case
-      //    var_dump($Pitch,$TradeTypeData,$TT);
-      $Xpos = ($Inf['X'] * $Factor);
-      $Ypos = ($Inf['Y'] * $Factor);
-      $Xwidth = ($Inf['Xsize'] * $Factor);
-      $Yheight = ($Inf['Ysize'] * $Factor);
-      $Lopen = 0;
-      if ($Links && !empty($Inf['HasLink'])) {
-        $lnk = $Inf['HasLink'];
-        if ($LinkRoot) $lnk = preg_replace('/TradeStandMap/',$LinkRoot,$lnk);
-        echo "<a href=$lnk>";
-        $Lopen = 1;
-      }
-  
-      $Name = $Inf['ShortName'] ?? $Inf['Name'] ?? '?';
-      $fill = 'White'; $stroke = 'black'; $Pen = 'black';
-      $TxtXf = $TxtYf = 1;
-      
-      switch ($Inf['ObjectType']) {
-      case 0: // Rectangle
-        echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
-        if (!empty($Inf['MapColour'])) {
-          if ($Inf['MapColour'] != '/') {
-            $fill = $Inf['MapColour'];
-
-            if ($Name[0] == "~") {
-              $Pen = 'White';
-              $Name = substr($Name,1);
-            } else if ($Name[0] == "/") {
-              $fill =  "url($Name)";
-              $Name= '';
-            }
-          } else {
-            $fill = "url(#diagonalHatch)";
-            $stroke = 'LightSeaGreen';
-          }
-        }
-        echo " style='fill:$fill;stroke:$stroke;";
-        if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";
-  //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
-        echo "'/>"; 
-        
-        // Fire Ex?
-        if ($Inf['FireEx']) { // TODO and display type for cat 2's
-           echo "<rect x=" . ($Xpos + $Xwidth - $Factor) . " y=" . ($Ypos + $Factor-2 ) . " width=$Factor height=$Factor ";
-           echo " style='fill:red; stroke:red; ";
-           if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";        
-           echo "' />";
-           $Key []= 'FireEx';
-        }
-        
-        break;
-        
-      case '1': // Text no action
-        $Xwidth = 1000; $Yheight = 1000;
-        break;
-      
-      case '2': // Circle
-        echo "<circle cx=$Xpos cy=$Ypos r=$Xwidth ";
-        if (!empty($Inf['MapColour'])) {
-          if ($Inf['MapColour'] != '/') {
-            $fill = $Inf['MapColour'];
-
-            if ($Name[0] == "~") {
-              $Pen = 'White';
-              $Name = substr($Name,1);
-            } else if ($Name[0] == "/") {
-              $fill =  "url($Name)";
-              $Name= '';
-            }
-          } else {
-            $fill = "url(#diagonalHatch)";
-            $stroke = 'LightSeaGreen';
-          }
-        }
-        echo " style='fill:$fill;stroke:$stroke;";
-        if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg); ";
-  //?     echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event); // Not used at present
-        echo "'/>"; 
-        $Inf['X'] -= $Inf['Xsize']; // For text positioning
-        $Inf['Y'] -= $Inf['Ysize']/2; // For text positioning
-        $TxtXf = $TxtYf = 2;
-      
-        break;
-      
-      case '3': // arrow
-        echo "<line x1=$Xpos y1=$Ypos x2=$Xwidth y2=$Yheight stroke=$stroke marker-end=url(#arrow) />";
-        break;
-      
-      case '4': // Image
-        echo "<image x=$Xpos y=$Ypos width=$Xwidth height=$Yheight href=$Name ";
-        if ($Inf['Angle']) echo "style='transform: rotate(" . $Inf['Angle'] . "Deg);' ";        
-        
-        echo " />";
-        $Name = '';
-      }
-      
-      // Now do any text
-
-      echo "<title>$Name</title>";
-
-      echo "<text x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . ((($Inf['Y']+0.7)/$Mapscale) * $Factor);
-      echo " style='";
-      if ($Inf['Angle']) echo "transform: rotate(" . $Inf['Angle'] . "Deg);";
-      echo "fill:$Pen; font-size:10px;'>";
-      if ($Name) {
-      // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
-      // Chunking - split to Words then add words to full - if no words split word (hard)
-      // Remove x t/a 
-      // Lowercase 
-      // Spilt at words of poss, otherwise at length (for now)
-
-        $ChSize = max(floor($Inf['Xsize']*45*$Mapscale/($Inf['Font']+10))*$TxtXf,2);
-        $Ystart = 0.6*($Inf['Font']+10)/10 -0.2;
-        $MaxCnk = max(floor(($Inf['Ysize']*2.5*$Mapscale))*$TxtYf,1);
-  //      $Name = preg_replace('/.*t\/a (.*)/',
-  //      $Chunks = str_split($Name,$ChSize);
-        $Chunks = ChunkSplit($Name,$ChSize,$MaxCnk);
-
-        foreach ($Chunks as $i=>$Chunk) {
-          if ($i>=$MaxCnk) break; 
-   //       $Chunk = substr($Name,0,$ChSize);
-          echo "<tspan x=" . (($Inf['X']+0.2) * $Factor)  . " y=" . (($Inf['Y']+$Ystart/$Mapscale) * $Factor) . 
-               " style=' font-weight:bold; font-size:" . (10+$Inf['Font']*2) . "px;'>$Chunk</tspan>";
-          $Ystart += 1.2*(10+$Inf['Font']*2.1)/20;
-        }
-      }
-      echo "</text>";
-      if ($Lopen) echo "</a>";
-    }
-  }
-  
-  
-  foreach ($Pitches as $Pitch) {
-    $Posn = $Pitch['Posn'];
-    $Name = '';
-    $Lopen = 0;
-    if (isset($Usage[$Posn])) $Name = $Usage[$Posn];
-    if ($Pitch['Type']) $Name = $Pitch['SN'];
-    if ($Links) {
-      if ($Links == 1 && !$Pitch['Type']) {
-        if (isset($TNum[$Posn])) {
-          echo "<a href=#Trader" . $TNum[$Posn] . ">";
-          $Lopen = 1;
-        }
-      } elseif ($Links == 2) {
-        echo "<a href='TradeShow?SEL=" . $Pitch['SN'] . "'>";
-        $Lopen = 1;
-      }
-    } else {
-//      echo "<a>";
-//      $Lopen = 1;
-    }
-    
-//    var_dump($Pitch,$TradeTypeData,$TT);
-    $Xpos = ($Pitch['X'] * $Factor);
-    $Ypos = ($Pitch['Y'] * $Factor);
-    $Xwidth = ($Pitch['Xsize'] * $Factor);
-    $Yheight = ($Pitch['Ysize'] * $Factor);
-
-    if ($Pitch['Type'] != 2) {
-      echo "<rect x=$Xpos y=$Ypos width=$Xwidth height=$Yheight ";
-      echo " style='fill:" . ($Pitch['Type']?$Pitch['Colour']:(($TT[$Posn]??-1)>=0?($Name?($TradeTypeData[$TT[$Posn]]['Colour']??0)  : "yellow"):"white")) . 
-           ";stroke:black;";
-      if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
-
-      echo "' id=Posn$Posn ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) />"; // Not used at present
-
-      echo "<title>$Name</title>";
-    }
-    
-    echo "<text x=" . ($Xpos+2)  . " y=" . ($Ypos+2); //(($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor -60);
-    $Ystart = $YAdd = (10+$Pitch['Font']*2.1)*.06;
-    
-    echo " style='";
-    if ($Pitch['Angle']) echo "transform: rotate(" . $Pitch['Angle'] . "Deg);";
-    echo "font-size:10px;'>";
-    if ($ShowPitch[$Pub]) {
-      echo "#" . $Posn;
-      if (($Pitch['Type'] == 0) && $Pitch['SN']) echo " - " . ($Pitch['SN']??'');
-    } else if (($Pub == 2) && ($Pitch['SN']??'')) echo $Pitch['SN'];
-    if ($Name && ($Pub!=2)) {
-    // Divide into Chunks each line has a chunk display Ysize chunks - the posn is a chunk,  chunk length = 3xXsize 
-    // Chunking - split to Words then add words to full - if no words split word (hard)
-    // Remove x t/a 
-    // Lowercase 
-    // Spilt at words of poss, otherwise at length (for now)
-    
-      $ChSize = floor($Pitch['Xsize']*($Pitch['Type']?18:32)*$Mapscale/($Pitch['Font']+10));
-      $Ystart = 0.6 *($Pitch['Type']?2:1)*($Pitch['Font']+10)/10;
-      if ($ShowPitch[$Pub]) {
-        $Ystart += ($Pitch['Type']?1.2:0.6)*(10+$Pitch['Font']*2.1)/10+1.2;
-      }
-      $MaxCnk = floor(($Pitch['Ysize']*2.5*$Mapscale) - 1);
-//      $Name = preg_replace('/.*t\/a (.*)/',
-//      $Chunks = str_split($Name,$ChSize);
-      $Chunks = ChunkSplit($Name,$ChSize,$MaxCnk);
-      
-      foreach ($Chunks as $i=>$Chunk) {
-        if ($i>=$MaxCnk) break; 
- //       $Chunk = substr($Name,0,$ChSize);
-        echo "<tspan x=" . (($Pitch['X']+0.2) * $Factor)  . " y=" . (($Pitch['Y']+$Ystart/$Mapscale) * $Factor) . 
-             " style='font-size:" . (($Pitch['Type']?$FSize*2:$FSize)+$Pitch['Font']) . "px;'>$Chunk</tspan>";
-        $Ystart += ($Pitch['Type']?1.2:0.6)*(10+$Pitch['Font']*2.1)/10;
-      }
-    }
-    echo "</text>";
-    if ($Lopen) echo "</a>";
-
-  }   
-  echo "</svg>";
-  echo "</div>";
 }

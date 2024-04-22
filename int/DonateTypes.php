@@ -5,7 +5,7 @@
  
   global $USER,$USERID,$db,$PLANYEAR;
 
-  A_Check('Staff'); // Will refine gate later
+  A_Check('Committee','Finance'); // Will refine gate later
   
 function Show_Don($Don,$Act='UPDATE') {
   echo "<table border>";
@@ -23,7 +23,7 @@ function Show_Don($Don,$Act='UPDATE') {
   echo "<tr>" . fm_number('In Use',$Don,'InUse');
   echo "<tr>" . fm_number('Relative Importance',$Don,'Importance');
   echo "<tr>" . fm_text('Text',$Don,'Text',2);
-  echo "<tr>" . fm_text('Button Id',$Don,'ButtonId',2);
+  echo "<tr>" . fm_text('Button Id (from Paypal)',$Don,'ButtonId',2);
   echo "<tr>" . fm_text('Image',$Don,'Image',2); 
   if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
   echo "</table><br>\n";
@@ -50,7 +50,7 @@ function ListDons() {
 
   foreach($Dons as $D) {
     $Did = $D['id'];
-    echo "<tr><td><a href=DonateTypes?ACTION=SHOW&id=Did>$Did</a><td><a href=DonateTypes?ACTION=SHOW&id=$Did>" . $D['Value'] . "</a><td>";
+    echo "<tr><td><a href=DonateTypes?ACTION=SHOW&id=$Did>$Did</a><td><a href=DonateTypes?ACTION=SHOW&id=$Did>" . $D['Value'] . "</a><td>";
     echo ['No','Yes'][$D['InUse']] . "<td>" . $D['Importance'] . "\n";
   }
   echo "</table></div>\n";

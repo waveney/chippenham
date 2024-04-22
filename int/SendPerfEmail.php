@@ -7,6 +7,7 @@ include_once("Email.php");
 global $PLANYEAR,$USER,$USERID,$PerfTypes,$CONF;
 
 A_Check("Staff");
+// var_dump($_REQUEST);
 
 if (isset($_REQUEST['REEDIT'])) {
   system("rm Temp/$USERID.*");
@@ -46,12 +47,32 @@ if (isset($_REQUEST['REEDIT'])) {
   $Side = Get_Side($id);
   $Sidey = Get_SideYear($id);
   $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
-  $Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:(Get_Email_Proforma($proforma))['Body']);
   $To = $Side['Email'];
-  if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
-    $To = $Side[$_REQUEST['E']];
+  $Contact = $Side['Contact'];
+  if (empty($Contact)) $Contact = $Side['SN'];
+  
+  if (empty($_REQUEST['E'])) {
+    if ($Side['HasAgent'] && !$Side['BookDirect']) $_REQUEST['E'] = 'Agent';
   }
+  
+  if (isset($_REQUEST['E'])) switch ($_REQUEST['E']) {
+      case 'Agent':
+        $To = $Side['AgentEmail'];
+        if (!empty($Side['AgentName'])) $Contact = $Side['AgentName'];
+        if (strstr($proforma,'Contract') && !strstr($proforma,'Agent')) $proforma .= "_Agent";
+        break;
+      case 'Alt':
+        $To = $Side['AltEmail'];
+        if (!empty($Side['AltContact'])) $Contact = $Side['AltContact'];
+        break;
 
+      default:
+        
+        break;
+  }     
+  
+  $Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:(Get_Email_Proforma($proforma))['Body']);
+  
   if (isset($_REQUEST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
 
   if (isset($_REQUEST['SEND'])) {
@@ -87,12 +108,7 @@ if (isset($_REQUEST['REEDIT'])) {
       }
     }
 
-    if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
-      $To = $Side[$_REQUEST['E']];
-    }
-
-    $too = [['to',$To,$Side['Contact']],
-//            ['from',$ReplyTo,Feature('ShortName')], // WRONG ANYWAY
+    $too = [['to',$To,$Contact],
             ['replyto',$ReplyTo,Feature('ShortName')]];
 
 
@@ -171,6 +187,3 @@ echo " <input type=submit name=PREVIEW value=Preview> <input type=submit name=SE
 echo "</form>";
 
 //echo fm_DragonDrop(, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$tddata1='',$tdclass='',$hide=0) {
-
-?>
-

@@ -88,6 +88,8 @@ function AgentChange(ev) {
   }
 }
 
+var ContractShow = 0;
+
 function CheckContract() {
   debugger;
   if ((document.getElementById('TotalFee') && document.getElementById('TotalFee').value > 0 ) || 
@@ -95,12 +97,15 @@ function CheckContract() {
        (document.getElementById('CampSat') && document.getElementById('CampSat').value > 0 ) || 
        (document.getElementById('CampSun') && document.getElementById('CampSun').value > 0 ) ||
        (document.getElementById('OtherPayment') && document.getElementById('OtherPayment').value !='' ) ||
-       (document.getElementById('ContractAnyway') && document.getElementById('ContractAnyway').checked))
-       { 
-//    if ((document.getElementById('OtherPayment') && document.getElementById('OtherPayment').value !='' )) 
-
+       (document.getElementById('ContractAnyway') && document.getElementById('ContractAnyway').checked) ||
+       (document.getElementById('HiddenYearState') && document.getElementById('HiddenYearState').value > 3)
+       ){ 
+    ContractShow = 1;
     $('.ContractShow').show();
-  } else { $('.ContractShow').hide(); }
+  } else { 
+    $('.ContractShow').hide(); 
+    ContractShow = 2;
+  }
 
   updateimps();
 }
@@ -121,10 +126,10 @@ function CheckDiscount() {
   
   ['Sat','Sun','Mon'].forEach((day) => {
     if ($("[Name=" + day + "]").is(":checked")) {
-      if (s = $('#' + day + 'Dance')) {
+      if ((s = $('#' + day + 'Dance'))) {
         Events += +s.val();
       }
-      if (s = $("[Name=Procession" + day +"]").is(":checked")) Events++;
+      if ((s = $("[Name=Procession" + day +"]").is(":checked"))) Events++;
     }
   });
   
@@ -139,9 +144,9 @@ function CheckIfTickets() {
 //debugger;
   var tot = 0;
   var l;
-  if (l = document.getElementById('Performers')) tot += +l.value;
-  if (l = document.getElementById('PerformersYouth')) tot += +l.value;
-  if (l = document.getElementById('PerformersChild')) tot += +l.value;
+  if ((l = document.getElementById('Performers'))) tot += +l.value;
+  if ((l = document.getElementById('PerformersYouth'))) tot += +l.value;
+  if ((l = document.getElementById('PerformersChild'))) tot += +l.value;
   if (l) {
     if (tot) { 
       $('.NOPerfTickets').hide(); 

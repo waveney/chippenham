@@ -23,7 +23,7 @@
 
     echo "The Resend action re-sends the last email to the trader (or a general status message if it does not make sense to resend).<p>";
   }
-
+  
   $Trade_Types = Get_Trade_Types(1);
   $TrMon = $TrRec = $TrSub = $TrState = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
   foreach ($TradeLocData as $i=>$TLoc) {
@@ -105,7 +105,7 @@
       $Tid = $fetch['Tid'];
       $str .= "<tr><td>";
         if ($ActsEnable) $str .= "<a href=Trade?id=$Tid>";
-        $str .= ($fetch['SN']?$fetch['SN']:'No Name Given');
+        $str .= ($fetch['SN']?preg_replace('/\|/','',$fetch['SN']):'No Name Given');
         if ($ActsEnable) $str .= "</a>";
       $str .= "<td style='background:" . $Trade_Types[$fetch['TradeType']]['Colour'] . ";'>" . $Trade_Types[$fetch['TradeType']]['SN'];
       $str .= "<td width=300>" . $fetch['GoodsDesc'];
@@ -144,6 +144,12 @@
                 break;
               case 'Invite Better':
                 if (!Feature('InviteBetter')) continue 2;
+                break;
+                
+              case 'Pitch Assign':
+              case 'Pitch Change':
+              case 'Moved':
+                if (empty($fetch['PitchNum0'])) continue 2;
                 break;
                 
               case 'LastWeek' :

@@ -4,6 +4,8 @@
   dostaffhead("Trader Application",["/js/Participants.js","js/dropzone.js","css/dropzone.css"]);
 
   include_once("TradeLib.php");
+  include_once("PitchMap.php");
+
   global $USER,$USERID,$db;
   echo "<div class=content>";
 // If access then edit trader info

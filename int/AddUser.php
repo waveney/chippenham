@@ -3,14 +3,11 @@
 
   A_Check('Committee','Users');
 
-  dostaffhead("Add/Change User");
   include_once("UserLib.php");
   global $Sections,$CONF;
 
   Set_User_Help();
-
-  echo "<h2>Add/Edit Fest Con Users</h2>\n";
-  echo "<form method=post action='AddUser'>\n";
+// var_dump($_REQUEST);
   if (isset($_REQUEST['UserId'])) { /* Response to update button */
     $unum = $_REQUEST['UserId'];
     if ($unum > 0) {                                 // existing User
@@ -35,13 +32,23 @@
           $User['Roll'] = 'No Access' . date(' j/m/Y');
           $User['Contacts'] = 0;
           foreach ($Sections as $sec) $User[$sec] = 0;
-          $a = Put_User($User);                 
+          $a = Put_User($User);
+          break;
+        case 'Become' : // Richard Only (for testing) ...
+          setcookie('FEST2',$User['Yale'],0,'/' );
+          $USER = $User;
+          $USERID = $USER['UserId'];
+          include_once ("Staff.php"); // no return wanted
+          exit;
         }
       } else {
         Update_db_post('FestUsers',$User);
       }
+
     } else { /* New User */
       $proc = 1;
+      dostaffhead("Add/Change User");
+
       if (!isset($_REQUEST['SN'])) {
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $proc = 0;
@@ -63,6 +70,7 @@
   } else {
     $unum = -1;
   }
+  dostaffhead("Add/Change User");
 
   $Stypes = [];
   if ($unum > 0) {                                 // existing User   
@@ -71,6 +79,11 @@
   }
 // var_dump($Stypes);
 
+  
+  echo "<h2>Add/Edit Fest Con Users</h2>\n";
+  echo "<form method=post action='AddUser'>\n";
+
+  
 //  echo "<!-- " . var_dump($User) . " -->\n";
   echo "<div class=tablecont><table width=90% border>\n";
     echo "<tr><td>User Id:<td>";
@@ -127,10 +140,11 @@
     echo "</form><form method=post action=AddUser>" . fm_hidden('UserId',$unum);
     echo " <input type=text name=NewPass size=10>";
     echo "<input type=submit name=ACTION value='Set Password'>\n";
+    if (Access('Internal')) echo "<input type=submit name=ACTION value=Become>";
 
     echo "<input type=submit name=ACTION value='Remove Access' " .
                   "onClick=\"javascript:return confirm('are you sure you want to remove this user?');\"></form> "; 
-
+    echo "<input type=submit namce=ACTION value=Become>";
     echo "<h2><a href=Welcome?U=$unum>Send Welcome Email with New Password Link</a> , \n";
   } else { 
     echo "<Center><input type=Submit name=Create value='Create'></center>\n";

@@ -100,10 +100,11 @@
   $Spons = Get_Sponsors();
   echo "<div hidden>" . fm_hidden('ChangeTime',Feature('SponsorTime',2000)); // IN msec
   foreach ($Spons as $s) {
-    echo "<li class=SponsorsIds id=" .$s['id'] . "><div class=sponcontainer><div class=sponContent>";
+    if ($s['Importance'] < 0) continue;
+    echo "<li class=SponsorsIds id=" .$s['id'] . " data-i=" . ($s['Importance']+1) . "><div class=sponcontainer><div class=sponContent>";
     if ($s['Website']) echo weblinksimple($s['Website']);
-    if ($s['Image']) echo "<img src='" . $s['Image'] . "' class=sponImage>";
-    if (!$s['Image'] || $s['IandT']) echo "<div class=sponText>" . $s['SN'] . "</div>";
+    if (!empty($s['Logo']) || !empty($s['Photo'])) echo "<img src='" . (empty($s['Logo'])?$s['Photo']: $s['Logo']) . "' class=sponImage>";
+    if ($s['IandT']) echo "<div class=sponText>" . $s['SN'] . "</div>";
     if ($s['Website']) echo "</a>";
     echo "</div></div>";
   }

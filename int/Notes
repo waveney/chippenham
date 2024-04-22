@@ -42,9 +42,10 @@
 89a) Per Venue
 89b) Totals
 89c) Year records, copy forward option
+89d) Done tables, power and fire ex 
 93) QR codes with icon in the middle
 95) Music Grids (Borrow from Dance grids)
-97) Work out how to make CSS colours instalation dependant
+97) Work out how to make CSS colours installation dependant
 101) Thumbnail size on gall manage
 102) Favicon/apple icons from build not hard coded
 104) Starting Logos
@@ -53,48 +54,31 @@
 108) Credit card handling (Stripe)
 109) Tickets (2025 onwards)
 110) Better Volunteer process
-111) Restrict volunteers to one team only (with override)
 112) Volunteer grids (Borrow from Dance Grids)
 113) Volunteer availability - hide irrelevant days
 115) Click to put link in clipboard (Perfs, Trade, Vols)
 116) Block out Venues
 
-117) Photos and Blurbs per Isa Cats & per fest option
-117a) Has Overlays Flag
-117b) Overlay data creation, access and management
-117c) Fns for Image, Blurb, desc
-117d) Overlay record - indexed by sidenum + fest + year?, if image set overrides, if blurb set ovverides, if desc set overrides
-117e) Images need to be stored in a diff way for this  images/Sides/Isa/sid.ftype
-117f) Select format for lineup displays
-117g) What to do with public perf pages
+117) Photos and Blurbs per Isa Cats & per fest option (on hold)
+117a) Has Overlays Flag Y
+117b) Overlay data creation, access and management Y
+117c) Fns for Image, Blurb, desc Y
+117d) Overlay record - indexed by sidenum + fest + year?, if image set overrides, if blurb set ovverides, if desc set overrides Y
+117e) Images need to be stored in a diff way for this  images/Sides/Isa/sid.ftype (Part)
+117f) Select format for lineup displays (Part)
+117g) What to do with public perf pages 
 117h) Photo editing etc
 118i) Printed programme impact
 
-125) Trade days
-127) Validate Trade (& Power)
-130) Pre-load trader quotes info
-132) Text on trade stand map
-133) Stalls per trader - two? (For bobby)
-
-
-
-TODAY
-
-3) Invoices
-4) Servers
-5) Trade 
-6) Multi perfs
-9) Zoom @8
+125) Trade days (not needed)
+168) dance grid slot size agnostic (on hold)
+177) Invoice Reminders
+179) Generic sound link W/O Staff access
+180) Donate...
+181) Spotify for performers (part - need the links to work)
+182) Trade Assign drag/drop (not critical path)
 
 
 
 
-Wider Fest Software
-1) Shared servers for many festivals
-2) Shared data
-3) Base cost and cost per Event?
-
-6/1/24 67.3kg
-16/1/24 66.7kg
-31/1/24 68!
 
