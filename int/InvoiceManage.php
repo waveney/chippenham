@@ -10,6 +10,7 @@
 
   dostaffhead("Invoice Management");
   
+  $BalancesSent = 0; // Need Yeardata check for this
 
 /* List all budget areas for year, if current allow edits, if historical not.
    Add Items, change items etc 
@@ -114,7 +115,9 @@
       break;
       
     case 'DELETE' :
+    case 'REMOVE' : // Remove an invoice from the records - Do NOT cancel anything
       db_delete('Invoices',$id);
+      echo "Invoice $id has been deleted<p>";
       break;
       
     case 'NEW' :
@@ -244,6 +247,12 @@
     case 'REMIND' : //Send reminder email
       
       break;
+    
+
+    case 'OVERDUE' : // Send Overdue email
+      
+      break;
+    
     }
 
   
@@ -299,6 +308,7 @@
   }
 
   echo "Click on the id# to see the invoice infomation, click on the Name to see the Trader/Business<p>";
+  if (Access('SysAdmin')) echo "See all for fancy actions...<P>";
 
   if ($Invs || $Pays) {  
   $Now = time();
@@ -400,10 +410,17 @@
         echo "<button name=ACTION value=DIFF onclick=diffprompt($id) >Paid Different</button> ";
         echo "<button name=ACTION value=CREDIT onclick=reasonprompt($id) >Cancel/credit</button> ";
       }
-      if ($Overdue) echo "<button name=ACTION value=REMIND >Remind</button> ";
+      if ($Overdue) {
+        echo "<button name=ACTION value=REMIND >Remind</button> ";
+        
+        if ($BalancesSent) echo "<button name=ACTION value=OVERDUE >Overdue</button> ";
+      }
 
-      if ($All && Access('SysAdmin')) echo "<button name=ACTION value=DIFF onclick=diffprompt($id) >Paid Special</button> ";
-      if ($All && Access('SysAdmin')) echo "<button name=ACTION value=DELETE onclick=diffprompt($id) >DELETE</button> ";
+      if ($All && Access('SysAdmin')) {
+        echo "<button name=ACTION value=DIFF onclick=diffprompt($id) >Paid Special</button> ";
+    //    echo "<button name=ACTION value=DELETE >DELETE</button> ";
+        echo "<button name=ACTION value=REMOVE >Remove Invoice</button> ";
+      }
       echo "</form>";
     }
     

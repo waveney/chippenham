@@ -31,8 +31,8 @@ function ImgData() {
       $FinalLoc = "images/Trade/" . $Who;
       $Put_Data = 'Put_Trader';
       break;
-    case 7: // Sponsor
-      $Data = Get_Sponsor($Who);
+    case 7: // Sponsor - dont work
+      $Data = []; // Get_Sponsor($Who);
       $Field = 'Image';
       $FinalLoc = "images/Sponsors/" . $Who;
       $Put_Data = 'Put_Sponsor';

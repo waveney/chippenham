@@ -14,7 +14,7 @@ $TS_Actions = ['Submit,Invite,Invite Better',
                 'Resend',
                 'Resend,Submit',
                 'Resend,Quote,Accept,Invite,Decline,Hold,Cancel,Invite Better,Dates,FestC',
-                'Resend,Quote,Invite,Accept,Decline,UnQuote,LastWeek,Dates,FestC',
+                'Resend,Quote,Invite,Accept,Decline,UnQuote,LastWeek,Dates,FestC', // Overdue
                 'Resend,Cancel,Dates,FestC',
                 'Pitch Assign,Pitch Change,Moved,Resend,Send Bal,Cancel,Dates,FestC',
                 'Pitch Assign,Pitch Change,Moved,Resend,Chase,Cancel,Dates,FestC',
@@ -28,14 +28,14 @@ $TS_Actions = ['Submit,Invite,Invite Better',
 $Trader_Status = ['Alive','Banned','Not trading'];
 $Trader_State = array_flip($Trader_Status);
 $ButExtra = [
-        'Accept'=>'',
+        'Accept'=>'title=>"Accept the quote/invite"',
         'Decline'=>'title="Decline this trader, if in doubt Hold Them"',
         'Submit'=>'title="Submit application"',
         'Hold'=>'title="Hold for space available"',
         'Dep Paid'=>'title="Deposit Paid"', // Not Used 
         'Send Bal'=>'title="Send Balance Request"', // PAYCODE
         'Invoice'=>'title="Send Balance Request"', // Invoice
-        'Paid'=>'title=Full Fees Paid"', // Not Used
+        'Paid'=>'title="Full Fees Paid"', // Not Used
         'Quote'=>'title="Send or repeat Quote email"',
         'Invite'=>'title="Send or repeat the Invitation Email"',
         'Balance Requested'=>'title="Final Invoice Sent"',
@@ -49,8 +49,9 @@ $ButExtra = [
         'Moved'=>'title="Pitch Moved"',
         'Balance'=>'title="Send Balance Payment Request',
         'LastWeek'=>'title="Last week of Quote"',
-        'Dates'=>'Festival Changed Dates',
-        'FestC'=>'Festival Cancelled this year',
+        'Dates'=>'title="Festival Changed Dates"',
+        'FestC'=>'title="Festival Cancelled this year"',
+        'Overdue'=>'title="Total payment needed now"'
         ]; 
         
 $ButTraderTips = [ // Overlay of diferent tips for traders 
@@ -189,7 +190,7 @@ function Old_Get_Sponsors($tup=0) { // 0 Current, 1 all data
 }
 
 function Get_Sponsor_Names($tup=0) {
-  $data = Get_Sponsors($tup);
+  $data = Old_Get_Sponsors($tup);
   foreach ($data as $sp) $ans[$sp['id']]=$sp['SN'];
   return $ans;
 }
@@ -1581,7 +1582,6 @@ function Trade_Main($Mode,$Program,$iddd=0) {
 //        var_dump($Mode, $ButTraderTips[$ac]);
         if (!$Mode && !empty($ButTraderTips[$ac])) $ButExtra[$ac] = $ButTraderTips[$ac];
         echo "<input type=submit name=ACTION value='$ac' " . ($ButExtra[$ac] ??'') . " $xtra onlick=PreventDouble()>";
-  //        . "onclick=\"this.disabled=true;this.value='Submitting...'; this.form.submit();\">";
       }
     }
     if ($Mode == 0) { 
