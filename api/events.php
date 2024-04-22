@@ -14,7 +14,8 @@ function Get_Events($subEventId) {
         SELECT DISTINCT 
             e.EventId as Id, e.SN as Name, e.Description, e.Day, e.Start, e.End, e.SlotEnd, IF(e.IsConcert OR t.IsConcert, 1, 0) as IsConcert,
             e.NonFest, e.Importance, e.Bar, e.Food, e.BarFoodText,
-            e.DoorPrice, e.SeasonTicketOnly, e.SponsoredBy,
+            e.SeasonTicketOnly, e.SpecPrice, e.Price1, e.Price2, e.Price3, e.DoorPrice,
+            e.SponsoredBy,
             e.Side1, e.Side2, e.Side3, e.Side4,
             e.Roll1, e.Roll2, e.Roll3, e.Roll4,
             t.SN as Type, e.ListDance, e.ListMusic, e.ListComedy, e.ListWorkshop, e.Family, e.Special,
@@ -46,6 +47,7 @@ function Get_Events($subEventId) {
                 $row['Start'] = Get_Date($row['Day'], $row['Start']);
                 $row['End'] = Get_Date($row['Day'], $row['End']);
             }
+            $row['Price'] = Price_Show($row);
             $row['SubEvents'] = Get_Events($row['Id']);
             $row["Access"] = $Event_Access_Type[$row['SeasonTicketOnly']];
             $row['Performers'] = Get_Performers($row);
@@ -53,6 +55,12 @@ function Get_Events($subEventId) {
             $row['Sponsors'] = Get_Sponsors($row['SponsoredBy'], $row['Name'], 2, $row['Id']);
 
             unset($row['Day']);
+            unset($row['SeasonTicketOnly']);
+            unset($row['SpecPrice']);
+            unset($row['Price1']);
+            unset($row['Price2']);
+            unset($row['Price3']);
+            unset($row['DoorPrice']);
             unset($row['Side1']);
             unset($row['Side2']);
             unset($row['Side3']);
