@@ -34,6 +34,9 @@ function Get_Events($subEventId) {
             if ($subEventId > 0 && $row['IsConcert']) {
                 $row['Start'] = null;    
                 $row['End'] = null;
+            } else {
+                $row['Start'] = Get_Date($row['Day'], $row['Start']);
+                $row['End'] = Get_Date($row['Day'], $row['End']);
             }
             $row['SubEvents'] = Get_Events($row['Id']);
             $row["Access"] = $Event_Access_Type[$row['SeasonTicketOnly']];
@@ -41,6 +44,7 @@ function Get_Events($subEventId) {
             $row['Venues'] = API_Get_Venues($row);
             $row['Sponsors'] = Get_Sponsors($row['SponsoredBy'], $row['Name'], 2, $row['Id']);
 
+            unset($row['Day']);
             unset($row['Side1']);
             unset($row['Side2']);
             unset($row['Side3']);
@@ -57,6 +61,18 @@ function Get_Events($subEventId) {
         return $evs;
     }
     return [];
+}
+
+function Get_Date($day, $time) {
+    global $YEARDATA;
+
+    $timeStr = str_pad($time, 4, '0', STR_PAD_LEFT);
+    $timeStr = substr_replace($timeStr, ':', 2, 0);
+    
+    $date = DateTime::createFromFormat('Y-m-d H:i', $YEARDATA['Year'].'-'.$YEARDATA['MonthFri'].'-'.$YEARDATA['DateFri'].' '.$timeStr);
+    $date = date_add($date, new DateInterval('P'.$day.'D'));
+
+    return date_format($date, 'Y-m-d\TH:i:s');
 }
 
 function Load_Performers() {
