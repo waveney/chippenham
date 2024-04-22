@@ -999,7 +999,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             echo "<td colspan=2><input type=submit id=greensubmit name=Contract value='Confirm Contract by Receipt of Confirmation Email'>";
             echo fm_hidden('ContractDate',time());
             echo "<td colspan=2><input type=submit id=redsubmit name=Decline value='Decline Contract by Clicking Here'>";
-            $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":'');
+            $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":0);
             $Issue = $Sidey['Contracts']+1;
 
             echo "<td class=NotSide><button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract_Reissue',$snum,"
