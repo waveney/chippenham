@@ -124,7 +124,7 @@ function Load_Venues() {
             v.VenueId as Id, v.ShortName, v.Address, v.Lat, v.Lng, y.SponsoredBy
         FROM
             Venues v
-            INNER JOIN VenueYear y ON v.VenueId = y.VenueId
+            LEFT JOIN VenueYear y ON v.VenueId = y.VenueId
         WHERE
             y.Year='$YEAR'
         ";
