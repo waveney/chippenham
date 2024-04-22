@@ -137,7 +137,8 @@ function Load_Venues() {
     global $db,$YEAR,$venues;
     $qry="
         SELECT DISTINCT 
-            v.VenueId as Id, v.SN as Name, v.ShortName, v.Address, v.Lat, v.Lng, v.PartVirt as ParentId, 
+            v.VenueId as Id, v.SN as Name, v.ShortName, v.Address, v.Lat, v.Lng,
+            v.PartVirt as ParentId, v.IsVirtual,
             y.SponsoredBy
         FROM
             Venues v
@@ -149,6 +150,7 @@ function Load_Venues() {
     if ($res) {
         while($row = $res->fetch_assoc()) {
             $row['Sponsors'] = Get_Sponsors($row['SponsoredBy'], $row['Name'], 3, $row['Id']);
+            $row['IsVirtual'] = $row['IsVirtual'] == 1;
             unset($row['SponsoredBy']);
             array_push($venues, $row);
         }
