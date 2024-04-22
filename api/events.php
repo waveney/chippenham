@@ -31,6 +31,14 @@ function Get_Events($subEventId) {
     if ($res) {
         $evs = [];
         while($row = $res->fetch_assoc()) {
+            $row['IsConcert'] = $row['IsConcert'] == 1;
+            $row['ListDance'] = $row['ListDance'] == 1;
+            $row['ListMusic'] = $row['ListMusic'] == 1;
+            $row['ListComedy'] = $row['ListComedy'] == 1;
+            $row['ListWorkshop'] = $row['ListWorkshop'] == 1;
+            $row['Family'] = $row['Family'] == 1;
+            $row['Special'] = $row['Special'] == 1;
+
             if ($subEventId > 0 && $row['IsConcert']) {
                 $row['Start'] = null;    
                 $row['End'] = null;
@@ -95,6 +103,13 @@ function Load_Performers() {
     $res = $db->query($qry);
     if ($res) {
         while($row = $res->fetch_assoc()) {
+            $row['IsASide'] = $row['IsASide'] == 1;
+            $row['IsAnAct'] = $row['IsAnAct'] == 1;
+            $row['IsOther'] = $row['IsOther'] == 1;
+            $row['IsFunny'] = $row['IsFunny'] == 1;
+            $row['IsFamily'] = $row['IsFamily'] == 1;
+            $row['IsCeilidh'] = $row['IsCeilidh'] == 1;
+            $row['IsNonPerf'] = $row['IsNonPerf'] == 1;
             $row['Sponsors'] = Get_Sponsors($row['SponsoredBy'], $row['Name'], 3, $row['Id']);
             unset($row['SponsoredBy']);
             array_push($performers, $row);
