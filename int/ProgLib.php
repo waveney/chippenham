@@ -9,8 +9,8 @@ $InfoLevels = array('None','Major','Minor','All');
 $VisParts = array('All','None'); // Add subcats when needed
 $Thing_Types = array('Sides','Acts','Others');
 $Public_Event_Types = array('As Global','Yes', 'Not yet','Never');
-$Event_Access_Type = ['Open','Weekend or Day tickets Only', 'Weekend, Day or Event tickets Only'];
-$Event_Access_Colours = ['white','lightblue','lightgreen'];
+$Event_Access_Type = ['Open','Weekend or Day tickets Only', 'Weekend, Day or Event tickets Only', 'Event Tickets Only'];
+$Event_Access_Colours = ['white','lightblue','lightgreen','pink'];
 
 $Day_Type = ['Thur'=>-1,'Fri'=>0,'Sat'=>1,'Sun'=>2,'Mon'=>3,'Tue'=>4]; 
 $Info_Type = array_flip($InfoLevels);

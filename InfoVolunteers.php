@@ -12,6 +12,8 @@
        "When you get to the form you can select more than one team.<p>";
        
   echo "Volunteers get free tickets and camping.<p>";
+  
+  echo "<b><a href=int/ShowFile?f=233>Volunteers Handbook 2024</a></b><p>";
 
 
   $Vol_Cats = Gen_Get_All('VolCats','ORDER BY Importance DESC');

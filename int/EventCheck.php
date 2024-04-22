@@ -43,7 +43,7 @@ function EventCheck($checkid=0) {
         continue;
       }        
 
-      if ($ev['End']<$ev['Start']) {
+      if (($ev['End']<$ev['Start']) && ($ev['EndsNextDay']==0)){
         echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts after it Ends.<p>";
               $errors++;
         continue;
