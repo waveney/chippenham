@@ -121,7 +121,8 @@ function Load_Venues() {
     global $db,$YEAR,$venues;
     $qry="
         SELECT DISTINCT 
-            v.VenueId as Id, v.SN as Name, v.ShortName, v.Address, v.Lat, v.Lng, y.SponsoredBy
+            v.VenueId as Id, v.SN as Name, v.ShortName, v.Address, v.Lat, v.Lng, v.PartVirt as ParentId, 
+            y.SponsoredBy
         FROM
             Venues v
             LEFT JOIN VenueYear y ON v.VenueId = y.VenueId
@@ -135,6 +136,12 @@ function Load_Venues() {
             unset($row['SponsoredBy']);
             array_push($venues, $row);
         }
+    }
+
+    //Add parents
+    foreach ($venues as $key => &$value) {
+        $value['Parent'] = API_Get_Venue($value['ParentId']);
+        unset($value['ParentId']);
     }
 }
 
