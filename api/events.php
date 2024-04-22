@@ -85,8 +85,8 @@ function Get_Date($day, $time) {
     $timeStr = str_pad($time, 4, '0', STR_PAD_LEFT);
     $timeStr = substr_replace($timeStr, ':', 2, 0);
     
-    $date = DateTime::createFromFormat('Y-m-d H:i', $YEARDATA['Year'].'-'.$YEARDATA['MonthFri'].'-'.$YEARDATA['DateFri'].' '.$timeStr);
-    $date = date_add($date, new DateInterval('P'.$day.'D'));
+    $date = DateTime::createFromFormat('Y-m-d H:i', substr($YEARDATA['Year'], 0, 4).'-'.$YEARDATA['MonthFri'].'-'.$YEARDATA['DateFri'].' '.$timeStr);
+    $date->modify($day.' day');
 
     return date_format($date, 'Y-m-d\TH:i:s');
 }
