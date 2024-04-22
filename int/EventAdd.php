@@ -366,12 +366,12 @@ A similar feature will appear eventually for music.<p>
       }
       echo "<tr>" . fm_radio("<b><span class=mday $hidemday>Start </span>Day</b>",$FestDays,$Event,'Day',
                     ($se > 0?'class=FullD hidden':''),1,($se > 0?'class=FullD hidden':''));
-      echo "<td colspan=2><b>Times</b>: " . fm_smalltext2('Start:',$Event,'Start');
+      echo "<td colspan=3><b>Times</b>: " . fm_smalltext2('Start:',$Event,'Start');
         echo fm_smalltext2(', End:',$Event,'End');
         echo fm_smalltext2(', Setup Time (mins):',$Event,'Setup') ;
         echo "<div class=FullD hidden>" . fm_smalltext2(', Duration:',$Event,'Duration') . "&nbsp;(mins)";
         if ($se < 0) echo fm_smalltext2(', Slot End:',$Event,'SlotEnd');
-        echo fm_smalltext2(', Doors:',$Event,'DoorsOpen') . "</div>";
+        echo fm_smalltext2(', Doors:',$Event,'DoorsOpen') . fm_checkbox("Ends After Midnight",$Event,'EndsNextDay') . "</div>";
         if ($se <= 0) echo "<tr>" . fm_radio("Access",$Event_Access_Type, $Event,'SeasonTicketOnly','',1,'colspan=2','',$Event_Access_Colours);
                      // echo "<td>" . fm_checkbox("Season Ticket Only",$Event,'SeasonTicketOnly');
       if ($se <= 0) echo "<tr class=mday $hidemday>" . fm_radio('End Day',$FestDays,$Event,'EndDay') . 

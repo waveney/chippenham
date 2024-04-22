@@ -392,10 +392,12 @@ function Refresh_Image_After_Upload(T,V) {
   if ((s=document.getElementById(T))) s.value = V;
 } 
 
-var ClickCount = 0;
+var Clickids = [];
 
-function PreventDouble() {
-  if (ClickCount++) return;
+function PreventDouble(id='') {
+  var now = Date.now();
+  if (Clickids[id] > (now -10000) ) return; // 10 Second window
+  Clickids[id]= now;
   this.form.submit();
 }
 
