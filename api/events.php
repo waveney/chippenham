@@ -126,7 +126,7 @@ function Load_Venues() {
             Venues v
             LEFT JOIN VenueYear y ON v.VenueId = y.VenueId
         WHERE
-            y.Year='$YEAR'
+            y.VenueId IS NULL OR y.Year='$YEAR'
         ";
     $res = $db->query($qry);
     if ($res) {
