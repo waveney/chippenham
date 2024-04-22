@@ -14,11 +14,12 @@ function Get_Events($subEventId) {
         SELECT DISTINCT 
             e.EventId as Id, e.SN as Name, e.Description, e.Day, e.Start, e.End, e.SlotEnd, IF(e.IsConcert OR t.IsConcert, 1, 0) as IsConcert,
             e.NonFest, e.Importance, e.Bar, e.Food, e.BarFoodText,
-            e.DoorPrice, e.SeasonTicketOnly, e.SponsoredBy,
+            e.SeasonTicketOnly, e.SpecPrice, e.Price1, e.Price2, e.Price3, e.DoorPrice,
+            e.SponsoredBy,
             e.Side1, e.Side2, e.Side3, e.Side4,
             e.Roll1, e.Roll2, e.Roll3, e.Roll4,
             t.SN as Type, e.ListDance, e.ListMusic, e.ListComedy, e.ListWorkshop, e.Family, e.Special,
-            e.Venue
+            e.Venue, e.Status
         FROM
             Events e
             INNER JOIN EventTypes t ON t.ETypeNo = e.Type
@@ -31,16 +32,35 @@ function Get_Events($subEventId) {
     if ($res) {
         $evs = [];
         while($row = $res->fetch_assoc()) {
+            $row['IsConcert'] = $row['IsConcert'] == 1;
+            $row['ListDance'] = $row['ListDance'] == 1;
+            $row['ListMusic'] = $row['ListMusic'] == 1;
+            $row['ListComedy'] = $row['ListComedy'] == 1;
+            $row['ListWorkshop'] = $row['ListWorkshop'] == 1;
+            $row['Family'] = $row['Family'] == 1;
+            $row['Special'] = $row['Special'] == 1;
+
             if ($subEventId > 0 && $row['IsConcert']) {
                 $row['Start'] = null;    
                 $row['End'] = null;
+            } else {
+                $row['Start'] = Get_Date($row['Day'], $row['Start']);
+                $row['End'] = Get_Date($row['Day'], $row['End']);
             }
+            $row['Price'] = Price_Show($row);
             $row['SubEvents'] = Get_Events($row['Id']);
             $row["Access"] = $Event_Access_Type[$row['SeasonTicketOnly']];
             $row['Performers'] = Get_Performers($row);
             $row['Venues'] = API_Get_Venues($row);
             $row['Sponsors'] = Get_Sponsors($row['SponsoredBy'], $row['Name'], 2, $row['Id']);
 
+            unset($row['Day']);
+            unset($row['SeasonTicketOnly']);
+            unset($row['SpecPrice']);
+            unset($row['Price1']);
+            unset($row['Price2']);
+            unset($row['Price3']);
+            unset($row['DoorPrice']);
             unset($row['Side1']);
             unset($row['Side2']);
             unset($row['Side3']);
@@ -57,6 +77,18 @@ function Get_Events($subEventId) {
         return $evs;
     }
     return [];
+}
+
+function Get_Date($day, $time) {
+    global $YEARDATA;
+
+    $timeStr = str_pad($time, 4, '0', STR_PAD_LEFT);
+    $timeStr = substr_replace($timeStr, ':', 2, 0);
+    
+    $date = DateTime::createFromFormat('Y-m-d H:i', $YEARDATA['Year'].'-'.$YEARDATA['MonthFri'].'-'.$YEARDATA['DateFri'].' '.$timeStr);
+    $date = date_add($date, new DateInterval('P'.$day.'D'));
+
+    return date_format($date, 'Y-m-d\TH:i:s');
 }
 
 function Load_Performers() {
@@ -79,6 +111,13 @@ function Load_Performers() {
     $res = $db->query($qry);
     if ($res) {
         while($row = $res->fetch_assoc()) {
+            $row['IsASide'] = $row['IsASide'] == 1;
+            $row['IsAnAct'] = $row['IsAnAct'] == 1;
+            $row['IsOther'] = $row['IsOther'] == 1;
+            $row['IsFunny'] = $row['IsFunny'] == 1;
+            $row['IsFamily'] = $row['IsFamily'] == 1;
+            $row['IsCeilidh'] = $row['IsCeilidh'] == 1;
+            $row['IsNonPerf'] = $row['IsNonPerf'] == 1;
             $row['Sponsors'] = Get_Sponsors($row['SponsoredBy'], $row['Name'], 3, $row['Id']);
             unset($row['SponsoredBy']);
             array_push($performers, $row);
@@ -121,7 +160,9 @@ function Load_Venues() {
     global $db,$YEAR,$venues;
     $qry="
         SELECT DISTINCT 
-            v.VenueId as Id, v.SN as Name, v.ShortName, v.Address, v.Lat, v.Lng, y.SponsoredBy
+            v.VenueId as Id, v.SN as Name, v.ShortName, v.Address, v.Lat, v.Lng,
+            v.PartVirt as ParentId, v.IsVirtual,
+            y.SponsoredBy
         FROM
             Venues v
             LEFT JOIN VenueYear y ON v.VenueId = y.VenueId
@@ -132,9 +173,16 @@ function Load_Venues() {
     if ($res) {
         while($row = $res->fetch_assoc()) {
             $row['Sponsors'] = Get_Sponsors($row['SponsoredBy'], $row['Name'], 3, $row['Id']);
+            $row['IsVirtual'] = $row['IsVirtual'] == 1;
             unset($row['SponsoredBy']);
             array_push($venues, $row);
         }
+    }
+
+    //Add parents
+    foreach ($venues as $key => &$value) {
+        $value['Parent'] = API_Get_Venue($value['ParentId']);
+        unset($value['ParentId']);
     }
 }
 
