@@ -110,7 +110,7 @@ function Get_Prices(&$Ev) {
     if ($Ev['SeasonTicketOnly']) {
         return [Make_Price($Cpri ? $Cpri : null, $Event_Access_Type[$Ev['SeasonTicketOnly']])];
     }
-    if (!$Cpri) return [Make_Price(0, Feature('FreeText','Free'))];
+    if (!$Cpri) return [Make_Price(null, Feature('FreeText','Free'))];
   
     if ($Ev['TicketCode']) {
         $Ev['TicketUrl'] = $Ev['TicketCode'];
