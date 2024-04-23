@@ -41,6 +41,7 @@
         ],
       'Information'=>[
         'Festival Map'=>'Map',
+        'Island Park Map'=>'int/TradeStandMap',
         'Camping'=>'InfoCamping',
         'Parking'=>'InfoParking',
         'Travel'=>'InfoGettingHere',

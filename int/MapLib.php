@@ -136,4 +136,3 @@ function Show_Map_Point($Venue) {
   echo "</div></div>"; 
 }
 
-?>

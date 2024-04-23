@@ -658,7 +658,6 @@ function Price_Show(&$Ev,$Buy=0) {
 
   if ($Ev['SpecPrice']) return $Ev['SpecPrice'];
 
-  $dats = array();
   $str = '';
   $once = 0;
   $Cpri = $Ev['Price1'];
@@ -673,6 +672,8 @@ function Price_Show(&$Ev,$Buy=0) {
       $str .= "<a href=" . $Ev['TicketCode'] . " target=_blank>";
     } else if ($Ev['SpecPriceLink']) {
       $str .= "<a href=" . $Ev['SpecPriceLink'] . " target=_blank>";
+    } else {
+      $Buy = 0;
     }
   }
   if ($YEARDATA['PriceChange1']) {
@@ -702,12 +703,13 @@ function Price_Show(&$Ev,$Buy=0) {
 
   if ($Ev['DoorPrice'] && $Ev['DoorPrice'] != $Cpri) {
     if ($once) $str .= ", then ";
-    $str .= Print_Pound($Cpri) . " in advance</a> and " . Print_Pound($Ev['DoorPrice']) . " on the door"; // The </a> is to stop the links when used
+    $str .= Print_Pound($Cpri) . " in advance and " . Print_Pound($Ev['DoorPrice']) . " on the door"; 
   } else {
     if ($once) $str .= ", then ";
     $str .= Print_Pound($Cpri);
   } 
 
+  if ($Buy) $str .= "</a>";
   return $str;
 }
 

@@ -26,6 +26,7 @@ Details to follow.<p>
 </div></div><div id=Blob4>
 
 <h2>Long Term Car Parks - Blue Icons</h2>
+And large blocks of Chargers.<p>
 The principle long term car parks are:<p>
 
 <div class=tablecont><table class=InfoTable>
