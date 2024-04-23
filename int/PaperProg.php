@@ -37,7 +37,15 @@
   $SetNum = 1;
   echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script><div class=PaperP>";
   foreach ($Perf_Cats as $Title=>$fetch) {
-    if ($Set && ($Set != $SetNum++)) continue;
+    if ($Set && ($Set != $SetNum++)) {
+      foreach ($Slist as $perf) {
+        if ($perf['NotPerformer'] ) continue;
+        if (isset($Displayed[$perf['SideId']])) continue;
+        if (empty($perf['Description']) && Feature('OmitEmptyDescriptions')) continue;
+        $Displayed[$perf['SideId']] = 1;
+      }
+      continue;
+    }
     echo "<div style='text-align:center;font-size:24;font-weight:bold;margin:10;'>$Title</div>";
     $Slist = [];
     $perfQ = $db->query($fetch);
