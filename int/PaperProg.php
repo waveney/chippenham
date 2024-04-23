@@ -38,6 +38,10 @@
   echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script><div class=PaperP>";
   foreach ($Perf_Cats as $Title=>$fetch) {
     if ($Set && ($Set != $SetNum++)) {
+      $Slist = [];
+      $perfQ = $db->query($fetch);
+      if ($perfQ) while($side = $perfQ->fetch_assoc()) $Slist[] = $side;
+
       foreach ($Slist as $perf) {
         if ($perf['NotPerformer'] ) continue;
         if (isset($Displayed[$perf['SideId']])) continue;
