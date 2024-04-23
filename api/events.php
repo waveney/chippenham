@@ -14,7 +14,7 @@ function Get_Events($subEventId) {
         SELECT DISTINCT 
             e.EventId as Id, e.SN as Name, e.Description, e.Day, e.EndsNextDay, e.Start, e.End, e.SlotEnd, IF(e.IsConcert OR t.IsConcert, 1, 0) as IsConcert,
             e.NonFest, e.Importance, e.Bar, e.Food, e.BarFoodText,
-            e.SeasonTicketOnly, e.SpecPrice, e.Price1, e.Price2, e.Price3, e.DoorPrice,
+            e.SeasonTicketOnly, e.SpecPrice, e.Price1, e.Price2, e.Price3, e.DoorPrice, e.TicketCode, e.SpecPriceLink,
             e.SponsoredBy,
             e.Side1, e.Side2, e.Side3, e.Side4,
             e.Roll1, e.Roll2, e.Roll3, e.Roll4,
@@ -48,11 +48,11 @@ function Get_Events($subEventId) {
                 $row['End'] = Get_Date($row['Day'] + $row['EndsNextDay'], $row['End']);
             }
             if ($row['SlotEnd'] > 0) {
-                $row['SlotEnd'] = Get_Date($row['Day'], $row['SlotEnd']);
+                $row['SlotEnd'] = Get_Date($row['Day'] + $row['EndsNextDay'], $row['SlotEnd']);
             } else {
                 $row['SlotEnd'] = null;
             }
-            $row['Price'] = Price_Show($row);
+            $row['Prices'] = Get_Prices($row);
             $row['SubEvents'] = Get_Events($row['Id']);
             $row["Access"] = $Event_Access_Type[$row['SeasonTicketOnly']];
             $row['Performers'] = Get_Performers($row);
@@ -95,6 +95,63 @@ function Get_Date($day, $time) {
     $date->modify($day.' day');
 
     return date_format($date, 'Y-m-d\TH:i:s');
+}
+
+function Get_Prices(&$Ev) {
+    global $YEARDATA,$Event_Access_Type;
+
+    $prices = [];
+  
+    if ($Ev['SpecPrice']) {
+        return [Make_Price(null, $Ev['SpecPrice'])];
+    }
+
+    $Cpri = $Ev['Price1'];
+    if ($Ev['SeasonTicketOnly']) {
+        return [Make_Price($Cpri ? $Cpri : null, $Event_Access_Type[$Ev['SeasonTicketOnly']])];
+    }
+    if (!$Cpri) return [Make_Price(null, Feature('FreeText','Free'))];
+  
+    if ($Ev['TicketCode']) {
+        $Ev['TicketUrl'] = $Ev['TicketCode'];
+    } else if ($Ev['SpecPriceLink']) {
+        $Ev['TicketUrl'] = $Ev['SpecPriceLink'];
+    }
+    
+    if ($YEARDATA['PriceChange1']) {
+        $pc = $YEARDATA['PriceChange1'];
+        $Npri = $Ev['Price2'];
+        if ($Npri != $Cpri && $Npri != 0) {
+            if ($pc > time()) {
+                array_push($prices, Make_Price($Cpri, 'Until '.date('j M Y',$pc)));
+            }
+            $Cpri = $Npri;
+        }
+    }
+    
+    if ($YEARDATA['PriceChange2']) {
+        $pc = $YEARDATA['PriceChange2'];
+        $Npri = $Ev['Price3'];
+        if ($Npri != $Cpri && $Npri != 0) {
+            if ($pc > time()) {
+                array_push($prices, Make_Price($Cpri, 'Until '.date('j M Y',$pc)));
+            }
+            $Cpri = $Npri;
+        }
+    }
+  
+    if ($Ev['DoorPrice'] && $Ev['DoorPrice'] != $Cpri) {
+        array_push($prices, Make_Price($Cpri, 'In advance'));
+        array_push($prices, Make_Price($Ev['DoorPrice'], 'On the door'));
+    } else {
+        array_push($prices, Make_Price($Cpri, null));
+    }
+
+    return $prices;
+}
+
+function Make_Price($amount, $string) {
+    return [ 'amount' => $amount, 'description' => $string ];
 }
 
 function Load_Performers() {
