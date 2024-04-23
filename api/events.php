@@ -49,6 +49,8 @@ function Get_Events($subEventId) {
             }
             if ($row['SlotEnd'] > 0) {
                 $row['SlotEnd'] = Get_Date($row['Day'], $row['SlotEnd']);
+            } else {
+                $row['SlotEnd'] = null;
             }
             $row['Price'] = Price_Show($row);
             $row['SubEvents'] = Get_Events($row['Id']);
