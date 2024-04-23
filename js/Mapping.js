@@ -112,7 +112,7 @@ function initMap() {
       if ((MapFeatures != 11) && (data.id > 2000000)) return; // Food & drink
       if ((MapFeatures == 11) && (data.id < 2000000)) return;
       if ((MapFeatures == 3) && (!data.usage || !data.usage.match(/^D/))) return;
-      if ((MapFeatures == 4) && (data.icon != 3) && (data.icon != 5) && (data.icon != 10)) return; // Car Parks
+      if ((MapFeatures == 4) && (data.icon != 3) && (data.icon != 5) && (data.icon != 10) && (data.icon != 8)) return; // Car Parks
       if ((MapFeatures == 5) && (!data.usage || !data.usage.match(/^.M/))) return;
       if ((MapFeatures == 6) && (!data.usage || !data.usage.match(/^....C/))) return;
       if ((MapFeatures == 7) && (!data.usage || !data.usage.match(/^..F/))) return;

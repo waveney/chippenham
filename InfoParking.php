@@ -32,7 +32,7 @@ The principle long term car parks are:<p>
 <?php
   $Things = Get_Map_Points();
   foreach ($Things as $T) {
-    if ($T['Type'] != 3) continue;
+    if ($T['Type'] != 3 && $T['Type'] != 8) continue;
     echo "<tr><td>" . $T['SN'] . "<td><button onclick=ShowDirect(" . (1000000 + $T['id']) . ")>Directions</button>\n";
   }
 ?>
