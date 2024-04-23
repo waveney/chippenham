@@ -47,6 +47,11 @@ function Get_Events($subEventId) {
                 $row['Start'] = Get_Date($row['Day'], $row['Start']);
                 $row['End'] = Get_Date($row['Day'] + $row['EndsNextDay'], $row['End']);
             }
+            if ($row['SlotEnd'] > 0) {
+                $row['SlotEnd'] = Get_Date($row['Day'], $row['SlotEnd']);
+            } else {
+                $row['SlotEnd'] = null;
+            }
             $row['Price'] = Price_Show($row);
             $row['SubEvents'] = Get_Events($row['Id']);
             $row["Access"] = $Event_Access_Type[$row['SeasonTicketOnly']];
