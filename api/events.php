@@ -48,7 +48,7 @@ function Get_Events($subEventId) {
                 $row['End'] = Get_Date($row['Day'] + $row['EndsNextDay'], $row['End']);
             }
             if ($row['SlotEnd'] > 0) {
-                $row['SlotEnd'] = Get_Date($row['Day'], $row['SlotEnd']);
+                $row['SlotEnd'] = Get_Date($row['Day'] + $row['EndsNextDay'], $row['SlotEnd']);
             } else {
                 $row['SlotEnd'] = null;
             }
