@@ -11,7 +11,7 @@
        FestDate($YEARDATA['LastDay'],'Y') . ", there are many different ways in which you can get involved...<p>" .
        "When you get to the form you can select more than one team.<p>";
        
-  echo "Volunteers get free tickets and camping.<p>";
+  echo "Volunteers get free tickets, camping and a discount on all festival merchandise.<p>";
   
   echo "<b><a href=int/ShowFile?f=233>Volunteers Handbook 2024</a></b><p>";
 

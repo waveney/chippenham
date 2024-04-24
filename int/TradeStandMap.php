@@ -30,7 +30,7 @@
   switch ($Type) {
     case 0: // Public, Setup, EMP, Infrastructure
     default:
-      if (isset($_REQUEST['STAFF'])) $ShowTraders = -1;
+      if (isset($_REQUEST['STAFF']) || ($YEARDATA['TradeState']> 2)) $ShowTraders = -1;
       break;
     
     case 1: // Public with trade 
