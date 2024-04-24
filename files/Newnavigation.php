@@ -29,7 +29,7 @@
         'Ceilidh and Dances'=>'LineUp?T=Ceilidh',
         'Story and Spoken Word'=>'LineUp?T=Other',
         '_Lineup changes since programme printed'=>'PerfChanges',
-//        'Traders'=>'int/TradeShow',
+        'Traders'=>'int/TradeShow',
 
         ],
       "Timetable"=>[

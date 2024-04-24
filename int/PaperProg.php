@@ -14,6 +14,8 @@
   $Order = "EffectiveImportance DESC, s.RelOrder DESC, s.SN";
   if (isset($_REQUEST['ALPHA'])) $Order = "s.SN";
   if (isset($_REQUEST['Set'])) $Set = $_REQUEST['Set'];
+  
+  $PairLimit = Feature('PerformerPairsPerPage',2);
   $now = time();
   $Perf_Cats = [
    'Music'=>"SELECT s.*, y.*, IF(s.DiffImportance=1,s.MusicImportance,s.Importance) AS EffectiveImportance FROM Sides AS s, SideYear AS y " .
@@ -35,6 +37,7 @@
   
   $Displayed = [];
   $SetNum = 1;
+  $PairCount = 0;
   echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script><div class=PaperP>";
   foreach ($Perf_Cats as $Title=>$fetch) {
     if ($Set && ($Set != $SetNum++)) {
@@ -63,7 +66,13 @@
       if (empty($perf['Description']) && Feature('OmitEmptyDescriptions')) continue;
       $Displayed[$perf['SideId']] = 1;
       $Imp = $perf['EffectiveImportance'];
-      if ($Pair == 0) echo "<tr>";
+      if ($Pair == 0) {
+        if ($PairCount++ == $PairLimit) {
+          echo "</table><p><table class='PerfT pagebreak' width=100% border>";
+          $PairCount = 1;
+        }
+        echo "<tr>";
+      }
 //      if ($Pair == 0) echo "<div class=PPair>";
       $Photo = $perf['Photo'];
       if (!$Photo) $Photo = '/images/icons/user2.png';
