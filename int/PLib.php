@@ -353,7 +353,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
           echo ($SelectPerf[$p]?fm_select($SelectPerf[$p],$O,$Other,1,"id=Perf$pi" . "_Side$i " . ($O[$OtherCat]==$pi?'':'hidden'),"Perf$pi" . "_Side$i") :"");
           if ($sid && ($O[$OtherCat] == $pi) && !isset($SelectPerf[$p][$sid])) {
             $OSide = Get_Side($sid);
-            echo "<del><a href=AddPerf?id=$sid>" . $OSide['SN'] . "</a></del> ";               
+            if ($OSide) echo "<del><a href=AddPerf?id=$sid>" . $OSide['SN'] . "</a></del> ";               
           }
           $pi++;
         }

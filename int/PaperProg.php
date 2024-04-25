@@ -1,7 +1,7 @@
 <?php
   include_once("fest.php");
 
-  A_Check('Staff');
+//  A_Check('Staff');
   
   include_once("ProgLib.php");
   include_once("DispLib.php");
@@ -15,7 +15,10 @@
   if (isset($_REQUEST['ALPHA'])) $Order = "s.SN";
   if (isset($_REQUEST['Set'])) $Set = $_REQUEST['Set'];
   
-  $PairLimit = Feature('PerformerPairsPerPage',2);
+  $PairsPerPage = Feature('PerformerPairsExtra','7');
+  $PageLimits = explode(',',$PairsPerPage);
+  $Page = 1;
+  $PairLimit = ($PageLimits[0] ?? 7) +0;
   $now = time();
   $Perf_Cats = [
    'Music'=>"SELECT s.*, y.*, IF(s.DiffImportance=1,s.MusicImportance,s.Importance) AS EffectiveImportance FROM Sides AS s, SideYear AS y " .
@@ -37,7 +40,7 @@
   
   $Displayed = [];
   $SetNum = 1;
-  $PairCount = 0;
+  $PairCount = $PairPageC = 0;
   echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script><div class=PaperP>";
   foreach ($Perf_Cats as $Title=>$fetch) {
     if ($Set && ($Set != $SetNum++)) {
@@ -57,9 +60,15 @@
     $Slist = [];
     $perfQ = $db->query($fetch);
     if ($perfQ) while($side = $perfQ->fetch_assoc()) $Slist[] = $side;
-
-    echo "<table class=PerfT width=100% border>";  
-    $Pair = 0;
+//var_dump("Type top",$PairLimit, $PairPageC, $Page);
+    $Pair = 0;    
+    if ($PairPageC >= $PairLimit) {
+      echo "<p><table class='PerfT pagebreak' width=100% border>";
+      $PairPageC = 0;
+      $PairLimit = ($PageLimits[$Page++] ?? 7)+0;
+    } else {
+      echo "<table class=PerfT width=100% border>";  
+    }
     foreach ($Slist as $perf) {
       if ($perf['NotPerformer'] ) continue;
       if (isset($Displayed[$perf['SideId']])) continue;
@@ -67,12 +76,18 @@
       $Displayed[$perf['SideId']] = 1;
       $Imp = $perf['EffectiveImportance'];
       if ($Pair == 0) {
-        if ($PairCount++ == $PairLimit) {
+        if ($PairPageC >= $PairLimit) {
           echo "</table><p><table class='PerfT pagebreak' width=100% border>";
-          $PairCount = 1;
+          $PairPageC = 0;
+          $PairLimit = ($PageLimits[$Page++] ?? 7)+0;
         }
+        $PairPageC++;
         echo "<tr>";
-      }
+//var_dump("PAIR",$Pair, $PairLimit, $PairPageC, $Page);
+
+        }
+
+      
 //      if ($Pair == 0) echo "<div class=PPair>";
       $Photo = $perf['Photo'];
       if (!$Photo) $Photo = '/images/icons/user2.png';

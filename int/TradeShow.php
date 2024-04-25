@@ -96,7 +96,7 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
     if (is_numeric($_REQUEST['l'])) {
       $sel = $PLocId = $LocId = $_REQUEST['l'];
       if ($Locs[$LocId]['PartOf']) $PLocId = $Locs[$LocId]['PartOf'];
-      $List = $LocUsed[$PLocId];
+      $List = ($LocUsed[$PLocId] ?? []);
 
       $SLoc = $loc = $Locs[$LocId];
       $Title = 'All Traders ' . $Prefixes[$loc['prefix']] . ' ' . $loc['SN'];
