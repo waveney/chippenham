@@ -63,7 +63,7 @@
 //var_dump("Type top",$PairLimit, $PairPageC, $Page);
     $Pair = 0;    
     if ($PairPageC >= $PairLimit) {
-      echo "<p><table class='PerfT pagebreak' width=100% border>";
+      echo "<table class='PerfT pagebreak' width=100% border>";
       $PairPageC = 0;
       $PairLimit = ($PageLimits[$Page++] ?? 7)+0;
     } else {
@@ -77,7 +77,7 @@
       $Imp = $perf['EffectiveImportance'];
       if ($Pair == 0) {
         if ($PairPageC >= $PairLimit) {
-          echo "</table><p><table class='PerfT pagebreak' width=100% border>";
+          echo "</table><table class='PerfT pagebreak' width=100% border>";
           $PairPageC = 0;
           $PairLimit = ($PageLimits[$Page++] ?? 7)+0;
         }

@@ -1,7 +1,8 @@
 <?php
 // Common Venue/Event/Programming Library
 
-global $Venue_Status,$InfoLevels,$VisParts,$Thing_Types,$Public_Event_Types,$Day_Type,$DayLongList,$Info_Type,$Public_Event_Type;
+global $Venue_Status,$InfoLevels,$VisParts,$Thing_Types,$Public_Event_Types,$Day_Type,$DayLongList,$Info_Type,
+       $Public_Event_Type,$Event_Access_Type,$Event_Access_Colours;
 $Venue_Status = array('In Use','Not in Use');
 $DayLongList = array(-4=>'Monday',-3=>'Tuesday',-2=>'Wednesday',-1=>'Thursday',0=>'Friday',1=>'Saturday',2=>'Sunday',3=>'Monday',
                      4=>'Tuesday',5=>'Wednesday',6=>'Thursday',7=>'Friday',8=>'Saturday',9=>'Sunday',10=>'Monday');

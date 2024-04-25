@@ -120,7 +120,7 @@
       echo "<div id=DirPaneWrap><div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div></div>";
       echo "<div id=map></div></div>";
       Init_Map(-1,0,17,$MapFeat);
-      echo "</div>";    
+      echo "</div>";
     }
     
     
@@ -179,6 +179,6 @@
   }
   
   if ($YEAR > $BackStop) {
-    echo "<h3><a href=Sherlock?t=$Type&Y=" . ($YEAR-1) . "> $Types in " . ($YEAR-1) . "</h3></a>";
+    echo "<h3><a href=Sherlock?T=$Type&Y=" . ($YEAR-1) . "> $Types in " . ($YEAR-1) . "</h3></a>";
   }
   dotail();
