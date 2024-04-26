@@ -12,6 +12,7 @@ function EventCheck($checkid=0) {
   $Venues = Get_Venues(1); // All info not just names
 
   $EVENT_Types = Get_Event_Types(1);
+  $Venues = Get_Venues(1);
 
   $LastVenue = -1;
   $LastEventEmpty = 1;
@@ -31,7 +32,20 @@ function EventCheck($checkid=0) {
         echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a Venue.<p>";
               $errors++;
         continue;
-      }        
+      }  
+
+      if (!isset($Venues[$ev['Venue']])) {
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a valid venue.<p>";
+        $errors++;
+        continue;
+      }
+      
+      if ($Venues[$ev['Venue']]['Status']) {
+        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  is at a venue that is not in use now.<p>";
+        $errors++;
+        continue;
+      }
+      
       if (empty($ev['Start'])) {
         echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a start time.<p>";
               $errors++;

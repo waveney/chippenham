@@ -797,7 +797,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
           }
 
           $s = &$Sides[$si];
-          $txt = SName($s) . (($types && $s['Type'])?(" (" . trim($s['Type']) . ") "):"");
+          $txt = SName($s) . (($types && !empty($s['Type']))?(" (" . trim($s['Type']) . ") "):"");
           if (!$txt || isset($s['ERROR'])) {
             if (!$condense) $txt = "<span class=Cancel>ERR (" . Side_ShortName($si) . ")</span>";
           }

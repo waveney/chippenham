@@ -593,6 +593,7 @@ function CollectInfo(&$Data,$type=0) { // 0 =Dance, 1=Vol
 }
 
 function CollectActions() {
+  global $YEAR;
   dostaffhead("Collecting",["/css/Collecting.css","/js/Collecting.js","/js/InviteThings.js"]);
 //var_dump($_REQUEST);
   if (isset($_REQUEST['ACTION'])) {
@@ -665,15 +666,15 @@ function CollectActions() {
   
   echo "<hr><h2>Other Actions:<ul>";
   if (Access('Staff','Finance')) {
-    echo "<li><a href=Collecting?ACTION=ListTins>Manage Tins</a>";
+    echo "<li><a href=Collecting?ACTION=ListTins&Y=$YEAR>Manage Tins</a>";
 //    echo "<li><a href=Collecting?ACTION=CurrentTins>Current Tins</a>";
-    echo "<li><a href=Collecting?ACTION=Records>List this year records</a>";  
-    echo "<li><a href=Collecting?ACTION=Count>Count Tins</a>";  
-    echo "<li><a href=Collecting?ACTION=Totals>Show Totals</a>";  
+    echo "<li><a href=Collecting?ACTION=Records&Y=$YEAR>List this year records</a>";  
+    echo "<li><a href=Collecting?ACTION=Count&Y=$YEAR>Count Tins</a>";  
+    echo "<li><a href=Collecting?ACTION=Totals&Y=$YEAR>Show Totals</a>";  
 //    echo "<li><a href=Collecting?ACTION=Email>Email Teams and Collectors their results</a>";  
-    echo "<li><a href=Collecting?ACTION=TinTypes>Manage Tin Types</a>";  
+    echo "<li><a href=Collecting?ACTION=TinTypes&Y=$YEAR>Manage Tin Types</a>";  
   }
-  echo "<li><a href=Collecting?ACTION=IO>Tins in and out</a></ul>";    
+  echo "<li><a href=Collecting?ACTION=IO&Y=$YEAR>Tins in and out</a></ul>";    
 
   dotail();
 }

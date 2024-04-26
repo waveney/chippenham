@@ -190,6 +190,7 @@ function Old_Get_Sponsors($tup=0) { // 0 Current, 1 all data
 }
 
 function Get_Sponsor_Names($tup=0) {
+  $ans = [];
   $data = Old_Get_Sponsors($tup);
   foreach ($data as $sp) $ans[$sp['id']]=$sp['SN'];
   return $ans;
