@@ -12,7 +12,6 @@ function EventCheck($checkid=0) {
   $Venues = Get_Venues(1); // All info not just names
 
   $EVENT_Types = Get_Event_Types(1);
-  $Venues = Get_Venues(1);
 
   $LastVenue = -1;
   $LastEventEmpty = 1;

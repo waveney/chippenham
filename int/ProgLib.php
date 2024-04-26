@@ -102,7 +102,7 @@ function &Report_To() { // List of report to locs
 
 
 function Get_Real_Venues($type=0) { // 0 =short, 1 =full
-  $Vens = Get_Venues(1,' WHERE Status=0 ');
+  $Vens = Get_AVenues(1);
   $real = array();
   if ($Vens) foreach ($Vens as $vi=>$v) if (!$v['IsVirtual']) $real[$v['VenueId']] = ($type?$v:SName($v));
   return $real;
