@@ -271,8 +271,12 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
     echo "<div class=OneCol id=TwoCols1>$txt";
     echo "<div class=OneCol id=TwoCols2></div></div>";
 
-    if ($prog = Show_Prog('Side',$snum,0,$price)) {
-      echo $prog;
+    $prog = Show_Prog('Side',$snum,0,$price);
+    $Exted_prog = Extended_Prog('Side',$snum,0);
+    
+    if ($prog || $Exted_prog) {
+      if ($prog) echo $prog;
+      if ($Exted_prog) echo $Exted_prog;
     } else {
       echo "<h2>The programme has not yet been published.</h2>\n";
       echo "When it is, the programme for <b>" . $side['SN'] . "</b> will appear here.<p>";
@@ -722,7 +726,7 @@ function Extended_Prog($type,$id,$all=0) {
 
     include_once("ProgLib.php");
     $str = '';
-    $Evs = Get_All_Events_For($type,$id,$all);
+    $Evs = Get_All_Events_For($id,$all);
     if (!$Evs) return "";
     $ETs = Get_Event_Types(1);
 //echo "Type: $type, $id<p>";
@@ -739,7 +743,7 @@ function Extended_Prog($type,$id,$all=0) {
     foreach($Olaps as $O) {
       $Oid = ($O['Sid1'] == $id ? $O['Sid2'] : $O['Sid1']);
       $Oct = ($O['Sid1'] == $id ? $O['Cat2'] : $O['Cat1']);
-      $OEvs = Get_All_Events_For($OlapCats[$Oct],$Oid,$all);
+      $OEvs = Get_All_Events_For($Oid,$all);
       if (!$OEvs) continue;
       foreach ($OEvs as $oe=>$e) $OEvs[$oe]['ActAs'] = $Oid;
       $Evs = array_merge($Evs,$OEvs);

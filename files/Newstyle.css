@@ -1775,7 +1775,7 @@ dl dt {
 }
 
 input[type="radio"] {
-  height:26px;  
-  padding-top:5px;
+  height:25px;  
+  transform: translateY(4px);
 }
 

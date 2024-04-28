@@ -353,7 +353,7 @@ function Get_Events_For($what,$Day) {
   }
 }
 
-function Get_All_Events_For($what,$wnum,$All=0) {// what is not used
+function Get_All_Events_For($wnum,$All=0) {// what is not used
   global $db,$YEAR;
   $qry="SELECT DISTINCT e.* FROM Events e, BigEvent b WHERE Year='$YEAR' " . ($All?'':"AND Public<2") . " AND ( " .
                 "Side1=$wnum OR Side2=$wnum OR Side3=$wnum OR Side4=$wnum" .
@@ -516,7 +516,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
                     $s = array_merge($s, $sy);  
                     $s['NotComing'] = ((($s['Coming'] != 2) && ($s['YearState'] < 2)) );
                   } else $s['NotComing'] = 1;
-                  if ($s && ($sy['ReleaseDate'] < $now) || ( Access('Committee') && $Mode)) {
+                  if ($s && (($sy['ReleaseDate']??0) < $now) || ( Access('Committee') && $Mode)) {
                     $Imp2Use = $s['Importance'];
                     if ($s['DiffImportance']) {
                       $Imp2Use = 0;
@@ -760,10 +760,9 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
     global $db,$Event_Types;
     $str = '';
     include_once("DanceLib.php");
-    $Evs = Get_All_Events_For($type,$id,$all);
+    $Evs = Get_All_Events_For($id,$all);
 
     $side = Get_Side($id);
-//echo "Type: $type, $id<p>";
 //var_dump($Evs);
     $evc=0;
     $Worst= 99;
@@ -889,6 +888,3 @@ function Venue_Parents(&$Vens,$vid) {
   $Pven = Get_Venue($Parent);
   return ($Pven['SN'] . ": ");
 }
-
-
-?>
