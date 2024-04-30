@@ -45,6 +45,7 @@
         'Camping'=>'InfoCamping',
         'Parking'=>'InfoParking',
         'Travel'=>'InfoGettingHere',
+        'Opening Times'=>'InfoFAQ?D=Opening Times',
         'Food & Drink'=>'InfoFood',
 // /*        'FAQs, Rules and Policies' => [
         'FAQs' => 'InfoFAQ?D=FAQ',

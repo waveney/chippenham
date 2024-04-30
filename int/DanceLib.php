@@ -280,7 +280,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
         }
       }
       if ($AlsoList) {
-        $txt .= "<div id=Blob" . ($BlobNum++) . ">" . implode(', ', $AlsoList) . "</b></div>";
+        $txt .= "<div id=Blob" . ($BlobNum++) . ">" . implode('<br>', $AlsoList) . "</b></div>";
       }
     }
 
