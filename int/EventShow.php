@@ -148,9 +148,12 @@ function Print_Participants($e,$when=0,$thresh=0) {
     $xtra .= ")";
   }
   dohead($Ev['SN'] . $xtra,[],1); // TODO Event specific banners
-  
+  $DescNotShown = true;
   if ($Ev['NonFest']) echo "This event is not run by the folk festival, but is shown here for your information.<p>\n";
-  if ($Ev['Description'] && !$Ev['Blurb']) echo $Ev['Description'] . "<P>";
+  if ($Ev['Description'] && !$Ev['Blurb']) {
+    echo $Ev['Description'] . "<P>";
+    $DescNotShown = false;
+  }
   // On, Start, End, Durration, Price, Where 
   echo "<div class=tablecont><table><tr><td>";
   if ($Ev['LongEvent']) {
@@ -258,7 +261,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   if ($Ev['Image']) echo "<img src=" . $Ev['Image'] . ">";
   if ($Ev['Blurb']) {
     echo "<div style='width:800px;'>" . $Ev['Blurb'] . "</div><P>";
-  } elseif ($Ev['Description']) {
+  } elseif ($Ev['Description'] && $DescNotShown) {
     echo "<div style='width:800px;'>" . $Ev['Description'] . "</div><P>";
   }
   if ($Ev['Website']) echo "<h3>" . weblink($Ev['Website'],'Website for this event') . "</h3><p>\n";
@@ -304,4 +307,3 @@ function Print_Participants($e,$when=0,$thresh=0) {
   }
    
   dotail();
-?>

@@ -333,10 +333,10 @@ A similar feature will appear eventually for music.<p>
       $hidemday =  (isset($Event['LongEvent']) && $Event['LongEvent'])?'':'hidden ';
       echo "<td class=NotSide>" . fm_checkbox('Big Event',$Event,'BigEvent') . " " . fm_checkbox('No Order',$Event,'NoOrder') . 
            fm_checkbox('Use Notes to fmt',$Event,'UseBEnotes');
-      echo "<td>" . fm_checkbox('Also Dance',$Event,'ListDance') . " ". fm_checkbox('Also Music',$Event,'ListMusic') . " ". 
-            fm_checkbox('Also Comedy',$Event,'ListComedy') . " " .fm_checkbox('Also Workshop',$Event,'ListWorkshop');
+      echo "<td>" . fm_checkbox('Also&nbsp;Dance',$Event,'ListDance') . " ". fm_checkbox('Also&nbsp;Music',$Event,'ListMusic') . " ". 
+            fm_checkbox('Also&nbsp;Comedy',$Event,'ListComedy') . " " .fm_checkbox('Also&nbsp;Workshop',$Event,'ListWorkshop');
       
-      echo "<td class=NotSide>" . fm_checkbox('No Part',$Event,'NoPart') . "<br>" . fm_checkbox('Omit Performers on Paper',$Event,'NoPerfsPaper');
+      echo "<td class=NotSide>" . fm_checkbox('No Performers',$Event,'NoPart') . "<br>" . fm_checkbox('Omit Performers on Paper',$Event,'NoPerfsPaper');
       echo "<td class=NotSide>" . fm_checkbox('Concert',$Event,'IsConcert');
       echo "<tr" . ($se>0?" class=FullD hidden":"") . "><td class=FullD hidden>" . fm_checkbox('Special Event',$Event,'Special');
       echo "<td>" . fm_checkbox('Family Event',$Event,'Family');

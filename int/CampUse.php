@@ -20,7 +20,7 @@
   $HighestSY = Gen_Get_Cond1('SideYear',"Year=$PLANYEAR ORDER BY syId DESC");
   $HighId = ($HighestSY? $HighestSY['syId'] : 0);
 
-  $PerfUse = Gen_Get_Cond('CampUse',"SideYearId>=$LowId AND SideYearId<=$HighId AND Number>0 ORDER BY SN, CampType");
+  $PerfUse = Gen_Get_Cond('CampUse',"SideYearId>=$LowId AND SideYearId<=$HighId AND Number>0 ");
   
   $Use = $Total = [];
   $LastSY = $LastAct = 0;

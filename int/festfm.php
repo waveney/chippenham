@@ -689,7 +689,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
 
       $str .= "<$Table class=Drop$Type >";
       if (isset($Data[$Name]) && $Data[$Name]) {
-        $str .= "<img id=Thumb$Type src=" . $Data[$Name] . " height=120>";
+        $str .= "<img id=Thumb$Type src='" . $Data[$Name] . "' height=120>";
       } else {
         $str .= "No $Name Yet";
       }
@@ -766,7 +766,7 @@ XXX;
   if ($files) {
     $Current = $files[0];
     $Cursfx = pathinfo($Current,PATHINFO_EXTENSION );
-    $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][1] . "><a href=ShowFile?l=$path.$Cursfx>View $Name file</a></$Table>";  
+    $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][1] . "><a href=ShowFile?l='$path.$Cursfx'>View $Name file</a></$Table>";  
   }
   if ($Mess) $str .= "<$Table class='Result$Type $tdclass' $hid>$Mess</$Table>";
   

@@ -179,6 +179,6 @@
   }
   
   if ($YEAR > $BackStop) {
-    echo "<h3><a href=Sherlock?T=$Type&Y=" . ($YEAR-1) . "> $Types in " . ($YEAR-1) . "</h3></a>";
+    echo "<h3>If you would like to see what we had last time: <a href=Sherlock?T=$Type&Y=" . ($YEAR-1) . "> $Types in " . ($YEAR-1) . "</h3></a>";
   }
   dotail();

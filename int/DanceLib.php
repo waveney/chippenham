@@ -23,7 +23,7 @@ $Share_Type = array_flip($Share_Spots);
 $PayTypes = ['BACS','Cheque'];
 
 $Dance_TimeFeilds = array('SatArrive','SatDepart','SunArrive','SunDepart');
-$OlapTypes = array('Dancer','Musician','Avoid','Also is');
+$OlapTypes = array('Dancer','Musician','Avoid','Also is','Part of','Includes');
 $OlapDays = array('All','Sat Only','Sun Only','None');
 $OlapCats = array('Side','Act','Comedy','Family','Other');
 $Proforma_Colours = ['Decide'=>'DarkOrange','Details'=>'Magenta','Program'=>'Yellow','ProgChk'=>'lightsalmon','NewProg'=>'yellow',
@@ -133,7 +133,8 @@ function &Part_Come_All() {
 
 function Get_SideAndYear($snum) {
   global $db,$YEAR;
-  $res = $db->query("SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=$snum AND s.SideId=y.SideId AND y.Year='$YEAR'") ;
+//  echo "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=$snum AND y.SideId=$snum AND y.Year='$YEAR'";
+  $res = $db->query("SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=$snum AND y.SideId=$snum AND y.Year='$YEAR'") ;
   if ($res) return $res->fetch_assoc();
   return 0;  
 }
@@ -141,7 +142,7 @@ function Get_SideAndYear($snum) {
 function Show_Side($snum,$Message='',$price=0,$Pcat='') {
   include_once("ProgLib.php");
   include_once("SideOverLib.php");
-  global $YEAR, $Coming_Type,$db,$PerfTypes;
+  global $YEAR, $Coming_Type,$db,$PerfTypes,$OlapTypes;
   if (is_numeric($snum) && ($side = Get_Side($snum))) {
     $syear = Get_SideYear($snum,$YEAR);
     Expand_PerfTypes();
@@ -153,7 +154,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
       if ($side[$is]) $Isa = $Pcat;
     }
     
-    $AlsoIs = Get_Active_Overlaps_For($snum,3);
+    $AlsoIs = Get_Active_Overlaps_For($snum,"AND OType>=3");
 
     $Banner = 1;
     if (Feature('PerformerBanners') && OvPhoto($side,$Isa)) $Banner = OvPhoto($side,$Isa);
@@ -242,22 +243,44 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
       $txt .=   Social_Link(OvFacebook($side,$Isa),'Facebook',1,$follow);
       $txt .=   Social_Link(OvTwitter($side,$Isa),'Twitter',1,$follow);
       $txt .=   Social_Link(OvInstagram($side,$Isa),'Instagram',1,$follow);
-      $txt .=   Social_Link(OvSpotify($side,$Isa),'Spotify',1,$follow);
+  //    $txt .=   Social_Link(OvSpotify($side,$Isa),'Spotify',1,$follow);
       $txt .=  "</div>";
     }
     
     if ($AlsoIs) {
  //       var_dump($AlsoIs);
+//$OlapTypes = array('Dancer','Musician','Avoid','Also is','Part of','Includes');
 
       $AlsoList = [];
       foreach($AlsoIs as $Also) {
-        $Aid = (($Also['Sid1'] == $snum)?$Also['Sid2']:$Also['Sid1']);
-        $Aside = Get_Side($Aid);
+        if ($Also['OType']>2) {
+          $Aid = (($Also['Sid1'] == $snum)?$Also['Sid2']:$Also['Sid1'])+0;
+          
+          switch ($Also['OType']) {
+            case 4:
+              if ($Also['Sid1'] == $snum) $Also['OType'] = 5;
+              break;
+            case 5:
+              if ($Also['Sid1'] != $snum) $Also['OType'] = 4;
+              break;
+            default:
+              break;
+          }
+          
+          $OLap_Strings = ['','','','is also appearing as','is part of','includes'];
+                
+          $Aside = Get_SideAndYear($Aid);
+          if ($Aside && (($Aside['IsASide'] && ($Aside['Coming'] == 2)) || ($Aside['YearState'] >= 2))) {
   //      $AYear = Get_SideYear($Aid);
-        if ($Aside) $AlsoList []= "<a href=ShowPerf?id=" . $Aside['SideId'] . ">" . $Aside['SN'] . "</a>";
+            if ($Aside) $AlsoList []= "<b>" . $side['SN'] . "</b> " .
+              $OLap_Strings[$Also['OType']] . " <a href=ShowPerf?id=" . $Aside['SideId'] . ">" . $Aside['SN'] . "</a>";
+          } else {
+  //          var_dump($Aid, $Also, $Aside);
+          }
+        }
       }
       if ($AlsoList) {
-        $txt .= "<div id=Blob" . ($BlobNum++) . "><b>" . $side['SN'] . "</b> Is also: " . implode(', ', $AlsoList) . "</b></div>";
+        $txt .= "<div id=Blob" . ($BlobNum++) . ">" . implode(', ', $AlsoList) . "</b></div>";
       }
     }
 
@@ -272,11 +295,11 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
     echo "<div class=OneCol id=TwoCols2></div></div>";
 
     $prog = Show_Prog('Side',$snum,0,$price);
-    $Exted_prog = Extended_Prog('Side',$snum,0);
+  //  $Exted_prog = Extended_Prog('Side',$snum,0);
     
-    if ($prog || $Exted_prog) {
+    if ($prog) {
       if ($prog) echo $prog;
-      if ($Exted_prog) echo $Exted_prog;
+  //    if ($Exted_prog) echo $Exted_prog;
     } else {
       echo "<h2>The programme has not yet been published.</h2>\n";
       echo "When it is, the programme for <b>" . $side['SN'] . "</b> will appear here.<p>";
@@ -610,22 +633,22 @@ function Put_Dance_Type(&$now) {
 function Has_Info(&$data) {
   $checkfor = array( 'StagePA', 'Likes', 'Notes', 'YNotes', 'PrivNotes', 'NoiseLevel');
   foreach ($checkfor as $c) if (isset($data[$c]) && $data[$c] && ($data[$c] != 'None')) return 1;
-  if (Get_Overlaps_For($data['SideId'],1)) return 1;
+//  if (Get_Overlaps_For($data['SideId'],1)) return 1;
   return 0;
 } 
 
-function Get_Overlaps_For($id,$act=0,$type='') { // if act only active
+function Get_Overlaps_For($id,$act=0,$xtra='') { // if act only active
   global $db;
   $Os = [];
-  $res = $db->query("SELECT * FROM Overlaps WHERE (Sid1=$id OR Sid2=$id)" . ($act?' AND Active=1':'') . ($type?" AND OType=$type":''));
+  $res = $db->query("SELECT * FROM Overlaps WHERE (Sid1=$id OR Sid2=$id)" . ($act?' AND Active=1':'') . $xtra);
   if ($res) while ($o = $res->fetch_assoc()) $Os[] = $o;
   return $Os;
 }
 
-function Get_Active_Overlaps_For($id,$type='') { // if act only active
+function Get_Active_Overlaps_For($id,$xtra='') { // if act only active
   global $db;
   $Os = [];
-  $res = $db->query("SELECT * FROM Overlaps WHERE (Sid1=$id OR Sid2=$id) AND Sid1!=0 AND Sid2!=0 AND Active=1"  . ($type?" AND OType=$type":''));
+  $res = $db->query("SELECT * FROM Overlaps WHERE (Sid1=$id OR Sid2=$id) AND Sid1!=0 AND Sid2!=0 AND Active=1 $xtra");
   if ($res) while ($o = $res->fetch_assoc()) $Os[] = $o;
   return $Os;
 }
@@ -721,7 +744,7 @@ function EventCmp($a,$b) {
 / */
 function Extended_Prog($type,$id,$all=0) { 
     global $OlapCats;
-    $Olaps = Get_Active_Overlaps_For($id,1);
+    $Olaps = Get_Active_Overlaps_For($id,"AND OType>=1");
     if (!$Olaps) return "";
 
     include_once("ProgLib.php");

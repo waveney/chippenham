@@ -7,7 +7,7 @@
 
   echo "<h2 class=subtitle>Festival Map</h2>";
   echo "Zoom out to find " . Feature('FestHomeName','Wimborne') . 
-       ", Zoom in for more detail.  Every marker shows a venue for something, click on the marker for more info.<p>\n";
+       ", Zoom in for more detail.<p>\n";
 
   echo "<div id=MapWrap>";
   echo "<div id=DirPaneWrap><div id=DirPane><div id=DirPaneTop></div><div id=Directions></div></div></div>";
@@ -18,6 +18,6 @@
 //  echo "<button class=PurpButton onclick=ShowDirect()>Directions</button> (From the " . Feature('DirectionDefault','Square') . " if it does not know your location)\n";
   Init_Map(-1,0,Feature('MapStartZoom',17),$Feat);
   echo "Zoom out to find " . Feature('FestHomeName','Wimborne') . 
-       ", Zoom in for more detail.  Every marker shows a venue for something, click on the marker for more info.<p>\n";
+       ", Zoom in for more detail.<p>\n";
   
   dotail();

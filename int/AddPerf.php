@@ -169,6 +169,9 @@
         Contract_Save($Side,$Sidey,2,1); 
       } elseif (isset($_REQUEST['Decline'])) { 
         Contract_Decline($Side,$Sidey,2); 
+      } elseif (isset($_REQUEST['View'])) { 
+        Show_Side($snum); 
+        dotail();
       } elseif (isset($_REQUEST['Delete'])) { 
         db_delete('Sides', $snum);
         echo "<h2>Deleted</h2>";
@@ -267,10 +270,11 @@
   if ($snum > 0) {
     if (Access('SysAdmin')) {
       echo "<div class=floatright>";
+      echo "<h2><a href=ShowPerf?id=$snum>Public View</a>";
       echo "<input type=Submit id=smallsubmit name='NewAccessKey' class=Button$BUTTON value='New Access Key'>";
       echo "<input type=Submit id=smallsubmit name='Contract2' class=Button$BUTTON value='Confirm Contract'>";
       echo "<input type=Submit id=smallsubmit name='Delete' class=Button$BUTTON value='Delete'>";
-      echo "</div>\n";
+      echo "</h2></div>\n";
     }
 //    if (Access('SysAdmin')) {};
     echo "<Center><input type=Submit name='Update' value='Save Changes' class=Button$BUTTON> - " .
