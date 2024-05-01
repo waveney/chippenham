@@ -351,7 +351,7 @@ There will be an additional fee for power, that will be added to your final invo
         'IsTrader'=>'Used to indicate the business is a trader (useful for finance) do not touch (normally)',
         'BankDetails'=>'Needed for suppliers, very rarely needed for others when doing a refund',
         'Extras'=>'Some locations have extras',
-        'NumberTickets'=>'Traders may request up to 2 tickets, which give access to the showers at the Olympiad and entrance to most events',
+        'NumberTickets'=>'Traders may request up to 2 tickets, which give access to the showers at the Olympiad',
         'NumberCarPass'=>'Traders may request up to 2 passes to park near the Olympiad after they have set up their pitches',
         'CampNeed'=>'For '
 
@@ -801,7 +801,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
   echo fm_DragonDrop(1,'RiskAssessment','Trade',$Tid,$Trady,$Mode);
   
   echo "<tr>" . fm_text('Arival day/time',$Trady,'ArrivalTime');
-  if (Feature('TraderPasses')) echo fm_number('Trader Passes',$Trady,'NumberTickets','',' min=0 max=2');
+  if (Feature('TraderPasses')) echo fm_number('Trader Passes',$Trady,'NumberTickets','',' min=0 max=4');
   if (Feature('TradeCarpark')) echo fm_number('Carpark passes',$Trady,'NumberCarPass','',' min=0 max=2');
   
   if (Feature('TradeCamping')) {

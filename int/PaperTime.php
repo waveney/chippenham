@@ -1,7 +1,7 @@
 <?php
   include_once("fest.php");
 
-  A_Check('Staff');
+//  A_Check('Staff');
   
   include_once("ProgLib.php");
   include_once("DispLib.php");
@@ -67,21 +67,22 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
     while( $e = $res->fetch_assoc()) {
       $eid = $e['EventId'];
 
-      if ($LastDay != $e['Day']) {
+      if ($Count >= $Splits[$Page]) {
+        $dname = $DayLongList[$e['Day']];
+        if (PaperDayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2),1)) {
+          echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
+        }
+        $LastDay = $e['Day'];
+        $Page++;
+        $Count = 1;
+
+      } if ($LastDay != $e['Day']) {
         $LastDay = $e['Day'];
         $dname = $DayLongList[$e['Day']];
         if (PaperDayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {
           if ($Page == 0) echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
         }      
         $Count++;
-      } else if ($Count >= $Splits[$Page]) {
-        $dname = $DayLongList[$e['Day']];
-        if (PaperDayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2),1)) {
-          echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
-        }
-        $Page++;
-        $Count = 1;
-
       } else {
         $Count++;
       }
@@ -89,7 +90,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
               
       Get_Imps($e,$imps,1,(Access('Staff')?1:0));
       echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
-      echo "<td>" . $e['SN'] ;
+      echo "<td>" . $e['SN'];
 
       if (empty($e['VenuePaper'])) {
         if (isset($Vens[$e['Venue']]['SN'])) {
@@ -135,4 +136,3 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
   
   echo "</div></div>";  
   exit;
-?>

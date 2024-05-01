@@ -766,7 +766,7 @@ XXX;
   if ($files) {
     $Current = $files[0];
     $Cursfx = pathinfo($Current,PATHINFO_EXTENSION );
-    $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][1] . "><a href=ShowFile?l='$path.$Cursfx'>View $Name file</a></$Table>";  
+    $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][1] . "><a href=ShowFile?l=$path.$Cursfx>View $Name file</a></$Table>";  
   }
   if ($Mess) $str .= "<$Table class='Result$Type $tdclass' $hid>$Mess</$Table>";
   
