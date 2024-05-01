@@ -23,7 +23,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
       if ($Mismatch) {
         echo "<div class=tablecont><table class=$Class $xtra3>";
       } else {
-        echo "<div class=pagebreak></div><div class=tablecont><table class=$Class $xtra3>";
+        echo "<div class='pagebreak tablecont'><table class=$Class $xtra3>";
       }
     } else {
       echo "<div class=tablecont><table class=$Class $xtra3>";
@@ -77,7 +77,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
         $Page++;
         $Count = 1;
 
-      } if ($LastDay != $e['Day']) {
+      } else if ($LastDay != $e['Day']) {
         $LastDay = $e['Day'];
         $dname = $DayLongList[$e['Day']];
         if (PaperDayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {

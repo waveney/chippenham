@@ -2,7 +2,7 @@
 // Common Venue/Event/Programming Library
 
 global $Venue_Status,$InfoLevels,$VisParts,$Thing_Types,$Public_Event_Types,$Day_Type,$DayLongList,$Info_Type,
-       $Public_Event_Type,$Event_Access_Type,$Event_Access_Colours;
+       $Public_Event_Type,$Event_Access_Type,$Event_Access_Type_Day,$Event_Access_Colours;
 $Venue_Status = array('In Use','Not in Use');
 $DayLongList = array(-4=>'Monday',-3=>'Tuesday',-2=>'Wednesday',-1=>'Thursday',0=>'Friday',1=>'Saturday',2=>'Sunday',3=>'Monday',
                      4=>'Tuesday',5=>'Wednesday',6=>'Thursday',7=>'Friday',8=>'Saturday',9=>'Sunday',10=>'Monday');
@@ -10,7 +10,9 @@ $InfoLevels = array('None','Major','Minor','All');
 $VisParts = array('All','None'); // Add subcats when needed
 $Thing_Types = array('Sides','Acts','Others');
 $Public_Event_Types = array('As Global','Yes', 'Not yet','Never');
-$Event_Access_Type = ['Open','Weekend or Day tickets Only', 'Weekend, Day or Event tickets Only', 'Event Tickets Only'];
+
+$Event_Access_Type_Day = ['Open','Weekend or Day tickets Only', 'Weekend, Day or Event tickets Only', 'Event Tickets Only'];
+$Event_Access_Type = ['Open','Weekend tickets Only', 'Weekend or Event tickets Only', 'Event Tickets Only'];
 $Event_Access_Colours = ['white','lightblue','lightgreen','pink'];
 
 $Day_Type = ['Thur'=>-1,'Fri'=>0,'Sat'=>1,'Sun'=>2,'Mon'=>3,'Tue'=>4]; 
@@ -655,7 +657,7 @@ function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='
 }
 
 function Price_Show(&$Ev,$Buy=0) {
-  global $YEARDATA,$Event_Access_Type;
+  global $YEARDATA,$Event_Access_Type,$Event_Access_Type_Day;
 
   if ($Ev['SpecPrice']) return $Ev['SpecPrice'];
 
@@ -664,6 +666,7 @@ function Price_Show(&$Ev,$Buy=0) {
   $Cpri = $Ev['Price1'];
   if ($Ev['SeasonTicketOnly']) {
     if ($Cpri) $str = "<b>" . Print_Pound($Cpri) . "</b> ";
+    if (Feature("DayTicket" . $Ev['Day'])) return $str . $Event_Access_Type_Day[$Ev['SeasonTicketOnly']];
     return $str . $Event_Access_Type[$Ev['SeasonTicketOnly']];
   }
   if (!$Cpri) return Feature('FreeText','Free');

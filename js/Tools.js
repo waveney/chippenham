@@ -32,7 +32,7 @@ function PCatSel(e,pname='PCAT') {
 $(document).ready(function() {
   //caches a jQuery object containing the header element
   var header = $(".main-header");
-  if (header) {
+  if (header[0]) {
     var dhead = header[0]; // jquery to dom
     var scroll = $(window).scrollTop();  
     if (scroll >= 1) header.addClass("fixedheader");

@@ -2,11 +2,9 @@ body {
   background:white;
 }
 
-@media print {
-    .pagebreak {
-        clear: both;
-        page-break-before: always;
-    }
+.pagebreak {
+  clear: both;
+  page-break-before: always;
 }
 
 .PaperP {
@@ -19,8 +17,8 @@ body {
 }
 
 .PaperL {
-  width:1300px;
-  max-width:1300px;
+  width:1400px;
+  max-width:1400px;
   display:block;
   overflow-x: auto;
   margin:0;
