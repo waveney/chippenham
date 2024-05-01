@@ -110,7 +110,7 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
     echo "</tbody></table></div>\n";
   
   } else {
-    echo "No sponsorship records found for " . $Tran['SN'] . "<P>";
+    echo "No sponsorship records found for " . $Trad['SN'] . "<P>";
   }
   
   if ($Mode ==2) return;
@@ -351,6 +351,7 @@ function Add_Spon_Request($Spid=0) {
     if ($Tid) {
       $Trad = Get_Trader($Tid);
     } else {
+      
       echo "Bug... What Organisation is this for...";
       var_dump($_REQUEST);
       exit;

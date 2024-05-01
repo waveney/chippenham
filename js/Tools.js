@@ -32,31 +32,33 @@ function PCatSel(e,pname='PCAT') {
 $(document).ready(function() {
   //caches a jQuery object containing the header element
   var header = $(".main-header");
-  var dhead = header[0]; // jquery to dom
-  var scroll = $(window).scrollTop();  
-  if (scroll >= 1) header.addClass("fixedheader");
-  
-  $(window).scroll(function() {
-    var scroll = $(window).scrollTop();
-    if (scroll >= 1) {
-      header.addClass("fixedheader");
-    } else {
-      header.removeClass("fixedheader");
-  	}
-  });
-  dhead.addEventListener("mouseover",function() {
-    var scroll = $(window).scrollTop();
-    if (scroll < 1) {
-      header.addClass("fixedheader");
-    }
-  });
-  dhead.addEventListener("mouseout",function() {
-    var scroll = $(window).scrollTop();
-    if (scroll < 1) {
-      header.removeClass("fixedheader");
-  	}
-  });
-  $('#HoverContainer').detach().appendTo('#LastDiv');  // Get menu to work on Iphones
+  if (header) {
+    var dhead = header[0]; // jquery to dom
+    var scroll = $(window).scrollTop();  
+    if (scroll >= 1) header.addClass("fixedheader");
+
+    $(window).scroll(function() {
+      var scroll = $(window).scrollTop();
+      if (scroll >= 1) {
+        header.addClass("fixedheader");
+      } else {
+        header.removeClass("fixedheader");
+      }
+    });
+    dhead.addEventListener("mouseover",function() {
+      var scroll = $(window).scrollTop();
+      if (scroll < 1) {
+        header.addClass("fixedheader");
+      }
+    });
+    dhead.addEventListener("mouseout",function() {
+      var scroll = $(window).scrollTop();
+      if (scroll < 1) {
+        header.removeClass("fixedheader");
+      }
+    });
+    $('#HoverContainer').detach().appendTo('#LastDiv');  // Get menu to work on Iphones
+  }
 });
 
 // Sticky menus for mobiles
