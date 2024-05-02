@@ -186,7 +186,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   } else {
     echo "<tr><td>Price:<td>" . Feature('FreeText','Free');
   }
-  echo "<tr><td>";
+  echo "<tr><td valign=top>";
     if (isset($OtherVenues[0])) {
 
       echo "Starting Location:<td>" . Venue_Parents($OVens,$Ev['Venue']) . "<a href=VenueShow?v=" . $Ven['VenueId'] . ">" . VenName($Ven) . "</a>";
@@ -208,7 +208,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
       if ($Ven['Description']) echo "<br>" . $Ven['Description'] . "\n";
       if (($Vy = Get_VenueYear($Ven['VenueId']))) {
         $VenY = array_merge($Ven,$Vy);
-        SponsoredBy($VenY, VenName($Ven), 1, $Ven['VenueId']);
+        SponsoredBy($VenY, VenName($Ven), 1, $Ven['VenueId'],75);
       }
     } else {
       echo "Where: <b>Not Yet Known</b><p>\n";
