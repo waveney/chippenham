@@ -182,7 +182,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
       echo " -  <strong><a href=" . $Ev['SpecPriceLink'] . " target=_blank>Buy Now</a></strong>\n";
     }
   } else if ($Ev['SeasonTicketOnly']) {
-    echo "<tr><td>Entry by:<td>" . Feature('SeasonName','Weekend Ticket') . " only";
+    echo "<tr><td>Entry by:<td>" . Price_Show($Ev); // Feature('SeasonName','Weekend Ticket') . " only";
   } else {
     echo "<tr><td>Price:<td>" . Feature('FreeText','Free');
   }
