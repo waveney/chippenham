@@ -20,11 +20,11 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
     if ($lastday != -99) echo "</table></div><p>\n";
     $lastday = $d;
     if ($PageBreak) {
-      if ($Mismatch) {
-        echo "<div class=tablecont><table class=$Class $xtra3>";
-      } else {
+//      if ($Mismatch) {
+//        echo "<div class=tablecont><table class=$Class $xtra3>";
+//      } else {
         echo "<div class='pagebreak tablecont'><table class=$Class $xtra3>";
-      }
+//      }
     } else {
       echo "<div class=tablecont><table class=$Class $xtra3>";
     }
@@ -112,7 +112,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
           if ($o['Type'] == 'Perf') $PerfC++;
         }
       }
-      echo "<td><span style='font-size:12'>";
+      echo "<td><span style='font-size:" . Feature('PaperEventFont',12) . "'>";
       if ($e['Description']) {
         $Desc = $e['Description'];
         $Desc = preg_replace('/<a href=(.*?)[ >].*?<\/a>/i','$1',$Desc);

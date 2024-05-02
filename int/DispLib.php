@@ -556,14 +556,14 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
   return 1;
 }
 
-function Get_Sponsors() { // New Code
+function Get_Sponsors($minlvl=0) { // New Code
   global $db,$YEAR,$YEARDATA;
   $full = [];
   $res = $db->query("SELECT s.*, t.SN, t.Photo, t.Logo, t.Website, t.IandT, t.GoodsDesc FROM Sponsorship s, Trade t WHERE " .
-    "s.SponsorId=t.Tid AND s.Year='$YEAR'");
+    "s.SponsorId=t.Tid AND s.Year='$YEAR' AND Importance>=$minlvl");
   if (!$res->num_rows && !empty($YEARDATA['PrevFest'])) {
     $res = $db->query("SELECT s.*, t.SN, t.Photo, t.Logo, t.Website, t.IandT, t.GoodsDesc FROM Sponsorship s, Trade t WHERE " .
-      "s.SponsorId=t.Tid AND s.Year='" . $YEARDATA['PrevFest'] . "'");
+      "s.SponsorId=t.Tid AND s.Year='" . $YEARDATA['PrevFest'] . "' AND Importance>=$minlvl");
     }
   if ($res) while ($spon = $res->fetch_assoc()) {
     if (isset($full[$spon['SN']])) {
