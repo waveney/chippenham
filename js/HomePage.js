@@ -45,7 +45,7 @@ $(document).ready(function() {
       SponPos[i] = elem;
       maxi=i;
     }
-    return 1;
+    return wid;
   }
   
   function UpdateSpon() {

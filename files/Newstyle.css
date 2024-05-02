@@ -989,7 +989,7 @@ textarea:Focus
   position: relative;
   float: left;
 }
-.sponsoringImage {
+.sponsoringImage { /* not used*/
   max-height:150px;
   max-width:150px;
 } 

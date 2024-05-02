@@ -369,7 +369,7 @@ function Get_SideYears($snum) {
 }
 
 function RecordPerfChanges(&$now,&$Cur,$Up) {
-  global $PLANYEAR;
+  global $PLANYEAR,$USERID;
   $Fields = ['Coming','Sat','Sun','Mon','YearState'];
 
   if (!isset($now['NoEvents']) || $now['NoEvents'] || $now['Year'] != $PLANYEAR) return;
@@ -384,9 +384,10 @@ function RecordPerfChanges(&$now,&$Cur,$Up) {
     $Rec = Gen_Get_Cond1('PerfChanges',"( SideId=" . $now['SideId'] . " AND Field='$ff' )");
     if (isset($Rec['id'])) {
       $Rec['Changes'] = $now[$f];
+      $Rec['Who'] = $USERID;
       Gen_Put('PerfChanges',$Rec);
     } else {
-      $Rec = ['SideId'=>$now['SideId'], 'Year'=>$PLANYEAR, 'Changes'=>$now[$f], 'Field'=>$ff ];
+      $Rec = ['SideId'=>$now['SideId'], 'Year'=>$PLANYEAR, 'Changes'=>$now[$f], 'Field'=>$ff, 'Who'=>$USERID ];
       Gen_Put('PerfChanges',$Rec);
     }
     

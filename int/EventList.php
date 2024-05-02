@@ -159,7 +159,7 @@
       if (!$PFComms) {
         echo "<td>" ; 
         if ($evnt['SeasonTicketOnly']) {
-          echo "ST only";
+          echo (['','ST only','ST+ET only','ET only'][$evnt['SeasonTicketOnly']]??"??");
         } else {
           if ($evnt['SubEvent'] <= 0 || ($evnt['SpecPrice'])) {
             if ($evnt['SpecPrice']) {
