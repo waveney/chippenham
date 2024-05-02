@@ -97,13 +97,16 @@
   echo '<center><h2>Sponsors & Supporters</h2></center>';
   echo "<center>Our festival would not be possible without the amazing help and generosity of many organisations including the following major sponsors<p>";
   echo "</center>";
-  $Spons = Get_Sponsors(1);
+  $Spons = Get_Sponsors(1);echo count($Spons);
+  $SPSize = '0';
+//  if (count($Spons) < 5) { $SPSize = "300";} elseif (count($Spons) < 7) { $SPSize = "150";}
   echo "<div hidden>" . fm_hidden('ChangeTime',Feature('SponsorTime',2000)); // IN msec
+  echo fm_hidden('SPSize',$SPSize);
   foreach ($Spons as $s) {
     if ($s['Importance'] < 0) continue;
-    echo "<li class=SponsorsIds id=" .$s['id'] . " data-i=" . ($s['Importance']+1) . "><div class=sponcontainer><div class=sponContent>";
+    echo "<li class=SponsorsIds id=" .$s['id'] . " data-i=" . ($s['Importance']+1) . "><div class=sponcontainer$SPSize><div class=sponContent>";
     if ($s['Website']) echo weblinksimple($s['Website']);
-    if (!empty($s['Logo']) || !empty($s['Photo'])) echo "<img src='" . (empty($s['Logo'])?$s['Photo']: $s['Logo']) . "' class=sponImage>";
+    if (!empty($s['Logo']) || !empty($s['Photo'])) echo "<img src='" . (empty($s['Logo'])?$s['Photo']: $s['Logo']) . "' class=sponImage$SPSize>";
     if ($s['IandT']) echo "<div class=sponText>" . $s['SN'] . "</div>";
     if ($s['Website']) echo "</a>";
     echo "</div></div>";

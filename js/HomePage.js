@@ -15,6 +15,9 @@ $(document).ready(function() {
   var ChangeTime = +$('#ChangeTime').val();
   var SponIndexes = [];
   var Spindexes = 0;
+  var MinSpons = +$('#MinSponsors').val();
+  if (!MinSpons) MinSpons = 1;
+  var SPSize = +$('#SPSize').val();
   
   
   function Get_ASpon() {
@@ -36,6 +39,7 @@ $(document).ready(function() {
     });
     
     var wid = $('#SponDisplay').width();
+    //var Mult
     for(i=0;(i+1)*170<wid;i++) {
       var elem = Get_ASpon();
       var tries=1;

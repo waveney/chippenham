@@ -957,10 +957,20 @@ textarea:Focus
   margin:10px;
 }
 
-.sponcontainer {
+.sponcontainer0 {
   position:relative;
   text-align:center;
-  height:150px;
+  height:170px;
+}
+.sponcontainer200 {
+  position:relative;
+  text-align:center;
+  height:225px;
+}
+.sponcontainer300 {
+  position:relative;
+  text-align:center;
+  height:330px;
 }
 .sponContent{
   position: relative;
@@ -972,10 +982,21 @@ textarea:Focus
 .sponText {
   font-size:14pt;
 } 
-.sponImage {
+.sponImage0 {
   max-height:150px;
   max-width:150px;
 } 
+
+.sponImage200 {
+  max-height:200px;
+  max-width:200px;    
+}
+
+.sponImage300 {
+  max-height:300px;
+  max-width:300px;
+}
+
 .SponWhat {
   font-size:14pt;
   font-weight:bold;

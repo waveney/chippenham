@@ -221,7 +221,7 @@ function ReHash() {
           echo "Updating Venue Year: "; var_dump($VenY); echo "<p>";
         } else Gen_Put('VenueYear',$VenY);
       } else {
-        $R = ['VenueId'=>$Vid,'Year'=>$YEAR];
+        $R = ['VenueId'=>$Vid,'Year'=>$YEAR, 'SponsoredBy'=>$who ];
         if ($TestMode) {
           echo "New Venue Year"; var_dump($R); echo "<p>";
         } else Gen_Put('VenueYear',$R);
@@ -278,7 +278,7 @@ function ReHash() {
     
     echo "Checking $Sid<p>";
       $SideY = Get_SideYear($Sid);
-      if ($SideY && ($SideY['Coming'] == 2 || $SideY['yearState'] >=2)) {
+      if ($SideY && ($SideY['Coming'] == 2 || $SideY['YearState'] >=2)) {
 //var_dump($who, $SideY);
         if ($SideY['SponsoredBy'] == $who) continue;
         $SideY['SponsoredBy'] = $who;
