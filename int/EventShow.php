@@ -206,6 +206,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
 //      echo "<div class=floatright><a onclick=ShowDirect(" . $Ven['VenueId'] . ")>Directions</a></div>\n";
       if ($Ven['Address']) echo " - " . $Ven['Address'] . $Ven['PostCode'] ."\n";
       if ($Ven['Description']) echo "<br>" . $Ven['Description'] . "\n";
+      SponsoredBy($Ven, VenName($Ven), 1, $Ven['VenueId']);
     } else {
       echo "Where: <b>Not Yet Known</b><p>\n";
     }

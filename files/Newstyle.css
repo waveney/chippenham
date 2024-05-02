@@ -982,6 +982,10 @@ textarea:Focus
 .sponText {
   font-size:14pt;
 } 
+.sponImage75 {
+  max-height:75px;
+  max-width:75px;
+} 
 .sponImage0 {
   max-height:150px;
   max-width:150px;

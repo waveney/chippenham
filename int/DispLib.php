@@ -576,7 +576,7 @@ function Get_Sponsors($minlvl=0) { // New Code
   return $full;
 }
 
-function SponsoredBy(&$Data,&$Name,$TType,$Tid) {
+function SponsoredBy(&$Data,&$Name,$TType,$Tid,$Logosize='0') {
   global $YEAR;
     if ($Data['SponsoredBy'] ?? 0) {
       $Spid = $Data['SponsoredBy'];
@@ -584,7 +584,8 @@ function SponsoredBy(&$Data,&$Name,$TType,$Tid) {
         $Spon = Gen_Get('Trade',$Spid,'Tid');
         echo "<div class=SponWrap><div class=SponSet><div class=SponWhat>$Name</div> is sponsored by:</div><div class=Sponsoring>" . 
              weblink($Spon['Website'], 
-               (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . "  class=sponImage></center>"):'') .
+               (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . 
+                "  class=sponImage$Logosize></center>"):'') .
                ($Spon['BizName']?$Spon['BizName']:$Spon['SN'] )," class=sponText") . "</div></div><br clear=all>";
 
       } else {
@@ -595,7 +596,8 @@ function SponsoredBy(&$Data,&$Name,$TType,$Tid) {
             $Spon = Gen_Get('Trade',$Spid['SponsorId'],'Tid');
             echo "<div class=Sponsoring>" . 
                weblink($Spon['Website'], 
-                 (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . "  class=sponImage></center>"):'') .
+                 (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . 
+                  "  class=sponImage$Logosize></center>"):'') .
                  ($Spon['BizName']?$Spon['BizName']:$Spon['SN'] )," class=sponText") . "</div>";
                
           }        
