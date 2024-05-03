@@ -486,7 +486,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
 //********* PRIVATE
 
     echo "<tr><th colspan=8><b>Private Information</b>" . Help('PrivateInfo');
-    if ($Trad['IsTrader']) {
+    if (($Trad['IsTrader'])??0) {
       echo "<tr>";
         echo "<td>Trade Type:" . help('TradeType') . "<td colspan=7>";
         foreach ($TradeTypeData as $i=>$d) {
@@ -514,7 +514,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
 // Other Contacts to be added here at some point     
      
       
-    if ($Trad['IsTrader']) {
+    if ($Trad['IsTrader']??0) {
       echo "<tr class=PublicHealth " . ($TradeTypeData[$Trad['TradeType']]['NeedPublicHealth']?'':'hidden') . ">" ;
       echo fm_text("Registered with which Local Authority ",$Trad,'PublicHealth',2,'colspan=2');
       if (Feature('TradeBID') || Feature('TradeChamberCommerce')) {
@@ -1450,7 +1450,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
     $Trad = ['TradeType' => 1, 'IsTrader' => 0];  
   }
 
-  if (!isset($Trady)) $Trady = Default_Trade($Tid,$Trad['TradeType']);
+  if (!isset($Trady)) $Trady = Default_Trade($Tid,($Trad['TradeType']??0));
 
   if (isset($_REQUEST['TB'])) {
     $Ans = Trade_TickBox($Tid,$Trad,$Trady,$_REQUEST['TB']);
