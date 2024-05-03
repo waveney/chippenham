@@ -295,14 +295,22 @@
 
         default: 
           $VY = Gen_Get_Cond1('VolYear'," Volid=$id AND Year=$Year ");
-//echo "<br>A:"; var_dump($VY);
           if (!$VY) $VY = ['Volid'=>$id, 'Year'=>$Year];
           $VY[$vfld] = $Value;
-//echo "<br>B:"; var_dump($VY);
           return "In VolYear" . Gen_Put('VolYear',$VY);
       }
     } 
     break;
+    
+  case 'Sponsorships':
+    if (preg_match('/(\a*):(\d*)/',$field,$mtch)?true:false) {        
+      $Spon = Gen_Get('Sponsorship',$mtch[2]);
+      if ($Spon) {
+        $Spon[$mtch[1]] = $Value;
+        return Gen_Put('Sponsorship',$Spon);
+      }
+    }
+    return "Something wrong $field $Value";    
     
   case 'Sponsorship':
     if (preg_match('/Id(\d*)/',$field,$mtch)?true:false) {        
@@ -329,10 +337,8 @@
   default:
     break;
   }
-//echo "AAAAA";
   global $TableIndexes;
   $idx = (isset($TableIndexes[$type])?$TableIndexes[$type]:'id');
   $N = Gen_Get($type,$id,$idx);
   $N[$field] = $Value;
-//var_dump($N);
   return Gen_Put($type,$N,$idx);

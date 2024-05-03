@@ -62,6 +62,7 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
   if ($Spons) {
     $coln = 0;
     echo "<div class=Scrolltable><table id=indextable border>\n";
+    Register_AutoUpdate('Sponsorships', 0);
     echo "<thead><tr>";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
     if ($Mode) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Who</a>\n";
@@ -100,13 +101,17 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
         echo "<td><a href=AddPerf?sidenum=" . $S['ThingId'] . ">" . ( $Perf['SN']  ?? '<span class=Err>Unknown</span>') . "</a>";
         break;
       }
-      echo "<td>" . $S['Year'] . "<td>" . $S['Importance'] . "<td>" . $SponStates[$S['Status']] . "<td>";
+      echo fm_text1('',$S, 'Year',1,'','',"Year:$Spid") . 
+           fm_text1('', $S, 'Importance',1,'','', "Importance:$Spid") . 
+           "<td>" . $SponStates[$S['Status']] . "<td>";
       
       echo "<a href=Biz?ACTION=SponAdd&Spid=$Spid>Edit</a>, ";
       echo "<a href=Biz?ACTION=SponDel&Spid=$Spid>Remove</a>, ";
 // Actions will go here
     }
     
+    if (Access('SysAdmin')) echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+
     echo "</tbody></table></div>\n";
   
   } else {
@@ -115,8 +120,8 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
   
   if ($Mode ==2) return;
   
-  echo "<h2><a href=Biz?T=$Tid&ACTION=SponAdd>Add Record</a>, <a href=ListBiz>Back to list of Businesses</a></h2>"; // Invoice all | selected
-  dotail();
+  echo "<h2><a href=Trade?ORGS>Add Sponsor</a>, <a href=ListBiz>Back to list of Businesses</a></h2>"; // Invoice all | selected
+  dotail();// TODO That is old code to add sponsor - should work
 }
 
 

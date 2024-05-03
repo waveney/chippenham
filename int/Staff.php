@@ -536,10 +536,10 @@
       $txt .= "<li><a href=Biz?ACTION=AllSponList>All Sponsorships </a> (new code)\n";
       $txt .= "<li><a href=Biz?ACTION=ReHash>Set up Cached Data</a> (Run after changes)\n";
 
-/*
-      $txt .= "<p><li><a href=ListTrade?ORGS>Businesses and Organistaions List</a> (Old code)\n"; 
-      $txt .= "<li><a href=Trade?ORGS>New Business or Organistaion</a> (Old code)\n";  
-      $txt .= "<li><a href=Sponsors>Sponsors</a> (old code)\n"; */
+
+//      $txt .= "<p><li><a href=ListTrade?ORGS>Businesses and Organistaions List</a> (Old code)\n"; 
+      $txt .= "<li><a href=Trade?ORGS>New Business or Organistaion</a>\n";  
+//      $txt .= "<li><a href=Sponsors>Sponsors</a> (old code)\n"; */
     }
     
     if (Access('SysAdmin')) {
