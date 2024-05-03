@@ -4,6 +4,7 @@
   $Value = $_REQUEST['V'];
   $id    = $_REQUEST['I'];
   $type  = $_REQUEST['D'];
+  $vfv   = $_REQUEST['vfv']??'';
 
   global $PLANYEAR,$YEARDATA;
 

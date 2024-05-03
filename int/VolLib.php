@@ -259,7 +259,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
   Register_AutoUpdate('Volunteers',$Volid);
   Register_Onload('CampingVolSet',"'CampNeed::$PLANYEAR'",0);
 
-  echo fm_hidden('id',$Volid);  
+  echo fm_hidden('id',$Volid) . fm_hidden('kvk', substr($Vol['AccessKey'],0,6));
 
 
     if ($VolMgr) echo "If you change any of the team statuses on this page you must click <b>Send Updates</b>, to notify the volunteer.<p>";
@@ -523,7 +523,7 @@ function VolFormM(&$Vol,$Err='',$View=0) {
   Register_AutoUpdate('Volunteers',$Volid);
   Register_Onload('CampingVolSet',"'CampNeed::$PLANYEAR'",0);
 //  Register_AfterInput('VolEnables',$Volid,$PLANYEAR);
-  echo fm_hidden('id',$Volid);  
+  echo fm_hidden('id',$Volid) . fm_hidden('kvk', substr($Vol['AccessKey'],0,6));
 
   if ($VolMgr) echo "If you change any of the team statuses on this page you must click <b>Send Updates</b>, to notify the volunteer.<p>";
 
@@ -810,11 +810,15 @@ function Vol_Validate(&$Vol) {
   global $YEARDATA,$VolCats,$YEAR;
   
   $Num1st = $Num2nd = $Num3rd = 0;
+  
+  if (!isset($_REQUEST['kvk1']) || ($_REQUEST['kvk1'] != substr($Vol['AccessKey'],0,6))) {
+    Error_Page("No Hacking");
+  }
 
-  if (($l = strlen($Vol['SN'])) < 2 || $l > 40) return "Please give your name";
-  if (($l = strlen($Vol['Email'])) < 6 || $l > 40) return "Please give your Email";
-  if (($l = strlen($Vol['Phone'])) < 6 || $l > 40) return "Please give your Phone number(s)";
-  if (($l = strlen($Vol['Address'])) < 10 || $l > 100) return "Please give your Address";
+  if (($l = strlen(Sanitise($Vol['SN']))) < 2 || $l > 40) return "Please give your name";
+  if (($l = strlen(Sanitise($Vol['Email']))) < 6 || $l > 40) return "Please give your Email";
+  if (($l = strlen(Sanitise($Vol['Phone']))) < 6 || $l > 40) return "Please give your Phone number(s)";
+  if (($l = strlen(Sanitise($Vol['Address']))) < 10 || $l > 100) return "Please give your Address";
   if (!isset($Vol['AllowUnder'])) if (!isset($Vol['Over18']) || !$Vol['Over18']) return "Please confirm you are over 18";
 //  if (strlen($Vol['Birthday']) < 2) return "Please give your age";
 
@@ -860,8 +864,8 @@ function Vol_Validate(&$Vol) {
   }
 
   if ($Avail == 0) return "Please give your availabilty";
-  if (strlen($Vol['ContactName']) < 2) return "Please give an emergency contact";
-  if (strlen($Vol['ContactPhone']) < 6) return ">Please give emergency Phone number(s)";
+  if (strlen(Sanitise($Vol['ContactName'])) < 2) return "Please give an emergency contact";
+  if (strlen(Sanitise($Vol['ContactPhone'])) < 6) return ">Please give emergency Phone number(s)";
   if (!isset($Vol['Relation']) || !$Vol['Relation']) return "Please give your emergency contact relationship to you";
 
   
@@ -1486,7 +1490,7 @@ function VolAction($Action,$csv=0) {
 
   $M = (isset($_REQUEST['M'])?'VolFormM':'VolForm');
 
-  switch ($Action) {
+  switch (Sanitise($Action,60)) {
   case 'New': // New Volunteer
   default:
     $Vol = ['id'=>-1, 'Year'=>$PLANYEAR,'KeepMe'=>1];

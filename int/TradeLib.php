@@ -28,7 +28,7 @@ $TS_Actions = ['Submit,Invite,Invite Better',
 $Trader_Status = ['Alive','Banned','Not trading'];
 $Trader_State = array_flip($Trader_Status);
 $ButExtra = [
-        'Accept'=>'title=>"Accept the quote/invite"',
+ //       'Accept'=>'title=>"Accept the quote/invite"',
         'Decline'=>'title="Decline this trader, if in doubt Hold Them"',
         'Submit'=>'title="Submit application"',
         'Hold'=>'title="Hold for space available"',
