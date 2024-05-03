@@ -666,9 +666,9 @@ function Price_Show(&$Ev,$Buy=0) {
   $once = 0;
   $Cpri = $Ev['Price1'];
   if ($Ev['SeasonTicketOnly']) {
-    if ($Cpri) $str = "<b>" . Print_Pound($Cpri) . "</b> ";
-    if (Feature("DayTicket" . $Ev['Day'])) return $str . $Event_Access_Type_Day[$Ev['SeasonTicketOnly']];
-    return $str . $Event_Access_Type[$Ev['SeasonTicketOnly']];
+    if ($Cpri) $str = " (" . Print_Pound($Cpri) . ") ";
+    if (Feature("DayTicket" . $Ev['Day'])) return $Event_Access_Type_Day[$Ev['SeasonTicketOnly']] . $str;
+    return $Event_Access_Type[$Ev['SeasonTicketOnly']] . $str;
   }
   if (!$Cpri) return Feature('FreeText','Free');
 
