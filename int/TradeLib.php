@@ -461,6 +461,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         } else {
           echo "<td colspan=3>You can upload a photo once you have created your record\n";
         }
+        if (Access('SysAdmin')) echo fm_text('Photo',$Trad,'Photo');
       }
       if ($Props &2) {
         if ($Tid >0) {
@@ -468,6 +469,8 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
         } else {
           echo "<td colspan=3>You can upload a Logo once you have created your record\n";
         }
+        if (Access('SysAdmin')) echo fm_text('Logo',$Trad,'Logo');
+
       }
 /*
       if ($Props &4) {
