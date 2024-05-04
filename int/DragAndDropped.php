@@ -18,8 +18,9 @@ function Archive_Stack($loc,$pth,$id) {
   global $DDdata;
 //********************************* START HERE **************************************************************
 
-$Type = $_REQUEST['Type'];
+$Type = Sanitise($_REQUEST['Type'],15,'txt');
 $id = $_REQUEST['Id'];
+if (!is_numeric($id)) $id=0;
 $Cat = $_REQUEST['Cat'];
 $Mode = (isset($_REQUEST['Mode'])?$_REQUEST['Mode'] :0);
 $Class = (isset($_REQUEST['Class'])?$_REQUEST['Class'] :"");

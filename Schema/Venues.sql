@@ -55,6 +55,7 @@ CREATE TABLE `Venues` (
   `SponsorYear` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `3Words` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `SuppressParent` tinyint NOT NULL,
+  `DanceOffGridPaper` tinyint NOT NULL,
   PRIMARY KEY (`VenueId`),
   UNIQUE KEY `VenueId` (`VenueId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

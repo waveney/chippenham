@@ -193,7 +193,8 @@ function Show_Contract($snum,$mode=0,$ctype=1) { // mode=-2 dummy-1 Draft,0 prop
     $str .= $faq;
 
     if ($mode > 0) {
-      $str .= "This contract was confirmed " . $ContractMethods[$mode] . " on " . date('d/m/y H:i:s',$Sidey['ContractDate']) . "<P>\n";
+      $str .= "This contract was confirmed " . ($ContractMethods[$mode]??'Unknown') . " on " . 
+        ($Sidey['ContractDate']? date('d/m/y H:i:s',$Sidey['ContractDate']):'Unknown') . "<P>\n";
     }
 
 /*

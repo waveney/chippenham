@@ -22,6 +22,10 @@
 
   $Links=1;
   if (isset($_REQUEST['Links'])) $Links=$_REQUEST['Links'];
+  
+  $Print=0;
+  if (isset($_REQUEST['Print'])) $Print=$_REQUEST['Print'];
+ 
 
 // var_dump($Cond,$day,$head,$Public,$Links);
 //  var_dump($day);
