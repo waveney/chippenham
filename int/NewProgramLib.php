@@ -72,7 +72,7 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
     $eid = $ev['EventId'];
     $v = $ev['Venue'];
     
-    if ($Paper && $Venues[$v['DanceOffGridPaper']]) {
+    if ($Paper && $Venues[$v]['DanceOffGridPaper']) {
       $OffGrid[] = $ev;
       continue;
     }
@@ -164,7 +164,7 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
   $Times = array_unique($UsedTimes);
   asort($Times);
   $Back_Times = array_reverse($Times);
-//var_dump($UsedTimes,$Times); exit;
+// var_dump($UsedTimes,$Times); exit;
 
 //  var_dump($lineLimit);exit;
 }

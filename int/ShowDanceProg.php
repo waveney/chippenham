@@ -27,7 +27,7 @@
   if (isset($_REQUEST['Print'])) $Print=$_REQUEST['Print'];
  
 
-// var_dump($Cond,$day,$head,$Public,$Links);
+//  var_dump($Cond,$day,$head,$Public,$Links,$Print);
 //  var_dump($day);
   Prog_Headers($Public,$head);
 

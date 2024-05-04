@@ -463,9 +463,9 @@
     $txt .= "<p>";
     $txt .= "<li class=smalltext><a href=PaperProg?ALPHA=1&$YEAR>Lineups for Printed Program</a> (Even if not public)";    
     $txt .= "<li class=smalltext><a href=PaperTime?$YEAR>Events for Printed Program</a> (Even if not public)";    
-    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat&$YEAR>Sat Dance Grid for Printed Program</a>";    
-    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun&$YEAR>Sun Dance Grid for Printed Program</a>";    
-    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon&$YEAR>Mon Dance Grid for Printed Program</a>";    
+    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat&$YEAR&Print=1>Sat Dance Grid for Printed Program</a>";    
+    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun&$YEAR&Print=1>Sun Dance Grid for Printed Program</a>";    
+    $txt .= "<li class=smalltext><a href=ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Mon&$YEAR&Print=1>Mon Dance Grid for Printed Program</a>";    
     
     $txt .= "<p class=smalltext>";
     $txt .= "<li><a href=/PerfChanges?$YEAR>Performer Changes since programme went to print</a>";    
