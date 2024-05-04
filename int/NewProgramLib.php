@@ -22,6 +22,7 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
   $SideCounts = array();
   $Earliest = 2400;  $Latest = 0;
   $EV = array();
+  $Venues = Get_Venues_For($Media);
   $VenueUse = array();
   $evs = array();
   $Sand = 0;
@@ -186,7 +187,6 @@ function Scan_Data($condense=0,$Media='Dance') {
     $DefLineLimit = (($Media == 'Dance')?2:1);
   }
 
-  $Venues = Get_Venues_For($Media);
   $VenueNames = Get_Real_Venues(0);
   $VenueInfo = Get_Real_Venues(1);
   $OtherLocs = array();
