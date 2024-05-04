@@ -13,8 +13,8 @@ function Prog_Headers($Public='',$headers=1,$What='Dance') {
   ini_set('display_errors', '0');
 }
 
-function Grab_Data($day='',$Media='Dance') {
-  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$OffGrid;
+function Grab_Data($day='',$Media='Dance',$Paper=0) {
+  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$OffGrid,$Venues;
 
 //  $cats = ['Side','Act','Comedy','Ch Ent','Other'];
   $Times = array();
@@ -71,6 +71,12 @@ function Grab_Data($day='',$Media='Dance') {
     }
     $eid = $ev['EventId'];
     $v = $ev['Venue'];
+    
+    if ($Paper && $Venues[$v['DanceOffGridPaper']]) {
+      $OffGrid[] = $ev;
+      continue;
+    }
+    
     if ($ev['SubEvent'] < 0) { $et = $ev['SlotEnd']; } else { $et = $ev['End']; }
     if ($et == 0 || $ev['Start']==0) continue; // Skip events with undefined times
     $UsedTimes[]= $ev['Start'];

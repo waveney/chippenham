@@ -48,7 +48,7 @@
   }
 
   if ($day == 'All' || $day == 'Sat') {
-    Grab_Data('Sat');
+    Grab_Data('Sat','Dance',$Print);
     Scan_Data($Cond);
     if ($Public) echo "<p id=Saturday><h2>Saturday " . $Event_Types[1]['Plural'] . "</h2><p>\n";
 //    echo "This will be easier to use on a small screen soon.<p>";
@@ -57,7 +57,7 @@
     Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
   }
   if ($day == 'All' || $day == 'Sun') {
-    Grab_Data("Sun");
+    Grab_Data("Sun",'Dance',$Print);
     Scan_Data($Cond);
     echo "<p id=Sunday><h2>Sunday " . $Event_Types[1]['Plural'] . "</h2></p>\n";
 //      echo "This will be easier to use on a small screen soon.<p>";
@@ -66,7 +66,7 @@
     Print_Grid(0,0,$Cond,$Links,1,'Dance',$Public);
   }
   if ($day == 'All' || $day == 'Mon') {
-    Grab_Data("Mon");
+    Grab_Data("Mon",'Dance',$Print);
     Scan_Data($Cond);
     echo "<p id=Monday><h2>Monday " . $Event_Types[1]['Plural'] . "</h2></p>\n";
 //      echo "This will be easier to use on a small screen soon.<p>";
