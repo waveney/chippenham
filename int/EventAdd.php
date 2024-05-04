@@ -350,6 +350,7 @@ A similar feature will appear eventually for music.<p>
           echo "<td><a href=BigEventProg?e=$eid>Big Event</a>";
         } else if ($se == 0) { echo "<td>No Sub Events"; }
         else if ($se < 0) { echo "<td><a href=EventList?se=$eid>Has Sub Events</a>"; }
+        if (Access('SysAdmin')) echo "<div class=FullD hidden>" . fm_text0('Val',$Event,'SubEvent') . "</div>";
         else { echo "<td><a href=EventList?se=$se>Is a Sub Event</a>"; };
         echo "<td" . ($se>0?" class=FullD hidden":"") . ">" .fm_checkbox('Needs Stewards',$Event,'NeedSteward');
 
