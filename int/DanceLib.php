@@ -227,6 +227,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
     if (OvPhoto($side,$Isa)) $txt .=  "<div id=Blob" . ($BlobNum++) . "><img src=" . OvPhoto($side,$Isa) . " width=100%></div>\n";
     
     if ($syear['SponsoredBy'] ?? 0) {
+      include_once("DispLib.php");
       $txt .=  "<div id=Blob" . ($BlobNum++) . ">";
       SponsoredBy($syear,OvName($side,$Isa),3,$snum);
       $txt .= "</div>";

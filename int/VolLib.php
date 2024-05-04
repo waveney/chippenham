@@ -811,7 +811,7 @@ function Vol_Validate(&$Vol) {
   
   $Num1st = $Num2nd = $Num3rd = 0;
   
-  if (!isset($_REQUEST['kvk1']) || ($_REQUEST['kvk1'] != substr($Vol['AccessKey'],0,6))) {
+  if (!isset($_REQUEST['kvk']) || ($_REQUEST['kvk'] != substr($Vol['AccessKey'],0,6))) {
     Error_Page("No Hacking");
   }
 
