@@ -83,7 +83,7 @@ function Get_Imps(&$e,&$imps,$clear=1,$all=0) {
   if ($clear) $imps = array();
   for($i=1;$i<5;$i++) {
     if (isset($e["Side$i"]) && $e["Side$i"]) { 
-      if ($ee = $e["Side$i"])  { 
+      if (($ee = $e["Side$i"]))  { 
         $si = Get_Side($ee);
         if ($si) {
           $y = Get_SideYear($ee,$YEAR);

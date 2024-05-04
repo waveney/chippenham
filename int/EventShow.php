@@ -270,7 +270,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   }
   if ($Ev['Website']) echo "<h3>" . weblink($Ev['Website'],'Website for this event') . "</h3><p>\n";
 
-  if ($Ev['IsConcert'] || ($Event_Types[$Ev['Type']]['IsConcert']) ) { // Concert Formating
+  if (!$Event['BigEvent'] && ($Ev['IsConcert'] || ($Event_Types[$Ev['Type']]['IsConcert']) )) { // Concert Formating
     echo "<div class=tablecont><table class=lemontab border>\n";
     if (empty($ks)) $ks = array_keys($imps);
     foreach(array_reverse($ks) as $i) {
