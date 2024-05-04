@@ -14,7 +14,7 @@ function Prog_Headers($Public='',$headers=1,$What='Dance') {
 }
 
 function Grab_Data($day='',$Media='Dance',$Paper=0) {
-  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$OffGrid,$Venues;
+  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$OffGrid,$VenueInfo,$Venues,$VenueNames;
 
 //  $cats = ['Side','Act','Comedy','Ch Ent','Other'];
   $Times = array();
@@ -23,6 +23,8 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
   $Earliest = 2400;  $Latest = 0;
   $EV = array();
   $Venues = Get_Venues_For($Media);
+  $VenueNames = Get_Real_Venues(0);
+  $VenueInfo = Get_Real_Venues(1);
   $VenueUse = array();
   $evs = array();
   $Sand = 0;
@@ -73,7 +75,7 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
     $eid = $ev['EventId'];
     $v = $ev['Venue'];
     
-    if ($Paper && $Venues[$v]['DanceOffGridPaper']) {
+    if ($Paper && $VenueInfo[$v]['DanceOffGridPaper']) {
       $OffGrid[] = $ev;
       continue;
     }
@@ -177,7 +179,8 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
 */
 
 function Scan_Data($condense=0,$Media='Dance') {
-  global $DAY,$Times,$Back_Times,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$SlotSize,$OffGrid;
+  global $DAY,$Times,$Back_Times,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,
+         $Venues,$VenueNames,$OtherLocs,$SlotSize,$OffGrid;
   
   if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
     $Round = 30;
@@ -187,8 +190,6 @@ function Scan_Data($condense=0,$Media='Dance') {
     $DefLineLimit = (($Media == 'Dance')?2:1);
   }
 
-  $VenueNames = Get_Real_Venues(0);
-  $VenueInfo = Get_Real_Venues(1);
   $OtherLocs = array();
 
   if ($Venues) foreach ($Venues as $v) if (isset($VenueUse[$v]) && $condense && $VenueInfo[$v]["Minor$DAY"]) $OtherLocs[] = $v;
