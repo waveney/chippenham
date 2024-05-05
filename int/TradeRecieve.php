@@ -58,11 +58,11 @@ global $YEAR,$db;
     
     if ($csv) {
       if (count($Invoices) == 1) { 
-        fputcsv($output,[$fetch['SN'],$Trade_Types[$fetch['TradeType']]['SN'],$Dep,$Invoices[1]['OurRef'] . "/" . $Invoices[1]['id'],
+        fputcsv($output,[$fetch['SN'],$Trade_Types[$fetch['TradeType']]['SN'],'','',
           $fetch['TotalPaid'],$Invoices[0]['OurRef'] . "/" . $Invoices[0]['id']]);
       } else {
         $Dep = T_Deposit($fetch);
-        fputcsv($output,[$fetch['SN'],$Trade_Types[$fetch['TradeType']]['SN'],'','',
+        fputcsv($output,[$fetch['SN'],$Trade_Types[$fetch['TradeType']]['SN'],$Dep,$Invoices[1]['OurRef'] . "/" . $Invoices[1]['id'],
           ($fetch['TotalPaid']-$Dep),$Invoices[0]['OurRef'] . "/" . $Invoices[0]['id']]);      
       }
     } else {
