@@ -138,12 +138,12 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
   if (isset($_REQUEST['SELType'])) {
     $selt = $_REQUEST['SELType'];
     $selt = preg_replace('/_/',' ',$selt);
-    if ($sel == 'Show All Types') {
+    if ($selt == 'Show All Types') {
       $List = $AllList;
       $Title = 'All Traders';
       $ShowTraders = 1;
 
-      } else if (!$List) {
+    } else if (!$List) {
       foreach($TTypes as $typ) {
         if ($selt == $typ['SN']) {
           $List = $TTUsed[$typ['id']];

@@ -12,6 +12,9 @@
 
   echo fm_hidden('Year',$YEAR);
   $YearTab = 'SideYear';
+  
+  $SpecMessage = '';
+  if (Access('SysAdmin')) $SpecMessage=Feature('SpecialMessage');
 
   $Type = (isset($_REQUEST['T'])? $_REQUEST['T'] : 'M' );
   if ($Type == 'Z') {
@@ -215,11 +218,13 @@
               echo "<button type=button id=$ac$snum class=ProfButton onclick=MList_ProformaSend('Music_$ac',$snum,'$ac','SendPerfEmail')" . 
                      Music_Proforma_Background($ac) . ">$ac</button>"; 
 
-
+     
 
 //              echo "<button class=floatright name=ACTION value='$ac' type=submit " . $Book_ActionExtras[$ac] . 
 //                   " style='background:" . $Book_ActionColours[$ac] . ";'>$ac</button>";
             }
+            if ($SpecMessage) echo "<button type=button id=$ac$snum class=ProfButton onclick=MList_ProformaSend('Music_$SpecMessage',$snum," .
+                    "'$SpecMessage','SendPerfEmail')" . Music_Proforma_Background($SpecMessage,'Pink') . ">$SpecMessage</button>"; 
             echo "</form>";
           } 
           break;
@@ -308,4 +313,3 @@
     echo "</tbody></table></div>\n";
   }
   dotail(); 
-?>

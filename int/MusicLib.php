@@ -697,9 +697,10 @@ function Music_Email_Too(&$data) {
   return $too;
 }
 
-function Music_Proforma_Background($name) {
+function Music_Proforma_Background($name,$Default='') {
   global $Book_ActionColours;
   if (isset($Book_ActionColours[$name])) return " Style=Background:" . $Book_ActionColours[$name] . " ";
+  if ($Default) return " Style=Background:$Default ";
   return "";
 }
 

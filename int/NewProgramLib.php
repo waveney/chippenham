@@ -850,6 +850,8 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
         echo " - " . ($links?"<a href=EventShow?e=" . $e['EventId'] . ">":'') . $e['SN'] . "</a> - " . $e['Description'];
         if (!$e['NoPart']) echo " with ". Get_Event_Participants($eid,0,($links?1:-1),15) . "<br>";
       }
+   
+      echo "<P>";
     }
   } 
 }
