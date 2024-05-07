@@ -172,7 +172,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
     } else {
       echo Price_Show($Ev,1);
       if (!$Ev['ExcludePass']) { echo ", or by " . Feature('SeasonName','Weekend Ticket');
-        if (!$Ev['ExcludeDay'] && $YEARDATA[$DayLongList[$Ev['Day']] . "Pass"]) echo " or " . $DayLongList[$Ev['Day']] . " ticket\n";
+        if (!$Ev['ExcludeDay'] && (($YEARDATA[$DayLongList[$Ev['Day']] . "Pass"])??0)) echo " or " . $DayLongList[$Ev['Day']] . " ticket\n";
       }
     }
     if ($Ev['TicketCode']) {
