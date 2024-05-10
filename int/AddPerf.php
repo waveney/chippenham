@@ -257,7 +257,7 @@
       }
       
     } else {
-      echo "<h2 class=ERR>Could not find Performer $snum</h2>\n";
+      Error_Page("Could not find Performer $snum");
     }
   } else {
     $Sidey = Default_SY();

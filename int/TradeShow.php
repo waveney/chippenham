@@ -146,7 +146,7 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
     } else if (!$List) {
       foreach($TTypes as $typ) {
         if ($selt == $typ['SN']) {
-          $List = $TTUsed[$typ['id']];
+          $List = ($TTUsed[$typ['id']]??[]);
           $Title = 'All ' . $typ['SN'] . " Traders";
           $ShowTraders = 1;
           break;

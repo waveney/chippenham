@@ -32,7 +32,7 @@
       $LastAct = 0;
       $LastSY = $PU['SideYearId'];
       $Sidey = Gen_Get('SideYear',$PU['SideYearId'],'syId');
-      if ($Sidey['Coming'] !=2 && $Sidey['YearState'] < 2) continue; // Not Confirmed
+      if (!$Sidey || (($Sidey['Coming']??0) !=2 && (($Sidey['YearState']??0) < 2))) continue; // Not Confirmed
       $Side = Get_Side($Sidey['SideId']);
       $SNames[$Sidey['SideId']] = $Side['SN'];
 //      $Use[$Csi]['Cat'] = 1;

@@ -65,7 +65,7 @@ function ValidateSub(&$Sub) {
   Sanitise($Sub['LastName']);
   if ((strlen($Sub['FirstName']) + strlen($Sub['LastName'])) < 3) return "Please give a name";
   $Bits = explode('@',$Sub['Email']);
-  if ((strlen($Bits[0]) < 1) || (strlen($Bits[1]) < 2)) return "Please give an Email address";
+  if ((count($Bits) < 2) || (strlen($Bits[0]) < 1) || (strlen($Bits[1]) < 2)) return "Please give an Email address";
   return '';
 }
 
