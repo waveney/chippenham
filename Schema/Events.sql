@@ -22,6 +22,7 @@ CREATE TABLE `Events` (
   `ListMusic` tinyint NOT NULL,
   `ListComedy` tinyint NOT NULL,
   `ListWorkshop` tinyint NOT NULL,
+  `ListSession` tinyint NOT NULL,
   `EndDay` tinyint NOT NULL,
   `ExcludeCount` tinyint NOT NULL,
   `IgnoreClash` tinyint NOT NULL,

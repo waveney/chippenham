@@ -145,6 +145,8 @@ function Print_Participants($e,$when=0,$thresh=0) {
     if ($Ev['ListMusic']) $xtra .= " / " . $ETs[14]['SN'];    
     if ($Ev['ListComedy']) $xtra .= " / " . $ETs[17]['SN'];    
     if ($Ev['ListWorkshop']) $xtra .= " / " . $ETs[5]['SN'];    
+    if ($Ev['ListSession']) $xtra .= " / " . $ETs[6]['SN'];    
+
     $xtra .= ")";
   }
   dohead($Ev['SN'] . $xtra,[],1); // TODO Event specific banners

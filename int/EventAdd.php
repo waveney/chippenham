@@ -334,7 +334,8 @@ A similar feature will appear eventually for music.<p>
       echo "<td class=NotSide>" . fm_checkbox('Big Event',$Event,'BigEvent') . " " . fm_checkbox('No Order',$Event,'NoOrder') . 
            fm_checkbox('Use Notes to fmt',$Event,'UseBEnotes');
       echo "<td>" . fm_checkbox('Also&nbsp;Dance',$Event,'ListDance') . " ". fm_checkbox('Also&nbsp;Music',$Event,'ListMusic') . " ". 
-            fm_checkbox('Also&nbsp;Comedy',$Event,'ListComedy') . " " .fm_checkbox('Also&nbsp;Workshop',$Event,'ListWorkshop');
+            fm_checkbox('Also&nbsp;Comedy',$Event,'ListComedy') . " " .fm_checkbox('Also&nbsp;Workshop',$Event,'ListWorkshop') . " " .
+            fm_checkbox('Also&nbsp;Session',$Event,'ListSession');
       
       echo "<td class=NotSide>" . fm_checkbox('No Performers',$Event,'NoPart') . "<br>" . fm_checkbox('Omit Performers on Paper',$Event,'NoPerfsPaper');
       echo "<td class=NotSide>" . fm_checkbox('Concert',$Event,'IsConcert');
