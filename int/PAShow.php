@@ -116,7 +116,7 @@
     if ($e['StagePA']) $rows++;
     
     if ($rows) {
-      echo "<tr><td rowspan=$rows>". timecolon($e['Start']) . "-" . timecolon($e['End']) . "<td>" . $e['Setup'] . 
+      echo "<tr><td rowspan=$rows>". timecolon($e['Start']) . "-" . timecolon($e['End']) . "<td  rowspan=$rows>" . $e['Setup'] . 
            "<td rowspan=$rows>" . ($e['SubEvent']<1?$e['SN']:"") ;
       $tr = 0;
       if ($e['StagePA']) { echo "<td><td>" . $e['StagePA']; $tr=1;}
