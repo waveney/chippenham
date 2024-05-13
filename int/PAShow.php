@@ -107,7 +107,7 @@
   foreach ($EVs as $ei=>$e) {
     $eid = $e['EventId'];
     if (DayTable($e['Day'],"PA Requirements for " . $Ven['SN'] ,'','style=font-size:24;')) {
-      echo "<tr><td>Time<td >What<td>Who<td>PA Reqs";
+      echo "<tr><td>Time<td>Setup<br>From<td>What<td>Who<td>PA Reqs";
       $lastevent = -99;
     }
 
@@ -116,8 +116,8 @@
     if ($e['StagePA']) $rows++;
     
     if ($rows) {
-      echo "<tr><td rowspan=$rows>". timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td rowspan=$rows>" . 
-           ($e['SubEvent']<1?$e['SN']:"") ;
+      echo "<tr><td rowspan=$rows>". timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>" . $e['Setup'] . 
+           "<td rowspan=$rows>" . ($e['SubEvent']<1?$e['SN']:"") ;
       $tr = 0;
       if ($e['StagePA']) { echo "<td><td>" . $e['StagePA']; $tr=1;}
       if (isset($e['With'])) foreach ($e['With'] as $snum) {
@@ -147,7 +147,8 @@
         } else echo "None";
       }
     } else {
-      echo "<tr><td>" . timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>" .  $e['SN'] . "<td><td>None";
+      echo "<tr><td>" . timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) . "<td>" . $e['Setup'] . "<td>" . 
+        $e['SN'] . "<td><td>None";
     }
   }
   echo "</table>\n";
