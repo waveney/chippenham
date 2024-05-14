@@ -419,7 +419,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
             break;
           case (preg_match('/DAY(.*)/',$key,$mtch)?true:false):
             $day = $mtch[1];
-            $rep = FestDate($day);
+            $rep = FestDate($day,'L');
             break;
 
           default:
