@@ -54,7 +54,8 @@
 //    echo "Key should be: " . $Side['AccessKey'] . " is " . $_REQUEST['key'] ."<p>";
 //    var_dump($Side);
     
-    if ($Side['AccessKey'] != $_REQUEST['key']) Error_Page("Sorry - This is not the right key");  // No return
+    if (empty($Side['AccessKey']) || empty($_REQUEST['key']) || ($Side['AccessKey'] != $_REQUEST['key'])) 
+      Error_Page("Sorry - This is not the right key");  // No return
 
     $Cake = sprintf("%s:%d:%06d",$Type,$Access_Type['Participant'],$SideId ); 
     $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');

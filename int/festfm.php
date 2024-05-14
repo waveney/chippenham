@@ -562,10 +562,11 @@ function ChunkSplit($txt,$maxlen,$maxchnks) {
   return $Res;
 }
 
-function linkemailhtml(&$data,$type="Side",$xtr='',$ButtonExtra='') {
+function linkemailhtml(&$data,$type="Side",$xtr='',$ButtonExtra='',$DirectType='') {
   global $YEAR,$USER;
   if (!Access('Staff')) return 0;
   include_once("DanceLib.php");
+  if (empty($DirectType)) $DirectType=$type;
   $Label = '';
   if (isset($data['HasAgent']) && ($data['HasAgent'])) {
     if ($xtr == '') {
@@ -608,7 +609,7 @@ function linkemailhtml(&$data,$type="Side",$xtr='',$ButtonExtra='') {
 
   $link = "'mailto:$email?from=" . $USER['Email'] .
          "&subject=" . urlencode(Feature('FestName') . " $YEAR and " . $data['SN']) . "'";
-  $direct = "<a href=https://" . $_SERVER['HTTP_HOST'] . "/int/Direct?t=$type&id=$id&key=$key&Y=$YEAR>this link</a>  " ;
+  $direct = "<a href=https://" . $_SERVER['HTTP_HOST'] . "/int/Direct?t=$DirectType&id=$id&key=$key&Y=$YEAR>this link</a>  " ;
 
   if (isset($data['SideId'])) {
     if ($data['IsASide'] && !$data['TotalFee']) {
