@@ -10,6 +10,8 @@ CREATE TABLE `Events` (
   `DoorsOpen` int NOT NULL,
   `SN` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Type` int NOT NULL,
+  `Type2` int NOT NULL,
+  `Type3` int NOT NULL,
   `Family` tinyint NOT NULL,
   `NonFest` tinyint NOT NULL,
   `SubEvent` int NOT NULL,

@@ -417,6 +417,10 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
           case 'SENDER':
             $rep = (empty($USER['SN'])?"The *FESTNAME*":$USER['SN']);
             break;
+          case (preg_match('/DAY(.*)/',$key,$mtch)?true:false):
+            $day = $mtch[1];
+            $rep = FestDate($day);
+            break;
 
           default:
 // var_dump($helper,$helperdata,$attachments,$embeded);
@@ -544,6 +548,7 @@ function Replace_Help($Area='',$Right=0) {
   ['*COLLECTINFO*','Collection Information','Dance, Volunteers'],
   ['*FEAT:Name:Default*','Include value of Feature(Name,Default)','All'],
   ['*TRADEORG*','Organiser(s) of Trade','Trade'],
+  ['*DAYnn*','Date of Day nn of festival 0=Friday','All'],
   ];
 
   echo "<span " . ($Right?' class=floatright':'') . " id=largeredsubmit onclick=($('.HelpDiv').toggle()) >Click to toggle Standard Replacements Help</span>";
