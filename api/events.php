@@ -18,7 +18,7 @@ function Get_Events($subEventId) {
             e.SponsoredBy,
             e.Side1, e.Side2, e.Side3, e.Side4,
             e.Roll1, e.Roll2, e.Roll3, e.Roll4,
-            t.SN as Type, e.ListDance, e.ListMusic, e.ListComedy, e.ListWorkshop, e.Family, e.Special,
+            t.SN as Type, e.ListDance, e.ListMusic, e.ListComedy, e.ListWorkshop, e.ListSession, e.Family, e.Special,
             e.Venue, e.Status
         FROM
             Events e
@@ -33,12 +33,15 @@ function Get_Events($subEventId) {
         $evs = [];
         while($row = $res->fetch_assoc()) {
             $row['IsConcert'] = $row['IsConcert'] == 1;
-            $row['ListDance'] = $row['ListDance'] == 1;
-            $row['ListMusic'] = $row['ListMusic'] == 1;
-            $row['ListComedy'] = $row['ListComedy'] == 1;
-            $row['ListWorkshop'] = $row['ListWorkshop'] == 1;
             $row['Family'] = $row['Family'] == 1;
             $row['Special'] = $row['Special'] == 1;
+
+            $row['Types'] = [ $row['Type'] ];
+            if ($row['ListDance'] == 1) { array_push($row['Types'], 'Dance Display'); }
+            if ($row['ListMusic'] == 1) { array_push($row['Types'], 'Concert'); }
+            if ($row['ListComedy'] == 1) { array_push($row['Types'], 'Comedy'); }
+            if ($row['ListWorkshop'] == 1) { array_push($row['Types'], 'Workshop'); }
+            if ($row['ListSession'] == 1) { array_push($row['Types'], 'Session'); }
 
             if ($subEventId > 0 && $row['IsConcert']) {
                 $row['Start'] = null;    
@@ -59,6 +62,12 @@ function Get_Events($subEventId) {
             $row['Venues'] = API_Get_Venues($row);
             $row['Sponsors'] = Get_Sponsors($row['SponsoredBy'], $row['Name'], 2, $row['Id']);
 
+            unset($row['Type']);
+            unset($row['ListDance']);
+            unset($row['ListMusic']);
+            unset($row['ListComedy']);
+            unset($row['ListWorkshop']);
+            unset($row['ListSession']);
             unset($row['Day']);
             unset($row['EndsNextDay']);
             unset($row['SeasonTicketOnly']);
@@ -67,6 +76,8 @@ function Get_Events($subEventId) {
             unset($row['Price2']);
             unset($row['Price3']);
             unset($row['DoorPrice']);
+            unset($row['TicketCode']);
+            unset($row['SpecPriceLink']);
             unset($row['Side1']);
             unset($row['Side2']);
             unset($row['Side3']);
@@ -151,7 +162,7 @@ function Get_Prices(&$Ev) {
 }
 
 function Make_Price($amount, $string) {
-    return [ 'amount' => $amount, 'description' => $string ];
+    return [ 'Amount' => $amount, 'Description' => $string ];
 }
 
 function Load_Performers() {
@@ -161,7 +172,7 @@ function Load_Performers() {
             p.SideId as Id, p.SN as Name,
             p.Type, p.IsASide, p.IsAnAct, p.IsOther, p.IsFunny, p.IsFamily, p.IsCeilidh, p.IsNonPerf,
             p.Importance, p.Photo, p.CostumeDesc, p.Description, p.Blurb,
-            p.Website, p.Facebook, p.Twitter, p.Instagram, p.Facebook, p.Video,
+            p.Website, p.Facebook, p.Twitter, p.Instagram, p.Video,
             y.SponsoredBy
         FROM
             Sides p
