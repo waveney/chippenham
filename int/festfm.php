@@ -341,7 +341,8 @@ function weblink($dest,$text='Website',$alink='',$all=0) {
   $sites = explode(' ',$dest);
   if (count($sites) > 1) {
     $ans = '';
-    foreach($sites as $site) {
+    foreach($sites as $si=>$site) {
+  //    $ans .= "Site:$si: ";
       $ans .= "<a $alink target=_blank href='";
       if (!preg_match("/^https?/i",$site,$mtch)) $ans .= 'http://';
       $ans .= "$site'>";

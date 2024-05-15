@@ -239,7 +239,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
     if (OvWebsite($side,$Isa) || OvFacebook($side,$Isa) || $side['Twitter'] || $side['Instagram']) {
       $txt .=  "<div id=Blob" . ($BlobNum++) . ">";
       if ( $side['Website'] ) $txt .=  "<img src=/images/icons/web.svg width=24 class=Limited> " . weblink(OvWebsite($side,$Isa),"<b>" . 
-        $side['SN'] . "'s website</b>") . "<br>";
+        $side['SN'] . "'s website</b>",'',1) . "<br>";
       $follow = "Follow " . $side['SN'] . " on ";
       $txt .=   Social_Link(OvFacebook($side,$Isa),'Facebook',1,$follow);
       $txt .=   Social_Link(OvTwitter($side,$Isa),'Twitter',1,$follow);
