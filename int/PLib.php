@@ -103,7 +103,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     echo "<tr>" . fm_textarea('Blurb for web',$Side,'Blurb',5,2,'','size=2000' ) . "\n";
     echo "<tr>";
       if (isset($Side['Website']) && strlen($Side['Website'])>1) {
-        echo fm_text(weblink(trim($Side['Website']),'','',1),$Side,'Website');
+        echo fm_text(weblink(trim($Side['Website']),'Website','',1),$Side,'Website');
       } else {
         echo fm_text('Website',$Side,'Website');
       }
