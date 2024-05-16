@@ -23,11 +23,18 @@ function CheckLink(&$Data,$Category,$Editor,$id) {
     }
 // exit;
     $headers = @ get_headers($url);
-    $Code = substr($headers[0], 9, 3) +0;
+    if ($headers[0]??0) {
+      $Code = substr($headers[0], 9, 3) +0;
+    } else {
+      $Code =999;
+    }
     if ($Code >= 400) {
       echo "$Category - <a href=$Editor?id=$id>" . ($Data['SN']??$Data['Name']??'Unknown') . "</a> has an faulty website - $site - failed $Code<p>";
     } else {
       echo "$Category - " . ($Data['SN']??$Data['Name']??'Unknown') . " website ok <br>";
+      if ($Code != 200) {
+        for($i=0;$i<10;$i++) echo $headers[$i] . "<br>";
+      }
     }
   }
 }
@@ -40,8 +47,8 @@ function CheckAll() {
 
 
   $SideQ = $db->query("SELECT s.*, y.* " . 
-           "FROM Sides AS s, SideYear AS y WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.Coming=" . $Coming_Type['Y'] . 
-           " AND s.IsASide=1 AND s.NotPerformer=0 AND y.NoDanceEvents=0 AND Website!=''");
+           "FROM Sides AS s, SideYear AS y WHERE s.IsASide=1 AND s.SideId=y.SideId AND y.year='$YEAR' AND y.Coming=" . $Coming_Type['Y'] . 
+           " AND s.IsASide=1 AND s.NotPerformer=0 AND y.NoDanceEvents=0 AND s.Website!=''");
 
   if ($SideQ) while($side = $SideQ->fetch_assoc()) { 
 //    echo "$WCount<p>";
@@ -54,10 +61,10 @@ function CheckAll() {
 
   // Check all Other performers in PLANYEAR
 
-  $SideQ = $db->query("SELECT s.*, y.*  FROM Sides AS s, SideYear AS y " .
-         "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-         " AND s.NotPerformer=0 AND Website!=''");
-  if ($SideQ) while($side = $SideQ->fetch_assoc()) { 
+  $PerfQ = $db->query("SELECT s.*, y.*  FROM Sides AS s, SideYear AS y " .
+         "WHERE (s.IsAnAct+s.IsOther+s.IsFunny+s.IsFamily+s.IsCeilidh)>0 AND s.SideId=y.SideId AND y.year='$YEAR' " .
+         " AND y.YearState>=" . $Book_State['Booking'] . " AND s.NotPerformer=0 AND s.Website!=''");
+  if ($PerfQ) while($side = $PerfQ->fetch_assoc()) { 
 //    echo "$WCount<p>";
     if ($WCount >= $StartAt + $BatchSize) return 2;
     if ($WCount++ < $StartAt) continue; 
