@@ -23,8 +23,8 @@ function CheckLink(&$Data,$Category,$Editor,$id) {
     }
 // exit;
     $headers = @ get_headers($url);
-    $Code = substr($headers[0], 9, 3);
-    if ($Code != '200') {
+    $Code = substr($headers[0], 9, 3) +0;
+    if ($Code >= 400) {
       echo "$Category - <a href=$Editor?id=$id>" . ($Data['SN']??$Data['Name']??'Unknown') . "</a> has an faulty website - $site - failed $Code<p>";
     } else {
       echo "$Category - " . ($Data['SN']??$Data['Name']??'Unknown') . " website ok <br>";
