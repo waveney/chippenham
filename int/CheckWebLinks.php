@@ -16,16 +16,17 @@ function CheckLink(&$Data,$Category,$Editor,$id) {
   foreach($sites as $si=>$site) {
     $url = stripslashes($site);
     if (!preg_match("/^https?/i",$url,$mtch)) $url = 'http://' . $url;
-    echo "Would check $Category - <a href=$Editor?id=$id>" . ($Data['SN']??$Data['Name']??'Unknown') . " has an faulty website - $site<p>";
-    continue;
+//    echo "Would check $Category - <a href=$Editor?id=$id>" . ($Data['SN']??$Data['Name']??'Unknown') . " </a>has a website - $site<p>";
+//    continue;
     list($status) = get_headers($url);
     if (strpos($status, '200') !== TRUE) {
-      echo "$Category - <a href=$Editor?id=$id>" . ($Data['SN']??$Data['Name']??'Unknown') . " has an faulty website - $site<p>";
+      echo "$Category - <a href=$Editor?id=$id>" . ($Data['SN']??$Data['Name']??'Unknown') . "</a> has an faulty website - $site<p>";
     }
      
   }
 }
 
+dostaffhead("Check Web Links");
 // Check all Dancers performers in PLANYEAR
 
 $SideQ = $db->query("SELECT s.*, y.* " . 
@@ -61,3 +62,5 @@ echo "<br>Checked All Traders<p>";
 // Check all Sponsors - TODO
 
 // Check all Events - TODO
+
+dotail();
