@@ -510,6 +510,10 @@
 //    if (Access('SysAdmin')) $txt .= "<li><a href=CarerTickets?Y=$YEAR>Manage Carer / Partner Tickets</a>\n"; 
 //    if (Access('SysAdmin','Sponsors')) $txt .= "<li><a href=TaxiCompanies>Manage Taxi Company List</a>\n"; 
 //    if (Access('SysAdmin')) $txt .= "<li><a href=ConvertPhotos>Convert Archive Format</a>";
+    
+    if (Access('SysAdmin')) {
+      $txt .= "<li><a href=CheckWebLinks>Check all Weblinks</a>";
+    }
     $txt .= "</ul>\n";
   }
 
