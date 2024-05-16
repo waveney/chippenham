@@ -105,7 +105,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       if (isset($Side['Website']) && strlen($Side['Website'])>1) {
         echo fm_text(weblink(trim($Side['Website']),'Website','',1),$Side,'Website');
       } else {
-        echo fm_text('Website',$Side,'Website');
+        echo fm_text('Website<br>Leave blank if none',$Side,'Website');
       }
       
       echo "<td>Recent Photo" . fm_DragonDrop(1, 'Photo','Perf',$snum,$Side,$Mode); // TODO  <td><a href=PhotoProcess.php?Cat=Perf&id=$snum>Edit/Change</a>";

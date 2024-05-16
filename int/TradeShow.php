@@ -29,7 +29,7 @@
 //  var_dump($Traders);
   
   if ($Traders) foreach ($Traders as $ti=>$Trad) {
-    if (!$Trad['ListMe'] && !Access('Staff')) continue;
+  //  if (!$Trad['ListMe'] && !Access('Staff')) continue;
     $TT = $Trad['TradeType'];
     $TTUsed[$TT][] = $ti;
     

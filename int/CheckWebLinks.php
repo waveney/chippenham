@@ -8,15 +8,20 @@ include_once("TradeLib.php");
 A_Check('Staff');
 global $StartAt, $BatchSize, $WCount;
 
-function CheckLink(&$Data,$Category,$Editor,$id) {
+function CheckLink(&$Data,$Category,$Editor,$id,$Updater) {
   global $CONF;
   $links = $Data['Website']??0;
   if (!$links) return;
   
   $sites = explode(' ',trim($links));
+  $Simple = (count($sites) == 1);
   foreach($sites as $si=>$site) {
+    $AddedHttp = 0;
     $url = stripslashes($site);
-    if (!preg_match("/^https?/i",$url,$mtch)) $url = 'http://' . $url;
+    if (!preg_match("/^https?/i",$url,$mtch)) {
+      $url = 'http://' . $url;
+      $AddedHttp = 1;
+    }
     if ($CONF['testing']??0) {
       echo "$Category - " . ($Data['SN']??$Data['Name']??'Unknown') . "<p>";
       continue;
@@ -27,13 +32,37 @@ function CheckLink(&$Data,$Category,$Editor,$id) {
       $Code = substr($headers[0], 9, 3) +0;
     } else {
       $Code =999;
-    }
+      if ($AddedHttp) {
+        $url = 'https://' . stripslashes($site);
+        $headers = @ get_headers($url);
+        if ($headers[0]??0) {
+          $Code = substr($headers[0], 9, 3) +0;
+          if ($Code < 400 && $Simple) {
+            $Data['Website'] = $url;
+            $Updater($Data);
+            echo "Updated website to $url<p>";
+          }
+        } else {
+          $Code =998;
+        }
+      }
+    } 
     if ($Code >= 400) {
       echo "$Category - <a href=$Editor?id=$id>" . ($Data['SN']??$Data['Name']??'Unknown') . "</a> has an faulty website - $site - failed $Code<p>";
     } else {
       echo "$Category - " . ($Data['SN']??$Data['Name']??'Unknown') . " website ok <br>";
       if ($Code != 200) {
         for($i=0;$i<10;$i++) echo $headers[$i] . "<br>";
+      }
+    }
+    
+    if ($Code == 301 && $Simple) { // Update the link
+      for ($i=0; $i<10; $i++) if (preg_match('/^Location: ?(ht.*)$/',$header[$i],$mtch)) {
+        $url = trim($mtch[1],' /');
+        $Data['Website'] = $url;
+        $Updater($Data);
+        echo "Updated wesite to $url<p>";
+        break;
       }
     }
   }
@@ -54,7 +83,7 @@ function CheckAll() {
 //    echo "$WCount<p>";
     if ($WCount >= $StartAt + $BatchSize) return 1;
     if ($WCount++ < $StartAt) continue; 
-    CheckLink($side,'Dance Side','AddPerf',$side['SideId']);
+    CheckLink($side,'Dance Side','AddPerf',$side['SideId'],'Put_Side');
   }
   echo "<br>Checked Dance Sides<p>";
 
@@ -68,7 +97,7 @@ function CheckAll() {
 //    echo "$WCount<p>";
     if ($WCount >= $StartAt + $BatchSize) return 2;
     if ($WCount++ < $StartAt) continue; 
-    CheckLink($side,'Performer','AddPerf',$side['SideId']);
+    CheckLink($side,'Performer','AddPerf',$side['SideId'],'Put_Side');
   }
   echo "<br>Checked All other performers<p>";
 
@@ -80,7 +109,7 @@ function CheckAll() {
 //    echo "$WCount<p>";    
     if ($WCount >= $StartAt + $BatchSize) return 3;
     if ($WCount++ < $StartAt) continue; 
-    CheckLink($t,'Trader','Trade',$t['Tid']);
+    CheckLink($t,'Trader','Trade',$t['Tid'],'Put_Trader');
     }
   echo "<br>Checked All Traders<p>";
 

@@ -453,7 +453,7 @@ function Show_Trader($Tid,&$Trad,$Form='Trade',$Mode=0) { // Mode 1 = Ctte, 2=Fi
       if (isset($Trad['Website']) && strlen($Trad['Website'])>1) {
         echo fm_text(weblink($Trad['Website']),$Trad,'Website',2);
       } else {
-        echo fm_text('Website',$Trad,'Website',2);
+        echo fm_text('Website<br>Leave blank if none',$Trad,'Website',2);
       }
       if ($Props &1) {
         if ($Tid >0) {
