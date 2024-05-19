@@ -43,7 +43,13 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
             echo "<a href=/int/ShowPerf?id=" . $thing['SideId'] . ">" . NoBreak($thing['SN'],3) . "</a>";
             if (!empty($thing['Roll'])) {
               echo " (" . $Perf_Rolls[$thing['Roll']] . ")";
-            } else if (isset($thing['Type']) && (strlen($thing['Type'])>1)) echo " " . NoBreak("(" . $thing['Type'] . ")");
+            } else if (isset($thing['Type']) && (strlen($thing['Type'])>1)) {
+              if (strlen($thing['Type']) < 15) {
+                echo " " . NoBreak("(" . $thing['Type'] . ")");
+              } else {
+                echo " (" . $thing['Type'] . ")";                
+              }
+            }
           }
           if ($NotAllFree && ($things == $ll)) echo "<td rowspan=$rows valign=top>$Price";
         }
