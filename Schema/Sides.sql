@@ -85,6 +85,8 @@ CREATE TABLE `Sides` (
   `NotPerformer` tinyint NOT NULL,
   `HasOverlays` tinyint NOT NULL,
   `NoMarketing` tinyint NOT NULL,
+  `Sketch` text COLLATE utf8mb4_general_ci NOT NULL,
+  `NoSketch` tinyint NOT NULL,
   PRIMARY KEY (`SideId`),
   KEY `SideNum` (`SideId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

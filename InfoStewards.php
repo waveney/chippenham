@@ -13,7 +13,7 @@
        
   echo "Volunteers get free tickets, camping and a discount on all festival merchandise.<p>";
   
-  echo "<b><a href=int/ShowFile?f=233>Volunteers Handbook 2024</a></b><p>";
+  echo "<b><a href=int/ShowFile?f=239>Volunteers Handbook 2024 (third version here)</a></b><p>";
 
 
   $Vol_Cats = Gen_Get_All('VolCats','ORDER BY Importance DESC');

@@ -815,10 +815,10 @@ function Vol_Validate(&$Vol) {
     Error_Page("No Hacking");
   }
 
-  if (($l = strlen(Sanitise($Vol['SN']))) < 2 || $l > 40) return "Please give your name";
-  if (($l = strlen(Sanitise($Vol['Email']))) < 6 || $l > 40) return "Please give your Email";
-  if (($l = strlen(Sanitise($Vol['Phone']))) < 6 || $l > 40) return "Please give your Phone number(s)";
-  if (($l = strlen(Sanitise($Vol['Address']))) < 10 || $l > 100) return "Please give your Address";
+  if (strlen(Sanitise($Vol['SN'])) < 2) return "Please give your name";
+  if ((strlen(Sanitise($Vol['Email'],40,'email')) < 6) || (strpos($Vol['Email'],'@')==false)) return "Please give your Email";
+  if (strlen(Sanitise($Vol['Phone'])) < 6) return "Please give your Phone number(s)";
+  if (strlen(Sanitise($Vol['Address']),100) < 10) return "Please give your Address";
   if (!isset($Vol['AllowUnder'])) if (!isset($Vol['Over18']) || !$Vol['Over18']) return "Please confirm you are over 18";
 //  if (strlen($Vol['Birthday']) < 2) return "Please give your age";
 

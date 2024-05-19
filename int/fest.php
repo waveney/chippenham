@@ -290,7 +290,7 @@ $YEARDATA = Get_General();
 if (!$YEARDATA) {
   $YEAR = Feature('ShowYear');
   $YEARDATA = Get_General();
-  Error_Page("Invalid Year");
+  // Error_Page("Invalid Year");
 }
 Feature_Reset();
 $PLANYEARDATA = Get_General($PLANYEAR);

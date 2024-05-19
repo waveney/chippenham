@@ -108,7 +108,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     echo "<div id=Poster>"; 
     echo "<center>";
     echo "<h2 class=subtitle id=Postertitle>";
-    echo "<img src=" . Feature('WebSiteBanner') . " height=60> &nbsp; ";
+    if (Feature('WebSiteBanner')) echo "<img src=" . Feature('WebSiteBanner') . " height=60> &nbsp; ";
     $namlen = strlen($Ven['SN']);
     if ($namlen > 20) {
       $siz = 60 - floor(($namlen-16)/2);

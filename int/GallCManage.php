@@ -18,7 +18,7 @@
 
   $ThumbSize = $_REQUEST['Thumb'] ?? 75;
   $Gals = Get_Gallery_Names(1);
-  $Galid (isset($_REQUEST['g'])? $_REQUEST['g']:0 );
+  $Galid = (isset($_REQUEST['g'])? $_REQUEST['g']:0 );
   if (strlen($Galid) > 4) $Galid=0;
   $GalName = $Gals[$Galid];
   
@@ -160,6 +160,11 @@
   echo "<tr>" . fm_text('Credits',$Gallery,'Credits',4);
   echo "<tr>" . fm_text('Image Number',$Gallery,'Image') . fm_text('Banner',$Gallery,'Banner') ;
   echo "<td>" . fm_number('Level',$Gallery,'Level') . fm_text('Gallery Set',$Gallery,'GallerySet');
+  if (Access('SysAdmin')) {
+    echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
+  }
+
+  
   echo "</table>";
   
   Cancel_AutoUpdate();  // REst is a different form handled by Updatemany

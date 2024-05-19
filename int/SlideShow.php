@@ -3,18 +3,17 @@
 
   include_once("ImageLib.php");
 
-  $id = $_REQUEST['g'];
-  $start = (isset($_REQUEST['s'])?$_REQUEST['s']:0);
-// Get gallery and start (default 0)
+  $id = $_REQUEST['g']??0;
+  $start = ($_REQUEST['s']??0);
 // Setup show and start it
-  if (strlen($id)<10) {
+  if (strlen($id)<20) {
     if (is_numeric($id)) {
       $Gal = db_get('Galleries',"id='$id'");
     } else {
       $Gal = db_get('Galleries',"SN='$id'");
     }
   }
-  if (!$Gal) Error_Page("Gallery $id does not exist");
+  if (empty($Gal)) Error_Page("Gallery $id does not exist");
 
   $name = $Gal['SN'];
   dohead($name, ['/css/jquery.bxslider.css','/js/jquery.bxslider.min.js']);

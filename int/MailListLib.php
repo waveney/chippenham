@@ -60,7 +60,7 @@ function CallOctopus($Request,&$Data=0) {
 
 
 function ValidateSub(&$Sub) {
-  Sanitise($Sub['Email'],'email');
+  Sanitise($Sub['Email'],40,'email');
   Sanitise($Sub['FirstName']);
   Sanitise($Sub['LastName']);
   if ((strlen($Sub['FirstName']) + strlen($Sub['LastName'])) < 3) return "Please give a name";
@@ -100,7 +100,7 @@ function Email_Sub(&$Sub,$Message) {
 function MailFormFilled() {
   global $StatusMail;
   if (!isset($_REQUEST['id'])) {
-    Sanitise($_REQUEST['Email'],'email');
+    Sanitise($_REQUEST['Email'],40,'email');
     Sanitise($_REQUEST['FirstName']);
     Sanitise($_REQUEST['LastName']);
     $_REQUEST['SubmitTime'] = time();
