@@ -35,7 +35,8 @@ define('VOL_Tins',0x40000);
 define('VOL_TeamFull',0x80000);
 
 // Button Name, Vol_Button
-$EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','E' => Feature('Vol_Special_Mess'), 'S'=>'Stew1','M'=>'Note2'];
+$EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','E' => Feature('Vol_Special_Mess'), 
+  'S'=>'Stew1','M'=>'Note2','F' => Feature('Vol_Special_Mess2')];
 
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
 
@@ -457,7 +458,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
     if (Access('Internal')) {
       echo "<tr><td>State: " . fm_select($YearStatus,$VYear,'Status',0,'',"YStatus::$YEAR");
-      echo fm_text('Messages', $VYear,'MessMap');
+      echo fm_text('Messages', $VYear,'MessMap',1,'','',"MessMap::$YEAR");
       echo "<tr><td>Link:<td colspan=4>" . htmlspec(Vol_Details('INNERLINK',$Vol)) . "<br>" . Vol_Details('LINK',$Vol);
       echo "<tr>" . fm_textarea('History',$VYear,'History',4,3);
     }
@@ -1140,6 +1141,10 @@ function List_Vols() {
         $Msg = $EmailMsgs['E'];
         if ($Msg && ($VY['Status'] == 0) && strstr($Mmap,'N') && !strstr($Mmap,'E') && ($HasSetAvail == 0)) {
           echo  " <button type=button id=VolSendEmailE$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'E')>$Msg</button>";
+        }
+        $Msg = $EmailMsgs['F'];
+        if ($Msg && ($VY['Status'] == 3) && !strstr($Mmap,'F')) {
+          echo  " <button type=button id=VolSendEmailF$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'F')>$Msg</button>";
         }
       echo "<td id=MessMap$id>" . ($VY['MessMap'] ?? '');
     }

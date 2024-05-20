@@ -421,6 +421,13 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
             $day = $mtch[1];
             $rep = FestDate($day,'L');
             break;
+          case (preg_match('/ATTACH_(.*)/',$key,$mtch)?true:false):
+            include_once("DocLib.php");
+            $fn = "Store" . File_FullName($mtch[1]);
+//            var_dump($fn);
+            $attachments[]= $fn;
+            $rep = ''; //$fn for testing
+            break;
 
           default:
 // var_dump($helper,$helperdata,$attachments,$embeded);
@@ -549,6 +556,7 @@ function Replace_Help($Area='',$Right=0) {
   ['*FEAT:Name:Default*','Include value of Feature(Name,Default)','All'],
   ['*TRADEORG*','Organiser(s) of Trade','Trade'],
   ['*DAYnn*','Date of Day nn of festival 0=Friday','All'],
+  ['*ATTACH_nn*','Attach File Number nn from the document store','All'],
   ];
 
   echo "<span " . ($Right?' class=floatright':'') . " id=largeredsubmit onclick=($('.HelpDiv').toggle()) >Click to toggle Standard Replacements Help</span>";

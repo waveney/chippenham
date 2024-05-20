@@ -8,6 +8,7 @@ global $PLANYEAR;
 $id = $_REQUEST['I'];
 $proforma = $_REQUEST['N'];
 $Code = $_REQUEST['C'];
+$atts = [];
 
 $Vol = Get_Volunteer($id);
 $subject = Feature('FestName') . " $PLANYEAR and " . $Vol['SN'];
@@ -18,4 +19,4 @@ $To = $Vol['Email'];
             ['replyto','Stewards' . '@' . Feature('HostURL'),Feature('ShortName') ] ];
 //$to = $Side['Email']; // Temp value
 //var_dump($_REQUEST);
-echo Email_Proforma(1,$id, $too,$proforma,$subject,'Vol_Details',$Vol,'Volunteers');
+echo Email_Proforma(1,$id, $too,$proforma,$subject,'Vol_Details',$Vol,'Volunteers',$atts);

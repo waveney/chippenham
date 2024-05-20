@@ -221,7 +221,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 
   $xtr = $Mode?'':"AND (e.Public=1 OR (e.Type=t.ETypeNo AND t.State>1 AND e.Public<2 )) AND t.Public=1 ";
   if ($Poster) {
-    if ($_REQUEST['DAYS'] >0 ) $xtr .= " AND Day=" . $_REQUEST['DAYS'];
+    if ($_REQUEST['DAYS'] >0 ) $xtr .= " AND Day=" . ($_REQUEST['DAYS']-1);
   }
 
   $VenList[] = $V;
@@ -378,7 +378,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
     $things = 0;
     $ImpC = ImpCount($imps);
     $rows = max(1,ceil($ImpC/2));
-    $Colspan = (($ImpC == 0) ?' colspan=3 ':'');
+    $Colspan = (($ImpC == 0) ?' colspan=2 ':'');
 
     if ($e['SubEvent'] <0) { // has subes
       if ($e['LongEvent'] && !$imps) continue;
@@ -400,7 +400,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
       $parname = $e['SN'];
       if ($Poster) $rows = 1; // Only ever show first row
 
-      echo "<tr><td rowspan=$rows $colwid $Colspan valign=top><a href=EventShow?e=$eid valign=top>"
+      echo "<tr><td rowspan=$rows $colwid valign=top><a href=EventShow?e=$eid valign=top>"
            . timecolon($e['Start']) . " - " . timecolon($e['End']) . "</a>";
       if ($VirtVen) {
         if (empty($VenNames[$e['Venue']])) {
@@ -410,11 +410,11 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
           echo "<br>" . $VenNames[$e['Venue']];
         }
       }
-      echo "<td rowspan=$rows  valign=top><a href=EventShow?e=$eid>" . $parname . "</a>";
+      echo "<td rowspan=$rows  $Colspan valign=top><a href=EventShow?e=$eid>" . $parname . "</a>";
       if ($e['Status'] == 1) echo "<br><div class=Cancel>CANCELLED</div>";
       if ($e['Description']) echo "<br>" . $e['Description'];
       if ($e['Image']) $SpecialImage = $e['Image'];
-      PrintImps($imps,$NotAllFree,Price_Show($e,1),$rows,$ImpC,($Poster?2:100));
+      if ($imps) PrintImps($imps,$NotAllFree,Price_Show($e,1),$rows,$ImpC,($Poster?2:100));
     } else { // Is a sube
       if ($e['LongEvent'] && $lastevent != $e['SubEvent']) {
         $lastevent = $e['SubEvent'];
