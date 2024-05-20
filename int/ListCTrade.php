@@ -6,6 +6,10 @@
 
   if ($ToPrint) {
     dominimalhead('List Traders');
+    include_once 'VolLib.php';
+    global $CampType;
+    $camps = Get_Campsites('Trade',1);
+
   } else {
     dostaffhead("List Traders", ["/js/clipboard.min.js", "/js/emailclick.js"]);
   }
@@ -255,7 +259,7 @@
       if ($ToPrint) {
         $str .= "<td>" . $fetch['NumberTickets'];
         $str .= "<td>" . $fetch['NumberCarPass'];
-        $str .= "<td>" . ($fetch['CampNeed']?'Yes':'');
+        $str .= "<td>" . ($fetch['CampNeed']?$camps[$fetch['CampNeed']]['Name']:'');
 
       } else {
         $inscols= array('red','yellow','lime');
