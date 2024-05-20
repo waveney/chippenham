@@ -317,6 +317,7 @@
     $txt .= "<li><a href=TradePowerList?T=Power>Show all power</a>\n";
     $txt .= "<li><a href=TradePowerList?T=Tables>Show all tables</a>\n";
     $txt .= "<li><a href=TradePowerList?T=FireEx>Show all Fire Ex</a>\n";
+    $txt .= "<li><a href=TradeStandMaps>Show all Maps (Pagenated)</a>\n";
 
     
     if (Capability('EnableTrade') && !Capability('EnableFinance')) $txt .= "<li><a href=InvoiceManage?Y=$YEAR>Invoice/Payment Management</a>\n";

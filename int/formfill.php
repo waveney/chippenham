@@ -98,7 +98,7 @@
     } else if (preg_match('/(Sat|Sun)(Arrive|Depart)/',$field)) {
       include_once("DateTime.php");
       $Value = Time_BestGuess($Value);
-    } else if (preg_match('/(\w*):(\d*):(\d*):(\d*)/',$field,$Mtch )) { //Word + 4 fields
+    } else if (preg_match('/(\w*):([\d-]*):(\d*):(\a*)/',$field,$Mtch )) { //Word + 4 fields
 //var_dump($Mtch);
       switch($Mtch[1]) {
       case 'CampSite':
@@ -160,7 +160,7 @@
       exit;
     }  
     // SHOULD never get here... (but it did!)
-    trigger_error("Updating a form confused - $field:$Value:$id:$type");
+    trigger_error("Updating a form confused - $field @ $Value @ $id @ $type");
     exit;
         
   case 'Trader': 
