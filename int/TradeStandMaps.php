@@ -15,10 +15,12 @@
     if ($tloc['InUse'] == 0) continue;
     if (empty($tloc['MapImage'])) continue;
    
-    echo "<h2>" .$tloc['SN'] . "</h2>";
-    $Traders = Get_Traders_For($loc, (Access('Staff')?1:0));
+    $trloc = ($tloc['PartOf']?$tloc['PartOf']:$loc);
     
-    $Pitches = Get_Trade_Pitches($loc);  
+    echo "<h2>" .$tloc['SN'] . "</h2>";
+    $Traders = Get_Traders_For($trloc);
+    
+    $Pitches = Get_Trade_Pitches($trloc);  
 //  var_dump($ShowTraders,$Traders);
 
     echo Pitch_Map($tloc,$Pitches,$Traders,4,1,'');
