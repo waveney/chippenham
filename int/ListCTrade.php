@@ -1,8 +1,14 @@
 <?php
   include_once("fest.php");
   A_Check('Steward');
+  
+  $ToPrint = $_REQUEST['TOPRINT']??false;
 
-  dostaffhead("List Traders", ["/js/clipboard.min.js", "/js/emailclick.js"]);
+  if ($ToPrint) {
+    dominimalhead('List Traders');
+  } else {
+    dostaffhead("List Traders", ["/js/clipboard.min.js", "/js/emailclick.js"]);
+  }
 
   global $YEAR,$PLANYEAR,$Trade_States,$Trade_State_Colours,$Trade_State,$TS_Actions,$ButAdmin,$AdminExtra,$TradeLocData;
   include_once("TradeLib.php");
@@ -10,7 +16,7 @@
   if ($Sum) {
     echo "<h2>Traders Summary $YEAR</h2>\n";
 //    echo "Note the totals exclude any extras such as power and tables.<p>";
-  } else {
+  } else if (!$ToPrint) {
     echo "<div class=content><h2>List Traders $YEAR</h2>\n";
 
     echo "Click on column header to sort by column.  Click on Traders's name for more detail.<p>";
@@ -66,7 +72,7 @@
     $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState=" . 
            $Trade_State['Submitted'] . " ORDER BY SN";  
   } else {  
-    if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR&SUB>Include Submitted</a>, " .
+    if (!$Sum && !$ToPrint) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR&SUB>Include Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a> </h2>";
     $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>" . 
            $Trade_State['Submitted'] . " ORDER BY SN";
@@ -85,21 +91,31 @@
     $str .= "<thead><tr>";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";
-    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Goods</a>\n";
+    if (!$ToPrint) $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Goods</a>\n";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contact</a>\n";
-    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
-    $str .= "<th style='min-width:350'><a href=javascript:SortTable(" . $coln++ . ",'T')>State</a>\n";
-    if (Feature('TradeDateChange')) $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Change</a>\n";
-    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Fee</a>\n";
-    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Sa</a>\n";
-    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Su</a>\n";
+    if (!$ToPrint) $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
+    if ($ToPrint) {
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>State</a>\n";
+    } else {
+      $str .= "<th style='min-width:350'><a href=javascript:SortTable(" . $coln++ . ",'T')>State</a>\n";
+      if (Feature('TradeDateChange')) $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Change</a>\n";
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Fee</a>\n";
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Sa</a>\n";
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Su</a>\n";
 //    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Ref</a>\n";
+    }
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Pitches</a>\n";
     if (Feature("TradePower")) $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power</a>\n";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Location</a>\n";
-    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Ins</a>\n";
-    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Risk</a>\n";
-    $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Local Auth</a>\n";
+    if ($ToPrint) {
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Tickets</a>\n";
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Parking</a>\n";
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Camping</a>\n";  
+    } else {
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Ins</a>\n";
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Risk</a>\n";
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Local Auth</a>\n";
+    }
     $str .= "</thead><tbody>";
     while ($fetch = $res->fetch_assoc()) {
       $Tid = $fetch['Tid'];
@@ -108,9 +124,9 @@
         $str .= ($fetch['SN']?preg_replace('/\|/','',$fetch['SN']):'No Name Given');
         if ($ActsEnable) $str .= "</a>";
       $str .= "<td style='background:" . $Trade_Types[$fetch['TradeType']]['Colour'] . ";'>" . $Trade_Types[$fetch['TradeType']]['SN'];
-      $str .= "<td width=300>" . $fetch['GoodsDesc'];
+      if (!$ToPrint) $str .= "<td width=300>" . $fetch['GoodsDesc'];
       $str .= "<td>" . $fetch['Contact'] . "<br>" . ($fetch['Phone']? $fetch['Phone'] : $fetch['Mobile']);
-      $str .= "<td>" . linkemailhtml($fetch,'Trade');
+      if (!$ToPrint) $str .= "<td>" . linkemailhtml($fetch,'Trade');
       $str .= "<td id=TR$Tid";
         $stat = $fetch['BookingState'];
         if ($stat == $Trade_State['Fully Paid'] && ($fetch['Insurance'] == 0 || $fetch['RiskAssessment'] == 0)) {
@@ -121,7 +137,7 @@
         $TrState[$stat]++;
 
         $Act = $TS_Actions[$stat];
-        if ($ActsEnable && $Act ) {
+        if ($ActsEnable && $Act && !$ToPrint) {
           $Acts = preg_split('/,/',$Act); 
           $str .= "<div class=floatright style='max-width:250'><form>" . fm_hidden('id',$Tid) . fm_hidden('Y',$YEAR);
           $butcount = 0;
@@ -182,30 +198,32 @@
           $str .= "CAN: " . ['Not Sent','Sent','Ack','Happy','Unhappy'][$fetch['DateChange']-10];        
         }
       }
-      $str .= "<td>";
-        $Dep = T_Deposit($fetch);
-        $fee = $fetch['Fee'];
-        $Pwr = PowerCost($fetch);
-        if ($fee>0) $fee+=$Pwr;
-        if ($fetch['ExtraPowerDesc']) $fee+=$fetch['ExtraPowerCost'];
-        for($i=0;$i<3;$i++) if ($fetch["Tables$i"]) $fee+=$fetch["Tables$i"]*Feature('TableCost');
-        if ($Dep == 0) {
-          if ($fee < 0) { $str .= "Free"; }
-          else if ($fee == 0) { $str .= "?"; }
-          else { $str .= "0<br>$fee<br>$fee"; };
-        } else {
-          if ($fee < 0) { $str .= "D:$Dep<br>B:0<br>T:0"; }
-          else if ($fee == 0) { $str .= "D:$Dep<br>B:?<br>T:?"; }
-          else { $str .= "D:$Dep<br>B:" . ($fee - $Dep) . "<br>T:$fee"; }
-        }
-      $str .= "<td>";
-        if ($fetch['Days'] ==0) {
-          $str .= "Y<td>Y";
-        } elseif ($fetch['Days'] == 1) { 
-          $str .= "Y<td>";
-        } else {
-          $str .= "<td>Y";
-        }
+      if (!$ToPrint) {
+        $str .= "<td>";
+          $Dep = T_Deposit($fetch);
+          $fee = $fetch['Fee'];
+          $Pwr = PowerCost($fetch);
+          if ($fee>0) $fee+=$Pwr;
+          if ($fetch['ExtraPowerDesc']) $fee+=$fetch['ExtraPowerCost'];
+          for($i=0;$i<3;$i++) if ($fetch["Tables$i"]) $fee+=$fetch["Tables$i"]*Feature('TableCost');
+          if ($Dep == 0) {
+            if ($fee < 0) { $str .= "Free"; }
+            else if ($fee == 0) { $str .= "?"; }
+            else { $str .= "0<br>$fee<br>$fee"; };
+          } else {
+            if ($fee < 0) { $str .= "D:$Dep<br>B:0<br>T:0"; }
+            else if ($fee == 0) { $str .= "D:$Dep<br>B:?<br>T:?"; }
+            else { $str .= "D:$Dep<br>B:" . ($fee - $Dep) . "<br>T:$fee"; }
+          }
+        $str .= "<td>";
+          if ($fetch['Days'] ==0) {
+            $str .= "Y<td>Y";
+          } elseif ($fetch['Days'] == 1) { 
+            $str .= "Y<td>";
+          } else {
+            $str .= "<td>Y";
+          }
+      }
 //      $str .= "<td>" . (1000000+$fetch['TYid']);
       $str .= "<td>" . $fetch['PitchSize0'];
         if ($fetch['PitchSize1']) $str .= "<br>" . $fetch['PitchSize1'];
@@ -233,29 +251,37 @@
             }
           }
         }
-      $inscols= array('red','yellow','lime');
-      $str .= "<td style='background:" . ($inscols[$fetch['Insurance']]) . ";'>" . ($fetch['Insurance']?"Y":'');
-//      $str .= "<td style='background:" . ($fetch['Insurance']?'lime':'red') .";'>" . ($fetch['Insurance']?"Y":'');
-      $str .= "<td>" . ($fetch['RiskAssessment']?"Y":'');
+        
+      if ($ToPrint) {
+        $str .= "<td>" . $fetch['NumberTickets'];
+        $str .= "<td>" . $fetch['NumberCarPass'];
+        $str .= "<td>" . ($fetch['CampNeed']?'Yes':'');
 
-      if ($Trade_Types[$fetch['TradeType']]['NeedPublicHealth']) {
-        if ($fetch['PublicHealth']) {
-            if ($fetch['BookingState'] >= $Trade_State['Submitted']) {
-            $str .= "<td"  . ($fetch['HealthChecked']?'':' style="background:red;"') . ">";
-              $str .= "<form>" . fm_hidden('id',$Tid) . fm_hidden('Y',$YEAR);
-//            if ($Acts && !$fetch['HealthChecked']) $str .= "<button class=floatright name=ACTION value=Checked type=submit >Checked</button>";
-            $str .= "</form>";
-          } else {
-            $str .= "<td>";
-          }
-          $str .= $fetch['PublicHealth'];
-        } else {
-          $str .= "<td style='background:red;'><b>MISSING</b>";
-        }
       } else {
-        $str .= "<td>";
+        $inscols= array('red','yellow','lime');
+        $str .= "<td style='background:" . ($inscols[$fetch['Insurance']]) . ";'>" . ($fetch['Insurance']?"Y":'');
+  //      $str .= "<td style='background:" . ($fetch['Insurance']?'lime':'red') .";'>" . ($fetch['Insurance']?"Y":'');
+        $str .= "<td>" . ($fetch['RiskAssessment']?"Y":'');
+
+        if ($Trade_Types[$fetch['TradeType']]['NeedPublicHealth']) {
+          if ($fetch['PublicHealth']) {
+              if ($fetch['BookingState'] >= $Trade_State['Submitted']) {
+              $str .= "<td"  . ($fetch['HealthChecked']?'':' style="background:red;"') . ">";
+                $str .= "<form>" . fm_hidden('id',$Tid) . fm_hidden('Y',$YEAR);
+  //            if ($Acts && !$fetch['HealthChecked']) $str .= "<button class=floatright name=ACTION value=Checked type=submit >Checked</button>";
+              $str .= "</form>";
+            } else {
+              $str .= "<td>";
+            }
+            $str .= $fetch['PublicHealth'];
+          } else {
+            $str .= "<td style='background:red;'><b>MISSING</b>";
+          }
+        } else {
+          $str .= "<td>";
+        }
       }
-      if ($fee > 0) {
+      if (!$ToPrint && ($fee > 0)) {
         $totfee += $fee;
         $totrec += $fetch['TotalPaid'];
         if (!isset($TrMon[$fetch['TradeType']])) {
@@ -327,7 +353,7 @@
 
   if (!$Sum && isset($str)) echo $str;
 
-  if (!isset($_REQUEST['ONLY'])) {
+  if (!isset($_REQUEST['ONLY']) && !$ToPrint) {
     echo "<p><div class=Scrolltable><table border id=narrowtable><tr><td>Type<td>Received<td>Total Accept<td>Total inc Quoted<td>Details\n";
     foreach ($Trade_Types as $t) {
       if (isset($TrMon[$t['id']]) && $TrMon[$t['id']]) {
@@ -366,6 +392,5 @@
     echo "</table></div>";
     echo "<p>";
   }
-  dotail();
-?>
+  if (!$ToPrint) dotail();
 
