@@ -18,12 +18,12 @@
     $trloc = ($tloc['PartOf']?$tloc['PartOf']:$loc);
     
     echo "<h2>" .$tloc['SN'] . "</h2>";
-    $Traders = Get_Traders_For($trloc);
+    $Traders = Get_Traders_For($loc,1);
     
     $Pitches = Get_Trade_Pitches($trloc);  
 //  var_dump($ShowTraders,$Traders);
 
-    echo Pitch_Map($tloc,$Pitches,$Traders,4,1,'');
+    echo Pitch_Map($tloc,$Pitches,$Traders,6,1,'');
     echo "<p class=PageBreak>";
   }
   
