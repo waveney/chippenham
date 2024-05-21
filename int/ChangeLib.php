@@ -33,6 +33,7 @@ function EventChangePrint($Mode=1) {
     } else {
       $LastEvent = $EC['EventId'];
       $Res = $Events[$LastEvent] = Get_Event($LastEvent);
+      if ($Event_Types[$Res['Type']]['Public'] == 0) continue;
       if (!$Res && Access('SysAdmin')) {
         echo "<span class=Err>Error Event $LastEvent not found</span><br>";
         continue;
@@ -239,4 +240,3 @@ function PerfChangePrint($Mode=1) {
 //  dotail();
 }
 
-?>
