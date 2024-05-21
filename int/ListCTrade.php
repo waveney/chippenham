@@ -239,6 +239,10 @@
           $str .= "<br>";
           $str .= $PowerTypes[$fetch['Power2']];
         }
+        if ($fetch['ExtraPowerDesc']) {
+          $str .= "<br>";
+          $str .= $fetch['ExtraPowerDesc'];
+        }
       }
       $str .= "<td>";
         for ($i = 0; $i<3; $i++) {
