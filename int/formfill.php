@@ -8,7 +8,7 @@
 
   global $PLANYEAR,$YEARDATA;
 
-//var_dump($_REQUEST,$YEARDATA);  
+var_dump($_REQUEST,$YEARDATA);  
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
@@ -98,7 +98,7 @@
     } else if (preg_match('/(Sat|Sun)(Arrive|Depart)/',$field)) {
       include_once("DateTime.php");
       $Value = Time_BestGuess($Value);
-    } else if (preg_match('/(\w*):([\d-]*):(\d*):(\a*)/',$field,$Mtch )) { //Word + 4 fields
+    } else if (preg_match('/(\w*):([\d-]*):(\d*):(\w*)/',$field,$Mtch )) { //Word + 4 fields
 //var_dump($Mtch);
       switch($Mtch[1]) {
       case 'CampSite':
