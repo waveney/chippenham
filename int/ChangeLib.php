@@ -29,7 +29,7 @@ function EventChangePrint($Mode=1) {
   
   foreach ($EChanges as $EC) {
     if ($EC['EventId'] == $LastEvent) {
-      $Events[$LastEvent]['Changes'][] = $EC;
+      if (isset($Events[$LastEvent])) $Events[$LastEvent]['Changes'][] = $EC;
     } else {
       $LastEvent = $EC['EventId'];
       $Res = Get_Event($LastEvent);

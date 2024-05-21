@@ -8,7 +8,7 @@
 
   global $PLANYEAR,$YEARDATA;
 
-var_dump($_REQUEST,$YEARDATA);  
+// var_dump($_REQUEST,$YEARDATA);  
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
