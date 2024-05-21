@@ -32,6 +32,7 @@ CREATE TABLE `SideYear` (
   `FreePerf` int NOT NULL,
   `FreeYouth` int NOT NULL,
   `FreeChild` int NOT NULL,
+  `DayTickets` tinyint NOT NULL,
   `CarPark` int NOT NULL,
   `YNotes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `PrivNotes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,

@@ -42,6 +42,7 @@
   if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contact</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Day</a>\n";
 
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Adults</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Youth</a>\n";
@@ -74,6 +75,7 @@
     $syId = $fetch['syId'];
     echo "<td><a href=AddPerf?id=" . $fetch['SideId'] . "&Y=$YEAR>" . (empty($fetch['SN'])?'Nameless':$fetch['SN']) . "</a>";
     echo "<td>" . $fetch['Contact'];
+    echo "<td>" . ($fetch['DayTickets']?'<b>DAY</b>':'');
     
     if ($Collect) {
       $CampUse = Gen_Get_Cond('CampUse',"SideYearId=$syId");  
