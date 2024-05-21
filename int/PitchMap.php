@@ -51,7 +51,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
           foreach ($list as $p) {
             if (!$p) continue;
             if (!is_numeric($p) && isset($PitchesByName[$p])) $p = $PitchesByName[$p]['Posn'];
-            if ($p) $Usage[$p] = (isset($Usage[$p])?"CLASH!":($Trad['Bizname']?$Trad['Bizname']:$Trad['SN']));
+            if ($p) $Usage[$p] = (isset($Usage[$p])?"CLASH!":($Trad['BizName']?$Trad['BizName']:$Trad['SN']));
             if ( $Trad['BookingState'] == $Trade_State['Deposit Paid'] || 
                  $Trad['BookingState'] == $Trade_State['Balance Requested'] || 
                  $Trad['BookingState'] == $Trade_State['Fully Paid'] ) {
