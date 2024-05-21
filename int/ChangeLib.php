@@ -33,7 +33,7 @@ function EventChangePrint($Mode=1) {
     } else {
       $LastEvent = $EC['EventId'];
       $Res = Get_Event($LastEvent);
-      if ($Event_Types[$Res['Type']]['Public'] == 0) continue;
+      if (!isset($Res['Type']) || $Event_Types[$Res['Type']]['Public'] == 0) continue;
       $Events[$LastEvent] = $Res;
       if (!$Res && Access('SysAdmin')) {
         echo "<span class=Err>Error Event $LastEvent not found</span><br>";
