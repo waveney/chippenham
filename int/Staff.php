@@ -281,11 +281,11 @@
   }
     
 // *********************** STALLS   ****************************************************
-  if ($x = StaffTable('Trade','Trade')) {
+  if ($x = StaffTable('Trade','Trade',2)) {
     $txt .= $x;
     $Tlocs = Get_Trade_Locs(0,"WHERE InUse=1");
     $ld = ['l'=>Feature('TradeBaseMap')];
-    $txt .= "<ul>\n";
+    $txt .= "<table><tr><td><ul>\n";
     $txt .= "<li><a href=ListCTrade?Y=$YEAR>List Active Traders This Year</a>\n";
     $txt .= "<li><a href=ListTrade?Y=$YEAR>List All Traders</a>\n";
     $txt .= "<li><a href=TradeFAQ>Trade FAQ</a>\n";
@@ -305,6 +305,7 @@
                 fm_select($Tlocs,$ld,'l',0," onchange=this.form.submit()") . "</form>\n";
 
       $txt .= "<li><a href=TradeLocs?Y=$YEAR>Trade Locations</a>\n";
+      $txt .= "</ul><td><ul>";
       $txt .= "<li><a href=TradeShow?STAFF>Trade Show</a> (even if not public)\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=TradeTypes>Trade Types and base Prices</a>\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=TradePower>Trade Power</a>\n";
@@ -333,7 +334,7 @@
       if (Feature('EnableCancelMsg')) $txt .= "<li class=smalltext><a href=CopyTradeYear2?Y=$YEAR>Copy Trade Year to New Years Bug Fix</a>";
       $txt .= "</table></div><p>\n";
     }
-    $txt .= "</ul>\n";
+    $txt .= "</ul></table>\n";
   }
   
 // *********************** VENUES & EVENTS *******************************************************
