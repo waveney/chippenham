@@ -21,7 +21,7 @@
         $tid = $Trad['Tid'];
         echo "<tr><td draggable=true class='TradeName Trader$tid' id=TradeN$tid ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) " .
              "style='background:" . (($Trad['PAID']??0) ? $Trade_Types[$Trad['TradeType']]['Colour'] : 'white' ) . "'>" . 
-             preg_replace('/\|/','',$Trad['SN']);
+             preg_replace('/\|/','',$Trad['BizName']?$Trad['BizName']:$Trad['SN']);
         if (!($Trad['PAID']??0)) {
           echo " <span class=err>" . ($Trad['BookingState'] == $Trade_State['Quoted'] ?"NOT ACCEPTED": "NOT PAID") .  "</span>";
         }
