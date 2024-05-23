@@ -54,7 +54,8 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
             if ($p) $Usage[$p] = (isset($Usage[$p])?"CLASH!":($Trad['BizName']?$Trad['BizName']:$Trad['SN']));
             if ( $Trad['BookingState'] == $Trade_State['Deposit Paid'] || 
                  $Trad['BookingState'] == $Trade_State['Balance Requested'] || 
-                 $Trad['BookingState'] == $Trade_State['Fully Paid'] ) {
+                 $Trad['BookingState'] == $Trade_State['Fully Paid'] ||
+                 $Trad['ShowAnyway'] ) {
               $TT[$p] = $Trad['TradeType'];
             } else {
               $TT[$p] = -1;

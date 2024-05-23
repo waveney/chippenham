@@ -624,7 +624,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
         if (isset($Trady['BookingState']) && ($Trady['BookingState'] == $i)) echo " checked";
         echo ">&nbsp;</div>\n ";
       }
-      echo "<td>" . fm_checkbox('Show Trader in anystate',$Trady,'ShowAnyway');
+      echo "<td class=NotSide>" . fm_checkbox('Show Trader in anystate',$Trady,'ShowAnyway');
       if (!Access('SysAdmin')) echo fm_hidden('BookingState',$Trady['BookingState']);
 //    echo fm_radio("Booking State",$Trade_States,$Trady,'BookingState','class=NotCSide',1,'colspan=2 class=NotCSide');
     if ($TradeTypeData[$Trad['TradeType']]['NeedPublicHealth']) echo "<td class=NotSide>" . fm_checkbox('Local Auth Checked',$Trady,'HealthChecked');
