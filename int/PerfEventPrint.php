@@ -6,8 +6,8 @@
   echo "<div class=PaperL>";
   echo "<h1>Event Changes since the programme went to print</h1>";
   EventChangePrint(2);
-  echo "<h1>Performer Changes since the programme went to print</h1>";
+  echo "<h1 class=pagebreak>Performer Changes since the programme went to print</h1>";
   PerfChangePrint(2);
   exit;
-?>
+
 
