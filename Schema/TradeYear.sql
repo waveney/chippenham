@@ -51,5 +51,6 @@ CREATE TABLE `TradeYear` (
   `CampNeed` int NOT NULL,
   `CampType` int NOT NULL,
   `CampText` text COLLATE utf8mb4_general_ci NOT NULL,
+  `ShowAnyway` tinyint NOT NULL,
   PRIMARY KEY (`TYid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

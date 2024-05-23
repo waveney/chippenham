@@ -22,7 +22,7 @@
 
     echo "Click on column header to sort by column.  Click on Traders's name for more detail.<p>";
 
-    echo "If you accidentally click the wrong button or want to undo an action, click on the Trader's name to enable all state changes.<p>\n";
+    echo "If you accidentally click the wrong button or want to undo an action, click on the Trader's name to enable more state changes.<p>\n";
 
     echo "If the amount paid is not the full deposit or remainder, click on the Trader's name to enable fine control.<p>\n";
 
@@ -62,20 +62,20 @@
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Not Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&SUB>Include Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a>, </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' ORDER BY SN";
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || t.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' ORDER BY SN";
   } else if (isset($_REQUEST['SUB'])) { 
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a> </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>=" . 
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || t.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>=" . 
            $Trade_State['Submitted'] . " ORDER BY SN";  
   } else if (isset($_REQUEST['ONLY'])) { 
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Submitted</a> </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState=" . 
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || t.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState=" . 
            $Trade_State['Submitted'] . " ORDER BY SN";  
   } else {  
     if (!$Sum && !$ToPrint) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR&SUB>Include Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a> </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>" . 
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || t.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>" . 
            $Trade_State['Submitted'] . " ORDER BY SN";
   }
 
@@ -109,6 +109,7 @@
     if (Feature("TradePower")) $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Power</a>\n";
     $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Location</a>\n";
     if ($ToPrint) {
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Tables</a>\n";
       $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Tickets</a>\n";
       $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Parking</a>\n";
       $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Camping</a>\n";  
@@ -122,7 +123,8 @@
       $Tid = $fetch['Tid'];
       $str .= "<tr><td>";
         if ($ActsEnable) $str .= "<a href=Trade?id=$Tid>";
-        $str .= ($fetch['SN']?preg_replace('/\|/','',$fetch['SN']):'No Name Given');
+        $Name = ($fetch['BizName']? ($fetch['SN'] . " T/A " . $fetch['BizName']):($fetch['SN']?$fetch['SN']:'No Name Given'));
+        $str .= preg_replace('/\|/','',$Name);
         if ($ActsEnable) $str .= "</a>";
       $str .= "<td style='background:" . $Trade_Types[$fetch['TradeType']]['Colour'] . ";'>" . $Trade_Types[$fetch['TradeType']]['SN'];
       if (!$ToPrint) $str .= "<td width=300>" . $fetch['GoodsDesc'];
@@ -258,6 +260,7 @@
         }
         
       if ($ToPrint) {
+        $str .= "<td>" . ($fetch['Tables0']+$fetch['Tables1']+$fetch['Tables2'] );
         $str .= "<td>" . $fetch['NumberTickets'];
         $str .= "<td>" . $fetch['NumberCarPass'];
         $str .= "<td>" . ($fetch['CampNeed']?$Camps[$fetch['CampNeed']]['Name']:'');
