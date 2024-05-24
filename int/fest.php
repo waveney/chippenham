@@ -10,7 +10,6 @@
 $BUTTON = 0;
 
 if (isset($_REQUEST['Y'])) $YEAR = Sanitise($_REQUEST['Y'],10,'txt');
-var_dump($YEAR);
 if (isset($_REQUEST['B'])) $BUTTON = ($_REQUEST['B']+1) % 4;
 
 if (isset($YEAR)) {
