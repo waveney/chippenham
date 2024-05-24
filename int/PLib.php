@@ -292,7 +292,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
         echo fm_DragonDrop(1,'StagePA','Perf',$snum,$Side,$Mode,'',1,'','StagePAFileF',($f?0:1));
 
 // Members
-    if ($Side['IsAnAct']) { // May need for Other
+    if ($Side['IsAnAct'] && Feature('NeedBandMembers')) { // May need for Other
       $Band = Get_Band($snum);      
       $BandPerRow=($Wide?6:4); 
       $Curband = $Band? count($Band) : 0;
