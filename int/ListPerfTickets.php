@@ -10,7 +10,7 @@
   include_once("DocLib.php");
   include_once("DateTime.php");
   
-  $SideQ = $db->query("SELECT * FROM Sides AS s, SideYear as y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND y.YearState>=2 AND " .
+  $SideQ = $db->query("SELECT * FROM Sides AS s, SideYear as y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND " .
            "( y.FreePerf>0 OR y.FreeYouth>0 OR y.FreeChild>0 ) ORDER BY SN");
 
   if (!$SideQ || $SideQ->num_rows==0) {
