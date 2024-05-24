@@ -3,7 +3,7 @@
 
   set_ShowYear();
   $Type = ($_REQUEST['t'] ?? 1);
-  $Type = Sanitise($Type,"'");
+  $Type = Sanitise($Type);
   
 
 // var_dump($_REQUEST);
