@@ -156,6 +156,10 @@ function Print_Participants($e,$when=0,$thresh=0) {
     echo $Ev['Description'] . "<P>";
     $DescNotShown = false;
   }
+  
+  if ($Ev['Status']) echo "<h1 class=Red>Event Cancelled</h1>";
+  
+  
   // On, Start, End, Durration, Price, Where 
   echo "<div class=tablecont><table><tr><td>";
   if ($Ev['LongEvent']) {
