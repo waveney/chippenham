@@ -660,6 +660,7 @@ function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='
 function Price_Show(&$Ev,$Buy=0) {
   global $YEARDATA,$Event_Access_Type,$Event_Access_Type_Day;
 
+  if ($Ev['Status']) return "<span class=red>Cancelled</span>";
   if ($Ev['SpecPrice']) return $Ev['SpecPrice'];
 
   $str = '';
