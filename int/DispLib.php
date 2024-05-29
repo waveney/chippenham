@@ -288,7 +288,7 @@ function Expand_Many(&$Art,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx
   if ($LineUp) $Art['Link'] = "/LineUp?T=$LineUp";
 
     $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$Year' AND $Cometest " . 
-           " AND y.ReleaseDate<$now");
+           " AND y.ReleaseDate<$now AND s.IsNonPerf=0");
     $Dsc = 0;
     if ($ans) {
       $res = $ans->fetch_assoc();
@@ -302,7 +302,7 @@ function Expand_Many(&$Art,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx
     }
 
     $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
-                    "WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.Photo!='' AND $Cometest " . 
+                    "WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.Photo!='' AND $Cometest AND s.IsNonPerf=0" . 
                     " AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
 
     if (!$ans) return; 
