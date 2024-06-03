@@ -42,7 +42,7 @@
     if (!$USER['Bugs'] && $ReportSevs[$Bug['Severity']]) {
       $je = json_encode($Bug);
       $em = Get_Emails('Bugs');
-      if ($em) NewSendEmail(0,0,$em,"WMFF Bug report by " .$USER['SN'],$je);
+      if ($em) NewSendEmail(EMAIL_SYS,0,$em,"System Bug report by " .$USER['SN'],$je);
     }
   } elseif (isset($_REQUEST['b'])) {
     $b = $_REQUEST['b'];
@@ -88,4 +88,3 @@
   echo "<h2><a href=ListBugs>List Bugs/Feature Requests</a></h2>\n";
 
   dotail();
-?>

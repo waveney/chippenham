@@ -193,7 +193,7 @@
               ['from','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance'],
               ['replyto','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance']];
       $pdf = Get_Invoice_Pdf($id,'',$inv['Revision']);
-      echo Email_Proforma(3,$inv['SourceId'],$too,$inv['CoverNote'],$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
+      echo Email_Proforma(EMAIL_INVOICE,$inv['SourceId'],$too,$inv['CoverNote'],$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
       $inv['EmailDate'] = time();
       echo "Invoice " . $id . " sent to " . $inv['Contact'] . " at " . $inv['BZ'] . "<p>";
       Put_Invoice($inv);
@@ -212,7 +212,7 @@
               ['from','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance'],
               ['replyto','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance']];
       $pdf = Get_Invoice_Pdf($id,'',$inv['Revision']);
-      echo Email_Proforma(3,$inv['SourceId'],$too,$inv['CoverNote'],$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
+      echo Email_Proforma(EMAIL_INVOICE,$inv['SourceId'],$too,$inv['CoverNote'],$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
 
       echo "Invoice " . $id . " resent to " . $inv['Contact'] . " at " . $inv['BZ'] . "<p>";
       Put_Invoice($inv);

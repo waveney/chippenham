@@ -18,7 +18,10 @@
 // text=>link or text=>[submenu] (recuresive)
 // 1st char 0f text * - not selectable, ! Icon, ? Only Dance, # Not Dance, = Get Tickets
 // 1st char of link ! - external, ~ Only after Program freeze
-  $Menus = [
+  
+  eval(Gen_Get('MainMenu',1)['Menu']);
+  
+  $OldMenus = [
     'Public'=> [
       '<Home'=>'',
       'Line-Up'=>[
@@ -29,7 +32,7 @@
         'Ceilidh and Dances'=>'LineUp?T=Ceilidh',
         'Story and Spoken Word'=>'LineUp?T=Other',
         '_Lineup changes since programme printed'=>'PerfChanges',
-        'Traders'=>'int/TradeShow',
+        ':Traders'=>'int/TradeShow',
 
         ],
       "Timetable"=>[
@@ -213,6 +216,11 @@ XXXX;*/
         if (Feature('RecordPerfChanges') !=2) continue 2;
         if (Gen_Get_Cond1('PerfChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
         continue 2;
+        
+      case ':' : // Only if Trade public
+        $text = substr($text,1);
+        if ($YEARDATA['TradeState'] < 3) continue 2;
+        break;
                 
       default:
     }

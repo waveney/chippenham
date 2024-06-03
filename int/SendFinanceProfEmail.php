@@ -22,7 +22,7 @@ if (isset($_REQUEST['SEND'])) {
   $too = [['to',$inv['Email'],$Side['Contact']],
           ['from','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance'],
           ['replyto','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance']];
-  echo Email_Proforma(3,$inv['SourceId'], $too,$Mess,$subject,'Invoice_Email_Details',$inv,$logfile='Invoices');
+  echo Email_Proforma(EMAIL_INVOICE,$inv['SourceId'], $too,$Mess,$subject,'Invoice_Email_Details',$inv,$logfile='Invoices');
   
   $inv['EmailDate'] = time();
   Put_Invoice($inv);

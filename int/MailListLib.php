@@ -87,13 +87,13 @@ function MailSub_Details($key,&$Sub) {
 
 function Email_Publicity(&$Sub,$Message) {
   global $PLANYEAR;
-  Email_Proforma(6,$Sub['id'],Feature('MailListMgrEmail'),$Message,Feature('FestName') . " $PLANYEAR and " . $Sub['FirstName'] . ' ' . $Sub['LastName'],
+  Email_Proforma(EMAIL_MAILLIST,$Sub['id'],Feature('MailListMgrEmail'),$Message,Feature('FestName') . " $PLANYEAR and " . $Sub['FirstName'] . ' ' . $Sub['LastName'],
     'MailSub_Details',$Sub,'MailingList.txt');
 }
 
 function Email_Sub(&$Sub,$Message) {
   global $PLANYEAR;
-  Email_Proforma(6,$Sub['id'],$Sub['Email'],$Message,Feature('FestName') . " $PLANYEAR and " . $Sub['FirstName'] . ' ' . $Sub['LastName'],
+  Email_Proforma(EMAIL_MAILLIST,$Sub['id'],$Sub['Email'],$Message,Feature('FestName') . " $PLANYEAR and " . $Sub['FirstName'] . ' ' . $Sub['LastName'],
     'MailSub_Details',$Sub,'MailingList.txt');
 }
 

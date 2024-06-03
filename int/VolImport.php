@@ -20,7 +20,7 @@ function VolImp_Details($key,&$vol) {
 
 function EmailImp_Volunteer(&$vol,$messcat,$whoto) {
   global $PLANYEAR,$USER;
-  Email_Proforma(5,0,$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $vol[0] . ' ' . $vol[1],'VolImp_Details',$vol,'Volunteer.txt');
+  Email_Proforma(EMAIL_VOL,0,$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $vol[0] . ' ' . $vol[1],'VolImp_Details',$vol,'Volunteer.txt');
 }
 
   $OldVols = Gen_Get_All('Volunteers');

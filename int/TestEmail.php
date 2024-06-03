@@ -14,7 +14,7 @@
         "This is yet another test message ...<p>".
         "Richard";
  
-    NewSendEmail(0,0,$user['Email'],"Test From " . firstword($user['SN']) . " from WMFF Staff pages",$letter);
+    NewSendEmail(EMAIL_SYS,0,$user['Email'],"Test From " . firstword($user['SN']) . " from WMFF Staff pages",$letter);
 
     echo "Email sent:<p>$letter";
   } else {

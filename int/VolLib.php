@@ -169,7 +169,7 @@ function Vol_Details($key,&$vol) {
 
 function Email_Volunteer(&$vol,$messcat,$whoto) {
   global $YEAR;
-  Email_Proforma(5,$vol['id'],$whoto,$messcat,Feature('FestName') . " $YEAR and " . $vol['SN'],'Vol_Details',$vol,'Volunteer.txt');
+  Email_Proforma(EMAIL_VOL,$vol['id'],$whoto,$messcat,Feature('FestName') . " $YEAR and " . $vol['SN'],'Vol_Details',$vol,'Volunteer.txt');
 }
 
 function Get_Volunteer($id) { return Gen_Get('Volunteers',$id); }

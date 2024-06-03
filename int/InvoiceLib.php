@@ -843,7 +843,7 @@ function Bespoke_Inv_CoverNote($id,&$inv) {
 
   if (isset($_REQUEST['SEND'])) {
     $pdf = Get_Invoice_Pdf($id,'',$inv['Revision']);
-    echo Email_Proforma(3,$inv['SourceId'],$too,$Mess,$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
+    echo Email_Proforma(EMAIL_INVOICE,$inv['SourceId'],$too,$Mess,$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
   
     $inv['EmailDate'] = time();
     Put_Invoice($inv);

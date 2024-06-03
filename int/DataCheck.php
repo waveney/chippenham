@@ -113,7 +113,7 @@ function Links_Email($Addr,&$list) {
     }
   }
 
-  NewSendEmail(0,0,$Addr,Feature('ShortName') . " data records of $Addr",$Mess);
+  NewSendEmail(EMAIL_SYS,0,$Addr,Feature('ShortName') . " data records of $Addr",$Mess);
 
   $logf = fopen("LogFiles/DataCheck.txt","a");
   if( $logf) {
@@ -166,5 +166,3 @@ function Data_Check_Emails($Addr) {
     if (access('SysAdmin')) echo "No Links found";
   }
 }
-
-?>

@@ -19,4 +19,4 @@ $To = $Vol['Email'];
             ['replyto','Stewards' . '@' . Feature('HostURL'),Feature('ShortName') ] ];
 //$to = $Side['Email']; // Temp value
 //var_dump($_REQUEST);
-echo Email_Proforma(1,$id, $too,$proforma,$subject,'Vol_Details',$Vol,'Volunteers',$atts);
+echo Email_Proforma(EMAIL_VOL,$id, $too,$proforma,$subject,'Vol_Details',$Vol,'Volunteers',$atts);

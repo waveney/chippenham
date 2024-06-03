@@ -7,6 +7,15 @@ require 'vendor/phpmailer/phpmailer/src/Exception.php';
 require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
 require 'vendor/phpmailer/phpmailer/src/SMTP.php';
 
+define('EMAIL_SYS',0);
+define('EMAIL_DANCE',1);
+define('EMAIL_TRADE',2);
+define('EMAIL_INVOICE',3);
+define('EMAIL_USER',4);
+define('EMAIL_SIGNUP',5);
+define('EMAIL_VOL',6);
+define('EMAIL_MAILLIST',7);
+
 function Pretty_Print_To($to) {
   $str = '';
   if (is_array($to)) {

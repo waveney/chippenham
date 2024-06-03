@@ -176,6 +176,7 @@ function Callback_RealFavicons() {
   echo "<li><a href=LinkManage>Manage Other Fest Links</a>\n";
   echo "<li><a href=RareAdmin?ACTION=Check%20Icons>Set up Favicon</a>\n";
   echo "<li><a href=RareAdmin?ACTION=Favicons>Set up Favicon (new method - not working yet)</a>\n";
+  echo "<li><a href=EditMainMenu>Edit Main Menu</a>\n";
   echo "</ul>";
   
   dotail();

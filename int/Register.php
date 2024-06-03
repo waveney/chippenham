@@ -43,7 +43,7 @@ function Send_MgrMessage(&$Reg,$Msg) {
   $DanceEmailsFrom = Feature('DanceEmailsFrom','Dance');
   $too = [['to',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom]];
 
-  Email_Proforma(1,$Reg['id'],$too,'Dance_Register','Dance Side Registering','Register_Email_Details',$Reg,$logfile='Dance');
+  Email_Proforma(EMAIL_DANCE,$Reg['id'],$too,'Dance_Register','Dance Side Registering','Register_Email_Details',$Reg,$logfile='Dance');
 }
 
 function Send_DanceMessage($Side,$Mess,$To='') {
@@ -52,7 +52,7 @@ function Send_DanceMessage($Side,$Mess,$To='') {
           ['from',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom],
           ['replyto',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom]];
 
-  Email_Proforma(1,$Side['SideId'],$too,$Mess,'Dance Side Registering','Register_Email_Details',$Side,$logfile='Dance');
+  Email_Proforma(EMAIL_DANCE,$Side['SideId'],$too,$Mess,'Dance Side Registering','Register_Email_Details',$Side,$logfile='Dance');
 }
 
 function Thankyou() {

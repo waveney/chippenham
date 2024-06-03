@@ -308,7 +308,7 @@ function munge_array(&$thing) {
 function Send_SysAdmin_Email($Subject,&$data=0) {
   include_once("Email.php");
   $dat = json_encode($data);
-  NewSendEmail(0,0,'richard@wavwebs.com',$Subject,$dat);  
+  NewSendEmail(EMAIL_SYS,0,'richard@wavwebs.com',$Subject,$dat);  
 }
 
 $head_done = 0;

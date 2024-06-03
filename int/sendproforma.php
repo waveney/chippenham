@@ -20,4 +20,4 @@ if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
             ['from',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom],
             ['replyto',$DanceEmailsFrom . '@' . Feature('HostURL'),Feature('ShortName') . ' ' . $DanceEmailsFrom]];
 //$to = $Side['Email']; // Temp value
-echo Email_Proforma(1,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],'Dance');
+echo Email_Proforma(EMAIL_DANCE,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],'Dance');

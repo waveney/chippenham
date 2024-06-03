@@ -109,7 +109,7 @@ function Lnl_Details($key,&$lnl) {
 
 function Email_Signup(&$lnl,$messcat,$whoto) {
   global $PLANYEAR;
-  Email_Proforma(5,$lnl['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $lnl['SN'],'lnl_Details',$lnl,'LiveNLoudLog.txt');
+  Email_Proforma(EMAIL_SIGNUP,$lnl['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $lnl['SN'],'lnl_Details',$lnl,'LiveNLoudLog.txt');
 }
 
 function LNL_Action($action,$id) {
@@ -182,7 +182,7 @@ function Lol_Details($key,&$lol) {
 
 function Email_lol_Signup(&$lol,$messcat,$whoto) {
   global $PLANYEAR,$USER;
-  Email_Proforma(5,$lol['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $lol['SN'],'lol_Details',$lnl,'LaughOutLog.txt');
+  Email_Proforma(EMAIL_SIGNUP,$lol['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $lol['SN'],'lol_Details',$lnl,'LaughOutLog.txt');
 }
 
 function Get_BB_Details(&$lnl) {
@@ -225,7 +225,7 @@ function BB_Details($key,&$bb) {
 
 function Email_BB_Signup(&$bb,$messcat,$whoto) {
   global $PLANYEAR,$USER;
-  Email_Proforma(5,$bb['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $bb['SN'],'BB_Details',$bb,'BuskersBashLog.txt');
+  Email_Proforma(EMAIL_SIGNUP,$bb['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $bb['SN'],'BB_Details',$bb,'BuskersBashLog.txt');
 }
 
 function BB_Action($action,$id) {
@@ -302,7 +302,7 @@ function Vol_SDetails($key,&$vol) {
 
 function Email_SVolunteer(&$vol,$messcat,$whoto) {
   global $PLANYEAR,$USER;
-  Email_Proforma(5,$vol['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $vol['SN'],'Vol_SDetails',$vol,'Volunteer.txt');
+  Email_Proforma(EMAIL_SIGNUP,$vol['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $vol['SN'],'Vol_SDetails',$vol,'Volunteer.txt');
 }
 
 function Get_SVolunteer($id) {
@@ -370,7 +370,7 @@ function ART_Details($key,&$art) {
 
 function ART_Email_Signup(&$art,$messcat,$whoto,&$att=0) {
   global $PLANYEAR,$USER;
-  Email_Proforma(5,$art['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $art['SN'],'ART_Details',$art,'ArtLog.txt',$att);
+  Email_Proforma(EMAIL_SIGNUP,$art['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $art['SN'],'ART_Details',$art,'ArtLog.txt',$att);
 }
 
 function ART_Action($action,$id,$val=0) {

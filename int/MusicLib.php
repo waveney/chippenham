@@ -599,7 +599,7 @@ function Music_Actions($Act,&$side,&$Sidey) { // Note Sidey MAY have other recor
     case 'Dates':
       $subject = Feature('FestName') . " $PLANYEAR and " . $side['SN'];
       $too = Music_Email_Too($side);
-      if ($too) echo Email_Proforma(1,$side['SideId'],$too,'Music_Change_Dates',$subject,'Dance_Email_Details',[$side,$Sidey],$logfile='Music');
+      if ($too) echo Email_Proforma(EMAIL_DANCE,$side['SideId'],$too,'Music_Change_Dates',$subject,'Dance_Email_Details',[$side,$Sidey],$logfile='Music');
       $Sidey['TickBox4'] = 1;
       $Change = 1;
       break;
@@ -607,7 +607,7 @@ function Music_Actions($Act,&$side,&$Sidey) { // Note Sidey MAY have other recor
     case 'FestC':
       $subject = Feature('FestName') . " $PLANYEAR and " . $side['SN'];
       $too = Music_Email_Too($side);
-      if ($too) echo Email_Proforma(1,$side['SideId'],$too,'Music_Festival_Cancel',$subject,'Dance_Email_Details',[$side,$Sidey],$logfile='Music');
+      if ($too) echo Email_Proforma(EMAIL_DANCE,$side['SideId'],$too,'Music_Festival_Cancel',$subject,'Dance_Email_Details',[$side,$Sidey],$logfile='Music');
       $Sidey['TickBox4'] = 1;
       $Change = 1;
       break;

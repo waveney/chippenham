@@ -5,7 +5,7 @@
 
   dostaffhead("Email Test");
   $letter = "Test message 1";
-  NewSendEmail(0,0,"richardjproctor42@gmail.com","Test Email",$letter);
+  NewSendEmail(EMAIL_SYS,0,"richardjproctor42@gmail.com","Test Email",$letter);
 
   dotail();
 ?>

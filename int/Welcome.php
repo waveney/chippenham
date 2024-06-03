@@ -20,10 +20,9 @@
     $User['ActualPwd'] = $newpwd; // Not stored
  
     $subject = "Welcome " . firstword($User['SN']) . " to " . Feature('FestName') . " Staff pages";
-    $letter = Email_Proforma(4,$uid,$User['Email'],'Login_Welcome',$subject,'Login_Details',$User,'LoginLog.txt');
+    $letter = Email_Proforma(EMAIL_USER,$uid,$User['Email'],'Login_Welcome',$subject,'Login_Details',$User,'LoginLog.txt');
     echo "Email sent:<p>$letter";
   } else {
     echo "No user..."; 
   }
   dotail();
-?>

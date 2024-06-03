@@ -123,7 +123,7 @@ if (isset($_REQUEST['REEDIT'])) {
   
 //  var_dump($too);  
 //var_dump($Atts);
-  echo Email_Proforma(1,$id,$too,$Mess,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer',$Atts);
+  echo Email_Proforma(EMAIL_DANCE,$id,$too,$Mess,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer',$Atts);
 //echo "<p>Afeter Proforma:";
 //var_dump($Atts);  
   Dance_Email_Details_Callback($proforma,[$Side,$Sidey]);

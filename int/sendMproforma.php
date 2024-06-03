@@ -83,7 +83,7 @@ $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
             
   $Atts = [];
 
-  Email_Proforma(1,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer',$Atts);
+  Email_Proforma(EMAIL_DANCE,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer',$Atts);
   Dance_Email_Details_Callback($proforma,[$Side,$Sidey]);
 
   $Sidey = Get_SideYear($id); // Need to refetch as callback has overwritten it
