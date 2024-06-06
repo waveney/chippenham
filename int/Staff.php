@@ -655,6 +655,7 @@
     $txt .= "<li><a href=DumpEmails>Dump Emails</a>";
     $txt .= "<li><a href=DumpTnC>Dump Ts and Cs</a>\n";
     $txt .= "<li><a href=DumpFeatures>Dump Features</a>\n";
+    $txt .= "<li><a href=DumpMenu>Dump Menu</a>\n";
     $txt .= "</ul>\n";
   }
 

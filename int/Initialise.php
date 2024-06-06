@@ -350,6 +350,10 @@ HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
     $db->query($qry);
   }
 
+  echo "Main Menu Creation<p>";
+  $Menus = json_decode(file_get_contents('festfiles/DumpMenu.json'),1); 
+  foreach($Menus as $M) Gen_Put('MainMenu',$M);
+  
 // Email proformas - lots of these read from munged sql dump
   echo "About to Create Email Proformas<p>";
   

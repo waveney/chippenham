@@ -19,94 +19,95 @@
 // 1st char 0f text * - not selectable, ! Icon, ? Only Dance, # Not Dance, = Get Tickets
 // 1st char of link ! - external, ~ Only after Program freeze
   
-  eval(Gen_Get('MainMenu',1)['Menu']);
-  
-  $OldMenus = [
-    'Public'=> [
-      '<Home'=>'',
-      'Line-Up'=>[
-        'Dance Displays'=>'LineUp?T=Dance',
-        'Music'=>'LineUp?T=Music', 
-//        'Comedy'=>'LineUp?T=Comedy',
-        'Family and Community'=>'LineUp?T=Family',
-        'Ceilidh and Dances'=>'LineUp?T=Ceilidh',
-        'Story and Spoken Word'=>'LineUp?T=Other',
-        '_Lineup changes since programme printed'=>'PerfChanges',
-        ':Traders'=>'int/TradeShow',
+  if (Feature('MainMenuTable')) eval(Gen_Get('MainMenu',1)['Menu']);
+  if (empty($Menus)) {
+    $Menus = [
+      'Public'=> [
+        '<Home'=>'',
+        'Line-Up'=>[
+          'Dance Displays'=>'LineUp?T=Dance',
+          'Music'=>'LineUp?T=Music', 
+  //        'Comedy'=>'LineUp?T=Comedy',
+          'Family and Community'=>'LineUp?T=Family',
+          'Ceilidh and Dances'=>'LineUp?T=Ceilidh',
+          'Story and Spoken Word'=>'LineUp?T=Other',
+          '_Lineup changes since programme printed'=>'PerfChanges',
+          ':Traders'=>'int/TradeShow',
 
-        ],
-      "Timetable"=>[
-        'By Venue'=>'WhatsOnWhere',
-        'By Time'=>'WhatsOnWhen',
-        'Now'=>'WhatsOnNow',
-        '@'=>0, //Special
-        '~Event changes since programme printed'=>'EventChanges',
-        ],
-      'Information'=>[
-        'Festival Map'=>'Map',
-        'Island Park Map'=>'int/TradeStandMap',
-        'Camping'=>'InfoCamping',
-        'Parking'=>'InfoParking',
-        'Travel'=>'InfoGettingHere',
-        'Opening Times'=>'InfoFAQ?D=Opening Times',
-        'Food & Drink'=>'InfoFood',
-// /*        'FAQs, Rules and Policies' => [
-        'FAQs' => 'InfoFAQ?D=FAQ',
-        'Westmead Camping Rules' => 'InfoFAQ?D=Westmead Campsite Rules',
-        'Monkton Park Camping Rules' => 'InfoFAQ?D=Monkton Park Campsite Rules',
-//          ],*/
-//        'Mailing List'=>'InfoMailingList',
-        'Contact Us'=>'contact',
-        'Data Privacy'=>'InfoData',
-        'Festival Software'=>'InfoSoftware',
-        ],
-      '-Get Involved'=>[
-        'Volunteer'=>'InfoVolunteers',
-        'Talking Folk Mailing List'=>'InfoMailingList',
-        'Sponsorship'=>'InfoSponsors',
-        'New Dance Side Registration'=>'int/Register',
-        'Trade Stand Applications'=>'InfoTrade', 
-//        'Art Show Application' => 'int/ArtForm',
-//        '*Live and Loud'=>'LiveNLoud',
-//        '*Buskers Bash'=>'BuskersBash',
-        '%Donate'=>'Donate',
+          ],
+        "Timetable"=>[
+          'By Venue'=>'WhatsOnWhere',
+          'By Time'=>'WhatsOnWhen',
+          'Now'=>'WhatsOnNow',
+          '@'=>0, //Special
+          '~Event changes since programme printed'=>'EventChanges',
+          ],
+        'Information'=>[
+          'Festival Map'=>'Map',
+          'Island Park Map'=>'int/TradeStandMap',
+          'Camping'=>'InfoCamping',
+          'Parking'=>'InfoParking',
+          'Travel'=>'InfoGettingHere',
+          'Opening Times'=>'InfoFAQ?D=Opening Times',
+          'Food & Drink'=>'InfoFood',
+  // /*        'FAQs, Rules and Policies' => [
+          'FAQs' => 'InfoFAQ?D=FAQ',
+          'Westmead Camping Rules' => 'InfoFAQ?D=Westmead Campsite Rules',
+          'Monkton Park Camping Rules' => 'InfoFAQ?D=Monkton Park Campsite Rules',
+  //          ],*/
+  //        'Mailing List'=>'InfoMailingList',
+          'Contact Us'=>'contact',
+          'Data Privacy'=>'InfoData',
+          'Festival Software'=>'InfoSoftware',
+          ],
+        '-Get Involved'=>[
+          'Volunteer'=>'InfoVolunteers',
+          'Talking Folk Mailing List'=>'InfoMailingList',
+          'Sponsorship'=>'InfoSponsors',
+          'New Dance Side Registration'=>'int/Register',
+          'Trade Stand Applications'=>'InfoTrade', 
+  //        'Art Show Application' => 'int/ArtForm',
+  //        '*Live and Loud'=>'LiveNLoud',
+  //        '*Buskers Bash'=>'BuskersBash',
+          '%Donate'=>'Donate',
+           ],
+        '-Gallery'=>[
+          '@'=>1, //Special
+          '>All Galleries'=>'int/ShowGallery?g=All_Galleries',
+
          ],
-      '-Gallery'=>[
-        '@'=>1, //Special
-        '>All Galleries'=>'int/ShowGallery?g=All_Galleries',
-        
-       ],
-      '!/images/icons/Facebook.png'=>('!http://facebook.com/' . Feature('Facebook','**NONE**')),
-      '!/images/icons/X.png'=>('!http://X.com/' . Feature('Twitter','**NONE**')),
-      '!/images/icons/Instagram.png'=>'!http://instagram.com/' . (Feature('Instagram','**NONE**')),
-      '!/images/icons/YouTube.png'=>'!http://YouTube.com/' . (Feature('YouTube','**NONE**')),
-      '=Buy Tickets'=>'Tickets',
-//      '%Donate'=>'Donate',
-      ],
-    'Private'=> [  
-      'Staff Tools'=>'int/Staff',
-      '-Documents'=>'int/Dir',
-//      '-Time Line'=>"int/TimeLine?Y=$YEAR",
-      "Logout $UserName"=>'int/Login?ACTION=LOGOUT',
-      ],
-    'Perf'=>[
-      'Edit Your Data'=>"int/AddPerf?sidenum=$USERID",
-      '-Public view'=>"int/ShowDance?sidenum=$USERID",
-      '?Dance Loc Map'=>'/Map?F=3',
-//      '?Dance FAQ'=>'int/DanceFAQ',
-//      '#Performer T&amp;Cs'=>'int/MusicFAQ',    
-      "Logout"=>'int/Login?ACTION=LOGOUT',
-      ],
-    'Trade'=>[
-      'Edit Trader Info'=>"int/TraderPage?id=$USERID",
-      'Trade FAQ'=>'int/TradeFAQ',
-      ], 
+        '!/images/icons/Facebook.png'=>('!http://facebook.com/' . Feature('Facebook','**NONE**')),
+        '!/images/icons/X.png'=>('!http://X.com/' . Feature('Twitter','**NONE**')),
+        '!/images/icons/Instagram.png'=>'!http://instagram.com/' . (Feature('Instagram','**NONE**')),
+        '!/images/icons/YouTube.png'=>'!http://YouTube.com/' . (Feature('YouTube','**NONE**')),
+        '=Buy Tickets'=>'Tickets',
+  //      '%Donate'=>'Donate',
+        ],
+      'Private'=> [  
+        'Staff Tools'=>'int/Staff',
+        '-Documents'=>'int/Dir',
+  //      '-Time Line'=>"int/TimeLine?Y=$YEAR",
+        "Logout $UserName"=>'int/Login?ACTION=LOGOUT',
+        ],
+      'Perf'=>[
+        'Edit Your Data'=>"int/AddPerf?sidenum=$USERID",
+        '-Public view'=>"int/ShowDance?sidenum=$USERID",
+        '?Dance Loc Map'=>'/Map?F=3',
+  //      '?Dance FAQ'=>'int/DanceFAQ',
+  //      '#Performer T&amp;Cs'=>'int/MusicFAQ',    
+        "Logout"=>'int/Login?ACTION=LOGOUT',
+        ],
+      'Trade'=>[
+        'Edit Trader Info'=>"int/TraderPage?id=$USERID",
+        'Trade FAQ'=>'int/TradeFAQ',
+        ], 
 
-    'Testing'=>[
-      'Staff Tools'=>'int/Staff',
-      ],         
-  ];
-
+      'Testing'=>[
+        'Staff Tools'=>'int/Staff',
+        ],         
+    ];
+  }
+  
 global $MainBar,$HoverBar,$HoverBar2;
 $MainBar = $HoverBar = $HoverBar2 = '';
 
