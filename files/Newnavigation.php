@@ -81,7 +81,7 @@
       '!/images/icons/Instagram.png'=>'!http://instagram.com/' . (Feature('Instagram','**NONE**')),
       '!/images/icons/YouTube.png'=>'!http://YouTube.com/' . (Feature('YouTube','**NONE**')),
       '=Buy Tickets'=>'Tickets',
-      '%Donate'=>'Donate',
+//      '%Donate'=>'Donate',
       ],
     'Private'=> [  
       'Staff Tools'=>'int/Staff',

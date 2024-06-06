@@ -66,12 +66,12 @@
         break;
 
     case 1: // This year past
-        $Banner .= "<div class=BanDates2>The festal was: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
+        $Banner .= "<div class=BanDates2>The festival was: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
                "</sup> $DMonth $Sy<div class=BanNotice></div></div>";
         break;
 
     case 3: // Both, this has past
-        $Banner .= "<div class=BanDates2>The festal was: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
+        $Banner .= "<div class=BanDates2>The festival was: $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
                "</sup> $DMonth $Sy<div class=BanNotice></div>";
         $Banner .= "Next year's dates: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
                "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
