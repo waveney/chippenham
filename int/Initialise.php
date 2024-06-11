@@ -327,9 +327,10 @@ HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
   if ($res) {
     $ans = $res->fetch_assoc();
 //    var_dump($res,$ans);
-    if (strstr('STRICT_TRANS_TABLES',$ans['@@sql_mode'])) {
+//    echo "Dumpped<p>";
+    if (strstr($ans['@@sql_mode'],'STRICT_TRANS_TABLES')) {
       echo "You have STRICT_TRANS_TABLES set in the database.<br>" .
-           'edit /etc/my.cnf add the line:<br>
+           'edit /etc/mysql/my.cnf (or /etc/my.cnf) add the line:<br>
             sql_mode = ""<br>
             or if it exists make it empty.';
       exit;

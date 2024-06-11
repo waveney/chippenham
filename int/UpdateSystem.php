@@ -110,9 +110,15 @@ function FixUpdate436() {  // Corect mediumtext to text
 
   
     chdir('../Schema');
-    $skema = system('skeema push');
-    echo $skema . "\n\n";
+    $skema = system('skeema push 2>&1');
+    $skedit = preg_replace('/\n/','<br>\n',$skema);
+    echo $skedit . "\n\n";
     chdir('../int');
+    
+    if (strstr('[ERROR]',$skedit)) {
+      echo "<p>The Database structure failed to update.<p>Update cancelled<p>";
+      dotail();
+    }
 
 
 // Post Database changes
