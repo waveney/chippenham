@@ -1,8 +1,8 @@
 <?php
   include_once("fest.php");
  
-  
-  dostaffhead("View Contract");
+  $Headers = !isset($_REQUEST['NoHead']);
+  if ($Headers) dostaffhead("View Contract");
   include_once("Contract.php");
   include_once("ViewLib.php");
   global $YEAR;
@@ -35,5 +35,5 @@
   }
 
   echo "</div>";  
-  dotail();
-?>
+  if ($Headers) dotail();
+

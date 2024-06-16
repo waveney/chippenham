@@ -315,7 +315,9 @@ function AutoInput(f,after) {
     } else if (data.match(/CALLxxAFTER/m)) {
       after(f);
     } else if ((m=data.match(/REPLACE_ID_WITH:(.*) /m))) {
-     if (document.getElementById(f)) document.getElementById(f).id = m[1];    
+    if (dbg) $('#Debug').html( "") ;  
+
+      if (document.getElementById(f)) document.getElementById(f).id = m[1];    
     }
   });
 }

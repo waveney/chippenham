@@ -276,9 +276,10 @@
       echo "<input type=Submit id=smallsubmit name='Delete' class=Button$BUTTON value='Delete'>";
       echo "</h2></div>\n";
     }
-//    if (Access('SysAdmin')) {};
-    echo "<Center><input type=Submit name='Update' value='Save Changes' class=Button$BUTTON> - " .
-         "(All normal changes are recorded as you type - This is probably redundant now)\n";
+    if (Access('SysAdmin')) {
+      echo "<Center><input type=Submit name='Update' value='Save Changes' class=Button$BUTTON> - " .
+         "(All normal changes are recorded as you type - SysAdmin ONLY)\n";
+    }
     if (Access('Staff','Dance')) {
       if (!isset($Sidey['Coming']) || $Sidey['Coming'] == 0) {
         if (!isset($Sidey['Invited']) || $Sidey['Invited'] == '') {

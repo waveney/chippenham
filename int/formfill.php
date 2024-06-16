@@ -29,7 +29,8 @@
       }
       $CurBand = Get_Band($id);
       $memb = Add_BandMember($id,$Value);
-      echo "@BandMember" . $match[1] . ":$memb@";
+      echo "REPLACE_ID_WITH:$id:$memb ";
+//      echo "@BandMember" . $match[1] . ":$memb@";
       exit;
     } else if (preg_match('/^Olap.*/',$field)) { // Overlaps are a special case
       $Exist = Get_Overlaps_For($id);

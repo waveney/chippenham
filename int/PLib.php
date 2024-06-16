@@ -25,7 +25,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
   }
  // if ( isset($Side['Photo']) && ($Side['Photo'])) echo "<img class=floatright id=PerfThumb src=" . $Side['Photo'] . " height=80>\n";
 //  if (Access('SysAdmin')) 
-  echo "<input  class=floatright type=Submit name='Update' value='Save Changes' form=mainform>";
+  if (Access('SysAdmin')) echo "<input  class=floatright type=Submit name='Update' value='Save Changes' form=mainform>";
   if ($Mode && ((isset($Side['Email']) && strlen($Side['Email']) > 5) || (isset($Side['AltEmail']) && strlen($Side['AltEmail']) > 5)) )  {
     if (Feature('EmailButtons')) {
       if (isset($Side['HasAgent']) && $Side['HasAgent'] && $Side['AgentEmail'] && !$Side['BookDirect']) {
