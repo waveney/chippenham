@@ -4,12 +4,13 @@
 
   dostaffhead('Where Dancers Came From');
   include_once('DanceLib.php');
-  
+
   $AllSides = Select_Come_All();
 
   $PCodes = array();
   $PCs = array();
   $Total = 0;
+  $PCb = $mtch = [];
 
   if($AllSides) foreach($AllSides as $Sid) {
     $Perf = $Sid['Performers'];
@@ -30,7 +31,7 @@
   }
 
   $ks = array_keys($PCs);
- 
+
   sort($ks);
 
   echo "<div class=Scrolltable><table border><td>PostCode<td>Sat<td>Sun<td>Both\n";

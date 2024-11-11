@@ -3,9 +3,10 @@
   A_Check('Staff','Docs');
 
   dostaffhead("Document Search");
+  global $db;
 
   include_once("DocLib.php");
-/* Search Loc and Restrict 
+/* Search Loc and Restrict
 */
   $table = 0;
   $lsted = array();
@@ -32,6 +33,7 @@
       }
     }
 
+    $greplst = [];
     if (isset($_REQUEST['Cont'])) {
       if ($_REQUEST['Search_Loc']) {
         $path = Dir_FullPName($_REQUEST['Search_Dir'],32);

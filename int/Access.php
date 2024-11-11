@@ -2,7 +2,7 @@
 // Direct improved....
 
   include_once("fest.php");
-  global $USER,$USERID;
+  global $USER,$USERID,$Access_Type;
   include_once("DanceLib.php");
   include_once("MusicLib.php");
   include_once("TradeLib.php");
@@ -46,7 +46,7 @@
     case 'u' : // Sign Up
       $Data = Get_SignUp($id);
       break;
-      
+
     case 'p' : // Sound Engineers for venues
       $Data = Get_Venue($id);
       $_REQUEST['pa4v'] = $id;
@@ -60,11 +60,11 @@
     case 'c' : // Staff - not yet
       $Data = Get_User($id);
       break;
-      
+
     case 'ART' :  // ART
       $Data = Get_SignUp($id);
       break;
-      
+
     default:
       Error_Page("Invalid link - type XX $t not recognised");
   }
@@ -74,10 +74,10 @@
   $CakeTypes = ['s'=>'Side','a'=>'Act','o'=>'Other','t'=>'Trader','w'=>'Steward','v'=>'Volunteer','u'=>'SignUp','c'=>'Staff','p'=>'Venue','ART'=>'SignUp','m'=>'Venue'];
     // Not Sure on staff
   $includes = ['s'=>'AddPerf.php','a'=>'AddPerf.php','o'=>'AddPerf.php','t'=>'TraderPage.php','w'=>'ViewStew.php',
-               'v'=>'Volunteers.php','u'=>'SignUp','c'=>'Staff','p'=>'PAShow.php','ART'=>'ArtForm.php','m'=>'StewardShow.php'];  
+               'v'=>'Volunteers.php','u'=>'SignUp','c'=>'Staff','p'=>'PAShow.php','ART'=>'ArtForm.php','m'=>'StewardShow.php'];
   $DoHead = ['s'=>1,'a'=>1,'o'=>1,'t'=>1,'w'=>1,'v'=>0,'u'=>1,'c'=>1,'p'=>1,'ART'=>1,'m'=>1];
 
-  $Cake = sprintf("%s:%d:%06d",$CakeTypes[$t],$Access_Type['Participant'],$id ); 
+  $Cake = sprintf("%s:%d:%06d",$CakeTypes[$t],$Access_Type['Participant'],$id );
   $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');
   setcookie('FESTD',$biscuit,0,'/');
 

@@ -2,6 +2,7 @@
 // Participant finder
 
   include_once("fest.php");
+  global $db;
   $x = '';
   $k = $_REQUEST['S'];
   if (isset($_REQUEST['X'])) $x = "AND " . $_REQUEST['X'];

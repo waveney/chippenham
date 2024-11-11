@@ -2,7 +2,7 @@
   include_once("fest.php");
 
   A_Check('SysAdmin');
-  
+
   dostaffhead("Convert Old Archive Images");
 
 /* Go through each file in ArchiveImages recurse into directories
@@ -10,9 +10,10 @@
    if dddd.sfx.ii rename as ddddHii.sfx
    if ddddIn.sfx rename as ddddIn.sfx
 */
- 
- 
+
+
 function Convert_Dir($name) {
+  $match = [];
   $D = opendir($name);
   if (!$D) return;
   while (($file = readdir($D)) !== false) {
@@ -25,7 +26,7 @@ function Convert_Dir($name) {
         $Img = ($match[3]?$match[2]:"");
         $sfx = $match[4];
         $Issue = (isset($match[5])? $match[5]: ".0");
-        
+
         echo "Found $name/$file is: Base:$Base Img:$Img Sfx:$sfx Iss:$Issue ";
         $NewName = "$Base$Img$Issue.$sfx";
         echo "New name = $NewName<br>";
@@ -38,12 +39,12 @@ function Convert_Dir($name) {
         $sfx = $match[4];
         $Issue = (isset($match[3])? $match[3]: ".0");
         if ($Issue[0] != '.') $Issue = ".$Issue";
-        
+
         echo "Found $name/$file is: Base:$Base Img:$Img Sfx:$sfx Iss:$Issue ";
         $NewName = "$Base$Img$Issue.$sfx";
         echo "New name = $NewName<br>";
         if (!rename("$name/$file","$name/$NewName")) {
-          echo "<span class=Err>Failed to rename $file as $NewFile</span>";
+          echo "<span class=Err>Failed to rename $file as $NewName</span>";
         }
       } else {
         echo "Match failed on $file<p>";

@@ -9,7 +9,8 @@
   include_once("DanceLib.php");
   include_once("MusicLib.php");
   include_once("EventCheck.php");
-  global $YEARDATA,$YEAR,$USERID,$Importance,$PerfTypes,$Event_Access_Type,$Event_Access_Colours;
+  global $YEARDATA,$YEAR,$USERID,$Importance,$PerfTypes,$Event_Access_Type,$Event_Access_Colours,$Event_Types,$Perf_Rolls;
+  global $Public_Event_Types;
 
   Set_Event_Help();
 
@@ -19,7 +20,7 @@
 function Parse_Perf_Selection() {
   for($i=1; $i<5; $i++) {
     if (isset($_REQUEST["PerfType$i"])) $_REQUEST["Side$i"] = $_REQUEST["Perf" . $_REQUEST["PerfType$i"] . "_Side$i"];
-  }  
+  }
 }
 
   $ETNames = [];
@@ -42,13 +43,13 @@ The system can handle many more complicated cases (click 'All Features' to see a
 
 If you would like to give a small description, this will appear in the programme book and in lists of events.<p>
 
-You do not normally need to set any of the other options.  Such as Blurb, Duration, Bar/Food, Special, Alt Edit, Prices, PA Requirements and Non Fest.  
+You do not normally need to set any of the other options.  Such as Blurb, Duration, Bar/Food, Special, Alt Edit, Prices, PA Requirements and Non Fest.
 For all complex cases contact Richard (07718 511432)<p>
 
 Then click on <b>Create</b>.<p>
-See if any errors are reported at the top of the event - they currently are a bit cryptic but any event clashes involving this event will be listed 
+See if any errors are reported at the top of the event - they currently are a bit cryptic but any event clashes involving this event will be listed
 - resolve them please.<p>
-If it a simple event, with up to 4 particpants do the following (this can be done later if you have not yet decided): 
+If it a simple event, with up to 4 particpants do the following (this can be done later if you have not yet decided):
 Select the Side, Act or Other participants from the drop down lists.<p>
 You can indicate a MC and separate band form callers by the Roll of the performer on the right.  If in doubt leave blank.  Other rolls may be added if required.
 
@@ -67,7 +68,7 @@ It is possible to edit sides into dancing here, but it is far far easier with th
 A similar feature will appear eventually for music.<p>
 <?php
   echo "</div>";
-  
+
   $FestDays = [];
   if ($YEARDATA['LastDay']-$YEARDATA['FirstDay'] < 6) {
     for ($day= $YEARDATA['FirstDay']; $day <=$YEARDATA['LastDay']; $day++) $FestDays[$day] = DayList($day);
@@ -104,7 +105,7 @@ A similar feature will appear eventually for music.<p>
               $Timeleft -= $slotsize;
               Insert_db('Events',$SubEvent);
             }
-          } else { 
+          } else {
             $Err = "Can't divide";
           }
         } elseif ($se < 0) { // Aready parent event
@@ -121,7 +122,7 @@ A similar feature will appear eventually for music.<p>
               $Timeleft -= $slotsize;
               Insert_db('Events',$SubEvent);
             }
-          } else { 
+          } else {
             $Err = "Can't divide";
           }
         } else { // Child event
@@ -137,7 +138,7 @@ A similar feature will appear eventually for music.<p>
               $Timeleft -= $slotsize;
               Insert_db('Events',$SubEvent);
             }
-          } else { 
+          } else {
             $Err = "Can't divide";
           }
         }
@@ -158,7 +159,7 @@ A similar feature will appear eventually for music.<p>
           $SubEvent['SubEvent'] = $eid;
         } else { // Already Has SEs
           $SubEvent['SubEvent'] = $eid;
-        }  
+        }
         for($i=1;$i<=$AddIn;$i++) Insert_db('Events',$SubEvent);
         break;
 
@@ -197,7 +198,7 @@ A similar feature will appear eventually for music.<p>
       $OtherValid = 1;
       if ($Event['BigEvent']) {
         $err = 0;
-        if (!isset($Other)) $Other = Get_Other_Things_For($eid);
+        $Other = Get_Other_Things_For($eid);
         if (!$err && $Other) foreach ($Other as $i=>$ov) {  // Start with venues only
           if ($ov['Identifier'] == 0) continue;
           if ($ov['Type'] == 'Venue') {
@@ -219,7 +220,7 @@ A similar feature will appear eventually for music.<p>
         }
         if ($err==0 && isset($_REQUEST['NEWVEN']) && $_REQUEST['NEWVEN'] > 0) { // Add venue
           if ($Other) foreach ($Other as $i=>$ov) if ($ov['Type'] == 'Venue' && $ov['Identifier'] == $_REQUEST['NEWVEN']) $err++;
-          if ($err == 0 && $Event['Venue'] == $_REQUEST['NEWVEN']) $err++; 
+          if ($err == 0 && $Event['Venue'] == $_REQUEST['NEWVEN']) $err++;
           if ($err == 0) {
             $BigE = array('Event'=>$eid, 'Type'=>'Venue', 'Identifier'=>$_REQUEST['NEWVEN']);
             New_BigEvent($BigE);
@@ -228,15 +229,15 @@ A similar feature will appear eventually for music.<p>
         }
         if ($err) echo "<h2 class=ERR>The Event already has Venue " . $Venues[$_REQUEST['NEWVEN']] . "</h2>\n";
         if (!$OtherValid) unset($Other);
-      }  
+      }
     } else { // New
       $proc = 1;
-      if (!isset($_REQUEST['SN']) || strlen($_REQUEST['SN']) < 2) { 
+      if (!isset($_REQUEST['SN']) || strlen($_REQUEST['SN']) < 2) {
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $Event = $_REQUEST;
         $proc = 0;
       }
-      if (empty($_REQUEST['Venue'])) { 
+      if (empty($_REQUEST['Venue'])) {
         echo "<h2 class=ERR>NO VENUE GIVEN</h2>\n";
         $Event = $_REQUEST;
         $proc = 0;
@@ -244,13 +245,13 @@ A similar feature will appear eventually for music.<p>
 
       if (empty($_REQUEST['Owner'])) $_REQUEST['Owner'] = $USERID;
       Parse_TimeInputs($EventTimeFields,$EventTimeMinFields);
-      
+
       Parse_Perf_Selection();
       $_REQUEST['Year'] = $YEAR;
 //var_dump($_REQUEST);
       $eid = Insert_db_post('Events',$Event,$proc); //
       $empty = [];
-      if (Feature('RecordEventChanges')) RecordEventChanges($Event,$empty,1);      
+      if (Feature('RecordEventChanges')) RecordEventChanges($Event,$empty,1);
       Check_4Changes($empty,$Event);
     }
   } elseif (isset($_REQUEST['COPY'])) {
@@ -268,7 +269,7 @@ A similar feature will appear eventually for music.<p>
     $Event = Get_Event($eid);
     if (Access('Staff','Events') || $Event['Owner'] == $USERID || $Event['Owner2'] == $USERID) { // Proceed
     } else {
-      fm_addall('disabled readonly'); 
+      fm_addall('disabled readonly');
     }
   } else {
     $eid = -1;
@@ -282,7 +283,7 @@ A similar feature will appear eventually for music.<p>
 // Other                                Y                Y        Y        Y
 
   if ($eid > 0) {
-    echo "<div class=Err>";  
+    echo "<div class=Err>";
     EventCheck($eid);
     echo "</div>";
   }
@@ -295,7 +296,7 @@ A similar feature will appear eventually for music.<p>
   foreach ($PerfTypes as $p=>$d) $SelectPerf[$p] = ($d[0] == 'IsASide'? Select_Come(): Select_Perf_Come($d[0]));
 
   if (isset($Event['WeirdStuff']) && $Event['WeirdStuff']) {
-    $FestDays = [];  
+    $FestDays = [];
     for ($day= -4; $day <= 10; $day++) $FestDays[$day] = FestDate($day,'S');
   }
 //var_dump($Event);
@@ -303,7 +304,7 @@ A similar feature will appear eventually for music.<p>
   echo "<span class='NotSide FullD' hidden>Fields marked should be only set by Richard</span>";
   Register_AutoUpdate('Event',$eid);
   if (!$Skip) {
-//    $adv = (isset($Event['SubEvent']) ?(($Event['SubEvent']>0?"class=Adv":"")) : ""); 
+//    $adv = (isset($Event['SubEvent']) ?(($Event['SubEvent']>0?"class=Adv":"")) : "");
     echo "<div class=tablecont><table width=90% border><tr class=FullD hidden>\n";
       if (isset($eid) && $eid > 0) {
         echo "<td>Event Id:" . $eid . fm_hidden('EventId',$eid);
@@ -331,12 +332,12 @@ A similar feature will appear eventually for music.<p>
 
       echo "<tr class=FullD hidden><td class=NotSide>" . fm_checkbox('Multiday Event',$Event,'LongEvent','onchange=$(".mday").show()');
       $hidemday =  (isset($Event['LongEvent']) && $Event['LongEvent'])?'':'hidden ';
-      echo "<td class=NotSide>" . fm_checkbox('Big Event',$Event,'BigEvent') . " " . fm_checkbox('No Order',$Event,'NoOrder') . 
+      echo "<td class=NotSide>" . fm_checkbox('Big Event',$Event,'BigEvent') . " " . fm_checkbox('No Order',$Event,'NoOrder') .
            fm_checkbox('Use Notes to fmt',$Event,'UseBEnotes');
-      echo "<td>" . fm_checkbox('Also&nbsp;Dance',$Event,'ListDance') . " ". fm_checkbox('Also&nbsp;Music',$Event,'ListMusic') . " ". 
+      echo "<td>" . fm_checkbox('Also&nbsp;Dance',$Event,'ListDance') . " ". fm_checkbox('Also&nbsp;Music',$Event,'ListMusic') . " ".
             fm_checkbox('Also&nbsp;Comedy',$Event,'ListComedy') . " " .fm_checkbox('Also&nbsp;Workshop',$Event,'ListWorkshop') . " " .
             fm_checkbox('Also&nbsp;Session',$Event,'ListSession');
-      
+
       echo "<td class=NotSide>" . fm_checkbox('No Performers',$Event,'NoPart') . "<br>" . fm_checkbox('Omit Performers on Paper',$Event,'NoPerfsPaper');
       echo "<td class=NotSide>" . fm_checkbox('Concert',$Event,'IsConcert');
       echo "<tr" . ($se>0?" class=FullD hidden":"") . "><td class=FullD hidden>" . fm_checkbox('Special Event',$Event,'Special');
@@ -359,9 +360,9 @@ A similar feature will appear eventually for music.<p>
       if ($se <= 0) {
         echo "<tr class='NotSide FullD' hidden>";
         echo "<td class=NotSide>" . fm_simpletext('Price &pound;',$Event,'Price1') . Help("Price");
-        if ($YEARDATA['PriceChange1']) 
+        if ($YEARDATA['PriceChange1'])
           echo "<td class=NotSide>" . fm_simpletext('Price after ' . date('j M Y',$YEARDATA['PriceChange1']) . ' (if diff) &pound;',$Event,'Price2');
-        if ($YEARDATA['PriceChange2']) 
+        if ($YEARDATA['PriceChange2'])
           echo "<td class=NotSide>" . fm_simpletext('Price after ' . date('j M Y',$YEARDATA['PriceChange2']) . ' (if diff) &pound;',$Event,'Price3');
         echo "<td class=NotSide>" . fm_simpletext('Door Price (if different) &pound;',$Event,'DoorPrice');
         echo "<td class=NotSide>" . fm_simpletext('Ticket Code',$Event,'TicketCode');
@@ -376,7 +377,7 @@ A similar feature will appear eventually for music.<p>
         echo fm_smalltext2(', Doors:',$Event,'DoorsOpen') . fm_checkbox("Ends After Midnight",$Event,'EndsNextDay') . "</div>";
         if ($se <= 0) echo "<tr>" . fm_radio("Access",$Event_Access_Type, $Event,'SeasonTicketOnly','',1,'colspan=3','',$Event_Access_Colours);
                      // echo "<td>" . fm_checkbox("Season Ticket Only",$Event,'SeasonTicketOnly');
-      if ($se <= 0) echo "<tr class=mday $hidemday>" . fm_radio('End Day',$FestDays,$Event,'EndDay') . 
+      if ($se <= 0) echo "<tr class=mday $hidemday>" . fm_radio('End Day',$FestDays,$Event,'EndDay') .
                 "<td colspan=3>Set up a sub event for each day after first, times are for first day";
       echo "<tr" . ($se>0?" class=FullD hidden":"") . "><td><b>Venue</b>:<td>" . fm_select($Venues,$Event,'Venue',1);
         echo fm_text('Special Printed Venue Text:',$Event,'VenuePaper',3,"class='NotSide FullD' hidden");
@@ -384,12 +385,12 @@ A similar feature will appear eventually for music.<p>
       $et = 'Mixed';
       if (isset($Event['Type'])) $et = $Event_Types[$Event['Type']];
       echo "<tr>" . fm_textarea('Description <span id=DescSize></span>',$Event,'Description',5,2,
-                        "maxlength=200 oninput=SetDSize('DescSize',200,'Description')"); 
+                        "maxlength=200 oninput=SetDSize('DescSize',200,'Description')");
 
 //      echo "<tr>" . fm_textarea('Description <span id=DescSize></span>',$Event,'Description',5,2,'',
-//                        'maxlength=150 oninput=SetDSize("DescSize",150,"ShortBlurb") id=ShortBlurb'); 
+//                        'maxlength=150 oninput=SetDSize("DescSize",150,"ShortBlurb") id=ShortBlurb');
       echo "<tr class='FullD' hidden>" . fm_textarea('Blurb',$Event,'Blurb',5,2,'','maxlength=2000');
-      echo "<tr class='FullD' hidden><td>If the Venue doesn't normally have a Bar or Food<td>" . fm_checkbox('Bar',$Event,'Bar') . 
+      echo "<tr class='FullD' hidden><td>If the Venue doesn't normally have a Bar or Food<td>" . fm_checkbox('Bar',$Event,'Bar') .
                 "<td>" . fm_checkbox('Food',$Event,'Food') . fm_text('Food/Bar text',$Event,'BarFoodText') . "\n";
       echo "<tr class='FullD' hidden>" . fm_text1('Image',$Event,'Image',1,'class=NotSide','class=NotSide') .
                     fm_text1('Website',$Event,'Website',1,'class=NotSide','class=NotSide') ;
@@ -415,7 +416,7 @@ A similar feature will appear eventually for music.<p>
             echo ($SelectPerf[$p]?fm_select($SelectPerf[$p],$Event,"Side$i",1,"id=Perf$pi" . "_Side$i " . ($Event["PerfType$i"]==$pi?'':'hidden'),"Perf$pi" . "_Side$i") :"");
             if ($sid && ($Event["PerfType$i"] == $pi) && !isset($SelectPerf[$p][$sid])) {
               $Side = Get_Side($sid);
-              echo "<del><a href=AddPerf?id=$sid>" . $Side['SN'] . "</a></del> ";               
+              echo "<del><a href=AddPerf?id=$sid>" . $Side['SN'] . "</a></del> ";
             }
             $pi++;
           }
@@ -437,13 +438,13 @@ A similar feature will appear eventually for music.<p>
         echo "<td>" . fm_select2($Venues,0,"NEWVEN",1);
       }
 
-    if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=7 class=NotSide><textarea id=Debug></textarea>";        
+    if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=7 class=NotSide><textarea id=Debug></textarea>";
     echo "</table></div>\n";
     if (isset($Event['BigEvent']) && $Event['BigEvent']) {
       echo "Use the <a href=BigEventProg?e=$eid>Big Event Programming Tool</a> to add sides, musicians and others to this event. ";
       echo "Use the <a href=DisplayBE?e=$eid>Big Event Display</a> to get a simple display of the event.";
     }
-  
+
     if ($eid > 0) {
       echo "<Center><input type=Submit name='Update' value='Update'>\n";
       if (Access('Committee','Events')) {
@@ -459,7 +460,7 @@ A similar feature will appear eventually for music.<p>
         echo "</form>\n";
       }
       echo "</center>\n";
-    } else { 
+    } else {
       echo "<Center><input type=Submit name=Create value='Create'></center>\n";
     }
 //    if (isset($Event['SubEvent']) && $Event['SubEvent'] > 0) echo "<button onclick=ShowAdv(event) id=ShowMore type=button class=floatright>More features</button>";

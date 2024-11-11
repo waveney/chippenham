@@ -3,24 +3,24 @@
   A_Check('Committee','Trade');
 
   dostaffhead("Manage Trade Locations");
-  global $YEAR,$LocTypes;
 
   include_once("TradeLib.php");
   include_once("InvoiceLib.php");
-  
+  global $YEAR,$LocTypes,$Prefixes,$Trade_Days;
+
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Locs</button><button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Curent Locs</button> ";
   echo "<div class='content'><h2>Manage Trade Locations</h2>\n";
-  
+
   echo "Artisan Messages trigger local Artisan related emails<p>Only set the Invoice Code for locations that override normal trade type invoice codes<p>";
-  
+
   echo "Set No List to exclude from venues on Show Trade<br>";
-  
+
 //  echo "Power Offset - Bit number for power properties<p>";
-  
+
   echo "Properties bit 0 = table, 1=Power - not in use<br>";
   echo "Width if >0, total usage is calculated, if Nat Depth > 0 it is used to consume extra width<br>";
   echo "Type 0- Trade, 1-Infra structure, 2-other<P>";
-  
+
   $Locs=Get_Trade_Locs(1);
   $LocNames = Get_Trade_Locs(0);
 
@@ -31,7 +31,7 @@
   $coln = 0;
   $InvCodes =  Get_InvoiceCodes();
   $t = [];
-  
+
   echo "<form method=post action=TradeLocs>";
   echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
@@ -106,9 +106,9 @@
 
   echo "<td><input type=text name=Notes0 >";
   echo "<td><input type=text name=MapImage0 >";
-  echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale0"); 
-  echo fm_text1('',$t,'Showscale',0.5,'','',"Showscale0"); 
-  
+  echo fm_text1('',$t,'Mapscale',0.5,'','',"Mapscale0");
+  echo fm_text1('',$t,'Showscale',0.5,'','',"Showscale0");
+
   // if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=10 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
 
   echo "</table></div>\n";

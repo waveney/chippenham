@@ -29,18 +29,19 @@
 //      echo "<P>VALID...<P>";
       $_REQUEST['AccessKey'] = rand_string(40);
       $_REQUEST['Year'] = $PLANYEAR;
+      $stew = [];
       $id = Insert_db_post('Volunteers',$stew);
       $_REQUEST['Over18']='on';
-    
-      Email_Steward($stew,'Stew_Application',$stew['Email']);
-      Email_Steward($stew,'Stew_Paul','paulfolkfest@outlook.com');
+
+/*      Email_Steward($stew,'Stew_Application',$stew['Email']);
+      Email_Steward($stew,'Stew_Paul','paulfolkfest@outlook.com'); What was stew supposed to be ? */
 
       echo "<h2 class=subtitle>Thankyou for submitting your application</h2>";
       dotail();
       exit();
     }
   }
-  
+
   echo "<h2 class=subtitle>Steward / Volunteer Application Form</h2>\n";
   echo "<form method=post action=StewardForm>";
   echo "<div class=tablecont><table border>\n";
@@ -74,7 +75,7 @@
   echo "<tr>" . fm_text('Contact Phone',$_REQUEST,'ContactPhone',2);
   echo "<tr><td>Relationship:<td>" . fm_select($Relations,$_REQUEST,'Relation');
   echo "</table><div><p>";
-  echo "<input type=submit name=submit value='Submit Application'><p>\n"; 
+  echo "<input type=submit name=submit value='Submit Application'><p>\n";
   echo "</form>\n";
 
   echo "<h3>Terms and Conditions</h3>\n";

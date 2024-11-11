@@ -7,9 +7,10 @@
 
   include_once("NewsLib.php");
   include_once("Uploading.php");
-  
+
 //var_dump($_REQUEST);
 
+  $mtch = [];
   $Arts = Get_All_Articles(1);
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Articles</button><button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Current/Future Articles Only</button> ";
 
@@ -30,8 +31,8 @@ Click on the title to edit.<p>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Start of Text</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Importance</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Order</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Thumbnail</a>\n"; 
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>When</a>\n"; 
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Thumbnail</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>When</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Usage</a>\n";
   echo "</thead><tbody>";
   if ($Arts) foreach($Arts as $t) {
@@ -40,7 +41,7 @@ Click on the title to edit.<p>";
     echo "<td><a href=AddArticle?id=$i>" . $t['id'] . "</a>";
     echo "<td><a href=AddArticle?id=$i>" . $t['SN'] . "</a>";
     preg_match('/(.*)[ \n].*?$/',substr($t['Text'],0,80),$mtch);
-    
+
     echo "<td>" . (isset($mtch[1]) ? htmlspec($mtch[1]) : "") ;
     echo "<td>" . $Importance[$t['Importance']];
     echo "<td>" . $t['RelOrder'];
@@ -50,7 +51,7 @@ Click on the title to edit.<p>";
   }
 
   echo "</table></div>\n";
-  
+
   echo "<h2><a href=AddArticle>Add An Article</a>, <a href=/index?F=7>Top Page in a Week</a></h2>\n";
 
   dotail();

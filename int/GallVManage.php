@@ -14,6 +14,7 @@
   include_once("ImageLib.php");
   include_once("TradeLib.php");
 
+  $mtch = [];
   $Gals = Get_Gallery_Names(1);
   $Galid = (isset($_REQUEST['g'])? $_REQUEST['g']:0 );
   if (strlen($Galid) > 4) $Galid=0;
@@ -45,7 +46,7 @@
         echo "Deleted $Count photos from Gallery - they are still stored on the server<p>";
       }
       break;
-      
+
     case 'Copy': // Copy Photo in another gallery - source is used for both
       $Tgt = $_REQUEST['CopyTo'];
       if (!$Tgt) break;
@@ -62,14 +63,14 @@
       }
       echo "Copied $Count to " . $Gals[$Tgt] . "<p>";
       break;
-    
+
     default:
       break;
     }
   }
 
 
-  if (isset($_REQUEST['IMPORT'])) { 
+  if (isset($_REQUEST['IMPORT'])) {
     $Prefix = $_REQUEST['FilePrefix'];
     $ImpLog = '';
     $ImpCount = 0;

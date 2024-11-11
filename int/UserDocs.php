@@ -2,7 +2,8 @@
   include_once("fest.php");
   A_Check('Committee');
 
-  dostaffhead("Doc Usgae");
+  global $db;
+  dostaffhead("Doc Usage");
   include_once("DocLib.php");
   $AllU = Get_AllUsers();
 

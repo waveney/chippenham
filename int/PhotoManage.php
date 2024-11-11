@@ -80,13 +80,13 @@ function Change_Rand(&$dat) {
 
 function Upload_Image() {
   global $Who,$Pcat,$db;
-  include_once("ImageLib.php"); 
+  include_once("ImageLib.php");
   $dat = ImgData();
   if (file_exists($dat['FinalLoc'] . "." . $dat['Suf'])) {
     $FinalLoc = $dat['FinalLoc'];
     $ArcLoc = $dat['ArcLoc'];
     Archive_Stack($ArcLoc . "." . $dat['Suf']);
-    copy($FinalLoc . "." . $dat['Suf'],$ArcLoc . "." . $dat['Suf']); 
+    copy($FinalLoc . "." . $dat['Suf'],$ArcLoc . "." . $dat['Suf']);
   }
 
   $target_dir = dirname($dat['FinalLoc']);
@@ -112,7 +112,7 @@ function Upload_Image() {
       if ($stuff) {
         $dat['Data']['ImageWidth'] = $stuff[0];
         $dat['Data']['ImageHeight'] = $stuff[1];
-      } 
+      }
       $pos = &$dat['Data'][$dat['Field']];
       if (isset($pos) && $pos == ("/" . $target_file)) {
         $pos = $_REQUEST[$dat['Field']] = "/" . $target_file . "?" . rand();
@@ -173,7 +173,7 @@ if (isset($_FILES['croppedImage'])) {
   $Shapes = array('Landscape','Square','Portrait','Banner','Free Form');
   $aspect = array('4/3','1/1','3/4','7/2','NaN');
   $Shape = 0;
-  if (isset($_REQUEST['SHAPE'])) { 
+  if (isset($_REQUEST['SHAPE'])) {
     $Shape = $_REQUEST['SHAPE'];
   } else {
     $_REQUEST['SHAPE'] = $Shape;
@@ -187,7 +187,7 @@ if (isset($_FILES['croppedImage'])) {
         'Family'=>Perf_Name_List('IsFamily'),
         'Other'=>Perf_Name_List('IsOther'),
         'Ceilidh'=>Perf_Name_List('IsCeilidh'),
-        
+
         'Traders'=>Get_All_Traders(0),
         'Sponsors'=>Get_Sponsor_Names(),
         'Venues'=>Get_Venues(0),
@@ -209,12 +209,12 @@ if (isset($_FILES['croppedImage'])) {
         'Venue2'=>Access('Staff','Venues'),
         'Food'=>Access('SysAdmin'), // For now
         ]
-  
+
 ?>
-<script language=Javascript defer>
+<script type=text/Javascript defer>
   var CC;
   $(document).ready(function() {
-    CC = ($('#image').cropper({ 
+    CC = ($('#image').cropper({
 <?php echo "aspectRatio: " . $aspect[$Shape] . ',' ?>
         viewMode:1,
         autoCropArea:1,
@@ -234,10 +234,10 @@ if (isset($_FILES['croppedImage'])) {
           method: "POST",
           data: formData,
           processData: false,
-          contentType: false, 
-          success: function (resp) { 
-            //console.log(resp); 
-            //document.getElementById('Feedback').innerHTML = resp; 
+          contentType: false,
+          success: function (resp) {
+            //console.log(resp);
+            //document.getElementById('Feedback').innerHTML = resp;
             var src = $('#image').attr('src');
             src += '?' + Date.now();
             $('#croptool').hide();
@@ -270,7 +270,7 @@ if (isset($_FILES['croppedImage'])) {
     rename($loc,"$loc.$hist");
 //echo "Arc $loc renamed $loc.$hist<br>";
   }
-  
+
 
   function Select_Photos() {
     global $Who,$Pcat;
@@ -281,7 +281,7 @@ if (isset($_FILES['croppedImage'])) {
     } else {
       $_REQUEST['PCAT']=0;
     }
-    
+
     $j = 0;
     foreach ($AccessNeeded as $i=>$showit) {
       if (!$showit) $PhotoCats[$j] = '';
@@ -309,6 +309,7 @@ if (isset($_FILES['croppedImage'])) {
     global $Shapes,$Shape, $Lists,$PhotoCats;
 //var_dump($_REQUEST);
     $dat = ImgData();
+    $mtch = [];
 
 //var_dump($dat); echo "<p>";
     $Name = $dat['Data']['SN'];
@@ -320,12 +321,12 @@ if (isset($_FILES['croppedImage'])) {
     $FinalLoc .= ".$suffix";
     $ExtLoc = "/" . $FinalLoc;
 //var_dump($Name,$PhotoURL,$ArcLoc,$FinalLoc,$suffix);
- 
+
     if ($type == 'Current') {
       if ($PhotoURL) {
         $ArcD = dirname($ArcLoc);
         if (!file_exists($ArcD)) mkdir($ArcD,0777,true);
-  
+
         if (preg_match('/^\/(.*)/',$PhotoURL,$mtch)) {
           $url = preg_replace('/\?.*/','',$mtch[1]);
 //var_dump($url);
@@ -335,7 +336,7 @@ if (isset($_FILES['croppedImage'])) {
 //var_dump($url);
           $img = file_get_contents($url);
         };
-  
+
         if ($img) {
             if (preg_match('/https?:\/\//',$PhotoURL)) { // if external always Archive
             Archive_Stack("$ArcLoc.$suffix");
@@ -346,7 +347,7 @@ if (isset($_FILES['croppedImage'])) {
             $PhotoURL = $ExtLoc;
           }
         } else {
-          $PhotoURL = "1";  
+          $PhotoURL = "1";
         }
       }
     }
@@ -390,7 +391,7 @@ if (isset($_FILES['croppedImage'])) {
     echo "<input type=submit name=Action value=Change id=NewLoc>";
     echo "<input type=submit name=Action value=Rotate>";
   }
-  
+
 function New_Image() {
   global $Who,$Pcat;
   $dat = ImgData();
@@ -439,7 +440,7 @@ function Resize_Photo($type='Current') {
     $suffix = $dat['Suf'];
     $FinalLoc .= ".$suffix";
     $ExtLoc = "/" . $FinalLoc;
-    
+
     // Lots more to do
 }
 
@@ -468,7 +469,7 @@ d  get original - conditional
 d  upload
 d  rescale for large
 d  Venues
-d  make it remember pcat/who correctly 
+d  make it remember pcat/who correctly
 d  mkdir
   After crop update location
   Zoom in/out
@@ -481,7 +482,7 @@ d  mkdir
 if ($suffix == 'heic' || $suffix =='heif') {
   $target_file = "$target_dir/$id.jpg";
   if (!exec("heif-convert -q 100 " . $_FILES["Upload"]["tmp_name"] . " $target_file")) {
-    echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);    
+    echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);
     exit;
   }
 } else {

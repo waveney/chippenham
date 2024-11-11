@@ -2,7 +2,7 @@
   include_once("fest.php");
 
 //  A_Check('Staff');
-  
+
   include_once("ProgLib.php");
   include_once("DispLib.php");
   include_once("DanceLib.php");
@@ -38,21 +38,21 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
 
 
   set_ShowYear();
- 
+
   global $db,$YEAR,$PLANYEAR,$YEARDATA,$SHOWYEAR,$DayList,$DayLongList,$Event_Types ;
 
   echo "<script>document.getElementsByTagName('body')[0].style.background = 'none';</script><div class=PaperL>";
-  
+
   $Splits = explode(',',TnC('PaperSplits'));
 
   $Vens = Get_Venues(1);
 
   /* Get all events that are public, sort by day, time
-     opening display is each day - click to expand 
+     opening display is each day - click to expand
      sub events not shown - click to expand
      More to come from event states and general
   */
-  $More = 0; 
+  $More = 0;
 
   if ($YEAR != $SHOWYEAR) echo "<h2>What is on When in " . substr($YEAR,0,4) . "?</h2>";
   echo "<div class='FullWidth WhenTable'>";
@@ -82,15 +82,16 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
         $dname = $DayLongList[$e['Day']];
         if (PaperDayTable($e['Day'],"Events",'','class=DayHead','style=max-width:99%',(1 + ($Page+1)%2))) {
           if ($Page == 0) echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>Time<td >What<td>Where<td>With and/or Description<td>Price";
-        }      
+        }
         $Count++;
       } else {
         $Count++;
       }
-      
-              
+
+      $imps = [];
+
       Get_Imps($e,$imps,1,(Access('Staff')?1:0));
-      echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
+      echo "<tr class=Day$dname ><td style='max-width:$TimeWidth;width:$TimeWidth;'>" . timecolon($e['Start']) . " - " . timecolon($e['End']);
       echo "<td>" . $e['SN'];
 
       if (empty($e['VenuePaper'])) {
@@ -102,12 +103,12 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
       } else {
         echo "<td>" . $e['VenuePaper'];
       }
-      
+
       if ($e['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
         $PerfC = 0;
         foreach ($Others as $i=>$o) {
-          if (empty($e['VenuePaper']) && (($o['Type'] == 'Venue') && ($o['Identifier']>0) )) 
+          if (empty($e['VenuePaper']) && (($o['Type'] == 'Venue') && ($o['Identifier']>0) ))
             echo ", " . Venue_Parents($Vens,$o['Identifier']) . $Vens[$o['Identifier']]['SN'];
           if ($o['Type'] == 'Perf') $PerfC++;
         }
@@ -121,7 +122,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
       if ($e['BigEvent']) {
         if ($e['NoPerfsPaper']) {
           echo "<span style='font-size:14'>For the full list of $PerfC teams see the website<span>";
-          
+
         } else {
           echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
         }
@@ -131,9 +132,9 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
         echo Get_Event_Participants($eid,0,-1,12);
       }
 
-      echo "</span><td><span style='font-size:12'>" . Price_Show($e,1) . "</span>";   
+      echo "</span><td><span style='font-size:12'>" . Price_Show($e,1) . "</span>";
     }
     echo "</table></div>\n";
-  
-  echo "</div></div>";  
+
+  echo "</div></div>";
   exit;

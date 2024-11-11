@@ -4,17 +4,18 @@
 
   dostaffhead("List Traders", ["/js/clipboard.min.js", "/js/emailclick.js"]);
   global $YEAR,$PLANYEAR,$Trade_States,$Trader_Status,$Trade_State_Colours;
+  global $db,$Trade_State;
   include_once("TradeLib.php");
 
   $Orgs = isset($_REQUEST['ORGS']);
   $ShowLinks = (Access('Committee') || Access('Steward','Trade'));
-  
+
   if ($Orgs) {
-    echo "<h2>List Businesses and Organisions</h2>\n"; 
+    echo "<h2>List Businesses and Organisions</h2>\n";
     echo "<div class=floatright><h2><a href=ListTrade?Y=$YEAR&orgs>List Traders</a></h2></div>";
   } else {
     echo "<h2>List Traders $YEAR</h2>\n";
-    if (isset($_REQUEST['orgs'])) echo "<div class=floatright><h2><a href=ListTrade?Y=$YEAR&ORGS>List Buisnesses and Organisations</a></h2></div>";    
+    if (isset($_REQUEST['orgs'])) echo "<div class=floatright><h2><a href=ListTrade?Y=$YEAR&ORGS>List Buisnesses and Organisations</a></h2></div>";
   }
 
   echo "Click on column header to sort by column.  Click on Business's name for more detail<p>\n";
@@ -24,11 +25,11 @@
 
 
   if ($Orgs) {
-    $qry = "SELECT t.* FROM Trade AS t WHERE t.IsTrader=0 ORDER BY SN";  
+    $qry = "SELECT t.* FROM Trade AS t WHERE t.IsTrader=0 ORDER BY SN";
   } else {
     $qry = "SELECT y.*, t.* FROM Trade AS t LEFT JOIN TradeYear AS y ON t.Tid = y.Tid AND y.Year='$YEAR' WHERE t.IsTrader=1 ORDER BY SN";
   }
-  
+
   $res = $db->query($qry);
   $Trade_Types = Get_Trade_Types(1);
 
@@ -52,8 +53,8 @@
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Before</a>\n";
     }
     if ($Orgs) {
-      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Invoices</a>\n";   
-      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";   
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Invoices</a>\n";
+      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";
     }
     echo "</thead><tbody>";
     while ($fetch = $res->fetch_assoc()) {
@@ -63,7 +64,7 @@
       if ($ShowLinks) {
         echo "<tr><td width=300><a href=Trade?id=$Tid" . ($Orgs?"&ORGS":"") . ">" . ($fetch['SN']?$fetch['SN']:'No Name Given') . "</a>";
       } else {
-        echo "<tr><td width=300>" . ($fetch['SN']?$fetch['SN']:'No Name Given');        
+        echo "<tr><td width=300>" . ($fetch['SN']?$fetch['SN']:'No Name Given');
       }
       if (!$Orgs) echo "<td style='background:" . $Trade_Types[$tt]['Colour'] . ";'>" . $Trade_Types[$tt]['SN'];
       if (!$Orgs) echo "<td width=400>" . $fetch['GoodsDesc'];
@@ -90,7 +91,7 @@
       } else {
         echo "<td><a href=InvoiceManage?FOR=$Tid>Invoices</a>";
         echo "<td><a href=InvoiceManage?ACTION=NEW&Tid=$Tid>New Invoice</a>";
-      
+
       }
     }
     echo "</tbody></table></div>\n";

@@ -30,14 +30,14 @@ Everything else is optional, but it is highly recommended that all contact infor
 <h2>Changing the performer type</h2>
 Do this with extreeme caution.<p>
 
-To add a performer type - tick the performer type box relevant and click </b>Save Changes</b> this will refresh the page and may change what is displayed.<p>
+To add a performer type - tick the performer type box relevant and click <b>Save Changes</b> this will refresh the page and may change what is displayed.<p>
 
 Removing a performer type should be avoided unless you are certain you can change all events they are doing, as it may leave those events in a messy state, if in doubt ask Richard.<p>
 
 
 
 
-<?php 
-  dotail()  
+<?php
+  dotail()
 ?>
 

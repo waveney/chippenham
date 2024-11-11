@@ -6,6 +6,7 @@
   if (isset($_REQUEST['CHECK'])) {
     include_once("int/DataCheck.php");
     $Email = $_REQUEST['Email'];
+    Sanitise($Email,'email');
     Data_Check_Emails($Email);
     echo "<H2 class=subtitle>Data has been checked</h2>";
     echo "If you are in the database, an email has been sent with link(s) to the data - if you don't see one check your Spam trap<p>";

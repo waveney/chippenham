@@ -2,15 +2,18 @@
   include_once("fest.php");
   A_Check('Staff');
 
-  dostaffhead("List Events");
-  global $db,$Event_Types,$Event_Types,$USERID,$Importance,$YEAR;
-  $yn = array('','Y');
   include_once("ProgLib.php");
   include_once("DocLib.php");
   include_once("EventCheck.php");
 
+  dostaffhead("List Events");
+  global $db,$Event_Types,$Event_Types,$USERID,$Importance,$YEAR;
+  global $Public_Event_Types;
+
+  $yn = array('','Y');
   $ETNames = [];
   foreach($Event_Types as $E) $ETNames[$E['ETypeNo']] = $E['SN'];
+  $res = [];
 
 //var_dump($_REQUEST);
 //var_dump($Event_Types);
@@ -42,11 +45,11 @@
         case 'Move to':
           if (($v = $_REQUEST['v'])) $Event['Venue'] = $v;
           break;
-          
+
         case 'Chown to':
           $Event['Owner'] = $_REQUEST['W'];
           break;
-          
+
         case 'Public':
           $Event['Public'] = 0;
           break;
@@ -54,7 +57,7 @@
         case 'Concert':
           $Event['IsConcert'] = 1;
           break;
-          
+
         case 'Set Event Type to' :
           $Event['Type'] = $_REQUEST['Type'];
           break;
@@ -125,7 +128,7 @@
   echo "</thead><tbody>";
 
   $res=$db->query("SELECT * FROM Events WHERE $SubE ORDER BY Day, Start, Type");
-  
+
   if ($PFComms) {
     $Comments = [];
     $Comms = Gen_Get_Cond('EventSteward',"Year='$YEAR'");
@@ -138,7 +141,7 @@
       }
     }
   }
-  
+
   if ($res) {
     while ($evnt = $res->fetch_assoc()) {
       $i = $evnt['EventId'];
@@ -147,17 +150,17 @@
       echo "<tr>";
       if (!$PFComms) echo "<td><input type=checkbox name=E$i class=SelectAllAble>";
       echo "<td>$i<td>";
-//      if (Access('Staff','Events') || $evnt['Owner']==$USERID || $evnt['Owner2']==$USERID) 
+//      if (Access('Staff','Events') || $evnt['Owner']==$USERID || $evnt['Owner2']==$USERID)
       echo "<a href=EventAdd?e=$i$PFX>";
       if (strlen($evnt['SN']) >2) { echo $evnt['SN'] . "</a>"; } else { echo "Nameless</a>"; }
       echo "<td>" . DayList($evnt['Day']) . "<td>" . timecolon($evnt['Start']) . "<td>";
       if ($se > 0 && $evnt['SubEvent'] < 0) { echo timecolon($evnt['SlotEnd']); } else { echo timecolon($evnt['End']); }
       echo "<td>" . (isset($Venues[$evnt['Venue']]) ? $Venues[$evnt['Venue']] : "Unknown");
-      echo "<td>" . ($evnt['Status'] == 1 ? "<div class=Cancel>Cancelled</div> " : "") . 
+      echo "<td>" . ($evnt['Status'] == 1 ? "<div class=Cancel>Cancelled</div> " : "") .
             (isset($Event_Types[$evnt['Type']]['SN']) ? $Event_Types[$evnt['Type']]['SN'] : "?" );
       if (!$PFComms) echo "<td>" . $Public_Event_Types[$evnt['Public']];
       if (!$PFComms) {
-        echo "<td>" ; 
+        echo "<td>" ;
         if ($evnt['SeasonTicketOnly']) {
           echo (['','ST only','ST+ET only','ET only'][$evnt['SeasonTicketOnly']]??"??");
         } else {
@@ -166,16 +169,16 @@
               echo $evnt['SpecPrice'];
             } else {
               if ($evnt['Price1']) { echo Print_Pound($evnt['Price1']); } else echo Feature('FreeText',"Free");
-              if ($evnt['Price2']) echo " /" . Print_Pound($evnt['Price2']); 
-              if ($evnt['DoorPrice']) echo " /" . Print_Pound($evnt['DoorPrice']); 
+              if ($evnt['Price2']) echo " /" . Print_Pound($evnt['Price2']);
+              if ($evnt['DoorPrice']) echo " /" . Print_Pound($evnt['DoorPrice']);
             }
           }
         }
       }
       echo "<td>" .($evnt['NeedSteward'] ? "Y" : "" );
         if ($evnt['StewardTasks']) echo " Stew";
-        if ($evnt['SetupTasks']) echo " Set";  
-      if ($evnt['BigEvent']) { echo "<td>BIG\n"; }      
+        if ($evnt['SetupTasks']) echo " Set";
+      if ($evnt['BigEvent']) { echo "<td>BIG\n"; }
       else {
         if ($se == 0) {
           if ($evnt['SubEvent'] == 0) { echo "<td>No\n"; }
@@ -202,7 +205,7 @@
   if (Access('Staff','Events') && !$PFComms) {
     $realvens = Get_Real_Venues();
     echo "Selected: <input type=Submit name=ACTION value=Delete " .
-        " onClick=\"javascript:return confirm('are you sure you want to delete these?');\">, "; 
+        " onClick=\"javascript:return confirm('are you sure you want to delete these?');\">, ";
     echo "<input type=Submit name=ACTION value='Rename as'> ";
     echo "<input type=text name=NewName>, <input type=Submit name=ACTION value='Move by'> ";
     echo "<input type=text name=Minutes size=4> Minutes, ";
@@ -222,7 +225,7 @@
     if ($se) echo ", <a href=EventList>List Events</a>";
 
     echo "</h2>";
-    
+
     if (!$PFComms) {
       echo "<h2>Checking...</h2>";
       EventCheck();

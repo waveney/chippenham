@@ -45,12 +45,12 @@ function Pretty_Print_To($to) {
           if (is_array($too)) {
             $str .= "to wierd array:" . implode(", ", $too);
           } else {
-            $str .= "to: $too";            
+            $str .= "to: $too";
           }
         }
       }
     } else {
-      $str .= "to: " . $to[0] . (isset($to[1])? " &lt;" . $to[1] . "&gt; ":'');      
+      $str .= "to: " . $to[0] . (isset($to[1])? " &lt;" . $to[1] . "&gt; ":'');
     }
   } else {
     $str .= "to: " . $to;
@@ -72,9 +72,9 @@ function ConvertHtmlToText(&$body) {
 //$to can be single address, a [address, name] or [[to,address,name],[cc,addr,name],bcc,addr,name],replyto,addr,name]...]
 //$atts can be simple fie or [[file, name],[file,name]...]
 
-function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embeded=0,$from='') { 
+function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embeded=0,$from='') {
   global $CONF;
-  
+
 //  echo "Debug: XXX" .( UserGetPref('EmailDebug')?2:0) . "<p>";
 //var_dump($sub,$attachments,$to);
 
@@ -85,14 +85,14 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
 }*/
   $Send = 1;
   if (!empty($CONF['testing'])){
-    if (strstr($CONF['testing'],'@')) { 
+    if (strstr($CONF['testing'],'@')) {
       $to = $CONF['testing'];
-    } else {    
+    } else {
       echo "<p>Would send email to " . Pretty_Print_To($to);
       if ($from) echo "From: " . Pretty_Print_To($from);
       echo " with subject: $sub<p>Content:<p>$letter<p>\n";
       debug_print_backtrace();
-    
+
       echo "Text: " . ConvertHtmlToText($letter);
       if ($attachments) {
         if (!empty($CONF['testing'])) echo var_export($attachments);
@@ -102,14 +102,14 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
               if (isset($att[0])) {
                 echo "Would attach " . $att[0] . " as " . $att[1] . "<p>";
               } else {
-                echo "Would attach " . $att . "<p>";              
+                echo "Would attach " . $att . "<p>";
               }
             } else {
               echo "Would Attach " . $att . "<p>";
             }
-          }                 
+          }
         } else {
-          echo "Would attach $attachments<p>";       
+          echo "Would attach $attachments<p>";
         }
       }
       if ($embeded) {
@@ -123,11 +123,11 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
                 echo "Would embed " . $att . "<p>";
               }
             } else {
-                echo "Would embed " . $att . "<p>";            
+                echo "Would embed " . $att . "<p>";
             }
-          }                 
+          }
         } else {
-          echo "Would embed $embeded<p>";       
+          echo "Would embed $embeded<p>";
         }
       }
     $Send = 0;
@@ -137,10 +137,10 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
   }
   $From = Feature('SMTPuser');
   $Atts = [];
-  
+
   $EmailFrom = Feature('EmailFromAllowed',0);
   $EmailReplyTo = Feature('EmailReplyTo',0);
-  
+
   $email = new PhpMailer(true);
   try {
     $email->SMTPDebug = ((Access('SysAdmin') && UserGetPref('EmailDebug'))?2:0);  // 2 general testing, 4 problems...
@@ -155,7 +155,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
     $email->Password = Feature('SMTPpwd');
     $email->SMTPSecure = 'tls';
     $email->Port = 587;
-    
+
     if ($EmailFrom) {
       if ($from) {
         if (is_array($from)) {
@@ -164,7 +164,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
           $email->setFrom($from);
         }
       } else {
-        $email->setFrom(Feature('DefaultFrom','No-Reply@' . Feature('HostURL')));    
+        $email->setFrom(Feature('DefaultFrom','No-Reply@' . Feature('HostURL')));
         if ($from) {
           $EmailReplyTo = $from;
         }
@@ -172,7 +172,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
     } else if ($from) {
       $EmailReplyTo = $from;
     }
-    
+
     if (is_array($to)) {
       if (is_array($to[0])) {
         foreach ($to as $i=>$too) {
@@ -204,11 +204,11 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
                 $From = "$n <$a>";
               }
               break;
-          } 
+          }
         }
       } else {
         $email->addAddress($to[0],(isset($to[1])?$to[1]:''));
-        $To = $to[0];  
+        $To = $to[0];
       }
     } else {
       $email->addAddress($to);
@@ -235,11 +235,11 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
               $email->addAttachment($att);
               $Atts[] = ["",$att,0];
             }
-          } else {  
+          } else {
             $email->addAttachment($att);
             $Atts[] = ["",$att,0];
           }
-        }                 
+        }
       } else {
         $email->addAttachment($attachments);
         $Atts[] = ["",$attachments,0];
@@ -247,7 +247,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
     }
     if ($embeded) {
       if (is_array($embeded)) {
-        foreach ($embeded as $i=>$att) {  
+        foreach ($embeded as $i=>$att) {
           if (is_array($att)) {
             if (isset($att[0])) {
               $email->addEmbeddedImage($att[0],$att[1]);
@@ -262,13 +262,13 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
           }
         }
       } else {
-        $email->addEmbeddedImage($embeded,0);       
+        $email->addEmbeddedImage($embeded,0);
         $Atts[] = ["",$embeded,1];
       }
     }
 
     if ($Send) $email->Send();
-    
+
   } catch (Exception $e) {
     echo 'Message could not be sent. Mailer Error: ', $email->ErrorInfo;
   }
@@ -283,7 +283,7 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
   }
 }
 
-function Get_Email_Proformas() { 
+function Get_Email_Proformas() {
   global $db;
   $full = [];
   $res = $db->query("SELECT * FROM EmailProformas ORDER BY SN ");
@@ -291,7 +291,7 @@ function Get_Email_Proformas() {
   return $full;
 }
 
-function Get_Email_Proformas_By_Name() { 
+function Get_Email_Proformas_By_Name() {
   global $db;
   $full = [];
   $res = $db->query("SELECT * FROM EmailProformas ORDER BY SN ");
@@ -311,7 +311,7 @@ function Get_Email_Proforma($id) {
     $ans = $res->fetch_assoc();
     return $ans;
   }
-  return 0; 
+  return 0;
 }
 
 function Put_Email_Proforma(&$now) {
@@ -326,6 +326,8 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
   $Reps = [];
   $Limit = 0;
 //echo "Passing <p>";
+  $Matches = [];
+  $mtch = [];
 
   while (preg_match('/\*(.*?)\*/',$Mess)) {
 //echo "<p>Here<p>";
@@ -335,12 +337,12 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
 //echo "Doing $key<br>";
         if (!isset($Reps[$key])) {
           switch ($key) {
-          case 'PLANYEAR': 
+          case 'PLANYEAR':
           case 'THISYEAR': // For historic proformas should be removed in time
           case 'YEAR':
             $rep = $PLANYEAR;
             break;
-          case 'NEXTYEAR':   
+          case 'NEXTYEAR':
             $rep = $PLANYEAR+1;
             break;
           case 'DATES':
@@ -390,7 +392,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
             if (isset($bits[1])) $url = $bits[1];
             if (isset($bits[2])) { $txt = $bits[2]; $txt = preg_replace('/_/',' ',$txt); }
             $rep = "<a href='https://$url'>$txt</a>";
-            break; 
+            break;
           case (preg_match('/READFILE_(.*)/',$key,$mtch)?true:false):
             $file = file_get_contents($mtch[1]);
             if ($file) {
@@ -408,7 +410,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
               Set_User();
               if (!$attnum) system("rm Temp/$USERID.*");
               $tf = $USERID . "." . $attnum . "." . time() . ".$sfx";
-              copy($mtch[1],"Temp/$tf");    
+              copy($mtch[1],"Temp/$tf");
               $rep = "<img src='Temp/$tf'>";
             } else {
               $rep = "<img src=cid:img_$attnum.$sfx>";
@@ -454,7 +456,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
 
     }
   }
-  
+
   $Mess = preg_replace('/(?<!<p>)\n\s*\n+\s*/mi',"\n\n<p>",$Mess);
 }
 
@@ -472,9 +474,9 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
     $Mess = $mescat;
   }
   Parse_Proforma($Mess,$helper,$helperdata,0,$attachments,$embeded);
-//echo "<p>After Pass:"; var_dump($attachments);  
+//echo "<p>After Pass:"; var_dump($attachments);
   NewSendEmail($Src,$SrcId,$to,$subject,$Mess,$attachments,$embeded,$from);
-//echo "<p>After Send:"; var_dump($attachments);  
+//echo "<p>After Send:"; var_dump($attachments);
   if (isset($Prof)) {
     $Callback = $helper . "_Callback";
 //    echo "Got Here";
@@ -482,7 +484,7 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
       $Callback($mescat,$helperdata);
     }
   }
-  
+
   if ($logfile) {
     $logf = fopen("LogFiles/$logfile","a");
     fwrite($logf,"\n\nOn:" . date('j M Y  H:i:s') . "\nEmail to : " . Pretty_Print_To($to) . "Subject:$subject\n");
@@ -497,11 +499,11 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
           if (is_array($att)) {
             fwrite($logf," With attachment: " . $att[0] . " as " . (empty($att[1])?"Unknown Attachment":$att[1]) . "\n\n");
           } else {
-            fwrite($logf," With attachment: " . $att . "\n\n");          
+            fwrite($logf," With attachment: " . $att . "\n\n");
           }
         }
       } else {
-        fwrite($logf," With attachment $attachments\n\n");       
+        fwrite($logf," With attachment $attachments\n\n");
       }
     }
     if ($embeded) {
@@ -510,7 +512,7 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
       if (is_array($embeded)) {
         foreach ($embeded as $i=>$att) fwrite($logf," With embeded: " . $att[0] . " as " . (empty($att[1])?"Unknown embeded":$att[1]) . "\n\n");
       } else {
-        fwrite($logf," With embeded $embeded\n\n");       
+        fwrite($logf," With embeded $embeded\n\n");
       }
     }
 
@@ -599,7 +601,7 @@ function Get_Email_Attachments($id) {
   if ($ans) while ($Att = $ans->fetch_assoc()) $Atts[] = $Att;
   return $Atts;
 }
-  
+
 function Get_Email_Log($id) {
   return db_get("EmailLog","id=$id");
 }

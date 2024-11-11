@@ -46,7 +46,7 @@ function Get_Signup($id) {
   global $db;
   $res=$db->query("SELECT * FROM SignUp WHERE id=$id");
   if ($res) return $res->fetch_assoc();
-  return 0; 
+  return 0;
 }
 
 function Put_Signup(&$now) {
@@ -92,7 +92,7 @@ function Get_lnl_Details(&$lnl) {
   if (isset($lnl['Bio'])) $Body .= "Bio:" . $lnl['Bio'] . "\n";
   if (isset($lnl['Social'])) $Body .= "Social:" . $lnl['Bio'] . "\n";
   if (isset($lnl['Example'])) $Body .= "Video: <a href='" . $lnl['Example'] . "'>" .$lnl['Example'] . "</a>\n";
-  
+
   $Body = preg_replace('/\n/',"<br>",$Body);
   return $Body;
 }
@@ -127,27 +127,27 @@ function LNL_Action($action,$id) {
     Email_Signup($lnl,'LNL_Invite',$lnl['Email']);
     $lnl['State'] = $StatesSignup['Accepted not paid'];
     break;
-  
+
   case 'Resend':
     Email_Signup($lnl,'LNL_Invite',$lnl['Email']);
     break;
-  
+
   case 'Paid':
   case 'PPaid':
     $lnl['State'] = $StatesSignup['Paid'];
     break;
-      
+
   case 'Cancel':
     $lnl['State'] = $StatesSignup['Cancelled'];
     if ($LNLDepositValue) Invoice_RemoveCode("LNL$id");
     break;
-    
+
   case 'Decline':
     Email_Signup($lnl,'LNL_Decline',$lnl['Email']);
     $lnl['State'] = $StatesSignup['Declined'];
     break;
- 
-  } 
+
+  }
   Put_Signup($lnl);
 }
 
@@ -156,7 +156,7 @@ function Get_lol_Details(&$lol) {
   global $yesno;
   $Body = "Act: " . $lol['SN'] . "\n";
   $Body .= "Contact: " . $lol['Contact'] . "\n";
-  if ($bb['Phone']) $Body .= "Phone: " . $lol['Phone'] . "\n";
+  if ($lol['Phone']) $Body .= "Phone: " . $lol['Phone'] . "\n";
   $Body .= "Email: <a href=mailto:" . $lol['Email'] . ">" . $lol['Email'] . "</a>\n";
   $Body .= "\n\n";
 
@@ -182,7 +182,7 @@ function Lol_Details($key,&$lol) {
 
 function Email_lol_Signup(&$lol,$messcat,$whoto) {
   global $PLANYEAR,$USER;
-  Email_Proforma(EMAIL_SIGNUP,$lol['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $lol['SN'],'lol_Details',$lnl,'LaughOutLog.txt');
+  Email_Proforma(EMAIL_SIGNUP,$lol['id'],$whoto,$messcat,Feature('FestName') . " $PLANYEAR and " . $lol['SN'],'lol_Details',$lol,'LaughOutLog.txt');
 }
 
 function Get_BB_Details(&$lnl) {
@@ -208,7 +208,7 @@ function Get_BB_Details(&$lnl) {
   if (isset($lnl['Bio'])) $Body .= "Bio:" . $lnl['Bio'] . "\n";
   if (isset($lnl['Social'])) $Body .= "Social:" . $lnl['Bio'] . "\n";
   if (isset($lnl['Example'])) $Body .= "Video: <a href='" . $lnl['Example'] . "'>" .$lnl['Example'] . "</a>\n";
-  
+
   $Body = preg_replace('/\n/',"<br>",$Body);
   return $Body;
 }
@@ -238,31 +238,31 @@ function BB_Action($action,$id) {
     // send invite email with BACS info and code
     // InvoiceLib needs list of reserved codes
     $bb['State'] = $StatesSignup['Accepted'];
-    if ($BBDepositValue) Invoice_AssignCode("BB$id",$BBDepositValue*100,3,$id,$bb['SN'],"Buskers Bash"); 
+    if ($BBDepositValue) Invoice_AssignCode("BB$id",$BBDepositValue*100,3,$id,$bb['SN'],"Buskers Bash");
     Email_BB_Signup($bb,'BB_Invite',[['to',$bb['Email']],['replyto','BuskersBash@']]);
     break;
-    
+
   case 'Resend':
     Email_BB_Signup($bb,'BB_Invite',$bb['Email']);
     break;
-  
+
   case 'Paid':
   case 'PPaid':
     $bb['State'] = $StatesSignup['Paid'];
     break;
-      
+
   case 'Cancel':
     $bb['State'] = $StatesSignup['Cancelled'];
     if ($BBDepositValue) Invoice_RemoveCode("BB$id");
     break;
 
-    
+
   case 'Decline':
-    Email_Signup($lnl,'BB_Decline',$bb['Email']);
+    Email_Signup($bb,'BB_Decline',$bb['Email']);
     $bb['State'] = $StatesSignup['Declined'];
     break;
-  
-  } 
+
+  }
   Put_Signup($bb);
 }
 
@@ -295,7 +295,7 @@ function Get_SVol_Details(&$vol) {
 function Vol_SDetails($key,&$vol) {
   switch ($key) {
   case 'WHO': return firstword($vol['SN']);
-  case 'DETAILS': return Get_SVol_Details($stwe);
+  case 'DETAILS': return Get_SVol_Details($vol);
   case 'LINK' :return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Access?t=w&id=" . $vol['id'] . "&k=" . $vol['AccessKey'] . "'><b>link</b></a>";
   }
 }
@@ -337,11 +337,11 @@ function Get_Art_Details(&$art) {
   if (isset($art['Instr3']) && $art['Instr3']) $Body .= "Want to achieve: " . $art['Instr3'] . "\n\n";
   if ($art['Tickbox2']) $Body .= "This is a " . $ArtValues[$_REQUEST['Tickbox2']] . "\n\n";
   if (isset($art['Style']) && $art['Style']) $Body .= "Genre: " . $art['Style'] . "\n\n";
-  if ($art['Tickbox3']) $Body .= "Position: " . $ArtPosition[$_REQUEST['Tickbox3']] . "\n\n"; 
-  if (isset($art['Instr4']) && $art['Instr4']) $Body .= "Workshops: " . $art['Instr4'] . "\n\n";  
+  if ($art['Tickbox3']) $Body .= "Position: " . $ArtPosition[$_REQUEST['Tickbox3']] . "\n\n";
+  if (isset($art['Instr4']) && $art['Instr4']) $Body .= "Workshops: " . $art['Instr4'] . "\n\n";
 
   $Body .= "\n\n";
-  
+
   $Body = preg_replace('/\n/',"<br>",$Body);
   return $Body;
 }
@@ -356,10 +356,10 @@ function ART_Details($key,&$art) {
   case 'DEPOSIT': return Print_Pound($ARTfee);
   case 'LINK': return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/Access?t=ART&i=$id&key=" . $art['AccessKey'] . "'  style='background:lightblue;'><b>link</b></a>";
   case 'FESTLINK' : return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/ArtForm?id=$id'><b>link</b></a>";
-  case 'PAYCODES' : 
+  case 'PAYCODES' :
     $Pay = Pay_Code_Find(5,$id);
     if ($Pay && $Pay['State']==0) {
-      return "<b>Payment due</b><br>For: <b>" . $Pay['Reason'] . "</b><br>Due: " . date('j/n/Y',$Pay['DueDate']) . "<br>Please pay: " . Print_Pence($Pay['Amount']) . " to:<br>" . 
+      return "<b>Payment due</b><br>For: <b>" . $Pay['Reason'] . "</b><br>Due: " . date('j/n/Y',$Pay['DueDate']) . "<br>Please pay: " . Print_Pence($Pay['Amount']) . " to:<br>" .
           Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . "<p>Quote Reference: " .
           $Pay['Code'] . "<p>";
     };
@@ -405,7 +405,7 @@ function ART_Action($action,$id,$val=0) {
       ART_Email_Signup($art,'ART_Invite',$art['Email']);
       $art['State'] = $StatesSignup['Accepted'];
     }
-    break;  
+    break;
 
   case 'Accept -10':
     if ($ARTfee && $art['Tickbox1'] > 0) {
@@ -421,37 +421,37 @@ function ART_Action($action,$id,$val=0) {
     break;
 
 
-    
+
   case 'Resend':
     if ($art['State'] == $StatesSignup['Accepted not paid']) {
       ART_Email_Signup($art,'ART_Invite_Pay',$art['Email']);
     } else {
       ART_Email_Signup($art,'ART_Invite',$art['Email']);
-    }  
+    }
     break;
-  
+
   case 'Paid':
   case 'PPaid':
     $art['State'] = $StatesSignup['Paid']; // TODO Add invoice to a concirfamtion email
 
     $ipdf = New_Invoice($art,
                           [["Pitch for selling Art @ The Folk Festival",$ARTfee*100]],
-                            'Art Pitch', 200, 5, -1,0,0,1 ); // TODO make 200 come from data 
-                            
-    ART_Email_Signup($art,'ART_Payment_Invoice',$art['Email'],$ipdf);                           
+                            'Art Pitch', 200, 5, -1,0,0,1 ); // TODO make 200 come from data
+
+    ART_Email_Signup($art,'ART_Payment_Invoice',$art['Email'],$ipdf);
     break;
-      
+
   case 'Cancel':
     $art['State'] = $StatesSignup['Cancelled'];
     if ($ARTfee) Invoice_RemoveCode("ART$id");
     break;
-    
+
   case 'Decline':
     Email_Signup($art,'ART_Decline',$art['Email']);
     $art['State'] = $StatesSignup['Declined'];
     break;
- 
-  } 
+
+  }
   Put_Signup($art);
 }
 

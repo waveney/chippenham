@@ -38,3 +38,6 @@ fred*
 */fred
 /nbproject/
 .DS_Store
+.settings/*
+.project
+

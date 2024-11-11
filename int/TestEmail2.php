@@ -9,6 +9,6 @@
 //    mail("richard@wavwebs.com","Test Email",'Test Message 2');
     mail("richardjproctor42@gmail.com","Test Email",'Test Message 2');
 
-    echo "Email sent:<p>$letter";
+    echo "Email sent:<p>";
   dotail();
 ?>

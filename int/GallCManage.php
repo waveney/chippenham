@@ -13,6 +13,7 @@
 
   include_once("ImageLib.php");
   include_once("TradeLib.php");
+  $mtch = [];
 
 // var_dump($_REQUEST);
 
@@ -21,7 +22,7 @@
   $Galid = (isset($_REQUEST['g'])? $_REQUEST['g']:0 );
   if (strlen($Galid) > 4) $Galid=0;
   $GalName = $Gals[$Galid];
-  
+
   if (isset($_REQUEST['ACTION'])) {
     switch ($_REQUEST['ACTION']) {
     case 'Move': // Move to other gallery
@@ -49,7 +50,7 @@
       }
 
       break;
-      
+
     case 'Copy': // Copy Photo in another gallery - source is used for both
       $Tgt = $_REQUEST['CopyTo'];
       if (!$Tgt) break;
@@ -66,13 +67,13 @@
       }
       echo "Copied $Count to " . $Gals[$Tgt] . "<p>";
       break;
-    
+
     default:
       break;
     }
-    
+
   }
-  if (isset($_REQUEST['IMPORT'])) { 
+  if (isset($_REQUEST['IMPORT'])) {
     $Prefix = $_REQUEST['FilePrefix'];
     $ImpLog = '';
     $ImpCount = 0;
@@ -164,27 +165,27 @@
     echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
   }
 
-  
+
   echo "</table>";
-  
+
   Cancel_AutoUpdate();  // REst is a different form handled by Updatemany
   $Gal = Get_Gallery_Photos($Galid);
   if (UpdateMany('GallPhotos','Put_Gallery_Photo',$Gal,0)) $Gal = Get_Gallery_Photos($Galid);
 
   echo "If used Order controls the order of pictures appearing, two pictures of the same Order value may appear in any order.<p>\n";
   echo "To delete a photo move the entry to the blank gallery.<p>\n";
-  
+
   $coln = 0;
-  
+
 //  $GalSize = count($Gal);
-  
+
   echo "<form method=post action=GallCManage>";
-  
+
 //  $Page = 0;
 //  if (isset($_REQUEST['Page'])) $Page = $_REQUEST['Page'];
 //  echo fm_hidden('Page',$Page);
-  
-  
+
+
   echo fm_hidden('g',$Galid);
   echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
@@ -196,7 +197,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Order</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Thumbnail</a>\n";
   echo "</thead><tbody>";
-  
+
 //  $GCount = $Skip = 0;
   $Seq = 0;
   foreach($Gal as $g) {

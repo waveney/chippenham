@@ -3,7 +3,7 @@
   include_once("int/MapLib.php");
   include_once("int/ProgLib.php");
   dohead("Food and Drink",[],1);
-
+  global $PLANYEAR;
 /*
 ?>
 <div class=TwoCols><script>Register_Onload(Set_ColBlobs,'Blob',5)</script>

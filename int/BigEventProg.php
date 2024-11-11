@@ -8,7 +8,7 @@
   include_once("MusicLib.php");
   include_once("ProgLib.php");
 //  include_once("PartLib.php");
-  global $YEAR,$SelectPerf,$Sides,$Order,$things;
+  global $YEAR,$SelectPerf,$Sides,$Order,$things,$PerfTypes;
 
   if (isset($_REQUEST['e'])) { $Eid = $_REQUEST['e']; } else { Error_Page('Big Event without Event'); };
   $Event = Get_Event($Eid);
@@ -23,8 +23,8 @@
     $extra = " AND y.Procession$Day=1 AND y.$Day=1";
   }
 
-  foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $SelectPerf[$p] = ($d[0] == 'IsASide'? Select_Come_All($extra): Select_Perf_Come_All($d[0],$extra2)); 
-  
+  foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $SelectPerf[$p] = ($d[0] == 'IsASide'? Select_Come_All($extra): Select_Perf_Come_All($d[0],$extra2));
+
   $Sides = Select_Perf_Full();
 
   $things = Get_Other_Things_For($Eid);
@@ -67,7 +67,7 @@ function Prog_Grid() {
         if (isset($Sides[$id]['EventOrder'])) { $Sides[$id]['EventOrder'] = '!!'; }
         else $Sides[$id]['EventOrder'] = $CurOrder;
       }
-      echo "<td id=M$CurOrder:$tt:$id ondragover=allow(event)><input type=text size=30 id=J$CurOrder:$tt:$id oninput=newnote(event) value='" . 
+      echo "<td id=M$CurOrder:$tt:$id ondragover=allow(event)><input type=text size=30 id=J$CurOrder:$tt:$id oninput=newnote(event) value='" .
         htmlspec($t['Notes']) ."' ondragover=allow(event)>\n";
       $CurOrder++;
     }
@@ -89,14 +89,14 @@ function Side_List($extra='',$extra2='') {
   global $Event,$DAY,$Sides,$Thing_Types,$ActsD,$OthersD,$PerfTypes,$SelectPerf,$Order;
   $Show['ShowThings'] = 'Sides';
   echo "<div class=SideListWrapper>";
-  
+
   $PTypes = [];
   foreach ($PerfTypes as $pi=>$p) if (Capability("Enable" . $p[2])) $PTypes[] = $pi;
   $stuff["PerfType0"] = 0;
   echo fm_radio('',$PTypes,$stuff,"PerfType0","onchange=EventPerfSel(event,###F,###V)",0);
 
   echo "<div class=SideListContainer>";
-  foreach ($PTypes as $pi=>$p) {    
+  foreach ($PTypes as $pi=>$p) {
     echo "<table border id=Perf$pi" . "_Side0 " . ($pi?"style='Display: none;' ":"") . ">";
     echo "<tr><th>" . $PTypes[$pi] . "<th>i";
 //    if (!$Event['ExcludeCount']) echo "<th>W<th>H";
@@ -124,7 +124,7 @@ function Controls() {
   global $InfoLevels,$Eid,$Event,$DAY;
   echo "<div class=DPControls><center>";
   echo "Big Event Programming Controls<br>";
-  echo "For " . $Event['SN'] . " on " . DayList($DAY) . "<br>\n"; 
+  echo "For " . $Event['SN'] . " on " . DayList($DAY) . "<br>\n";
   echo "<div id=EVENT hidden>$Eid</div>";
   echo "<form method=get action=BigEventProg>";
   echo fm_hidden('EV',$Eid);
@@ -165,7 +165,5 @@ function InfoPane() {
 // No standard footer - will use whole screen
 ?>
 
-  </div>
-</div>
 </body>
 </html>

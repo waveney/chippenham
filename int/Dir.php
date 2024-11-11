@@ -9,6 +9,8 @@
 // if ($_REQUEST) var_dump($_REQUEST);
 
   include_once("DocLib.php");
+
+  global $Sections,$Access_Levels,$USERID,$USER;
   if (isset($_REQUEST['d'])) {
     $d = $_REQUEST['d'];
   } else {
@@ -16,7 +18,7 @@
   }
 
 //  $DBG = fopen("LogFiles/XLOG","a+");
-  
+
   $dir  = Get_DirInfo($d);
   $list = Get_DirList($d);
   $subs = Get_SubDirList($d);
@@ -28,13 +30,13 @@
   if (isset($_REQUEST['Action'])) { $Act = $_REQUEST['Action']; }
   else { $Act = ''; }
   $skip = 0;
-  
+
   switch ($Act) {
-    case 'Create': 
+    case 'Create':
       if ($dir) {
         $NewDir = $_REQUEST['DirName'];
         if (strlen($NewDir) < 2) {
-          $ErrMess = "Directory name too short"; 
+          $ErrMess = "Directory name too short";
         } else {
           $ndir = "Store" . Dir_FullName($d) . "/" . $NewDir;
           if (file_exists($ndir)) {
@@ -48,12 +50,12 @@
           }
         }
       } else {
-        $ErrMess = "Insufficient Priviledge";      
-      }  
+        $ErrMess = "Insufficient Priviledge";
+      }
       break;
     case 'Delete':
       /* delete all files and directories (recurse) set d to Parent then do dir, log it */
-      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
+      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID /*|| $sub['Who'] == $USERID*/ )) {
         $Parent = $dir['Parent'];
         DeleteAll($d);
         $d = $Parent;
@@ -65,7 +67,7 @@
       }
       break;
     case 'Rename1':
-      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
+      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID /*|| $sub['Who'] == $USERID*/ )) {
           echo '<form action="Dir" method="post">';
           echo fm_hidden('d', $d);
         echo "<h2>Rename " . htmlspec($dir['SN']) . "</h2>";
@@ -78,7 +80,7 @@
       }
       break;
     case 'Rename':
-      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
+      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID /*|| $sub['Who'] == $USERID*/ )) {
         $NewDir = $_REQUEST['DirName'];
         if ($dir['SN'] == $NewDir) break;
         $fullname = Dir_FullName($d);
@@ -95,7 +97,7 @@
       }
       break;
     case 'Move1':
-      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
+      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID /*|| $sub['Who'] == $USERID*/ )) {
           echo '<form action="Dir" method="post">';
           echo fm_hidden('d', $d);
         echo "<h2>Move " . htmlspec($dir['SN']) . " to </h2>";
@@ -108,7 +110,7 @@
       }
       break;
     case 'Move':
-      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
+      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID /*|| $sub['Who'] == $USERID*/ )) {
         $NewDir = $_REQUEST['NewDir'];
         $name = $dir['SN'];
         if ($dir['Parent'] == $NewDir) break;
@@ -148,7 +150,7 @@
       }
       break;
     case 'Restrict1': // Change access restrictions
-      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {    
+      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID /*|| $sub['Who'] == $USERID*/ )) {
           echo '<form action="Dir" method="post">';
           echo fm_hidden('d', $d);
         echo "<h2>Restrict " . htmlspec($dir['SN']) . " to </h2>";
@@ -167,18 +169,18 @@
       }
       break;
     case 'Restrict': // Change access restrictions
-      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID || $sub['Who'] == $USERID )) {
+      if ($d > 0 && (Access('Committee','Docs') || $dir['Who'] == $USERID /*|| $sub['Who'] == $USERID*/ )) {
         $dir['AccessLevel'] = $_REQUEST['AccessLevel'];
         $sects = [];
         foreach ($Sections as $Sect) if (isset($_REQUEST["Section_$Sect"]) && $_REQUEST["Section_$Sect"]) $sects[] = $Sect;
-        $dir['AccessSections'] = ($sects ? implode(",",$sects) : ''); 
-        Put_DirInfo($dir);                 
+        $dir['AccessSections'] = ($sects ? implode(",",$sects) : '');
+        Put_DirInfo($dir);
       } else {
         $ErrMess = "Insufficient Priviledge";
       }
       break;
-    
-    
+
+
     default:
   }
 
@@ -186,7 +188,7 @@
 
   if (isset($_REQUEST['FileAction'])) { $Act = $_REQUEST['FileAction']; }
   else { $Act = ''; }
-  
+
   if (!$skip && $Act) {
     if (isset($_REQUEST['f'])) {
       $f = $_REQUEST['f'];
@@ -342,13 +344,13 @@
     echo "<h2>Directory: " . Get_Parent($d) . "</h2>";
 
     Doc_Table_Head();
- 
+
  // Parent
- 
+
     if ($d > 0) {
       $pid = $dir['Parent'];
       $pdir = Get_DirInfo($pid);
-      
+
       List_dir_ent($pdir,'Parent');
     }
 
@@ -365,11 +367,11 @@
     }
 
     foreach($list as $file) Doc_List($file);
-    
+
     echo "</tbody></table></div><p>\n";
 
 //    fm_DragNDrop(0,1,'','- Do not upload more than 15M at once, for large files contact <a href=mailto:Richard@wavwebs.com>Richard</a>');
-    
+
     echo "<form method=post action=Dir enctype='multipart/form-data' class=dropzone id=DirUpload >";
     echo fm_hidden('d', $d);
     echo fm_hidden('FileAction', 'Upload');

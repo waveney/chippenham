@@ -29,7 +29,7 @@ $OlapCats = array('Side','Act','Comedy','Family','Other');
 $Proforma_Colours = ['Decide'=>'DarkOrange','Details'=>'Magenta','Program'=>'Yellow','ProgChk'=>'lightsalmon','NewProg'=>'yellow',
   'FinalInfo'=>'LawnGreen', 'FinalInfo2'=>'MediumSeaGreen', 'Invite'=>'Beige','Remind'=>'khaki', 'Change'=>'DarkOrange', 'Reinvite'=>'Beige',
   'Cancel'=>'lightgrey', 'SpecInvite'=>'Beige','SpecPoss'=>'Khaki','MorrisTickets' =>'Beige'];
-$TickBoxes = [['Seen Programme','Invited','YHAS','Program:','D',2]]; 
+$TickBoxes = [['Seen Programme','Invited','YHAS','Program:','D',2]];
 $PerfListStates = ['Not Open','Open'];
 
 
@@ -79,14 +79,14 @@ function Select_Come($type=0,$extra='') {
   static $Come_Loaded = 0;
   static $Coming = array('');
   if ($Come_Loaded) return $Coming;
-  $qry = "SELECT s.SideId, s.SN, s.Type FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND y.Coming=" . 
+  $qry = "SELECT s.SideId, s.SN, s.Type FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND y.Coming=" .
         $Coming_Type['Y'] . " AND s.IsASide=1 " . $extra . " ORDER BY s.SN";
 //  echo "<!-- " . var_dump($qry) . " -->\n";
   $res = $db->query($qry);
   if ($res) {
     while ($row = $res->fetch_assoc()) {
       $x = '';
-      if ($type == 0 && $row['Type']) $x = " ( " . $row['Type'] . " ) "; 
+      if ($type == 0 && $row['Type']) $x = " ( " . $row['Type'] . " ) ";
       $Coming[$row['SideId']] = $row['SN'] . $x;
     }
   }
@@ -124,11 +124,11 @@ function &Part_Come_All() {
   global $db,$YEAR,$Coming_Type;
   $Coming = [];
 
-  $qry = "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideStatus=0 AND s.SideId=y.SideId AND y.Year='$YEAR' AND ( y.Coming=" . 
+  $qry = "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideStatus=0 AND s.SideId=y.SideId AND y.Year='$YEAR' AND ( y.Coming=" .
          $Coming_Type['Y'] . " OR y.YearState>1 ) ORDER BY s.SN" ;
   $res = $db->query($qry);
   if ($res) while ($row = $res->fetch_assoc()) $Coming[$row['SideId']] = $row; // All Sides, now acts
-  return $Coming;  
+  return $Coming;
 }
 
 function Get_SideAndYear($snum) {
@@ -136,7 +136,7 @@ function Get_SideAndYear($snum) {
 //  echo "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=$snum AND y.SideId=$snum AND y.Year='$YEAR'";
   $res = $db->query("SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=$snum AND y.SideId=$snum AND y.Year='$YEAR'") ;
   if ($res) return $res->fetch_assoc();
-  return 0;  
+  return 0;
 }
 
 function Show_Side($snum,$Message='',$price=0,$Pcat='') {
@@ -153,13 +153,13 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
       $is = $PerfTypes[$Pcat][0];
       if ($side[$is]) $Isa = $Pcat;
     }
-    
+
     $AlsoIs = Get_Active_Overlaps_For($snum,"AND OType>=3");
 
     $Banner = 1;
     if (Feature('PerformerBanners') && OvPhoto($side,$Isa)) $Banner = OvPhoto($side,$Isa);
     dohead($side['SN'],[],$Banner);
-    if ($Message) echo "<h2 class=ERR>$Message</h2>"; 
+    if ($Message) echo "<h2 class=ERR>$Message</h2>";
 
     $txt = '';
     $BlobNum = 0;
@@ -168,13 +168,13 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
 
     echo "<div class=TwoCols><script>Register_Onload(Set_ColBlobs,'Blob',4)</script>";
     echo "<div class=OneCol id=TwoCols1>";
-    
 
-    
+
+
     $txt .= "<div id=Blob" . ($BlobNum++) . ">";
     $txt .=  "<h2>" . OvName($side,$Isa) . "</h2>";
     if (OvDesc($side,$Isa)) {
-//      if ($side['OneBlurb']==0 || 
+//      if ($side['OneBlurb']==0 ||
       if (strlen(OvDesc($side,$Isa)) > strlen(OvBlurb($side,$Isa))) $txt .=  OvDesc($side,$Isa) . "<p>";
     }
 
@@ -223,22 +223,22 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
     }
     if (OvBlurb($side,$Isa)) $txt .=  $side['Blurb'];
     $txt .=  "</div>";
-    
+
     if (OvPhoto($side,$Isa)) $txt .=  "<div id=Blob" . ($BlobNum++) . "><img src=" . OvPhoto($side,$Isa) . " width=100%></div>\n";
-    
+
     if ($syear['SponsoredBy'] ?? 0) {
       include_once("DispLib.php");
       $txt .=  "<div id=Blob" . ($BlobNum++) . ">";
       SponsoredBy($syear,OvName($side,$Isa),3,$snum);
       $txt .= "</div>";
     }
-    
-    if ( OvVideo($side,$Isa)) $txt .=  "<div id=Blob" . ($BlobNum++) . "  style='max-width:100%; object-fit:contain;overflow:hidden'>" . 
+
+    if ( OvVideo($side,$Isa)) $txt .=  "<div id=Blob" . ($BlobNum++) . "  style='max-width:100%; object-fit:contain;overflow:hidden'>" .
       embedvideo(OvVideo($side,$Isa)) . "</div>";
 
     if (OvWebsite($side,$Isa) || OvFacebook($side,$Isa) || $side['Twitter'] || $side['Instagram']) {
       $txt .=  "<div id=Blob" . ($BlobNum++) . ">";
-      if ( $side['Website'] ) $txt .=  "<img src=/images/icons/web.svg width=24 class=Limited> " . weblink(OvWebsite($side,$Isa),"<b>" . 
+      if ( $side['Website'] ) $txt .=  "<img src=/images/icons/web.svg width=24 class=Limited> " . weblink(OvWebsite($side,$Isa),"<b>" .
         $side['SN'] . "'s website</b>",'',1) . "<br>";
       $follow = "Follow " . $side['SN'] . " on ";
       $txt .=   Social_Link(OvFacebook($side,$Isa),'Facebook',1,$follow);
@@ -247,7 +247,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
   //    $txt .=   Social_Link(OvSpotify($side,$Isa),'Spotify',1,$follow);
       $txt .=  "</div>";
     }
-    
+
     if ($AlsoIs) {
  //       var_dump($AlsoIs);
 //$OlapTypes = array('Dancer','Musician','Avoid','Also is','Part of','Includes');
@@ -256,7 +256,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
       foreach($AlsoIs as $Also) {
         if ($Also['OType']>2) {
           $Aid = (($Also['Sid1'] == $snum)?$Also['Sid2']:$Also['Sid1'])+0;
-          
+
           switch ($Also['OType']) {
             case 4:
               if ($Also['Sid1'] == $snum) $Also['OType'] = 5;
@@ -267,9 +267,9 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
             default:
               break;
           }
-          
+
           $OLap_Strings = ['','','','is also appearing as','is part of','includes'];
-                
+
           $Aside = Get_SideAndYear($Aid);
           if ($Aside && (($Aside['IsASide'] && ($Aside['Coming'] == 2)) || ($Aside['YearState'] >= 2))) {
   //      $AYear = Get_SideYear($Aid);
@@ -286,18 +286,18 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
     }
 
     $txt .=  "</div>";
-    
+
     if ($HasOverlay) {
       // Not written yet
     }
-    
+
     echo "<div class=TwoCols><script>Register_Onload(Set_ColBlobs,'Blob'," . $BlobNum . ")</script>";
     echo "<div class=OneCol id=TwoCols1>$txt";
     echo "<div class=OneCol id=TwoCols2></div></div>";
 
     $prog = Show_Prog('Side',$snum,0,$price);
   //  $Exted_prog = Extended_Prog('Side',$snum,0);
-    
+
     if ($prog) {
       if ($prog) echo $prog;
   //    if ($Exted_prog) echo $Exted_prog;
@@ -335,7 +335,7 @@ function Get_Side($who) {
 
 function Put_Side(&$data) {
   global $Save_Sides;
-  
+
   if (!isset($Save_Sides[$data['SideId']])) Get_Side($data['SideId']);
   $Save = &$Save_Sides[$data['SideId']];
   return Update_db('Sides',$Save,$data);
@@ -391,7 +391,7 @@ function RecordPerfChanges(&$now,&$Cur,$Up) {
       $Rec = ['SideId'=>$now['SideId'], 'Year'=>$PLANYEAR, 'Changes'=>$now[$f], 'Field'=>$ff, 'Who'=>$USERID ];
       Gen_Put('PerfChanges',$Rec);
     }
-    
+
   }
 }
 
@@ -400,26 +400,26 @@ function Put_SideYear(&$data,$Force=0) {
   if (!$data) return;
   if ($Force) {
     $Save = Get_SideYear($data['SideId']);
-    $Up = 1;    
+    $Up = 1;
    } else {
      if (!isset($Save_SideYears[$data['SideId']][$data['Year']])) {
        $Save = &$Save_SideYears[$data['SideId']][$YEAR];
        $Save = Default_SY($data['SideId']);
        $data = array_merge($Save,$data);
        $Up = 0;
-     } else { 
+     } else {
        $Save = &$Save_SideYears[$data['SideId']][$data['Year']];
        $Up = 1;
      }
   }
-  
+
   if (Feature('RecordPerfChanges')) RecordPerfChanges($data,$Save,$Up);
   if ($Up) {
     return Update_db('SideYear',$Save,$data);
   } else {
     return Insert_db('SideYear',$data);
   }
- 
+
 }
 
 function isknown($snum,$yr) {
@@ -448,7 +448,7 @@ function Get_Perf_Type($id) {
     $ans = $res->fetch_assoc();
     return $ans;
   }
-  return 0; 
+  return 0;
 }
 
 function Put_Perf_Type(&$now) {
@@ -490,7 +490,7 @@ function Set_Side_Help() {
         'DataCheck'=>'Not yet working',
         'MorrisAnimal'=>'If the side has a morris animal - what kind is it',
         'Workshops'=>'That the side could run',
-        'Overlaps'=>('Do you overlap with any dance sides, musicians or other performers who might be at' . Feature('FestName') . 
+        'Overlaps'=>('Do you overlap with any dance sides, musicians or other performers who might be at' . Feature('FestName') .
                     ', if so please describe in detail and we will try and prevent clashes'),
         'OverlapRules'=>'Dancer - must have break between spots, Musician allowed to play at same spot for two periods - then must break, ' .
                     'Avoid - Dont put these together, Also is - Same performer different profile. Major - major error, minor avoid if you can',
@@ -530,22 +530,22 @@ function Set_Side_Year_Help() {
         'SatDance'=>'How many Dance spots would you like on Saturday, the minimum for a performers wristband is 3 shared spots plus the ' .
            'procession or 4 shared spots or 3 solo spots',
         'SunDance'=>'How many Dance spots would you like on Sunday, the minimum for a performers wristband is 4 shared spots or 3 solo spots',
-        'Share'=>'Do you like shared or dedicated dance spots?', 
+        'Share'=>'Do you like shared or dedicated dance spots?',
         'CarPark'=>'Number of free car park tickets for parking at QE school (10 minute walk to square)',
         'SatArrive'=>'The earliest time (eg 1000), if blank no restrictions are assumed',
         'SatDepart'=>'The end of the last spot (eg 1700).  If blank no restictions are assumed.',
         'SunArrive'=>'The earliest time (eg 1000), if blank no restrictions are assumed',
         'SunDepart'=>'The end of the last spot (eg 1700).  If blank no restictions are assumed.',
-        'BudgetArea0'=>'In MOST cases nothing needs setting here as Music acts will default to Music and Dance to Dance.  
+        'BudgetArea0'=>'In MOST cases nothing needs setting here as Music acts will default to Music and Dance to Dance.
                 * IF you need to assign to a different budget change the area
                 * IF you need part of the fee to come under a different budget, you set up to 2 areas to have parts of the Fee and the amount ' .
            'to assign',
         'OtherPayment' => 'Eg A bottle of Rum',
         'OtherPayCost' => 'Cost of the other payment, eg the bottle of Rum',
         'ReleaseDate' => 'If set, do not show to public until after this date/time',
-        'YearState'=>'This is generally set by your and the Acts actions.  
+        'YearState'=>'This is generally set by your and the Acts actions.
 Declined - Will leave this state after any change that would affect the contract.
-Booking - negotiations in place. 
+Booking - negotiations in place.
 Contract Ready - For the Act to confirm it.
 Contract Signed - Enables listing to public.',
         'Rider'=>'Additional text to be added to the Contract',
@@ -563,7 +563,7 @@ Contract Signed - Enables listing to public.',
   Set_Help_Table($t);
 }
 
-function Default_SY($id=0) { 
+function Default_SY($id=0) {
   global $YEAR,$USERID;
   $numprocs = intval(Feature('ProcessDays'));
   $ans = array('SatDance'=>4,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0,'Coming'=>0);
@@ -572,27 +572,27 @@ function Default_SY($id=0) {
   case 0:
     break;
   case 2:
-    $ans['ProcessionSat'] = 1; 
+    $ans['ProcessionSat'] = 1;
     $ans['SatDance'] = 3;
     break;
   case 4:
-    $ans['ProcessionSun'] = 1; 
+    $ans['ProcessionSun'] = 1;
     $ans['SunDance'] = 3;
     break;
-  
+
   case 8:
-    $ans['ProcessionMon'] = 1; 
+    $ans['ProcessionMon'] = 1;
     $ans['MonDance'] = 3;
     break;
-  
+
   case 10:
     if (rand() < 0.5) {
-      $ans['ProcessionSat'] = 1; 
+      $ans['ProcessionSat'] = 1;
       $ans['SatDance'] = 3;
     } else {
-      $ans['ProcessionMon'] = 1; 
+      $ans['ProcessionMon'] = 1;
       $ans['MonDance'] = 3;
-    }  
+    }
   default:
   }
 
@@ -623,7 +623,7 @@ function Get_Dance_Type($id) {
     $Types[$id] = $ans;
     return $ans;
   }
-  return 0; 
+  return 0;
 }
 
 function Put_Dance_Type(&$now) {
@@ -637,7 +637,7 @@ function Has_Info(&$data) {
   foreach ($checkfor as $c) if (isset($data[$c]) && $data[$c] && ($data[$c] != 'None')) return 1;
 //  if (Get_Overlaps_For($data['SideId'],1)) return 1;
   return 0;
-} 
+}
 
 function Get_Overlaps_For($id,$act=0,$xtra='') { // if act only active
   global $db;
@@ -676,13 +676,13 @@ function Put_Overlaps(&$Ovs) {
     }
   }
 }
-  
+
 function UpdateOverlaps($snum) {
   $Exist = Get_Overlaps_For($snum);
 
 //  for($i=1; $i<5; $i++) {
 //    $_REQUEST["Side$i"] = $_REQUEST["Perf" . $_REQUEST["PerfType$i"] . "_Side$i"];
-//  }  
+//  }
 
 // Scan each existing and any added rules
   $Rule = 0;
@@ -691,10 +691,10 @@ function UpdateOverlaps($snum) {
     if (!isset($_REQUEST["Olap$r" . "Cat"])) break;
     $cat = $_REQUEST["Olap$r" . "Cat"];
     $sid = $_REQUEST["Perf$cat" . "_Side$r"];
-  
+
     if (!$sid || !isset($_REQUEST["OlapActive$r"]) || !isset($_REQUEST["OlapMajor$r"])) continue;
     $O = $StO = (isset($Exist[$r]) ? $Exist[$r] : ['Sid1'=>$snum,'Cat2'=>0]);
-    $Other = ($O['Sid1'] == $snum)?'Sid2':'Sid1'; 
+    $Other = ($O['Sid1'] == $snum)?'Sid2':'Sid1';
     $OtherCat = ($O['Sid1'] == $snum)?'Cat2':'Cat1';
     $O['OType'] = $_REQUEST["OlapType$r"];
     $O['Major'] = (isset($_REQUEST["OlapMajor$r"]) ? $_REQUEST["OlapMajor$r"] :0);
@@ -704,13 +704,13 @@ function UpdateOverlaps($snum) {
     $O[$Other] = $sid;
 
     if ((isset($O['id'])) && $O['id']) {
-      Update_db('Overlaps',$StO,$O); 
+      Update_db('Overlaps',$StO,$O);
     } else if ($O[$Other]) {
-      Insert_db('Overlaps',$O); 
+      Insert_db('Overlaps',$O);
     }
   }
 }
-      
+
 function Side_ShortName($si) {
   $side = Get_Side($si);
   return $side[($side['ShortName']?'ShortName':'SN')];
@@ -744,7 +744,7 @@ function EventCmp($a,$b) {
 /* Get Overlaps - if none return empty string, if not public return,
 /  otherwise get programmes for all overlaps and merge together and list as a timetable
 / */
-function Extended_Prog($type,$id,$all=0) { 
+function Extended_Prog($type,$id,$all=0) {
     global $OlapCats;
     $Olaps = Get_Active_Overlaps_For($id,"AND OType>=1");
     if (!$Olaps) return "";
@@ -776,8 +776,8 @@ function Extended_Prog($type,$id,$all=0) {
     }
     if (!$Found) return ""; // No new events found
 
-    usort($Evs,"EventCmp"); 
-    
+    usort($Evs,"EventCmp");
+
 //var_dump($Evs); exit;
     $Venues = Get_Real_Venues(1);
     if ($Evs) { // Show IF all or EType state > 1 or (==1 && participant)
@@ -786,7 +786,7 @@ function Extended_Prog($type,$id,$all=0) {
         if ($e["BigEvent"]) { $With = 1; break; }
         for ($i = 1; $i<5;$i++) if ($e["Side$i"] && $e["Side$i"] != $id) { $With = 1; break 2; }
       }
-        
+
       $UsedNotPub = 0;
       foreach ($Evs as $e) {
         $cls = ($e['Public']<2?'':' class=NotCSide ');
@@ -808,8 +808,8 @@ function Extended_Prog($type,$id,$all=0) {
               case 'Side':
               case 'Act':
               case 'Other':
-                if ($O['Identifier'] == $e['ActAs']) { 
-                  $Found = 1; 
+                if ($O['Identifier'] == $e['ActAs']) {
+                  $Found = 1;
                 } else {
                   if ($Found && $NextI==0) { $NextI=$O['Identifier']; $NextT=$O['Type']; }
                   if (!$Found) { $PrevI=$O['Identifier']; $PrevT=$O['Type']; $Position++; }
@@ -821,7 +821,7 @@ function Extended_Prog($type,$id,$all=0) {
                 break;
               }
             }
-            $str .= "<tr><td $cls>" . DayList($e['Day']) . 
+            $str .= "<tr><td $cls>" . DayList($e['Day']) .
               "<td $cls>" . timecolon($e['Start']) . "-" . timecolon(($e['SubEvent'] < 0 ? $e['SlotEnd'] : $e['End'] )) .
                         "<td>" . SAO_Report($e['ActAs']) .
                         "<td $cls><a href=$host/int/$EventLink?e=" . $e['EventId'] . ">" . $e['SN'] . "</a><td $cls>";
@@ -833,17 +833,17 @@ function Extended_Prog($type,$id,$all=0) {
             if ($NextI) { $str .= ", Before " . SAO_Report($NextI); }
             $str .= "\n";
           } else { // Normal Event
-            $str .= "<tr><td $cls>" . DayList($e['Day']) . "<td $cls>" . timecolon($e['Start']) . "-" . 
+            $str .= "<tr><td $cls>" . DayList($e['Day']) . "<td $cls>" . timecolon($e['Start']) . "-" .
               timecolon(($e['SubEvent'] < 0 ? $e['SlotEnd'] : $e['End'] )) .
                         "<td>" . SAO_Report($e['ActAs']) .
-                        "<td $cls><a href=$host/int/$EventLink?e=" . $e['EventId'] . ">" . $e['SN'] . 
+                        "<td $cls><a href=$host/int/$EventLink?e=" . $e['EventId'] . ">" . $e['SN'] .
                         "</a><td $cls><a href=$host/int/$VenueLink?v=" . $e['Venue'] . ">" . VenName($Venues[$e['Venue']]) . "</a>";
             if ($With) {
               $str .= "<td $cls>";
               $withc=0;
               for ($i=1;$i<5;$i++) {
-                if ($e["Side$i"] > 0 && $e["Side$i"] != $id && $type == 'Side') { 
-                  if ($withc++) $str .= ", "; 
+                if ($e["Side$i"] > 0 && $e["Side$i"] != $id && $type == 'Side') {
+                  if ($withc++) $str .= ", ";
                   $str .= SAO_Report($e["Side$i"],$e["Roll$i"],$e['SubEvent']);
                 }
               }
@@ -859,13 +859,13 @@ function Extended_Prog($type,$id,$all=0) {
         $Thing = Get_Side($id);
         $Desc = ($Worst > 2)?"":'Current ';
         if ($With) $str = "<td>With\n" . $str;
-        $str = "<h2>$Desc Programme for " . $Thing['SN'] . " including overlaps:</h2>\n" . 
+        $str = "<h2>$Desc Programme for " . $Thing['SN'] . " including overlaps:</h2>\n" .
                 ($UsedNotPub?"<span class=NotCSide>These are not currently public<p>\n</span>":"") .
                 "<div class=Scrolltable><table border class=PerfProg><tr><td>Day<td>time<td>As<td>Event<td>Venue" . $str;
       }
     }
     if ($evc) {
-      $str .= "</table></div>\n";    
+      $str .= "</table></div>\n";
     }
 
 //var_dump($str);
@@ -880,13 +880,14 @@ function Dance_Email_Details($key,&$data,&$att=0) {
   $Side = &$data[0];
   if (isset($data[1])) $Sidey = &$data[1];
   $snum = $Side['SideId'];
+  $mtch = [];
   $str = '';
   $host = "https://" . $_SERVER['HTTP_HOST'];
   switch ($key) {
   case 'WHO':  return $Side['Contact']? firstword($Side['Contact']) : $Side['SN'];
   case 'LINK': return "<a href='$host/int/Direct?t=Perf&id=$snum&key=" . $Side['AccessKey'] . "&Y=$YEAR'><b>this link</b></a>  " ;
   case 'PROG': return Show_Prog('Perf',$snum,1);
-  case 'MISSING': $str = "Please could you <span style='background:pink'><B>click</B> on the *LINK*</span> and add the following:<ol>\n"; 
+  case 'MISSING': $str = "Please could you <span style='background:pink'><B>click</B> on the *LINK*</span> and add the following:<ol>\n";
     $count = 0;
     if ($Sidey['Sat'] == 0 && $Sidey['Sun'] == 0 && $Sidey['Mon'] == 0) {
       $str .= '<li><b>Days</b> What days you will be dancing.  It is also very helpful if you tell us: ' .
@@ -896,7 +897,7 @@ function Dance_Email_Details($key,&$data,&$att=0) {
     if (!$Side['Mobile']) {
       $str .= '<li><b>Mobile phone number</b> so we can contact you in an emergency.<p>';
       $count++;
-      }        
+      }
     if (Feature('PublicLiability') && !$Sidey['Insurance']) {
       $str .= '<Li>Upload your <b>insurance</b> for *PLANYEAR*.<p>';
       $count++;
@@ -923,10 +924,10 @@ function Dance_Email_Details($key,&$data,&$att=0) {
     if (isset($bits[2])) { $txt = $bits[2]; $txt = preg_replace('/_/',' ',$txt); }
     return "<a href='$host/int/Access?t=s&i=$snum&TB=$box&k=" . $Side['AccessKey'] . "&Y=$PLANYEAR'><b>$txt</b></a>\n";
 
-  case 'CONTRACT': 
+  case 'CONTRACT':
     if (isset($Sidey['YearState']) && $Sidey['YearState']) {
-      if ($Sidey['YearState'] == $Book_State['Contract Signed']) { 
-        $p = 1; 
+      if ($Sidey['YearState'] == $Book_State['Contract Signed']) {
+        $p = 1;
         $AddC = 1;
       } else {
         $ConAns = Contract_Check($snum,1,1);
@@ -951,7 +952,7 @@ function Dance_Email_Details($key,&$data,&$att=0) {
             $AddC = 2;
         }
       }
-      
+
     if (is_array($att) && $AddC) {
       $att[] = Contract_Save($Side,$Sidey,($Sidey['YearState'] == $Book_State['Contract Ready']?-1:1),1);
     } else {
@@ -959,10 +960,10 @@ function Dance_Email_Details($key,&$data,&$att=0) {
     return $str;
     }
   return '';
-  
+
   case 'COLLECTINFO':
     include_once("CollectLib.php");
-    return CollectInfo($Side);  
+    return CollectInfo($Side);
   }
 }
 
@@ -981,42 +982,42 @@ function Dance_Email_Details_Callback($mescat,$data) {
       Put_SideYear($Sidey);
 //      $str .= "Updated State to " . $Sidey['YearState'];
     }
-//echo $str;  
+//echo $str;
     return;
   default:
-//echo $str;  
+//echo $str;
     return;
   }
 }
 
 
-function Dance_Record_Change($id,$prefix) { 
+function Dance_Record_Change($id,$prefix) {
   global $YEAR,$PLANYEAR,$YEARDATA;
-  
+
 //  echo "Called DRC<p>";
-  
+
 // var_dump($YEAR,$PLANYEAR);
-  
+
 //  exit;
-  
+
   if ($YEAR == $PLANYEAR) {
     $SideLY = Get_SideYear($id,$YEARDATA['PrevFest']);
     if (!strstr($SideLY['Invited'],$prefix)) {
       if (strlen($SideLY['Invited'])) {
         $SideLY['Invited'] = $prefix . ", " . $SideLY['Invited'];
       } else {
-        $SideLY['Invited'] = $prefix;  
+        $SideLY['Invited'] = $prefix;
       }
       Put_SideYear($SideLY);
     }
-    
+
     $Sidey = Get_SideYear($id);
     $Sidey['Invite'] = $SideLY['Invite'];
     if (!strstr($Sidey['Invited'],$prefix)) {
       if (strlen($Sidey['Invited'])) {
         $Sidey['Invited'] = $prefix . ", " . $Sidey['Invited'];
       } else {
-        $Sidey['Invited'] = $prefix;  
+        $Sidey['Invited'] = $prefix;
       }
     }
     Put_SideYear($Sidey);
@@ -1026,18 +1027,18 @@ function Dance_Record_Change($id,$prefix) {
       if (strlen($Sidey['Invited'])) {
         $Sidey['Invited'] = $prefix . ", " . $Sidey['Invited'];
       } else {
-        $Sidey['Invited'] = $prefix;  
+        $Sidey['Invited'] = $prefix;
       }
       Put_SideYear($Sidey);
     }
-    
+
     $SideNY = Get_SideYear($id,$YEARDATA['NextFest']);
     $SideNY['Invite'] = $Sidey['Invite'];
     if (!strstr($SideNY['Invited'],$prefix)) {
       if (strlen($SideNY['Invited'])) {
         $SideNY['Invited'] = $prefix . ", " . $SideNY['Invited'];
       } else {
-        $SideNY['Invited'] = $prefix;  
+        $SideNY['Invited'] = $prefix;
       }
     }
     Put_SideYear($SideNY);

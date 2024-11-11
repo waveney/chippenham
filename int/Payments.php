@@ -4,7 +4,7 @@
   include_once("BudgetLib.php");
   include_once("DanceLib.php");
   include_once("DocLib.php");
-  
+
   A_Check('Committee','Finance');
 
   $csv = 0;
@@ -20,12 +20,12 @@
   } else {
     dostaffhead("All Performer Payments");
   }
-  
-  global $db,$YEAR;
-  
+
+  global $db,$YEAR,$BUDGET;
+
   $qry = "SELECT s.*, y.* FROM Sides s, SideYear y WHERE y.Year='$YEAR' AND y.TotalFee>0 AND s.SideId=y.SideId AND (y.Coming=2 OR y.Yearstate>=2 ) ORDER BY s.SN";
   $pays = $db->query($qry);
-  if (!$pays) { 
+  if (!$pays) {
     echo "Nothing to pay";
     dotail();
   }
@@ -38,10 +38,10 @@
       if ($b['id']) $heads[] = $b['SN'];
     }
     $heads[] = 'Homeless';
-    
+
     fputcsv($output, $heads,',','"');
 
-  } else {  
+  } else {
     echo "<h2><a href=Payments?Y=$YEAR&F=CSV>Output as CSV</a></h2>";
     $coln = 0;
     echo "<div class=Scrolltable><table id=indextable border>\n";
@@ -61,7 +61,7 @@
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contract</a>\n";
     echo "</thead><tbody>";
   }
-  
+
   while ($payee = $pays->fetch_assoc()) {
     $bud = [];
     $bud[$payee['BudgetArea']] = $payee['TotalFee'];
@@ -80,15 +80,15 @@
       foreach($BUDGET as $i=>$b)  $data[]= (isset($bud[$i])?$bud[$i]:"");
       $csvdata = [];
       foreach ($data as $d) $csvdata[] = (is_numeric($d)?"$d":$d);
-      
+
       fputcsv($output,$csvdata);
     } else {
       echo "<tr><td>" . $payee['SideId'] . "/" . $payee['syId'] . "<td><a href=AddPerf?id=" . $payee['SideId'] . ">" . $payee['SN'] . "</a>";
       echo "<td>" . $payee['TotalFee'];
       echo "<td>" . $payee['SortCode'] . "<td>" . $payee['Account'] . "<td>" . $payee['AccountName'];
       echo "<td>" . ($AllActive[$payee['BookedBy']] ?? 'Unknown');
-      
-    
+
+
       foreach($BUDGET as $i=>$b) {
         echo "<td>";
         if (isset($bud[$i])) echo $bud[$i];
@@ -112,13 +112,13 @@
       echo "\n";
     }
   }
-  
+
   if ($csv) {
-  
+
   } else {
     echo "</table></div>";
-    
+
     dotail();
   }
-  
+
 

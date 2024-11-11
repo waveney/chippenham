@@ -7,8 +7,10 @@
   $vfv   = $_REQUEST['vfv']??'';
 
   global $PLANYEAR,$YEARDATA;
+  $match = [];
+  $mtch = [];
 
-// var_dump($_REQUEST,$YEARDATA);  
+// var_dump($_REQUEST,$YEARDATA);
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
@@ -42,36 +44,36 @@
         $ORule = $match[1];
       } else { echo "Undefined Olap format"; exit();
       }
-      
+
       $O = $StO = (isset($Exist[$ORule]) ? $Exist[$ORule] : ['Sid1'=>$id,'Cat2'=>0]);
-      $Other = ($O['Sid1'] == $id)?'Sid2':'Sid1'; 
+      $Other = ($O['Sid1'] == $id)?'Sid2':'Sid1';
       $OtherCat =  ($O['Sid1'] == $id)?'Cat2':'Cat1';
-      $O[ ['OlapType' => 'OType', 
-           'OlapMajor' => 'Major', 
-           'OlapActive' => 'Active', 
-           'OlapDays' => 'Days', 
-           'OlapSide' => $Other, 
-           'OlapAct' => $Other, 
+      $O[ ['OlapType' => 'OType',
+           'OlapMajor' => 'Major',
+           'OlapActive' => 'Active',
+           'OlapDays' => 'Days',
+           'OlapSide' => $Other,
+           'OlapAct' => $Other,
            'OlapOther' => $Other,
            'OlapCat' => $OtherCat,
            'Cat' => $OtherCat][$OFld] ] = $Value;
 
       if ((isset($O['id'])) && $O['id']) {
-        Update_db('Overlaps',$StO,$O); 
+        Update_db('Overlaps',$StO,$O);
       } else {
-        Insert_db('Overlaps',$O); 
+        Insert_db('Overlaps',$O);
       }
       exit;
     } else if (preg_match('/^Perf(\d+)_Side(\d+)/',$field,$match)) { // Overlaps are a special case
       $Exist = Get_Overlaps_For($id);
       $ORule = $match[2];
       $O = $StO = (isset($Exist[$ORule]) ? $Exist[$ORule] : ['Sid1'=>$id,'Cat2'=>0]);
-      $Other = ($O['Sid1'] == $id)?'Sid2':'Sid1'; 
+      $Other = ($O['Sid1'] == $id)?'Sid2':'Sid1';
       $O[$Other] = $Value;
       if ((isset($O['id'])) && $O['id']) {
-        Update_db('Overlaps',$StO,$O); 
+        Update_db('Overlaps',$StO,$O);
       } else {
-        Insert_db('Overlaps',$O); 
+        Insert_db('Overlaps',$O);
       }
       exit;
     } else if ($field == 'Photo' && (preg_match('/^\s*https?:\/\//i',$Value ))) { // Remote Photos are a special case - look for localisation
@@ -99,31 +101,31 @@
     } else if (preg_match('/(Sat|Sun)(Arrive|Depart)/',$field)) {
       include_once("DateTime.php");
       $Value = Time_BestGuess($Value);
-    } else if (preg_match('/(\w*):([\d-]*):(\d*):(\w*)/',$field,$Mtch )) { //Word + 4 fields
+    } else if (preg_match('/(\w*):([\d-]*):(\d*):(\w*)/',$field,$mtch )) { //Word + 4 fields
 //var_dump($Mtch);
-      switch($Mtch[1]) {
+      switch($mtch[1]) {
       case 'CampSite':
-        if ($Mtch[2]>0) {
-          $syid = $Mtch[2];
+        if ($mtch[2]>0) {
+          $syid = $mtch[2];
         } else {
           $Perfy = Get_SideYear($id);
           if (empty($Perfy['syId'])) Put_SideYear($Perfy);
 //var_dump($Perfy);
           $syid = $Perfy['syId'];
         }
-        $ECS = Gen_Get_Cond1('CampUse',"SideYearId=$syid AND CampSite=" . $Mtch[3] . " AND CampType=" . $Mtch[4]);
+        $ECS = Gen_Get_Cond1('CampUse',"SideYearId=$syid AND CampSite=" . $mtch[3] . " AND CampType=" . $mtch[4]);
         if ($ECS) {
           $ECS['Number'] = $Value;
         } else {
-          $ECS = ['SideYearId'=>$syid, 'CampSite'=>$Mtch[3], 'Number'=>$Value, 'CampType'=>$Mtch[4]];
+          $ECS = ['SideYearId'=>$syid, 'CampSite'=>$mtch[3], 'Number'=>$Value, 'CampType'=>$mtch[4]];
         }
         echo Gen_Put('CampUse',$ECS);
         return;
-      
+
       }
-    
-    } 
-//echo "Here";    
+
+    }
+//echo "Here";
     // else general cases
 
     $Perf = Get_Side($id);
@@ -140,7 +142,7 @@
       if (isset($flds[$field])) {
         $Perfy = Default_SY($id);
         $Perfy[$field] = $Value;
-          
+
         echo Put_SideYear($Perfy);
         exit;
       }
@@ -153,18 +155,18 @@
       echo Put_SideYear($Perfy);
       exit;
     }
-    
+
     $sflds = table_fields('Sides');
     if (isset($sflds[$field])) {
       $Perf[$field] = $Value;
       echo Put_Side($Perf);
       exit;
-    }  
+    }
     // SHOULD never get here... (but it did!)
     trigger_error("Updating a form confused - $field @ $Value @ $id @ $type");
     exit;
-        
-  case 'Trader': 
+
+  case 'Trader':
     include_once("TradeLib.php");
 
     $Trad = Get_Trader($id);
@@ -192,22 +194,22 @@
       $Trad[$field] = $Value;
       echo Put_Trader($Trad);
       exit;
-    }   
+    }
     $Trady = Get_Trade_Year($id);
     if (isset($Trady[$field])) {
       $Trady[$field] = $Value;
       echo Put_Trade_Year($Trady);
       exit;
     }
-    
+
     $TradFlds = table_fields('Trade');
     if (isset($TradFlds[$field])) {
       $Trad[$field] = $Value;
       echo Put_Trader($Trad);
-      exit;    
+      exit;
     }
-    
-    $TradyFlds = table_fields('TradeYear');     
+
+    $TradyFlds = table_fields('TradeYear');
     if ($Trady) {
       if (isset($TradyFlds[$field])) {
         $Trady[$field] = $Value;
@@ -223,10 +225,10 @@
         exit;
       }
     }
-    
-    // SHOULD never get here...    
-    exit;  
-    
+
+    // SHOULD never get here...
+    exit;
+
   case 'Event':
     include_once("ProgLib.php");
     $Event = Get_Event($id);
@@ -242,7 +244,7 @@
     } else if (preg_match('/Perf\d+_(Side\d+)/',$field,$res)) {
       $field = $res[1];
     }
-    
+
 //    echo "Field=$field Val=$Value<br>";
     if (isset($Event[$field])) { // General case
       $Event[$field] = $Value;
@@ -250,9 +252,9 @@
       exit;
     }
 
-    // SHOULD never get here...    
-    exit;  
-    
+    // SHOULD never get here...
+    exit;
+
   case 'EventSteward':
     $RandWho = $id;
     if (preg_match('/(\w*):(\d*):(.*)/',$field,$mtch)?true:false) {
@@ -260,7 +262,7 @@
       $Efld = $mtch[1];
       $SE = $mtch[3];
       $ES = Gen_Get_Cond1('EventSteward',"RandId=$id AND EventId=$Eid AND SubEvent=$SE AND Year='$PLANYEAR'");
-            
+
       if (!isset($ES['id'])) {
         $ES = ['RandId'=>$id, 'EventId'=>$Eid, 'HowMany'=>0, 'HowWent'=>'','Name'=>'', 'SubEvent'=>$SE, 'Year'=>$PLANYEAR];
       }
@@ -271,7 +273,7 @@
     break;
 
   case 'Volunteers':
-    if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {        
+    if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {
       $vfld = $mtch[1];
       $Catid = $mtch[2];
       $Year = $mtch[3];
@@ -295,47 +297,47 @@
           $VY['Status'] = $Value;
           return Gen_Put('VolYear',$VY);
 
-        default: 
+        default:
           $VY = Gen_Get_Cond1('VolYear'," Volid=$id AND Year=$Year ");
           if (!$VY) $VY = ['Volid'=>$id, 'Year'=>$Year];
           $VY[$vfld] = $Value;
           return "In VolYear" . Gen_Put('VolYear',$VY);
       }
-    } 
+    }
     break;
-    
+
   case 'Sponsorships':
-    if (preg_match('/(\a*):(\d*)/',$field,$mtch)?true:false) {        
+    if (preg_match('/(\a*):(\d*)/',$field,$mtch)?true:false) {
       $Spon = Gen_Get('Sponsorship',$mtch[2]);
       if ($Spon) {
         $Spon[$mtch[1]] = $Value;
         return Gen_Put('Sponsorship',$Spon);
       }
     }
-    return "Something wrong $field $Value";    
-    
+    return "Something wrong $field $Value";
+
   case 'Sponsorship':
-    if (preg_match('/Id(\d*)/',$field,$mtch)?true:false) {        
+    if (preg_match('/Id(\d*)/',$field,$mtch)?true:false) {
       $field = 'ThingId';
     }
     break;
-  
+
   case 'FestUsers':
-    if (preg_match('/UserCap:(\d*)/',$field,$mtch)?true:false) {        
-      $Capid = $mtch[1];    
+    if (preg_match('/UserCap:(\d*)/',$field,$mtch)?true:false) {
+      $Capid = $mtch[1];
       $Cap = Gen_Get_Cond1('UserCap'," User=$id AND Capability=$Capid ");
       if (!$Cap) $Cap = ['User'=>$id,'Capability'=>$Capid];
       $Cap['Level'] = $Value;
       return Gen_Put('UserCap',$Cap);
     }
     break;
-    
+
   case 'VolCats':
     if ($field != 'Props') break;
     $N = Gen_Get($type,$id);
     $N[$field] = hexdec($Value);
     return Gen_Put($type,$N);
-     
+
   default:
     break;
   }

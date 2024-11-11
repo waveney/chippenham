@@ -15,11 +15,11 @@
   $Vens = Get_Venues(1);
 
   /* Get all events that are public, sort by day, time
-     opening display is each day - click to expand 
+     opening display is each day - click to expand
      sub events not shown - click to expand
      More to come from event states and general
   */
-  $More = 0; 
+  $More = 0;
   foreach ($Event_Types as $et) if ($et['State'] != 4 && $et['Public']) $More++;
   if ($YEARDATA['FamilyState'] != 4) $More++;
   if ($YEARDATA['SpecialState'] != 4) $More++;
@@ -47,9 +47,10 @@
       if (DayTable($e['Day'],"Events","<button id=DayClick$dname class=DayExpand>Expand</button>","onclick=ShowDay('$dname')",'style=min-width:1200' )) {
         echo "<tr class=Day$dname hidden><td>Time<td >What<td>Where<td>With and/or Description<td>Price";
       }
-        
+      $imps = [];
+
       Get_Imps($e,$imps,1,(Access('Staff')?1:0));
-      echo "<tr class=Day$dname hidden><td>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
+      echo "<tr class=Day$dname hidden><td>" . timecolon($e['Start']) . " - " . timecolon($e['End']);
       echo "<td><a href=/int/EventShow?e=$eid>" . $e['SN'] . "</a>";
 
       if (isset($Vens[$e['Venue']]['SN'])) {
@@ -60,18 +61,18 @@
       if ($e['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
         foreach ($Others as $i=>$o) {
-          if (($o['Type'] == 'Venue') && ($o['Identifier']>0)) echo ", " . Venue_Parents($Vens,$o['Identifier']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" . 
+          if (($o['Type'] == 'Venue') && ($o['Identifier']>0)) echo ", " . Venue_Parents($Vens,$o['Identifier']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" .
             $Vens[$o['Identifier']]['SN'] . "</a>";
         }
       }
       echo "<td>";
       if ($e['Description']) echo $e['Description'] . "<br>";
       echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,1,15,1,'',$e) : Get_Event_Participants($eid,0,1,15));
-      echo "<td>" . Price_Show($e,1);   
+      echo "<td>" . Price_Show($e,1);
     }
     echo "</table></div>\n";
   }
-  
+
   if ($YEAR > 2018) {
 //    echo "</div><h3><a href=WhatsOnWhen?Y=" . ($YEAR-1) . "> Whats on When from " . ($YEAR-1) . "</h3></a>";
   }

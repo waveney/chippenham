@@ -24,7 +24,7 @@ function Get_SubDirList($d) {
       $valid = 0;
       foreach($sects as $sect) if (isset($USER[$sect]) && $USER[$sect]>0) $valid=1;
       if (!$valid) continue;
-    }  
+    }
     $ans[] = $rec;
   }
   return $ans;
@@ -39,18 +39,18 @@ function Get_DirInfo($d,$new=0) {
 
   $qry = "SELECT * FROM Directories WHERE DirId='" . $d . "'";
   $res = $db->query($qry);
-  if (!$res) return $Dir_cache[$d] = 0; 
+  if (!$res) return $Dir_cache[$d] = 0;
   $rec = $res->fetch_assoc();
   if (!$rec) return $Dir_cache[$d] = 0;
   if ($rec['AccessLevel'] == 0 || $rec['Who'] == $USERID || $rec['AccessLevel'] < $USER['AccessLevel']) { // Not restricted
-    } 
+    }
   else if ($rec['AccessLevel'] == $USER['AccessLevel'] && $rec['AccessSections'] !='') {
 
     $sects = explode(',',$rec['AccessSections']);
     $valid = 0;
-    foreach($sects as $sect) if (Is_SubType($Sect)) { $valid=1; break; }
+    foreach($sects as $sect) if (Is_SubType($sect)) { $valid=1; break; }
     if (!$valid) return $Dir_cache[$d] = 0;
-  }  
+  }
 
   return $Dir_cache[$d] = $rec;
 }
@@ -221,7 +221,7 @@ function Dir_recurse($d,$name,$level,$cur,$exclude) {
 
 function Dir_All_Tree($NewDir,$cur=-1,$exclude=-1) {
   $ans = "<select name=$NewDir size=40>\n";
-  $ans .= Dir_recurse(0,'Documents:',0,$cur,$exclude); 
+  $ans .= Dir_recurse(0,'Documents:',0,$cur,$exclude);
   $ans .= "</select>\n";
   return $ans;
 }
@@ -261,7 +261,7 @@ function Put_DocInfo(&$finf,$force=0) {
 }
 
 function Doc_Access($num) {
-  return $num; // for now...  
+  return $num; // for now...
 }
 
 function Doc_create($fname,$d,$size) {
@@ -302,26 +302,26 @@ function List_dir_ent(&$dir,$type,$xtra='') {
   $pid = $dir['DirId'];
   $parid = $dir['Parent'];
   $Parent = Get_DirInfo($parid);
-  
+
   echo "<tr $xtra><td><a href=Dir?d=" . $dir['DirId'] . ">" . htmlspec($dir['SN']) . "</a>";
   echo "<td class=FullD hidden>" . (isset($AllU[$dir['Who']])?$AllU[$dir['Who']]: "Unknown");
   echo "<td>$type";
   echo "<td class=FullD hidden>" . date('d/m/y H:i:s',$dir['Created']);
-  echo "<td class=FullD hidden>" . ((isset($sub['AccessLevel']) && $dir['AccessLevel']>0) ? 
+  echo "<td class=FullD hidden>" . ((/*isset($sub['AccessLevel']) &&*/ $dir['AccessLevel']>0) ?
        ($Access_Levels[$dir['AccessLevel']]  . ": " . $dir['AccessSections']) : "");
   echo "<td>";
   if (Access('Committee','Docs') || $dir['Who'] == $USERID  || ($parid > 0 && $Parent['Who'] == $USERID )) {
-    echo " <a href=Dir?d=$pid&Action=Rename1>Rename</a>"; 
+    echo " <a href=Dir?d=$pid&Action=Rename1>Rename</a>";
 
-    echo " <a href='Dir?d=$pid&Action=Delete' onClick=\"javascript:return confirm('are you sure you want to delete this?');\">Delete</a>"; 
+    echo " <a href='Dir?d=$pid&Action=Delete' onClick=\"javascript:return confirm('are you sure you want to delete this?');\">Delete</a>";
 
     echo "<span class=FullD hidden>";
-    echo " <a href=Dir?d=$pid&Action=Move1>Move</a>"; 
+    echo " <a href=Dir?d=$pid&Action=Move1>Move</a>";
     if (Access('Committee','Docs')) {
-      echo " <a href=Dir?d=$pid&Action=Chown1>Chown</a>"; 
+      echo " <a href=Dir?d=$pid&Action=Chown1>Chown</a>";
     }
 
-    echo " <a href=Dir?d=$pid&Action=Restrict1>Restrict</a>"; 
+    echo " <a href=Dir?d=$pid&Action=Restrict1>Restrict</a>";
     echo "</span>";
   }
 }
@@ -346,24 +346,24 @@ function Doc_List($file,$opts=0) {
 
   echo "<a href=ShowFile?d=$fid>Download</a> ";
   if (Access('Committee','Docs') || $dir['Who'] == $USERID ) {
-    echo "<a href=Dir?f=$fid&d=$d&FileAction=Rename1>Rename</a> "; 
+    echo "<a href=Dir?f=$fid&d=$d&FileAction=Rename1>Rename</a> ";
     }
   if (Access('Committee','Docs') || $dir['Who'] == $USERID || $file['Who'] == $USERID ) {
     echo "<a href='Dir?f=$fid&d=$d&FileAction=Delete' " .
-                  "onClick=\"javascript:return confirm('are you sure you want to delete this?');\">Delete</a> "; 
+                  "onClick=\"javascript:return confirm('are you sure you want to delete this?');\">Delete</a> ";
   }
   if (Access('Committee','Docs') || $dir['Who'] == $USERID ) {
     echo "<span class=FullD hidden>";
-    echo "<a href=Dir?f=$fid&d=$d&FileAction=Move1>Move</a> "; 
+    echo "<a href=Dir?f=$fid&d=$d&FileAction=Move1>Move</a> ";
     if (Access('Committee','Docs')) {
-      echo "<a href=Dir?f=$fid&d=$d&FileAction=Chown1>Chown</a>"; 
+      echo "<a href=Dir?f=$fid&d=$d&FileAction=Chown1>Chown</a>";
     }
     echo "</span> ";
   }
   return 1;
 }
 
-function Find_Doc_For($fname) { 
+function Find_Doc_For($fname) {
   global $db;
   $chunks = preg_split('/\//',addslashes($fname));
   $nchunks = sizeof($chunks);
@@ -386,7 +386,7 @@ function Find_Doc_For($fname) {
   return $ans;
 }
 
-function Find_Dir_For($dname) { 
+function Find_Dir_For($dname) {
   global $db;
   $chunks = preg_split('/\//',$dname);
   $nchunks = sizeof($chunks);
@@ -406,9 +406,10 @@ function Find_Dir_For($dname) {
 function Make_dir_Path($Path,$User=1) {
   global $USERID;
   umask(0);
+  $dname = [];
   $chunks = preg_split('/\//',$dname);
-  if ($chunk[0] != 'Store') array_unshift($chunks,'Store');
-  
+  if ($chunks[0] != 'Store') array_unshift($chunks,'Store');
+
   $CurD = 0;
   $CurP = '.';
   foreach ($chunks as $chunk) {
@@ -424,7 +425,7 @@ function Make_dir_Path($Path,$User=1) {
 
 function Dir_File_Count($dir) {
   global $db;
-  $res = $db->query("SELECT * FROM Documents WHERE Dir='" . $d );
+  $res = $db->query("SELECT * FROM Documents WHERE Dir='$dir'");
   if (!$res) return 0;
   return $res->num_rows;
 }
@@ -455,8 +456,8 @@ function Extract_Date($txt) {
   $day = $chnks[0];
   $mnth = $chnks[1];
   if ($bits == 2) { // day/month assumed
-    if ($mnth <= date('n')) return mktime(0,0,0,$mnth,$day); 
-    return mktime(0,0,0,$mnth,$day,date('Y')-1); 
+    if ($mnth <= date('n')) return mktime(0,0,0,$mnth,$day);
+    return mktime(0,0,0,$mnth,$day,date('Y')-1);
   } elseif ($bits ==3 ) { // day/month/year assumed - year can be 2 or 4 digit
     return mktime(0,0,0,$mnth,$day,$chnks[2]);
   } else {

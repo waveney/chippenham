@@ -20,9 +20,9 @@ function Image_Convert($src,$Twidth,$Theight,$target) {
     $Nheight = $Theight;
     $Nwidth = (int)($Swidth * $Theight/$Sheight);
   }
-    
+
   $tmp = imagecreatetruecolor($Nwidth, $Nheight);
-  $whiteBackground = imagecolorallocate($tmp, 255, 255, 255); 
+  $whiteBackground = imagecolorallocate($tmp, 255, 255, 255);
   imagefill($tmp,0,0,$whiteBackground); // fill the background with white
 
   switch ($suffix) {
@@ -42,15 +42,15 @@ function Image_Convert($src,$Twidth,$Theight,$target) {
       imagecopyresampled( $tmp, $img, 0, 0, 0, 0,$Nwidth,$Nheight, $Swidth, $Sheight );
       return imagegif($tmp,$target);
   }
- 
-} 
+
+}
 
 function Image_Validate($img) {
   $file = file_get_contents($img);
   if ($file === false) return "Could not get the Photo";
 
 //  file_put_contents("Store/testfile",$file);
-
+  $sfx = [];
   if (!preg_match('/\.([^.]*)$/',$img,$sfx)) return "Unknown Image type for Photo";
 
   $first8 = substr($file,0,8);
@@ -108,7 +108,8 @@ function Localise_Image($src,&$data,&$store,$field='Photo') { // If not local, g
   return 0;    // TODO make it work for local as well setting stuff
 }
 
-function Image_Cache_Update_POST(&$Datas,$field='Photo',$path='') { 
+function Image_Cache_Update_POST(&$Datas,$field='Photo',$path='') {
+  $mtch = [];
   foreach ($Datas as $Data) {
     $id = $Data['id'];
     $fld = $field . $id;
@@ -119,15 +120,15 @@ function Image_Cache_Update_POST(&$Datas,$field='Photo',$path='') {
 
         if ($mtch) {
           $sfx = $mtch[1];
-          $loc = "$path/$id.$sfx"; 
+          $loc = "$path/$id.$sfx";
           $res = Localise_Image($Cur,$_REQUEST, $loc, $fld);
         } else {
           $sfx = Find_Hidden_Image_Type($Cur);
           if ($sfx) {
-            $loc = "$path/$id.$sfx"; 
+            $loc = "$path/$id.$sfx";
             $res = Localise_Image($Cur,$_REQUEST,$loc, $fld);
           }
-        }        
+        }
       }
     }
   }

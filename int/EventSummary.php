@@ -5,8 +5,9 @@
   dostaffhead("Event Summary");
   include_once("ProgLib.php");
   global $Event_Types;
+  global $db,$PLANYEAR;
 
-  echo "<div class=content><h2>Event Summary $YEAR</h2>\n";
+  echo "<div class=content><h2>Event Summary $PLANYEAR</h2>\n";
 
   echo "<div class=Scrolltable><table class=TueTab><tr><td>Event type<td>Number";
 
@@ -15,9 +16,9 @@
     $c = 0;
     $Ett = $t['ETypeNo'];
     if ($Event_Types[$Ett]['DontList']) continue;
-    $ans = $db->query("SELECT * FROM Events WHERE Year='$YEAR' AND Type=$Ett");
-    if ($ans) while ($e = $ans->fetch_assoc()) { 
-      $Evs[] = $e; 
+    $ans = $db->query("SELECT * FROM Events WHERE Year='$PLANYEAR' AND Type=$Ett");
+    if ($ans) while ($e = $ans->fetch_assoc()) {
+      $Evs[] = $e;
       $c++;
       if ($e['Family']) $fam++;
       if ($e['Special']) $sp++;
@@ -28,7 +29,7 @@
   echo "<tr><td>Family<td>$fam";
   echo "<tr><td>Special<td>$sp";
   echo "<tr><td>Total<td>$tot";
-    
+
   echo "</table></div>\n";
   dotail();
 

@@ -3,14 +3,15 @@
   A_Check('Staff');
 
   dostaffhead("List Art Applications");
-  global $db,$PLANYEAR;
+  global $db,$PLANYEAR,$SHOWYEAR;
   include_once("SignupLib.php");
+  global $ArtClasses,$ArtPosition,$ArtView,$ArtValues,$SignupStateColours,$SignupStates;
 
   $extra = '';
 //  if (!isset($_REQUEST['ALL'])) $extra = "AND State<3 ";
   echo "Click Person's Name for more info.<p>";
   if ($extra) echo "<h2><a href=LiveNLoudView?ALL>Show All including canceled and Declined</a></h2>";
-  $coln = 0;  
+  $coln = 0;
 //  echo "<form method=post action=LiveNLoudView>";
   echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";
@@ -28,8 +29,8 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>State/Actions</a>\n";
   echo "</thead><tbody>";
 
-  $res=$db->query("SELECT * FROM SignUp WHERE Year='$YEAR' $extra AND Activity=5 ORDER BY SN");
-  
+  $res=$db->query("SELECT * FROM SignUp WHERE Year='$PLANYEAR' $extra AND Activity=5 ORDER BY SN");
+
   if ($res) {
     while ($art = $res->fetch_assoc()) {
       $id = $art['id'];
@@ -43,7 +44,7 @@
       echo "<td>" . $art['Phone'];
       echo "<td>" . $art['Email'];
       echo "<td>" . $art['Discount'];
-      echo "<td style='background:" . $SignupStateColours[$art['State']] . "'><form method=post action=ArtForm>" . 
+      echo "<td style='background:" . $SignupStateColours[$art['State']] . "'><form method=post action=ArtForm>" .
            fm_hidden('id',$id) . $SignupStates[$art['State']] . " " . SignupActions('ART',$art['State']) . "</form>";
 
     }

@@ -3,20 +3,20 @@
   A_Check('Staff','News');
 
   dostaffhead("Manage News");
-  global $SHOWYEAR;
+  global $SHOWYEAR,$USER;
 
   include_once("TradeLib.php");
   include_once("NewsLib.php");
   include_once("Uploading.php");
   echo "<div class='content'><h2>Manage News</h2>\n";
-  
+
   $DispTyp = 0;
   $DispLim = 50;
   if (isset($_REQUEST['S'])) {
     $DispLim = $_REQUEST['S'];
     if ($DispLim == 'ALL') $DispLim = 1000;
     $DispTyp = 1;
-  } else { 
+  } else {
     echo "<h2><a href=NewsManage?S=ALL>Show All News</a> &nbsp;,  &nbsp; <a href=NewsManage?S=50>Last 50 Items</a></h2>";
   }
   $News = Get_All_News($DispTyp,$DispLim,1);

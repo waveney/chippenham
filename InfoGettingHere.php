@@ -15,7 +15,7 @@
   Init_Map(-1,0,10,1);
 //  echo "</div></div>";
 ?>
-<script language=Javascript defer>
+<script type=text/Javascript defer>
 function ShowBus(Route) {
   $('#TimeTab').load("/files/BusRoute" +Route );
 }
@@ -45,7 +45,7 @@ Details to follow.<p>
 
 <div id=TimeTab></div>
 </div><div class=BorderBox>
-<h2><a name=Taxis></a>By Taxi</h2>
+<h2><a id=Taxis></a>By Taxi</h2>
 This is a list of Taxi firms.<p>
 <div class=tablecont><table class=InfoTable>
 <tr><td>Authority<td>Name<td>Phone
@@ -57,5 +57,5 @@ This is a list of Taxi firms.<p>
 ?>
 </table></div><p>
 </div>
-<?php 
+<?php
   dotail();

@@ -3,12 +3,12 @@
   include_once("TradeLib.php");
 
   A_Check('SysAdmin');
-  
+
   dostaffhead("Copy Trade Year to New Trade Year - Only to be used after a cancelled festival");
 
-  global $db,$YEAR;
+  global $db,$PLANYEAR,$YEARDATA;
   $res = $db->query("SELECT * FROM TradeYear WHERE DateChange=12");
- 
+
   while ($ty = $res->fetch_assoc()) {
     $Tid = $ty['Tid'];
     $tys = Get_Trade_Years($Tid);
@@ -21,5 +21,5 @@
   }
 
   echo "Finished<p>";
-  
+
   dotail();

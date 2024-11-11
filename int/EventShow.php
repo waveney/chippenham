@@ -28,8 +28,8 @@ function Print_Thing($thing,$right=0) {
       $iimp = 0;
       foreach($PerfTypes as $pt=>$pd) if (Capability("Enable" . $pd[2])) if ($thing[$pd[0]] && ($iimp < $thing[$pd[2] . 'Importance'])) $iimp = $thing[$pd[2] . 'Importance'];
     }
-    echo "<h2 class=EventMinittl style='font-size:" . (27+ $iimp) . "px;'>"; 
-    echo $thing['SN'];  
+    echo "<h2 class=EventMinittl style='font-size:" . (27+ $iimp) . "px;'>";
+    echo $thing['SN'];
     if (!empty($thing['Roll'])) {
       echo " (" . $Perf_Rolls[$thing['Roll']] . ")";
     } else if (isset($thing['Type']) && $thing['Type']) echo " (" . $thing['Type'] . ") ";
@@ -43,6 +43,7 @@ $lemons = 0;
 
 function Print_Participants($e,$when=0,$thresh=0) {
   global $lemons,$DayLongList,$YEARDATA;
+  $imps = [];
   Get_Imps($e,$imps,1,(Access('Staff')?1:0));
   $things = 0;
 
@@ -61,7 +62,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
     }
   }
   $ks = array_keys($imps);
-  sort($ks);        
+  sort($ks);
   $things = 0;
   foreach ( array_reverse($ks) as $imp) {
     foreach ($imps[$imp] as $thing) {
@@ -85,7 +86,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
     Participants + descr ordered by Importance
     If BE get participants from GET Stuff and more venues if applicable
   else if headliners give headliners
-    for each time 
+    for each time
       particpants + descr + Photo - ordered by Importance
 
   If it is public then this will be accessable by main site, otherwise only if you have the link - not planning on restrictions (currently)
@@ -93,7 +94,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
 
   $Eid = ( $_REQUEST['e'] ?? 0);
   if (!is_numeric($Eid)) exit("Invalid Event Number");
-  $Ev = Get_Event($Eid);  
+  $Ev = Get_Event($Eid);
   if (empty($Ev['EventId'])) {
     dohead('Unknown Event',[],1); // TODO Event specific banners
     echo "<h1>This Event is not known</h1>";
@@ -114,15 +115,15 @@ function Print_Participants($e,$when=0,$thresh=0) {
   } else if ($Se > 0) { // Is Sub Event - Find Root
     $Eid = $Se;
     $Subs = Get_All_Public_Subevents_For($Eid);
-//    $Ev = Get_Event($Eid);  
+//    $Ev = Get_Event($Eid);
 //    $res=$db->query("SELECT * FROM Events WHERE SubEvent=$Eid ORDER BY Day, Start, Type");
 //    while($sev = $res->fetch_assoc()) $Subs[] = $sev;
   } else if ($Ev['BigEvent']) {
     $Others = Get_Other_Things_For($Eid);
     foreach ($Others as $o) {
       switch ($o['Type']) {
-        case 'Venue': 
-          if ($o['Identifier']) $OtherVenues[] = $o; 
+        case 'Venue':
+          if ($o['Identifier']) $OtherVenues[] = $o;
           break;
         case 'Act':
         case 'Perf':
@@ -142,10 +143,10 @@ function Print_Participants($e,$when=0,$thresh=0) {
   if (($ETs[$Ev['Type']]['IncType']) && !strpos(strtolower($Ev['SN']),strtolower($ETs[$Ev['Type']]['SN']))) {
     $xtra = " (" . $ETs[$Ev['Type']]['SN'];
     if ($Ev['ListDance']) $xtra .= " / " . $ETs[1]['SN'];
-    if ($Ev['ListMusic']) $xtra .= " / " . $ETs[14]['SN'];    
-    if ($Ev['ListComedy']) $xtra .= " / " . $ETs[17]['SN'];    
-    if ($Ev['ListWorkshop']) $xtra .= " / " . $ETs[5]['SN'];    
-    if ($Ev['ListSession']) $xtra .= " / " . $ETs[6]['SN'];    
+    if ($Ev['ListMusic']) $xtra .= " / " . $ETs[14]['SN'];
+    if ($Ev['ListComedy']) $xtra .= " / " . $ETs[17]['SN'];
+    if ($Ev['ListWorkshop']) $xtra .= " / " . $ETs[5]['SN'];
+    if ($Ev['ListSession']) $xtra .= " / " . $ETs[6]['SN'];
 
     $xtra .= ")";
   }
@@ -156,11 +157,11 @@ function Print_Participants($e,$when=0,$thresh=0) {
     echo $Ev['Description'] . "<P>";
     $DescNotShown = false;
   }
-  
+
   if ($Ev['Status']) echo "<h1 class=Red>Event Cancelled</h1>";
-  
-  
-  // On, Start, End, Durration, Price, Where 
+
+
+  // On, Start, End, Durration, Price, Where
   echo "<div class=tablecont><table><tr><td>";
   if ($Ev['LongEvent']) {
     echo "Starting On:<td>" . FestDate($Ev['Day'],'L') . "\n";
@@ -228,7 +229,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
     else if ($Ev['BarFoodText']) { echo "<td>" . $Ev['BarFoodText']; }
   }
   echo "</table></div><p>\n";
-  
+
   SponsoredBy($Ev,$Ev['SN'],2,$Eid);
 
   // Headlines
@@ -258,7 +259,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
               if (feature('EventWithDown')) {
                 echo "<a href=#" . AlphaNumeric($thing['SN']) . " style='font-size:" . (17+$i*2) . "'>" . $thing['SN'] . "</a>";
               } else {
-                echo "<a href=/int/ShowPerf?id=" . $thing['SideId'] . " style='font-size:" . (17+$i*2) . "'>" . NoBreak($thing['SN']) . "</a>";              
+                echo "<a href=/int/ShowPerf?id=" . $thing['SideId'] . " style='font-size:" . (17+$i*2) . "'>" . NoBreak($thing['SN']) . "</a>";
               }
             }
           }
@@ -289,7 +290,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
     }
     echo "</table></div>";
   } else {
-    if (!$Se) { 
+    if (!$Se) {
       if ($Ev['BigEvent']) {
         if (isset($OtherPart[1])) echo "Participants" . ($Ev['NoOrder']?'':" in order") . ":<p>\n";
         echo "<div class=mini style='width:480;'>\n";
@@ -315,5 +316,5 @@ function Print_Participants($e,$when=0,$thresh=0) {
   } else if ($Se) {
     echo "<p>Ending at: " . $Ev['End'];
   }
-   
+
   dotail();

@@ -2,33 +2,33 @@
 
   include_once("fest.php");
   A_Check('SysAdmin');
-  
+
   include_once("TradeLib.php");
   include_once("InvoiceLib.php");
-  
+
   dostaffhead("Import Old Invoices");
-  
+
   require 'vendor/autoload.php';
 
 
-  use PhpOffice\PhpSpreadsheet\Spreadsheet;
-  /* 
+//  use PhpOffice\PhpSpreadsheet\Spreadsheet;
+  /*
     Walk OldInvoices - find first xls for each company
-    
+
     Read xls
-    
+
     Find:
       Business - Look it up - if we have it and have a Sage Code defined skip company
       Find Sage Code used
       Find Contact Name
       Find Address
-      
+
       If BZ exists - set all the data above not held, save, report, end for company
-      
+
       Create BZ with details above, report, end for company
-      
+
    */
-   
+
   $Fixes = [
 'Somerset And Dorset Hog Roast'=>112,
 'Brewers Folly Brewery Ltd'=>392,
@@ -77,7 +77,7 @@
       $suf = pathinfo($f,PATHINFO_EXTENSION);
       if ($suf != "xls") continue;
 //      echo "<p>Processing: $f<p>";
-      
+
       $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($f);
       $cellB9 = $spreadsheet->getActiveSheet()->getCell('B9')->getValue();
       $cellB8 = $spreadsheet->getActiveSheet()->getCell('B8')->getValue();
@@ -85,7 +85,7 @@
       $sageCode = preg_split('/\//',$cellG13)[0];
 
       $BZname = trim($cellB8 == ''?$cellB9:$cellB8);
-      $sageCode = trim(preg_split('/\//',$cellG13)[0]);      
+      $sageCode = trim(preg_split('/\//',$cellG13)[0]);
       $contact = trim($spreadsheet->getActiveSheet()->getCell('G12')->getValue());
       $lccont = strtolower($contact);
       $adr = [];
@@ -94,11 +94,11 @@
         if ($cell) $adr[] = $cell;
         }
       $address = implode(', ',$adr);
-      
+
 //      echo "BZ Name = $BZname - $sageCode - $contact - ";
       echo "$BZname - ";
-      
-      
+
+
       if (isset($Fixes[$BZname])) {
         $Trad = Get_Trader($Fixes[$BZname]);
       } else {
@@ -122,22 +122,22 @@
 // echo "Stored Adr:" . $Trad['Address'] . " from Invoice: $address<br>";
         if ($Trad['Address'] == '') { $Trad['Address'] = $address; $change = 1; }
         if ($Trad['Contact'] == '') { $Trad['Contact'] = $contact; $change = 1; }
-        else if (strtolower(trim($Trad['Contact'])) != $lccont) echo "Contacts different '" . $Trad['Contact'] . "' - '$contact' ";        
+        else if (strtolower(trim($Trad['Contact'])) != $lccont) echo "Contacts different '" . $Trad['Contact'] . "' - '$contact' ";
         if ($change) {
           Put_Trader($Trad); // commented to check workings
           echo "Updated";
         }
-        echo "<p>";        
+        echo "<p>";
       } else {
 //        echo "NOT IN SYSTEM YET<p>";
         echo "Added<p>";
         $NewTrad = ['SN'=>$BZname, 'Contact'=>$contact, 'SageCode'=>$sageCode, 'Address'=> $address];
-        Insert_db("Trade",$NewTrad);        
+        Insert_db("Trade",$NewTrad);
       }
 
       break 1;
     }
   }
-   
+
   dotail();
 ?>

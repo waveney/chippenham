@@ -13,7 +13,7 @@
 function Show_Biz() {
   global $Trad,$Tid,$YEAR;
   Show_Trader($Tid,$Trad,$Form='Biz',$Mode=3);
-  
+
   if ($Trad['IsTrader']) {
     echo "<h2>Trader Actions: </h2>";
   }
@@ -21,7 +21,7 @@ function Show_Biz() {
     echo "<h2>Sponsorships:</h2>";
     List_Spons(2);
     echo "<h2>Sponsor Actions: ";
-    //<a href=Biz?T=$Tid&ACTION=SponList&Y=$YEAR>List</a>, 
+    //<a href=Biz?T=$Tid&ACTION=SponList&Y=$YEAR>List</a>,
     echo "<a href=Biz?T=$Tid&ACTION=SponAdd>Add</a></h2>";
   }
   if ($Trad['IsSupplier']) {
@@ -33,7 +33,7 @@ function Show_Biz() {
   if ($Trad['IsOther']) {
     echo "<h2>Other Actions: </h2>";
   }
-  
+
   echo "<h2><a href=Biz?ACTION=AllSponList>Back to list of Sponsors</a></h2>\n";
 }
 
@@ -49,9 +49,9 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
   switch ($Mode) {
     case 0:
       $Spons = Gen_Get_Cond('Sponsorship',"SponsorId=$Tid");
-      Spon_Header($Tid);    
+      Spon_Header($Tid);
       break;
-    case 1: 
+    case 1:
       $Spons = Gen_Get_All('Sponsorship');
       break;
     case 2:
@@ -71,8 +71,8 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Year</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Value</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>State</a>\n";
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";   
-  
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";
+
     echo "</thead><tbody>";
     foreach ($Spons as $Spid=>$S) {
       echo "<tr><td>" . $S['id'];
@@ -92,8 +92,8 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
       case 'Event':
         $Ev = Get_Event($S['ThingId']);
         if ($Ev) $Ven = Get_Venue($Ev['Venue']);
-        echo "<td><a href=EventAdd?e=" . $S['ThingId'] . ">" . ($Ev['SN'] ?? '<span class=Err>Unknown</span>') . 
-             "</a> at <a href=AddVenue?v=" . ($Ev['Venue'] ??0) . ">" . ($Ven['SN'] ?? '<span class=Err>Unknown</span>') . "</a> on " . 
+        echo "<td><a href=EventAdd?e=" . $S['ThingId'] . ">" . ($Ev['SN'] ?? '<span class=Err>Unknown</span>') .
+             "</a> at <a href=AddVenue?v=" . ($Ev['Venue'] ??0) . ">" . ($Ven['SN'] ?? '<span class=Err>Unknown</span>') . "</a> on " .
             ($Ev? (FestDate($Ev['Day'],'S') . " at " . timecolon($Ev['Start'])) : "<span class=Err>Unknown</span>");
         break;
       case 'Performer':
@@ -101,25 +101,25 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
         echo "<td><a href=AddPerf?sidenum=" . $S['ThingId'] . ">" . ( $Perf['SN']  ?? '<span class=Err>Unknown</span>') . "</a>";
         break;
       }
-      echo fm_text1('',$S, 'Year',1,'','',"Year:$Spid") . 
-           fm_text1('', $S, 'Importance',1,'','', "Importance:$Spid") . 
+      echo fm_text1('',$S, 'Year',1,'','',"Year:$Spid") .
+           fm_text1('', $S, 'Importance',1,'','', "Importance:$Spid") .
            "<td>" . $SponStates[$S['Status']] . "<td>";
-      
+
       echo "<a href=Biz?ACTION=SponAdd&Spid=$Spid>Edit</a>, ";
       echo "<a href=Biz?ACTION=SponDel&Spid=$Spid>Remove</a>, ";
 // Actions will go here
     }
-    
+
     if (Access('SysAdmin')) echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
 
     echo "</tbody></table></div>\n";
-  
+
   } else {
     echo "No sponsorship records found for " . $Trad['SN'] . "<P>";
   }
-  
+
   if ($Mode ==2) return;
-  
+
   echo "<h2><a href=Trade?ORGS>Add Sponsor</a>, <a href=ListBiz>Back to list of Businesses</a></h2>"; // Invoice all | selected
   dotail();// TODO That is old code to add sponsor - should work
 }
@@ -131,8 +131,8 @@ function ReHash() {
   $TestMode = 0;
   $Spons = Gen_Get_All('Sponsorship'); // Sponsorship
   $Sponsors = []; // The Orgs themselves
-  $Sposored = []; // Sponsor table
-  
+  $Sponsored = []; // Sponsor table
+
   foreach ($Spons as $S) {
     $Sid = $S['SponsorId'];
     if (!isset($Sponsors[$Sid])) $Sponsors[$Sid] = Get_Trader($Sid);
@@ -145,11 +145,11 @@ function ReHash() {
       }
     }
   }
-  
+
 //  var_dump($Sponsored);
 //  exit;
   $SpCs = Gen_Get_All('Sponsors');
-  
+
 //  $SpIdx = [];
   foreach($SpCs as &$SPC) {
     $Sid = $SPC['SponsorId'];
@@ -159,7 +159,7 @@ function ReHash() {
       if ($Found) {
         if (isset($Sponsors[$Sid]['Cached'])) {
           $SPC['State'] = 0;
-        } 
+        }
         $Sponsors[$Sid]['Cached'] = 1;
       }
       continue;
@@ -181,7 +181,7 @@ function ReHash() {
     }
     $SPC['State'] = 0;
   }
-  
+
 //  echo "State of Spons..<p>"; var_dump($Spons); echo "<p>";
   foreach($Spons as $Sp=>$S) {
     if (isset($Sponsors[$S['SponsorId']]['Cached'])) continue; // Done
@@ -189,9 +189,9 @@ function ReHash() {
     $SpRec = ['SponsorId'=>$Sid, 'SN'=>$Sponsors[$Sid]['SN'], 'Image'=>$Sponsors[$Sid]['Logo'] , 'IandT' =>$Sponsors[$Sid]['IandT'],'State'=>3];
     $SpCs[] = $SpRec;
   }
-  
+
   // Now re-write the sponsors table
-  
+
   foreach ($SpCs as $SP) {
     if (($SP['State'] ??0) ==0 ) {
       if ($TestMode) {
@@ -213,9 +213,9 @@ function ReHash() {
 
     }
   }
-  
+
   // Now go through Venues, Events and Performers
-  
+
   if (isset($Sponsored[1])) { // Venues
     foreach ($Sponsored[1] as $Vid=>$who) {
       $VenY = Gen_Get_Cond1('VenueYear',"Year=$YEAR AND VenueId=$Vid");
@@ -233,7 +233,7 @@ function ReHash() {
       }
     }
   }
-  
+
   $SVens = Gen_Get_Cond('VenueYear',"Year=$YEAR AND SponsoredBy!=0");
   if ($SVens) {
     foreach ($SVens as $VY) {
@@ -243,9 +243,9 @@ function ReHash() {
           echo "Would remove sponsor data from VY "; var_dump($VY); echo "<P>";
         } else Gen_Put('VenueYear',$VY);
       }
-    } 
+    }
   }
-  
+
   if (isset($Sponsored[2])) { // Events
     foreach ($Sponsored[2] as $Eid=>$who) {
       $Ev = Gen_Get('Events',$Eid,'EventId');
@@ -261,7 +261,7 @@ function ReHash() {
       }
     }
   }
-  
+
   $Evs = Gen_Get_Cond('Events',"Year=$YEAR AND SponsoredBy!=0",'EventId');
   if ($Evs) {
     foreach ($Evs as $Ev) {
@@ -271,16 +271,16 @@ function ReHash() {
           echo "Would remove sponsor data from Ev "; var_dump($Ev); echo "<P>";
         } else Gen_Put('Events',$Ev,'EventId');
       }
-    } 
+    }
   }
-  
+
 //  echo "About to check perfs";
   if (isset($Sponsored[3])) { // Performers
-    
+
 //    var_dump($Sponsored[3]);
-    
+
     foreach ($Sponsored[3] as $Sid=>$who) {
-    
+
     echo "Checking $Sid<p>";
       $SideY = Get_SideYear($Sid);
       if ($SideY && ($SideY['Coming'] == 2 || $SideY['YearState'] >=2)) {
@@ -293,7 +293,7 @@ function ReHash() {
         if ($TestMode) {
           echo "Updating Performer: "; var_dump($SideY); echo "<p>";
         } else {
-//echo "<p>Putting...<p>";          
+//echo "<p>Putting...<p>";
           Put_SideYear($SideY);
         }
       } else {
@@ -302,7 +302,7 @@ function ReHash() {
       }
     }
   }
-  
+
   $SideYs = Gen_Get_Cond('SideYear',"Year=$YEAR AND SponsoredBy!=0",'syId');
   if ($SideYs) {
     foreach ($SideYs as $Sy) {
@@ -312,18 +312,18 @@ function ReHash() {
           echo "Would remove sponsor data from Perf "; var_dump($Sy); echo "<P>";
         } else Gen_Put('SideYear',$Sy,'syId');
       }
-    } 
+    }
   }
-  
+
   echo "Sponsorship data updated<p>";
 /*
   Read All Sponsorship data
-  
+
   go through sponsors - remove unused entires, create new ones
-  
+
   go through each Venue, Event, Performer that has records - if incorrect correct
   go through each sponsorship that has not yet been checked - update VEP as appropriate
- 
+
 */
 }
 
@@ -335,14 +335,14 @@ function SponConvert() {
   $idx = Gen_Put('Trade',$R);
   $R2 = ['SponsorId'=>$idx,'Year'=>$YEAR,'ThingType'=>0];
   Gen_Put('Sponsorship',$R2);
-        
-  List_Spons(1);  
+
+  List_Spons(1);
 }
 
 function Add_Spon_Request($Spid=0) {
   global $SponTypes,$YEAR,$db,$PerfTypes;
   echo "<h1>Add/Edit sponsorship record</h1>\n";
-  
+
   echo "<form method=post action=Biz?ACTION=SponCreate>";
   if ($Spid) {
     $S = Gen_Get('Sponsorship',$Spid);
@@ -356,13 +356,13 @@ function Add_Spon_Request($Spid=0) {
     if ($Tid) {
       $Trad = Get_Trader($Tid);
     } else {
-      
+
       echo "Bug... What Organisation is this for...";
       var_dump($_REQUEST);
       exit;
     }
   }
-  
+
   $Lists[0] = [''];
   $Venues = Get_Venues();
   $Lists[1] = $Venues;
@@ -372,17 +372,17 @@ function Add_Spon_Request($Spid=0) {
     $EvList[$Eid] = $Ev['SN'] . " at " . $Venues[$Ev['Venue']] . " starting at " . FestDate($Ev['Day'],'S') . " " . timecolon($Ev['Start']);
   }
   $Lists[2] = $EvList;
-  
+
   $AllPerfs = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE y.Year='$YEAR' AND s.SideId=y.SideId AND (y.coming=2 OR y.YearState>=2) ORDER BY s.SN");
   $PList = [];
   if ($AllPerfs) while ($P = $AllPerfs->fetch_assoc()) {
     $Cats = [];
     foreach ($PerfTypes as $Pcat=>$pt) if ($P[$pt[0]]) $Cats[] = $Pcat;
     $PList[$P['SideId']] = $P['SN'] . " ( " . implode(', ',$Cats) . " )";
-  } 
-  
+  }
+
   $Lists[3] = $PList; //['Not yet written'];
-//var_dump($Lists);  
+//var_dump($Lists);
 
   echo "<table border>";
   echo "<tr>" . fm_number('Buisness Id',$S,'SponsorId') . "<tr><td>Name:<td>" . ($Trad['SN'] ?? 'Unknown') . fm_hidden('Tid',$Tid);
@@ -404,7 +404,7 @@ function Add_Spon_Request($Spid=0) {
   }
   echo "</table>";
   if ($Spid == 0) echo "<input type=submit name=ACTION value=Create>";
-  
+
   echo "<h2><a href=Biz?ACTION=Show&id=$Tid>Back to Sponsor</a>, <a href=Biz?ACTION=AllSponList>Back to list of Sponsors</a></h2>\n";
   dotail(); // change?
 }
@@ -428,7 +428,7 @@ function Spon_Validate() {
 /// START HERE
 
 //  var_dump($_REQUEST);
-  
+
   $Tid = ($_REQUEST['id']??$_REQUEST['T']??0);
   if ($Tid) $Trad = Get_Trader($Tid);
 
@@ -438,15 +438,15 @@ function Spon_Validate() {
       case 'Show':
         Show_Biz();
         dotail();
-    
+
       case 'SponList':
         List_Spons(0);
         break;
-              
+
       case 'AllSponList':
         List_Spons(1);
         break;
-              
+
       case 'SponAdd':
         if (isset($_REQUEST['Spid'])) {
           // Already exists just allow edits
@@ -455,7 +455,7 @@ function Spon_Validate() {
           Add_Spon_Request();
         }
         break;
-              
+
       case 'SponDel':
         if (isset($_REQUEST['Spid'])) {
           $Spid = $_REQUEST['Spid'];
@@ -463,27 +463,27 @@ function Spon_Validate() {
           db_delete('Sponsorship',$Spid);
           echo "<h1>Removed Sponsorship record</h1>";
           $Tid = $S['SponsorId'];
-          if ($Tid) $Trad = Get_Trader($Tid);          
+          if ($Tid) $Trad = Get_Trader($Tid);
           Show_Biz();
           dotail();
         }
-        break;      
+        break;
 
       case 'SponCancel':
-      
+
         break;
-        
+
       case 'SponPaid':
-      
+
         break;
-              
+
       case 'ReHash':
         ReHash();
         break;
-        
+
       case 'Convert': // Old format to new
         SponConvert();
-        
+
       case 'Create':
         if (isset($_REQUEST['Spid'])) {
           // Already exists just allow edits
@@ -495,26 +495,26 @@ function Spon_Validate() {
           echo "<h1>Sponsorship record created</h1>";
           Add_Spon_Request($Spid);
         } else {
-          Add_Spon_Request();        
+          Add_Spon_Request();
         }
         break;
 
       default:
         break;
-      
-      
+
+
     }
-     
+
   }
-  
+
   /*
   Display basic
   sections for different types of Biz.
-  
+
   actions for different types
-  
+
   needs js to handle changes to isas
-  
-  
+
+
   */
-  
+

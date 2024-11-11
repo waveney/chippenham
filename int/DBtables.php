@@ -1,7 +1,8 @@
 <?php
   include_once("fest.php");
-  
+
   A_Check('SysAdmin');
+  global $db;
 
   $tables = [
 'Acts',

@@ -1,6 +1,7 @@
 <?php
   include_once("fest.php");
   A_Check('Steward');
+  global $db;
 
   dostaffhead("List Traders in Detail", ["/js/clipboard.min.js", "/js/emailclick.js"]);
 
@@ -15,6 +16,7 @@
   $TrSub = array();
   $LastWeekThresh = time() - Feature('TradeLastWeek',14)*86400;
   $UnQuoteThresh = time() - Feature('TradeUnQuote',14)*86400;
+  $mtchs= [];
 
   $TrState = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
   $div = 0;
@@ -23,28 +25,28 @@
     $Type = $_REQUEST['t'];
 
     $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND (y.BookingState=" . $Trade_State['Deposit Paid'] .
-                " OR y.BookingState=" . $Trade_State['Balance Requested'] . 
+                " OR y.BookingState=" . $Trade_State['Balance Requested'] .
                 " OR y.BookingState=" . $Trade_State['Fully Paid'] . " OR y.BookingState=" . $Trade_State['Accepted'] . ") AND t.TradeType=$Type ORDER BY SN";
   } else if (isset($_REQUEST['l']))  {
     $Loc = $_REQUEST['l'];
     $div = 1;
-    
+
     if ($Loc) {
       $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND (y.BookingState=" . $Trade_State['Deposit Paid'] .
-                " OR y.BookingState=" . $Trade_State['Balance Requested'] . 
-                " OR y.BookingState=" . $Trade_State['Quoted'] . 
-                " OR y.BookingState=" . $Trade_State['Fully Paid'] . 
+                " OR y.BookingState=" . $Trade_State['Balance Requested'] .
+                " OR y.BookingState=" . $Trade_State['Quoted'] .
+                " OR y.BookingState=" . $Trade_State['Fully Paid'] .
                 " OR y.BookingState=" . $Trade_State['Accepted'] . ") AND " .
                 "(y.PitchLoc0=$Loc OR y.PitchLoc1=$Loc OR y.PitchLoc2=$Loc ) ORDER BY SN";
     } else {
       $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE t.Status!=2 AND t.Tid = y.Tid AND y.Year='$YEAR' AND (y.BookingState=" . $Trade_State['Deposit Paid'] .
-                " OR y.BookingState=" . $Trade_State['Balance Requested'] . 
-                " OR y.BookingState=" . $Trade_State['Quoted'] . 
+                " OR y.BookingState=" . $Trade_State['Balance Requested'] .
+                " OR y.BookingState=" . $Trade_State['Quoted'] .
                 " OR y.BookingState=" . $Trade_State['Fully Paid'] .
                 " OR y.BookingState=" . $Trade_State['Accepted'] . ") AND " .
-                "(y.PitchLoc0=0 AND y.PitchLoc1=0 AND y.PitchLoc2=0 ) ORDER BY SN";    
+                "(y.PitchLoc0=0 AND y.PitchLoc1=0 AND y.PitchLoc2=0 ) ORDER BY SN";
     }
-  
+
   } else Error_Page('Do Not Know What Details Are Needed');
   $ActsEnable = Access('Committee','Trade');
 //echo "$qry<p>";
@@ -89,7 +91,7 @@
         $str .= $Trade_States[$stat];
 
         if ($ActsEnable && $Act ) {
-          $Acts = preg_split('/,/',$Act); 
+          $Acts = preg_split('/,/',$Act);
           $str .= "<br><form>" . fm_Hidden('id',$Tid);
           $butcount = 0;
 
@@ -114,25 +116,25 @@
               case 'Pitch Change':
               case 'Moved':
                 if (empty($fetch['PitchNum0'])) continue 2;
-                break;  
+                break;
               case 'Invite Better':
                 if (!Feature('InviteBetter')) continue 2;
                 break;
 
                 case 'LastWeek' :
-                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] != 0) || ($fetch['DateQuoted'] > $LastWeekThresh )) continue 2;  
+                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] != 0) || ($fetch['DateQuoted'] > $LastWeekThresh )) continue 2;
                 break;
-                
+
               case 'UnQuote' :
-                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] == 0) || ($fetch['DateRemind'] > $UnQuoteThresh )) continue 2;  
+                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] == 0) || ($fetch['DateRemind'] > $UnQuoteThresh )) continue 2;
                 break;
-                
+
 
                 default:
               }
 //            if ($Act == 'FestC' && !Feature('EnableCancelMsg')) continue 2;
 //            if ($Act == 'Dates' && !Feature('EnableDateChange')) continue 2;
-              
+
               if ((($butcount++)%3) == 0) $str .= "<p>";
 
               $str .= "<button class=floatright name=ACTION value='$ac' type=submit " . ($ButExtra[$ac]??'') . " >$ac</button>";
@@ -166,7 +168,7 @@
       $pitches = 0;
       for ($i = 0; $i<3; $i++) if ($fetch["PitchLoc$i"]) $pitches++;
 
-      if (0 && $div && $pitches>1) { // Duff 
+      if (0 && $div && $pitches>1) { // Duff
         $Dep /= $pitches;
         $fee /= $pitches;
         $tot /= $pitches;
@@ -175,7 +177,7 @@
       $str .= "<td>" . Print_Pound($fee);
       $str .= "<td>" . Print_Pound($Dep);
       $str .= "<td>" . Print_Pound(($Dep <= $tot)?$Dep:$tot);
-      
+
       $str .= "<td>" . $DepDet;
       $str .= "<td>" . Print_Pound($Bal);
       $str .= "<td>" . Print_Pound(($tot >= $Dep)?($tot-$Dep):0);

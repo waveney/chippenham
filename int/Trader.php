@@ -7,6 +7,8 @@
   include_once("PitchMap.php");
 
   global $USER,$USERID,$db;
+  global $Access_Type;
+
   echo "<div class=content>";
 // If access then edit trader info
 // If not ask are you a previous trader -> give email to give direct edit link, if found otherwise new trader
@@ -43,7 +45,7 @@
     Trade_Main(0,'TraderPage',-1);
     dotail();
     exit;
-  } 
+  }
 
   if (($USER['AccessLevel']??0) == $Access_Type['Participant']) {
     $Tid = $USERID;

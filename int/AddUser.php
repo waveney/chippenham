@@ -4,19 +4,19 @@
   A_Check('Committee','Users');
 
   include_once("UserLib.php");
-  global $Sections,$CONF;
+  global $Sections,$CONF,$Access_Type,$Access_Levels,$User_Public_Vis,$Area_Levels;
 
   Set_User_Help();
 // var_dump($_REQUEST);
   if (isset($_REQUEST['UserId'])) { /* Response to update button */
     $unum = $_REQUEST['UserId'];
     if ($unum > 0) {                                 // existing User
-    
+
       $Stypes = [];
       $Ttypes = Gen_Get_All('UserCap',"WHERE User=$unum");
 
       foreach($Ttypes as $T) $Stypes[$T['Capability']] = $T['Level'];
-    
+
       $User = Get_User($unum);
       if (isset($_REQUEST['ACTION'])) {
         switch ($_REQUEST['ACTION']) {
@@ -60,7 +60,7 @@
       $Exist = Gen_Get_Cond('FestUsers',"Login='" . $_REQUEST['Login'] ."'",'UserId');
       if ($proc && !empty($Exist)) {
         echo "<h2 class=ERR>Username not unique</h2>\n";
-        $proc = 0;      
+        $proc = 0;
       }
       $unum = Insert_db_post('FestUsers',$User,$proc);
     }
@@ -73,17 +73,17 @@
   dostaffhead("Add/Change User");
 
   $Stypes = [];
-  if ($unum > 0) {                                 // existing User   
+  if ($unum > 0) {                                 // existing User
     $Ttypes = Gen_Get_All('UserCap',"WHERE User=$unum");
     foreach($Ttypes as $T) $Stypes[$T['Capability']] = $T['Level'];
   }
 // var_dump($Stypes);
 
-  
+
   echo "<h2>Add/Edit Fest Con Users</h2>\n";
   echo "<form method=post action='AddUser'>\n";
 
-  
+
 //  echo "<!-- " . var_dump($User) . " -->\n";
   echo "<div class=tablecont><table width=90% border>\n";
     echo "<tr><td>User Id:<td>";
@@ -118,12 +118,12 @@
     if (isset($User['LastAccess'])) echo "<tr><td>Last Login:<td>" . ($User['LastAccess']? date('d/m/y H:i:s',$User['LastAccess']):'Never');
     if (Access('SysAdmin')) {
       echo "<tr>" . fm_text('Change Sent',$User,'ChangeSent',1,'','readonly');
-      if ($unum > 0) { 
+      if ($unum > 0) {
         if (!isset($User['AccessKey']) || $User['AccessKey'] == '') {
           $User['AccessKey'] = rand_string(40);
           Put_User($User);
         }
-        echo "<tr>" . fm_text('Access Key',$User,'AccessKey',1,'','readonly'); 
+        echo "<tr>" . fm_text('Access Key',$User,'AccessKey',1,'','readonly');
         if (!empty($CONF['testing'])) {
           echo "<td><a href=Login.php?ACTION=ActAs&i=$unum&k=" . $User['AccessKey'] . ">Use</a>";
         }
@@ -131,7 +131,7 @@
       echo "<tr>" . fm_textarea('Prefs',$User,'Prefs',6,2);
       echo "<tr><td>Log Use" . fm_checkbox('',$User,'LogUse');
     }
-  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";
     echo "</table></div>\n";
 
   if ($unum > 0) {
@@ -143,10 +143,10 @@
     if (Access('Internal')) echo "<input type=submit name=ACTION value=Become>";
 
     echo "<input type=submit name=ACTION value='Remove Access' " .
-                  "onClick=\"javascript:return confirm('are you sure you want to remove this user?');\"></form> "; 
+                  "onClick=\"javascript:return confirm('are you sure you want to remove this user?');\"></form> ";
     echo "<input type=submit namce=ACTION value=Become>";
     echo "<h2><a href=Welcome?U=$unum>Send Welcome Email with New Password Link</a> , \n";
-  } else { 
+  } else {
     echo "<Center><input type=Submit name=Create value='Create'></center>\n";
     echo "</form>\n<h2>";
   }

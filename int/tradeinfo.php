@@ -3,13 +3,14 @@
 include_once("fest.php");
 include_once("TradeLib.php");
 
+global $TradeLocData;
 $Tid = $_REQUEST['I'];
 $Trad=Get_Trader_All($Tid);
 $Trade_Types = Get_Trade_Types(1);
 $TradePowers = Gen_Get_All('TradePower');
 
 
-echo "<b>" . $Trad['SN'] . "</b> - " . "<span style='background:" . $Trade_Types[$Trad['TradeType']]['Colour'] . "'>" . 
+echo "<b>" . $Trad['SN'] . "</b> - " . "<span style='background:" . $Trade_Types[$Trad['TradeType']]['Colour'] . "'>" .
      $Trade_Types[$Trad['TradeType']]['SN'] . "</span> - <span class=red><a href=Trade?id=$Tid>Edit</a></span><br>";
 echo "Goods: " . $Trad['GoodsDesc'] . "<br>";
 if ($Trad['Notes']) echo "Notes: " . $Trad['Notes'] . "<br>";

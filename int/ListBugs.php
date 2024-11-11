@@ -8,6 +8,7 @@
   $yn = array('','Y');
   include_once("BugLib.php");
   include_once("DocLib.php");
+  global $Bug_Status,$Bug_Type,$Severities;
 
   $AllU = Get_AllUsers(0);
   $AllA = Get_AllUsers(1);
@@ -43,7 +44,7 @@
     }
   }
   echo "</tbody></table></div>\n";
-  
+
   echo "<h2><a href=AddBug>Add Bug/Feature Request</a>, <a href=ListBugs?OLD>Old Bugs</a></h2>";
 
   dotail();

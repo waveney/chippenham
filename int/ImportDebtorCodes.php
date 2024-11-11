@@ -7,7 +7,8 @@
   include_once("InvoiceLib.php");
   include_once("BudgetLib.php");
   include_once("TradeLib.php");
-  
+  global $db;
+
   // Read in codes, go through each trader - if no code, look through codes if match save, if no match report it
   // Later extend this to look through other orgs
   // Report all unused codes
@@ -20,17 +21,17 @@
     echo "<input type=submit name=Import value=Import><br></form>\n";
     dotail();
   }
-  
-  $F = fopen($_FILES["CSVfile"]["tmp_name"],"r");  
+
+  $F = fopen($_FILES["CSVfile"]["tmp_name"],"r");
   $TestOnly = (isset($_REQUEST['TestFull'])?1:0);
   $orgs = [];
   $orgs_used = [];
-  
+
   while (($cvs = fgetcsv($F)) !== FALSE) {
     $orgs[$cvs[1]] = $cvs[0];
     $orgs_used[$cvs[1]] = 0;
   }
-  
+
   $qry = "SELECT * FROM Trade";
   $res = $db->query($qry);
   while ($trad = $res->fetch_assoc()) {
@@ -50,9 +51,9 @@
       Put_Trader($trad);
     }
   }
-  
+
   // Other Orgs go here
-  
+
   if (!$TestOnly) {
     foreach ($orgs as $nam=>$code) if ($orgs_used[$nam] == 0) echo "Code $code not used<br>";
   }

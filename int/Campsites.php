@@ -19,10 +19,10 @@
 
 function ListSites() {
   $Sites = Gen_Get_All('Campsites','ORDER BY Importance DESC');
-        
+
   echo "<h1>Campsites</h1>";
   echo "Clicking on the name takes you to edit access<br>\n";
-  
+
   $coln = 0;
   echo "<div class=Scrolltable><table id=indextable border width=100% style='min-width:1400px'>\n";
   echo "<thead><tr>";
@@ -37,7 +37,7 @@ function ListSites() {
     echo  $S['Importance'] . "\n";
   }
   echo "</table></div>\n";
-        
+
   echo "<h2><a href=Campsites?ACTION=ADD>Add New Site</a></h2>\n";
 }
 
@@ -62,10 +62,10 @@ function Show_Site(&$Site,$Act='UPDATE') {
   echo "<tr>" . fm_number('Relative Importance',$Site,'Importance');
   echo "<tr>" . fm_textarea('Short Description',$Site,'ShortDesc',3,3);
   echo "<tr>" . fm_textarea('Long Description',$Site,'LongDesc',3,3);
-  echo "<tr>" . fm_text('Image',$Cat,'Image',2); 
+  echo "<tr>" . fm_text('Image',$Site,'Image',2);
   echo "<tr>" . fm_text('If Restricted, to who',$Site,'Restriction',3) . "<td>eg just for Task Force\n";
-  echo "<tr>" . fm_text('Campsite Rules File Name',$Cat,'RulesName',2); 
-  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";  
+  echo "<tr>" . fm_text('Campsite Rules File Name',$Site,'RulesName',2);
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea>";
   echo "</table><br>\n";
   if (empty($Site['id'])) {
     echo "<h2><input type=submit name=ACTION value=$Act></h2><p>\n";
@@ -87,26 +87,26 @@ function Show_Site(&$Site,$Act='UPDATE') {
       $Site = Gen_Get('Campsites',$Sid);
       Show_Site($Site);
     break;
-  
+
     case 'ADD':
       $Site = [];
       Show_Site($Site,'CREATE');
       break;
- 
+
     case 'CREATE':
       if (isset($_REQUEST['Name'])) {
         Insert_db_post('Campsites', $Site);
       }
-      ListSites();      
+      ListSites();
       break;
-    
+
     case 'DELETE':
-      $Sid = $_REQUEST['id'];      
+      $Sid = $_REQUEST['id'];
       db_delete('Campsites',$Sid);
       echo "<h2>Deleted</h2>";
       ListSites();
       break;
-    
+
     case 'UPDATE':
       if (isset($_REQUEST['id'])) {
         $Sid = $_REQUEST['id'];
@@ -114,19 +114,19 @@ function Show_Site(&$Site,$Act='UPDATE') {
         Update_db_post('Campsites', $Site);
       } else {
         Insert_db_post('Campsites', $Site);
-      }      
+      }
       Show_Site($Site,'CREATE');
       break;
-    
+
     case 'LIST':
     default:
-      ListSites();    
-    
+      ListSites();
+
     }
-    
+
   } else {
     ListSites();
   }
   dotail();
-  
+
 ?>

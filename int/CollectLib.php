@@ -8,7 +8,7 @@
 
   A_Check('Staff');
 
-global $TinTypes; 
+global $TinTypes;
 $TinTypes = Gen_Get_All('TinTypes');
 $TinStatus = ['','Lost'];
 $WhoCats = ['Dance Side','Volunteer','Other'];
@@ -25,18 +25,18 @@ function ShowList($Pfx,&$List, $Fld, $Action='') {
   global $AltColours,$Thresh;
   $LLen = count($List);
   if ($LLen > $Thresh) {
-    echo $Pfx . fm_select($List,$_REQUEST,$Fld,0,($Action?" oninput=$Action(event)":'')); 
+    echo $Pfx . fm_select($List,$_REQUEST,$Fld,0,($Action?" oninput=$Action(event)":''));
   } else {
     if ($LLen == 1) $_REQUEST[$Fld] = array_key_first($List);
     echo fm_radio($Pfx,$List,$_REQUEST,$Fld,($Action?" oninput=$Action(event)":''),-1,'','',$AltColours);
   }
-}     
-     
+}
+
 // 0 = Free, 1=Out, 2=Counting
 function Get_Tins_And_States() {
   global $Tins,$YEAR;
   $Tins = Gen_Get_Cond('CollectingUnit','Status=0');
-  
+
   $Records = Gen_Get_Cond('CollectingUse',"Year='$YEAR' AND Value=0");
   foreach ($Tins as &$T) $T['State'] = 0;
   foreach ($Records as $R) $Tins[$R['CollectionUnitId']]['State'] = ($R['TimeIn']?2:1);
@@ -60,16 +60,16 @@ function ListTins() {
   echo "</thead><tbody>\n";
 
 //var_dump($Tins);
-  
+
   foreach ($Tins as $i=>$T) {
 
-    echo "<tr><td>$i<td>" . fm_select($TNames,$T,'Type',0,'',"Type$i") . fm_text1('',$T,'Name',2,'','',"Name$i") . 
-         "<td>" . fm_checkbox("Lost",$T,'Status'); // fm_select($TinStatus,$T,'Status',0,'',"Status$i") . 
+    echo "<tr><td>$i<td>" . fm_select($TNames,$T,'Type',0,'',"Type$i") . fm_text1('',$T,'Name',2,'','',"Name$i") .
+         "<td>" . fm_checkbox("Lost",$T,'Status'); // fm_select($TinStatus,$T,'Status',0,'',"Status$i") .
     echo "<td>" . ($T['Status'] == 0 ? $TinStates[$T['State']] : 'Lost');
     if (($T['Status'] == 0) && ($T['State'] != 0)) {
       echo " (<a href=Collecting?ACTION=" . (($T['State'] == 1)?"Returned&TinIdIn=$i>Return":"Count&i=$i>Count") . "</a>)";
     }
-         
+
   }
   $T = [];
   echo "<tr><td>Add:<td>" . fm_select($TNames,$T,'Type0') . fm_text1('',$T,'Name0',2) . "<td>" . fm_select($TinStatus,$T,'Status0') . "\n";
@@ -96,27 +96,27 @@ function TinTypes() {
   echo "<tr><td>0" . fm_text1('',$T,'Name',2,'','',"Name0");
   echo "</table></div>";
   echo "<input type=submit name=Update value=Update>";
-  
+
 }
 
 function TinIssue($Reassign=0) {
   global $YEAR,$TinTypes;
-  
+
   $Tcat = $_REQUEST['WhoCat'];
   switch ($Tcat) {
     case 0: $TIden = $_REQUEST['SideId']; $Side = Get_Side($TIden); $TName = $Side['SN']; break;
     case 1: $TIden = $_REQUEST['VolMemb']; $Vol = Get_Volunteer($TIden); $TName = $Vol['SN']; break;
     case 2: $TIden = $TName = $_REQUEST['OtherName']; break;
   }
-  
+
   $Tno = $_REQUEST['TinIdOut'];
   $Tin = Gen_Get('CollectingUnit', $Tno);
-  
+
   $Rec = Gen_Get_Cond1('CollectingUse',"Year='$YEAR' AND CollectionUnitId=$Tno AND Value=0");
   if ($Rec) {
     if ($Reassign) {
       $Rec['Value'] = -1;
-      Gen_Put('CollectingUse',$Rec); // Close old record 
+      Gen_Put('CollectingUse',$Rec); // Close old record
     } else {
       $State = ($Rec['TimeIn'] ? 'Returned not empty': 'Not Returned');
       echo "<h2>" . $TinTypes[$Tin['Type']]['Name'] . " " . $Tin['Name'] . " is assigned to $TName</h2>";
@@ -144,7 +144,7 @@ function TinIssue($Reassign=0) {
 function TinIO($Another=0) { // 0 - Normal, 1 - select another tin, 2 - have tin select collector
   global $YEAR,$TinTypes,$TinStatus,$VolCats,$CatStatus,$WhoCats,$Thresh,$Tins,$AltColours;
 
-  Get_Tins_And_States();  
+  Get_Tins_And_States();
   $Dance_Sides = Select_Come();
   $Collectors = [];
   if ($Another==1) {
@@ -153,8 +153,8 @@ function TinIO($Another=0) { // 0 - Normal, 1 - select another tin, 2 - have tin
     $WhoCats []= 'Unknown';
   }
   foreach($VolCats as $Ci=>$VC) if ($VC['Props'] & VOL_USE) if ($VC['Props'] & VOL_Tins) $Collectors[$Ci] = [];
-  
-  $Vols = Gen_Get_Cond("Volunteers","Status=0 AND Money>0 ORDER BY SN");  
+
+  $Vols = Gen_Get_Cond("Volunteers","Status=0 AND Money>0 ORDER BY SN");
   foreach($Vols as $Vid=>$Vol) {
     $VY = Get_Vol_Year($Vid,$YEAR);
     if ( $CatStatus[$VY['Status']] == 'Confirmed') {
@@ -164,7 +164,7 @@ function TinIO($Another=0) { // 0 - Normal, 1 - select another tin, 2 - have tin
       }
     }
   }
-  
+
   $VolTeams = [];
   foreach($VolCats as $Ci=>$VC) if (!empty($Collectors[$Ci]) ) $VolTeams[$Ci] = $VC['Name'];
 
@@ -174,8 +174,8 @@ function TinIO($Another=0) { // 0 - Normal, 1 - select another tin, 2 - have tin
   ShowList('',$WhoCats,'WhoCat','SelectWhoCat');
 //  echo fm_radio('Category',$WhoCats,$_REQUEST,'WhoCat','class=CollectWho1 oninput=SelectWhoCat(event)',0,'','',$AltColours);
 
-//function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field2='',$colours=0,$multi=0,$extra3='',$extra4='') {  
-  
+//function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field2='',$colours=0,$multi=0,$extra3='',$extra4='') {
+
   echo "<div class=CollectDance id=CollectDance " . (($Another==1 && ($WhoCat==0))?'>': "hidden>");
     ShowList('',$Dance_Sides,'SideId','SelectDanceSide');
 //    if (count($Dance_Sides) > $Thresh) {
@@ -184,7 +184,7 @@ function TinIO($Another=0) { // 0 - Normal, 1 - select another tin, 2 - have tin
 //      echo fm_radio('',$Dance_Sides,$_REQUEST,'SideId',' oninput=SelectDanceSide(event)',-1,'','',$AltColours);
 //    }
   echo "</div>";
-  
+
   if ($VolTeams) {
     echo "<div class=CollectVol id=CollectVol " . (($Another==1 && $WhoCat==1)?'>': "hidden>");
     echo "&nbsp;<br>" . fm_radio('Team',$VolTeams,$_REQUEST,'VolTeam','class=CollectTeam1  oninput=SelectTeam(event)',0,'','',$AltColours);
@@ -201,15 +201,15 @@ function TinIO($Another=0) { // 0 - Normal, 1 - select another tin, 2 - have tin
     }
     echo "</div>\n";
   }
-    
+
   echo "<div class=CollectOther id=CollectOther " . (($Another==1 && $WhoCat==2)?'>': "hidden>");
     echo fm_text('Name',$_REQUEST,'OtherName',2,'',' oninput=SelectOther(event)');
     echo "</div>\n";
-  
+
   if ($Another != 2) {
     echo "<h3>Select Tin/Bucket/Reader</h3>";
     echo "If it is not listed here please check the (<a href=Collecting?ACTION=Records>Records</a>)<p>";
-    
+
 //    $Tins = Gen_Get_Cond('CollectingUnit', "Status=0 ORDER BY Name");
     $TinNames = [];
     foreach($Tins as $i=>$T) if ($T['State'] == 0) $TinNames[$i] = $TinTypes[$T['Type']]['Name'] . " - " . $T['Name'];
@@ -226,11 +226,11 @@ function TinIO($Another=0) { // 0 - Normal, 1 - select another tin, 2 - have tin
     echo "<p><input id=TinTake class=TinNotYet disabled type=submit name=ACTION value='Returned'>";
     return;
   }
-  
+
   echo "<hr><h1>Return Tins</h1>\n";
   echo "If it is not listed here please check the (<a href=Collecting?ACTION=Records>Records</a>)<p>";
   echo "If it is being returned unused please tick here: " . fm_checkbox('Not Used',$_REQUEST,'NotUsed') . "<p>";
-  
+
   $TinNames = [];
   foreach($Tins as $i=>$T) if ($T['State'] == 1) $TinNames[$i] = $TinTypes[$T['Type']]['Name'] . " - " . $T['Name'];
   ShowList('',$TinNames,'TinIdIn','EnableReturn');
@@ -242,8 +242,8 @@ function TinIO($Another=0) { // 0 - Normal, 1 - select another tin, 2 - have tin
 
   echo fm_text('<p>Add a note:',$_REQUEST,'Note',2) . " - only for weird cases please";
   echo "<p><input id=TinReturn class=TinReturnNotYet disabled type=submit name=ACTION value='Returned'>";
-  
-  
+
+
   echo "</form></div>\n";
 }
 
@@ -254,14 +254,14 @@ function ReturnTin() {
   $Rec = Gen_Get_Cond1('CollectingUse',"CollectionUnitId=$TinNumb AND Value=0");
   if (!$Rec) {
     echo "<h2>" . $TinTypes[$Tin['Type']]['Name'] . " " . $Tin['Name'] . " is not booked out</h2>";
-    TinIO(2); 
+    TinIO(2);
     return;
   }
   $Rec['TimeIn'] = time();
   if (!empty($_REQUEST['NotUsed'])) $Rec['Value'] = -1;
   if (!empty($_REQUEST['Note'])) $Rec['Notes'] .= $_REQUEST['Note'];// . " - " . $USER['SN'] . "\n";
   Gen_Put('CollectingUse',$Rec);
-  echo "<h1>This has been recorded - please put " . $TinTypes[$Tin['Type']]['Name'] . ": " . $Tin['Name'] . 
+  echo "<h1>This has been recorded - please put " . $TinTypes[$Tin['Type']]['Name'] . ": " . $Tin['Name'] .
        (!empty($Rec['Value'])?' back in the pile to be reused' : ' to be counted') . "</h1><hr>";
   TinIO(0);
 }
@@ -283,20 +283,20 @@ function Get_All_Data() { // Used for Showing records, totals and emails
       case 1: $ColLink = "<a href=Volunteers?A=Show&id=" . $R['AssignTo'] . ">"; $CName = $Vols[$R['AssignTo']]['SN']; break;
       case 2: $ColLink = ''; $CName = $R['AssignName']; break;
     }
-    
+
     $R['Name'] = $CName;
     $R['ColLink'] = $ColLink;
-    
+
     if ($R['Value'] == 0) {
       $Finished = 0;
       continue;
-    } 
+    }
     $val = (($R['Value'] < 0)? 0 : $R['Value']/100);
 
     $TotalValue += $val;
     if (isset($ColCount[$CName])) {
       $ColCount[$CName]['Value'] += $val;
-      $ColCount[$CName]['Tins'][] = $id;                
+      $ColCount[$CName]['Tins'][] = $id;
     } else {
       $ColCount[$CName]['Value'] = $val;
       $ColCount[$CName]['Link'] = $ColLink;
@@ -310,9 +310,9 @@ function Get_All_Data() { // Used for Showing records, totals and emails
 
 function ShowAllRecords() {
   global $TinTypes,$YEAR,$WhoCats,$ColCount,$Records;
-  
+
   Get_All_Data();
-  
+
   $Tins = Gen_Get_All('CollectingUnit');
 
   echo "To edit a record click on the id number<p>";
@@ -322,13 +322,13 @@ function ShowAllRecords() {
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>User Type</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>User Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'D')>Time Out</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'D')>Time In</a>\n"; 
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'D')>Time In</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Value</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Device Type</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Device Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
   echo "</thead><tbody>\n";
-  
+
   foreach($Records as $id=>$R) {
     echo "<tr><td><a href=Collecting?ACTION=Edit&i=$id>$id</a><td>" . $WhoCats[$R['AssignType']] . "<td>";
     echo ($R['ColLink'] ? $R['ColLink'] : '') . $R['Name'] . ($R['ColLink'] ? '</a>' : '');
@@ -359,7 +359,7 @@ function ShowAllRecords() {
         if (isset($ColCount[$CName])) {
           $ColCount[$CName] += $val;
         } else {
-          $ColCount[$CName] = $val;        
+          $ColCount[$CName] = $val;
         }*/
       }
 //var_dump($R,$Tins[$R['CollectionUnitId']]);
@@ -382,16 +382,16 @@ function TinCount() {
   $TinId = ($_REQUEST['i'] ?? 0);
   echo "<form method=post action=Collecting id=ColForm>";
 
-  if (empty($TinId)) {  
+  if (empty($TinId)) {
     $Tins = Gen_Get_All('CollectingUnit');
     $Records = Gen_Get_Cond('CollectingUse',"Year='$YEAR' AND TimeIn!=0 AND Value=0");
     $ToBeCounted = [];
     foreach ($Records as $R) $ToBeCounted[$R['CollectionUnitId']] = 1;
-  
+
     echo "<H1>Select Device:</h1>";
     echo "If it is not here, it is not recorded properly... (Go to the <a href=Collecting?ACTION=Records>Records</a>)<p>";
 
-  
+
     $Tins = Gen_Get_Cond('CollectingUnit', "Status=0 ORDER BY Name");
     $TinNames = [];
     $tid = -1;
@@ -412,7 +412,7 @@ function TinCount() {
   }
 
   echo  fm_text0("<p><H2>Value (in pounds)</h2>",$_REQUEST,'Value',3,'',' oninput=EnableCount(event)');
-  
+
   echo fm_text('<p>Add a note:',$_REQUEST,'Note',2) . " - only for weird cases please<p>";
   echo "<input id=TinCount class=TinCountNotYet disabled type=submit name=ACTION value=Counted>\n";
 }
@@ -435,26 +435,26 @@ function TinCounted() {
   $R['Value'] = ($Value? $Value*100: -1); // Stored in pennies
   if (!empty($_REQUEST['Note'])) $Rec['Notes'] .= $_REQUEST['Note']; // . " - " . $USER['SN'] . "\n";
   Gen_Put('CollectingUse',$R);
-  
-  echo "<h2>That was collected by: "; 
+
+  echo "<h2>That was collected by: ";
     switch ($R['AssignType']) {
       case 0: echo "<a href=AddPerf?i=" . $R['AssignTo'] . ">" . $Dance_Sides[$R['AssignTo']] . "</a>"; break;
       case 1: echo "<a href=Volunteers?A=Show&id=" . $R['AssignTo'] . ">" . $Vols[$R['AssignTo']]['SN'] . "</a>"; break;
       case 2: echo $R['AssignName']; break;
     }
   echo "</h2>\n";
-  
+
   echo "<h2>Please put " . $TinTypes[$Tin['Type']]['Name'] . " " . $Tin['Name'] . " to be reused</h2>\n";
-} 
+}
 
 function EditRecord() {
-  global $TinTypes,$YEAR,$WhoCats,$Thresh;  
+  global $TinTypes,$YEAR,$WhoCats,$Thresh;
   $Rid = $_REQUEST['i'];
   $R = Gen_Get('CollectingUse',$Rid);
-  
+
   echo "<form method=post action=Collecting id=ColForm>\n";
   Register_AutoUpdate('CollectingUse',$Rid);
-  
+
   echo "<table border><tr><td>Id: $Rid" . fm_text('Year',$R,'Year');
   echo "<tr>" . fm_number('Assign Type',$R,'AssignType');
   echo "<tr>" . fm_number('Assign To',$R,'AssignTo');
@@ -468,7 +468,7 @@ function EditRecord() {
 }
 
 function ShowComment() {
-  global $TinTypes,$YEAR,$WhoCats,$Thresh;  
+  global $TinTypes,$YEAR,$WhoCats,$Thresh;
   $Rid = $_REQUEST['i'];
   $R = Gen_Get('CollectingUse',$Rid);
 
@@ -488,16 +488,16 @@ function ShowComment() {
 
 function ShowTotals() {
   global $TinTypes,$YEAR,$WhoCats,$ColCount,$Records;
-  
+
   $Finished = Get_All_Data();
   $Tins = Gen_Get_All('CollectingUnit');
-    
+
   if ($Finished) {
     echo "<h2>All tins are counted.  The totals are:</h2>";
   } else {
     echo "<h2>The interim totals are:</h2>The email buttons only appear when all are counted.<p>";
   }
-  
+
   uasort($ColCount, function ($a,$b) { return $b['Value'] <=> $a['Value'];});
 
   echo "<div class=Scrolltable><table border class=altcolours>\n";
@@ -524,26 +524,26 @@ function ShowTotals() {
           echo "<td>" . $TinTypes[$Tin['Type']]['Name'] . ": " . $Tin['Name'] . "<td>";
           echo date('D j/n/y H:i:s',$R['TimeOut']) . "<td>" . date('D j/n/y H:i:s',$R['TimeIn']);
           echo "<td align=right>" . ($R['Value'] <0 ? 0 :  sprintf('£%0.2f',$R['Value']/100));
-          
+
           if ($TinNum++ == 0) {
             echo "<td rowspan=$Rows align=right>" . sprintf('£%0.2f',$Col['Value']);
             switch ($Col['Cat']) {
               case 0:
                 $Sid = $Col['Who'];
-                $Side = Get_Side($Sid); 
-                echo "<td class=smalltext style='max-width:180;overflow-x:auto;' rowspan=$Rows>" . $Side['Email'] . "<td rowspan=$Rows>" . ($Side['Phone'] ?? $Side['Mobile']); 
-                if ($Finished) echo "<td rowspan=$Rows><button type=button class=ProfButton onclick=ProformaSend('Dance_Collect_Info',$Sid,'CollectInfo','SendProfEmail')" . 
+                $Side = Get_Side($Sid);
+                echo "<td class=smalltext style='max-width:180;overflow-x:auto;' rowspan=$Rows>" . $Side['Email'] . "<td rowspan=$Rows>" . ($Side['Phone'] ?? $Side['Mobile']);
+                if ($Finished) echo "<td rowspan=$Rows><button type=button class=ProfButton onclick=ProformaSend('Dance_Collect_Info',$Sid,'CollectInfo','SendProfEmail')" .
                      Proforma_Background('FinalInfo') . ">Send Thanks</button>";
 
                 break;
-              case 1: 
+              case 1:
                 $Vid = $Col['Who'];
-                $Vol = Get_Volunteer($Vid); 
-                echo "<td class=smalltext style='max-width:180;overflow-x:auto;' rowspan=$Rows>" . $Vol['Email'] . "<td rowspan=$Rows>" . $Vol['Phone']; 
+                $Vol = Get_Volunteer($Vid);
+                echo "<td class=smalltext style='max-width:180;overflow-x:auto;' rowspan=$Rows>" . $Vol['Email'] . "<td rowspan=$Rows>" . $Vol['Phone'];
                 if ($Finished) echo "<td rowspan=$Rows><button type=button class=ProfButton onclick=ProformaVolSend('Vol_Collect_Info',$Vid,'CollectInfo','SendVolEmail')" .
                      Proforma_Background('FinalInfo2') . ">Send Thanks</button>";
                 break;
-              case 2: 
+              case 2:
                 echo "<td rowspan=$Rows><td rowspan=$Rows>";
                 if ($Finished) echo "<td rowspan=$Rows>\n";
             }
@@ -551,10 +551,10 @@ function ShowTotals() {
         }
 //        echo "</table>";
 //      }
-    
+
   }
-  
-  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=8 class=NotSide><textarea id=Debug></textarea>";    
+
+  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=8 class=NotSide><textarea id=Debug></textarea>";
   echo "</table></div>\n";
 }
 
@@ -563,7 +563,7 @@ function CollectInfo(&$Data,$type=0) { // 0 =Dance, 1=Vol
 
   $Finished = Get_All_Data();
   $Tins = Gen_Get_All('CollectingUnit');
-    
+
   uasort($ColCount, function ($a,$b) { return $b['Value'] <=> $a['Value'];});
 
   $Str = "You collected <br><table border><tr><th>Device Type<th>Device<th>From<th>To<th>Value";
@@ -584,7 +584,7 @@ function CollectInfo(&$Data,$type=0) { // 0 =Dance, 1=Vol
       $Str .= "<tr><td colspan=5 align=right>" . sprintf('£%0.2f',$Col['Value']) . "</table>";
 
       if ($Posn < Feature('CollectingPosn',4)) {
-        $Str .= "<p>You collected the " . 
+        $Str .= "<p>You collected the " .
                 (($Posn < 4)?['<B>Most</b>','<b>Second</b> most','<b>third</b> most'][$Posn-1] : ($Posn .  Ordinal($Posn) . " largest ")) . " amount<p>";
       }
       return $Str;
@@ -593,18 +593,18 @@ function CollectInfo(&$Data,$type=0) { // 0 =Dance, 1=Vol
 }
 
 function CollectActions() {
-  global $YEAR;
+  global $YEAR,$TinTypes;
   dostaffhead("Collecting",["/css/Collecting.css","/js/Collecting.js","/js/InviteThings.js"]);
 //var_dump($_REQUEST);
   if (isset($_REQUEST['ACTION'])) {
     switch ($_REQUEST['ACTION']) {
-    
+
       case 'ListTinsUpdate': // Manage Tin Types
         UpdateMany('CollectingUnit',0,$TinTypes); // Drop Through
       case 'ListTins': //Manage Tin pool
         ListTins();
         break;
-      
+
       case 'Records': // Records this year
         ShowAllRecords();
         break;
@@ -612,24 +612,24 @@ function CollectActions() {
       case 'IO': // Tins in and out
         TinIO(0);
         break;
-        
+
       case 'Assign': // Assign Tins
         TinIssue(0);
         break;
-        
+
       case 'Reassign': // Reassign Tins
         TinIssue(1);
         break;
 
       case 'Choose Another': // Choose another tin
         unset($_REQUEST['TinIdOut']);
-        TinIO(1);      
+        TinIO(1);
         break;
 
       case 'Email': // Send out totals
-      
+
         break;
-        
+
       case 'Totals': // Show totals
         ShowTotals();
         break;
@@ -637,7 +637,7 @@ function CollectActions() {
       case 'Returned': // Return Tin
         ReturnTin();
         break;
-        
+
       case 'Count': // Show totals
         TinCount();
         break;
@@ -651,30 +651,30 @@ function CollectActions() {
       case 'TinTypes': // Manage Tin Types
         TinTypes();
         break;
-      
+
       case 'Edit':
         EditRecord();
         break;
- 
+
        case 'ShowComment':
         ShowComment();
         break;
 
- 
+
     }
   }
-  
+
   echo "<hr><h2>Other Actions:<ul>";
   if (Access('Staff','Finance')) {
     echo "<li><a href=Collecting?ACTION=ListTins&Y=$YEAR>Manage Tins</a>";
 //    echo "<li><a href=Collecting?ACTION=CurrentTins>Current Tins</a>";
-    echo "<li><a href=Collecting?ACTION=Records&Y=$YEAR>List this year records</a>";  
-    echo "<li><a href=Collecting?ACTION=Count&Y=$YEAR>Count Tins</a>";  
-    echo "<li><a href=Collecting?ACTION=Totals&Y=$YEAR>Show Totals</a>";  
-//    echo "<li><a href=Collecting?ACTION=Email>Email Teams and Collectors their results</a>";  
-    echo "<li><a href=Collecting?ACTION=TinTypes&Y=$YEAR>Manage Tin Types</a>";  
+    echo "<li><a href=Collecting?ACTION=Records&Y=$YEAR>List this year records</a>";
+    echo "<li><a href=Collecting?ACTION=Count&Y=$YEAR>Count Tins</a>";
+    echo "<li><a href=Collecting?ACTION=Totals&Y=$YEAR>Show Totals</a>";
+//    echo "<li><a href=Collecting?ACTION=Email>Email Teams and Collectors their results</a>";
+    echo "<li><a href=Collecting?ACTION=TinTypes&Y=$YEAR>Manage Tin Types</a>";
   }
-  echo "<li><a href=Collecting?ACTION=IO&Y=$YEAR>Tins in and out</a></ul>";    
+  echo "<li><a href=Collecting?ACTION=IO&Y=$YEAR>Tins in and out</a></ul>";
 
   dotail();
 }

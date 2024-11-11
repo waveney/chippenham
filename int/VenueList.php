@@ -3,7 +3,8 @@
   A_Check('Steward');
 
   dostaffhead("List Venues");
-  global $Surfaces,$YEAR;
+  global $Surfaces,$YEAR,$Venue_Status;
+
   $yn = array('','Y');
   include_once("ProgLib.php");
   include_once("DanceLib.php");
@@ -12,10 +13,10 @@
   if ($VYear) foreach($VYear as $VY) {
     $Spid = $VY['SponsoredBy'];
     if ($Spid > 0) {
-      $Spon = Gen_Get('Trade',$Spid,'Tid');      
+      $Spon = Gen_Get('Trade',$Spid,'Tid');
       $venues[$VY['VenueId']]['SponsoredBy'] = "<a href=Trade?id=$Spid&T=S>" . $Spon['SN'] . "</a>";
     } else {
-      $venues[$VY['VenueId']]['SponsoredBy'] = "<a href=SponSort?T=V&i=" . $VY['VenueId'] . ">Many</a>";    
+      $venues[$VY['VenueId']]['SponsoredBy'] = "<a href=SponSort?T=V&i=" . $VY['VenueId'] . ">Many</a>";
     }
     $venues[$VY['VenueId']]['QRCount'] = ($VYear['QRCount'] ?? 0);
   }
@@ -84,7 +85,7 @@
     }
   }
   echo "</tbody></table></div>\n";
-  
+
   if (Access('Committee','Venues')) {
     echo "<h2><a href=AddVenue>Add Venue</a></h2>";
   }

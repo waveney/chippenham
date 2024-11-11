@@ -1,14 +1,15 @@
 <?php
   include_once("fest.php");
-  
+
   $V = $_REQUEST['pa4v'] ?? 0;
   A_Check('Participant','Venue',$V);
-  
+
   include_once("ProgLib.php");
   include_once("DanceLib.php");
   include_once("ViewLib.php");
   global $YEAR;
-    
+  global $db;
+
   if ($V == 0) {
     dohead('No Venue Selected');
     echo "<h1> No Venue Selected</h1>";
@@ -17,12 +18,12 @@
 
   $Ven = Get_Venue($V);
   $host = "https://" . $_SERVER['HTTP_HOST'];
-  
+
   $ShowMode = '';
   $AtEnd = [];
   if (isset($_REQUEST['Embed'])) $ShowMode = 'Embed';
   if (isset($_REQUEST['HeaderFree'])) $ShowMode = 'HeaderFree';
-  
+
   if ($ShowMode == 'HeaderFree') {
     dominimalhead("PA Requirements for " . $Ven['SN'],['files/Newstyle.css','css/festconstyle.css',"js/qrcode.js"]);
 
@@ -47,21 +48,21 @@
     dotail();
     exit;
   }
-  
+
   $LastDay = -99;
   while ($e = $res->fetch_assoc()) {
     if ($LastDay != $e['Day']) { $MaxEv = 0; $LastDay = $e['Day']; };
     $WithC = 0;
     if ($e['BigEvent']) {
       $O = Get_Other_Things_For($e['EventId']);
-      $found = ($e['Venue'] == $V); 
+      $found = ($e['Venue'] == $V);
 //      if (!$O && !$found) continue;
-      if ( !$found && $Ven['IsVirtual'] && in_array($e['Venue'],$VenList)) $found = 1; 
+      if ( !$found && $Ven['IsVirtual'] && in_array($e['Venue'],$VenList)) $found = 1;
       foreach ($O as $i=>$thing) {
         if (($O['Identifier'] ?? 0) == 0) continue;
         switch ($thing['Type']) {
           case 'Venue':
-            if (in_array($thing['Identifier'],$VenList)) $found = 1; 
+            if (in_array($thing['Identifier'],$VenList)) $found = 1;
             break;
           case 'Perf':
           case 'Side':
@@ -114,9 +115,9 @@
     $rows = 0;
     if (isset($e['With'])) $rows += count($e['With']);
     if ($e['StagePA']) $rows++;
-    
+
     if ($rows) {
-      echo "<tr><td rowspan=$rows>". timecolon($e['Start']) . "-" . timecolon($e['End']) . "<td  rowspan=$rows>" . $e['Setup'] . 
+      echo "<tr><td rowspan=$rows>". timecolon($e['Start']) . "-" . timecolon($e['End']) . "<td  rowspan=$rows>" . $e['Setup'] .
            "<td rowspan=$rows>" . ($e['SubEvent']<1?$e['SN']:"") ;
       $tr = 0;
       if ($e['StagePA']) { echo "<td><td>" . $e['StagePA']; $tr=1;}
@@ -140,19 +141,19 @@
               echo "None";
             }
           } else {
-            echo "None";          
+            echo "None";
           }
         } else if ($side['StagePA']) {
           echo $side['StagePA'];
         } else echo "None";
       }
     } else {
-      echo "<tr><td>" . timecolon($e['Start']) . "-" . timecolon($e['End']) . "<td>" . $e['Setup'] . "<td>" . 
+      echo "<tr><td>" . timecolon($e['Start']) . "-" . timecolon($e['End']) . "<td>" . $e['Setup'] . "<td>" .
         $e['SN'] . "<td><td>None";
     }
   }
   echo "</table>\n";
-  
+
   if ($AtEnd) {
     foreach($AtEnd as $snum=>$IncFile) {
       $side = Get_Side($snum);
@@ -160,7 +161,7 @@
       ViewFile($IncFile,1,'',0);
     }
   }
- 
+
   if ($ShowMode == 'HeaderFree') {
 
     echo "<h3> To find out more scan this:</h3>"; // pixels should be multiple of 41
@@ -175,7 +176,7 @@
 
     exit;
   }
-  
+
   if (Access('Staff')) {
 
     echo "<h3>Link to send to Engineer: $host/int/Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'];

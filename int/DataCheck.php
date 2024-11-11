@@ -102,12 +102,12 @@ function Links_Email($Addr,&$list) {
     case 'sa':
     case 'aa':
     case 'oa':
-      $Mess .= "You are recorded as an alternative contact for the " . $e[0] . " <b>" . $e[3] . "</b> To change this please contact " . $e[5] . 
+      $Mess .= "You are recorded as an alternative contact for the " . $e[0] . " <b>" . $e[3] . "</b> To change this please contact " . $e[5] .
                 " <a href=mailto: " . $e[6] . ">" . $e[6] . "</a><p>";
       break;
 
     case 'u':
-      $Mess .= "You are recorded as the contact person for the " . $e[0] . " <b>" . $e[3] . "</b> in " . $e[5] . 
+      $Mess .= "You are recorded as the contact person for the " . $e[0] . " <b>" . $e[3] . "</b> in " . $e[5] .
                 ".  This is historic record with no user edits possible at the moment.<p>";
       break;
     }
@@ -117,7 +117,8 @@ function Links_Email($Addr,&$list) {
 
   $logf = fopen("LogFiles/DataCheck.txt","a");
   if( $logf) {
-    fwrite($logf,"\n\nEmail to : " . $whoto . "\n\n" . $Mess);
+    $whoto =
+    fwrite($logf,"\n\nEmail to : $Addr \n\n" . $Mess);
     fclose($logf);
   }
 
@@ -133,25 +134,25 @@ function Data_Check_Emails($Addr) {
 
   $ads = DanceLinks($Addr);
   if ($ads) $LinkList = array_merge($LinkList,$ads);
-  
+
   $ads = DanceAltLinks($Addr);
   if ($ads) $LinkList = array_merge($LinkList,$ads);
-  
+
   $ads = MusicLinks($Addr);
   if ($ads) $LinkList = array_merge($LinkList,$ads);
-  
+
   $ads = MusicAltLinks($Addr);
   if ($ads) $LinkList = array_merge($LinkList,$ads);
-  
+
   $ads = TradeLinks($Addr);
   if ($ads) $LinkList = array_merge($LinkList,$ads);
-  
+
   $ads = VolunteerLinks($Addr);
   if ($ads) $LinkList = array_merge($LinkList,$ads);
-  
+
   $ads = SubmitLinks($Addr);
   if ($ads) $LinkList = array_merge($LinkList,$ads);
-  
+
 //var_dump($LinkList);
 
   if (count($LinkList)) {

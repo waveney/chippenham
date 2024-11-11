@@ -2,16 +2,17 @@
 <?php
   include_once("fest.php");
   A_Check('Committee','Dance');
-  
+
   dominimalhead("Car Park Address Labels");
 
-/* 
+  global $db,$PLANYEAR;
+/*
   Select Sides to print
   display - no back links
 */
 
   $flds = "s.*, y.Invite, y.Coming";
-  $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s LEFT JOIN SideYear as y ON s.SideId=y.SideId AND y.Year='$YEAR' ORDER BY SN");
+  $SideQ = $db->query("SELECT s.*, y.* FROM Sides AS s LEFT JOIN SideYear as y ON s.SideId=y.SideId AND y.Year='$PLANYEAR' ORDER BY SN");
   $tot_perf = 0;
 
   echo "<h2>Car Parking needed</h2>\n";

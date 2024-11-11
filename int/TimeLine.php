@@ -7,6 +7,7 @@
   include_once("TLLib.php");
   include_once("DocLib.php");
   global $YEAR,$PLANYEAR,$TL_Importance;
+  global $db,$USERID,$USER;
 
   $Years = Get_Years();
 
@@ -27,16 +28,16 @@ Coming ...
     if ($YEAR+1 < $PLANYEAR) echo " &nbsp; <a href=TimeLine?Y=$PLANYEAR>$PLANYEAR</a>\n";
   echo "</div>";
 
-  echo "<h2>Timeline Management for $YEAR </h2>"; 
+  echo "<h2>Timeline Management for $YEAR </h2>";
   $now = time();
   $date = getdate();
   $month = mktime(0,0,0,$date['mon']+1,$date['mday'],$date['year']);
-  
+
 /* Thinking space
  Time line for YEAR                                      PREV, NEXT, PLAN (aka sideyears)
- Add a Task  Show: Your Open tasks      All Your Tasks      Due next month, 2 months     Simple display (No year, recur, etc) 
+ Add a Task  Show: Your Open tasks      All Your Tasks      Due next month, 2 months     Simple display (No year, recur, etc)
                    all Open tasks       All Tasks           Overdue                      Complex display (only for TLent?
- Use JS to swap display round quickly - always send all for year 
+ Use JS to swap display round quickly - always send all for year
 
 */
 
@@ -46,7 +47,7 @@ Coming ...
   $AllActive = [];
   foreach ($All as $usr) {
     $id = $usr['UserId'];
-    if ($usr['AccessLevel'] >=2 && $usr['AccessLevel']<= 6 ) $AllActive[$id] = (strlen($usr['Abrev'])?$usr['Abrev']:$usr['Login']);  
+    if ($usr['AccessLevel'] >=2 && $usr['AccessLevel']<= 6 ) $AllActive[$id] = (strlen($usr['Abrev'])?$usr['Abrev']:$usr['Login']);
   }
 //var_dump($All[3]);
 
@@ -65,7 +66,7 @@ Coming ...
         $Ntl['ProgText'] = $Ntl['History'] = '';
 
         $tl['NextYearId'] = Insert_db('TimeLine',$Ntl);
-         
+
         Put_TLent($tl);
       }
     } else {
@@ -165,7 +166,7 @@ Coming ...
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'D','dmy')>Due</a>\n";
     echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'N')>Year</a>\n";
     echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'T')>Recur</a>\n";
-    echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'T')>Copied</a>\n";    
+    echo "<th class=FullD hidden><a href=javascript:SortTable(" . $coln++ . ",'T')>Copied</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
     echo "</thead><tbody>";
 
@@ -177,14 +178,14 @@ Coming ...
       $Open = 0;
       if (!isset($tl['Start']) || $tl['Start'] == 0) $tl['Start'] = $now;
       if ($tl['Assigned']>0) {
-      
+
         if ($tl['Assigned'] != $USERID && ($tl['Assigned'] != 3)) { $classes .=  "TL_EVERYONE "; $hide=1; }
       }
-      
+
       if ($tl['Progress'] >= 0) {
         if ($tl['Progress'] >= 100) {
           $hide=1;
-          $classes .= "TL_COMPLETE "; 
+          $classes .= "TL_COMPLETE ";
         } else {
           $classes .= "TL_OPEN ";
           if ($tl['Due'] < $month ) $classes .= "TL_MONTH ";
@@ -195,7 +196,7 @@ Coming ...
         continue; //TODO enable SysAdmin/TLine
         // Cancelled
       }
-      
+
       echo "<tr class='$classes' " . ($hide?'hidden':'') . ">";
       if (Access('Committee','TLine')) echo "<td><input type=checkbox name=E$tli class=SelectAllAble>";
       if (Access('SysAdmin')) echo "<td class=FullD hidden>" . $tli;
@@ -209,13 +210,13 @@ Coming ...
       echo "<td class=FullD hidden>" . $tl['Year'];
       echo "<td class=FullD hidden>" . ["","Y"][$tl['Recuring']];
       echo "<td class=FullD hidden>" . ($tl['NextYearId']? ("<a href=AddTimeLine?TLid=" . $tl['NextYearId'] . ">Y</a>" ) : "");
-      echo "<td>" . $tl['Notes'] . "\n";  
+      echo "<td>" . $tl['Notes'] . "\n";
     }
     echo "</table></div>\n";
     if (Access('Committee','TLine')) {
       echo "<div class=floatright><input type=Submit name=ACTION value='Copy Recuring to $PLANYEAR' class=FullD hidden></div>";
       echo "Selected: <input type=Submit name=ACTION value=Cancel " .
-           " onClick=\"javascript:return confirm('are you sure you want to cancel these?');\">, "; 
+           " onClick=\"javascript:return confirm('are you sure you want to cancel these?');\">, ";
       echo "<input type=Submit name=ACTION value='Completed'>, ";
       echo "<input type=Submit name=ACTION value='Re Assign to'>: " . fm_select($AllActive,$_REQUEST,'ReAssign',1);
       echo "<input type=Submit name=ACTION value='Copy to $PLANYEAR' class=FullD hidden> ";
@@ -231,9 +232,9 @@ Coming ...
   }
 
 
-  
+
 //  echo "<h2>Importing Data</h2>";
-//  echo "If you have a spreadsheet or file with lots of entries you would like to import directly without retyping them please send it to Richard.\n<p>"; 
+//  echo "If you have a spreadsheet or file with lots of entries you would like to import directly without retyping them please send it to Richard.\n<p>";
 
   echo "</div>\n";
   dotail();

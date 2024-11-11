@@ -1,6 +1,6 @@
 <?php
 // Updates to data following on screen drag drops, returns info pane html
-//    $("#Infomation").load("dpupdate", "D=" + dstId + "&S=" + srcId + "&Y=" + $("#DayId").text() + "&E=" + 
+//    $("#Infomation").load("dpupdate", "D=" + dstId + "&S=" + srcId + "&Y=" + $("#DayId").text() + "&E=" +
 //                        $("input[type='radio'][name='EInfo']:checked").val()        );
 //  include_once("minimalfiles/header");
 /* ids are
@@ -13,15 +13,16 @@
         Z0:Side:$id        Side Side
         Z0:Act:$id        Act Side
         Z0:Other:$id        Other Side
-    $("#InformationPane").load("beupdate", "D=" + dstId + "&S=" + srcId + "&EV=" + $("#EVENT").text() + "&E=" + 
+    $("#InformationPane").load("beupdate", "D=" + dstId + "&S=" + srcId + "&EV=" + $("#EVENT").text() + "&E=" +
                         $("input[type='radio'][name='EInfo']:checked").val()        );
 */
 
   include_once("fest.php");
+  $dstmtch = [];
 
   if (isset($_REQUEST['D'])) {
-    $dstId = $_REQUEST['D'];  
-    $note = $_REQUEST['N'];  
+    $dstId = $_REQUEST['D'];
+    $note = $_REQUEST['N'];
     $Ev   = $_REQUEST['EV'];
 
     preg_match('/(.)(\d*):(.*):(\d*)/',$dstId,$dstmtch);

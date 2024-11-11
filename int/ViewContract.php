@@ -1,21 +1,21 @@
 <?php
   include_once("fest.php");
- 
+
   $Headers = !isset($_REQUEST['NoHead']);
   if ($Headers) dostaffhead("View Contract");
   include_once("Contract.php");
   include_once("ViewLib.php");
-  global $YEAR;
+  global $YEAR,$Book_State;
 
   $snum=0;
   if (isset($_REQUEST['sidenum'])) $snum = $_REQUEST['sidenum'];
 
   $Side = Get_Side($snum);
   $ctype = ($Side['IsAnAct']?1:0);
-  
+
   $Sidey = Get_SideYear($snum);
   $Opt = 0;
-  $IssNum = $Sidey['Contracts']; 
+  $IssNum = $Sidey['Contracts'];
   if ($Sidey['YearState'] == $Book_State['Contract Signed']) $Opt += 1;
   if ($Sidey['Contracts']) $Opt +=2;
   if (isset($_REQUEST{'I'})) { $IssNum = $_REQUEST['I']; $Opt += 4; }
@@ -34,6 +34,6 @@
     break;
   }
 
-  echo "</div>";  
+  echo "</div>";
   if ($Headers) dotail();
 

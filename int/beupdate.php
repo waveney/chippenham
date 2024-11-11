@@ -1,6 +1,6 @@
 <?php
 // Updates to data following on screen drag drops, returns info pane html
-//    $("#Infomation").load("dpupdate.php", "D=" + dstId + "&S=" + srcId + "&Y=" + $("#DayId").text() + "&E=" + 
+//    $("#Infomation").load("dpupdate.php", "D=" + dstId + "&S=" + srcId + "&Y=" + $("#DayId").text() + "&E=" +
 //                        $("input[type='radio'][name='EInfo']:checked").val()        );
 //  include_once("minimalfiles/header.php");
 /* ids are
@@ -13,7 +13,7 @@
         Z0:Side:$id        Side Side
         Z0:Act:$id        Act Side
         Z0:Other:$id        Other Side
-    $("#InformationPane").load("beupdate.php", "D=" + dstId + "&S=" + srcId + "&EV=" + $("#EVENT").text() + "&E=" + 
+    $("#InformationPane").load("beupdate.php", "D=" + dstId + "&S=" + srcId + "&EV=" + $("#EVENT").text() + "&E=" +
                         $("input[type='radio'][name='EInfo']:checked").val()        );
 
 D=Z0:Side:32&S=S10:Side:32&EV=167&E=
@@ -33,14 +33,14 @@ function RecordBeEventChanges($Ev) {
   }
 }
 
-
+$srcmtch = $dstmtch = [];
 
 //var_dump($_REQUEST);
   if (isset($_REQUEST['D'])) {
-    $dstId = $_REQUEST['D'];  
-    $srcId = $_REQUEST['S'];  
+    $dstId = $_REQUEST['D'];
+    $srcId = $_REQUEST['S'];
     $Ev   = $_REQUEST['EV'];
-  
+
     preg_match('/(.)(\d*):(.*):(\d*)/',$dstId,$dstmtch);
     preg_match('/(.)(\d*):(.*):(\d*)/',$srcId,$srcmtch);
 
@@ -55,7 +55,7 @@ function RecordBeEventChanges($Ev) {
       break;
 
     case 'ES':
-      db_delete_cond('BigEvent',"Event=$Ev AND ( Type='$dtt' OR Type='Perf' OR Type='Act' OR Type='Other') AND Identifier=$did"); // Fudge for old data 
+      db_delete_cond('BigEvent',"Event=$Ev AND ( Type='$dtt' OR Type='Perf' OR Type='Act' OR Type='Other') AND Identifier=$did"); // Fudge for old data
 
       break;
 
@@ -98,7 +98,7 @@ function RecordBeEventChanges($Ev) {
 
   }
  // Return setup
-   
+
   $Ei    = $_REQUEST['E'];  // Used for return info
 //  echo "fred";
   CheckDance($Ei);

@@ -3,27 +3,27 @@
   include_once("int/DateTime.php");
 
   dohead("Buy Tickets and Passes",[],1);
-  global $YEARDATA,$YEAR;
+  global $YEARDATA,$YEAR,$DayLongList;
   set_ShowYear();
   include_once "int/ProgLib.php";
-  
+
   if ($YEARDATA['TicketControl'] == 0 && $YEARDATA['CampingControl'] == 0) {
     echo "<h2>Tickets and Passes are not yet on Sale</h2>";
     dotail();
   }
-  
+
   // This is a short term kludge
-  
+
 
   echo TnC("TicketHeader");
-    
+
   echo "<div class=TicketFrame style='max-width:1000px;'>";
-  echo '<p><script type="text/javascript" src="https://theticketsellerslive.blob.core.windows.net/webcontent/embed/iframeResizer.min.js"></script><iframe src="https://ww2.theticketsellers.co.uk/embed/10057362" scrolling="no" style="border: 0px; width: 1px; min-width: 100%; max-width: 1100px;" onload="iFrameResize()"></iframe></p>';
+  echo '<p><script type="text/javascript" src="https://theticketsellerslive.blob.core.windows.net/webcontent/embed/iframeResizer.min.js"></script><iframe src="https://ww2.theticketsellers.co.uk/embed/10058480" scrolling="no" style="border: 0px; width: 1px; min-width: 100%; max-width: 1100px;" onload="iFrameResize()"></iframe></p>';
   echo "</div>";
-  
+
   dotail();
-  
-  // Old code for Ticketsource 
+
+  // Old code for Ticketsource
 
   echo "<div class=biodiv>";
   echo "<img src='/images/Weekend-Wristband.jpg' class=bioimg />";
@@ -39,8 +39,8 @@
   }
 
   echo "Select from the options below to purchase your passes and tickets for " . Feature('FullName') . " " . substr($YEAR,0,4) . ".<p>";
- 
-  echo "The weekend Pass is access to everything (apart from events at the Tivoli and events before Friday).  The Saturday Pass gives access to everything on Saturday only.  
+
+  echo "The weekend Pass is access to everything (apart from events at the Tivoli and events before Friday).  The Saturday Pass gives access to everything on Saturday only.
   Event tickets are just access to that individual event.<p>";
 
   if ($YEARDATA['BookingFee']) echo "Please note that there is a booking fee of " . $YEARDATA['BookingFee'] . " when ordering tickets online.<p> ";
@@ -59,7 +59,7 @@
 
   echo "<a href=TermsAndConditions>Full Terms and Conditions</a>.<p>";
 
-  if ($YEARDATA['CampingCost'] && $YEARDATA['CampingControl'] == 1) { 
+  if ($YEARDATA['CampingCost'] && $YEARDATA['CampingControl'] == 1) {
     echo "<a href=/InfoCamping><b>Camping Information and Camping Tickets.</b></a><p>";
   }
 
@@ -71,7 +71,7 @@
       if ($YEARDATA['TicketControl'] == 1) echo "<a href='" . $YEARDATA[$day . "PassCode"] . "' target=_blank style='font-size:18px'>";
       echo "<strong>$day Pass</strong></a><br>";
       echo "Adult (16+): <strong>";
-      
+
       $str = '';
       $Cpri = $YEARDATA[$day . 'Pass'];
 
@@ -83,7 +83,7 @@
           $Cpri = $Npri;
         }
       }
-  
+
       if ($YEARDATA['PriceChange2']) {
         $pc = $YEARDATA['PriceChange2'];
         $Npri = $YEARDATA[$day . 'Pass2'];
@@ -97,7 +97,7 @@
       }
 
       if ($str) $str .= ", then ";
-      $str .= "&pound;$Cpri </strong><br>"; 
+      $str .= "&pound;$Cpri </strong><br>";
 
       echo $str;
       echo "Child (5-15): <strong>" . Print_Pence($Cpri*50) . "</strong><br>";
@@ -134,7 +134,7 @@
     }
     DayTable($E['Day'],"Event Tickets",($PC?'':'(More to come)'),'','style=min-width:1000');
     $bl = "<a href=" . ($E['SpecPriceLink']? $E['SpecPriceLink'] : $E['TicketCode']) . " target=_blank>" ;
-    echo "<tr><td><strong><a href=/int/EventShow?e=" . $E['EventId'] . ">" . $E['SN'] . "</a></strong><br>"; 
+    echo "<tr><td><strong><a href=/int/EventShow?e=" . $E['EventId'] . ">" . $E['SN'] . "</a></strong><br>";
       echo Price_Show($E);
     echo "<td>" . FestDate($E['Day'],'L') . "<br>";
       if ($E['Venue']) {
@@ -153,13 +153,13 @@
       }
       if ($E['ExcludePass']) {
         echo "<p><b>Note:</b> This is event excluded from the Weekend Pass ";
-        if ($E['ExcludeDay'] && $YEARDATA[$DayLongList[$E['Day']] . "Pass"]!='') echo " or " . $DayLongList[$Ev['Day']] . " ticket\n";
+        if ($E['ExcludeDay'] && $YEARDATA[$DayLongList[$E['Day']] . "Pass"]!='') echo " or " . $DayLongList[$E['Day']] . " ticket\n";
       } elseif ($E['ExcludeDay'] && $YEARDATA[$DayLongList[$E['Day']] . "Pass"]!='') {
         echo "<p><b>Note:</b> This is event excluded from the " . $DayLongList[$E['Day']] . " ticket\n";
-      } 
+      }
     if (($YEARDATA['TicketControl'] == 1) && ($E['TicketCode'] || $E['SpecPriceLink'])) echo "<td><strong>$bl Buy Now</a></strong>\n";
   }
-  
+
   if (!$Evs->num_rows) echo "No Ticketed Events are yet published.<p>";
 
   echo "</table></div></div></p>";
@@ -167,11 +167,11 @@
   if (($YEARDATA['CampingControl'] == 1) && $YEARDATA['CampingCost']) {
     echo "<div class=tablecont><table class='InfoTable CampTable' style='min-width:700px'>";
     echo "<tr><th colspan=7>Camping Tickets";
-  
+
     $Avails = [
              'Thursday, Friday, Saturday and Sunday nights'=>['TFSS',4],
              'Thursday, Friday and Saturday nights'=>['TFSx',3],
-             'Thursday and Friday nights'=>['TFxx',2],             
+             'Thursday and Friday nights'=>['TFxx',2],
              'Thursday night only'=>['Txxx',1],
              'Friday, Saturday and Sunday nights'=>['xFSS',3],
              'Friday and Saturday nights'=>['xFSx',2],
@@ -190,9 +190,9 @@
          echo "<a href='" . $YEARDATA['CampingCode_' . $dat[0] ] . "' target=_blank><b>Buy Now</b></a>";
        } else {
          echo "Closed";
-       } 
+       }
      }
-   
+
     echo "</table></div><p>";
   }
 
@@ -203,23 +203,23 @@
   echo "<h2>Official Campsite</h2><p>";
   echo "<a href=/InfoCamping><b>Camping Information.</b></a><p>";
 
-  if ($YEARDATA['CampingCost'] && $YEARDATA['CampingControl'] == 1) { 
+  if ($YEARDATA['CampingCost'] && $YEARDATA['CampingControl'] == 1) {
     echo "Order your festival tickets and camping together, by selecting <strong>Continue Shopping</strong> before you checkout!</p> ";
   }
 
 //  echo "<h2>* Party In The Paddock</h2><p>";
 
 //  echo "There will not be a Party in the Paddock this year.<p>";
-  
+
   if (0) echo "If you're looking to combine a weekend of official festival events and a trip to <a href='http://partyinthepaddock.com'>Party In The Paddock</a>, " .
        "then book your tickets with us!</p>";
 
   if ($YEARDATA['TicketControl'] == 1) {
     echo "<h2>Official Ticket Outlets</h2>";
     echo "<p>Tickets and day/weekend passes are on sale at these outlets:</p>";
-    
+
     // TODO Add a list for fest
   }
-  
+
   dotail();
 ?>

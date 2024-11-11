@@ -7,9 +7,9 @@
 // No problem to run again and again
 // TODO security if run on a live system
 
-// Note this does not call fest as it must run without a db, it uses Configure.ini and 
+// Note this does not call fest as it must run without a db, it uses Configure.ini and
 
-// IFF Config.ini read it and use, else prompt for data set it up and then use 
+// IFF Config.ini read it and use, else prompt for data set it up and then use
 
 $CONF = [];
 include_once("festfm.php"); // Not db or main fest
@@ -37,10 +37,10 @@ function Get_Config() {
 function Create_Config() {
   global $CONF;
   if (Get_Config()) return;
-  
+
   if (!isset($_REQUEST['dbase']) || !isset($_REQUEST['user'])) {
     echo "Set up the database and user, with all privalages, so they can add and change the database later.<p>";
-    
+
     echo "<html><head><title>Festival System Setup</title></head><body>";
     echo "<form method=post><div class=tablecont><table border>\n";
     echo "<tr>" . fm_text("Host Name - usually localhost",$_REQUEST,'host');
@@ -59,7 +59,7 @@ function Create_Config() {
 [FF]
 
 ;;;;;;;;;;;;;;;;;;;
-; About Configuration.ini 
+; About Configuration.ini
 ;;;;;;;;;;;;;;;;;;;
 ; comments start with ;
 
@@ -92,7 +92,7 @@ TitlePrefix=" . $_REQUEST['TitlePrefix'] . "
 
   if (Get_Config()) return;
   echo "Config file created but reading it failed";
-  exit; 
+  exit;
 }
 
 function Create_Directories() {  // Makes all needed directories and adds .htaccess where appropriate
@@ -100,14 +100,14 @@ function Create_Directories() {  // Makes all needed directories and adds .htacc
 
   echo "Checking access<p>";
   $NeedWrite = ['.','int','Schema'];
-  
+
   foreach($NeedWrite as $D) {
     if (!is_writeable("../" . $D)) {
       echo "../" . $D . "Is NOT writeable  - aborting for now - you can retry once corrected<p>";
       exit;
     }
   }
-  
+
   echo "Creating directories and links<p>";
 
   $Dirs = [['int/ArchiveImages',1],  // dir name, access control
@@ -123,11 +123,11 @@ function Create_Directories() {  // Makes all needed directories and adds .htacc
   $LinkedDirs = ['js','files','cache','images','festfiles'];
   foreach($Dirs as $D) {
     if (!file_exists("../" . $D[0])) {
-    
+
       mkdir("../" . $D[0],0777,true);
       chmod("../" . $D[0],0777);
       echo "Creating " . $D[0] . "<br>";
-      
+
       if (!is_writeable("../" . $D[0])) {
         echo "../" . $D[0] . " Is NOT writeable  - aborting for now - you can retry once corrected<p>";
         exit;
@@ -143,29 +143,29 @@ function Create_Directories() {  // Makes all needed directories and adds .htacc
     if (!file_exists($D)) symlink ("../" . $D, $D);
   }
   echo "Directories Created<p>";
-  
+
   // Copy files
   if (!file_exists("../favicon.ico")) {
     if (copy("../images/icons/favicon.ico","../favicon.ico")) {
       echo "Copied the default favicon<br>";
     } else {
-      echo "Failed to copy default favicon - aborting for now - you can retry once corrected<p>";  
+      echo "Failed to copy default favicon - aborting for now - you can retry once corrected<p>";
       exit;
     }
   }
-  
+
   foreach (glob("../images/icons/apple-touch-icon*") as $fn) {
     $dfn = preg_replace('/images\/icons\//','',$fn);
     if (!file_exists($dfn)) {
       if (copy($fn,$dfn)) {
-        echo "Copied $fn to $dfn<br>";     
+        echo "Copied $fn to $dfn<br>";
       } else {
         echo "Failed to copy $fn to $dfn - aborting for now - you can retry once corrected<p>";
-        exit;    
+        exit;
       }
     }
   }
-  
+
   echo "Icon files copied<p>";
 
 }
@@ -182,14 +182,14 @@ function Create_Databases() {
   }
   if ($db->select_db($CONF['dbase']) === false) {
     echo "Database to be created .<p>";
- 
+
     $res = $db->query("CREATE DATABASE IF NOT EXISTS " . $CONF['dbase']);
     if ($db->select_db($CONF['dbase']) === false) {
       echo "Database creation failed " . $db->connect_error;
-      exit; 
+      exit;
     }
     echo "Database created<br>";
-  
+
   } else {
     echo "Database already exists.<p>";
   }
@@ -205,32 +205,32 @@ default-character-set=utf8mb4
 default-collation=utf8mb4_general_ci
 
 host=127.0.0.1
-port=3306 
+port=3306
 user=" . $CONF['user'] . "\n";
-    if ($CONF['passwd']) $skeema .= "password='" . $CONF['passwd'] . "'\n"; 
+    if ($CONF['passwd']) $skeema .= "password='" . $CONF['passwd'] . "'\n";
     file_put_contents("../Schema/.skeema",$skeema);
 //  }
-  
+
   $dbg = ''; // '--debug';
 //  chmod("skeema",0755);
   chdir ("../Schema");
   if (file_exists('/usr/bin/skeema')) { // Use systems own copy if available
     echo "About to call Skeema - system version\n";
-    system("/usr/bin/skeema $dbg push"); // push for live  
-  } else { 
+    system("/usr/bin/skeema $dbg push"); // push for live
+  } else {
     echo "About to call Skeema - local version\n";
     system("int/skeema $dbg push"); // push for live
   }
   chdir ("../int");
   echo "Database tables created.<p>";
-  
+
 }
 
-// [Table, id, [data]] 
+// [Table, id, [data]]
 
 function Preload_Data() {
 
-  global $db,$PLANYEAR,$YEAR;
+  global $db,$PLANYEAR,$YEAR,$VERSION;
   include_once("Version.php");
 
   $Year = gmdate('Y');
@@ -248,7 +248,7 @@ function Preload_Data() {
     ['FestUsers', 9,['Login'=>'reserved']],
     ['FestUsers', 10,['Login'=>'reserved']],
 
-    ['SystemData',1,['CurVersion'=> $VERSION,'Capabilities'=> 
+    ['SystemData',1,['CurVersion'=> $VERSION,'Capabilities'=>
 'EnableDocs:1
 EnableTLine:0
 EnableMusic:1
@@ -277,7 +277,7 @@ HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
 ; There are lots more here to be set up - needs documenting
 ']],
     ['General',$Year,['Year'=>$Year]],
-    
+
     ['MapPointTypes',1,['SN'=>'Text','Icon'=>'Text']],
     ['MapPointTypes',2,['SN'=>'Music Venue','Icon'=>'MusicIcon.png']],
     ['MapPointTypes',3,['SN'=>'Car Park','Icon'=>'carparkicon.png']],
@@ -291,10 +291,10 @@ HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
     ['MapPointTypes',11,['SN'=>'Cup','Icon'=>'tea-hot-icon.png']],
     ['MapPointTypes',12,['SN'=>'Meal','Icon'=>'meal-icon.png']],
     ['MapPointTypes',13,['SN'=>'Beer','Icon'=>'beer-glass-mug-icon.png']],
-        
+
     ['Directories',1,['SN'=>'Documents', 'Created'=>1, 'Who'=>1, 'Parent'=>1, 'State'=>0, 'AccessLevel'=>0, 'AccessSections'=>'', 'ExtraData'=>'']],
     ['BigEvent',1,['Event'=>-1,'Type'=>'Blank', 'Identifier'=>1,'EventOrder'=>0,'Notes'=>'']],
-    
+
     ['EventTypes',1,['SN'=>'Dance','Plural'=>'Dances','Public'=>1,'HasDance'=>1,'FirstYear'=>$Year,'Sherlock'=>'int/ShowDanceProg']],
     ['EventTypes',2,['SN'=>'Concert','Plural'=>'Concerts','Public'=>1,'HasMusic'=>1,'FirstYear'=>$Year,'HasRolls'=>1,'IncType'=>1]],
     ['EventTypes',3,['SN'=>'Workshop','Plural'=>'Workshops','Public'=>1,'HasMusic'=>1, 'HasDance'=>1,'FirstYear'=>$Year,'IncType'=>1]],
@@ -311,7 +311,7 @@ HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
     ['PerformerTypes',4,['SN'=>'Family','FullName'=>'Family and Community']],
     ['PerformerTypes',5,['SN'=>'Ceilidh','FullName'=>'Ceilidhs and Folk Dances']],
     ['PerformerTypes',6,['SN'=>'Other','FullName'=>'Other']],
-    
+
     ['Galleries',1,['SN'=>'All Galleries', 'Level'=>1]],
 
   ];
@@ -352,16 +352,16 @@ HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
   }
 
   echo "Main Menu Creation<p>";
-  $Menus = json_decode(file_get_contents('festfiles/DumpMenu.json'),1); 
+  $Menus = json_decode(file_get_contents('festfiles/DumpMenu.json'),1);
   foreach($Menus as $M) Gen_Put('MainMenu',$M);
-  
+
 // Email proformas - lots of these read from munged sql dump
   echo "About to Create Email Proformas<p>";
-  
-  include_once("Email.php"); 
+
+  include_once("Email.php");
   $Pros = Gen_Get_All('EmailProformas');
-  
-  $Profs = json_decode(file_get_contents('festfiles/DumpEmails.json'),1); 
+
+  $Profs = json_decode(file_get_contents('festfiles/DumpEmails.json'),1);
 
   foreach ($Profs as $P) {
     foreach($Pros as $Pr) if ($Pr['SN'] == $P['SN']) continue 2;
@@ -369,12 +369,12 @@ HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
     Gen_Put('EmailProformas',$P);
     echo "Added Email Proforma - " . $P['SN'] . "<Br>";
   }
-  
+
   echo "About to Create Ts And Cs <p>";
-  
+
   $Ts=Gen_Get_All('TsAndCs2');
-  
-  $Cs = json_decode(file_get_contents('festfiles/DumpTsNCs.json'),1); 
+
+  $Cs = json_decode(file_get_contents('festfiles/DumpTsNCs.json'),1);
 
   foreach ($Cs as $C) {
     foreach($Ts as $T) if ($T['Name'] == $C['Name']) continue 2;
@@ -382,19 +382,19 @@ HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
     Gen_Put('TsAndCs2',$C);
     echo "Added TnC Proforma - " . $C['Name'] . "<Br>";
   }
- 
- 
+
+
   echo "About to Import raw features<p>";
- 
+
   $RFeats = base64_decode(file_get_contents('festfiles/RawFeatures'));
-  
+
   $RFeatures = parse_ini_string($RFeats);
-  
+
   $CSys = Gen_Get('SystemData',1);
   $CFeats = $CSys['Features'];
-  
+
   $CFeatures =  parse_ini_string($CFeats);
-  
+
   if (strlen($RFeats) > strlen($CFeats)) { // Raw is bigger
     foreach ($CFeatures as $CF=>$CV) {
       if (isset($RFeatures[$CF])) {
@@ -412,13 +412,13 @@ HostURL = ' . ($_SERVER['SERVER_NAME'] ?? 'WHAT URL IS THIS?') . '
         if ($CFeatures[$RF] == $RV) continue; //
         $CFeats = preg_replace("/($RF)( *)?\=.*?$/", "$RF = $RV", $CFeats);
       } else {
-        $CFeats .= "$FF = $RV\n";
+        $CFeats .= "$RF = $RV\n";
       }
     }
     $CSys['Features'] = $CFeats;
     Gen_Put('SystemData',$CSys);
   }
-  Feature_Reset();  
+  Feature_Reset();
   echo "System data now has Raw Features<p>";
 }
 
@@ -428,17 +428,17 @@ function Create_htaccess() {
     // Read ht access, if it does not have rewriteengine on append it, do the same with the rule.  If change write file back
     $htaccess = file_get_contents("../.htaccess");
     $htac_changed = 0;
-    
+
     if (!strstr($htaccess,"Options FollowSymLinks")) {
       $htaccess .= "Options FollowSymLinks\n";
       $htac_changed = 1;
     }
-    
+
     if (!strstr($htaccess,"RewriteEngine on")) {
       $htaccess .= "RewriteEngine on\n";
       $htac_changed = 1;
     }
-    
+
     if (!strstr($htaccess,'RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]')) {
       $htaccess .= 'RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]' . "\n";
       $htac_changed = 1;
@@ -457,14 +457,14 @@ function Create_htaccess() {
       $htaccess .= 'php_value include_path "' . get_include_path() . ":" . $DocRoot . "\"\n";
       $htac_changed = 1;
     }
-    
+
     if ($htac_changed) {
       if (is_writable("../.htaccess")) {
         file_put_contents("../.htaccess",$htaccess);
         echo "htaccess modified<p>";
       } else {
         echo "htaccess needs modification but can't be writen to by Initialise<p>";
-        return 0; 
+        return 0;
       }
     }
   } else {
@@ -481,8 +481,8 @@ RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]
     if (file_put_contents("../.htaccess",$htac)) {
       echo "htaccess created<p>";
     } else {
-      echo "htaccess needs Creation but can't be writen to by Initialise<p>";  
-      return 0;  
+      echo "htaccess needs Creation but can't be writen to by Initialise<p>";
+      return 0;
     }
   }
   return 1;
@@ -490,9 +490,9 @@ RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]
 
 // Updating code - not yet written
 function BringUptoDate($oldversion) {
-  
-  
-  
+
+
+
 }
 
 function Check_Sysadmin() {
@@ -500,14 +500,14 @@ function Check_Sysadmin() {
   include_once("DocLib.php");
   include_once("UserLib.php");
   global $Access_Type;
-  
+
   $Users = Get_AllUsers(2);
   $isasys = 0;
-  
+
   foreach($Users as $U) if ($U['AccessLevel'] == $Access_Type['SysAdmin']) $isasys = 1;
-  
+
   if ($isasys) return;  // There is a sysadmin setup - skip
-  
+
   echo "<form method=post><h2>Setup a sysadmin account</h2>";
   echo "<div class=tablecont><table><tr>" . fm_text("Login",$_REQUEST,'login');
   echo "<tr>" . fm_text("Password",$_REQUEST,'password');
@@ -521,10 +521,11 @@ function Setup_Sysadmin() {
   global $Access_Type,$YEAR;
   include_once("UserLib.php");
   include_once("DocLib.php");
-  
+
   $Users = Get_AllUsers(2);
   $isasys = 0;
-  
+  $ans = [];
+
   if ($Users) foreach($Users as $U) if ($U['AccessLevel'] == $Access_Type['SysAdmin']) $isasys = 1;
   if ($isasys) return;  // There is a sysadmin setup - skip
 
@@ -543,9 +544,9 @@ function Setup_Map_Data() {
   global $PLANYEAR;
   include_once("MapLib.php");
   Update_MapPoints();
-  
+
   echo "Map Cache set up<p>";
-  
+
 }
 
 if (isset($_REQUEST['SETUPSYS'])) {
@@ -572,7 +573,7 @@ if (isset($_REQUEST['SETUPSYS'])) {
 echo "All done<p><h2><a href=Staff.php>Now Login</a></h2>";
 
 
-/* 
+/*
 
 TODO
   chmod
@@ -581,8 +582,8 @@ TODO
   php.ini
   check errors on create entries in db
   .php handling
-  
-  
+
+
 */
 
 ?>

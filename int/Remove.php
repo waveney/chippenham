@@ -5,20 +5,21 @@
   include_once("MusicLib.php");
   include_once("TradeLib.php");
   include_once("InvoiceLib.php");
+  global $Access_Type,$Trade_State;
 
   if ( !isset($_REQUEST['id']) || !isset($_REQUEST['key'])) Error_Page("Invalid link"); // No return
 
-  if (isset($_REQUEST['t']) && strtolower($_REQUEST['t']) == 'trade') { 
+  if (isset($_REQUEST['t']) && strtolower($_REQUEST['t']) == 'trade') {
     $Tid = $_REQUEST['id'];
     if (!is_numeric($Tid)) Error_Page("Invalid Identifier");
     $Trad = Get_Trader($Tid);
 
     if ($_REQUEST['key'] == '') {
 
-    } 
+    }
     elseif ($Trad['AccessKey'] != $_REQUEST['key']) Error_Page("Sorry - This is not the right key");  // No return
 
-    $Cake = sprintf("%s:%d:%06d",'Trader',$Access_Type['Participant'],$Tid ); 
+    $Cake = sprintf("%s:%d:%06d",'Trader',$Access_Type['Participant'],$Tid );
     $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');
     setcookie('FESTD',$biscuit,0,'/');
     $_COOKIE['FESTD'] = $biscuit;
@@ -38,13 +39,13 @@
         Put_Trade_Year($Trady);
       }
       echo "<h2>Thank you for letting us know</h2>";
-      
-      dotail(); 
+
+      dotail();
     } else {
       include_once("TraderPage.php");
     }
     exit;
-  } else { 
+  } else {
     $SideId = $_REQUEST['id'];
     if (!is_numeric($SideId)) Error_Page("Invalid Identifier");
     $Side = Get_Side($SideId);
@@ -56,10 +57,10 @@
 
 //    echo "Key should be: " . $Side['AccessKey'] . " is " . $_REQUEST['key'] ."<p>";
 //    var_dump($Side);
-    
+
     if ($Side['AccessKey'] != $_REQUEST['key']) Error_Page("Sorry - This is not the right key");  // No return
 
-    $Cake = sprintf("%s:%d:%06d",$Type,$Access_Type['Participant'],$SideId ); 
+    $Cake = sprintf("%s:%d:%06d",$Type,$Access_Type['Participant'],$SideId );
     $biscuit = openssl_encrypt($Cake,'aes-128-ctr','Quarterjack',0,'MollySummers1929');
     setcookie('FESTD',$biscuit,0,'/');
     $_COOKIE['FESTD'] = $biscuit;
@@ -69,7 +70,7 @@
     $USER['AccessLevel'] = $Access_Type['Participant'];
     $USER['Subtype'] = $Type;
     $USER['UserId'] = $USERID = $SideId;
-    
+
     include_once("AddPerf.php"); // Should not return
   }
   dotail();

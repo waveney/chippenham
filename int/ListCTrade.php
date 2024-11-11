@@ -1,7 +1,8 @@
 <?php
   include_once("fest.php");
   A_Check('Steward');
-  
+  global $db;
+
   $ToPrint = $_REQUEST['TOPRINT']??false;
 
   if ($ToPrint) {
@@ -11,7 +12,7 @@
     dostaffhead("List Traders", ["/js/clipboard.min.js", "/js/emailclick.js"]);
   }
 
-  global $YEAR,$PLANYEAR,$Trade_States,$Trade_State_Colours,$Trade_State,$TS_Actions,$ButAdmin,$AdminExtra,$TradeLocData;
+  global $YEAR,$PLANYEAR,$Trade_States,$Trade_State_Colours,$Trade_State,$TS_Actions,$ButAdmin,$AdminExtra,$TradeLocData,$ButExtra;
   include_once("TradeLib.php");
   $Sum = isset($_REQUEST['SUM']);
   if ($Sum) {
@@ -30,14 +31,14 @@
 
     echo "The Resend action re-sends the last email to the trader (or a general status message if it does not make sense to resend).<p>";
   }
-  
+
   $Trade_Types = Get_Trade_Types(1);
   $TrMon = $TrRec = $TrSub = $TrState = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
   foreach ($TradeLocData as $i=>$TLoc) {
-    $TradeLocData[$i]['ReceiveTot'] = $TradeLocData[$i]['AcceptTot'] = $TradeLocData[$i]['QuoteTot'] = 
+    $TradeLocData[$i]['ReceiveTot'] = $TradeLocData[$i]['AcceptTot'] = $TradeLocData[$i]['QuoteTot'] =
       $TradeLocData[$i]['UsedWidth'] = $TradeLocData[$i]['QuoteWidth']= 0;
   }
-      $TradeLocData[0]['ReceiveTot'] = $TradeLocData[0]['AcceptTot'] = $TradeLocData[0]['QuoteTot'] = 
+      $TradeLocData[0]['ReceiveTot'] = $TradeLocData[0]['AcceptTot'] = $TradeLocData[0]['QuoteTot'] =
       $TradeLocData[0]['UsedWidth'] = $TradeLocData[0]['QuoteWidth']= 0;
 
   $TradeLocData[0]['ReceiveTot'] = $TradeLocData[0]['AcceptTot'] = $TradeLocData[0]['QuoteTot'] = 0;
@@ -48,7 +49,8 @@
   $PowerTypes[0] = '';
   $LastWeekThresh = time() - Feature('TradeLastWeek',14)*86400;
   $UnQuoteThresh = time() - Feature('TradeUnQuote',14)*86400;
-  
+  $mtchs= [];
+
   foreach ($TradePowers as $TP) $PowerTypes[$TP['id']] = $TP['Name'];
 
   if (isset($_REQUEST['ACTION'])) {
@@ -63,19 +65,19 @@
       "<a href=ListCTrade?Y=$YEAR&SUB>Include Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a>, </h2>";
     $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || y.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' ORDER BY SN";
-  } else if (isset($_REQUEST['SUB'])) { 
+  } else if (isset($_REQUEST['SUB'])) {
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a> </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || y.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>=" . 
-           $Trade_State['Submitted'] . " ORDER BY SN";  
-  } else if (isset($_REQUEST['ONLY'])) { 
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || y.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>=" .
+           $Trade_State['Submitted'] . " ORDER BY SN";
+  } else if (isset($_REQUEST['ONLY'])) {
     if (!$Sum) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR>Exclude Declined/Cancelled/Submitted</a> </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || y.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState=" . 
-           $Trade_State['Submitted'] . " ORDER BY SN";  
-  } else {  
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || y.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState=" .
+           $Trade_State['Submitted'] . " ORDER BY SN";
+  } else {
     if (!$Sum && !$ToPrint) echo "<h2><a href=ListCTrade?Y=$YEAR&INC>Show All</a>, <a href=ListCTrade?Y=$YEAR&SUB>Include Submitted</a>, " .
       "<a href=ListCTrade?Y=$YEAR&ONLY>Only Submitted</a> </h2>";
-    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || y.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>" . 
+    $qry = "SELECT t.*, y.* FROM Trade AS t, TradeYear AS y WHERE (t.Status!=2 || y.ShowAnyway) AND t.Tid = y.Tid AND y.Year='$YEAR' AND y.BookingState>" .
            $Trade_State['Submitted'] . " ORDER BY SN";
   }
 
@@ -112,7 +114,7 @@
       $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Tables</a>\n";
       $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Tickets</a>\n";
       $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Parking</a>\n";
-      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Camping</a>\n";  
+      $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Camping</a>\n";
     } else {
       $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Ins</a>\n";
       $str .= "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Risk</a>\n";
@@ -141,7 +143,7 @@
 
         $Act = $TS_Actions[$stat];
         if ($ActsEnable && $Act && !$ToPrint) {
-          $Acts = preg_split('/,/',$Act); 
+          $Acts = preg_split('/,/',$Act);
           $str .= "<div class=floatright style='max-width:250'><form>" . fm_hidden('id',$Tid) . fm_hidden('Y',$YEAR);
           $butcount = 0;
           foreach($Acts as $ac) {
@@ -164,21 +166,21 @@
               case 'Invite Better':
                 if (!Feature('InviteBetter')) continue 2;
                 break;
-                
+
               case 'Pitch Assign':
               case 'Pitch Change':
               case 'Moved':
                 if (empty($fetch['PitchNum0'])) continue 2;
                 break;
-                
+
               case 'LastWeek' :
-                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] != 0) || ($fetch['DateQuoted'] > $LastWeekThresh )) continue 2;  
+                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] != 0) || ($fetch['DateQuoted'] > $LastWeekThresh )) continue 2;
                 break;
-                
+
               case 'UnQuote' :
-                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] == 0) || ($fetch['DateRemind'] > $UnQuoteThresh )) continue 2;  
+                if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] == 0) || ($fetch['DateRemind'] > $UnQuoteThresh )) continue 2;
                 break;
-                
+
               default:
               }
             if ((($butcount++)%3) == 0) $str .= "<br>";
@@ -198,7 +200,7 @@
         if ($fetch['DateChange'] < 10) {
           $str .= "DC: " . ['Not Sent','Sent','Ack','Happy','Unhappy'][$fetch['DateChange']];
         } else {
-          $str .= "CAN: " . ['Not Sent','Sent','Ack','Happy','Unhappy'][$fetch['DateChange']-10];        
+          $str .= "CAN: " . ['Not Sent','Sent','Ack','Happy','Unhappy'][$fetch['DateChange']-10];
         }
       }
       if (!$ToPrint) {
@@ -221,7 +223,7 @@
         $str .= "<td>";
           if ($fetch['Days'] ==0) {
             $str .= "Y<td>Y";
-          } elseif ($fetch['Days'] == 1) { 
+          } elseif ($fetch['Days'] == 1) {
             $str .= "Y<td>";
           } else {
             $str .= "<td>Y";
@@ -258,7 +260,7 @@
             }
           }
         }
-        
+
       if ($ToPrint) {
         $str .= "<td>" . ($fetch['Tables0']+$fetch['Tables1']+$fetch['Tables2'] );
         $str .= "<td>" . $fetch['NumberTickets'];
@@ -298,7 +300,7 @@
           $TrMon[$fetch['TradeType']] += $fee;
         }
         $TrRec[$fetch['TradeType']] += $fetch['TotalPaid'];
-        if ($stat >$Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] && 
+        if ($stat >$Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] &&
             $stat != $Trade_State['Wait List'] && $stat != $Trade_State['Requote']) {
           $TrSub[$fetch['TradeType']] += $fee;
           $totsub += $fee;
@@ -308,7 +310,7 @@
         if ($pitches) {
           for ($i = 0; $i < 3; $i++) {
             if ($fetch["PitchLoc$i"]) {
-              if ($stat > $Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] && 
+              if ($stat > $Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] &&
                   $stat != $Trade_State['Wait List'] && $stat != $Trade_State['Requote']) {
                 $TradeLocData[$fetch["PitchLoc$i"]]['AcceptTot'] += $fee/$pitches;
               }
@@ -317,13 +319,13 @@
             }
           }
         } else if ($fee) {
-          if ($stat > $Trade_State['Submitted'] && // $stat != $Trade_State['Quoted'] && 
+          if ($stat > $Trade_State['Submitted'] && // $stat != $Trade_State['Quoted'] &&
               $stat != $Trade_State['Wait List']) $TradeLocData[0]['AcceptTot'] += $fee;
           $TradeLocData[0]['QuoteTot'] += $fee;
           $TradeLocData[0]['ReceiveTot'] += $fetch['TotalPaid'];
-        }          
+        }
       }
-      
+
       if ($stat > $Trade_State['Submitted'] && $stat != $Trade_State['Wait List']) {
         for ($i = 0; $i <3; $i++) {
           if ($fetch["PitchLoc$i"] && $fetch["PitchSize$i"]) {
@@ -347,11 +349,11 @@
                 if ($QDpth != $Dpth) {
                   $Qtd = $Qtd * $QDpth/$Dpth;
                 }
-                
+
               }
               $TradeLocData[$fetch["PitchLoc$i"]]['QuoteWidth'] += $Qtd;
               if ($stat != $Trade_State['Quoted']) $TradeLocData[$fetch["PitchLoc$i"]]['UsedWidth'] += $Used;
-            }              
+            }
           }
         }
       }
@@ -380,21 +382,21 @@
       echo "<td>" . Print_Pound($TLoc['ReceiveTot']) . "<td>" . Print_Pound($TLoc['AcceptTot']) . "<td>" . Print_Pound($TLoc['QuoteTot']);
       if (!isset($TLoc['TotalWidth'])) $TLoc['TotalWidth'] = 0;
       $Limit = ($TLoc['TotalWidth'] == 0?1000000:$TLoc['TotalWidth']);
-      echo "<td>" . $TLoc['TotalWidth'] . "<td " . ($TLoc['QuoteWidth']>$Limit?' class=red>':">") . $TLoc['QuoteWidth'] . 
+      echo "<td>" . $TLoc['TotalWidth'] . "<td " . ($TLoc['QuoteWidth']>$Limit?' class=red>':">") . $TLoc['QuoteWidth'] .
         "<td" . ($TLoc['UsedWidth']>$Limit?' class=red>':">") . $TLoc['UsedWidth'];
-      
+
       echo "<td><a href=ListDTrade?l=" . $TLoc['TLocId'] . ">Details</a>\n";
       $TotLRec += $TLoc['ReceiveTot'];
       $TotLAcc += $TLoc['AcceptTot'];
       $TotLQut += $TLoc['QuoteTot'];
       }
-    
+
     echo "<tr><td>Total Fees<td>" . Print_Pound($TotLRec) . "<td>" . Print_Pound($TotLAcc) . "<td>" . Print_Pound($TotLQut) . "<td>\n";
 
     echo "</table></div><br>\n";
     echo "<div class=Scrolltable><table border id=narrowtable><tr><td>State<td>Number\n";
     foreach ($Trade_States as $i=>$state) {
-      if (isset($TrState[$i]) && $TrState[$i]>0) echo "<tr><td style='background:" . $Trade_State_Colours[$i] . 
+      if (isset($TrState[$i]) && $TrState[$i]>0) echo "<tr><td style='background:" . $Trade_State_Colours[$i] .
          ";padding:4; white-space: nowrap;'>$state<td>" . $TrState[$i];
     }
     echo "</table></div>";

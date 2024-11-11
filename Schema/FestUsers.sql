@@ -37,5 +37,6 @@ CREATE TABLE `FestUsers` (
   `RelOrder` int NOT NULL,
   `ClassEmail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `DefaultBudget` int NOT NULL,
+  `ErrorCount` int NOT NULL,
   PRIMARY KEY (`UserId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

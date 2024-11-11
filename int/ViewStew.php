@@ -4,8 +4,9 @@
   dostaffhead("View Stewarding form");
   include_once("SignupLib.php");
   global $USER,$USERID,$db,$PLANYEAR,$StewClasses,$Relations,$Days;
-  
+
 function Submit_Steward() {
+  global $USER,$USERID,$db,$PLANYEAR,$StewClasses,$Relations,$Days;
   if (strlen($_REQUEST['SN']) < 2) { echo "<p class=Err>Please give your name\n"; $err=1; };
   if (strlen($_REQUEST['Email']) < 6) { echo "<p class=Err>Please give your Email\n"; $err=1; };
   if (strlen($_REQUEST['Phone']) < 6) { echo "<p class=Err>Please give your Phone number(s)\n"; $err=1; };
@@ -28,17 +29,20 @@ function Submit_Steward() {
 //      echo "<P>VALID...<P>";
     $_REQUEST['AccessKey'] = rand_string(40);
     $_REQUEST['Year'] = $PLANYEAR;
+    $stew = [];
     $id = Insert_db_post('Stewards',$stew);
-    
+
+    /* What was stew supposed to be?
     Email_Steward($stew,'Stew_Application',$stew['Email']);
     Email_Steward($stew,'Vol_Team_Message','paulfolkfest@outlook.com');
+    */
 
     echo "<h2 class=subtitle>Thankyou for submitting your application</h2>";
     dotail();
   }
 }
 
- 
+
   if (isset($_REQUEST['ACTION'])) { /* Response to Action button */
     $id = $_REQUEST['id'];
     $stew = Get_Steward($id);
@@ -50,7 +54,7 @@ function Submit_Steward() {
 
 
       break;
-    
+
     case 'Update':
       break;
     }
@@ -96,7 +100,7 @@ function Submit_Steward() {
   echo "<tr>" . fm_text('Contact Phone',$stew,'ContactPhone',2);
   echo "<tr><td>Relationship:<td>" . fm_select($Relations,$stew,'Relation');
   echo "</table></div><p>";
-  echo "<input type=submit name=submit value='Change Application'><p>\n"; 
+  echo "<input type=submit name=submit value='Change Application'><p>\n";
   echo "</form>\n";
 
   echo "<h2><a href=StewardView>Back to list of Stewards</a>";

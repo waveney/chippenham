@@ -6,6 +6,7 @@
   include_once("SignupLib.php");
   include_once("InvoiceLib.php");
   global $USER,$USERID,$db,$PLANYEAR,$SignupStates,$SignupStateColours,$ArtClasses,$ArtValues;
+  global $ArtClasses,$ArtPosition;
 
 /*  if (!Access('Staff')) {
     echo "<h2>Applications are closed</h2>";
@@ -13,7 +14,7 @@
   } */
 
 
-
+  $art = [];
   $id = -1;
  /* In the longer term this will be based on participants, but I want to do this quickly for 2018 so it is stand alone for now */
 //var_dump($_REQUEST);
@@ -37,10 +38,10 @@
       $_REQUEST['Activity'] = 5;
       $_REQUEST['State'] = 0;
       $id = Insert_db_post('SignUp',$art);
-    
+
       ART_Email_Signup($art,'ART_Application',$art['Email']);
       ART_Email_Signup($art,'ART_Debbie','art@');
-      
+
       echo "<h2 class=subtitle>Thankyou for submitting your application</h2>";
       if (Access('Staff')) echo "<h2><a href=ArtView>Back to List of applications</a></h2>";
       dotail();
@@ -50,7 +51,7 @@
     $id = $_REQUEST['id'];
     $art = Get_Signup($id);
     Update_db_post('SignUp',$art);
-    if (!Access('Staff')) ART_Email_Signup($art,'ART_Debbie_Update','art@');    
+    if (!Access('Staff')) ART_Email_Signup($art,'ART_Debbie_Update','art@');
     $_REQUEST = $art;
   } else if (isset($_REQUEST['ACTION'])) {
     $id = $_REQUEST['id'];
@@ -83,11 +84,11 @@
   echo "<tr>" . fm_text('Are you a member of any Art clubs/societies',$_REQUEST,'Instr1',2);
   echo "<tr>" . fm_text('Do you have any disabilities',$_REQUEST,'Instr2',2);
   echo "<tr>" . fm_radio('Are you',$ArtClasses,$_REQUEST,'Tickbox1') . "<td colspan=3>There will be a &pound;25 charge if you are selling";
-  echo "<tr>" . fm_text('What would you like to achieve by displaying art at Art @ the  Folk Festival',$_REQUEST,'Instr3',4);  
+  echo "<tr>" . fm_text('What would you like to achieve by displaying art at Art @ the  Folk Festival',$_REQUEST,'Instr3',4);
   echo "<tr>" . fm_radio('Is this a',$ArtValues,$_REQUEST,'Tickbox2');
-  echo "<tr>" . fm_text('Describe your genre of art',$_REQUEST,'Style',4);  
-  echo "<tr>" . fm_radio('Do you require a stall',$ArtPosition,$_REQUEST,'Tickbox3');  
-  echo "<tr>" . fm_text('Are you prepared to deliver an hour’s workshop to the public',$_REQUEST,'Instr4',3) . 
+  echo "<tr>" . fm_text('Describe your genre of art',$_REQUEST,'Style',4);
+  echo "<tr>" . fm_radio('Do you require a stall',$ArtPosition,$_REQUEST,'Tickbox3');
+  echo "<tr>" . fm_text('Are you prepared to deliver an hour’s workshop to the public',$_REQUEST,'Instr4',3) .
        "<td>The festival may be prepared to assist with any reasonable expenses for products";
   echo "<tr>" . fm_text("Social Media link(s)",$_REQUEST,'Social',4);
   if (Access('SysAdmin')) {
@@ -99,16 +100,16 @@
     if (Access('Staff')) {
       echo SignupActions('ART',$_REQUEST['State']);
     } else {
-    
+
     }
   } else {
     echo "Please submit your application, you can update it at any time.<p>  " .
          "You will be notified by email if you are sucessful, and be asked to pay any fees if you are selling<p>";
-    echo "<input type=submit name=submit value='Submit Application' onclick=$('#Patience').show()><p>\n";   
+    echo "<input type=submit name=submit value='Submit Application' onclick=$('#Patience').show()><p>\n";
     echo "<h2 hidden class=Err id=Patience>This takes a few moments, please be patient</h2>";
   }
   echo "</form>";
- 
+
   if (Access('Staff')) echo "<h2><a href=ArtView>Back to List of applications</a></h2>";
   dotail();
 

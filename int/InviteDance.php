@@ -1,27 +1,28 @@
 <?php
   include_once("fest.php");
-  include_once("DanceLib.php"); 
+  include_once("DanceLib.php");
   A_Check('Steward');
 
   dostaffhead("Invite Dance", ["/js/clipboard.min.js", "/js/emailclick.js", "/js/InviteThings.js"]);
 
-  global $YEAR,$PLANYEAR,$Coming_Colours,$Coming_idx,$Bespoke,$YEARDATA;
+  global $YEAR,$PLANYEAR,$Coming_Colours,$Coming_idx,$Bespoke,$YEARDATA,$Coming_States;
+  global $db,$Invite_States;
   $Invited = (isset($_REQUEST['INVITED'])? "&INVITED" :"");
 
   echo "<h2>" . ($Invited?"Ongoing":"Invite") . " Dance Sides $YEAR</h2>\n";
 
   if (Access('Staff','Dance')) echo "<div class=floatright style=text-align:right><div class=Bespoke>" .
-       "Sending:<button class=BigSwitchSelected id=BespokeM onclick=Add_Bespoke()>Generic Messages</button><br>" .  
+       "Sending:<button class=BigSwitchSelected id=BespokeM onclick=Add_Bespoke()>Generic Messages</button><br>" .
        "Switch to: <button class=BigSwitch id=GenericM onclick=Add_Bespoke()>Bespoke Messages</button></div>" .
        "<div class=Bespoke hidden id=BespokeMess>" .
-       "Sending:<button class=BigSwitchSelected id=GenericM1 onclick=Remove_Bespoke()>Bespoke Messages</button><br>" .  
+       "Sending:<button class=BigSwitchSelected id=GenericM1 onclick=Remove_Bespoke()>Bespoke Messages</button><br>" .
        "Switch to: <button class=BigSwitch id=BespokeM1 onclick=Remove_Bespoke()>Generic Messages</button></div>" .
        "</div>";
-       
+
   echo "Click on column header to sort by column.  Click on Side's name for more detail and programme when available,<p>";
 
   echo "If you click on the email link, press control-V afterwards to paste the standard link into message.<p>";
-  
+
   if ($YEAR != $PLANYEAR) echo "No messages can be sent unless you are Richard...";
 
   echo "<div id=InformationPane></div><p>\n";
@@ -55,7 +56,7 @@
   if (Access('Staff','Dance')) $col10 = "Proforma Emails";
 
   if (Access('SysAdmin')) {
-    echo "Debug: <span id=DebugPane></span><p>"; 
+    echo "Debug: <span id=DebugPane></span><p>";
   }
 
   if (!$SideQ || $SideQ->num_rows==0) {
@@ -118,11 +119,11 @@
       echo "<td>";
         if ($fetch['Email']) {
           if (Feature("EmailButtons")) {
-             echo "<button type=button id=Email$snum onclick=ProformaSend('Dance_Blank',$snum,'Email','SendProfEmail',1)>Email</button>"; 
+             echo "<button type=button id=Email$snum onclick=ProformaSend('Dance_Blank',$snum,'Email','SendProfEmail',1)>Email</button>";
           } else echo linkemailhtml($fetch,'Side',(!$fetch['Email'] && $fetch['AltEmail']? 'Alt' : '' ));
         }
 //      echo "<td>" . linkemailhtml($fetch,'Side',(!$fetch['Email'] && $fetch['AltEmail']? 'Alt' : '' ),'ReportTed(event)');
-      
+
       echo "<td>";
       if ($fetch['Notes'] || $fetch['YNotes'] || $fetch['PrivNotes']) {
         $Htext = htmlspecialchars($fetch['Notes'] . "\n" . $fetch['YNotes'] . "\n" . $fetch['PrivNotes']);
@@ -148,7 +149,7 @@
 //      echo "<button type=button id=Ted$snum onclick=ReportTed(event)>Y</button><span id=Vited$snum>";
 //      if (isset($fetch['Invited'])) echo $fetch['Invited'];
 //      echo "</span>";
-      
+
       if (isset($fetch['Coming'])) {
         echo "<td style='background:" . $Coming_Colours[$fetch['Coming']] . "'>";
         echo $Coming_States[$fetch['Coming']] . "\n";
@@ -164,41 +165,41 @@
           case 'R':
           case 'P':
             // if invited & less than a month to mid feb show remind 1 month, else remind - not written
-            echo "<button type=button id=Remind$snum class=ProfButton onclick=ProformaSend('Dance_Decide_Month',$snum,'Decide','SendProfEmail')" . 
-                  Proforma_Background('Decide') . ">Decide</button>";         
+            echo "<button type=button id=Remind$snum class=ProfButton onclick=ProformaSend('Dance_Decide_Month',$snum,'Decide','SendProfEmail')" .
+                  Proforma_Background('Decide') . ">Decide</button>";
             if ($YEAR=='2020') echo "<button type=button id=Change$snum class=ProfButton onclick=ProformaSend('Dance_Change_Dates',$snum,'Change','SendProfEmail')" .
-                                      Proforma_Background('Change') . ">Change</button>";        
+                                      Proforma_Background('Change') . ">Change</button>";
             break;
-          
+
           case '':
           default:
             if ($fetch['Invited']) {
               echo "<button type=button id=Remind$snum class=ProfButton onclick=ProformaSend('Dance_Decide_Month',$snum,'Decide','SendProfEmail')" .
                                       Proforma_Background('Decide') . ">Decide</button>";
             }
-            echo "<button type=button id=Invie$snum class=ProfSmallButton onclick=ProformaSend('Dance_Invite',$snum,'Invite','SendProfEmail')" . 
-                Proforma_Background('Invite') . ($fetch['Invite']?'':' hidden ') . ">Invite</button>"; 
-                     
+            echo "<button type=button id=Invie$snum class=ProfSmallButton onclick=ProformaSend('Dance_Invite',$snum,'Invite','SendProfEmail')" .
+                Proforma_Background('Invite') . ($fetch['Invite']?'':' hidden ') . ">Invite</button>";
+
             if ($YEAR=='2020') echo "<button type=button id=Change$snum class=ProfButton onclick=ProformaSend('Dance_Change_Dates',$snum,'Change','SendProfEmail')" .
                                       Proforma_Background('Change') . ">Change</button>";
 
             break;
-        
+
           case 'Y':
             // Actions to be added
 //          var_dump($fetch);
             if ((!Feature('PublicLiability') || $fetch['Insurance']) && $fetch['Mobile'] &&
-                  ((($fetch['Performers'] > 0) && $fetch['Address']) || ($fetch['Performers'] < 0)) && 
+                  ((($fetch['Performers'] > 0) && $fetch['Address']) || ($fetch['Performers'] < 0)) &&
                   ($fetch['Sat'] || $fetch['Sun'])) {
             } else {
-              echo "<button type=button id=Detail$snum class=ProfButton onclick=ProformaSend('Dance_Details',$snum,'Details','SendProfEmail')" . 
-                   Proforma_Background('Details') . ">Details!</button>"; 
+              echo "<button type=button id=Detail$snum class=ProfButton onclick=ProformaSend('Dance_Details',$snum,'Details','SendProfEmail')" .
+                   Proforma_Background('Details') . ">Details!</button>";
             }
             if ($YEAR=='2020') echo "<button type=button id=Change$snum class=ProfButton onclick=ProformaSend('Dance_Change_Dates',$snum,'Change','SendProfEmail')" .
                                       Proforma_Background('Change') . ">Change</button>";
-            
+
             break;
-          
+
           case 'N':
           case 'NY':
             if ($YEAR=='2020') echo "<button type=button id=Change$snum class=ProfButton " .
@@ -207,13 +208,13 @@
 
 //            echo "Woof";
             break;
-          }        
+          }
         } else {
-          echo "<button type=button id=Invie$snum class=" . ( $fetch['Invited']?"ProfSmallButton":"ProfButton") . 
-                  " onclick=ProformaSend('Dance_Invite',$snum,'Invite','SendProfEmail')" . 
+          echo "<button type=button id=Invie$snum class=" . ( $fetch['Invited']?"ProfSmallButton":"ProfButton") .
+                  " onclick=ProformaSend('Dance_Invite',$snum,'Invite','SendProfEmail')" .
                   Proforma_Background('Invite') . ($fetch['Invite']?'':' hidden ') . ">Invite</button>";
           if (!isset($fetch['Coming']) || $Coming_idx[$fetch['Coming']]=='') {
-            echo "<button type=button id=Remind$snum class=ProfButton onclick=ProformaSend('Dance_Remind',$snum,'Remind','SendProfEmail')" . 
+            echo "<button type=button id=Remind$snum class=ProfButton onclick=ProformaSend('Dance_Remind',$snum,'Remind','SendProfEmail')" .
                   Proforma_Background('Remind') . ($fetch['Invited']?'':' hidden ') . ">Remind</button>";
 
         }
@@ -230,7 +231,7 @@
            echo "<button type=button id=SpecInvite$snum class=ProfButton onclick=ProformaSend('Dance_SpecInvite',$snum,'SpecInvite','SendProfEmail')" .
                                       Proforma_Background('SpecInvite') . ">Reinvite</button>";
           }
-        
+
         if (Feature('SpecialInvite') && $fetch['Coming'] == 4) {
            echo "<button type=button id=SpecPossible$snum class=ProfButton onclick=ProformaSend('Dance_SpecPossible',$snum,'SpecPossible','SendProfEmail')" .
                                       Proforma_Background('SpecPossible') . ">RePossible</button>";
@@ -239,7 +240,7 @@
 
 //          echo "Meow";
       } else {
-        echo "No Email!";      
+        echo "No Email!";
       }
 
 //      for($i=1;$i<5;$i++) {
@@ -247,18 +248,18 @@
 //      }
     }
     echo "</tbody></table></div>\n";
-    
+
       $Dtypes = Get_Dance_Types(0);
-      echo "<div id=SelTools data-t1=Tool_Type,2 data-t2=Tool_Invite,8 data-t3=Tool_Coming,10 data-t4=Tool_Coming_Last,7></div>"; 
+      echo "<div id=SelTools data-t1=Tool_Type,2 data-t2=Tool_Invite,8 data-t3=Tool_Coming,10 data-t4=Tool_Coming_Last,7></div>";
       // Encode all tools below selectname,col to test
       echo "<b>Select: Type=" . fm_select($Dtypes,$_REQUEST,'Tool_Type',1,' oninput=ToolSelect(event)') ;
-      echo " Invite=" . fm_select($Invite_States,$_REQUEST,'Tool_Invite',1,' oninput=ToolSelect(event)') ;    
-      echo " Coming $PLANYEAR=" . fm_select($Coming_States,$_REQUEST,'Tool_Coming',1,' oninput=ToolSelect(event)') ;    
-      echo " Coming $LastYear=" . fm_select($Coming_States,$_REQUEST,'Tool_Coming_Last',1,' oninput=ToolSelect(event)') . "</b><p>";    
-    
-    
-    
-    
+      echo " Invite=" . fm_select($Invite_States,$_REQUEST,'Tool_Invite',1,' oninput=ToolSelect(event)') ;
+      echo " Coming $PLANYEAR=" . fm_select($Coming_States,$_REQUEST,'Tool_Coming',1,' oninput=ToolSelect(event)') ;
+      echo " Coming $LastYear=" . fm_select($Coming_States,$_REQUEST,'Tool_Coming_Last',1,' oninput=ToolSelect(event)') . "</b><p>";
+
+
+
+
   }
   dotail();
 ?>

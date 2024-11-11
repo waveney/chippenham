@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Set uploaded fields in data
 include_once("fest.php");
 include_once("festfm.php");
@@ -15,7 +15,7 @@ function Archive_Stack($loc,$pth,$id) {
   rename($loc,"$pth/Old$hist.$id.$sfx");
 }
 
-  global $DDdata;
+global $DDdata,$PLANYEAR;
 //********************************* START HERE **************************************************************
 
 $Type = Sanitise($_REQUEST['Type'],15,'txt');
@@ -28,6 +28,7 @@ $DDd = $DDdata[$Type];
 $Name = $Type;
 if (isset($DDd['Name'])) $Name = $DDd['Name'];
 $PutCat = $PathCat = $Cat;
+$mtch = [];
 
 // var_dump($_REQUEST);
 
@@ -52,19 +53,19 @@ case 'Trade':
     $Put = 'Put_Trader';
   }
   break;
-  
+
 case 'Volunteer':
   $Data = Get_Volunteer($id);
   $Put = 'Put_Volunteer';
   $PathCat = 'Volunteers/Photos';
   break;
-  
+
 case 'Article':
   $Data = Get_Article($id);
   $Put = 'Put_Article';
   $PathCat = 'ArtImages';
   break;
-  
+
 case 'FoodAndDrink':
   $Data = Gen_Get($Cat,$id);
   $Put = 'Gen_Put';
@@ -78,24 +79,24 @@ case (preg_match('/Overlay:(.*)/',$Cat,$mtch)?true:false):
   $PutCat = 'SideOverlays';
   $PathCat = "Sides/Overlay/$Isa";
   break;
-  
+
 case 'Venue':
 case 'Venue2':
 case 'Sponsor':
 case 'Event':
   // TODO
-  
+
 default:
   echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,$Mode,"Unknown Data Category $Cat",1,'',$Class);
   exit;
 }
 
-if (!$Data) { 
+if (!$Data) {
   echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,$Mode,"No Data found to update - $Type - $Cat - $id ",1,'',$Class);
   exit;
 }
 
-//TODO paths bellow only work for per year data not fixed eg PA 
+//TODO paths bellow only work for per year data not fixed eg PA
 
 // Existing file?
 if (isset($DDd['path'])) {
@@ -105,7 +106,7 @@ if (isset($DDd['path'])) {
     $pdir = $DDd['path'];
   }
 } else {
-  $pdir = ($DDd['UseYear']?"$Type/$YEAR/$Cat":$Name);
+  $pdir = ($DDd['UseYear']?"$Type/$PLANYEAR/$Cat":$Name);
 }
 $path = "$pdir/$Type$id";
 
@@ -126,7 +127,7 @@ $suffix = pathinfo($_FILES["Upload"]["name"],PATHINFO_EXTENSION);
 if ($suffix == 'heic' || $suffix =='heif') {
   $target_file = "$target_dir/$Type$id.jpg";
   if (!exec("heif-convert -q 90 " . $_FILES["Upload"]["tmp_name"] . " $target_file")) {
-    echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);    
+    echo fm_DragonDrop(0,$Type,$Cat,$id,$Data,'',$Mode,1,"Uploaded file failed to be stored",1,'',$Class);
     exit;
   }
 } else {
@@ -151,7 +152,7 @@ if (preg_match('/Image|Photo/',$Type,$mtch)) {
   if ($stuff) {
     $Data['ImageWidth'] = $stuff[0];
     $Data['ImageHeight'] = $stuff[1];
-    
+
     if ($stuff[0] > 800) {
       exec("convert -resize 800x $target_file $target_file");
       $stuff = getimagesize($target_file);
@@ -163,7 +164,7 @@ if (preg_match('/Image|Photo/',$Type,$mtch)) {
   }
 }
 
-$Mess = ''; 
+$Mess = '';
 // "Here with: " . var_export($Data,1);
 if ($Put == 'Gen_Put') {
   Gen_Put($PutCat,$Data);

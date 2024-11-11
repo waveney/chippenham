@@ -7,12 +7,13 @@
   include_once("TradeLib.php");
   include_once("PitchMap.php");
 
-  global $Pitches,$tloc,$loc,$Traders,$Trade_State,$db,$Trade_Types,$Trade_Types;
+  global $Pitches,$tloc,$loc,$Traders,$Trade_State,$db,$Trade_Types,$Trade_Types,$PLANYEAR;
   $Trade_Types = Get_Trade_Types(1);
 
   function TraderList($Message='',$trloc) {
     global $Pitches,$tloc,$loc,$Traders,$Trade_Types,$Trade_State;
     echo "<div class=PitchWrap><div class=PitchCont>";
+    $mtch = [];
     if (!$Traders) {
       echo "No Traders Here Yet";
     } else {
@@ -20,14 +21,14 @@
       foreach ($Traders as $Trad) {
         $tid = $Trad['Tid'];
         echo "<tr><td draggable=true class='TradeName Trader$tid' id=TradeN$tid ondragstart=drag(event) ondragover=allow(event) ondrop=drop(event) " .
-             "style='background:" . (($Trad['PAID']??0) ? $Trade_Types[$Trad['TradeType']]['Colour'] : 'white' ) . "'>" . 
+             "style='background:" . (($Trad['PAID']??0) ? $Trade_Types[$Trad['TradeType']]['Colour'] : 'white' ) . "'>" .
              preg_replace('/\|/','',$Trad['BizName']?$Trad['BizName']:$Trad['SN']);
         if (!($Trad['PAID']??0)) {
           echo " <span class=err>" . ($Trad['BookingState'] == $Trade_State['Quoted'] ?"NOT ACCEPTED": "NOT PAID") .  "</span>";
         }
-        echo "<td><img src=/images/icons/information.png width=20 " /* title='" . $Trad['GoodsDesc'] . "' */ . " onclick=UpdateTraderInfo($tid)><td>";          
+        echo "<td><img src=/images/icons/information.png width=20 " /* title='" . $Trad['GoodsDesc'] . "' */ . " onclick=UpdateTraderInfo($tid)><td>";
         $pitched = 0;
-        for ($i=0; $i<3; $i++) 
+        for ($i=0; $i<3; $i++)
           if ($Trad["PitchLoc$i"] == $trloc) {
             if ($pitched) {
               if (preg_match('/^(\d*)/',$Trad["PitchSize$i"],$mtch) && ($mtch[1]==0)) continue;
@@ -47,6 +48,7 @@
 
   function Update_Pitches() {
     $Change = 0;
+    $matches = [];
     foreach($_REQUEST as $P=>$V) {
       if (preg_match('/PitchNum(\d):(\d+)/',$P,$matches)) {
         $Tid = $matches[2];
@@ -61,14 +63,14 @@
     }
     return $Change;
   }
-  
-  
+
+
   // No pitch used more than once, no invalid pitch #s (not = pitch and pitch for trade)
   // All traders have a pitch
-  
+
   function Validate_Pitches_At($Loc) {
-    global $Traders,$Pitches,$tloc,$Trade_State,$PitchesByName;
-    
+    global $Traders,$Pitches,$tloc,$Trade_State,$PitchesByName,$PLANYEAR;
+
     $Usage = [];$TT = [];
     $NotAssign = '';
     $TLocId = $tloc['TLocId'];
@@ -78,7 +80,7 @@
           $Traders[$idx]['PAID'] = 1;
         } else {
           $Traders[$idx]['PAID'] = 0;
-        } 
+        }
         for ($i=0; $i<3; $i++) {
           if ($Trad["PitchLoc$i"] == $TLocId) {
             $Found = 0;
@@ -101,9 +103,9 @@
     }
     return $NotAssign;
   }
-  
 
-  $trloc = $loc = Get_Location(); 
+
+  $trloc = $loc = Get_Location();
   if (isset($_REQUEST['Update'])) Update_Pitches(); // Note this can't use Update Many as weird format of ids
   $Pitches = Get_Trade_Pitches($loc);
   $PitchesByName = [];
@@ -112,9 +114,9 @@
   if ($tloc['PartOf']) {
     $trloc = $tloc['PartOf'];
   }
-  
+
   $Traders = Get_Traders_For($trloc,0); // Only those who have accepted/paid 1);
-  
+
   echo "<form method=post>";
   echo fm_hidden('l',$loc);
 
@@ -126,10 +128,10 @@
 
 //  Pitch_Map($tloc,$Pitches,$Traders);
   TraderList($Message,$trloc);
-  echo "<h2><a href=TradeLocs?Y=$YEAR>Trade Locs</a></h2>";
-  
+  echo "<h2><a href=TradeLocs?Y=$PLANYEAR>Trade Locs</a></h2>";
+
   echo "<div id=TraderInfo><div id=TraderContent>Info about a selected trader appears here</div></div>";
-  
+
   dotail();
- 
+
 

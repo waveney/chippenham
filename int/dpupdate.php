@@ -1,19 +1,21 @@
 <?php
 // Updates to data following on screen drag drops, returns info pane html
-//    $("#Infomation").load("dpupdate.php", "D=" + dstId + "&S=" + srcId + "&Y=" + $("#DayId").text() + "&E=" + 
+//    $("#Infomation").load("dpupdate.php", "D=" + dstId + "&S=" + srcId + "&Y=" + $("#DayId").text() + "&E=" +
 //                        $("input[type='radio'][name='EInfo']:checked").val()        );
 //  include_once("minimalfiles/header.php");
   include_once("fest.php");
   include_once("ProgLib.php");
   include_once("CheckDance.php");
+  global $Day_Type;
+  $sres = [];
 
   if (isset($_REQUEST['D'])) {
-    $dstId = $_REQUEST['D'];  
-    $srcId = $_REQUEST['S'];  
+    $dstId = $_REQUEST['D'];
+    $srcId = $_REQUEST['S'];
     $Day   = $_REQUEST['A'];
     $DayN  = $Day_Type[$Day];
     $sSide   = $_REQUEST['I'];
-  
+
     if (preg_match('/SideN(\d*)/',$srcId,$sres)) {
       $src=0;
     } elseif (preg_match('/G:(\d*):(\d*):(\d*)/',$srcId,$sres)) {
@@ -22,7 +24,7 @@
       echo "Something went wrong with source $srcId";
       exit;
     }
-  
+    $dres = [];
     if (preg_match('/SideN(\d*)/',$dstId,$dres)) {
       $dst=0;
     } elseif (preg_match('/G:(\d*):(\d*):(\d*)/',$dstId,$dres)) {
@@ -61,7 +63,7 @@
 
   }
  // Return setup
- 
+
 //var_dump($_REQUEST);
   $Ei    = $_REQUEST['E'];  // Used for return info
   if (isset($_REQUEST['P'])) UserSetPref('ProgErr',$Ei);

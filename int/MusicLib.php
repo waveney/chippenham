@@ -38,7 +38,7 @@ function Get_Music_Type($id) {
     $Types[$id] = $ans;
     return $ans;
   }
-  return 0; 
+  return 0;
 }
 
 function Put_Music_Type(&$now) {
@@ -59,7 +59,7 @@ function Get_Band($act) {
 
 function Get_BandMember($mid) {
   global $db;
-  $res = $db->query("SELECT * FROM BandMembers WHERE BandMemId=$mid"); 
+  $res = $db->query("SELECT * FROM BandMembers WHERE BandMemId=$mid");
   return $res->fetch_assoc();
 }
 
@@ -141,7 +141,7 @@ function Put_ActYear(&$data) {
     $data = array_merge($Save,$data);
     $rec = "INSERT INTO ActYear SET ";
     $Up = 0;
-  } else { 
+  } else {
     $Save = &$Save_ActYears[$data['SideId']][$data['Year']];
     $rec = "UPDATE ActYear SET ";
     $Up = 1;
@@ -175,17 +175,16 @@ function Get_Events4Act($snum,$yr=0) {
   $evs = array();
   if (!$res) return 0;
   while ($ev = $res->fetch_assoc()) $evs[] = $ev;
-  return $evs; 
+  return $evs;
 }
 
 function Get_Event4Act($Eid) {
   global $db,$YEAR;
-  if ($yr==0) $yr=$YEAR;
   $res = $db->query("SELECT * FROM Events WHERE EventId=$Eid");
   $evs = array();
   if (!$res) return 0;
   while ($ev = $res->fetch_assoc()) $evs[] = $ev;
-  return $evs; 
+  return $evs;
 }
 
 function Act_Name_List() {
@@ -254,7 +253,7 @@ function Select_Perf_Come($Perf,$type=0,$extra='') {
   global $db,$YEAR;
   static $Coming;
   if (isset($Coming[$Perf])) return $Coming[$Perf];
-  $qry = "SELECT s.SideId, s.SN, s.Type FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' " . 
+  $qry = "SELECT s.SideId, s.SN, s.Type FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' " .
         " AND s.$Perf=1 AND y.YearState>=2 " . $extra . " ORDER BY s.SN";
   $res = $db->query($qry);
   if ($res) {
@@ -271,7 +270,7 @@ function Select_Perf_Come_All($Perf,$extra='') {
   global $db,$YEAR;
   static $Coming;
   if (isset($Coming[$Perf])) return $Coming[$Perf];
-  $qry = "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' " . 
+  $qry = "SELECT s.*, y.* FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' " .
         " AND s.$Perf=1 AND y.YearState>=2 " . $extra . " ORDER BY s.SN";
   $res = $db->query($qry);
   if ($res) {
@@ -414,7 +413,7 @@ function Contract_Decline($Side,$Sidey,$Reason) {
 function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result number, otherwise string
   global $YEAR;
 //echo "check $snum $YEAR<br>";
-  $Check_Fails = array('',"No Fee", "Start Time","Bank Details missing",'Not Booked',"No Events","Venue Unknown","Duration not yet known","Events Clash"); 
+  $Check_Fails = array('',"No Fee", "Start Time","Bank Details missing",'Not Booked',"No Events","Venue Unknown","Duration not yet known","Events Clash");
   // Least to most critical
   // 0=ok, 1 - No Fee, 2 - lack times, 3 - no bank details, 4 - Not Booked, 4 - no events, 6 - no Ven, 7 - no dur,8 - clash
   include_once('ProgLib.php');
@@ -438,20 +437,20 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
           }
         }
       }
-        
+
       $et = $types[$e['Type']];
       if ($InValid < 6 && ($e['Venue']==0) || !isset($Vens[$e['Venue']])) $InValid = 6;
       if (!$et['NotCrit']) {
         if ($e['SubEvent'] < 0) { $End = $e['SlotEnd']; } else { $End = $e['End']; };
         if ($InValid == 0 && $e['Start'] == 0) $InValid = 1;
         if (($e['Start'] != 0) && ($End != 0) && ($e['Duration'] == 0)) $e['Duration'] = timeadd2($End, - $e['Start']);
-        if ($InValid < 7 && ($End == 0) && ($e['Duration'] == 0)) $InValid = 7; 
-      }    
+        if ($InValid < 7 && ($End == 0) && ($e['Duration'] == 0)) $InValid = 7;
+      }
       $LastEv = $e;
-    }  
+    }
   } else {
     $Sy = Get_SideYear($snum,$YEAR);
-    if ($Sy['NoEvents'] ?? 1) $InValid = 0;  
+    if ($Sy['NoEvents'] ?? 1) $InValid = 0;
   }
 
   $ActY = Get_SideYear($snum);
@@ -465,11 +464,11 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
       $InValid = 1;
     }
   }
-  
-  
+
+
 
 //echo "$InValid <br>";
-  if ($ret) return $InValid;  
+  if ($ret) return $InValid;
   if ($InValid == 0) {
     $act = Get_Side($snum);
     if (Feature('NeedShortBlurb') && !$act['Description']) return "No Short Blurb";
@@ -545,12 +544,12 @@ function Contract_State_Check(&$Sidey,$chkba=1) {
       break;
 
     case $Book_State['Contract Ready']:
-      if (!$Valid)  $ys = $Book_State[$Es?'Booking':'None']; 
+      if (!$Valid)  $ys = $Book_State[$Es?'Booking':'None'];
       break;
 
     case $Book_State['Contract Signed']:
       break;
-    
+
     case $Book_State['Contract Sent']:
       break;
   }
@@ -595,7 +594,7 @@ function Music_Actions($Act,&$side,&$Sidey) { // Note Sidey MAY have other recor
         if ($Valid) $NewState = $Book_State['Contract Ready'];
       }
       break;
-      
+
     case 'Dates':
       $subject = Feature('FestName') . " $PLANYEAR and " . $side['SN'];
       $too = Music_Email_Too($side);
@@ -634,8 +633,8 @@ function MusicMail($data,$name,$id,$direct) {
   $Msg = '';
 
   if (isset($datay['YearState']) && $datay['YearState']) {
-    if ($datay['YearState'] == $Book_State['Contract Signed']) { 
-      $p = 1; 
+    if ($datay['YearState'] == $Book_State['Contract Signed']) {
+      $p = 1;
       $AddC = 1;
     } else {
       $ConAns = Contract_Check($id,1,1);
@@ -662,7 +661,7 @@ function MusicMail($data,$name,$id,$direct) {
   }
   $Content = "$name,<p>";
   $Content .= "<span id=SideLink$id>Please use $direct</span> " .
-                "to add/correct details about " . $data['SN'] . "'s contact information, update social media links, " . 
+                "to add/correct details about " . $data['SN'] . "'s contact information, update social media links, " .
                 "and information about you that appears on the festival website.<p>  $Msg";
   $Content .= "Regards " . $USER['SN'] . "<p>\n" ;
   if ($AddC) $Content .= "<div id=SideProg$id>" . Show_Contract($id,$p) . "</div><p>\n";
@@ -673,24 +672,24 @@ function MusicMail($data,$name,$id,$direct) {
 function Music_Email_Too(&$data) {
   global $YEAR;
   $em = $name = '';
-  
+
   if (isset($data['HasAgent']) && ($data['HasAgent']) && isset($data["AgentEmail"]) && !isset($data['BookDirect'])) {
     $em = $data['AgentEmail'];
     $name = firstword($data['AgentName']);
   } else if ($data['Email']) {
     $em = $data['Email'];
-    $name = firstword($data['Contact']); 
+    $name = firstword($data['Contact']);
   } else if ($data['AltEmail']) {
     $em = $data['AltEmail'];
-    $name = firstword($data['AltContact']);      
+    $name = firstword($data['AltContact']);
   } else {
     return "";
   }
 
   if (!$em) return "";
-  
+
   if (!$name) $name = $data['SN'];
-      
+
   $too = [['to',$em,$name],
           ['from','Music@' . Feature('HostURL'),Feature('ShortName') . ' Music'],
           ['replyto','Music@' . Feature('HostURL'),Feature('ShortName') . ' Music']];

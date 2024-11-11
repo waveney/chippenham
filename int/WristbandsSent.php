@@ -4,10 +4,10 @@
   dostaffhead("Mark Wristbands as sent");
   include_once("DanceLib.php");
 
-  $sides = Select_Come_All();
+  $Sides = Select_Come_All();
   $sc = 0;
 
-  if ($Sides) foreach($sides as $side) {
+  if ($Sides) foreach($Sides as $side) {
     if ($side['Performers'] < 1 || strlen($side['Address']) < 10 || $side['WristbandsSent']) continue;
     $sidey = Get_SideYear($side['SideId']);
     $sidey['WristbandsSent'] = 1;
@@ -16,4 +16,4 @@
   }
   echo "Done - $sc sides updated";
   dotail();
-?> 
+?>

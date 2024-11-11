@@ -7,7 +7,7 @@
 
   // Anything not listed will be copied as is
   // name=>  xxx - replace with xxx
-  $Rules =['FestName'=>'', 
+  $Rules =['FestName'=>'',
            'ShortName'=>'',
            'FestPhone'=>'',
            'HostURL'=>'',
@@ -27,7 +27,8 @@
 
            ];
   global $FESTSYS;
-  
+  $match = [];
+
   $Feats = $FESTSYS['Features'];
   $SFeats = [];
   foreach(explode("\n",$Feats) as $line) {
@@ -39,15 +40,15 @@
       $key = trim($match[1]);
       $rslt = trim($match[2]);
       $com = trim($match[3]??'');
-      
+
       if (isset($Rules[$key])) $rslt = $Rules[$key];
       $SFeats []= "$key = $rslt" . ($com? (' ' . $com) : '');
     } else {
-      $SFeats []= $line;  
+      $SFeats []= $line;
     }
   }
-    
-  file_put_contents('festfiles/RawFeatures',base64_encode(implode("\n",$SFeats))); 
+
+  file_put_contents('festfiles/RawFeatures',base64_encode(implode("\n",$SFeats)));
   echo "Features Dumped<p>";
   dotail();
 ?>

@@ -16,9 +16,9 @@ function EventChangePrint($Mode=1) {
   /* Get All Event Changes
      Get their events, sort by time/date
      Report changes in that order */
-     
+
   $EChanges = Gen_Get_Cond('EventChanges',"Year='$YEAR' ORDER by EventId");
-  
+
   $Events = [];
   $LastEvent = 0;
 
@@ -26,7 +26,7 @@ function EventChangePrint($Mode=1) {
     echo "<h2>No sigificant changes in events have been recorded</h2>";
     dotail();
   }
-  
+
   foreach ($EChanges as $EC) {
     if ($EC['EventId'] == $LastEvent) {
       if (isset($Events[$LastEvent])) $Events[$LastEvent]['Changes'][] = $EC;
@@ -48,18 +48,19 @@ function EventChangePrint($Mode=1) {
     if ($a['Day'] != $b['Day']) return ($a['Day'] < $b['Day']) ? -1 : 1;
     return ($a['Start'] <=> $b['Start']);
   }
-  
+
   uasort($Events, 'Ecmp');
-  
+
   foreach ($Events as $eid=>$e) {
     $dname = $DayLongList[$e['Day']];
     if (DayTable($e['Day'],"Events that have changed","","",'style=min-width:1200' )) {
       echo "<tr class=Day$dname ><td>Time<td >What<td>Where<td>Change(s)<td>With and/or Description<td>Price";
     }
-    
+    $imps = [];
+
     Get_Imps($e,$imps,1,(Access('Staff')?1:0));
-    
-    echo "<tr class=Day$dname><td>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
+
+    echo "<tr class=Day$dname><td>" . timecolon($e['Start']) . " - " . timecolon($e['End']);
     echo "<td><a href=/int/EventShow?e=$eid>" . $e['SN'] . "</a>";
 
     if (isset($Vens[$e['Venue']]['SN'])) {
@@ -70,13 +71,13 @@ function EventChangePrint($Mode=1) {
     if ($e['BigEvent']) {
       $Others = Get_Other_Things_For($eid);
       foreach ($Others as $i=>$o) {
-        if (($o['Type'] == 'Venue') && ($o['Identifier']>0)) echo ", " . Venue_Parents($Vens,$o['Identifier']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" . 
+        if (($o['Type'] == 'Venue') && ($o['Identifier']>0)) echo ", " . Venue_Parents($Vens,$o['Identifier']) . "<a href=/int/VenueShow?v=" . $o['Identifier'] . ">" .
           $Vens[$o['Identifier']]['SN'] . "</a>";
       }
     }
     echo "<td>";
     $Chtxt = [];
-     
+
     foreach ($e['Changes'] as $Ch) {
       switch ($Ch['Field']) {
       case 'Missed' :
@@ -115,15 +116,15 @@ function EventChangePrint($Mode=1) {
       case 'Venue' :
         $Chtxt[7] = 'Changed Venue';
         break;
- 
+
       }
     }
     echo implode(", ",$Chtxt);
-      
+
     echo "<td>";
     if ($e['Description']) echo $e['Description'] . "<br>";
     echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,1,15,1,'',$e) : Get_Event_Participants($eid,0,1,15));
-    echo "<td>" . Price_Show($e,1);   
+    echo "<td>" . Price_Show($e,1);
   }
   echo "</table></div>\n";
 }
@@ -136,22 +137,23 @@ function PerfChangePrint($Mode=1) {
   /* Get All Perf Changes
      Get the Perf, sort by name
      Report changes in that order */
-     
+
   $PChanges = Gen_Get_Cond('PerfChanges',"Year='$YEAR' ORDER by SideId");
-  
+
   $Events = [];
   $LastPerf = 0;
   $RealPerf = 1;
+  $Perfs = [];
 
 //  dohead("Lineup changes since the programme went to print",[],1);
-  
+
   if (!$PChanges) {
     echo "<h2>No sigificant changes in performers have been recorded</h2>";
     dotail();
   }
-  
+
   if ($Mode == 1) echo "Click on the performers name to find out what they are now doing and when.<p>\n";
-  
+
   foreach ($PChanges as $PC) {
     if ($PC['SideId'] == $LastPerf) {
       if ($RealPerf) $Perfs[$LastPerf]['Changes'][] = $PC;
@@ -175,13 +177,13 @@ function PerfChangePrint($Mode=1) {
   function Pcmp($a,$b) {
     return ($a['SN'] <=> $b['SN']);
   }
-  
+
 //  var_dump($Perfs);exit;
   uasort($Perfs, 'Pcmp');
-  
+
   echo "<table border style='min-width:1200'><td>Performer<td>Changes\n";
   foreach ($Perfs as $snum=>$p) {
-    
+
 
 //var_dump($p['Changes']);
     $Chtxt = [];
@@ -231,11 +233,11 @@ function PerfChangePrint($Mode=1) {
       }
 // var_dump($Ch, $Chtxt) ;
     }
-    
+
     if ($Chtxt) {
       echo "<tr><td><a href=/int/ShowPerf?id=$snum&Y=$YEAR>" . $p['SN'] . "</a><td>";
       echo implode(", ",$Chtxt);
-    }  
+    }
   }
   echo "</table></div>\n";
 //  dotail();

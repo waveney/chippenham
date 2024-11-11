@@ -2,7 +2,7 @@
   include_once("fest.php");
 
   A_Check('SysAdmin');
-  
+
   include_once("DanceLib.php");
   include_once("TradeLib.php");
   include_once("ImageLib.php");
@@ -10,7 +10,8 @@
   echo "This may be extended to other image categories later.<p>";
 
   global $db;
-  
+  $mtch = [];
+
   if (isset($_REQUEST['TRADE'])) {
     $ans = $db->query("SELECT * FROM Trade");
     while ($trad = $ans->fetch_assoc()) {
@@ -25,11 +26,11 @@
             $sfx = Find_Hidden_Image_Type($Photo);
           }
           if ($sfx) {
-            $loc = "/images/Trade/$id.$sfx"; 
+            $loc = "/images/Trade/$id.$sfx";
             $res = Localise_Image($Photo,$trad,$loc);
             Put_Trader($trad);
             echo "Cached " . $id . " " . $trad['SN'] . "<br>\n";
-          }        
+          }
           continue;
         } else if (preg_match('/^\/(.*)\?.*/',$Photo,$mtch)) {
           $stuff = getimagesize($mtch[1]);
@@ -62,13 +63,13 @@
             $sfx = Find_Hidden_Image_Type($Photo);
           }
           if ($sfx) {
-            $loc = "/images/Sides/$id.$sfx"; 
+            $loc = "/images/Sides/$id.$sfx";
             $res = Localise_Image($Photo,$side,$loc);
 //            var_dump($side);
             Put_Side($side);
             echo "Cached " . $id . " " . $side['SN'] . "<br>\n";
  //           exit;
-          }       
+          }
           continue;
         } else if (preg_match('/^\/(.*)\?.*/',$Photo,$mtch)) {
           $stuff = getimagesize($mtch[1]);

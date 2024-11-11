@@ -10,12 +10,13 @@
   include_once("int/MusicLib.php");
 
   global $db,$YEAR,$SHOWYEAR,$YEARDATA,$DayList,$DayLongList,$Event_Types ;
+  global $PLANYEAR;
 
   $Vens = Get_Venues(1);
 
   /* Get all events that are public, sort by day, time
-     opening display is each day - click to expand 
-     sub events are shown 
+     opening display is each day - click to expand
+     sub events are shown
      find those with start < (now +1.5 hrs) & end >=now)
      if day !=0-2 (1.5hrs = whole day)
      More to come from event states and general
@@ -41,18 +42,18 @@
     dohead("Whats on Now",[],1);
     $Now = getdate($now);
     $Now['hours']++; // Festivals is BST server is UTC
-  } 
+  }
 // Fudge for testing...
 //  $Now['mon'] = 6;
 //  $Now['mday']= 9;
- 
+
   $StartTime = mktime(0,0,0,$YEARDATA['MonthFri'],$YEARDATA['DateFri']+$YEARDATA['FirstDay'],substr($PLANYEAR,0,4));
   $EndTime = mktime(23,59,59,$YEARDATA['MonthFri'],$YEARDATA['DateFri']+$YEARDATA['LastDay'],substr($PLANYEAR,0,4));
- 
+
 //var_dump($now,$StartTime,$EndTime);
   if ($now < $StartTime || $now > $EndTime) {
     echo "<h3>There are no festival events today</h3>\n";
-    dotail();  
+    dotail();
   }
 /*
   if (($Now['year'] != $SHOWYEAR) || ($Now['mon'] != 6) || ($Now['mday'] < ($YEARDATA['DateFri']-3)) || ($Now['mday'] > ($YEARDATA['DateFri']+3))) { // Not during festival
@@ -86,12 +87,12 @@
     $eid = $e['EventId'];
     /* New day give table header, links to Dance Grid/Music Grid (if applicable), Events have click to expand */
 
-    if ($e['Start'] >= $StartLim) continue; 
-    if ($e['End'] < $EndLim) continue; 
-    if ((($e['SubEvent'] < 0) && ($e['SlotEnd'] < $EndLim) && !$e['IsConcert'] ) || ($e['IsConcert'] && ($e['SubEvent']>0))) continue; 
+    if ($e['Start'] >= $StartLim) continue;
+    if ($e['End'] < $EndLim) continue;
+    if ((($e['SubEvent'] < 0) && ($e['SlotEnd'] < $EndLim) && !$e['IsConcert'] ) || ($e['IsConcert'] && ($e['SubEvent']>0))) continue;
 
     if ($e['BigEvent'] == 0) {
-      if ($e['Side1'] == 0 && $e['Side2'] == 0 && $e['Side3'] == 0 && $e['Side4'] == 0 && $e['NoPart'] == 0) continue; // Nobody there 
+      if ($e['Side1'] == 0 && $e['Side2'] == 0 && $e['Side3'] == 0 && $e['Side4'] == 0 && $e['NoPart'] == 0) continue; // Nobody there
     }
 
     $dname = $DayLongList[$e['Day']];
@@ -99,9 +100,11 @@
     if (DayTable($e['Day'],"Events",($Poster?(" in the next hour or so "):''),'style=min-width:1000')) {
       echo "<tr class=Day$dname><td>Time<td >What<td>Where" . ($Poster?'':"<td>With") . "<td>Price";
     }
-      
+    $imps = [];
+
+    $Others = [];
     Get_Imps($e,$imps,1,(Access('Staff')?1:0));
-    echo "<tr class=Day$dname><td>" . timecolon($e['Start']) . " - " . timecolon($e['End']); 
+    echo "<tr class=Day$dname><td>" . timecolon($e['Start']) . " - " . timecolon($e['End']);
     echo "<td>" . ($Poster? $e['SN'] : "<a href=/int/EventShow?e=$eid>" . $e['SN'] . "</a>");
     $With = ($e['BigEvent'] ? Get_Other_Participants($Others,0,$Link,15,1,'',$e) : Get_Event_Participants($eid,0,$Link,15));
     if ($e['Description']) echo "<br>" . $e['Description'];

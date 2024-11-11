@@ -6,11 +6,11 @@
   include_once("PLib.php");
   include_once("DateTime.php");
 
-  global $PerfTypes;
+  global $PerfTypes,$BUTTON,$PLANYEAR;
   $Type = 'D';
   $Mess = '';
   if (isset($_REQUEST['T'])) $T = $_REQUEST['T'];
-  $Perf = 0; 
+  $Perf = 0;
   foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) if ($d[4] == $T || $d[2] == $T) { $Perf = $p; $Type = $d[2]; };
 // var_dump($Type);
   A_Check('Staff',$Type);
@@ -31,28 +31,29 @@
             echo $p;
           }
           if ($side['SideStatus']) {
-            if ($side['SideStatus'] == 1) echo " [[No Longer Active]] ";          
-            if ($side['SideStatus'] == 2) echo " [[Banned See notes]] ";   
-          }       
+            if ($side['SideStatus'] == 1) echo " [[No Longer Active]] ";
+            if ($side['SideStatus'] == 2) echo " [[Banned See notes]] ";
+          }
         }
-        echo "</ul>or <form method=post>" . fm_hidden('SN',$_REQUEST['SN']) . fm_hidden('T',$Type) . "<input type=submit name=CONTINUE value=Continue><p>or<p>";  
+        echo "</ul>or <form method=post>" . fm_hidden('SN',$_REQUEST['SN']) . fm_hidden('T',$Type) . "<input type=submit name=CONTINUE value=Continue><p>or<p>";
 //        dotail();
       } else { // It is new
         foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $_REQUEST[$d[0]]=0;
         $_REQUEST[$PerfTypes[$Perf][0]] = 1;
         $_REQUEST['AccessKey'] = rand_string(40);
-        
+
+        $Side = [];
         $snum = Insert_db_post('Sides',$Side);
         $Side = Get_Side($snum);
         $_REQUEST['P'] = $_REQUEST['sidenum'] = $snum;
         $Sidey = Default_SY();
 
         dostaffhead("Add Performer");
-        
+
         Show_Part($Side,'Side',1,'AddPerf');
-        Show_Perf_Year($snum,$Sidey,$YEAR,Access('Staff'));
+        Show_Perf_Year($snum,$Sidey,$PLANYEAR,Access('Staff'));
         echo "<Center><input type=Submit name=Create value='Create' class=Button$BUTTON >\n";
-        echo "<input type=Submit name='Action' value='Record as Non Performer' class=Button$BUTTON >\n"; 
+        echo "<input type=Submit name='Action' value='Record as Non Performer' class=Button$BUTTON >\n";
         echo "</center>\n";
 
         echo "</form>\n";
@@ -69,14 +70,14 @@
 
 // This is a front end to AddPerf to create the entry after verifying the name is unique then allow for incremental edits to stick
 // After verify and save take straight to AddPerf
-// 
+//
 
   if ($Mess) echo "<div class=Err>$Mess</div><p>";
   echo "<form method=post>" . fm_hidden('T',$T);
   echo fm_text('Name',$_REQUEST,'SN',2);
   echo "<input type=submit name=Create value=Create>";
   echo "</form>";
-  
+
   dotail();
 
 ?>

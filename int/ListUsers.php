@@ -1,6 +1,6 @@
 <?php
   include_once("fest.php");
-  
+
   if (isset($_REQUEST['FULL'])) {
     $Full = 1;
     A_Check('Committee','Users');
@@ -13,6 +13,8 @@
   include_once("DocLib.php");
   include_once("UserLib.php");
 
+  global $Access_Levels;
+  global $Sections,$Access_Type,$USER,$User_Public_Vis;
   $Users = Get_AllUsers(2);
 
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Users</button><button class='floatright FullD' hidden" .
@@ -33,7 +35,7 @@
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Abrev</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Login</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Personal Email</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";  
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Fest Email</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Access Level</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Roll</a>\n";
@@ -46,7 +48,7 @@
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Show</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Capabilities</a>\n";
 
-//    foreach ($Sections as $sec) 
+//    foreach ($Sections as $sec)
 //      echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>$sec</a>\n";
 //    echo "</thead><tbody>";
   }
@@ -61,16 +63,16 @@
     echo "<td>" . $usr['Login'] . "<td>" . $usr['Email'] . "<td>" . $usr['Phone'] . "<td>" . $usr['FestEmail'] . "<td>" . $Access_Levels[$usr['AccessLevel']];
     echo "<td>" . $usr['Roll'] . "<td>" . $usr['RelOrder'] ;
     if (feature('ShowContactPhotos')) {
-      echo "<td>"; 
+      echo "<td>";
       if ($usr['Image']) echo "<img src='" . $usr['Image'] . "' width=50>";
       }
     echo "<td>" . $User_Public_Vis[$usr['Contacts']];
-  
-    if ($Full) { 
+
+    if ($Full) {
       echo "<td>";
       if ($usr['LastAccess']) echo date('d/m/y H:i:s',$usr['LastAccess']);
       echo "<td>";
-      if ($usr['NoTasks']) echo "Y";   
+      if ($usr['NoTasks']) echo "Y";
       echo "<td>";
       if ($usr['Contacts']) echo "Y";
       if ($usr['AccessLevel'] >= $Access_Type['SysAdmin']) {
@@ -79,7 +81,7 @@
         $Stypes = [];
         $Ttypes = Gen_Get_All('UserCap',"WHERE User=" . $usr['UserId']);
         foreach($Ttypes as $T) $Stypes[$T['Capability']] = $T['Level'];
-    
+
         $Usecs = [];
         foreach ($Sections as $Si=>$sec) if (isset($Stypes[$Si]) && $Stypes[$Si]>0) $Usecs[]= "$sec";
         echo "<td>" . implode(", ", $Usecs);
@@ -87,7 +89,7 @@
     }
   }
   echo "</tbody></table></div>\n";
-  
+
   if ($Full) echo "<h2><a href=AddUser>Add User</a></a>";
 
   dotail();

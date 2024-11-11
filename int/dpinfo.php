@@ -3,7 +3,7 @@
   include_once("DanceLib.php");
   include_once("MusicLib.php");
 
-  global $YEAR,$OlapTypes,$OlapDays,$OlapCats,$Share_Spots;
+  global $YEAR,$OlapTypes,$OlapDays,$OlapCats,$Share_Spots,$Noise_Levels,$Surfaces;
   $t = $_REQUEST['T'];
   $s = $_REQUEST['S'];
 
@@ -21,7 +21,7 @@
   echo "<div class=Scrolltable><table>";
   if ($data['Type']) echo "<tr><td>Type:<td>" . $data['Type'];
   if ($data['Description']) echo "<tr valign=top><td>Desc:<td>" . $data['Description'];
-  $surfs = 0; 
+  $surfs = 0;
   foreach ($Surfaces as $ss) if ($ss && isset($data["Surface_$ss"]) && $data["Surface_$ss"]) $surfs++;
   if ($surfs) {
     echo "<tr><td>Sfcs:<td class=smalltext>";
@@ -53,22 +53,22 @@
     if ($t == 'Side') echo "- Spots " . $datay["MonDance"];
     if (Feature("Procession") && $datay['ProcessionMon']) echo ' ' . Feature("Procession"," Procession");
   }
-   
+
   if ($datay['Sat']) {
     if ($datay['SatArrive']) echo "<tr><td>Sat Start<td>" . $datay['SatArrive'];
     if ($datay['SatDepart']) echo "<tr><td>Sat Depart<td>" . $datay['SatDepart'];
   }
-  
+
   if ($datay['Sun']) {
     if ($datay['SunArrive']) echo "<tr><td>Sun Start<td>" . $datay['SunArrive'];
     if ($datay['SunDepart']) echo "<tr><td>Sun Depart<td>" . $datay['SunDepart'];
   }
-  
+
   if ($datay['Mon']) {
     if ($datay['MonArrive']) echo "<tr><td>Mon Start<td>" . $datay['MonArrive'];
     if ($datay['MonDepart']) echo "<tr><td>Mon Depart<td>" . $datay['MonDepart'];
   }
-  
+
   if ($datay['YNotes']) echo "<tr><td>notes<td class=smalltext>" . $datay['YNotes'];
   if ($datay['PrivNotes']) echo "<tr><td>notes<td class=smalltext>" . $datay['PrivNotes'];
 
@@ -80,7 +80,7 @@
 
     echo "<tr><td>Olap " . substr($OlapTypes[$O['OType']],0,1) . ($O['Major']?' M ':' m ');
     echo "<td>" . ($O['Days']?$OlapDays[$O['Days']]:'') . " " . /* $OlapCat[$O[$OtherCat]] . " " .*/ Get_Side_Name($O[$Other]);
-  } 
+  }
 
   if ($data['NoiseLevel']) echo "<tr><td>Noise:<td>" . $Noise_Levels[$data['NoiseLevel']];
 

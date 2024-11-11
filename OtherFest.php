@@ -4,6 +4,7 @@
   dohead("Other Festivals");
   include_once("int/TradeLib.php");
 
+  global $SHOWYEAR;
   echo "<h2 class=subtitle>Other Festivals</h2>\n";
 
   $fests = Get_OtherLinks("WHERE Year='$SHOWYEAR'");
@@ -18,5 +19,5 @@
   } else {
     echo "Nothing else yet this year.<p>";
   }
-      
+
   dotail();

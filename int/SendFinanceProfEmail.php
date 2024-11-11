@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Send Bespoke email bassed on a proforma email Finance Version
 include_once("fest.php");
 include_once("InvoiceLib.php");
@@ -19,14 +19,14 @@ $inv['CoverNote'] = $Mess;
 if (isset($_REQUEST['CANCEL'])) {  echo "<script>window.close()</script>"; exit; }
 
 if (isset($_REQUEST['SEND'])) {
-  $too = [['to',$inv['Email'],$Side['Contact']],
+  $too = [['to',$inv['Email'],$inv['Contact']],
           ['from','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance'],
           ['replyto','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance']];
   echo Email_Proforma(EMAIL_INVOICE,$inv['SourceId'], $too,$Mess,$subject,'Invoice_Email_Details',$inv,$logfile='Invoices');
-  
+
   $inv['EmailDate'] = time();
   Put_Invoice($inv);
-  echo "<script>window.close()</script>"; 
+  echo "<script>window.close()</script>";
   exit;
 }
 

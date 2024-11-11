@@ -6,8 +6,8 @@
 
   include_once("fest.php");
   global $FESTSYS,$VERSION,$db;
- 
-// Change the year field from int to text - Skeema does not like it. 
+
+// Change the year field from int to text - Skeema does not like it.
 function xPreUpdate420() {
   global $db;
   $db->query("ALTER TABLE `VolCatYear` MODIFY COLUMN `Year` text COLLATE latin1_general_ci NOT NULL");
@@ -25,19 +25,19 @@ function PostUpdate429() {
     if (copy("../images/icons/favicon.ico","../favicon.ico")) {
       echo "Copied the default favicon<br>";
     } else {
-      echo "Failed to copy default favicon - aborting for now - you can retry once corrected<p>";  
+      echo "Failed to copy default favicon - aborting for now - you can retry once corrected<p>";
       exit;
     }
   }
-  
+
   foreach (glob("../images/icons/apple-touch-icon*") as $fn) {
     $dfn = preg_replace('/images\/icons\//','',$fn);
     if (!file_exists($dfn)) {
       if (copy($fn,$dfn)) {
-        echo "Copied $fn to $dfn<br>";     
+        echo "Copied $fn to $dfn<br>";
       } else {
         echo "Failed to copy $fn to $dfn - aborting for now - you can retry once corrected<p>";
-        exit;    
+        exit;
       }
     }
   }
@@ -46,9 +46,10 @@ function PostUpdate429() {
 function PostUpdate604() {
   // Update Date Quoted on Tradeyear data
   $Tys = Gen_Get_Cond('TradeYear',"Year=2024 AND BookingState=5",'TYid');
+  $rslt = [];
   foreach ($Tys as $Ty) {
     echo "Doing " . $Ty['TYid'] . "<br>";
-    
+
     if (preg_match('/Quote.* on (.*) by/',$Ty['History'],$rslt)) {
       $when = Date_BestGuess($rslt[1]);
       $Ty['DateQuoted'] = $when;
@@ -83,13 +84,14 @@ function FixUpdate436() {  // Corect mediumtext to text
 // ********************** START HERE ***************************************************************
 
 
-  dostaffhead("Update System");  
-  
+  dostaffhead("Update System");
+
 //  FixUpdate436();
 //  echo "Done";
 //  exit;
-  
-  
+
+  $Match = [];
+
   preg_match('/(\d*)\.(\d*)/',$VERSION,$Match);
   $pfx = $Match[1];
   $Version = $Match[2];
@@ -108,13 +110,13 @@ function FixUpdate436() {  // Corect mediumtext to text
       }
     }
 
-  
+
     chdir('../Schema');
     $skema = system('skeema push 2>&1');
     $skedit = preg_replace('/\n/','<br>\n',$skema);
     echo $skedit . "\n\n";
     chdir('../int');
-    
+
     if (strstr('[ERROR]',$skedit)) {
       echo "<p>The Database structure failed to update.<p>Update cancelled<p>";
       dotail();
@@ -122,14 +124,14 @@ function FixUpdate436() {  // Corect mediumtext to text
 
 
 // Post Database changes
- 
+
     for ($Ver = ($FESTSYS['CurVersion'] ?? 0); $Ver <= $Version; $Ver++) {
       if (function_exists("PostUpdate$Ver")) {
         echo "Doing Post update to Verion $pfx.$Ver<br>";
         ("PostUpdate$Ver")();
       }
     }
-  }  
+  }
   echo "Updated to Version $VERSION<p>";
   $FESTSYS['CurVersion'] = $Version;
   $FESTSYS['VersionDate'] = time();

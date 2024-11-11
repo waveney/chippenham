@@ -7,9 +7,9 @@
   include_once("MapLib.php");
   include_once("DispLib.php");
   include_once("DanceLib.php");
-  
-  global $YEAR;
-  
+
+  global $YEAR,$Venue_Status,$Surfaces;
+
   Set_Venue_Help();
 
   echo "<div class='content'><h2>Add/Edit Venues</h2>\n";
@@ -28,7 +28,7 @@
       $_REQUEST['AccessKey'] = rand_string(40);
       $vid = Insert_db_post('Venues',$Venue,$proc);
     }
-    Update_MapPoints(); 
+    Update_MapPoints();
   } elseif (isset($_REQUEST['v'])) {
     $vid = $_REQUEST['v'];
     $Venue = Get_Venue($vid);
@@ -49,7 +49,7 @@
     }
     echo "All Access Keys Now changed";
     dotail();
-    
+
   } else {
     $Venue = array();
     $vid = -1;
@@ -58,7 +58,7 @@
   if ($vid > 0) Register_Autoupdate('Venues',$vid);
   $RealSites = Get_Real_Venues(0);
   $VirtSites = Get_Virtual_Venues();
-  
+
   echo "<div class=tablecont  style='width:70%;float:left;'><table border>\n";
     if (isset($vid) && $vid > 0) {
       echo "<tr><td>Venue Id:<td>$vid" . fm_hidden('VenueId',$vid);
@@ -68,7 +68,7 @@
       echo fm_hidden('VenueId',-1);
     }
     echo "<tr>" . fm_text('Short Name', $Venue,'ShortName');
-    if (isset($vid) && $vid > 0 && isset($VenY['QRCount'])) echo "<td>QR Count:<td>" . $VenY['QRCount'];  
+    if (isset($vid) && $vid > 0 && isset($VenY['QRCount'])) echo "<td>QR Count:<td>" . $VenY['QRCount'];
     echo "<tr>" . fm_text('Name',$Venue,'SN',3);
     echo "<tr>" . fm_text('Address',$Venue,'Address',3);
     echo          fm_text('Post Code',$Venue,'PostCode',1);
@@ -86,7 +86,7 @@
     echo          fm_text('Banner',$Venue,'Banner',1);
     echo "<tr><td>" . fm_checkbox('Bar',$Venue,'Bar') . "<td>" . fm_checkbox('Food',$Venue,'Food') . fm_text('Food/Bar text',$Venue,'BarFoodText') . "\n";
     echo "<td>" . fm_checkbox("Parking",$Venue,'Parking');
-    
+
     echo "<tr>" . fm_text('Notes',$Venue,'Notes',3);
     echo "<td colspan=2>Do NOT use if:" . fm_select($RealSites,$Venue,'DontUseIf',1) . " In use";
     echo "<tr><td>Status<td>" . fm_select($Venue_Status,$Venue,'Status');
@@ -104,8 +104,8 @@
     echo "<tr><td>" . fm_simpletext("Dance Importance",$Venue,'DanceImportance','size=4');
     echo "<td>" . fm_simpletext("Music Importance",$Venue,'MusicImportance','size=4');
     echo "<td>" . fm_simpletext("Other Importance",$Venue,'OtherImportance','size=4');
-    echo "<tr><td colspan=2>Treat as Minor for Dance on:" . help('Minor') . "<td>" . fm_checkbox('Sat',$Venue,'MinorFri') . 
-         "<td>" . fm_checkbox('Sat',$Venue,'MinorSat') . "<td>" . fm_checkbox('Sun',$Venue,'MinorSun') . 
+    echo "<tr><td colspan=2>Treat as Minor for Dance on:" . help('Minor') . "<td>" . fm_checkbox('Sat',$Venue,'MinorFri') .
+         "<td>" . fm_checkbox('Sat',$Venue,'MinorSat') . "<td>" . fm_checkbox('Sun',$Venue,'MinorSun') .
          "<td>" . fm_checkbox('Mon',$Venue,'MinorMon') . "<td>" . fm_checkbox('Dance off Grid on Paper',$Venue,'DanceOffGridPaper');
     echo "<tr><td>Surfaces:<td>" . fm_select($Surfaces,$Venue,'SurfaceType1',0);
     echo "<td>" . fm_select($Surfaces,$Venue,'SurfaceType2',0) . "\n";
@@ -118,14 +118,14 @@
     echo "</table></div>\n";
   if (isset($Venue['Image']) && $Venue['Image']) {
     echo "<div style='width:25%;float:left;'><img src=" . $Venue['Image'] . " width=400><br>";
-    if (!empty($Venue['Caption'])) echo $Venue['Caption'] . "<br>"; 
+    if (!empty($Venue['Caption'])) echo $Venue['Caption'] . "<br>";
     if (isset($Venue['Image2']) && ($Venue['Image2'])) {
       echo "<img src=" . $Venue['Image2'] . " width=400><br>";
-      if (!empty($Venue['Caption2'])) echo $Venue['Caption2'] . "<br>"; 
-    }    
+      if (!empty($Venue['Caption2'])) echo $Venue['Caption2'] . "<br>";
+    }
     if (!empty($Venue['Banner']) ) {
       echo "<img src=" . $Venue['Banner'] . " width=400><br>Banner Image<br>";
-    }    
+    }
     echo "</div>";
   }
 
@@ -135,7 +135,7 @@
   if ($vid > 0) {
     echo "<Center><input type=Submit name='Update' value='Update'>\n";
     echo "</center>\n";
-  } else { 
+  } else {
     echo "<Center><input type=Submit name=Create value='Create'></center>\n";
   }
   echo "</form>\n";

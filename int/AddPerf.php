@@ -13,17 +13,17 @@
   // 2D Access check hard coded here -- if needed anywhere else move to fest
   if (isset($_REQUEST['SideId'])) { $snum = $_REQUEST['SideId']; }
   elseif (isset($_REQUEST['sidenum'])) { $snum = $_REQUEST['sidenum']; }
-  elseif (isset($_REQUEST['id'])) { $snum = $_REQUEST['id'];} 
-  elseif (isset($_REQUEST['i'])) { $snum = $_REQUEST['i'];} 
+  elseif (isset($_REQUEST['id'])) { $snum = $_REQUEST['id'];}
+  elseif (isset($_REQUEST['i'])) { $snum = $_REQUEST['i'];}
   else { $snum = 0; }
-  
+
   if (!is_numeric($snum)) $snum=0;
   Set_User();
 
   if (!isset($USER['AccessLevel'])) Error_Page("Not accessable to you - Please use the corect link");
-  
+
   switch ($USER['AccessLevel']) {
-  case $Access_Type['Participant'] : 
+  case $Access_Type['Participant'] :
     if (($USER['Subtype'] == 'Perf' || $USER['Subtype'] == 'Side') && ($snum == $USERID)) break;
     Error_Page("Not accessable to you");
     break;
@@ -40,25 +40,26 @@
     if (!$capmatch) fm_addall('disabled readonly');
     break;
 
-  case $Access_Type['Internal'] : 
-  case $Access_Type['SysAdmin'] : 
+  case $Access_Type['Internal'] :
+  case $Access_Type['SysAdmin'] :
     $capmatch = 1;
     break;
-  }  
+  }
 
   dostaffhead("Add/Change Performer", ["/js/clipboard.min.js", "/js/emailclick.js", "/js/Participants.js","js/dropzone.js","css/dropzone.css", "js/InviteThings.js"]);
   global $YEAR,$PLANYEAR,$Mess,$BUTTON,$YEARDATA;  // TODO Take Mess local
   $ShowAvailOnly = 0;
 
   $AllDone = 0;
-  
+
   echo '<h2>Add/Edit Performer</h2>'; // TODO CHANGE
-  global $Mess,$Action,$Dance_TimeFeilds,$ShowAvailOnly;
+  global $Mess,$Action,$Dance_TimeFeilds,$ShowAvailOnly,$Book_States;
   $DateFlds = ['ReleaseDate'];
 // var_dump($_REQUEST);
 // TODO Change this to not do changes at a distance and needing global things
-  $Action = ''; 
+  $Action = '';
   $Mess = '';
+  $mtch = [];
   if (isset($_REQUEST['Action'])) {
     include_once("Uploading.php");
     $Action = $_REQUEST['Action'];
@@ -79,12 +80,12 @@
 //      echo "<br>"; var_dump($olaps);
       if (isset($olaps[$mtch[1]])) {
         db_delete("Overlaps",$olaps[$mtch[1]]['id']);
-      } 
+      }
       break;
     case 'TICKBOX':
 
       break; // Action is taken later after loading
-      
+
     case 'Record as Non Performer' :
       $Side = Get_Side($snum);
       $Sidey = Get_SideYear($snum);
@@ -104,13 +105,13 @@
       echo "<h1>Setup as a non performer</h1>";
       $AllDone = 1;
       break;
-      
+
     case 'Create as Non Performer' :
       $_REQUEST['NotPerformer'] = 1;
       $_REQUEST['NoEvents'] = 1;
       $_REQUEST['YearState'] = 2;
       if (empty($_REQUEST['FreePerf'])) $_REQUEST['FreePerf'] = 1;
-      
+
       $proc = 1;
       $Side = [];
       if (!isset($_REQUEST['SN'])) {
@@ -125,30 +126,30 @@
       $Sidey = Get_SideYear($snum);
 
       $AllDone = 1;
-      break; 
+      break;
 
 
     case 'Send Generic Contract':
       SendProfEmail();
  //   'Dance_Final_Info',$snum,'FinalInfo','SendProfEmail')
-    
+
     case 'Send Bespoke Contract':
-    
+
     default:
       $Mess = "!!!";
     }
   }
 //  echo "<!-- " . var_dump($_REQUEST) . " -->\n";
   if ($AllDone) {
-  } else if (isset($_REQUEST['SideId']) ) { // Response to update button 
-    
+  } else if (isset($_REQUEST['SideId']) ) { // Response to update button
+
     Clean_Email($_REQUEST['Email']);
     Clean_Email($_REQUEST['AltEmail']);
-    Parse_TimeInputs($Dance_TimeFeilds);    
+    Parse_TimeInputs($Dance_TimeFeilds);
     Parse_DateInputs($DateFlds);
- 
+
     $Sidey = Default_SY();
-    if ($snum > 0) {         // existing Side 
+    if ($snum > 0) {         // existing Side
       $Side = Get_Side($snum);
       if ($Side) {
         $Sideyrs = Get_Sideyears($snum);
@@ -163,21 +164,21 @@
         $_REQUEST['Invited'] .= date('j/n');
       } elseif (isset($_REQUEST['NewAccessKey'])) {
         $_REQUEST['AccessKey'] = rand_string(40);
-      } elseif (isset($_REQUEST['Contract'])) { 
-        Contract_Save($Side,$Sidey,2); 
-      } elseif (isset($_REQUEST['Contract2'])) { 
-        Contract_Save($Side,$Sidey,2,1); 
-      } elseif (isset($_REQUEST['Decline'])) { 
-        Contract_Decline($Side,$Sidey,2); 
-      } elseif (isset($_REQUEST['View'])) { 
-        Show_Side($snum); 
+      } elseif (isset($_REQUEST['Contract'])) {
+        Contract_Save($Side,$Sidey,2);
+      } elseif (isset($_REQUEST['Contract2'])) {
+        Contract_Save($Side,$Sidey,2,1);
+      } elseif (isset($_REQUEST['Decline'])) {
+        Contract_Decline($Side,$Sidey,2);
+      } elseif (isset($_REQUEST['View'])) {
+        Show_Side($snum);
         dotail();
-      } elseif (isset($_REQUEST['Delete'])) { 
+      } elseif (isset($_REQUEST['Delete'])) {
         db_delete('Sides', $snum);
         echo "<h2>Deleted</h2>";
         dotail();
-      } elseif (isset($_REQUEST['ReIssue'])) { 
-        
+      } elseif (isset($_REQUEST['ReIssue'])) {
+
       }
 
       Update_db_post('Sides',$Side);
@@ -208,7 +209,7 @@
     UpdateBand($snum);
     UpdateOverlaps($snum);
 
-  } elseif ($snum > 0) { //Link from elsewhere 
+  } elseif ($snum > 0) { //Link from elsewhere
     $Side = Get_Side($snum);
     if ($Side) {
       $Sideyrs = Get_Sideyears($snum);
@@ -217,27 +218,27 @@
       } else {
         $Sidey = Default_SY($snum);
       }
-      
+
       if (isset($_REQUEST['TICKBOX'])) {
         switch ($_REQUEST['TICKBOX']) {
         case 1: case 2: case 3: case 4:
           $Sidey["TickBox" . $_REQUEST['TICKBOX']] = 1;
           break;
-          
-        case 'Rec': 
+
+        case 'Rec':
           if (!isset($Sidey['Coming']) || !$Sidey['Coming'] ) $Sidey['Coming'] = 1;
           break;
-          
+
         case 'DCMRec' :
           $Lasty = $Sideyrs[$YEARDATA['PrevFest']];
           $Lasty['TickBox3'] = 1;  // May not be used
-          $Lasty['TickBox4'] = 2; 
+          $Lasty['TickBox4'] = 2;
           Put_SideYear($Lasty);
           $ShowAvailOnly = 1;
           $Sidey['TickBox3'] = 1;  // May not be used
           echo "<script>$(document).ready(function() {var elmnt = document.getElementById('Availability');elmnt.scrollIntoView(true);})</script>";
-          break;  
-          
+          break;
+
         case (preg_match('/FCV(.)/',$_REQUEST['TICKBOX'],$mtch)?true:false):
           $Sidey['TickBox4'] = $mtch[1]+1;
           Put_SideYear($Lasty);
@@ -245,23 +246,23 @@
           $Sidey = (isset($Sideyrs[$PLANYEAR])?$Sideyrs[$PLANYEAR]:Default_SY($snum));
           $ShowAvailOnly = 1;
 //          echo "<script>$(document).ready(function() {var elmnt = document.getElementById('Availability');elmnt.scrollIntoView(true);})</script>";
-          break;  
-               
-          
+          break;
+
+
         default:
           echo "<h2>Unrecognised Button</h2>";
-          
+
         }
         Put_SideYear($Sidey);
         echo "<h2>Thankyou for recording that, your other records are below</h2>";
       }
-      
+
     } else {
       Error_Page("Could not find Performer $snum");
     }
   } else {
     $Sidey = Default_SY();
-    $Side = ['SideId'=>$snum]; 
+    $Side = ['SideId'=>$snum];
   }
 
   Show_Part($Side,'Side',Access('Staff'),'AddPerf');
@@ -294,27 +295,27 @@
       $E = (($Side['HasAgent'] && !$Side['BookDirect'] )?"'Agent'":'');
       echo "<div class=ContractShow hidden>";
       if ($Book_States[$Sidey['YearState']] == 'Contract Ready') {
-        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','sendMproforma.php',1,$E)" . 
-                     Music_Proforma_Background('Contract') . ">Email Generic Contract</button>"; 
-        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail.php',2,$E)" . 
-                     Music_Proforma_Background('Contract') . ">Email Bespoke Contract</button>"; 
+        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','sendMproforma.php',1,$E)" .
+                     Music_Proforma_Background('Contract') . ">Email Generic Contract</button>";
+        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail.php',2,$E)" .
+                     Music_Proforma_Background('Contract') . ">Email Bespoke Contract</button>";
       } elseif ($Book_States[$Sidey['YearState']] == 'Contract Sent') {
-        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','sendMproforma.php',1,$E)" . 
-                     Music_Proforma_Background('Contract') . ">Resend Generic Contract</button>"; 
-        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail.php',2,$E)" . 
-                     Music_Proforma_Background('Contract') . ">Resend Bespoke Contract</button>"; 
+        echo "<button type=button id=GContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','sendMproforma.php',1,$E)" .
+                     Music_Proforma_Background('Contract') . ">Resend Generic Contract</button>";
+        echo "<button type=button id=BContract$snum class=ProfButton onclick=MProformaSend('Music_Contract',$snum,'Contract','SendPerfEmail.php',2,$E)" .
+                     Music_Proforma_Background('Contract') . ">Resend Bespoke Contract</button>";
       } elseif ($Book_States[$Sidey['YearState']] == 'None') {
         echo "<input type=Submit name='Action' value='Record as Non Performer' class=Button$BUTTON >\n";
       }
 //      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Generic Contract'>";
-//      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Bespoke Contract'>";  
+//      echo "<input type=Submit id=smallsubmit name=ACTION class=Button$BUTTON value='Send Bespoke Contract'>";
       echo "</div>";
     } else {
 //      var_dump( $Book_States[$Sidey['YearState']] , $capmatch);
     }
 
     echo "</center>\n";
-  } else { 
+  } else {
     echo "<Center><input type=Submit name=Create value='Create' class=Button$BUTTON >\n";
     echo "<input type=Submit name='Action' value='Create as Non Performer' class=Button$BUTTON >\n";
     echo "</center>\n";

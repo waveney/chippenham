@@ -5,17 +5,18 @@
   dostaffhead("List Business (other than traders)", ["/js/clipboard.min.js", "/js/emailclick.js"]);
   global $YEAR,$PLANYEAR,$Trade_States,$Trader_Status,$Trade_State_Colours;
   include_once("TradeLib.php");
+  global $db;
 
   $Orgs = isset($_REQUEST['ORGS']);
-  
-  echo "<h2>List Businesses and Organisions Business (other than traders</h2>\n"; 
- 
+
+  echo "<h2>List Businesses and Organisions Business (other than traders</h2>\n";
+
   echo "Click on column header to sort by column.  Click on Business's name for more detail<p>\n";
 
   echo "If you click on the email link, press control-V afterwards to paste the standard link into message.<p>";
 
-  $qry = "SELECT t.* FROM Trade AS t WHERE (t.IsSponsor=1 OR t.IsAdvertiser=1 OR t.IsSupplier=1 OR t.IsOther=1) ORDER BY SN";  
-  
+  $qry = "SELECT t.* FROM Trade AS t WHERE (t.IsSponsor=1 OR t.IsAdvertiser=1 OR t.IsSupplier=1 OR t.IsOther=1) ORDER BY SN";
+
   $res = $db->query($qry);
 
   if (!$res || $res->num_rows==0) {
@@ -35,9 +36,9 @@
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Adverts</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Supply</a>\n";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Other</a>\n";
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Invoices</a>\n";   
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";   
-  
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Invoices</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";
+
     echo "</thead><tbody>";
 
     while ($fetch = $res->fetch_assoc()) {
@@ -54,10 +55,10 @@
       echo "<td>" . ($fetch['IsAdvertiser']?'Y':'');
       echo "<td>" . ($fetch['IsSupplier']?'Y':'');
       echo "<td>" . ($fetch['IsOther']?'Y':'');
-      
+
       echo "<td><a href=InvoiceManage?FOR=$Tid>Invoices</a>";
       echo "<td><a href=InvoiceManage?ACTION=NEW&Tid=$Tid>New Invoice</a>";
-      
+
     }
     echo "</tbody></table></div>\n";
   }

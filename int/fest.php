@@ -20,7 +20,7 @@ $Access_Levels = ['','Participant','Upload','Steward','Staff','Committee','SysAd
 $Access_Type = array_flip($Access_Levels);
 $Area_Levels = [ 'No','Edit','Edit and Report'];
 $Area_Type = array_flip($Area_Levels);
-$Sections = ['', 'Docs', 'Dance', 'Trade', 'Users', 'Venues', 'Music', 'Sponsors', 'Finance', 'Craft', 'OtherPerf', 'TLine', 'Bugs', 'Photos', 'Comedy', 
+$Sections = ['', 'Docs', 'Dance', 'Trade', 'Users', 'Venues', 'Music', 'Sponsors', 'Finance', 'Craft', 'OtherPerf', 'TLine', 'Bugs', 'Photos', 'Comedy',
              'Family', 'News', 'Volunteers', 'Art', 'Tickets', 'Events', 'Ceilidh', 'Biz']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD
 $Importance = array('None','Some','High','Very High','Even Higher','Highest','The King');
 $Book_States = array('None','Declined','Booking','Contract Ready','Contract Signed','Contract Sent');
@@ -30,7 +30,7 @@ $InsuranceStates = array('None','Uploaded','Checked');
 $Book_Actions = ['None'=>'Book',
   'Declined'=>'Book,Contract',
   'Booking'=>'Cancel,Dates,FestC',
-  'Contract Ready'=>'Contract,Cancel,Dates,FestC', 
+  'Contract Ready'=>'Contract,Cancel,Dates,FestC',
   'Contract Signed'=>'Cancel,Decline,Dates,FestC',
   'Contract Sent'=>'Contract,Cancel,Decline,Confirm'];
 $Book_ActionExtras = array('Book'=>'', 'Contract'=>'', 'Decline'=>'', 'Cancel'=>'', 'Confirm'=>'', 'Dates'=>'', 'FestC'=>'');
@@ -39,7 +39,7 @@ $Cancel_States = ['','Cancel: Sent','Cancel: Avail','Cancel: Not Avail','Cancel:
 $Cancel_Colours = ['white','orange','green','red','yellow'];
 $EType_States = array('Very Early','Draft','Partial','Provisional','Complete');
 $TicketStates = array('Not Yet','Open','Closed','Remove','Remote');
-$ArticleFormats = ['Large Image','Small Image','Text','Banner Image','Banner Text','Fixed','Left/Right Pairs', '2/3rds Banner Image', 'Image below text', 
+$ArticleFormats = ['Large Image','Small Image','Text','Banner Image','Banner Text','Fixed','Left/Right Pairs', '2/3rds Banner Image', 'Image below text',
  'V Small image right of heading'];
 // Name => [EnableFld, Email@, Capability, ?, Code]
 $PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance Displays','D'],
@@ -47,8 +47,8 @@ $PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance Displays','D'],
               'Comedy'=>['IsFunny','Comedy','Comedy','Comedy','C'],
               'Child Ent'=>['IsFamily','Family.Festival','Family','Family and Community','Y'],
               'Other'=>['IsOther','Other','OtherPerf','Other Performers','O'],
-              'Ceilidh'=>['IsCeilidh','Ceilidh','Ceilidh','Ceilidhs and Dances','H'], 
-              'Not Perf'=>['IsNonPerf','','NonPerf','','X'],             
+              'Ceilidh'=>['IsCeilidh','Ceilidh','Ceilidh','Ceilidhs and Dances','H'],
+              'Not Perf'=>['IsNonPerf','','NonPerf','','X'],
               ];
 $PerfIdx = ['Side'=>0,'Act'=>1,'Comic'=>2,'ChEnt'=>3,'Other'=>4,'Ceilidh'=>5,'NonPerf'=>6];
 $SourceTypes = ['None','Perf','Trade','Finance','User','SignUp'];
@@ -86,7 +86,7 @@ function Check_Login() {
         }
       }
     }
-  } 
+  }
 }
 
 function Set_User() {
@@ -106,7 +106,7 @@ function Set_User() {
   }
   Check_Login();
 }
-  
+
 function Is_SubType($Name) {
   global $USERID,$Sections;
   static $Stypes =[];
@@ -126,11 +126,11 @@ function Access($level,$subtype=0,$thing=0) {
 //echo "Access $level $subtype<br>";
   if (!isset($USER['AccessLevel'])) return 0;
   if ($USER['AccessLevel'] < $want) return 0;
-  
+
   if ($USER['AccessLevel'] > $want+1) return 1;
   switch  ($USER['AccessLevel']) {
 
-  case $Access_Type['Participant'] : 
+  case $Access_Type['Participant'] :
     if (!$subtype) return 1;
     if ($USER['Subtype'] == 'Other' && $subtype == 'Act') {}
     elseif ($USER['Subtype'] != $subtype) return 0;
@@ -146,10 +146,10 @@ function Access($level,$subtype=0,$thing=0) {
     if (!$subtype) return 1;
     return Is_SubType($subtype);
 
-  case $Access_Type['SysAdmin'] : 
+  case $Access_Type['SysAdmin'] :
     return 1;
 
-  case $Access_Type['Internal'] : 
+  case $Access_Type['Internal'] :
     return 1;
 
   default:
@@ -159,11 +159,11 @@ function Access($level,$subtype=0,$thing=0) {
 
 
 /*
-  If not in session 
+  If not in session
     If Yale then
       Find User from Yale, start session
       if not found - Login page
-    else 
+    else
       Login page
   endif
   if AccessOK return
@@ -188,6 +188,7 @@ function UserSetPref($pref,$val) {
 function UserGetPref($pref) {
   global $USER;
   if (!$USER || !isset($USER['Prefs'])) return 0;
+  $rslt = [];
   if (preg_match("/$pref\:(.*)\n/",$USER['Prefs'],$rslt)) return trim($rslt[1]);
   return 0;
 }
@@ -263,9 +264,9 @@ function Error_Page ($message) {
     $ErrorMessage = "Something went very wrong... - $message";
     include_once('int/Staff.php');  // Should be good
     exit;                        // Just in case
-    
+
   default:
-    include_once("index.php"); 
+    include_once("index.php");
   }
 }
 
@@ -293,10 +294,12 @@ if (!$YEARDATA) {
   // Error_Page("Invalid Year");
 }
 Feature_Reset();
+global $PLANYEAR;
 $PLANYEARDATA = Get_General($PLANYEAR);
 
 function First_Sent($stuff) {
   $onefifty=substr($stuff,0,150);
+  $m = [];
   return (preg_match('/^(.*?[.!?])\s/s',$onefifty,$m) ? $m[1] : $onefifty);
 }
 
@@ -308,7 +311,7 @@ function munge_array(&$thing) {
 function Send_SysAdmin_Email($Subject,&$data=0) {
   include_once("Email.php");
   $dat = json_encode($data);
-  NewSendEmail(EMAIL_SYS,0,'richard@wavwebs.com',$Subject,$dat);  
+  NewSendEmail(EMAIL_SYS,0,'richard@wavwebs.com',$Subject,$dat);
 }
 
 $head_done = 0;
@@ -342,12 +345,12 @@ function dohead($title,$extras=[],$Banner='',$BannerOptions=' ') {
     include_once("files/Newheader.php");
   } else {
     include_once("festfiles/header.php");
-  }  
+  }
   if ($extras) doextras($extras);
   echo "</head><body>\n";
 
   if ($AdvancedHeaders) {
-    echo "<div class=contentlim>";  
+    echo "<div class=contentlim>";
     include_once("files/Newnavigation.php");
 
     if ($Banner) {
@@ -368,14 +371,14 @@ function dohead($title,$extras=[],$Banner='',$BannerOptions=' ') {
       echo "<div class='NullBanner'></div>";  // Not shure this is needed
     }
   } else {
-    echo "<div class=contentlim>";  
+    echo "<div class=contentlim>";
     include_once("festfiles/navigation.php");
   }
-  echo "<div class=mainwrapper><div class=maincontent>";  
+  echo "<div class=mainwrapper><div class=maincontent>";
   $head_done = 1;
 }
 
-//  No Banner 
+//  No Banner
 function doheadpart($title,$extras=[]) {
   global $head_done,$CONF,$AdvancedHeaders;
   if ($head_done) return;
@@ -387,8 +390,8 @@ function doheadpart($title,$extras=[]) {
     include_once("files/Newheader.php");
   } else {
     include_once("festfiles/header.php");
-  }  
-  
+  }
+
   if ($extras) doextras($extras);
   $head_done = 1;
 }
@@ -408,21 +411,21 @@ function dostaffhead($title,$extras=[]) {
     echo "<meta http-equiv='cache-control' content=no-cache>";
     echo "</head><body>\n";
     include_once("files/Newnavigation.php");
-    echo "<div class=content>";  
+    echo "<div class=content>";
   } else {
     include_once("festfiles/header.php");
     include_once("festcon.php");
     if ($extras) doextras($extras);
     echo "<meta http-equiv='cache-control' content=no-cache>";
     echo "</head><body>\n";
-    include_once("festfiles/navigation.php"); 
+    include_once("festfiles/navigation.php");
     echo "<div class=content>";
   }
   $head_done = 1;
 }
 
 // No Banner
-function dominimalhead($title,$extras=[]) { 
+function dominimalhead($title,$extras=[]) {
   global $head_done,$CONF,$FESTSYS;
   $pfx="";
   if (isset($CONF['TitlePrefix'])) $pfx = $CONF['TitlePrefix'];

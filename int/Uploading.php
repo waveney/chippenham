@@ -92,15 +92,16 @@ function Upload_Insurance($Dir='Sides') {
       return "<div class=Err>Sorry, there was an error uploading your Insurance file to $target_file.</div>";
     }
   }
-  return 0; 
+  return 0;
 }
 
 
 function Upload_Image($Dir='Sides',$fld) {
   global $YEAR,$Side,$Sidey,$Put,$Puty,$snum;
+  global $db;
 
   Upload_Init($Dir);
-  include_once("ImageLib.php"); 
+  include_once("ImageLib.php");
 
   $target_dir = "images/$Dir";
   umask(0);
@@ -129,7 +130,7 @@ function Upload_Image($Dir='Sides',$fld) {
       if ($stuff) {
         $Side['ImageWidth'] = $stuff[0];
         $Side['ImageHeight'] = $stuff[1];
-      } 
+      }
       if ($Side) {
         if (isset($Side[$fld]) && $Side[$fld] == "/" . $target_file) {
           $Side[$fld] = $_REQUEST[$fld] = "/" . $target_file . "?" . rand();
@@ -157,6 +158,7 @@ function Upload_Photo($Dir='Sides') {
 
 function Upload_PASpec($Dir='') {
   global $YEAR,$Side,$Sidey,$Put,$Puty,$snum;
+  global $db;
 
   Upload_Init($Dir);
 
@@ -198,7 +200,7 @@ function Upload_PASpec($Dir='') {
       return "<div class=Err>Sorry, there was an error uploading your PA Specification file.</div>";
     }
   }
-  return 0; 
+  return 0;
 }
 
 // FieldName is FeildName of object, RecType = (Perf|Trade|etc|Specials), RecId = id of Record, ShowId is div to be updated on screen, if '' not updated

@@ -1,8 +1,8 @@
 <?php
-  global $Access_Type,$USER,$USERID,$YEAR,$YEARDATA,$NEXTYEARDATA,$Months,$PLANYEARDATA,$PLANYEAR;
+global $Access_Type,$USER,$USERID,$YEAR,$YEARDATA,$NEXTYEARDATA,$Months,$PLANYEARDATA,$PLANYEAR,$VERSION,$Menus;
   Set_User();
-  
-  // Header bar  
+
+  // Header bar
   // Icon
   // Public bar
   // Private bar (may be zero height)
@@ -13,12 +13,12 @@
     $Bars = 2;
     $UserName = (isset($USER['Login'])? $USER['Login'] : "");
   }
-//   $Bars = 1; 
+//   $Bars = 1;
 
 // text=>link or text=>[submenu] (recuresive)
 // 1st char 0f text * - not selectable, ! Icon, ? Only Dance, # Not Dance, = Get Tickets
 // 1st char of link ! - external, ~ Only after Program freeze
-  
+
   if (Feature('MainMenuTable')) eval(Gen_Get('MainMenu',1)['Menu']);
   if (empty($Menus)) {
     $Menus = [
@@ -26,7 +26,7 @@
         '<Home'=>'',
         'Line-Up'=>[
           'Dance Displays'=>'LineUp?T=Dance',
-          'Music'=>'LineUp?T=Music', 
+          'Music'=>'LineUp?T=Music',
   //        'Comedy'=>'LineUp?T=Comedy',
           'Family and Community'=>'LineUp?T=Family',
           'Ceilidh and Dances'=>'LineUp?T=Ceilidh',
@@ -65,7 +65,7 @@
           'Talking Folk Mailing List'=>'InfoMailingList',
           'Sponsorship'=>'InfoSponsors',
           'New Dance Side Registration'=>'int/Register',
-          'Trade Stand Applications'=>'InfoTrade', 
+          'Trade Stand Applications'=>'InfoTrade',
   //        'Art Show Application' => 'int/ArtForm',
   //        '*Live and Loud'=>'LiveNLoud',
   //        '*Buskers Bash'=>'BuskersBash',
@@ -83,7 +83,7 @@
         '=Buy Tickets'=>'Tickets',
   //      '%Donate'=>'Donate',
         ],
-      'Private'=> [  
+      'Private'=> [
         'Staff Tools'=>'int/Staff',
         '-Documents'=>'int/Dir',
   //      '-Time Line'=>"int/TimeLine?Y=$YEAR",
@@ -94,24 +94,24 @@
         '-Public view'=>"int/ShowDance?sidenum=$USERID",
         '?Dance Loc Map'=>'/Map?F=3',
   //      '?Dance FAQ'=>'int/DanceFAQ',
-  //      '#Performer T&amp;Cs'=>'int/MusicFAQ',    
+  //      '#Performer T&amp;Cs'=>'int/MusicFAQ',
         "Logout"=>'int/Login?ACTION=LOGOUT',
         ],
       'Trade'=>[
         'Edit Trader Info'=>"int/TraderPage?id=$USERID",
         'Trade FAQ'=>'int/TradeFAQ',
-        ], 
+        ],
 
       'Testing'=>[
         'Staff Tools'=>'int/Staff',
-        ],         
+        ],
     ];
   }
-  
+
 global $MainBar,$HoverBar,$HoverBar2;
 $MainBar = $HoverBar = $HoverBar2 = '';
 
-function Show_Bar(&$Bar,$level=0,$Pval=1) { 
+function Show_Bar(&$Bar,$level=0,$Pval=1) {
   global $USERID,$host,$PerfTypes,$MainBar,$HoverBar,$HoverBar2,$YEARDATA,$Event_Types,$YEAR,$VERSION;
   $host= "https://" . $_SERVER['HTTP_HOST'];
 //  echo "<ul class=MenuLevel$level>";
@@ -122,8 +122,9 @@ function Show_Bar(&$Bar,$level=0,$Pval=1) {
     $xtra = '';
     $Pi++; $P++;
     if (!$text) continue;
+    $res = [];
     switch (substr($text,0,1)) {
-      case '*' : 
+      case '*' :
         $str = "<a class='NotYet MenuMinor2'>" . substr($text,1);
         $MainBar .= $str;
         $HoverBar .= $str;
@@ -181,7 +182,7 @@ title:'PayPal - The safer, easier way to pay online!',
 </script>Donate
 </div>
 XXXX;*/
-        
+
         break;
       case '@' :
         switch ($link) {
@@ -196,40 +197,40 @@ XXXX;*/
           foreach ($Gals as $G) {
             if ($G['MenuBarOrder']>0) $Bar[$G['SN']] = "int/ShowGallery?g=" . $G['id'];
           }
-          break;          
-          
+          break;
+
         }
         continue 2;
-      
+
       case '>' : // Move to End
         $text = substr($text,1);
         $Bar[$text] = $link;
         continue 2;
-        
+
       case '~' : // Only if Event Changes recorded, move to end
         $text = substr($text,1);
         if (Feature('RecordEventChanges') !=2 ) continue 2;
-        if (Gen_Get_Cond1('EventChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
+        if (Gen_Get_Cond1('EventChanges',"Year='$YEAR'")) $Bar[$text] = $link;
         continue 2;
-                
+
       case '_' : // Only if Perf Changes recorded, move to end
         $text = substr($text,1);
         if (Feature('RecordPerfChanges') !=2) continue 2;
-        if (Gen_Get_Cond1('PerfChanges',"Year='$YEAR'")) $Bar[$text] = $link;      
+        if (Gen_Get_Cond1('PerfChanges',"Year='$YEAR'")) $Bar[$text] = $link;
         continue 2;
-        
+
       case ':' : // Only if Trade public
         $text = substr($text,1);
         if ($YEARDATA['TradeState'] < 3) continue 2;
         break;
-                
+
       default:
     }
     if (is_array($link)) {
       $MainBar .= "<div class='dropdown MenuMinor$Minor' id=MenuParent$P $xtra onmouseover=NoHoverSticky(event)>";
       $MainBar .= "<a onclick=NavStick(event) onmouseover=NavSetPosn(event,$P)>$text</a>";
       $MainBar .= "<div class=dropdown-content id=MenuChild$P>";
-      if ($level == 1) $xtra .= " style='animation-duration: " . (150 * $Pi) . "ms; '";      
+      if ($level == 1) $xtra .= " style='animation-duration: " . (150 * $Pi) . "ms; '";
       $HoverBar .= "<div class=hoverdown id=HoverParent$P onclick=HoverDownShow($P) $xtra >$text" .
         "<img class=hoverdownarrow src=/images/icons/Down-arrow.png id=DownArrow$P></div>";
       $HoverBar .= "<div class=hoverdown-content id=HoverChild$P>";
@@ -261,16 +262,16 @@ XXXX;*/
   Show_Bar($Menus['Public']);
   $MainBar .= "</nav>";
 //  echo $MainBar;
-  
+
   if ($Bars == 2) {
     $MainBar .=  "<div class='navigation PrivateBar MenuMinor0' align=right>";
     if ( isset($USER['AccessLevel']) && $USER['AccessLevel'] == $Access_Type['Participant'] ) {
       switch ($USER['Subtype']) {
-        case 'Side': 
-        case 'Perf': 
+        case 'Side':
+        case 'Perf':
           Show_Bar($Menus['Perf']);
           break;
-        case 'Trader':    
+        case 'Trader':
           Show_Bar($Menus['Trade']);
           break;
         default:
@@ -286,13 +287,13 @@ XXXX;*/
     }
     $MainBar .= "</div>";
   }
-  
-//   var_dump($YEARDATA); 
-  echo "<div class=main-header>"; 
+
+//   var_dump($YEARDATA);
+  echo "<div class=main-header>";
   $NFrom = $DFrom = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['FirstDay']);
   $NTo = $DTo = ($PLANYEARDATA['DateFri']+$PLANYEARDATA['LastDay']);
   $NMonth = $DMonth = $Months[$PLANYEARDATA['MonthFri']];
-  $NYear = $PLANYEARDATA['NextFest']; 
+  $NYear = $PLANYEARDATA['NextFest'];
 
   if ($PLANYEARDATA['Years2Show'] > 0) {
     $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);
@@ -300,7 +301,7 @@ XXXX;*/
     $NTo = ($NEXTYEARDATA['DateFri']+$NEXTYEARDATA['LastDay']);
     $NMonth = $Months[$NEXTYEARDATA['MonthFri']];
     $NYear = $YEARDATA['NextFest'];
-  }   
+  }
 
   echo "<a href=/>";
     echo "<img src=" . Feature('WebsiteBanner2') . "?V=$VERSION class='header-logo head-white-logo'>";
@@ -312,7 +313,7 @@ XXXX;*/
     } else {
       $NYear = substr($NYear,0,4) ;
       echo "<div class=SmallDates>$NFrom - $NTo $NMonth $NYear</div>";
-      echo "<div class=FestDates>$NFrom - $NTo<br>$NMonth<br>$NYear</div>";    
+      echo "<div class=FestDates>$NFrom - $NTo<br>$NMonth<br>$NYear</div>";
     }
   echo "</a>";
   echo "<div class=MenuIcon><div id=MenuIconIcon class=MenuMenuIcon onclick=ShowHoverMenu()>Menu<img src=/images/icons/MenuIcon.png></div>";
@@ -322,6 +323,6 @@ XXXX;*/
   echo $MainBar;
 
   echo "</div></div>";
-  
+
 ?>
 

@@ -4,14 +4,14 @@
   include_once("Email.php");
 
   global $USER,$USERID,$db;
-  
+
 $MailStatus = ['Request','Email Confirmed','Accepted','Rejected','Duplicate'];
 $StatusMail = array_flip($MailStatus);
 
 define('MAIL_LIST_ADD',1);//Add with no checks - not implemented yet
 define('MAIL_LIST_VERIFY',2);//Send verify email
 define('MAIL_LIST_EYEBALL',4);//Check with real person
-  
+
 function MailForm($Sub=0,$Message='') {
   if ($Message) echo "$Message<p>\n";
   echo "<form method=post action=MailListMgr.php>";
@@ -28,7 +28,7 @@ function MailForm($Sub=0,$Message='') {
   echo "<tr>" . fm_text('Surname',$Sub,'LastName',2);
   echo "<tr>" . fm_text('Email',$Sub,'Email',2);
   echo "</table>\n";
-  
+
   echo "<input type=submit name=ACTION value=Subscribe>";
   dotail();
 }
@@ -74,10 +74,10 @@ function MailSub_Details($key,&$Sub) {
   case 'NAME': return $Sub['FirstName'] .' ' . $Sub['LastName'];
   case 'EMAIL': return $Sub['Email'];
   case 'WHEN': return date("j/n/Y", $Sub['SubmitTime']);
-  case 'CONFIRM': 
+  case 'CONFIRM':
     if (empty($Sub['AccessKey'])) {
       $Sub['AccessKey'] = rand_string(40);
-      Gen_Put('MailingListRequest',$Sub);      
+      Gen_Put('MailingListRequest',$Sub);
     }
     return $Sub['AccessKey'];
 //  case 'CONFIRM': return "<a href='https://" . $_SERVER['HTTP_HOST'] . "/int/MailListMgr?A=Confirm&i=" . $Sub['id'] . "&k=" . $Sub['AccessKey'] . "'><b>link</b></a>";
@@ -105,21 +105,22 @@ function MailFormFilled() {
     Sanitise($_REQUEST['LastName']);
     $_REQUEST['SubmitTime'] = time();
     $_REQUEST['AccessKey'] = rand_string(40);
+    $Sub = [];
     $SubId = Insert_db_post('MailingListRequest',$Sub);
   } else {
     $SubId = $_REQUEST['id'];
     $Sub = Gen_Get('MailingListRequest',$SubId);
-  }  
+  }
   if ($Mess = ValidateSub($Sub)) {
     MailForm($Sub,$Mess);
   }
-  
+
   // Check for unique
   $md5 = md5(strtolower($Sub['Email']));
-  
+
   $CheckRes = CallOctopus("lists/" . Feature('MailListID') . "/contacts/$md5");
 
-//var_dump($Sub,$CheckRes);  
+//var_dump($Sub,$CheckRes);
   if (!strstr($CheckRes,'MEMBER_NOT_FOUND')) {
     echo "You are already subscribed to the list, thankyou.";
     $Sub['Status'] = $StatusMail['Duplicate'];
@@ -130,27 +131,27 @@ function MailFormFilled() {
   echo "An Email has been sent to you to confirm your Email address.";
   dotail();
 }
- 
+
 function MailConfirmed() {
   global $StatusMail;
 
   $SubId = ($_REQUEST['id'] ?? 0);
   $Key = ($_REQUEST['k'] ?? 0);
-  
-  if ($SubId == 0) { 
+
+  if ($SubId == 0) {
     echo "Invalid Link";
     dotail();
   }
-  
+
   $Sub = Gen_Get('MailingListRequest',$SubId);
-  
+
   if (!Access('Committee','Publicity')) {
     if ($Key == 0 || $Key != $Sub['AccessKey']) {
       echo "Invalid Link";
       dotail();
     }
   }
-  
+
   echo "Recorded for checking.<p>";
   Email_Publicity($Sub,"MailList_Add");
   $Sub['Status'] = $StatusMail['Email Confirmed'];
@@ -163,10 +164,10 @@ function AcceptForm() {
   global $StatusMail;
   $SubId = ($_REQUEST['id'] ?? 0);
   $Sub = Gen_Get('MailingListRequest',$SubId);
-  $Data['fields'] =  ['FirstName' => $Sub['FirstName'] , 'LastName' => $Sub['LastName']];  
-  $Data['email_address'] = $Sub['Email'];  
-  
-  
+  $Data['fields'] =  ['FirstName' => $Sub['FirstName'] , 'LastName' => $Sub['LastName']];
+  $Data['email_address'] = $Sub['Email'];
+
+
   $Res = CallOctopus("lists/" . Feature('MailListID') . "/contacts" ,$Data);
 
 //var_dump($Res);
@@ -176,17 +177,17 @@ function AcceptForm() {
     echo "<span class=Err>Failed to add to the MailOctopus list because: <b>" . $RRes['error']['message'] . "</b></span>";
   } else {
     echo "<B>" . $Sub['FirstName'] . " " . $Sub['LastName'] . "</b> has been added to the mailing list<p>";
-  
+
     $Sub['Status'] = $StatusMail['Accepted'];
     Gen_Put('MailingListRequest',$Sub);
   }
-  
+
   ListForms('Open');
 }
 
 function RejectForm() {
   global $StatusMail;
-  
+
   $SubId = ($_REQUEST['id'] ?? 0);
   $Sub = Gen_Get('MailingListRequest',$SubId);
 
@@ -212,9 +213,9 @@ function ListForms($Status) {
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'D')>When</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'D')>State</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Actions</a>\n";
-  
+
   $Subs = Gen_Get_All('MailingListRequest');
-  
+
   foreach ($Subs as $Sub) {
     if ($Status != 'All' && $Sub['Status'] != 1) continue;
     $SubId = $Sub['id'];
@@ -236,11 +237,11 @@ function ListForms($Status) {
       case 3: // Rejectted
         echo "<a href=MailListMgr?id=$SubId&A=AcceptForm>Accept</a> ";
         break;
-      
+
       default: // No actions (currently)
       }
   }
-  
+
   echo "</tbody></table></div>\n";
   dotail();
 }
@@ -256,42 +257,42 @@ function Mail_List_Action($Action) {
   case 'MailForm':
     MailForm();
     break;
-    
+
   case 'Subscribe':
     MailFormFilled();
     break;
-  
+
   case 'Confirm':
     MailConfirmed();
     break;
-  
+
   case 'ViewForm':
     ViewForm($_REQUEST['id']);
     break;
-  
+
   case 'AcceptForm':
     AcceptForm();
     break;
-  
+
   case 'RejectForm':
     RejectForm();
     break;
-  
+
   case 'ListForms':
     ListForms($_REQUEST['ListType'] ?? 'Open');
     break;
-  
+
   case 'SendMail':
     SendMailToList(); // For the future
     break;
 
   default:
     echo "Unknown Action: $Action";
-    
+
   }
   dotail();
 }
- 
- 
+
+
 ?>
 

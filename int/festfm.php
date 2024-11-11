@@ -59,9 +59,9 @@ function fm_text($Name,&$data,$field,$cols=1,$extra1='',$extra2='',$field2='',$e
   if ($field2 == '') $field2=$field;
   if ($extra3 == '') $extra3 = $extra1;
   if ($cols >0) {
-    $str = "<td $extra3>$Name" . ($Name?':':'') . help($field) . "<td colspan=$cols $extra1><input type=text name=$field2 id=$field2 $extra2 size=" . $cols*16; 
+    $str = "<td $extra3>$Name" . ($Name?':':'') . help($field) . "<td colspan=$cols $extra1><input type=text name=$field2 id=$field2 $extra2 size=" . $cols*16;
   } else {
-    $str = "<td $extra3>$Name" . ($Name?':':'') . help($field) . "<br><input type=text name=$field2 id=$field2 $extra2 size=" . abs($cols)*16;   
+    $str = "<td $extra3>$Name" . ($Name?':':'') . help($field) . "<br><input type=text name=$field2 id=$field2 $extra2 size=" . abs($cols)*16;
   }
   if (isset($data[$field])) $str .= " value=\"" . htmlspec($data[$field]) ."\"";
   if ($AutoADD) $str .=  " oninput=AutoInput('$field2') ";
@@ -71,7 +71,7 @@ function fm_text($Name,&$data,$field,$cols=1,$extra1='',$extra2='',$field2='',$e
 function fm_text1($Name,&$data,$field,$cols=1,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
-  $str = "<td colspan=$cols $extra1>$Name" . ($Name?':':'') . help($field) . "<input type=text name=$field2 id=$field2 $extra2 size=" . $cols*16; 
+  $str = "<td colspan=$cols $extra1>$Name" . ($Name?':':'') . help($field) . "<input type=text name=$field2 id=$field2 $extra2 size=" . $cols*16;
   if (isset($data[$field])) $str .= " value=\"" . htmlspec($data[$field]) ."\"";
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
   return $str . " $ADDALL>";
@@ -80,7 +80,7 @@ function fm_text1($Name,&$data,$field,$cols=1,$extra1='',$extra2='',$field2='') 
 function fm_text0($Name,&$data,$field,$cols=1,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
-  $str = $Name . ($Name?':':'') . help($field) . "<input type=text name=$field2 id=$field2 $extra2 size=" . $cols*16; 
+  $str = $Name . ($Name?':':'') . help($field) . "<input type=text name=$field2 id=$field2 $extra2 size=" . $cols*16;
   if (isset($data[$field])) $str .= " value=\"" . htmlspec($data[$field]) ."\"";
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
   return $str . " $ADDALL>";
@@ -125,7 +125,7 @@ function fm_nontext($Name,&$data,$field,$cols=1,$extra='') {
 function fm_time($Name,&$data,$field,$cols=1,$extra='') {
   global $ADDALL,$AutoADD;
   return "<td>$Name:" . help($field) . "<td colspan=$cols><input type=time name=$field  id=$field $extra size=" . $cols*16 .
-        ($AutoADD? " oninput=AutoInput('$field') " : "") . 
+        ($AutoADD? " oninput=AutoInput('$field') " : "") .
         " value=\"" . $data[$field] ."\" $ADDALL>";
 }
 
@@ -143,8 +143,8 @@ function fm_textarea($Name,&$data,$field,$cols=1,$rows=1,$extra1='',$extra2='',$
     $str = ($Name?"<br $extra1>$Name:" . help($field) . "<br>":"") . "<textarea name=$field2 id=$field2 $ADDALL ";
   }
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
-  $str .= " $extra2 rows=" . abs($rows) . ">" ;  
- 
+  $str .= " $extra2 rows=" . abs($rows) . ">" ;
+
   return $str . (isset($data[$field])?        htmlspec($data[$field]) : '' ) . "</textarea>\n";
 }
 
@@ -157,8 +157,8 @@ function fm_textarea1($Name,&$data,$field,$cols=1,$rows=1,$extra1='',$extra2='',
     $str = ($Name?"<br $extra1>$Name:" . help($field) . "<br>":"") . "<textarea name=$field2 id=$field2 $ADDALL ";
   }
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
-  $str .= " $extra2 rows=" . abs($rows) . ">" ;  
- 
+  $str .= " $extra2 rows=" . abs($rows) . ">" ;
+
   return $str . (isset($data[$field])?        htmlspec($data[$field]) : '' ) . "</textarea>\n";
 }
 
@@ -177,10 +177,10 @@ function fm_checkbox($Desc,&$data,$field,$extra='',$field2='',$split=0,$extra2='
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
   if (isset($data[$field])) if ($data[$field]) {
-    return ($Desc?"<label for=$field2>$Desc:</label>":'') . help($field) . ($split?"<td $extra2>":"") . "<input type=checkbox $ADDALL " . 
+    return ($Desc?"<label for=$field2>$Desc:</label>":'') . help($field) . ($split?"<td $extra2>":"") . "<input type=checkbox $ADDALL " .
            ($AutoADD? " oninput=AutoCheckBoxInput('$field2') " : "") . " Name=$field2 id=$field2 $extra checked>";
   }
-  return ($Desc?"<label for=$field2>$Desc:</label>":'') . help($field) . ($split?"<td $extra2>":"") . "<input type=checkbox $ADDALL " . 
+  return ($Desc?"<label for=$field2>$Desc:</label>":'') . help($field) . ($split?"<td $extra2>":"") . "<input type=checkbox $ADDALL " .
           ($AutoADD? " oninput=AutoCheckBoxInput('$field2') " : "") . " Name=$field2 id=$field2 $extra>";
 }
 
@@ -216,10 +216,10 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
 //var_dump($Desc,$field,$tabs,$extra2,$field2);
   if ($field2 == '') $field2=$field;
   $str = "";
-  if ($tabs > 0) $str .= "<td $extra>"; 
+  if ($tabs > 0) $str .= "<td $extra>";
   if ($Desc) { $str .= "$Desc:";
     $str .= help($field) . "&nbsp;";
-    if ($tabs > 0) $str .= "<td $extra2>"; 
+    if ($tabs > 0) $str .= "<td $extra2>";
   }
   if ($tabs < 0 ) $str .= "<br>";
   $done = 0;
@@ -233,13 +233,13 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
     }
     if (abs($tabs) < 3) {
       $str .= "<label for=$field2$i $extra3>$d:</label>";
-    } 
+    }
     $ex = $extra;
     $ex = preg_replace('/###F/',("'" . $field2 . "'"),$ex);
     $ex = preg_replace('/###V/',("'" . $i . "'"),$ex);
     if ($multi) {
       $str .= "<input type=checkbox name=$field2$i $ex id=$field2$i $ADDALL ";
-      if ($AutoADD) $str .= " oninput=AutoInput('$field2$i',$i) ";    
+      if ($AutoADD) $str .= " oninput=AutoInput('$field2$i',$i) ";
       $str .= " value='$i'";
       if (isset($data["$field$i"]) && ($data["$field$i"] == $i)) $str .= " checked";
     } else {
@@ -251,7 +251,7 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
     $str .= ">\n";
     if (abs($tabs) == 3) {
       $str .= " <label for=$field2$i $extra3>$d</label>";
-    } 
+    }
 
     if ($colours) $str .= "</span>";
   }
@@ -261,7 +261,7 @@ function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field
 function fm_date($Name,&$data,$field,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
-  $str = "<td $extra1>$Name" . ($Name?':':'') . help($field) . "<td $extra1><input type=text name=$field2 id=$field2 $extra2 size=16"; 
+  $str = "<td $extra1>$Name" . ($Name?':':'') . help($field) . "<td $extra1><input type=text name=$field2 id=$field2 $extra2 size=16";
   if (isset($data[$field]) && $data[$field]) $str .= " value=\"" . ($data[$field]?date('j M Y H:i',$data[$field]):'') . "\"";
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
   return $str . " $ADDALL>";
@@ -270,7 +270,7 @@ function fm_date($Name,&$data,$field,$extra1='',$extra2='',$field2='') {
 function fm_date1($Name,&$data,$field,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
-  $str = "<td $extra1>$Name" . ($Name?':':'') . help($field) . "<input type=text name=$field2 id=$field2 $extra2 size=16"; 
+  $str = "<td $extra1>$Name" . ($Name?':':'') . help($field) . "<input type=text name=$field2 id=$field2 $extra2 size=16";
   if (isset($data[$field]) && $data[$field]) $str .= " value=\"" . ($data[$field]?date('j M Y H:i',$data[$field]):'') ."\"";
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
   return $str . " $ADDALL>";
@@ -279,7 +279,7 @@ function fm_date1($Name,&$data,$field,$extra1='',$extra2='',$field2='') {
 function fm_date0($Name,&$data,$field,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
-  $str = $Name . ($Name?':':'') . help($field) . "<input type=text name=$field2 id=$field2 $extra2 size=16"; 
+  $str = $Name . ($Name?':':'') . help($field) . "<input type=text name=$field2 id=$field2 $extra2 size=16";
   if (isset($data[$field]) && $data[$field]) $str .= " value=\"" . ($data[$field]?date('j M Y H:i',$data[$field]):'') ."\"";
   if ($AutoADD) $str .= " oninput=AutoInput('$field2') ";
   return $str . " $ADDALL>";
@@ -288,7 +288,7 @@ function fm_date0($Name,&$data,$field,$extra1='',$extra2='',$field2='') {
 function fm_pence($desc,&$data,$field,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
-  $str = "<td $extra1>$desc" . ($desc?':':'') . help($field) . "<td $extra1>&pound;<input type=text name=$field2 id=$field2 $extra2 "; 
+  $str = "<td $extra1>$desc" . ($desc?':':'') . help($field) . "<td $extra1>&pound;<input type=text name=$field2 id=$field2 $extra2 ";
   if (isset($data[$field])) $str .= " value=\"" . $data[$field]/100 ."\"";
   if ($AutoADD) $str .=  " oninput=AutoInput('$field2') ";
   return $str . " $ADDALL>";
@@ -297,7 +297,7 @@ function fm_pence($desc,&$data,$field,$extra1='',$extra2='',$field2='') {
 function fm_pence1($desc,&$data,$field,$extra1='',$extra2='',$field2='') {
   global $ADDALL,$AutoADD;
   if ($field2 == '') $field2=$field;
-  $str = "<td $extra1>$desc" . ($desc?':':'') . help($field) . "&pound;<input type=text name=$field2 id=$field2 $extra2 "; 
+  $str = "<td $extra1>$desc" . ($desc?':':'') . help($field) . "&pound;<input type=text name=$field2 id=$field2 $extra2 ";
   if (isset($data[$field])) $str .= " value=\"" . $data[$field]/100 ."\"";
   if ($AutoADD) $str .=  " oninput=AutoInput('$field2') ";
   return $str . " $ADDALL>";
@@ -339,6 +339,7 @@ function Disp_CB($what) {
 function weblink($dest,$text='Website',$alink='',$all=0) {
   $dest = stripslashes($dest);
   $sites = explode(' ',$dest);
+  $mtch = [];
   if (count($sites) > 1) {
     $ans = '';
     foreach($sites as $si=>$site) {
@@ -346,12 +347,13 @@ function weblink($dest,$text='Website',$alink='',$all=0) {
       $ans .= "<a $alink target=_blank href='";
       if (!preg_match("/^https?/i",$site,$mtch)) $ans .= 'http://';
       $ans .= "$site'>";
+      $m = [];
       preg_match("/^(https?:\/\/)?(.*?)(\/|$)/i",$site,$m);
       $ans .= $m[2];
       $ans .= "</a> ";
       if ($all==0) break;
     }
-    return $ans;      
+    return $ans;
   } else {
     if (preg_match("/^http/i",$dest,$mtch)) return "<a href='$dest' $alink target=_blank>$text</a>";
     return "<a href='http://$dest' $alink target=_blank>$text</a>";
@@ -363,11 +365,12 @@ function weblinksimple($dest) {
   $ans = "<a target=_blank href='";
   if (!preg_match("/^https?/",$dest)) $ans .= 'http://';
   $ans .= "$dest'>";
-  return $ans;      
+  return $ans;
 }
 
 function videolink($dest) {
   $dest = stripslashes($dest);
+  $match = [];
   if (preg_match("/^http/",$dest)) return "'" . $dest ."'";
   if (preg_match('/watch\?v=/',$dest)) {
     return preg_replace("/.*watch\?v=/", 'youtu.be/', $dest);
@@ -379,6 +382,7 @@ function videolink($dest) {
 
 function embedvideo($dest) {
   $dest = stripslashes($dest);
+  $mtch = [];
   if (preg_match("/<iframe.*src/i",$dest)) return $dest;
   if (preg_match('/.*watch\?v=(.*)/',$dest,$mtch)) {
     $dest = $mtch[1];
@@ -390,6 +394,7 @@ function embedvideo($dest) {
 }
 
 function Clean_Email(&$addr) {
+  $a = [];
   if (preg_match('/<([^>]*)>?/',$addr,$a)) return $addr=trim($a[1]);
   if (preg_match('/([^>]*)>?/',$addr,$a)) return $addr=trim($a[1]);
   $addr = preg_replace('/ */','',$addr);
@@ -400,11 +405,12 @@ function Clean_Email(&$addr) {
 function formatBytes($size, $precision = 2) {
   if ($size==0) return 0;
   $base = log($size, 1024);
-  $suffixes = array('', 'K', 'M', 'G', 'T', 'P');   
+  $suffixes = array('', 'K', 'M', 'G', 'T', 'P');
   return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
 }
 
 function firstword($stuff) {
+  $s = [];
   if (preg_match('/(\S*?)\s/',trim($stuff),$s)) return $s[1];
   return $stuff;
 }
@@ -415,7 +421,7 @@ function UpperFirstChr($stuff) {
 
 function SAO_Report($i,$r='',$se=0) {
   global $Perf_Rolls;
-  $OSide = Get_Side( $i ); 
+  $OSide = Get_Side( $i );
   $str = "<a href=/int/ShowPerf?id=$i>" . $OSide['SN'];
   if (!empty($r) && $se <= 0) {
     $str .= " (" . $Perf_Rolls[$r] . ")";
@@ -447,9 +453,9 @@ function NoBreak($t,$Max=0) {
   $Words = preg_split('/ /',$t);
   $Count = -1;
   foreach($Words as $word) {
-    if (++$Count == 0) { 
+    if (++$Count == 0) {
       $NewTxt = $word;
-    } else { 
+    } else {
       $NewTxt .= ( ($Count % $Max)==0?' ':'&nbsp;') . $word;
     }
   }
@@ -476,7 +482,7 @@ function Print_Pence($amt) {
   return ($amt<0?"-":"") . sprintf("&pound;%0.2f",abs($amt)/100);
 }
 
-function DurationFormat($mins) { // Show N mins as N <=90, x hr ymins 
+function DurationFormat($mins) { // Show N mins as N <=90, x hr ymins
   if ($mins <=90 ) return "$mins minutes";
   return (int)($mins/60) . " hours " . (($mins%60) ? (($mins%60) . " minutes") : "");
 }
@@ -520,7 +526,7 @@ function FestDate($day,$format='M',$Year=0) {
   } else {
     $date = mktime(0,0,0,$YEARDATA['MonthFri'],$YEARDATA['DateFri']+$day,$ShortYear);
   }
-  
+
   switch (strtoupper($format)) {
     default:
     case 'S': return date('D j M',$date);
@@ -559,7 +565,7 @@ function ChunkSplit($txt,$maxlen,$maxchnks) {
     }
   }
   if ($left) $Res[] = $left;
-  
+
   return $Res;
 }
 
@@ -623,14 +629,14 @@ function linkemailhtml(&$data,$type="Side",$xtr='',$ButtonExtra='',$DirectType='
               "You can update information at any time, until the programme goes to print. " .
               "(You'll also be able to view your programme times, once we've done the programme)<p>" .
               "<div id=SideProg$id>$ProgInfo</div><p>" .
-              "Regards " . $USER['SN'] . "<p></div>"); 
+              "Regards " . $USER['SN'] . "<p></div>");
     } else {
       include_once("MusicLib.php");
       $Content = MusicMail($data,$name,$id,$direct);
     }
   } else { // Trade/Invoicing (I think gets here)
     $Content = urlencode("$name,<p>" . "<div id=SideLink$id>To update, correct, and administer your booking please visit $direct.</div></p>" .
-               "Regards " . $USER['SN'] . "<p>"); 
+               "Regards " . $USER['SN'] . "<p>");
   }
 
   $lnk = "<button onclick=\"emailclk($link,'Email$id'); $ButtonExtra\" id=Em$id target='_blank' type=button>$Label Email</button>" .
@@ -642,22 +648,22 @@ global $DDdata;
 $DDdata = [
     'Insurance' => [ 'UseYear'=>1, 'AddState'=>1, 'tr'=>1, 'SetValue'=>1, 'cols'=>[2,2], 'view'=>1 ],
     'RiskAssessment' => [ 'UseYear'=>1, 'AddState'=>1, 'Name' => 'Risk Assessment', 'tr'=>1, 'SetValue'=>1, 'cols'=>[2,2], 'view'=>1 ],
-    'StagePA'  => [ 'UseYear'=>0, 'AddState'=>0, 'Name'=>'PA requirements', 'tr'=>0, 'SetValue'=>'@@FILE@@', 'cols'=>[2,2], 'path'=>'PAspecs', 
+    'StagePA'  => [ 'UseYear'=>0, 'AddState'=>0, 'Name'=>'PA requirements', 'tr'=>0, 'SetValue'=>'@@FILE@@', 'cols'=>[2,2], 'path'=>'PAspecs',
                     'view'=>1 ],
-    'Photo'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[2,2], 
-                    'path'=>'images', 'Show'=>1 ], 
-    'NewPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1, 
+    'Photo'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[2,2],
+                    'path'=>'images', 'Show'=>1 ],
+    'NewPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1,
                  'Extra'=>"acceptedFiles: 'image/*',", 'Show'=>1,'Name'=>'Photo'],
-    'NewImage' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1, 
+    'NewImage' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL','cols'=>[1,1], 'URL'=>'PhotoProcess.php', 'Replace'=>1,
                  'Extra'=>"acceptedFiles: 'image/*',",'Name'=>'Image'],
-    'Image'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 
-                 'path'=>'images', 'Show'=>1 ], 
-    'MobPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 
-                 'path'=>'images', 'Show'=>2, 'Name'=>'Photo', 'NotTable'=>1 ], 
-    'Logo'     => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 
-                 'path'=>'images', 'Show'=>1, 'Name'=>'Logo' ], 
-    'Advert'   => [ 'UseYear'=>1, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1], 
-                 'path'=>'images', 'Show'=>1, 'Name'=>'Advert' ], 
+    'Image'    => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1],
+                 'path'=>'images', 'Show'=>1 ],
+    'MobPhoto' => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1],
+                 'path'=>'images', 'Show'=>2, 'Name'=>'Photo', 'NotTable'=>1 ],
+    'Logo'     => [ 'UseYear'=>0, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1],
+                 'path'=>'images', 'Show'=>1, 'Name'=>'Logo' ],
+    'Advert'   => [ 'UseYear'=>1, 'AddState'=>0, 'tr'=>0, 'SetValue'=>'URL', 'Extra'=>"acceptedFiles: 'image/*',", 'cols'=>[1,1],
+                 'path'=>'images', 'Show'=>1, 'Name'=>'Advert' ],
 
 ];
 
@@ -675,9 +681,9 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
   $hid = ($hide?' hidden ':'');
   if (isset($DDd['Name'])) $Name = $DDd['Name'];
   $Table = "td";
-  if (isset($DDd['NotTable'])) $Table = "div";  
-    
-  if ($Call || isset($DDd['Show'])) {  
+  if (isset($DDd['NotTable'])) $Table = "div";
+
+  if ($Call || isset($DDd['Show'])) {
     if ($DDd['tr']) {
       $str .= "<tr><td $tddata1 $hid>$Name:";
       if (!$Cond) {
@@ -685,8 +691,8 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
         return $str;
       }
     }
-  
-    $Padding = time();  
+
+    $Padding = time();
     if (isset($DDd['Show'])) {
 
       $str .= "<$Table class=Drop$Type >";
@@ -700,7 +706,7 @@ function fm_DragonDrop($Call, $Type,$Cat,$id,&$Data,$Mode=0,$Mess='',$Cond=1,$td
 //      if ($DDd['Show']== 1) {
         $str .= "<$Table class='Result$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";
 //      } else if ($DDd['Show']== 2) {
-//        $str .= "<br class='Drop$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";      
+//        $str .= "<br class='Drop$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";
 //      }
     } else {
       $str .= "<$Table class='Drop$Type $tdclass' $hid><div class=dropzone id=Upload$Type$Padding ></div><script>";
@@ -750,7 +756,7 @@ XXX;
     $pdir = ($DDd['UseYear']?"$Type/$YEAR/$Cat":$Type);
   }
   $path = "$pdir/$Type$id";
-  $files = glob("$path.*"); 
+  $files = glob("$path.*");
 
   if ($Mode) {
     if ($DDd['AddState']) {
@@ -762,16 +768,16 @@ XXX;
     $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][0] . ">";
     $tmp['Ignored'] = $ddat;
     $str .= fm_checkbox("$Type Uploaded",$tmp,'Ignored','disabled');
-    $str .= fm_hidden($Type,$ddat) . "</$Table>";   
+    $str .= fm_hidden($Type,$ddat) . "</$Table>";
   }
-  
+
   if ($files) {
     $Current = $files[0];
     $Cursfx = pathinfo($Current,PATHINFO_EXTENSION );
-    $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][1] . "><a href=ShowFile?l=$path.$Cursfx>View $Name file</a></$Table>";  
+    $str .= "<$Table class='Result$Type $tdclass' $hid colspan=" . $DDd['cols'][1] . "><a href=ShowFile?l=$path.$Cursfx>View $Name file</a></$Table>";
   }
   if ($Mess) $str .= "<$Table class='Result$Type $tdclass' $hid>$Mess</$Table>";
-  
+
   if (($Call == 0) && is_array($Data) && isset($Data[$Type]) ) $str .= "<script>Refresh_Image_After_Upload('$Type','" . $Data[$Type] . "');</script>";
   return $str;
 }
@@ -844,13 +850,13 @@ function Sanitise(&$txt,$len=40,$cat='') {
   if ($len && strlen($txt) > $len) $txt = substr($txt,$len);
   switch ($cat) {
   case 'num':
-    $txt = preg_replace('/[^0-9]/','',$txt);  
-    return $txt;  
+    $txt = preg_replace('/[^0-9]/','',$txt);
+    return $txt;
   case 'email':
-    $txt = preg_replace('/[^a-zA-Z0-9@_.]/','',$txt);  
+    $txt = preg_replace('/[^a-zA-Z0-9@_.]/','',$txt);
     return $txt;
   case 'txt':
-    $txt = preg_replace('/[^a-zA-Z0-9]/','',$txt);  
+    $txt = preg_replace('/[^a-zA-Z0-9]/','',$txt);
     return $txt;
   default:
     $txt = preg_replace('/[^a-zA-Z0-9_ ,.\'\/\\\\]/','',$txt);
@@ -870,6 +876,8 @@ function SanitiseAll($Rules) {
 // Count numbers !=0 in the text
 function NumbersOf($Text) {
   if (empty($Text)) return 0;
+  $matches = [];
+
   return preg_match_all('/([1-9]\d*?)/',$Text,$matches);
 }
 
@@ -878,9 +886,9 @@ function NumbersOf($Text) {
 --Insurance
 --RiskAccess
 Photos - action after upload
-PA specs - complex behavior, 
+PA specs - complex behavior,
 -- Perf Files
-Invoices?  
+Invoices?
 
 DragonDrop(Call: 1 Page, 0 Update
   Type: Insurance | RiskAccess | PA | ...

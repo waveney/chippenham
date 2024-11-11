@@ -2,7 +2,7 @@
   include_once("fest.php");
 
   A_Check('SysAdmin');
-  
+
   include_once("DanceLib.php");
   include_once("TradeLib.php");
   include_once("ImageLib.php");
@@ -10,7 +10,8 @@
   echo "This may be extended to other image categories later.<p>";
 
   global $db;
-  
+  $mtch = [];
+
     $ans = $db->query("SELECT * FROM Sides");
     while ($side = $ans->fetch_assoc()) {
       $Photo = $side['Photo'];
@@ -25,7 +26,7 @@ echo "Checking $id $Photo<br>";
       }
     }
   echo "Finished<p>";
-  
+
   dotail();
 ?>
 

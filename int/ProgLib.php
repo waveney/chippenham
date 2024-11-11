@@ -15,18 +15,19 @@ $Event_Access_Type_Day = ['Open','Weekend or Day tickets Only', 'Weekend, Day or
 $Event_Access_Type = ['Open','Weekend tickets Only', 'Weekend or Event tickets Only', 'Event Tickets Only'];
 $Event_Access_Colours = ['white','lightblue','lightgreen','pink'];
 
-$Day_Type = ['Thur'=>-1,'Fri'=>0,'Sat'=>1,'Sun'=>2,'Mon'=>3,'Tue'=>4]; 
+$Day_Type = ['Thur'=>-1,'Fri'=>0,'Sat'=>1,'Sun'=>2,'Mon'=>3,'Tue'=>4];
 $Info_Type = array_flip($InfoLevels);
 $Public_Event_Type = array_flip($Public_Event_Types);
 
 include_once("DateTime.php");
 
 function DayList($d) {
-  $DayList = array(-4=>'Mon',-3=>'Tue',-2=>'Wed',-1=>'Thur',0=>'Fri',1=>'Sat',2=>'Sun',3=>'Mon',4=>'Tue',5=>'Wed',6=>'Thur',7=>'Fri',8=>'Sat',9=>'Sun',10=>'Mon');
+  $DayList = array(-4=>'Mon',-3=>'Tue',-2=>'Wed',-1=>'Thur',0=>'Fri',1=>'Sat',2=>'Sun',3=>'Mon',4=>'Tue',5=>'Wed',6=>'Thur',7=>'Fri',
+    8=>'Sat',9=>'Sun',10=>'Mon');
   global $YEARDATA;
-  
+
   if ($d < $YEARDATA['FirstDay'] || $d > $YEARDATA['LastDay'] || ($YEARDATA['LastDay']-$YEARDATA['FirstDay']) < 6) return $DayList[$d];
-  return FestDate($day,'S');
+  return FestDate($d,'S');
 }
 
 function Set_Venue_Help() {
@@ -63,7 +64,7 @@ function Get_Venues($type=0,$extra='') { //0 = short, 1 = full
     $res = $db->query("SELECT * FROM Venues $extra ORDER BY SN");
     if ($res) {
       while ($Ven = $res->fetch_assoc()) {
-        $i = $Ven['VenueId']; 
+        $i = $Ven['VenueId'];
         $short[$i] = SName($Ven);
         $full[$i] = $Ven;
       }
@@ -80,7 +81,7 @@ function Get_AVenues($type=0,$extra='') { //0 = short, 1 = full
     $res = $db->query("SELECT * FROM Venues WHERE status=0 $extra ORDER BY SN");
     if ($res) {
       while ($Ven = $res->fetch_assoc()) {
-        $i = $Ven['VenueId']; 
+        $i = $Ven['VenueId'];
         $short[$i] = SName($Ven);
         $full[$i] = $Ven;
       }
@@ -122,7 +123,7 @@ function Get_Venues_For($What) {
   $ids = [];
   $res = $db->query("SELECT VenueId FROM Venues WHERE $What=1 AND Status=0 ORDER BY $What" . "Importance DESC");
   if ($res) {
-    while ($Ven = $res->fetch_assoc()) $ids[] = $Ven['VenueId']; 
+    while ($Ven = $res->fetch_assoc()) $ids[] = $Ven['VenueId'];
   }
   return $ids;
 }
@@ -137,7 +138,7 @@ function Get_Venue($vid) {
     $Venues[$vid] = $ans;
     return $ans;
   }
-  return 0; 
+  return 0;
 }
 
 function Put_Venue(&$now) {
@@ -188,7 +189,7 @@ Set Use Notes to fmt to use the Big Event programming Notes to describe types of
         'IgnoreClash'=>'Ignore two events at same time and surpress gap checking',
         'Public'=>'Controls public visibility of Event, "Not Yet" and "Never" are handled the same',
         'ExcludeCount'=>'For Big Events - if set exclude this event from Dance Spot counts - eg Procession',
-        'Price'=>'Needs to be coordinated between here and Ticketing - Do NOT set these, let Richard do it.  
+        'Price'=>'Needs to be coordinated between here and Ticketing - Do NOT set these, let Richard do it.
 Price is for entire event - there are no prices for sub events - negative prices have special meanings -1 = museum',
         'Venue'=>'If the Venue you need is not here ask Richard.  For Big Events - put the starting Venue here',
         'SlotEnd'=>'If a large event is divided into a number of slots, this is the end of the first slot, not needed otherwise',
@@ -218,11 +219,11 @@ Price is for entire event - there are no prices for sub events - negative prices
         'IsConcert'=>'Select this if it has a ticketed entry to a whole - multi act event - used in formatting event descriptions - Not needed for event type Concert',
         'WeirdStuff'=>'Set this to have events before the start and after the end.  After setting save and reload',
         'Roll'=>'To highlight band/callers for Ceilidhs and Folk Dances and MCs for concerts',
-        'SeasonTicketOnly'=>'Event is only open to people with season tickets, no non ticket admission',    
+        'SeasonTicketOnly'=>'Event is only open to people with season tickets, no non ticket admission',
         'ShowNameOnGrid'=>'Enable to put event name on the dance grid, normally ommied',
         'ListOffGrid'=>'Tick to list the dance event separate from the grid - weird times/venues',
         'Notes'=>'Anything you want to record - not used externally',
-        
+
   );
   Set_Help_Table($t);
 }
@@ -237,7 +238,7 @@ function Get_Event($eid,$new=0) {
     $Events[$eid] = $ans;
     return $ans;
   }
-  return 0; 
+  return 0;
 }
 
 function Get_Event_VT($v,$t,$d) {
@@ -289,7 +290,7 @@ function RecordPerfEventChange($id,$Type='Perform') {
 function RecordEventChanges(&$now,&$Cur,$new) {
   global $PLANYEAR,$USERID;
   $Fields = ['Start','SlotEnd','End','Day','SN','Side1','Side2','Side3','Side4','Type','Status','Venue'];
-  
+
   $Check = $TCheck = 0;
   if (isset($Cur['EventId'])) {
 
@@ -307,11 +308,11 @@ function RecordEventChanges(&$now,&$Cur,$new) {
       }
     }
   } else {
-    $Check = 1;  
+    $Check = 1;
     $Rec = ['EventId'=>$now['EventId'], 'Year'=>$PLANYEAR, 'Changes'=>$now['SN'], 'Field'=>'New', 'Who'=>$USERID ];
     Gen_Put('EventChanges',$Rec);
   }
-       
+
   if ($Check) {
     for($i=1;$i<5;$i++) {
       if (!isset($Cur["Side$i"]) || $now["Side$i"] != $Cur["Side$i"]) {
@@ -335,11 +336,11 @@ function Put_Event(&$now,$new=0) {
   $e=$now['EventId'];
   $Cur = Get_Event($e,$new);
   if (isset($Cur['EventId'])) {
-    if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
+    if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);
     Update_db('Events',$Cur,$now);
   } else {
-    Update_db('Events',$Cur,$now);  
-    if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);  
+    Update_db('Events',$Cur,$now);
+    if (Feature('RecordEventChanges')) RecordEventChanges($now,$Cur,$new);
   }
   Check_4Changes($Cur,$now);
 }
@@ -348,7 +349,7 @@ function Get_Events_For($what,$Day) {
   global $db,$YEAR,$Day_Type;
   $evs = [];
   $xtra = ($what=='Dance'?' OR e.ListDance=1 ':($what=='Music'?' OR e.ListMusic=1':''));
-  $res=$db->query("SELECT DISTINCT e.* FROM Events e, EventTypes t WHERE e.Year='$YEAR' AND Status=0 AND (( e.Type=t.ETypeNo AND t.Has$what=1) $xtra ) AND e.Day=" . 
+  $res=$db->query("SELECT DISTINCT e.* FROM Events e, EventTypes t WHERE e.Year='$YEAR' AND Status=0 AND (( e.Type=t.ETypeNo AND t.Has$what=1) $xtra ) AND e.Day=" .
                 $Day_Type[$Day] );
   if ($res) {
     while($ev = $res->fetch_assoc()) $evs[$ev['EventId']] = $ev;
@@ -373,7 +374,7 @@ function Get_All_Events_For($wnum,$All=0) {// what is not used
 function Get_All_Public_Subevents_For($Eid) {
   global $db,$YEAR,$Event_Types;
   $evs = [];
-  $res=$db->query("SELECT * FROM Events WHERE SubEvent=$Eid ORDER BY Day, Start, Type");  
+  $res=$db->query("SELECT * FROM Events WHERE SubEvent=$Eid ORDER BY Day, Start, Type");
   if ($res) {
     while($ev = $res->fetch_assoc()) {
       if (( $Event_Types[$ev['Type']]['Public']) && ($Event_Types[$ev['Type']]['State'] >= 2) && ($ev['Public'] < 2)) {
@@ -404,7 +405,7 @@ function Get_BigEvent($b) {
     $BigEvent[$b] = $ans;
     return $BigEvent[$b];
   }
-  return 0; 
+  return 0;
 }
 
 function Put_BigEvent($now) {
@@ -456,12 +457,12 @@ function Event_Has_Parts($e) {
 
 function ListLinksNew(&$Perfs,$idx,$single,$plural,$size,$mult) {
   global $PerfTypes,$PerfIdx;
-  
-  if (!isset($Perfs[$idx])) return "";  
+
+  if (!isset($Perfs[$idx])) return "";
 //  var_dump($Perfs);
   $ks = array_keys($Perfs[$idx]);
   $think = array();
-  sort($ks);        
+  sort($ks);
   $things = 0;
   $ans = '';
   foreach ( array_reverse($ks) as $imp) {
@@ -502,11 +503,11 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
       if ($e['BigEvent']) {
 // TODO
       } else {
-      
-      
+
+
 // need perfs[type][imp] and then condense to perf[type] in imporder - will be needed for Big Es as well in time
           for($i=1;$i<5;$i++) {
-            if (isset($e["Side$i"])) { 
+            if (isset($e["Side$i"])) {
               $ee = $e["Side$i"];
               if ($ee) {
 
@@ -516,32 +517,32 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
                   $sy = Get_SideYear($ee,$YEAR);
 //var_dump($sy); echo "<P>";
                   if (is_array($sy)) {
-                    $s = array_merge($s, $sy);  
+                    $s = array_merge($s, $sy);
                     $s['NotComing'] = ((($s['Coming'] != 2) && ($s['YearState'] < 2)) );
                   } else $s['NotComing'] = 1;
                   if ($s && (($sy['ReleaseDate']??0) < $now) || ( Access('Committee') && $Mode)) {
                     $Imp2Use = $s['Importance'];
                     if ($s['DiffImportance']) {
                       $Imp2Use = 0;
-                      foreach($PerfTypes as $pt=>$pd) if (Capability("Enable" . $pd[2])) if ($s[$pd[0]] && $Imp2Use < $s[$pd[2] . 'Importance']) 
+                      foreach($PerfTypes as $pt=>$pd) if (Capability("Enable" . $pd[2])) if ($s[$pd[0]] && $Imp2Use < $s[$pd[2] . 'Importance'])
                         $Imp2Use = $s[$pd[2] . 'Importance'];
                     }
-                    $imps[$Imp2Use][] = $s; 
-                    $Perfs[$e["PerfType$i"]][$Imp2Use][] = $s; 
+                    $imps[$Imp2Use][] = $s;
+                    $Perfs[$e["PerfType$i"]][$Imp2Use][] = $s;
                     $PerfRolls[$e["Roll$i"]][] = $s;
                     $PerfCount++;
                   }
                   $found[$ee]=1;
                 }
               }
-            } 
+            }
           }
       }
     }
 
     switch ($Event_Types[$MainEv['Type']]['SN']) {
     case 'Ceilidh':
-    
+
 /*      if (($PerfCount < 2) || ($PerfCount == count($PrefRolls[0]))) {
         // Drop through
       } else {
@@ -549,7 +550,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
         if (isset($Perfs[4])) $ans .= "; "   . ListLinksNew($Perfs,4,'Caller','Callers',$size,$mult);
         if (isset($Perfs[0])) $ans .= "<br>" . ListLinksNew($Perfs,0,'Dance spot by','Dance spots by',$size,$mult);
         if (isset($Perfs[2])) $ans .= "<br>" . ListLinksNew($Perfs,2,'Comedy spot by','Comedy spots by',$size,$mult);
-        if (isset($Perfs[3])) $ans .= "<br>" . ListLinksNew($Perfs,3,'Entertainment spot by','Entertainment spots by',$size,$mult); 
+        if (isset($Perfs[3])) $ans .= "<br>" . ListLinksNew($Perfs,3,'Entertainment spot by','Entertainment spots by',$size,$mult);
         if ($ans) $ans .= "<p>";
         break;
       }
@@ -557,7 +558,7 @@ function Get_Event_Participants($Ev,$Mode=0,$l=0,$size=12,$mult=1,$prefix='') {
 
     default: // Do default treatment below
       $ks = array_keys($imps);
-      sort($ks);        
+      sort($ks);
       $things = 0;
       foreach ( array_reverse($ks) as $imp) {
         if ($imp) $ans .= "<span style='font-size:" . ($size+$imp*$mult) . "px'>";
@@ -598,7 +599,7 @@ function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='
   $pfx = '';
   if ($Others) foreach ($Others as $oi=>$o) {
     if (($o['Identifier']> 0) && ($o['Type'] == 'Side' || $o['Type'] == 'Act' || $o['Type'] == 'Other' || $o['Type'] == 'OtherPerf' || $o['Type'] == 'Perf')) {
-      $si = $o['Identifier'];  
+      $si = $o['Identifier'];
       if (!isset($found[$si])) {
         $s = Get_Side($si);
         $sy = Get_SideYear($si); // TODO munge/merge?
@@ -614,35 +615,35 @@ function Get_Other_Participants(&$Others,$Mode=0,$l=0,$size=12,$mult=1,$prefix='
           }
         }
 
-        if ($s && ($sy['ReleaseDate'] < $now) || ( Access('Committee') && $Mode)) $imps[$iimp][] = $s; 
+        if ($s && ($sy['ReleaseDate'] < $now) || ( Access('Committee') && $Mode)) $imps[$iimp][] = $s;
         $something = 1;
         $found[$si] = 1;
       }
     }
     if ($o['Type'] == 'Note' && $Event['UseBEnotes']) $pfx = "<b>" . $o['Notes'] . "</b>: ";
   }
-    
+
 //var_dump($imps);
   if ($something) {
     $ks = array_keys($imps);
-    sort($ks);        
+    sort($ks);
     $things = 0;
     foreach ( array_reverse($ks) as $imp) {
       if ($imp) $ans .= "<span style='font-size:" . ($size+$imp*$mult) . "px'>";
-      foreach ($imps[$imp] as $thing) {    
+      foreach ($imps[$imp] as $thing) {
         $link=0;
-        if (isset($thing['ZZZZZpfx'])) { 
+        if (isset($thing['ZZZZZpfx'])) {
           if ($things++) $ans .= "<br>";
           $ans .= $thing['ZZZZZpfx'];
         } else {
           if ($things++) $ans .= ", ";
-        } 
+        }
         if ($l > 0 && ($thing['Photo'] || $thing['Description'] || $thing['Blurb'] || $thing['Website'])) $link=$l;
         if ($link) {
           if ($link ==1) {
             $ans .= "<a href='/int/ShowPerf?id=" . $thing['SideId'] . "'>";
           } else if ($Mode)  {
-            $ans .= "<a href='/int/AddPerf?sidenum=" . $thing['SideId'] . "'>";           
+            $ans .= "<a href='/int/AddPerf?sidenum=" . $thing['SideId'] . "'>";
           }
         }
         $ans .= ($l<0?'<b>':'') . NoBreak($thing['SN'], 2) . ($l<0?'</b>':'') ;
@@ -693,7 +694,7 @@ function Price_Show(&$Ev,$Buy=0) {
     $Cpri = $Npri;
     }
   }
-  
+
   if ($YEARDATA['PriceChange2']) {
     $pc = $YEARDATA['PriceChange2'];
     $Npri = $Ev['Price3'];
@@ -709,11 +710,11 @@ function Price_Show(&$Ev,$Buy=0) {
 
   if ($Ev['DoorPrice'] && $Ev['DoorPrice'] != $Cpri) {
     if ($once) $str .= ", then ";
-    $str .= Print_Pound($Cpri) . " in advance and " . Print_Pound($Ev['DoorPrice']) . " on the door"; 
+    $str .= Print_Pound($Cpri) . " in advance and " . Print_Pound($Ev['DoorPrice']) . " on the door";
   } else {
     if ($once) $str .= ", then ";
     $str .= Print_Pound($Cpri);
-  } 
+  }
 
   if ($Buy) $str .= "</a>";
   return $str;
@@ -727,7 +728,7 @@ function DayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBreak=0
   global $DayLongList,$YEAR,$YEARDATA;
   static $lastday = -99;
   if (($Mismatch = ($d != $lastday)) || $ForceNew) {
-    
+
     if ($lastday != -99) echo "</table></div><p>\n";
     $lastday = $d;
     echo '<div class="tablecont' . (($PageBreak && !$Mismatch)?' pagebreak':'') . '"><table class=' . DayList($d) . "tab $xtra3>";
@@ -741,9 +742,9 @@ function DayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBreak=0
 
 function &Get_Active_Venues($All=0) {
   global $db,$YEAR;
-  
+
   if ($All) {
-    
+
   }
   $res = $db->query("SELECT DISTINCT v.* FROM Venues v, Events e, EventTypes t WHERE " .
          "( v.VenueId=e.Venue AND (e.Public=1 OR ( e.Public=0 AND e.Type=t.ETypeNo AND t.State>1 ) AND " .
@@ -807,7 +808,7 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
               case 'Other':
               case 'Perf':
                 if ($O['Identifier'] == $id) {
-                  $Found = 1; 
+                  $Found = 1;
                 } else {
                   if ($Found && $NextI==0) { $NextI=$O['Identifier']; $NextT=$O['Type']; }
                   if (!$Found) { $PrevI=$O['Identifier']; $PrevT=$O['Type']; $Position++; }
@@ -839,27 +840,27 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
             $with = [];
             while ($ev = $res->fetch_assoc()) {
               for ($i=1;$i<5;$i++) {
-                if ($ev["Side$i"] > 0 && $ev["Side$i"] != $id) { 
+                if ($ev["Side$i"] > 0 && $ev["Side$i"] != $id) {
                   $with[] = SAO_Report($ev["Side$i"],$e["Roll$i"],$e['SubEvent']);
                 }
               }
             }
             $str .= "<tr><td $cls>" . FestDate($e['Day'],'M') . "<td $cls>" . timecolon($pe['Start']) . "-" . timecolon($pe['End'] ) .
-                        "<td $cls><a href=/int/$EventLink?e=$Parent>" . $pe['SN'] . 
+                        "<td $cls><a href=/int/$EventLink?e=$Parent>" . $pe['SN'] .
                         "</a><td $cls><a href=/int/$VenueLink?v=" . $pe['Venue'] . ">" . VenName($Venues[$pe['Venue']]) . "</a>" .
                         "<td>" . implode(', ',$with) . "<br>" . $side['SN'] . " will be performing from " . timecolon($e['Start']) . " to " . timecolon($e['End']);
             if ($Price) $str .= "<td>" . Price_Show($pe,1);
-          
+
           } else { // Normal Event
             $str .= "<tr><td $cls>" . FestDate($e['Day'],'M') . "<td $cls>" . timecolon($e['Start']) . "-" . timecolon(($e['SubEvent'] < 0 ? $e['SlotEnd'] : $e['End'] )) .
-                        "<td $cls><a href=/int/$EventLink?e=" . $e['EventId'] . ">" . $e['SN'] . 
+                        "<td $cls><a href=/int/$EventLink?e=" . $e['EventId'] . ">" . $e['SN'] .
                         "</a><td $cls><a href=/int/$VenueLink?v=" . $e['Venue'] . ">" . VenName($Venues[$e['Venue']]) . "</a>";
             if ($With) {
               $str .= "<td $cls>";
               $withc=0;
               for ($i=1;$i<5;$i++) {
-                if ($e["Side$i"] > 0 && $e["Side$i"] != $id) { 
-                  if ($withc++) $str .= ", "; 
+                if ($e["Side$i"] > 0 && $e["Side$i"] != $id) {
+                  if ($withc++) $str .= ", ";
                   $str .= SAO_Report($e["Side$i"],$e["Roll$i"],$e['SubEvent']);
                 }
               }
@@ -880,7 +881,7 @@ function Show_Prog($type,$id,$all=0,$price=0) { //mode 0 = html, 1 = text for em
       }
     }
     if ($evc) {
-      $str .= "</table></div>\n";    
+      $str .= "</table></div>\n";
     }
 
 //var_dump($str);

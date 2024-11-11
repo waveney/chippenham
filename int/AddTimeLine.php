@@ -6,7 +6,7 @@
 
   include_once("DocLib.php");
   include_once("TLLib.php");
-  global $USERID,$USER,$YEAR,$TL_Importance,$PLANYEAR;
+  global $USERID,$USER,$YEAR,$TL_Importance,$PLANYEAR,$Err;
 
   Set_TimeLine_Help();
 
@@ -14,7 +14,7 @@
   $AllActive = [];
   foreach ($All as $usr) {
     $id = $usr['UserId'];
-    /*if ($usr['AccessLevel'] >=2 && $usr['AccessLevel']<= 6 && $usr['NoTasks']==0 ) */ $AllActive[$id] = $usr['SN'];  
+    /*if ($usr['AccessLevel'] >=2 && $usr['AccessLevel']<= 6 && $usr['NoTasks']==0 ) */ $AllActive[$id] = $usr['SN'];
   }
 
   $now = time();
@@ -31,7 +31,7 @@
       $proc = 1;
       if (isset($_REQUEST['ACTION'])) {
         $otl = Get_TLent($_REQUEST['TLid']);
-        
+
         switch ($_REQUEST['ACTION']) {
           case 'Completed':
             $_REQUEST['Progress'] = 100;
@@ -74,11 +74,11 @@
       $_REQUEST['CreatedBy'] = $USERID;
       $_REQUEST['Start'] = Date_BestGuess($_REQUEST['NewStart']);
       $_REQUEST['Due'] = Date_BestGuess($_REQUEST['NewDue']);
-      if (!isset($_REQUEST['Title'])  || strlen($_REQUEST['Title']) < 2) { // 
+      if (!isset($_REQUEST['Title'])  || strlen($_REQUEST['Title']) < 2) { //
         echo "<h2 class=ERR>NO TITLE GIVEN</h2>\n";
         $proc = 0;
       }
-      $tl = Insert_db_post('TimeLine',$tle,$proc); 
+      $tl = Insert_db_post('TimeLine',$tle,$proc);
     }
   } elseif (isset($_REQUEST['TLid'])) {
     $tl = $_REQUEST['TLid'];
@@ -124,7 +124,7 @@
         echo "<td>Created by: ";
         echo ((isset($tle['CreatedBy']) && ($tle['CreatedBy'] != 0)) ? ($AllActive[$tle['CreatedBy']]) : "UNKNOWN" );
         echo " On " . date('d/m/Y',$tle['Created']);
-      
+
       if ((isset($tle['Due']) && $tle['Due'] > 0 && $now > $tle['Due'] && $tle['Progress']< 100) || ((isset($tle['Start']) && $tle['Start'] > 0 && $now > $tle['Start'] && $tle['Progress'] == 0))) {
         echo "<td class=red>OVERDUE\n";
 
@@ -134,20 +134,20 @@
         if (isset($tle['NextYearId']) && ($tle['NextYearId']>0)) echo "<td><a href=AddTimeLine?Y=$YEAR&TLid=" . $tle['NextYearId'] . ">Copied</a>";
 
       echo "<tr>" . fm_textarea("Notes",$tle,'Notes',8,2);
-      
+
       echo "<tr>" . TL_State($tle,1);
         if ($tle['Progress'] >= 100) {
           echo " On<td>" . date('d/m/Y',$tle['Completed']);
         } else {
           echo "<td><div style='max-width=500; overflow: contain'><div  id=slider class=slider></div></div>";
         }
-        
+
       echo "<tr>" . fm_textarea('Progress Text',$tle,'ProgText',8,2);
 
       echo "<tr>" . fm_textarea('History',$tle,'History',8,2);
 
       echo "</table></div>\n";
-  
+
     if ($Editable) {
       if ($tl > 0) {
         echo "<Center><input type=Submit name='Update' value='Update'>\n";
@@ -157,15 +157,15 @@
         echo "<input type=Submit name='ACTION' value='Add Another'>\n";
         if ((!isset($tle['Year']) || $tle['Year'] != $PLANYEAR ) && ($tle['NextYearId'] == 0)) echo "<input type=Submit name=ACTION value='Copy to $PLANYEAR'>\n";
         echo "</center>\n";
-      } else { 
+      } else {
         echo "<Center><input type=Submit name=Create value='Create'></center>\n";
       }
       echo "</form>\n";
     }
   }
   echo "<h2><a href=TimeLine>Back to Time Line Management</a></h2>\n</div>";
-  
-  
+
+
 
   dotail();
 ?>

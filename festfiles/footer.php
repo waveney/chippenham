@@ -22,10 +22,10 @@
   $htail = Feature('FooterBit');
   if ($htail) echo $htail;
 ?>
-Photos remain Copyright of their respective owners and cannot be reproduced or used without permission.</p>
+Photos remain Copyright of their respective owners and cannot be reproduced or used without permission.<p>
 
-<p>Festival Software by <a href=http://wavwebs.com style=color:white;>Waveney Web Services</a> - Version 
-<?php 
+<p>Festival Software by <a href=http://wavwebs.com style=color:white;>Waveney Web Services</a> - Version
+<?php
   echo $FESTSYS['V'];
   if (!isset($_COOKIE['FEST2'])) echo " <a href=/int/Login style='color:white; float:right;'> Staff Login</a><p>\n";
 ?>

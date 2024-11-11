@@ -26,6 +26,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Year</a>\n";
   echo "</thead><tbody>";
   foreach($lnks as $g) {
+    $i = $g['id'];
     echo "<tr><td>" . $g['id'];
     echo fm_text1("",$g,'SN',1,'','',"SN$i");
     echo fm_text1("",$g,'URL',1,'','',"URL$i");

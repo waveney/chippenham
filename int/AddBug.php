@@ -6,7 +6,7 @@
   include_once("DocLib.php");
   include_once("BugLib.php");
   include_once("Email.php");
-  global $USERID,$USER;
+  global $USERID,$USER,$ReportSevs,$Err,$Severities,$Bug_Status;
 
   Set_Bug_Help();
 
@@ -33,11 +33,11 @@
     } else { // New
       $proc = 1;
       $_REQUEST['Created'] = time();
-      if (!isset($_REQUEST['SN'])  || strlen($_REQUEST['SN']) < 2) { // 
+      if (!isset($_REQUEST['SN'])  || strlen($_REQUEST['SN']) < 2) { //
         echo "<h2 class=ERR>NO NAME GIVEN</h2>\n";
         $proc = 0;
       }
-      $b = Insert_db_post('Bugs',$Bug,$proc); 
+      $b = Insert_db_post('Bugs',$Bug,$proc);
     }
     if (!$USER['Bugs'] && $ReportSevs[$Bug['Severity']]) {
       $je = json_encode($Bug);
@@ -69,18 +69,18 @@
       echo fm_text('Title',$Bug,'SN',2,'','placeholder="Please give bug a short name"');
       echo  "<td>Severity:" . fm_select($Severities, $Bug,'Severity');
       echo "<td>State:" . fm_select($Bug_Status,$Bug,'State');
-      echo "<tr><td>Raised by:<td>" . fm_select($AllActive,$Bug,'Who'); 
+      echo "<tr><td>Raised by:<td>" . fm_select($AllActive,$Bug,'Who');
         echo "<td><td>Created:" . date('d/m/y H:i:s',$Bug['Created']);
 
       echo "<tr>" . fm_textarea('Description',$Bug,'Description',5,10);
       echo "<tr>" . fm_textarea('Response',$Bug,'Response',5,10);
 
       echo "</table></div>\n";
-  
+
     if ($b > 0) {
       echo "<Center><input type=Submit name='Update' value='Update'>\n";
       echo "</center>\n";
-    } else { 
+    } else {
       echo "<Center><input type=Submit name=Create value='Create'></center>\n";
     }
     echo "</form>\n";
