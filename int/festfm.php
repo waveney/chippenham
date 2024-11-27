@@ -534,6 +534,7 @@ function FestDate($day,$format='M',$Year=0) {
     case 'M': return date('D jS M Y',$date);
     case 'L': return date('l jS F Y',$date);
     case 'F': return date('l jS F',$date);
+    case 'V': return date('D j',$date);
   }
 }
 

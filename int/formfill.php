@@ -10,7 +10,7 @@
   $match = [];
   $mtch = [];
 
-// var_dump($_REQUEST,$YEARDATA);
+ var_dump($_REQUEST);
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
@@ -274,6 +274,7 @@
 
   case 'Volunteers':
     if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {
+ //var_dump($mtch);
       $vfld = $mtch[1];
       $Catid = $mtch[2];
       $Year = $mtch[3];

@@ -1,4 +1,4 @@
-CREATE TABLE `VolCats` (
+CREATE TABLE `VolGroups` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ShortName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
@@ -16,13 +16,7 @@ CREATE TABLE `VolCats` (
   `Q1Extra` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Q2Extra` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Q3Extra` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `Image` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `LongDesc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `Importance` int NOT NULL,
-  `VolName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `ImageHeight` int NOT NULL,
-  `ImageWidth` int NOT NULL,
   `Colour` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `FormGroup` int NOT NULL,
+  `Importance` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

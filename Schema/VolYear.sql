@@ -34,5 +34,10 @@ CREATE TABLE `VolYear` (
   `CollectedBy` int NOT NULL,
   `MessMap` text COLLATE utf8mb4_general_ci NOT NULL,
   `History` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Arrival` int NOT NULL,
+  `Depart` int NOT NULL,
+  `ArriveTime` int NOT NULL,
+  `DepartTime` int NOT NULL,
+  `Commitments` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -22,5 +22,6 @@ CREATE TABLE `Volunteers` (
   `FirstAidUpload` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `OtherUpload` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Money` int NOT NULL,
+  `Cat` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

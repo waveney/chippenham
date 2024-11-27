@@ -32,13 +32,16 @@ define('VOL_Other3',0x400);
 define('VOL_Other4',0x800);
 define('VOL_NoList',0x20000);
 define('VOL_Tins',0x40000);
-define('VOL_TeamFull',0x80000);
+// define('VOL_TeamFull',0x80000); Don't Use
+define('VOL_FullAvail',0x100000);
+define('VOL_GROUPQS',0x200000);
 
 // Button Name, Vol_Button
 $EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','E' => Feature('Vol_Special_Mess'),
   'S'=>'Stew1','M'=>'Note2','F' => Feature('Vol_Special_Mess2')];
 
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
+//$VolGroups = Gen_Get_All('VolGroups','ORDER BY Importance DESC');
 
 function Get_Campsites($Restrict='',$Comments=1) {
   global $CampStatus;
@@ -141,7 +144,7 @@ function Get_Vol_Details(&$vol) {
 }
 
 function Vol_Details($key,&$vol) {
-  global $VolCats,$CatStatus;
+  global $VolCats,$CatStatus,$VolGroups;
   switch ($key) {
   case 'WHO': return firstword($vol['SN']);
   case 'DETAILS': return Get_Vol_Details($vol);
@@ -226,21 +229,32 @@ function OtherVols(&$Vol) {
   return Gen_Get_Cond('Volunteers',"Email='" . $Vol['Email'] . "' AND id!=" . $Vol['id']);
 }
 
+
+function CatsInGroups() {
+  global $VolCats,$YEARDATA,$YEAR,$YEAR,$Relations,$YearStatus,$AgeCats,$CampType,$CatStatus,$VolOrders,$VolGroups; //M
+
+
+
+}
+
 function VolForm(&$Vol,$Err='',$View=0) {
-  global $VolCats,$YEARDATA,$YEAR,$YEAR,$Relations,$YearStatus,$AgeCats,$CampType,$CatStatus,$VolOrders; //M
+  global $VolCats,$YEARDATA,$YEAR,$YEAR,$Relations,$YearStatus,$AgeCats,$CampType,$CatStatus,$VolOrders,$VolGroups; //M
   $Volid = $Vol['id'];
 // var_dump($Vol);
 
+  $M = $_REQUEST['M']??0;
   $VolMgr = Access('Committee','Volunteers') && !isset($_REQUEST['FORCE']);
 
   $CopyList = ['t','i','ACTION','k','id','A','FORCE'];
   echo "<form method=post action=Volunteers?M>";
   foreach ($CopyList as $F) if (isset($_REQUEST[$F])) echo fm_hidden($F,$_REQUEST[$F]);
-  echo "<input type=submit style='font-size:12pt' value='Switch to: Mobile Friendly Version'>";
+  echo fm_hidden('M',(1-$M));
+  echo "<input type=submit style='font-size:12pt' value='Switch to: " . ['Mobile','Computer'][$M] . " Friendly Version'>";
   echo "</form>";
 
+  $MM = ($M?'':'&M=1');
   if ($VolMgr) {
-    echo "<h2><a class=floatright href=Volunteers?A=Show&id=$Volid&FORCE>As Seen by the Volunteer</a></h2>";
+    echo "<h2><a class=floatright href=Volunteers?A=Show&id=$Volid&FORCE$MM>As Seen by the Volunteer</a></h2>";
   }
 
   $OVols = OtherVols($Vol);
@@ -249,7 +263,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     $Ovlst = [];
     foreach ($OVols as $V) $Ovlst[$V['id']] = $V['SN'];
 
-    echo "<form method=post action=Volunteers>";
+    echo "<form method=post action=Volunteers?$MM>";
     echo fm_hidden('ACTION',($View ?'View':'Show'));
     echo fm_radio("Switch to",$Ovlst, $_REQUEST,'id','onchange=this.form.submit()',-3);
     echo "</form>";
@@ -258,6 +272,29 @@ function VolForm(&$Vol,$Err='',$View=0) {
   echo "<h2 class=subtitle>Steward / Volunteer Application Form</h2>\n";
   if (!empty($Err)) echo "<p class=Err>$Err<p>";
   echo "<form method=post action=Volunteers>";
+  if ($M) {
+    echo fm_hidden('M',$M);
+    echo "<div>"; // class=VolWrapper>";
+    $Col1 = -1;
+    $Col2 = -2;
+    $Col3 = -3;
+    $Col4 = -2; // Not an error
+    $Col5 = -2;
+    $Csp4 = $Csp5 = '';
+    $td = '<td>';
+    $td3 = '<br>';
+  } else {
+    $Col1 = 1;
+    $Col2 = 2;
+    $Col3 = 3;
+    $Col4 = 4;
+    $Col5 = 5;
+    $Csp4 = 'colspan=4 ';
+    $Csp5 = 'colspan=5 ';
+    $td = '';
+    $td3 = '<td colspan=3>';
+
+  }
   Register_AutoUpdate('Volunteers',$Volid);
   Register_Onload('CampingVolSet',"'CampNeed::$YEAR'",0);
 
@@ -267,47 +304,66 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if ($VolMgr) echo "If you change any of the team statuses on this page you must click <b>Send Updates</b>, to notify the volunteer.<p>";
 
     echo "This is in 4 parts:";
-    echo "<li><b>Who you are</b>.  This will normally be kept year to year, so you should only need to fill this in once.\n";
+    echo "<ol><li><b>Who you are</b>.  This will normally be kept year to year, so you should only need to fill this in once.\n";
     echo "<li>Which <b>team(s)</B>. you would like to be part of, along with any likes, dislikes and team related details.\n";
     echo "<li>Your <b>availability</b> this year.\n";
     echo "<li>Anything special this year and the <b>submit</b> button.<p>";
-    echo "<div class=tablecont><table border style='table-layout:fixed'>\n";
+
+    echo "</ol>";
+    if ($M) {
+      echo "</div>";
+      echo "<table border>\n";
+    } else {
+      echo "<div class=tablecont><table border style='table-layout:fixed'>\n";
+    }
+
+
     echo "<tr><td colspan=5><h3><center>Part 1: The Volunteer</center></h3>";
     if (Access('SysAdmin')) echo "<tr><td>id: $Volid";
-//  echo "<tr><td style='max-width:100;width:100'>Name:" . fm_text1('',$Vol,'SN',2,'');
-    echo "<tr>" . fm_text('Name',$Vol,'SN',4,'');
-    echo "<tr>" . fm_text('Email',$Vol,'Email',4);
-    echo "<tr>" . fm_text('Phone(s)',$Vol,'Phone',4);
-    echo "<tr>" . fm_textarea("Address", $Vol,'Address',3,3);
-    echo "<tr>" . fm_Radio("Age range",$AgeCats,$Vol,'Over18',"",1). "<td colspan=3>All volunteers need to be over 18, a few roles need over 21.";
+    echo "<tr>" . fm_text('Name',$Vol,'SN',$Col4);
+    echo "<tr>" . fm_text('Email',$Vol,'Email',$Col4);
+    echo "<tr>" . fm_text('Phone(s)',$Vol,'Phone',$Col4);
+
+    echo "<tr>$td" . fm_textarea("Address", $Vol,'Address',$Col4,$Col3);
+
+    echo "<tr>$td" . fm_Radio("Age range",$AgeCats,$Vol,'Over18',"",$Col1). $td3  . "All volunteers need to be over 18, a few roles need over 21.";
     if ($VolMgr) echo " <span class=NotSide>" . fm_checkbox("Allow Underage",$Vol,'AllowUnder') . "</span>";
     $Photo = Feature('VolPhoto');
     if ($Photo) echo "<tr rowspan=4 colspan=4 height=80><td>" . ($Photo == 1 ? 'Photo, not essential yet' : 'Photo') .
         fm_DragonDrop(1,'Photo','Volunteer',$Volid,$Vol,1,'',1,'','Photo');
-    echo "<tr><td>" . fm_checkbox("Are you happy to handle Money",$Vol,'Money',"","",1). "<td colspan=3>Needed for some teams";
-    echo "<tr><td>" . fm_checkbox("Keep my records",$Vol,'KeepMe',"","",1) .
-         "<td colspan=3>Please uncheck this box if you do not wish the festival to contact you about our future events.<br>" .
+    echo "<tr><td>" . fm_checkbox("Are you happy to handle Money",$Vol,'Money',"","",0). $td3 . "Needed for some teams";
+    echo "<tr><td>" . fm_checkbox("Keep my records",$Vol,'KeepMe',"","",($M?0:1),'colspan=4') .
+         "Please uncheck this box if you do not wish the festival to contact you about our future events.<br>" .
          "If you are happy for us to save your details, they will be available to you when you apply next time!";
 
     echo "<tr>" . fm_text('Do you have any medical conditions, disabilities or accessibility requirements that we need to be aware of? ' .
-                          'Please give any details to enable us to support you',$Vol,'Disabilities',4);
+                          'Please give any details to enable us to support you',$Vol,'Disabilities',$Col4);
     if (Feature('VolDBS')) {
-      echo "<tr><td colspan=5>"; // <h3>Legal</h3>\n";
+      echo "<tr><td" . ($M?'':' colspan=5') . ">";
       echo "Do you have a current DBS certificate? if so please give details (needed for some volunteering roles)<br>" .
            fm_textinput('DBS',(isset($Vol['DBS'])?$Vol['DBS']:''),'size=100');
     }
     if (Feature('VolFirstAid')) {
-      echo "<tr><td colspan=5>"; // <h3>Legal</h3>\n";
+      echo "<tr><td" . ($M?'':' colspan=5') . ">";
       echo "Do you have current First Aid training? if so please give details (Just plain useful for the unknown)<br>" .
            fm_textinput('FirstAid',(isset($Vol['FirstAid'])?$Vol['FirstAid']:''),'size=100');
     }
     echo "<tr><td colspan=5><h3>Emergency Contact</h3>\n";
-    echo "<tr>" . fm_text('Contact Name',$Vol,'ContactName',4);
-    echo "<tr>" . fm_text('Contact Phone',$Vol,'ContactPhone',4);
-    echo "<tr><td>Relationship:<td>" . fm_select($Relations,$Vol,'Relation');
+    echo "<tr>" . fm_text('Contact Name',$Vol,'ContactName',$Col4);
+    echo "<tr>" . fm_text('Contact Phone',$Vol,'ContactPhone',$Col4);
+    echo "<tr><td>Relationship:$td3" . fm_select($Relations,$Vol,'Relation');
     if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=4 class=NotSide><textarea id=Debug></textarea>";
 
-  echo "<tr><td colspan=5><h2><center>Volunteering in $YEAR</center></h2>";
+    if ($M) {
+      echo "</table>";
+      echo "<h2><center>Volunteering in $YEAR</center></h2>";
+      echo "<table border>\n";
+
+    } else {
+      echo "<tr><td colspan=5><h2><center>Volunteering in $YEAR</center></h2>";
+
+    }
+
   $VYear = Get_Vol_Year($Volid);//!
 
     if ($VYear['id'] == 0) {
@@ -318,27 +374,37 @@ function VolForm(&$Vol,$Err='',$View=0) {
         echo "<center>This shows what you filled in for " . $VYear1['Year'] . " please update as appropriate</center>";
       }
     }
-    echo "<tr><td colspan=5><h3><center>Part 2: Which Team(s) would you like to volunteer for?</center></h3>\n";
+    echo "<tr><td" . ($M?'':' colspan=5') . "><h3><center>Part 2: Which Team(s) would you like to volunteer for?</center></h3>\n";
     echo "<center>If you select more than one team, please indicate your preference (1st, 2nd, 3rd)</center>";
 
     $DayTeams = [];
     $DayClasses = [];
     $DayShow = [];
+    $NeedAD = $NeedAV = 0;
+    $ShowGroup = 0;
+
     foreach ($VolCats as $Cat) {
       $Catid = $Cat['id'];
       $VCY = Get_Vol_Cat_Year($Volid,$Catid);
 
-      if (($VCY['id'] == 0) && isset($VYear1)) { //!
-        $VCY = Get_Vol_Cat_Year($Volid,$Catid,$VYear1['Year']);
-        $VCY['Year'] = $YEAR;
-        unset($VCY['id']);
-        if ($VCY['Status'] > 1) $VCY['Status'] = 1;
-        Put_Vol_Cat_Year($VCY);
+//      echo "<tr><td colspan=5>"; var_dump($Vol,$Cat,$VCY);
+
+      if ($VCY['id'] == 0) {
+        if (!empty($VYear1['id'])) {
+          $VCY = Get_Vol_Cat_Year($Volid,$Catid,$VYear1['Year']);
+          $VCY['Year'] = $YEAR;
+          unset($VCY['id']);
+          if ($VCY['Status'] > 1) $VCY['Status'] = 1;
+          Put_Vol_Cat_Year($VCY);
+        } else if (($Vol['Cat']??0) == $Catid) {
+          $VCY['Status'] = 1;
+          Put_Vol_Cat_Year($VCY);
+        }
       }
 
       $cp = $Cat['Props'];
       if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue; // Skip if team not listed
-      if ((!$VolMgr) && ($cp & VOL_TeamFull) && ($VCY['Status'] == 0)) continue; // Skip if team full
+//      if ((!$VolMgr) && ($cp & VOL_TeamFull) && ($VCY['Status'] == 0)) continue; // Skip if team full Do differently if needed again
 
       $SetShow = ($VCY['Status'] > 0);
       $Ctxt = "";
@@ -349,6 +415,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       if (($cp & VOL_USE) == 0) continue;
       $Colour = (empty($Cat['Colour'])?'' : " style='background:" . $Cat['Colour'] . "' ");
       $Hide = (($VCY['Status'] == 0) ?"hidden ":'');
+
 
       $SplitWhen = explode(',', $Cat['Listofwhen']);
       foreach($SplitWhen as $wh) {
@@ -362,92 +429,148 @@ function VolForm(&$Vol,$Err='',$View=0) {
         if ($SetShow) $DayShow[$wh] = 1;
       }
 
-      if ($cp & VOL_Likes)   {
-        $rows++;
-        $Ctxt .= "\n<tr $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',4,"colspan=4 class=$cls $Hide $Colour",'',
-                 "Likes:$Catid:$YEAR") . $Cat['LExtra'];
-      }
-      if ($cp & VOL_Dislikes){
-        $rows++;
-        $Ctxt .= "\n<tr $Colour>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',4,"colspan=4 class=$cls $Hide $Colour",'',
-                 "Dislikes:$Catid:$YEAR") . $Cat['DExtra'];
-      }
+      if (($cp & VOL_GROUPQS) == 0) {
+        if ($VolMgr) {
+          echo "\n<tr $Colour><td $Colour>" .
+            fm_radio("<b>" . $Cat['Name'] . "</b> " . fm_select($VolOrders,$VCY,'VolOrder',1,'',"VolOrder:$Catid:$YEAR") ,$CatStatus,$VCY,'Status',
+            "onchange=Update_VolMgrCats(event,'$cls',$Catid,$YEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",-3,'',
+            "Status:$Catid:$YEAR") . "<br>" .
+            ($M?' &nbsp; ':"<td $Csp4 $Colour>") . $Cat['Description'] ;
 
-      if ($cp & VOL_Exp){
-        $rows++;
-        $Ctxt .= "\n<tr $Colour>" . fm_textarea("Please outline your relevant experience", $VCY,'Experience',3,3," class=$cls $Hide $Colour",'',
-                            "Experience:$Catid:$YEAR");
-      }
-      for ($i=1; $i<5; $i++) {
-        if ($cp & (VOL_Other1 << ($i-1))) {
-          $rows++;
-          if ($cp & (VOL_Other1 << ($i+3))) {
-            $Ctxt .= "\n<tr>" . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i",3,3,
-                   "class=$cls $Hide $Colour",'',"Other$i:$Catid:$YEAR");
-
+        } else {
+          echo "\n<tr $Colour><td $Colour>" .  fm_checkbox("<b>" . $Cat['Name'] . "</b>",$VCY,'Status',
+            "onchange=Update_VolCats(event,'$cls',$Catid,$YEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",
+            "Status:$Catid:$YEAR",0,'') .
+            "<span  class=$cls $Hide><br>Team Preference: " . fm_select($VolOrders,$VCY,'VolOrder',1,'',"VolOrder:$Catid:$YEAR") . "</span>" .
+            ($M?' &nbsp; ':"<td $Csp4 $Colour>") . $Cat['Description'] ;
+        }
+        if ($VCY['Status'] > 0) {
+          $ShowGroup = 1;
+          if ($cp & VOL_FullAvail) {
+            $NeedAV = 1;
           } else {
-            $Ctxt .= "\n<tr>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",4,"colspan=4 class=$cls $Hide $Colour",'',"Other$i:$Catid:$YEAR") .
-                              $Cat["Q$i" . "Extra"] ;
+            $NeedAD = 1;
           }
         }
       }
 
+//      echo "<tr><td>$ShowGroup<td>"; var_dump($Cat);
+
+      $ShowAnyway = (($VCY['Likes']??0) || ($VCY['Dislikes']??0) || ($VCY['Experience']??0) );
+      if (!$ShowAnyway) {
+        for ($i=1; $i<5; $i++) {
+          if ($cp & (VOL_Other1 << ($i-1))) {
+            if (($cp & (VOL_Other1 << ($i+3))) && ($Cat["OtherQ$i"]??0)) {
+              $ShowAnyWay = 1;
+              break;
+            }
+          }
+        }
+      }
+
+      if (($Cat['FormGroup'] == 0) || (($Cat['FormGroup'] != 0) && (($cp & VOL_GROUPQS) != 0)) || $ShowAnyway) {
+        $Xtr = "class=CatGroup" . $Cat['FormGroup'] . (($ShowGroup || $ShowAnyway)?'':' hidden');
+          if ($cp & VOL_Likes)   {
+            echo "\n<tr $Xtr $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',$Col5,"$Csp4 class=$cls $Colour",'',
+                     "Likes:$Catid:$YEAR") . $Cat['LExtra'];
+          }
+          if ($cp & VOL_Dislikes){
+            echo "\n<tr $Xtr $Colour>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',$Col5,"$Csp4 class=$cls $Colour",'',
+                     "Dislikes:$Catid:$YEAR") . $Cat['DExtra'];
+          }
+
+          if ($cp & VOL_Exp){
+            echo "\n<tr $Xtr $Colour>" . ($M?"<td $Colour>":'') . fm_textarea("Please outline your relevant experience", $VCY,'Experience',$Col5-1,$Col3,
+              " class=$cls $Hide $Colour",'', "Experience:$Catid:$YEAR");
+          }
+          for ($i=1; $i<5; $i++) {
+            if ($cp & (VOL_Other1 << ($i-1))) {
+              if ($cp & (VOL_Other1 << ($i+3))) {
+                echo "\n<tr $Xtr $Colour>" . ($M?"<td $Colour>":'') . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i",$Col4,$Col3,
+                       "class=$cls $Hide $Colour",'',"Other$i:$Catid:$YEAR");
+
+              } else {
+                echo "\n<tr $Xtr $Colour>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",$Col5,"$Csp4 class=$cls $Colour",'',"Other$i:$Catid:$YEAR") .
+                                  $Cat["Q$i" . "Extra"] ;
+              }
+            }
+          }
+          if (!$ShowAnyway) $ShowGroup = 0;
+      }
+    }
 // tabs 0=none, 1 normal, 2 lines between, 3 box before txt
 // function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field2='',$colours=0,$multi=0,$extra3='',$extra4='') {
 
-      if ($VolMgr) {
-        $Ctxt = "\n<tr $Colour><td rowspan=$rows $Colour>" .
-                fm_radio("<b>" . $Cat['Name'] . "</b> " . fm_select($VolOrders,$VCY,'VolOrder',1,'',"VolOrder:$Catid:$YEAR") ,$CatStatus,$VCY,'Status',
-                "onchange=Update_VolMgrCats(event,'$cls',$Catid,$YEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",-3,'',
-                "Status:$Catid:$YEAR") . "<br>" .
-                "<td  colspan=4 $Colour>" . $Cat['Description'] . $Ctxt; //M
-
-      } else {
-        $Ctxt = "\n<tr $Colour><td rowspan=$rows $Colour>" .  fm_checkbox("<b>" . $Cat['Name'] . "</b>",$VCY,'Status',
-                "onchange=Update_VolCats('$cls',$Catid,$YEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",
-                "Status:$Catid:$YEAR",0,'') .
-                "<span  class=$cls $Hide><br>Team Preference: " . fm_select($VolOrders,$VCY,'VolOrder',1,'',"VolOrder:$Catid:$YEAR") . "</span>" .
-                "<td  colspan=4 $Colour>" . $Cat['Description'] . $Ctxt;
-      }
-      echo $Ctxt. "\n"; // $Desc,&$data,$field,$extra='',$field2='',$split=0,$extra2='
+    if ($M) {
+      echo "</table>";
+      echo "<table border>\n";
+    } else {
 
     }
 
-    echo "\n<tr><td colspan=5><h3><center>Part 3: Availability in $YEAR</center></h3>" .
-         "If you could help on the days below, please give the times you would be available\n";
-    if (isset($DayTeams['Before'])) echo "\n<tr id=TRAvailBefore>" .
-        fm_text("Months before the festival",$VYear,"AvailBefore",4,'','',"AvailBefore::$YEAR") .
-        "<div id=TeamsBefore class=Inline>" . $DayTeams['Before'] . "</div>"; // " . (empty($DayShow['Before'])?" hidden " : "") . "
-    if (isset($DayTeams['Week'])) echo "\n<tr id=TRAvailWeek>" .
-        fm_text("Week before the festival",$VYear,"AvailWeek",4,'','',"AvailWeek::$YEAR")  .
-        "<div id=TeamsWeek class=Inline>" . $DayTeams['Week'] . "</div>";//  " . (empty($DayShow['Week'])?" hidden " : "") . "
-    for ($day = $YEARDATA['FirstDay']-1; $day<=$YEARDATA['LastDay']+1; $day++) {
-      $av = "Avail" . ($day <0 ? "_" . (-$day) : $day);
- //     $rs = (($day<$YEARDATA['FirstDay'] || $day> $YEARDATA['LastDay']));
-      echo "\n<tr id=TR$av>" .
-           fm_text("On " . FestDate($day,'M'), $VYear,$av,4,'','',"$av::$YEAR") . "<div id=TeamsWeek class=Inline>" . $DayTeams[$day] . "</div>";
-    }// " . (empty($DayShow[$day])?" hidden " : "") . "
+    $Days = [];
+    for ($d = $YEARDATA['FirstDay']; $d <= $YEARDATA['LastDay']; $d++) $Days[$d] = FestDate($d,'V');
+    $Day_Colours = [0=>'slategray', 1=>'seagreen',2=>'darkcyan',3=>'peru'];
+
+ //   function fm_radio($Desc,&$defn,&$data,$field,$extra='',$tabs=1,$extra2='',$field2='',$colours=0,$multi=0,$extra3='',$extra4='') {
+
+    echo "\n<tr><td $Csp5><h3><center>Part 3: Availability in $YEAR</center></h3></tr>";
+      echo "<tr class=NeedDept " . ($NeedAD?'':' hidden') . "><td $Csp5><h3>Please give your arrival, departure day/time and any commitments you have:</h3>\n";
+      echo "<tr class=NeedDept " . ($NeedAD?'':' hidden') . "><td colspan=2>" .
+        fm_radio('<b>Arrival</b>',$Days,$VYear,'Arrival','',0,'',"Arrival::$YEAR",$Day_Colours) . ($M?' ':'<td>') .
+        fm_text0('Time',$VYear,'ArriveTime',1,'','',"ArriveTime::$YEAR");
+      echo "<tr class=NeedDept " . ($NeedAD?'':' hidden') . "><td colspan=2>" .
+        fm_radio('<b>Depart</b>',$Days,$VYear,'Depart','',0,'',"Depart::$YEAR",$Day_Colours) .
+        ($M?' ':'<td>') . fm_text0('Time',$VYear,'DepartTime',1,'','',"DepartTime::$YEAR");
+
+    echo "<tr class=NeedAvail " . ($NeedAV?'':' hidden') . "><td $Csp5><h3>Please give the details as to when you would be available:</h3>\n";
+      if (isset($DayTeams['Before'])) echo "<tr class=NeedAvail " . ($NeedAV?'':' hidden') . ">" .
+        fm_text("Months before the festival",$VYear,"AvailBefore",$Col4,'','',"AvailBefore::$YEAR");
+        "<div id=TeamsBefore class=Inline>" . $DayTeams['Before']; // " . (empty($DayShow['Before'])?" hidden " : "") . "
+        if (isset($DayTeams['Week'])) echo "<tr class=NeedAvail " . ($NeedAV?'':' hidden') . ">" .
+          fm_text("Week before the festival",$VYear,"AvailWeek",$Col4,'','',"AvailWeek::$YEAR");
+//          "<div id=TeamsWeek class=Inline>" . $DayTeams['Week'];//  " . (empty($DayShow['Week'])?" hidden " : "") . "
+      for ($day = $YEARDATA['FirstDay']-1; $day<=$YEARDATA['LastDay']+1; $day++) {
+        $av = "Avail" . ($day <0 ? "_" . (-$day) : $day);
+   //     $rs = (($day<$YEARDATA['FirstDay'] || $day> $YEARDATA['LastDay']));
+        echo "\n<tr class=NeedAvail " . ($NeedAV?'':' hidden') . ">" .
+             fm_text("On " . FestDate($day,'M'), $VYear,$av,$Col4,'','',"$av::$YEAR"); // . "<div id=TeamsWeek class=Inline>" . $DayTeams[$day] . "</div>";
+      }// " . (empty($DayShow[$day])?" hidden " : "") . "
+    echo "</div>";
+
+
+    echo "<tr>" . fm_text('Do you have any commitments which mean you are unavailable for part of the festival',$VYear,'Commitments',$Col4);
+
+    if ($M) {
+      echo "</table>";
+      echo "<table border>\n";
+    } else {
+
+    }
 
      echo "\n<tr><td colspan=5><h3><center>Part 4: Anything else for $YEAR</center></h3>";
     if (Feature('Vol_Children')) {
-      echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their names and ages)",$VYear,'Children',4,'','',"Children::$YEAR");
-      echo "<tr>" . fm_text("Free Youth tickets (11 to 17 - please give their names and ages)",$VYear,'Youth',4,'','',"Youth::$YEAR");
-      if (Access('SysAdmin') || (isset($VYear['Adults']) && $VYear['Adults'] > 1)) echo "<tr>" . fm_text("Adults",$VYear,'Adults',4,'','',"Adults::$YEAR");
+      echo "<tr>" . fm_text("Free Childrens tickets (under 10 - please give their names and ages)",$VYear,'Children',$Col4,'','',"Children::$YEAR");
+      echo "<tr>" . fm_text("Free Youth tickets (11 to 17 - please give their names and ages)",$VYear,'Youth',$Col4,'','',"Youth::$YEAR");
+      if (Access('SysAdmin') || (isset($VYear['Adults']) && $VYear['Adults'] > 1)) {
+        echo "<tr>" . fm_text("Adults",$VYear,'Adults',$Col4,'','',"Adults::$YEAR");
+      }
     }
     if (Feature('Vol_Camping')) {
       $camps = Get_Campsites('Task',1);
 //var_dump($camps);exit;
-      echo "<tr>" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',3,' colspan=4',"CampNeed::$YEAR",
+      echo "<tr>$td" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',$Col3," $Csp4 ","CampNeed::$YEAR",
         0,0,''," onchange=CampingVolSet('CampNeed::$YEAR')");
-      echo "<tr id=CampPUB>" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',1,' colspan=4',"CampType::$YEAR");
-      echo "<tr id=CampREST>" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
-                    $VYear,'CampText',4,'','',"CampText::$YEAR");
+      echo "<tr id=CampPUB>$td" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',1," $Csp4 ","CampType::$YEAR");
+      echo "<tr id=CampREST>$td" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
+                    $VYear,'CampText',$Col4,'','',"CampText::$YEAR");
     }
 
 
-    echo "\n<tr><td><h3>Anything Else /Notes:</h3><td colspan=4>" . fm_basictextarea($VYear,'Notes',3,3,'',"Notes::$YEAR");
+    echo "\n<tr><td><h3>Anything Else /Notes:</h3>" . ($M?'<br>':'<td colspan=4>'). fm_basictextarea($VYear,'Notes',3,$Col3,'',"Notes::$YEAR");
     $Stat = empty($VYear['Status'])?0:$VYear['Status'];
-    echo "\n<tr><td>Application Status:<td colspan=3 " . ($Stat?'style=color:Green;font-weight:bold;>': 'style=color:Red;font-weight:bold;>') . $YearStatus[$Stat];
+    echo "\n<tr><td>Application Status:" . ($M?'<br><span ':"<td $Csp4 ") .
+      ($Stat?'style=color:Green;font-weight:bold;>': 'style=color:Red;font-weight:bold;>') . $YearStatus[$Stat];
     if ($VYear['Status'] == 1 && $VYear['SubmitDate']) echo " On " . date('d/n/Y',$VYear['SubmitDate']);
     if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate'])
       echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
@@ -463,7 +586,9 @@ function VolForm(&$Vol,$Err='',$View=0) {
       echo "<tr><td>Link:<td colspan=4>" . htmlspec(Vol_Details('INNERLINK',$Vol)) . "<br>" . Vol_Details('LINK',$Vol);
       echo "<tr>" . fm_textarea('History',$VYear,'History',4,3);
     }
-  echo "</table></div><p>";
+  echo "</table><p>";
+
+//  if ($M) echo "</div></div>";
 
     echo "<H3>Actions:</h3>";
     echo "<input type=submit hidden name=ACTION value=View>\n";
@@ -487,7 +612,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
   dotail();
 }
 
-
+/*
 function VolFormM(&$Vol,$Err='',$View=0) {
   global $VolCats,$YEARDATA,$YEAR,$YEAR,$Relations,$YearStatus,$AgeCats,$CampType,$CatStatus,$M,$VolOrders;
   $Volid = $Vol['id'];
@@ -805,11 +930,11 @@ function CompAdd($Volid,$Err='') {
 
   dotail();
 }
-
+*/
 
 
 function Vol_Validate(&$Vol) {
-  global $YEARDATA,$VolCats,$YEAR;
+  global $YEARDATA,$VolCats,$YEAR,$VolGroups;
   $mtch = [];
 
   $Num1st = $Num2nd = $Num3rd = 0;
@@ -878,7 +1003,7 @@ function Vol_Validate(&$Vol) {
 }
 
 function Vol_Emails(&$Vol,$reason='Submit') {// Allow diff message on reason=update
-  global $VolCats,$YEAR;
+  global $VolCats,$YEAR,$VolGroups;
   $Leaders = [];
   Email_Volunteer($Vol,"Vol_Application_$reason",$Vol['Email']);
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
@@ -899,7 +1024,7 @@ function Vol_Emails(&$Vol,$reason='Submit') {// Allow diff message on reason=upd
 }
 
 function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on reason=update
-  global $VolCats,$YEAR;
+  global $VolCats,$YEAR,$VolGroups;
   $Leaders = [];
 
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
@@ -918,7 +1043,7 @@ function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on
 
 
 function CSV_Vols() {
-  global $db,$VolCats,$YEARDATA,$YearStatus,$Cat_Status_Short;
+  global $db,$VolCats,$YEARDATA,$YearStatus,$Cat_Status_Short,$VolGroups;
 
   $output = fopen('php://output', 'w');
   $heads = ['Name','Email','Phone(s)','Status'];
@@ -960,7 +1085,7 @@ function CSV_Vols() {
 
 
 function List_Vols() {
-  global $db,$VolCats,$YEARDATA,$YEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus,$VolOrders,$EmailMsgs;
+  global $db,$VolCats,$YEARDATA,$YEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus,$VolOrders,$EmailMsgs,$VolGroups;
   echo "<button class='floatright FullD' onclick=\"($('.FullD').toggle())\">All Applications</button>" .
        "<button class='floatright FullD' hidden onclick=\"($('.FullD').toggle())\">Curent Aplications</button> ";
   echo "<button class='floatright AvailD' onclick=\"($('.AvailD').toggle())\">Hide Availability</button>" .
@@ -1168,7 +1293,7 @@ function List_Vols() {
 }
 
 function List_Team($Team) {
-  global $YEAR,$VolCats,$CatStatus,$yesno;
+  global $YEAR,$VolCats,$CatStatus,$yesno,$VolGroups;
   $Cat = $VolCats[$Team];
   $CatP = $Cat['Props'];
   $SplitWhen = explode(',', $Cat['Listofwhen']);
@@ -1258,7 +1383,7 @@ function List_Team($Team) {
 }
 
 function List_Team_CSV($Team) {
-  global $YEAR,$VolCats,$CatStatus,$yesno;
+  global $YEAR,$VolCats,$CatStatus,$yesno,$VolGroups;
 
   $Cat = $VolCats[$Team];
   $CatP = $Cat['Props'];
@@ -1340,6 +1465,7 @@ function Email_Form_Only($Vol,$mess='',$xtra='') {
     echo fm_hidden('Second',$xtra);
     echo fm_hidden('Address',$Vol['Address']);
   }
+  if (isset($_REQUEST['C'])) echo fm_hidden('C',$_REQUEST['C']);
   echo "<tr>" . fm_text('Name',$Vol,'SN',2);
   echo "<tr>" . fm_text('Email',$Vol,'Email',2);
   echo fm_hidden('A','NewStage2');
@@ -1462,7 +1588,7 @@ function SendCatsToBrowser() {
 }
 
 function Send_Accepts($Vol) {
-  global $VolCats;
+  global $VolCats,$VolGroups;
 
   $Accepted = $Rejected = $Pending = 0;
   $VY = Get_Vol_Year($Vol['id']);
@@ -1495,16 +1621,16 @@ function VolAction($Action,$csv=0) {
 //var_dump($Action);
 //var_dump($_REQUEST);
 
-  $M = (isset($_REQUEST['M'])?'VolFormM':'VolForm');
+  $M = 'VolForm'; //(isset($_REQUEST['M'])?'VolFormM':'VolForm');
 
   switch (Sanitise($Action,60)) {
   case 'New': // New Volunteer
   default:
-    $Vol = ['id'=>-1, 'Year'=>$YEAR,'KeepMe'=>1];
+    $Vol = ['id'=>-1, 'Year'=>$YEAR,'KeepMe'=>1,'Cat'=>($_REQUEST['C']??0)];
     Email_Form_Only($Vol);
     break;
 
-  case 'NS2':
+  case 'NS2': // Old import code - no need to keep up to date
     $mindata = json_decode(base64_decode($_REQUEST['data']),true);
     $Name = $mindata[0] . " " . $mindata[1];
     $Vol = ['Year'=>$YEAR, 'SN'=>$Name, 'Email'=>$mindata[2], 'KeepMe'=>1, 'AccessKey' => rand_string(40) ];
@@ -1523,14 +1649,16 @@ function VolAction($Action,$csv=0) {
         $Vol = $OV;
         $M($Vol);
       }
-      $Vol = ['Year'=>$YEAR, 'SN'=>$Name, 'Email'=>$_REQUEST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40), 'Address'=>$_REQUEST['Address'] ];
+      $Vol = ['Year'=>$YEAR, 'SN'=>$Name, 'Email'=>$_REQUEST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40), 'Address'=>$_REQUEST['Address'],
+              'Cat'=>($_REQUEST['C']??0)];
+
       $Volid = Gen_Put('Volunteers',$Vol);
       $M($Vol);
     }
     Check_Unique(); // Deliberate drop through
 
   case 'Form': // New stage 2
-    $Vol = ['Year'=>$YEAR, 'SN'=>$_REQUEST['SN'], 'Email'=>$_REQUEST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40)];
+    $Vol = ['Year'=>$YEAR, 'SN'=>$_REQUEST['SN'], 'Email'=>$_REQUEST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40), 'Cat'=>($_REQUEST['C']??0)];
     $Volid = Gen_Put('Volunteers',$Vol);
     $M($Vol);
     break;
