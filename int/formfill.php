@@ -10,7 +10,7 @@
   $match = [];
   $mtch = [];
 
- var_dump($_REQUEST);
+// var_dump($_REQUEST);
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':

@@ -4,8 +4,8 @@ var Teams = [];
 var PlanYear;
 
 function TeamsSelected() {
-  Teams.forEach((team,idx)=> { team['Selected'] = $('#Props:' +team['id'] + ':' +PlanYear).is(':checked');});
-  var a=1;
+  Teams.forEach((team)=> { team['Selected'] = $('#Props:' +team['id'] + ':' +PlanYear).is(':checked');});
+//  var a=1;
 }
 
 function ShowAvails() {
@@ -28,7 +28,9 @@ function ShowAvails() {
 }
 
 function Update_VolCats(e,cls,catid,year) {
-  var Val = e.target.checked;
+  var Mgr = document.getElementById('VolManager').value;
+  
+  var Val = (Mgr? + e.target.value:e.target.checked);
   if (Val) {
     $('.'+cls).show();
     var cat = Teams[catid];
@@ -40,33 +42,39 @@ function Update_VolCats(e,cls,catid,year) {
     } else {
       $('.NeedDept').show();
     }
+    $('.NoTeams').hide();
   } else {  
     $('.'+cls).hide();
     var cat = Teams[catid];
     if (cat['FormGroup']) {
       var Gs =0 , NeedAv =0, NeedDp = 0;
       for (var i in Teams) { 
-        if ((Teams[i].Props & 1) && ((Teams[i].Props & 0x200000) ==0) && (Teams[i].FormGroup == cat['FormGroup'])) {
-          var statuse = document.getElementById('Status:'+Teams[i].id+':'+year);
-          if (statuse && statuse.checked ) {
-            Gs = 1;
-            if (Teams[i].Props & 0x100000) {
-               NeedAv = 1;
-            } else {
-               NeedDp = 1;
-            } 
-          }
+        var statuse = document.getElementById('Status:'+Teams[i].id+':'+year);
+        var select = (Mgr? (statuse && (statuse.value > 0)): (statuse && statuse.checked));
+
+        if ((Teams[i].Props & 1) && select ) {
+          if (((Teams[i].Props & 0x200000) ==0) && (Teams[i].FormGroup == cat['FormGroup'])) Gs = 1;
+          if (Teams[i].Props & 0x100000) {
+             NeedAv = 1;
+          } else {
+             NeedDp = 1;
+          } 
         }
       }
       
       if (!Gs) $('.CatGroup' + cat['FormGroup']).hide();
-      $('.NeedAvail').toggle(NeedAv);
-      $('.NeedDept').toggle(NeedDp);
-
+      if (NeedAv) { $('.NeedAvail').show()} else {$('.NeedAvail').hide()};
+      if (NeedDp) { $('.NeedDept').show() } else {$('.NeedDept').hide()};
+      if (NeedAv || NeedDp ) {
+        $('.NoTeams').hide();
+      } else {
+        $('.NoTeams').show();
+      }
     } 
   }
 }
 
+/*
 function Update_VolMgrCats(e,cls,catid,year) {
 debugger;
   var Val = e.target.value;
@@ -91,7 +99,7 @@ debugger;
       if (!$Gs) $('.CatGroup' + cat['FormGroup']).hide();
     } 
   }
-}
+}*/
 
 $(document).ready(function() {
 //  debugger;
@@ -119,6 +127,7 @@ function CampingVolSet(nam) {
   else if (CampVal < 30) { $('#CampPUB').hide(); $('#CampREST').show(); }; 
 }
 
+/*
 function VolEnables(volid,year) {
   PlanYear = year;
 
@@ -129,18 +138,27 @@ function VolEnables(volid,year) {
 
 // Sort out camping display
 
-}
+}*/
 
 function VolListFilter() {
 // debugger;
   var Show = $("input[name=ThingShow]:checked").val();
-  var dbg = document.getElementById('Debug');
+//  var dbg = document.getElementById('Debug');
   $(".Volunteer").each(function() {
     if (Show == 0) $(this).show();
     if (Show > 0) {
       if ($(this).hasClass("VolCat" + Show)) { $(this).show(); } else { $(this).hide(); };
     }
   });
+  
+  for (var i in Teams) { 
+    var catid = Teams[i].id;
+    if (Show == 0 || Show==catid) {
+      $('.Cat' + i).show();
+    } else { 
+      $('.Cat' + i).hide();
+    }
+  }
 }
 
 var Clickids = [];
@@ -159,3 +177,37 @@ function AcceptTeam(id,catid) {
   $("#Wanted" + id + 'CAT' + catid).text('Y');
 }
 
+var SelectedAvail = 0;
+
+function AvailDisp(Code) {
+  $('#Avail' + SelectedAvail).removeClass('AvSelect');
+  SelectedAvail = Code;
+  $('#Avail' + SelectedAvail).addClass('AvSelect');
+
+  switch (Code) {
+    case 0: 
+      $('.AvailD1').hide();
+      $('.AvailD2').hide();
+      $('.AvailD3').hide();
+      break;
+
+    case 1: 
+      $('.AvailD1').show();
+      $('.AvailD2').hide();
+      $('.AvailD3').show();
+      break;
+
+    case 2: 
+      $('.AvailD1').hide();
+      $('.AvailD2').show();
+      $('.AvailD3').show();
+      break;
+
+    case 3: 
+      $('.AvailD1').show();
+      $('.AvailD2').show();
+      $('.AvailD3').show();
+      break;
+
+  }
+}
