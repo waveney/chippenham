@@ -13,7 +13,8 @@ function Show_Cat($Cat,$Act='UPDATE') {
   echo "Properties: 1=In use, 2=Likes, 4=Dislikes, 8=Need Over 21, 10=Upload, 20=Experience, 40=Need Money, 80=Need DBS, " .
        " 100=OtherQ1, 200=OtherQ2, 400=OtherQ3, 800=OtherQ4, " .
        " 1000=LongQ1, 2000=LongQ2, 4000=LongQ3, 8000=LongQ4, " .
-       " 10000=Special Camp, 20000=Don't list, 40000=Collecting Tins, 80000=Spare, 100000=Full AvailQs, 20000=GroupQs<br>";
+       " 10000=Special Camp, 20000=Don't list, 40000=Collecting Tins, 80000=Spare, 100000=Full AvailQs, 200000=GroupQs, " .
+       "1000000=Q1GP, 2000000=Q2GP, 4000000=Q3GP, 8000000=Q4GP<br>";
   echo "For List of When: 'Before' - long time before, 'Week' - week before, 0=Friday of festival, Fest=Just Fest, -1 = day before, 1 next day etc.  " .
        "upto -4 and +11<p>\n";
   echo "Put ALL members of a Group in Priority order Higher than the Groups Questions.<p>";

@@ -38,6 +38,8 @@ define('VOL_Tins',0x40000);
 // define('VOL_TeamFull',0x80000); Don't Use
 define('VOL_FullAvail',0x100000);
 define('VOL_GROUPQS',0x200000);
+define('VOL_HEADER',0x400000);
+define('VOL_GRP1',0x1000000);
 
 // Button Name, Vol_Button
 $EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','E' => Feature('Vol_Special_Mess'),
@@ -470,6 +472,9 @@ function VolForm(&$Vol,$Err='',$View=0) {
             $NeedAD = 1;
           }
         }
+      } else if ($cp & VOL_HEADER) {
+        echo "\n<tr $Colour class='CatGroup" . $Cat['FormGroup'] . "'" . ($ShowGroup?'':' hidden') .
+          "><td $Colour colspan=5><b>" . $Cat['Description'] . "</b>";
       }
 
 //      echo "<tr><td>$ShowGroup<td>"; var_dump($Cat);
@@ -487,29 +492,32 @@ function VolForm(&$Vol,$Err='',$View=0) {
       }
 
       if (($Cat['FormGroup'] == 0) || (($Cat['FormGroup'] != 0) && (($cp & VOL_GROUPQS) != 0)) || $ShowAnyway) {
-        $Xtr = (($Cat['FormGroup'] && ($cp & VOL_GROUPQS) != 0)?("class='$cls CatGroup" . $Cat['FormGroup'] . "'"):"class=$cls") .
-        ((((($cp & VOL_GROUPQS) != 0) && $ShowGroup) || ($ShowAnyway && ($VCY['Status']>0)))?'':' hidden');
+        $Xtr = (($Cat['FormGroup'] && ($cp & VOL_GROUPQS) != 0)?("class='$cls CatGroup" . $Cat['FormGroup'] . "'"):"class=$cls");
+        $QHide = ((((($cp & VOL_GROUPQS) != 0) && $ShowGroup) || ($ShowAnyway && ($VCY['Status']>0)))?'':' hidden');
           if ($cp & VOL_Likes)   {
-            echo "\n<tr $Xtr $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',$Col5,"$Csp4 class=$cls $Colour",'',
+            echo "\n<tr $Xtr $QHide $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',$Col5,"$Csp4 class=$cls $Colour",'',
                      "Likes:$Catid:$YEAR") . $Cat['LExtra'];
           }
           if ($cp & VOL_Dislikes){
-            echo "\n<tr $Xtr $Colour>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',$Col5,"$Csp4 class=$cls $Colour",'',
+            echo "\n<tr $Xtr $QHide $Colour>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',$Col5,"$Csp4 class=$cls $Colour",'',
                      "Dislikes:$Catid:$YEAR") . $Cat['DExtra'];
           }
 
           if ($cp & VOL_Exp){
-            echo "\n<tr $Xtr $Colour>" . ($M?"<td $Colour>":'') . fm_textarea("Please outline your relevant experience", $VCY,'Experience',$Col5-1,$Col3,
-              " class=$cls $Hide $Colour",'', "Experience:$Catid:$YEAR");
+            echo "\n<tr $Xtr $QHide $Colour>" . ($M?"<td $Colour>":'') .
+              fm_textarea("Please outline your relevant experience", $VCY,'Experience',$Col5-1,$Col3,
+              " class=$cls $QHide $Colour",'', "Experience:$Catid:$YEAR");
           }
           for ($i=1; $i<5; $i++) {
             if ($cp & (VOL_Other1 << ($i-1))) {
+              $HidQ = (($cp & (VOL_GRP1 << ($i-1)))?'':$QHide);
               if ($cp & (VOL_Other1 << ($i+3))) {
-                echo "\n<tr $Xtr $Colour>" . ($M?"<td $Colour>":'') . fm_textarea($Cat["OtherQ$i"] .($Cat["Q$i" . "Extra"]?"<br>" . $Cat["Q$i" . "Extra"]:''),
-                      $VCY,"Other$i",$Col4,$Col3,"class=$cls $Hide $Colour",'',"Other$i:$Catid:$YEAR");
+                echo "\n<tr $Xtr $HidQ $Colour>" . ($M?"<td $Colour>":'') .
+                      fm_textarea($Cat["OtherQ$i"] .($Cat["Q$i" . "Extra"]?"<br>" . $Cat["Q$i" . "Extra"]:''),
+                      $VCY,"Other$i",$Col4,$Col3,"class=$cls $HidQ $Colour",'',"Other$i:$Catid:$YEAR");
 
               } else {
-                echo "\n<tr $Xtr $Colour>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",$Col5,"$Csp4 class=$cls $Colour",'',"Other$i:$Catid:$YEAR") .
+                echo "\n<tr $Xtr $HidQ $Colour>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",$Col5,"$Csp4 class=$cls $Colour",'',"Other$i:$Catid:$YEAR") .
                                   $Cat["Q$i" . "Extra"] ;
               }
             }
