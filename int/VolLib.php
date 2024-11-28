@@ -399,7 +399,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     $DayClasses = [];
     $DayShow = [];
     $NeedAD = $NeedAV = 0;
-    $ShowGroup = 0;
+    $LastGroup = $ShowGroup = 0;
 
     foreach ($VolCats as $Cat) {
       $Catid = $Cat['id'];
@@ -514,7 +514,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
               }
             }
           }
-          if (!$ShowAnyway) $ShowGroup = 0;
+          if (!$ShowAnyway || $Cat['FormGroup']==0) $ShowGroup = 0;
       }
     }
 // tabs 0=none, 1 normal, 2 lines between, 3 box before txt
