@@ -342,7 +342,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     echo "<tr>" . fm_text('Email',$Vol,'Email',$Col4);
     echo "<tr>" . fm_text('Phone(s)',$Vol,'Phone',$Col4);
 
-    echo "<tr>$td" . fm_textarea("Address", $Vol,'Address',$Col4,$Col3);
+    echo "<tr>" . ($M?'<td>':'') . fm_textarea("Address", $Vol,'Address',$Col4,$Col3);
 
     echo "<tr>$td" . fm_Radio("Age range",$AgeCats,$Vol,'Over18',"",$Col1). $td3  . "All volunteers need to be over 18, a few roles need over 21.";
     if ($VolMgr) echo " <span class=NotSide>" . fm_checkbox("Allow Underage",$Vol,'AllowUnder') . "</span>";
@@ -504,8 +504,8 @@ function VolForm(&$Vol,$Err='',$View=0) {
           for ($i=1; $i<5; $i++) {
             if ($cp & (VOL_Other1 << ($i-1))) {
               if ($cp & (VOL_Other1 << ($i+3))) {
-                echo "\n<tr $Xtr $Colour>" . ($M?"<td $Colour>":'') . fm_textarea($Cat["OtherQ$i"] . "<br>" . $Cat["Q$i" . "Extra"], $VCY,"Other$i",$Col4,$Col3,
-                       "class=$cls $Hide $Colour",'',"Other$i:$Catid:$YEAR");
+                echo "\n<tr $Xtr $Colour>" . ($M?"<td $Colour>":'') . fm_textarea($Cat["OtherQ$i"] .($Cat["Q$i" . "Extra"]?"<br>" . $Cat["Q$i" . "Extra"]:''),
+                      $VCY,"Other$i",$Col4,$Col3,"class=$cls $Hide $Colour",'',"Other$i:$Catid:$YEAR");
 
               } else {
                 echo "\n<tr $Xtr $Colour>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",$Col5,"$Csp4 class=$cls $Colour",'',"Other$i:$Catid:$YEAR") .
@@ -585,7 +585,8 @@ function VolForm(&$Vol,$Err='',$View=0) {
       echo "<tr>$td" . fm_radio("Do you want camping?",$camps,$VYear,'CampNeed','',$Col3," $Csp4 ","CampNeed::$YEAR",
         0,0,''," onchange=CampingVolSet('CampNeed::$YEAR')");
       echo "<tr id=CampPUB>$td" . fm_radio("If so for what?" ,$CampType,$VYear,'CampType','',$Col1," $Csp4 ","CampType::$YEAR");
-      echo "<tr id=CampREST>$td" . fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
+      echo "<tr id=CampREST>" . ($M?'<td>':'') .
+                    fm_text('Please describe the footprint you need.<br>For example 1 car one tent /<br>one car one tent and a caravan etc ',
                     $VYear,'CampText',$Col4,'','',"CampText::$YEAR");
     }
 
@@ -1279,11 +1280,11 @@ function List_Vols($AllVols='') {
 
     echo "<td class=smalltext id=YearStatus$id>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" .
       $YearStatus[$VY['Status']] . "</span>"):'');
-      if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
+      if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && ($VY['SubmitDate']??0)) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
 
     echo "<td class='smalltext FullD'>" . ((isset($VLY['id']) && $VLY['id']>0)?("<span style='background:" . $YearColour[$VLY['Status']] . ";'>" .
       $YearStatus[$VLY['Status']] . "</span>"):'');
-      if (isset($VLY['id']) && $VLY['id']>0 && $VLY['Status'] == 1 && $VY['SubmitDate']) echo "<br>" . date('d/n/Y',$VLY['SubmitDate']);
+      if (isset($VLY['id']) && $VLY['id']>0 && $VLY['Status'] == 1 && ($VY['SubmitDate']??0)) echo "<br>" . date('d/n/Y',$VLY['SubmitDate']);
 
     echo "<td $fdh>$year";
     echo $str;
