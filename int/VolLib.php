@@ -487,7 +487,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       }
 
       if (($Cat['FormGroup'] == 0) || (($Cat['FormGroup'] != 0) && (($cp & VOL_GROUPQS) != 0)) || $ShowAnyway) {
-        $Xtr = (($Cat['FormGroup'] && ($cp & VOL_GROUPQS) != 0)?"class=CatGroup" . $Cat['FormGroup']:"class=$cls") .
+        $Xtr = (($Cat['FormGroup'] && ($cp & VOL_GROUPQS) != 0)?("class='$cls CatGroup" . $Cat['FormGroup'] . "'"):"class=$cls") .
            (($ShowGroup || ($ShowAnyway && ($VCY['Status']>0)))?'':' hidden');
           if ($cp & VOL_Likes)   {
             echo "\n<tr $Xtr $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',$Col5,"$Csp4 class=$cls $Colour",'',
