@@ -34,7 +34,7 @@ define('VOL_Other2',0x200);
 define('VOL_Other3',0x400);
 define('VOL_Other4',0x800);
 define('VOL_NoList',0x20000);
-define('VOL_Tins',0x40000);
+define('VOL_Tins',0x40000); // Not Used
 // define('VOL_TeamFull',0x80000); Don't Use
 define('VOL_FullAvail',0x100000);
 define('VOL_GROUPQS',0x200000);
@@ -510,7 +510,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
           }
           for ($i=1; $i<5; $i++) {
             if ($cp & (VOL_Other1 << ($i-1))) {
-              $HidQ = (($cp & (VOL_GRP1 << ($i-1)))?'':$QHide);
+              $HidQ = (($cp & (VOL_GRP1 << ($i-1)) && ($Cat['Status']>0))?'':$QHide);
               if ($cp & (VOL_Other1 << ($i+3))) {
                 echo "\n<tr $Xtr $HidQ $Colour>" . ($M?"<td $Colour>":'') .
                       fm_textarea($Cat["OtherQ$i"] .($Cat["Q$i" . "Extra"]?"<br>" . $Cat["Q$i" . "Extra"]:''),
