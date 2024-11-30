@@ -513,16 +513,17 @@ function VolForm(&$Vol,$Err='',$View=0) {
         }
         for ($i=1; $i<5; $i++) {
           if ($cp & (VOL_Other1 << ($i-1))) {
-            if (!$BaseShow && ($cp & (VOL_GRP1 << ($i-1)) ==0 )) continue;
-            $HidQ = (($cp & (VOL_GRP1 << ($i-1)) && ($VCY['Status']>0))?'':$QHide);
-            if ($cp & (VOL_Other1 << ($i+3))) {
-              echo "\n<tr $Xtr $HidQ $Colour>" . ($M?"<td $Colour>":'') .
-                    fm_textarea($Cat["OtherQ$i"] .($Cat["Q$i" . "Extra"]?"<br>" . $Cat["Q$i" . "Extra"]:''),
-                    $VCY,"Other$i",$Col4,$Col3,"class=$cls $HidQ $Colour",'',"Other$i:$Catid:$YEAR");
+            if ($BaseShow || ($cp & (VOL_GRP1 << ($i-1)) )) {
+              $HidQ = (($cp & (VOL_GRP1 << ($i-1)) && ($VCY['Status']>0))?'':$QHide);
+              if ($cp & (VOL_Other1 << ($i+3))) {
+                echo "\n<tr $Xtr $HidQ $Colour>" . ($M?"<td $Colour>":'') .
+                      fm_textarea($Cat["OtherQ$i"] .($Cat["Q$i" . "Extra"]?"<br>" . $Cat["Q$i" . "Extra"]:''),
+                      $VCY,"Other$i",$Col4,$Col3,"class=$cls $HidQ $Colour",'',"Other$i:$Catid:$YEAR");
 
-            } else {
-              echo "\n<tr $Xtr $HidQ $Colour>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",$Col5,"$Csp4 class=$cls $Colour",'',"Other$i:$Catid:$YEAR") .
-                                $Cat["Q$i" . "Extra"] ;
+              } else {
+                echo "\n<tr $Xtr $HidQ $Colour>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",$Col5,"$Csp4 class=$cls $Colour",'',"Other$i:$Catid:$YEAR") .
+                                  $Cat["Q$i" . "Extra"] ;
+              }
             }
           }
         }
