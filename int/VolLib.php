@@ -40,6 +40,7 @@ define('VOL_FullAvail',0x100000);
 define('VOL_GROUPQS',0x200000);
 define('VOL_HEADER',0x400000);
 define('VOL_GRP1',0x1000000);
+define('VOL_GRPS',0xf000000);
 
 // Button Name, Vol_Button
 $EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','E' => Feature('Vol_Special_Mess'),
@@ -491,38 +492,41 @@ function VolForm(&$Vol,$Err='',$View=0) {
         }
       }
 
-      if (($Cat['FormGroup'] == 0) || (($Cat['FormGroup'] != 0) && (($cp & VOL_GROUPQS) != 0)) || $ShowAnyway) {
+      $Override = (($Cat['FormGroup'] != 0) && (($cp & VOL_GROUPQS) == 0) && (($cp & VOL_GRPS )!=0));
+      $BaseShow = (($Cat['FormGroup'] == 0) || (($Cat['FormGroup'] != 0) && (($cp & VOL_GROUPQS) != 0)) || $ShowAnyway);
+      if ($BaseShow || $Override) {
         $Xtr = (($Cat['FormGroup'] && ($cp & VOL_GROUPQS) != 0)?("class='$cls CatGroup" . $Cat['FormGroup'] . "'"):"class=$cls");
         $QHide = ((((($cp & VOL_GROUPQS) != 0) && $ShowGroup) || ($ShowAnyway && ($VCY['Status']>0)))?'':' hidden');
-          if ($cp & VOL_Likes)   {
-            echo "\n<tr $Xtr $QHide $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',$Col5,"$Csp4 class=$cls $Colour",'',
-                     "Likes:$Catid:$YEAR") . $Cat['LExtra'];
-          }
-          if ($cp & VOL_Dislikes){
-            echo "\n<tr $Xtr $QHide $Colour>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',$Col5,"$Csp4 class=$cls $Colour",'',
-                     "Dislikes:$Catid:$YEAR") . $Cat['DExtra'];
-          }
+        if ($BaseShow && ($cp & VOL_Likes))  {
+          echo "\n<tr $Xtr $QHide $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',$Col5,"$Csp4 class=$cls $Colour",'',
+                   "Likes:$Catid:$YEAR") . $Cat['LExtra'];
+        }
+        if ($BaseShow && ($cp & VOL_Dislikes)) {
+          echo "\n<tr $Xtr $QHide $Colour>" . fm_text1("Disliked " . $Cat['Name'] . " Tasks", $VCY,'Dislikes',$Col5,"$Csp4 class=$cls $Colour",'',
+                   "Dislikes:$Catid:$YEAR") . $Cat['DExtra'];
+        }
 
-          if ($cp & VOL_Exp){
-            echo "\n<tr $Xtr $QHide $Colour>" . ($M?"<td $Colour>":'') .
-              fm_textarea("Please outline your relevant experience", $VCY,'Experience',$Col5-1,$Col3,
-              " class=$cls $QHide $Colour",'', "Experience:$Catid:$YEAR");
-          }
-          for ($i=1; $i<5; $i++) {
-            if ($cp & (VOL_Other1 << ($i-1))) {
-              $HidQ = (($cp & (VOL_GRP1 << ($i-1)) && ($Cat['Status']>0))?'':$QHide);
-              if ($cp & (VOL_Other1 << ($i+3))) {
-                echo "\n<tr $Xtr $HidQ $Colour>" . ($M?"<td $Colour>":'') .
-                      fm_textarea($Cat["OtherQ$i"] .($Cat["Q$i" . "Extra"]?"<br>" . $Cat["Q$i" . "Extra"]:''),
-                      $VCY,"Other$i",$Col4,$Col3,"class=$cls $HidQ $Colour",'',"Other$i:$Catid:$YEAR");
+        if ($BaseShow && ($cp & VOL_Exp)) {
+          echo "\n<tr $Xtr $QHide $Colour>" . ($M?"<td $Colour>":'') .
+            fm_textarea("Please outline your relevant experience", $VCY,'Experience',$Col5-1,$Col3,
+            " class=$cls $QHide $Colour",'', "Experience:$Catid:$YEAR");
+        }
+        for ($i=1; $i<5; $i++) {
+          if ($cp & (VOL_Other1 << ($i-1))) {
+            if (!$BaseShow && ($cp & (VOL_GRP1 << ($i-1)) ==0 )) continue;
+            $HidQ = (($cp & (VOL_GRP1 << ($i-1)) && ($VCY['Status']>0))?'':$QHide);
+            if ($cp & (VOL_Other1 << ($i+3))) {
+              echo "\n<tr $Xtr $HidQ $Colour>" . ($M?"<td $Colour>":'') .
+                    fm_textarea($Cat["OtherQ$i"] .($Cat["Q$i" . "Extra"]?"<br>" . $Cat["Q$i" . "Extra"]:''),
+                    $VCY,"Other$i",$Col4,$Col3,"class=$cls $HidQ $Colour",'',"Other$i:$Catid:$YEAR");
 
-              } else {
-                echo "\n<tr $Xtr $HidQ $Colour>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",$Col5,"$Csp4 class=$cls $Colour",'',"Other$i:$Catid:$YEAR") .
-                                  $Cat["Q$i" . "Extra"] ;
-              }
+            } else {
+              echo "\n<tr $Xtr $HidQ $Colour>" . fm_text1($Cat["OtherQ$i"], $VCY,"Other$i",$Col5,"$Csp4 class=$cls $Colour",'',"Other$i:$Catid:$YEAR") .
+                                $Cat["Q$i" . "Extra"] ;
             }
           }
-          if (!$ShowAnyway || $Cat['FormGroup']==0) $ShowGroup = 0;
+        }
+        if (!$ShowAnyway || $Cat['FormGroup']==0) $ShowGroup = 0;
       }
     }
 // tabs 0=none, 1 normal, 2 lines between, 3 box before txt
