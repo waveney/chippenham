@@ -352,7 +352,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
     $Photo = Feature('VolPhoto');
     if ($Photo) echo "<tr rowspan=4 colspan=4 height=80><td>" . ($Photo == 1 ? 'Photo, not essential yet' : 'Photo') .
         fm_DragonDrop(1,'Photo','Volunteer',$Volid,$Vol,1,'',1,'','Photo');
-    echo "<tr><td>" . fm_checkbox("Are you happy to handle Money",$Vol,'Money',"","",0). $td3 . "Needed for some teams";
+    if (Feature('VolMoney')) echo "<tr><td>" . fm_checkbox("Are you happy to handle Money",$Vol,'Money',"","",0). $td3 . "Needed for some teams";
     echo "<tr><td>" . fm_checkbox("Keep my records",$Vol,'KeepMe',"","",($M?0:1),'colspan=4') .
          "Please uncheck this box if you do not wish the festival to contact you about our future events.<br>" .
          "If you are happy for us to save your details, they will be available to you when you apply next time!";
