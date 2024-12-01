@@ -261,6 +261,7 @@ function CatsInGroups() {
 function VolForm(&$Vol,$Err='',$View=0) {
   global $VolCats,$YEARDATA,$YEAR,$YEAR,$Relations,$YearStatus,$AgeCats,$CampType,$CatStatus,$VolOrders,$VolGroups,$ADTimes; //M
   $Volid = $Vol['id'];
+  $AgeColours = ['Orange','Yellow','lightGreen'];
 // var_dump($Vol);
 
   $M = $_REQUEST['M']??0;
@@ -347,7 +348,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
     echo "<tr>" . ($M?'<td>':'') . fm_textarea("Address", $Vol,'Address',$Col4,$Col3);
 
-    echo "<tr>$td" . fm_Radio("Age range",$AgeCats,$Vol,'Over18',"",$Col1). $td3  . "All volunteers need to be over 18, a few roles need over 21.";
+    echo "<tr>$td" . fm_Radio("Age range",$AgeCats,$Vol,'Over18'," style='margin-bottom:10'",$Col1,'','',$AgeColours). $td3  . "All volunteers need to be over 18, a few roles need over 21.";
     if ($VolMgr) echo " <span class=NotSide>" . fm_checkbox("Allow Underage",$Vol,'AllowUnder') . "</span>";
     $Photo = Feature('VolPhoto');
     if ($Photo) echo "<tr rowspan=4 colspan=4 height=80><td>" . ($Photo == 1 ? 'Photo, not essential yet' : 'Photo') .
@@ -420,6 +421,9 @@ function VolForm(&$Vol,$Err='',$View=0) {
         } else if (($Vol['Cat']??0) == $Catid) {
           $VCY['Status'] = 1;
           Put_Vol_Cat_Year($VCY);
+          if (empty($VYear['id'])) {
+            Put_Vol_Year($VYear);
+          }
         }
       }
 
@@ -494,9 +498,13 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
       $Override = (($Cat['FormGroup'] != 0) && (($cp & VOL_GROUPQS) == 0) && (($cp & VOL_GRPS )!=0));
       $BaseShow = (($Cat['FormGroup'] == 0) || (($Cat['FormGroup'] != 0) && (($cp & VOL_GROUPQS) != 0)) || $ShowAnyway);
+
+//      echo "<tr><td colspan=5>"; var_dump($Override,$BaseShow,$VCY);
+
       if ($BaseShow || $Override) {
         $Xtr = (($Cat['FormGroup'] && ($cp & VOL_GROUPQS) != 0)?("class='$cls CatGroup" . $Cat['FormGroup'] . "'"):"class=$cls");
-        $QHide = ((((($cp & VOL_GROUPQS) != 0) && $ShowGroup) || ($ShowAnyway && ($VCY['Status']>0)))?'':' hidden');
+        $QHide = ((((($cp & VOL_GROUPQS) != 0) && $ShowGroup) || ((($cp & VOL_GROUPQS) == 0) || $ShowAnyway) && ($VCY['Status']>0))?'':' hidden');
+
         if ($BaseShow && ($cp & VOL_Likes))  {
           echo "\n<tr $Xtr $QHide $Colour>" . fm_text1("Preferred " . $Cat['Name'] . " Tasks", $VCY,'Likes',$Col5,"$Csp4 class=$cls $Colour",'',
                    "Likes:$Catid:$YEAR") . $Cat['LExtra'];
@@ -551,11 +559,11 @@ function VolForm(&$Vol,$Err='',$View=0) {
 
       echo "<tr class=NeedDept " . ($NeedAD?'':' hidden') . "><td $Csp5><h3>Please give your arrival, departure day/time and any commitments you have:</h3>\n";
       echo "<tr class=NeedDept " . ($NeedAD?'':' hidden') . "><td colspan=2>" .
-        fm_radio('<b>Arrival</b>',$Days,$VYear,'Arrival','',0,'',"Arrival::$YEAR",$Day_Colours) . ($M?' ':'<td>') .
+        fm_radio('<b>Arrival</b>',$Days,$VYear,'Arrival',"style='margin-bottom:10'",0,'',"Arrival::$YEAR",$Day_Colours) . ($M?' ':'<td>') .
           " Time: " . fm_select($ADTimes,$VYear,'ArriveTime',0,'',"ArriveTime::$YEAR");
   //      fm_text0('Time',$VYear,'ArriveTime',1,'','',"ArriveTime::$YEAR");
       echo "<tr class=NeedDept " . ($NeedAD?'':' hidden') . "><td colspan=2>" .
-        fm_radio('<b>Depart</b>',$Days,$VYear,'Depart','',0,'',"Depart::$YEAR",$Day_Colours) .
+        fm_radio('<b>Depart</b>',$Days,$VYear,'Depart',"style='margin-bottom:10'",0,'',"Depart::$YEAR",$Day_Colours) .
         ($M?' ':'<td>') . " Time: " . fm_select($ADTimes,$VYear,'DepartTime',0,'',"DepartTime::$YEAR");
 
 //      ($M?' ':'<td>') . fm_text0('Time',$VYear,'DepartTime',1,'','',"DepartTime::$YEAR");
@@ -1305,8 +1313,8 @@ function List_Vols($AllVols='') {
 
     // Availability
 
-    echo "<td class=AvailD1 hidden>" . $FDays[$VY['Arrival']??0] . "<td class=AvailD1 hidden>" . $ADTimes[$VY['ArriveTime']??0];
-    echo "<td class=AvailD1 hidden>" . $FDays[$VY['Depart']??0] . "<td class=AvailD1 hidden>" . $ADTimes[$VY['DepartTime']??0];
+    echo "<td class=AvailD1 hidden>" . ($VY['Arrival']<-10?'':$FDays[$VY['Arrival']??0]) . "<td class=AvailD1 hidden>" . $ADTimes[$VY['ArriveTime']??0];
+    echo "<td class=AvailD1 hidden>" . ($VY['Depart']<-10?'':$FDays[$VY['Depart']??0]) . "<td class=AvailD1 hidden>" . $ADTimes[$VY['DepartTime']??0];
 
     echo "<td class=AvailD2 hidden>" . (isset($VY['AvailBefore'])? ((strlen($VY['AvailBefore'])<12)? $VY['AvailBefore'] : ($link . "Expand</a>")):"");
     echo "<td class=AvailD2 hidden>" . (isset($VY['AvailWeek'])? ((strlen($VY['AvailWeek'])<12)? $VY['AvailWeek'] : ($link . "Expand</a>")):"");
@@ -1338,7 +1346,6 @@ function List_Vols($AllVols='') {
 
             $Msg = $EmailMsgs['N'];
             echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'N')>$Msg</button>";
-//          }
         }
 
         $Msg = $EmailMsgs['E'];
@@ -1731,7 +1738,7 @@ function VolAction($Action,$csv=0) {
       $Volid = Gen_Put('Volunteers',$Vol);
       $M($Vol);
     }
-    Check_Unique(); // Deliberate drop through
+//    Check_Unique(); // Deliberate drop through
 
   case 'Form': // New stage 2
     $Vol = ['Year'=>$YEAR, 'SN'=>$_REQUEST['SN'], 'Email'=>$_REQUEST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40), 'Cat'=>($_REQUEST['C']??0)];

@@ -46,11 +46,12 @@
         $Cat['ImageHeight'] = 0;
     }
 
+    $Force = (Access('SysAdmin')?'&FORCE':''); // For testing
     $Arts[] = ['SN' => $Cat['Name'],'Type'=>0, 'Link'=>'int/Volunteers?A=New', 'HideTitle'=>0, 'RedTitle'=>0,
                'Image'=>$Cat['Image'], 'ImageHeight'=>$Cat['ImageHeight'] , 'ImageWidth'=>$Cat['ImageWidth'],'Format'=>0,
                'Text'=> ($Cat['Description'] . "<p>" . $Cat['LongDesc'] .
                  ((($Cat['Props'] & 0 /*VOL_TeamFull*/) > 0)?'<P>This team has all the volunteers it needs this year, please select another team':
-                 "<a href=int/Volunteers?A=New&C=" . $Cat['id'] . "><div class=VolButtonWrap><div class=VolButton>Please Volunteer for " .
+                 "<a href=int/Volunteers?A=New$Force&C=" . $Cat['id'] . "><div class=VolButtonWrap><div class=VolButton>Please Volunteer for " .
                    $Cat['Name'] . "</a></div></div>"))
               ];
   }
