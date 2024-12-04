@@ -1398,7 +1398,7 @@ function List_Team($Team) {
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
-  if (Feature('VolMoney')) if $CatP & VOL_Money) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Money</a>\n";
+  if (Feature('VolMoney')) if ($CatP & VOL_Money) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Money</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Mobility</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Child</a>\n";
