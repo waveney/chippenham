@@ -80,7 +80,7 @@ function Get_Vol_Details(&$vol) {
   $Body .= "Address: " . $vol['Address'] . "<br>\n";
   if (isset($vol['PostCode'])) $Body .= "PostCode: " . $vol['PostCode'] . "<br>\n\n";
   $Body .= "Age: " . $AgeCats[$vol['Over18']] . "<br>\n";
-  $Body .= "Handle Money:" . ($vol['Money']?'Yes':'No') . "<br>\n";
+  if (Feature('VolMoney')) $Body .= "Handle Money:" . ($vol['Money']?'Yes':'No') . "<br>\n";
 //  if (Feature('VolPhoto') && !empty($vol['Photo'])) $Body .= "*IMAGE_" . $vol['Photo'] . "*<br>\n\n";
   if (!empty($vol['Disabilities'])) $Body .= "<p>Disabilities: " . $vol['Disabilities'] . "<br>\n\n";
   if (Feature('VolDBS')) {
@@ -1398,7 +1398,7 @@ function List_Team($Team) {
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Phone</a>\n";
 //  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Status</a>\n";
-  if ($CatP & VOL_Money) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Money</a>\n";
+  if (Feature('VolMoney')) if $CatP & VOL_Money) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Money</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Mobility</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Notes</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Child</a>\n";
@@ -1738,7 +1738,7 @@ function VolAction($Action,$csv=0) {
       $Volid = Gen_Put('Volunteers',$Vol);
       $M($Vol);
     }
-//    Check_Unique(); // Deliberate drop through
+    Check_Unique(); // Deliberate drop through
 
   case 'Form': // New stage 2
     $Vol = ['Year'=>$YEAR, 'SN'=>$_REQUEST['SN'], 'Email'=>$_REQUEST['Email'], 'KeepMe'=>1, 'AccessKey' => rand_string(40), 'Cat'=>($_REQUEST['C']??0)];
