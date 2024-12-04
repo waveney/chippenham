@@ -1435,7 +1435,7 @@ function List_Team($Team) {
 //    echo "<td>" . $Vol['Email'];
     echo "<td>" . $Vol['Phone'];
 
-    if ($CatP & VOL_Money) echo "<td>" . $yesno[$Vol['Money']];
+    if (Feature('VolMoney')) if ($CatP & VOL_Money)  echo "<td>" . $yesno[$Vol['Money']];
     echo "<td>" . $Vol['Disabilities'];
     echo "<td>" . (empty($VY['Notes'])?'':$link . "Yes</a>");
     echo "<td>" . ($VY['Children']??0);
