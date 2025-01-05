@@ -208,9 +208,11 @@
           $Dep = T_Deposit($fetch);
           $fee = $fetch['Fee'];
           $Pwr = PowerCost($fetch);
-          if ($fee>0) $fee+=$Pwr;
-          if ($fetch['ExtraPowerDesc']) $fee+=$fetch['ExtraPowerCost'];
-          for($i=0;$i<3;$i++) if ($fetch["Tables$i"]) $fee+=$fetch["Tables$i"]*Feature('TableCost');
+          if ($fee != 0) {
+            $fee+=$Pwr;
+            if ($fetch['ExtraPowerDesc']) $fee+=$fetch['ExtraPowerCost'];
+            for($i=0;$i<3;$i++) if ($fetch["Tables$i"]) $fee+=$fetch["Tables$i"]*Feature('TableCost');
+          }
           if ($Dep == 0) {
             if ($fee < 0) { $str .= "Free"; }
             else if ($fee == 0) { $str .= "?"; }

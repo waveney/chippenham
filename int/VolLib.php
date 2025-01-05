@@ -185,6 +185,22 @@ function Vol_Details($key,&$vol) {
       if ($VCY['Status'] > 0) $Accept .= $Cat['Name'] . " - " . $CatStatus[$VCY['Status']] . "<br>\n";
     }
     return $Accept;
+
+  case 'VOLTEAM_TIMES' :
+    $Times = '';
+    foreach ($VolCats as $Cat) {
+      $VCY = Get_Vol_Cat_Year($vol['id'],$Cat['id']);
+      if ($VCY['Status'] == 3) {
+        if ($Cat['Name'] == 'Task Force') {
+          $Times .= $Cat['Name'] . " - your working hours will be between *DAY-4* and *DAY4*<br>\n";
+        } else {
+          $Times .= $Cat['Name'] . " - your working hours will be between *DAY0* and *DAY3*<br>\n";
+        }
+      }
+    }
+    return Times;
+
+
   case 'COLLECTINFO':
     include_once("CollectLib.php");
     return CollectInfo($vol,1);
