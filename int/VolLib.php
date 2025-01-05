@@ -43,8 +43,10 @@ define('VOL_GRP1',0x1000000);
 define('VOL_GRPS',0xf000000);
 
 // Button Name, Vol_Button
-$EmailMsgs = [''=>'','U'=>'NotSub','N'=>'Again','E' => Feature('Vol_Special_Mess'),
-  'S'=>'Stew1','M'=>'Note2','F' => Feature('Vol_Special_Mess2')];
+$EmailMsgs = [''=>'','U'=>'NotSub','E' => Feature('Vol_Special_Mess'),
+  'S'=>'Stew1','M'=>'Note2','F' => Feature('Vol_Special_Mess2'),'T' => 'Vol_Post_Fest1', 'O' => 'Vol_October',
+  'N'=>'Vol_November', 'D'=>'Vol_December', 'J'=>'Vol_January', 'R' => 'Vol_March', 'A'=>'Vol_April',
+];
 
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
 //$VolGroups = Gen_Get_All('VolGroups','ORDER BY Importance DESC');
@@ -1048,9 +1050,10 @@ function Vol_Validate(&$Vol) {
   $Avail=0;
   $VY = Get_Vol_Year($Vol['id']);
 
-  if ($VY["Arrival"] || $VY["Depart"] || $VY["ArriveTime"] || $VY["DepartTime"]) $Avail++;
+  if (isset($VY["Arrival"]) || isset($VY["Depart"]) || isset($VY["ArriveTime"]) || isset($VY["DepartTime"])) $Avail++;
 
-  if (($VY["Arrival"] > $VY["Depart"]) || (($VY["Arrival"] == $VY["Depart"]) &&($VY["ArriveTime"] > $VY["DepartTime"]) ))
+  if ((($VY["Arrival"]??0) > ($VY["Depart"]??0)) ||
+      ((($VY["Arrival"]??0) == ($VY["Depart"]??0)) && (($VY["ArriveTime"]??0) > ($VY["DepartTime"]??0)) ))
     return "You are departing before you are arriving...";
 
 
@@ -1357,15 +1360,18 @@ function List_Vols($AllVols='') {
           echo  " <button type=button id=VolSendEmailU$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'U')>$Msg</button>";
         }
 
-        if ((($year != $YEAR) && (!strstr($Mmap,'N')) && (!strstr($Mmap,'S'))) ||
-            (($year == $YEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U') && ($HasSetAvail == 0)))) {
+        $Agn = Feature('VolAgain');
+        if ($Agn) {
+          [$ALet,$AMsg] = explode(',',($Agn??''));
+          if ($ALet && ((($year != $YEAR) && (!strstr($Mmap,$ALet))) ||
+                        (($year == $YEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U') && ($HasSetAvail == 0))))) {
 
-            $Msg = $EmailMsgs['N'];
-            echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'N')>$Msg</button>";
+              echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('$AMsg',$id,'$ALet')>$AMsg</button>";
+          }
         }
 
         $Msg = $EmailMsgs['E'];
-        if ($Msg && ($VY['Status'] == 0) && strstr($Mmap,'N') && !strstr($Mmap,'E') && ($HasSetAvail == 0)) {
+        if ($Msg && ($VY['Status'] == 0) && !strstr($Mmap,'E') && ($HasSetAvail == 0)) {
           echo  " <button type=button id=VolSendEmailE$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'E')>$Msg</button>";
         }
         $Msg = $EmailMsgs['F'];

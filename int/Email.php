@@ -342,6 +342,9 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
           case 'YEAR':
             $rep = $PLANYEAR;
             break;
+          case 'LASTYEAR':
+            $rep = $PLANYEAR-1;
+            break;
           case 'NEXTYEAR':
             $rep = $PLANYEAR+1;
             break;
