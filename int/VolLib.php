@@ -198,7 +198,7 @@ function Vol_Details($key,&$vol) {
         }
       }
     }
-    return Times;
+    return $Times;
 
 
   case 'COLLECTINFO':
