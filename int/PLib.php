@@ -93,8 +93,10 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       }
     if (!$Wide) echo "<tr>";
       echo fm_text('Grid Name', $Side,'ShortName',1,$snx,$snx . " id=ShortName") . "\n";
-    if (!$Wide) echo "<tr>";
-      echo fm_text('Type', $Side,'Type') . "\n";
+      if ($Side['IsASide']) {
+        if (!$Wide) echo "<tr>";
+        echo fm_text('Type', $Side,'Type') . "\n";
+      }
 
     if ($Side['IsASide']) echo "<tr>" . fm_textarea('Costume Description <span id=CostSize></span>',$Side,'CostumeDesc',5,1,
                         "maxlength=150 oninput=SetDSize('CostSize',150,'CostumeDesc')");
@@ -544,7 +546,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
   for ($d= $YEARDATA['FirstDay']; $d<= $YEARDATA['LastDay']; $d++) $DayCount++;
 
   if (Feature('MaxDanceSat')) {
-    $DayUsage = DanceDaysUsed();
+    $DayUsage = [0,0,0,0];//DanceDaysUsed();
   } else {
     $DayUsage = [0,0,0,0];
   }

@@ -9,7 +9,7 @@
   include_once("Email.php");
 
   global $YEAR,$PLANYEAR,$Book_Colours,$Book_State,$Book_Actions,$Book_ActionExtras,$Importance,$InsuranceStates,$PerfTypes,$Cancel_Colours,
-    $Cancel_States,$Book_ActionColours;
+  $Cancel_States,$Book_ActionColours,$Book_States;
   global $db;
 
   echo fm_hidden('Year',$YEAR);
@@ -112,9 +112,9 @@
     $col9 = 'Messages';
     if (substr($YEAR,0,4) == '2020') $col10 = 'Change';
   } else { // general public list
+    $con = $Book_State['Contract Signed'];
     $SideQ = $db->query("SELECT y.*, s.*, IF(s.DiffImportance=1,s.$DiffFld,s.Importance) AS EffectiveImportance  FROM Sides AS s, $YearTab as y " .
-                "WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND y.YearState=" .
-                $Book_State['Contract Signed'] . " ORDER BY EffectiveImportance DESC SN");
+      "WHERE $TypeSel AND s.SideId=y.SideId AND y.Year='$YEAR' AND y.YearState=$con ORDER BY EffectiveImportance DESC SN");
   }
 
   if (!$SideQ || $SideQ->num_rows==0) {
@@ -124,7 +124,7 @@
     echo "<div class=Scrolltable><table id=indextable border style='min-width:1200px'>\n";
     echo "<thead><tr>";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
-    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";
+    if (Feature('MusicTypes')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";
     if ($_REQUEST['SEL']) {
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Contact</a>\n";
       echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Email</a>\n";
@@ -160,7 +160,7 @@
       if ($fetch['SideStatus']) {
         echo "<td>DEAD";
       } else {
-        echo "<td>" . $fetch['Type'];// . $fetch['syId'];
+        if (Feature('MusicTypes')) echo "<td>" . $fetch['Type'];// . $fetch['syId'];
       }
       if ($_REQUEST['SEL']) {
         echo "<td>" . ($fetch['HasAgent']?$fetch['AgentName']:$fetch['Contact']);
@@ -173,7 +173,7 @@
         Contract_State_Check($fetch,0);
         $State = $fetch['YearState'];
       } else {
-        $state = 0;
+        $State = 0;
       }
       for ($fld=5; $fld<11; $fld++) {
         $ff = "col$fld";
@@ -196,7 +196,7 @@
         case 'Actions':
           echo "<td>";
           if (!Access('Staff',($PerfD[2] ?? 'OtherPerf'))) break;  // Not your area
-          $acts = $Book_Actions[$Book_State[$State]];
+          $acts = $Book_Actions[$Book_States[$State]];
           if ($acts) {
             $acts = array_reverse(preg_split('/,/',$acts) );
 //            echo "<form method=Post Action=PerformerActions>" . fm_Hidden('SEL',$_REQUEST['SEL']) . fm_hidden('SideId',$fetch['SideId']) . fm_hidden('T',$Type) .

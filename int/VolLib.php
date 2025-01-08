@@ -1018,8 +1018,8 @@ function Vol_Validate(&$Vol) {
   $Clss=0;
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
   foreach ($VCYs as $VCY) if (isset($VCY['Status']) && $VCY['Status']) {
+    if (($VCY['CatId'] == 0) || ($VCY['Status']==0)) { /* var_dump($VCY);*/ continue; }
     $Clss++;
-    if ($VCY['CatId'] == 0) { /* var_dump($VCY);*/ continue; }
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_NeedDBS) && empty($Vol['DBS'])) return $VolCats[$VCY['CatId']]['Name'] . " requires DBS";
     if (!isset($Vol['AllowUnder']) && ($VolCats[$VCY['CatId']]['Props'] & VOL_Over21) && $Vol['Over18'] <2)
       return $VolCats[$VCY['CatId']]['Name'] . " requires you to be over 21";
@@ -1267,7 +1267,7 @@ function List_Vols($AllVols='') {
       $year = $YEAR;
     } else {
       for ($year=$YEAR-1; $year>($YEAR-6); $year--) {
-        $VY = Get_Vol_Year($id);
+        $VY = Get_Vol_Year($id,$year);
         if (!empty($VY['id'])) break;
       }
     }
@@ -1319,9 +1319,11 @@ function List_Vols($AllVols='') {
       Put_Vol_Year($VY);
     }
 
-    echo "<td class=smalltext id=YearStatus$id>" . ((isset($VY['id']) && $VY['id']>0)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" .
+    echo "<td class=smalltext id=YearStatus$id>" .
+      (isset($VY['id']) && ($VY['id']>0) && ($VY['Year'] == $YEAR)?("<span style='background:" . $YearColour[$VY['Status']] . ";'>" .
       $YearStatus[$VY['Status']] . "</span>"):'');
-      if (isset($VY['id']) && $VY['id']>0 && $VY['Status'] == 1 && ($VY['SubmitDate']??0)) echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
+      if (isset($VY['id']) && ($VY['Year'] == $YEAR) && ($VY['id']>0) && ($VY['Status'] == 1) && ($VY['SubmitDate']??0))
+        echo "<br>" . date('d/n/Y',$VY['SubmitDate']);
 
     echo "<td class='smalltext FullD'>" . ((isset($VLY['id']) && $VLY['id']>0)?("<span style='background:" . $YearColour[$VLY['Status']] . ";'>" .
       $YearStatus[$VLY['Status']] . "</span>"):'');
@@ -1332,8 +1334,10 @@ function List_Vols($AllVols='') {
 
     // Availability
 
-    echo "<td class=AvailD1 hidden>" . ($VY['Arrival']<-10?'':$FDays[$VY['Arrival']??0]) . "<td class=AvailD1 hidden>" . $ADTimes[$VY['ArriveTime']??0];
-    echo "<td class=AvailD1 hidden>" . ($VY['Depart']<-10?'':$FDays[$VY['Depart']??0]) . "<td class=AvailD1 hidden>" . $ADTimes[$VY['DepartTime']??0];
+    echo "<td class=AvailD1 hidden>" . (($VY['Arrival']??0)<-10?'':$FDays[$VY['Arrival']??0]) . "<td class=AvailD1 hidden>" .
+        $ADTimes[$VY['ArriveTime']??0];
+    echo "<td class=AvailD1 hidden>" . (($VY['Depart']??0)<-10?'':$FDays[$VY['Depart']??0]) . "<td class=AvailD1 hidden>" .
+        $ADTimes[$VY['DepartTime']??0];
 
     echo "<td class=AvailD2 hidden>" . (isset($VY['AvailBefore'])? ((strlen($VY['AvailBefore'])<12)? $VY['AvailBefore'] : ($link . "Expand</a>")):"");
     echo "<td class=AvailD2 hidden>" . (isset($VY['AvailWeek'])? ((strlen($VY['AvailWeek'])<12)? $VY['AvailWeek'] : ($link . "Expand</a>")):"");
@@ -1363,7 +1367,7 @@ function List_Vols($AllVols='') {
         $Agn = Feature('VolAgain');
         if ($Agn) {
           [$ALet,$AMsg] = explode(',',($Agn??''));
-          if ($ALet && ((($year != $YEAR) && (!strstr($Mmap,$ALet))) ||
+          if ($ALet && (!strstr($Mmap,$ALet)) && (($year != $YEAR)  ||
                         (($year == $YEAR) && ($VY['Status'] == 0) && (!strstr($Mmap,'U') && ($HasSetAvail == 0))))) {
 
               echo  " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('$AMsg',$id,'$ALet')>$AMsg</button>";
@@ -1990,8 +1994,9 @@ function VolAction($Action,$csv=0) {
       Vol_Emails($Vol,'Submit');
     }
 
-
-
+  case 'Validate':
+    $Vol = Get_Volunteer($id = $_REQUEST['id']);
+    break;
 
   case 'CompList':
     CompList();

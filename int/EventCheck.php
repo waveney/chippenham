@@ -17,56 +17,59 @@ function EventCheck($checkid=0) {
   $LastEventEmpty = 1;
   $errors = 0;
   $res=$db->query("SELECT * FROM Events WHERE Year='$YEAR' AND Status=0 ORDER BY Venue, Day, Start");
-
+var_dump($checkid);
   $perfs = [];
   if ($res) {
     while($ev = $res->fetch_assoc()) { // Basic Events against basic events check
-      if (empty($ev['SN'])) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['id'] . ")</a>  does not have a Name.<p>";
-              $errors++;
-        continue;
-      }
+      $eid = $ev['Eventid'];
+      if ($checkid == 0 || $checkid=$eid) {
+        if (empty($ev['SN'])) {
+          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['id'] . ")</a>  does not have a Name.<p>";
+                $errors++;
+          continue;
+        }
 
-      if (empty($ev['Venue'])) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a Venue.<p>";
-              $errors++;
-        continue;
-      }
+        if (empty($ev['Venue'])) {
+          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a Venue.<p>";
+                $errors++;
+          continue;
+        }
 
-      if (!isset($Venues[$ev['Venue']])) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a valid venue.<p>";
-        $errors++;
-        continue;
-      }
+        if (!isset($Venues[$ev['Venue']])) {
+          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a valid venue.<p>";
+          $errors++;
+          continue;
+        }
 
-      if ($Venues[$ev['Venue']]['Status']) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  is at a venue that is not in use now.<p>";
-        $errors++;
-        continue;
-      }
+        if ($Venues[$ev['Venue']]['Status']) {
+          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  is at a venue that is not in use now.<p>";
+          $errors++;
+          continue;
+        }
 
-      if (empty($ev['Start'])) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a start time.<p>";
-              $errors++;
-        continue;
-      }
-      if (empty($ev['End'])) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have an end time.<p>";
-              $errors++;
-        continue;
-      }
+        if (empty($ev['Start'])) {
+          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a start time.<p>";
+                $errors++;
+          continue;
+        }
+        if (empty($ev['End'])) {
+          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have an end time.<p>";
+                $errors++;
+          continue;
+        }
 
-      if (($ev['End']<$ev['Start']) && ($ev['EndsNextDay']==0)){
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts after it Ends.<p>";
-              $errors++;
-        continue;
-      }
+        if (($ev['End']<$ev['Start']) && ($ev['EndsNextDay']==0)){
+          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts after it Ends.<p>";
+                $errors++;
+          continue;
+        }
 
 
-      if ($ev['End'] == $ev['Start']) {
-        echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts and Ends at the same time.<p>";
-              $errors++;
-        continue;
+        if ($ev['End'] == $ev['Start']) {
+          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts and Ends at the same time.<p>";
+                $errors++;
+          continue;
+        }
       }
 
       if ($ev['IgnoreClash']) continue;
