@@ -187,6 +187,7 @@ if (isset($_FILES['croppedImage'])) {
         'Family'=>Perf_Name_List('IsFamily'),
         'Other'=>Perf_Name_List('IsOther'),
         'Ceilidh'=>Perf_Name_List('IsCeilidh'),
+        'Youth'=>Perf_Name_List('IsYouth'),
 
         'Traders'=>Get_All_Traders(0),
         'Sponsors'=>Get_Sponsor_Names(),
@@ -202,6 +203,7 @@ if (isset($_FILES['croppedImage'])) {
         'Family'=>Access('Staff','Family'),
         'Other'=>Access('Staff','OtherPerf'),
         'Ceilidh'=>Access('Staff','Ceilidh'),
+        'Youth'=>Access('Staff','Youth'),
 
         'Traders'=>Access('Staff','Trade'),
         'Sponsors'=>Access('Staff','Sponsors'),

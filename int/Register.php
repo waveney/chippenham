@@ -339,8 +339,13 @@ function Ignore($id) {
 // **********************************************************************
 // START HERE
 // **********************************************************************
-  $AllPosts = ['SN','Email:40:email','Contact','Website','YouTube','Mobile','Phone','VerifyReason:1000','Description:2000','SideId:10:num','RegId:10:num'];
+
+//var_dump($_REQUEST);
+
+  $AllPosts = ['SN','Email:40:email','Contact','Website:40:link','YouTube:800:link','Mobile:20:phone','Phone:20:phone',
+     'VerifyReason:1000','Description:2000','SideId:10:num','RegId:10:num'];
   SanitiseAll($AllPosts);
+ // var_dump($_REQUEST);
   dostaffhead("Registering", ["/js/Participants.js"]);
   $RedStar = " <span class=Red><b>*</b></span>";
   $Reg = [];

@@ -48,6 +48,7 @@ $PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance Displays','D'],
               'Child Ent'=>['IsFamily','Family.Festival','Family','Family and Community','Y'],
               'Other'=>['IsOther','Other','OtherPerf','Other Performers','O'],
               'Ceilidh'=>['IsCeilidh','Ceilidh','Ceilidh','Ceilidhs and Dances','H'],
+              'Youth'=>['IsYouth','Youth','Youth','Youth','U'],
               'Not Perf'=>['IsNonPerf','','NonPerf','','X'],
               ];
 $PerfIdx = ['Side'=>0,'Act'=>1,'Comic'=>2,'ChEnt'=>3,'Other'=>4,'Ceilidh'=>5,'NonPerf'=>6];

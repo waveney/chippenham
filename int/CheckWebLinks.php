@@ -92,7 +92,7 @@ function CheckAll() {
   // Check all Other performers in PLANYEAR
 
   $PerfQ = $db->query("SELECT s.*, y.*  FROM Sides AS s, SideYear AS y " .
-         "WHERE (s.IsAnAct+s.IsOther+s.IsFunny+s.IsFamily+s.IsCeilidh)>0 AND s.SideId=y.SideId AND y.year='$YEAR' " .
+         "WHERE (s.IsAnAct+s.IsOther+s.IsFunny+s.IsFamily+s.IsCeilidh+s.IsYouth)>0 AND s.SideId=y.SideId AND y.year='$YEAR' " .
          " AND y.YearState>=" . $Book_State['Booking'] . " AND s.NotPerformer=0 AND s.Website!=''");
   if ($PerfQ) while($side = $PerfQ->fetch_assoc()) {
 //    echo "$WCount<p>";

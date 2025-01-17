@@ -202,6 +202,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       echo fm_hidden('IsFamily',$Side['IsFamily']);
       echo fm_hidden('IsOther',$Side['IsOther']);
       echo fm_hidden('IsCeilidh',$Side['IsCeilidh']);
+      echo fm_hidden('IsYouth',$Side['IsYouth']);
     }
 
 
@@ -651,6 +652,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         case 'F': if ($Side['IsFamily']) $Doit = 1; break;
         case 'O': if ($Side['IsOther']) $Doit = 1; break;
         case 'H': if ($Side['IsCeilidh']) $Doit = 1; break;
+        case 'U': if ($Side['IsYouth']) $Doit = 1; break;
         }
       }
       if (!$Doit) continue;
@@ -710,7 +712,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             if ($Mode) echo "<td class=NotSide>" . fm_checkbox('These have changed',$Sidey,'PerfNumChange');
           }
 
-          if ($Side['IsAnAct'] || $Side['IsFunny'] || $Side['IsFamily'] || $Side['IsCeilidh'] || $Side['IsOther'] ) {
+          if ($Side['IsAnAct'] || $Side['IsFunny'] || $Side['IsFamily'] || $Side['IsCeilidh'] || $Side['IsOther'] || $Side['IsYouth'] ) {
             echo "<tr class=NotCSide><td class=NotCSide>Free Tickets: " . fm_checkbox('Day Tickets',$Sidey,'DayTickets') .
                  fm_number1('Adults',$Sidey,'FreePerf','class=NotCSide') .
                  fm_number1('Youth (10-16)',$Sidey,'FreeYouth','class=NotCSide') .

@@ -2,19 +2,19 @@
   include_once("fest.php");
 
 //  A_Check('Staff');
-  
+
   include_once("ProgLib.php");
   include_once("DispLib.php");
   include_once("DanceLib.php");
   include_once("MusicLib.php");
   dominimalhead("Performer Print Pages", ['css/PrintPage.css']);
 
-  global $db,$Coming_Type,$YEAR,$PLANYEAR,$Book_State,$EType_States;  
+  global $db,$Coming_Type,$YEAR,$PLANYEAR,$Book_State,$EType_States;
   $Set = 0;
   $Order = "EffectiveImportance DESC, s.RelOrder DESC, s.SN";
   if (isset($_REQUEST['ALPHA'])) $Order = "s.SN";
   if (isset($_REQUEST['Set'])) $Set = $_REQUEST['Set'];
-  
+
   $PairsPerPage = Feature('PerformerPairsExtra','7');
   $PageLimits = explode(',',$PairsPerPage);
   $Page = 1;
@@ -22,22 +22,26 @@
   $now = time();
   $Perf_Cats = [
    'Music'=>"SELECT s.*, y.*, IF(s.DiffImportance=1,s.MusicImportance,s.Importance) AS EffectiveImportance FROM Sides AS s, SideYear AS y " .
-                      "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
+                      "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
                       " AND s.IsAnAct=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
-             'Dance Displays'=>"SELECT s.*, y.*, IF(s.DiffImportance=1,s.DanceImportance,s.Importance) AS EffectiveImportance " .
-                      "FROM Sides AS s, SideYear AS y WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.Coming=" . $Coming_Type['Y'] . 
-                      " AND s.IsASide=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
-             'Ceilidhs and Folk Dance'=> "SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
-                      "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-                      " AND s.IsCeilidh=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
-             'Family and Community' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.FamilyImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
-                      "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-                      " AND s.IsFamily=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
-             'Other Performers' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
-                      "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] . 
-                      " AND s.IsOther=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
-            ];
-  
+   'Dance Displays'=>"SELECT s.*, y.*, IF(s.DiffImportance=1,s.DanceImportance,s.Importance) AS EffectiveImportance " .
+            "FROM Sides AS s, SideYear AS y WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.Coming=" . $Coming_Type['Y'] .
+            " AND s.IsASide=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
+   'Ceilidhs and Folk Dance'=> "SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
+            "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
+            " AND s.IsCeilidh=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
+   'Family and Community' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.FamilyImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
+            "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
+            " AND s.IsFamily=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
+   'Other Performers' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
+            "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
+            " AND s.IsOther=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
+
+    'Youth' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.YouthImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
+      "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
+      " AND s.IsYouth=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
+  ];
+
   $Displayed = [];
   $SetNum = 1;
   $PairCount = $PairPageC = 0;
@@ -61,13 +65,13 @@
     $perfQ = $db->query($fetch);
     if ($perfQ) while($side = $perfQ->fetch_assoc()) $Slist[] = $side;
 //var_dump("Type top",$PairLimit, $PairPageC, $Page);
-    $Pair = 0;    
+    $Pair = 0;
     if ($PairPageC >= $PairLimit) {
       echo "<table class='PerfT pagebreak' width=100% border>";
       $PairPageC = 0;
       $PairLimit = ($PageLimits[$Page++] ?? 7)+0;
     } else {
-      echo "<table class=PerfT width=100% border>";  
+      echo "<table class=PerfT width=100% border>";
     }
     foreach ($Slist as $perf) {
       if ($perf['NotPerformer'] ) continue;
@@ -87,7 +91,7 @@
 
         }
 
-      
+
 //      if ($Pair == 0) echo "<div class=PPair>";
       $Photo = $perf['Photo'];
       if (!$Photo) $Photo = '/images/icons/user2.png';

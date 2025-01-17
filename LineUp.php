@@ -119,6 +119,21 @@
     $ShortDesc = Feature('LinupShortDesc_Family');
     break;
 
+  case 'Youth':
+    $ET['FirstYear'] = 2025; // FUDGE TODO make better
+    if ($YEAR != $PLANYEAR) {
+      echo "In $YEAR, These Youth Activity Organisers were in $Place.  Click on the name or photograph to find out more and where they performed.<p>\n";
+    } else {
+      echo "Click on the name of a Youth Activity Organisers, or their photograph to find out more about them and where they are performing.<p>\n";
+    }
+
+    $SideQ = $db->query("SELECT s.*, y.*, IF(s.DiffImportance=1,s.YouthImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
+      "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
+      " AND s.IsYouth=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY EffectiveImportance DESC, s.RelOrder DESC, s.SN");
+    $ShortDesc = Feature('LinupShortDesc_Youth');
+    break;
+
+
 
   case 'Other':
     $ET['FirstYear'] = 2019; // FUDGE TODO make better

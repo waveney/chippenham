@@ -28,7 +28,8 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
           $scale = $imp;
 //var_dump($thing);
           if (( $thing['IsASide'] && (!isset($thing['Coming']) || $thing['Coming'] != 2)) &&
-              (($thing['IsAnAct'] || $thing['IsFunny'] || $thing['IsFamily'] || $thing['IsOther']) && (!isset($thing['YearState']) || $thing['YearState'] < 2))) {
+            (($thing['IsAnAct'] || $thing['IsFunny'] || $thing['IsFamily'] || $thing['IsYouth'] || $thing['IsOther']) &&
+              (!isset($thing['YearState']) || $thing['YearState'] < 2))) {
             echo "<a href=/int/ShowPerf?id=" . $thing['SideId'] . ">" . NoBreak($thing['SN'],3) . "</a>";
             echo " are no longer coming";
           } else {

@@ -1619,6 +1619,8 @@ function Trade_Date_Cutoff() { // return 0 - normal, 30, full payment (normal du
   global $YEARDATA;
   $Now = time();
   $PayTerm = Feature('PaymentTerms',30);
+  if (!$YEARDATA['TradeMainDate']) return $PayTerm;
+  if (!$YEARDATA['TradeLastDate']) return $PayTerm;
   if ($YEARDATA['TradeMainDate'] > $Now) return 0;
   if ($Now >= $YEARDATA['TradeLastDate']) return 2;
   $DaysLeft = intdiv(($YEARDATA['TradeLastDate'] - $Now),24*60*60);

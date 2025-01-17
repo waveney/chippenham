@@ -17,56 +17,56 @@ function EventCheck($checkid=0) {
   $LastEventEmpty = 1;
   $errors = 0;
   $res=$db->query("SELECT * FROM Events WHERE Year='$YEAR' AND Status=0 ORDER BY Venue, Day, Start");
-var_dump($checkid);
+
   $perfs = [];
   if ($res) {
     while($ev = $res->fetch_assoc()) { // Basic Events against basic events check
-      $eid = $ev['Eventid'];
+      $eid = $ev['EventId'];
       if ($checkid == 0 || $checkid=$eid) {
         if (empty($ev['SN'])) {
-          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['id'] . ")</a>  does not have a Name.<p>";
+          echo "The <a href=EventAdd?e=$eid>Event (" . $ev['id'] . ")</a>  does not have a Name.<p>";
                 $errors++;
           continue;
         }
 
         if (empty($ev['Venue'])) {
-          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a Venue.<p>";
+          echo "The <a href=EventAdd?e=$eid>Event (" . $ev['SN'] . ")</a>  does not have a Venue.<p>";
                 $errors++;
           continue;
         }
 
         if (!isset($Venues[$ev['Venue']])) {
-          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a valid venue.<p>";
+          echo "The <a href=EventAdd?e=$eid>Event (" . $ev['SN'] . ")</a>  does not have a valid venue.<p>";
           $errors++;
           continue;
         }
 
         if ($Venues[$ev['Venue']]['Status']) {
-          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  is at a venue that is not in use now.<p>";
+          echo "The <a href=EventAdd?e=$eid>Event (" . $ev['SN'] . ")</a>  is at a venue that is not in use now.<p>";
           $errors++;
           continue;
         }
 
         if (empty($ev['Start'])) {
-          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have a start time.<p>";
+          echo "The <a href=EventAdd?e=$eid>Event (" . $ev['SN'] . ")</a>  does not have a start time.<p>";
                 $errors++;
           continue;
         }
         if (empty($ev['End'])) {
-          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a>  does not have an end time.<p>";
+          echo "The <a href=EventAdd?e=$eid>Event (" . $ev['SN'] . ")</a>  does not have an end time.<p>";
                 $errors++;
           continue;
         }
 
         if (($ev['End']<$ev['Start']) && ($ev['EndsNextDay']==0)){
-          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts after it Ends.<p>";
+          echo "The <a href=EventAdd?e=$eid>Event (" . $ev['SN'] . ")</a> Starts after it Ends.<p>";
                 $errors++;
           continue;
         }
 
 
         if ($ev['End'] == $ev['Start']) {
-          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> Starts and Ends at the same time.<p>";
+          echo "The <a href=EventAdd?e=$eid>Event (" . $ev['SN'] . ")</a> Starts and Ends at the same time.<p>";
                 $errors++;
           continue;
         }
@@ -90,9 +90,9 @@ var_dump($checkid);
         } else {
           if ($Venues[$ev['Venue']]['SetupOverlap']) {
             if ($end <= $ev['Start'] && $EVENT_Types[$LastEvent['Type']]['HasDance'] ) { // No error
-            } else if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$LastEvent['EventId'] ) {
+            } else if ($checkid==0 || $checkid==$eid || $checkid==$LastEvent['EventId'] ) {
               if ($ev['SubEvent'] != $LastEvent['EventId'] ) {
-                echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> at " . SName($Venues[$ev['Venue']]) . " starting at " .
+                echo "The <a href=EventAdd?e=$eid>Event (" . $ev['SN'] . ")</a> at " . SName($Venues[$ev['Venue']]) . " starting at " .
                    $ev['Start'] . " on (A)" . DayList($ev['Day']) . " clashes with <a href=EventAdd?e=" .
                    $LastEvent['EventId'] . ">this event (" . $LastEvent['SN'] . ")</a><p>\n";
                 $errors++;
@@ -100,12 +100,12 @@ var_dump($checkid);
             }
           } else {
             if ($ev['SubEvent'] == $LastEvent['EventId'] && $LastEventEmpty) { // No Error
-            } else if ($ev['EventId'] == $LastEvent['SubEvent'] && $ThisEventEmpty) { // No Error
-            } else if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$LastEvent['EventId']) {
+            } else if ($eid == $LastEvent['SubEvent'] && $ThisEventEmpty) { // No Error
+            } else if ($checkid==0 || $checkid==$eid || $checkid==$LastEvent['EventId']) {
 // var_dump($ev['SubEvent'], $LastEvent['EventId'],$LastEventEmpty);
 // var_dump($ev['EventId'], $LastEvent['SubEvent'],$ThisEventEmpty);
               if ($ev['SubEvent'] != $LastEvent['EventId'] ) {
-                echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event (" . $ev['SN'] . ")</a> at " . SName($Venues[$ev['Venue']]) . " starting at " .
+                echo "The <a href=EventAdd?e=$eid>Event (" . $ev['SN'] . ")</a> at " . SName($Venues[$ev['Venue']]) . " starting at " .
                    $ev['Start'] . " on (B) " . DayList($ev['Day']) . " clashes with <a href=EventAdd?e=" .
                    $LastEvent['EventId'] . ">this event (" . $LastEvent['SN'] . ")</a><p>\n";
                 $errors++;
@@ -124,7 +124,7 @@ var_dump($checkid);
       if ($ev['BigEvent']) {
         $realstart = timereal($ev['Start']) - $ev['Setup'];
         $realend = timereal($ev['SubEvent']<0 ? $ev['SlotEnd'] : $ev['End']);
-        $Other = Get_Other_Things_For($ev['EventId']);
+        $Other = Get_Other_Things_For($eid);
         if ($Other) foreach($Other as $oi=>$oe) {// Big Events other venues against ordinary events
           if ($oe['Type'] == 'Venue') {
             $cfv=$oe['Identifier'];
@@ -135,7 +135,7 @@ var_dump($checkid);
                   $chkstart = timereal($ce['Start']) - $ce['Setup'];
                   $chkend = timereal($ce['SubEvent']<0 ? $ce['SlotEnd'] : $ce['End']);
                   if (($chkstart >= $realstart && $chkstart < $realend) || ($chkend > $realstart && $chkend <= $realend)) {
-                    if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$ce['EventId']) {
+                    if ($checkid==0 || $checkid==$eid || $checkid==$ce['EventId']) {
                       if ($ev['SubEvent'] != $ce['EventId'] ) {
                         echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Big Event (" . $ev['SN'] . ")</a> at " . $Venues[$ce['Venue']]['SN'] . " starting at " .
                            $ev['Start'] . " on (C) " . DayList($ev['Day']) . " clashes with <a href=EventAdd?e=" .
@@ -161,9 +161,9 @@ var_dump($checkid);
                   if ($coe['Type'] == 'Venue') {
                   foreach($Other as $oi=>$oe) {
                     if ($oe['Type'] == 'Venue' && $coe['Identifier'] == $oe['Identifier']) { // Clash
-                      if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$ce['EventId']) {
+                      if ($checkid==0 || $checkid==$eid || $checkid==$ce['EventId']) {
                         if ($ev['SubEvent'] != $oe['EventId'] ) {
-                          echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Big Event (" . $ev['SN'] . ")</a>  starting at " .
+                          echo "The <a href=EventAdd?e=$eid>Big Event (" . $ev['SN'] . ")</a>  starting at " .
                              $ev['Start'] . " on (D) " . DayList($ev['Day']) . " clashes with <a href=EventAdd?e=" .
                              $ce['EventId'] . ">this big event (" . $ce['SN'] . ")</a> on use of " . SName($Venues[$oe['Identifier']]) . "<p>\n";
                           $errors++;
@@ -191,8 +191,8 @@ var_dump($checkid);
             $chkstart = timereal($fv['Start']) - $fv['Setup'];
             $chkend = timereal($fv['SubEvent']<0 ? $fv['SlotEnd'] : $fv['End']);
             if (($ev['Day'] == $fv['Day']) && (($chkstart > $realstart && $chkstart < $realend) || ($chkend > $realstart && $chkend < $realend))) { // In use...
-              if ($checkid==0 || $checkid==$ev['EventId'] || $checkid==$fv['EventId']) {
-                echo "The <a href=EventAdd?e=" . $ev['EventId'] . ">Event</a> is at " . SName($Venues[$ev['Venue']]) . " when " .
+              if ($checkid==0 || $checkid==$eid || $checkid==$fv['EventId']) {
+                echo "The <a href=EventAdd?e=$eid>Event</a> is at " . SName($Venues[$ev['Venue']]) . " when " .
                       SName($Venues[$fv['Venue']]) . " is being used for <a href=EventAdd?e=" . $fv['EventId'] . ">This Event</a>.<p>\n";
                 $errors++;
               }

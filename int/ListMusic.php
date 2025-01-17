@@ -20,7 +20,7 @@
 
   $Type = (isset($_REQUEST['T'])? $_REQUEST['T'] : 'M' );
   if ($Type == 'Z') {
-    $TypeSel = " IsASide=0 AND IsAnAct=0 AND IsFunny=0 AND IsFamily=0 AND IsCeilidh=0 AND IsOther=0 ";
+    $TypeSel = " IsASide=0 AND IsAnAct=0 AND IsFunny=0 AND IsFamily=0 AND IsCeilidh=0 AND IsOther=0 AND IsYouth=0";
     $Perf = "Uncategorised performers";
     $DiffFld = "Importance";
   }  else {
@@ -185,7 +185,7 @@
             $CState = $fetch['TickBox4'];
             echo "<td style='background-color:" . $Cancel_Colours[$CState] . "' id=BookState$snum >" . $Cancel_States[$CState];
           } else {
-            echo "<td style='background-color:" . $Book_Colours[$State] . "' id=BookState$snum >" . $Book_State[$State];
+            echo "<td style='background-color:" . $Book_Colours[$State] . "' id=BookState$snum >" . $Book_States[$State];
           }
           break;
 

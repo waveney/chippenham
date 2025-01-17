@@ -261,6 +261,19 @@
     $txt .= "<li><a href=/LineUp?T=Family&FORCE&Y=$PLANYEAR>Family Lineup</a> (Even if not public)";
 
     $txt .= "</ul>\n";
+    $txt .= "<h2>Youth</h2>";
+    $txt .= "<ul>\n";
+    if (Access('Staff')) {
+      $txt .= "<li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=U>List All Youth Activity Organisers in Database</a>\n";
+      $txt .= "<li><a href=ListMusic?SEL=Booking&Y=$YEAR&T=U>List Youth Activity Organisers Booking</a>\n";
+    }
+    if (Access('Staff','Family')) {
+      $txt .= "<li><a href=CreatePerf?T=U&Y=$YEAR>Add Youth Activity Organiser to Database</a>";
+    }
+    $txt .= "<li><a href=/LineUp?T=Youth&FORCE&Y=$PLANYEAR>Youth Lineup</a> (Even if not public)";
+
+    $txt .= "</ul>\n";
+
   }
   if ($x = StaffTable('OtherPerf', 'Other Performers')) {
     $txt .= $x;

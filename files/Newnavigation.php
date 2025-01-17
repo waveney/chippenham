@@ -30,6 +30,7 @@ global $Access_Type,$USER,$USERID,$YEAR,$YEARDATA,$NEXTYEARDATA,$Months,$PLANYEA
   //        'Comedy'=>'LineUp?T=Comedy',
           'Family and Community'=>'LineUp?T=Family',
           'Ceilidh and Dances'=>'LineUp?T=Ceilidh',
+          'Youth'=>'LineUp?T=Youth',
           'Story and Spoken Word'=>'LineUp?T=Other',
           '_Lineup changes since programme printed'=>'PerfChanges',
           ':Traders'=>'int/TradeShow',

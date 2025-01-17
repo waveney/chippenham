@@ -4,7 +4,7 @@
   set_ShowYear();
   $Type = ($_REQUEST['t'] ?? 1);
   $Type = Sanitise($Type);
-  
+
 
 // var_dump($_REQUEST);
 
@@ -23,14 +23,14 @@
     foreach($Event_Types as $eti=>$et) if ($et['SN'] == $Type) $Ett = $eti;
     if ($Ett < 0) $Ett = 1;
   }
-  
+
   $ShowAll = 0;
   if (Access('Staff') && isset($_REQUEST['SHOWALL'])) $ShowAll = 1;
-  
+
   $Vens = Get_Venues(1);
 
   $Extras = ['Music'=>' OR e.ListMusic=1 ', 'Dance'=>' OR e.ListDance=1 ', 'Comedy'=>' OR e.ListComedy=1 ', 'Workshop'=>' OR e.ListWorkshop=1',
-    'Concert'=>' OR e.ListMusic=1', 'Session'=>' OR e.ListSession=1']; // Need Dance Equiv
+    'Concert'=>' OR e.ListMusic=1', 'Session'=>' OR e.ListSession=1', 'Youth'=>' OR e.ListYouth=1']; // Need Dance Equiv
 
 //  var_dump($Type);
 //  var_dump($Event_Types);
@@ -41,7 +41,7 @@
   $Evs = array();
   $Complete = 0;
   $BackStop = 2018;
-  
+
   if (($YEAR == $PLANYEAR) && ($ShowAll == 0)) {
     $restrict = "AND ( e.Public=1 OR (e.Type=t.ETypeNo AND t.State>1 AND e.Public<2 ))";
   } else {
@@ -51,11 +51,11 @@
 
   $MapFeat = 0;
   $Banner = 1;
-  if ($Ett >= 0) { 
+  if ($Ett >= 0) {
     $qry = "SELECT DISTINCT e.* FROM Events e, EventTypes t WHERE e.Year='$YEAR' AND ( e.Type=$Ett $xtr ) AND ( e.SubEvent<1 OR e.ShowSubevent=1 ) AND e.Venue!=0 " .
                 "$restrict ORDER BY e.Day, e.Start";
 //    echo "$qry<p>";
-    $ans = $db->query($qry); 
+    $ans = $db->query($qry);
     if ($ans) while ($e = $ans->fetch_assoc()) $Evs[] = $e;
     if (count($Evs) > 1) $Types = $Event_Types[$Ett]['Plural'];
     if (($YEAR == $PLANYEAR) && ($ShowAll==0)) $Complete = $Event_Types[$Ett]['State'];
@@ -66,7 +66,7 @@
     switch ($Type) {
       case 'Family':
         $ans = $db->query("SELECT DISTINCT e.* FROM Events e, EventTypes t WHERE e.Year='$YEAR' AND e.Family=1 AND e.SubEvent<1 AND e.Venue!=0 " .
-                "$restrict ORDER BY e.Day, e.Start"); 
+                "$restrict ORDER BY e.Day, e.Start");
         if ($ans) while ($e = $ans->fetch_assoc()) $Evs[] = $e;
         $Types = "Family Event";
         if (count($Evs) != 1) $Types .= "s";
@@ -75,7 +75,7 @@
         break;
       case 'Special':
         $ans = $db->query("SELECT DISTINCT e.* FROM Events e, EventTypes t WHERE e.Year='$YEAR' AND e.Special=1 AND (e.SubEvent<1 OR e.LongEvent=1) AND e.Venue!=0 " .
-                "$restrict ORDER BY e.Day, e.Start"); 
+                "$restrict ORDER BY e.Day, e.Start");
         if ($ans) while ($e = $ans->fetch_assoc()) $Evs[] = $e;
         $Types = "Special Event";
         if (count($Evs) != 1) $Types .= "s";
@@ -89,7 +89,7 @@
 
 
   dohead("Timetable: $Types" . ($ShowAll?' (even if not public)':''),[],$Banner);
-  
+
   $yr = substr($YEAR,0,4);
   $Titles = array("", // Not used
                 "Currently known $Types for $yr, there will be more", // Draft
@@ -106,7 +106,7 @@
     $DaysUsed[$e['Day']] = 1;
   }
   $TotalDays = array_sum($DaysUsed);
-  
+
   $Header = TnC("Sherlock_$Type");
   if (!empty($Header)) {
     echo $Header;
@@ -114,7 +114,7 @@
   }
   if ($Evs && $Complete) {
     if ($Complete <4 || $YEAR!=$SHOWYEAR) echo "<h2>" . $Titles[$Complete] . "</h2>";
-    
+
     if ($MapFeat>0) {
       include_once("int/MapLib.php");
       echo "<h3 class='DanceMap Fakelink' onclick=$('.DanceMap').toggle()>Show $Type Locations</h3>";
@@ -125,8 +125,8 @@
       Init_Map(-1,0,17,$MapFeat);
       echo "</div>";
     }
-    
-    
+
+
 //var_dump($TotalDays,$DaysUsed);
     if ($TotalDays > 1) {
       echo "<p>Jump to: ";
@@ -135,17 +135,17 @@
         echo "<a href=#SkipTo" . ($i+10) . " class='DaySkipTo " . DayList($i) . "Tab'>" . $DayLongList[$i] . "</a> ";
       }
     }
-    
+
     $Extra = TnC("Sherlock$Types");
     if ($Extra) echo $Extra;
-    
+
     echo "<div class='FullWidth WhenTable'>";
 
     if ($NotAllFree == 0) echo "All $Types are " . Feature('FreeText','Free') . ".<p>";
 
     echo "Click on the event name for more information.<p>";
 
-    
+
     foreach ($Evs as $i=>$E) {
       $eid = $E['EventId'];
       if (DayTable($E['Day'],$Types,($Complete>2?'':'(More to come)'),'',"style='min-width:801;' id=SkipTo" . ($E['Day']+10) )) {
@@ -153,9 +153,9 @@
       }
 
       echo "<tr>";
-      echo "<td>"; 
+      echo "<td>";
         echo timecolon($E['Start']) . " to " . timecolon($E['End']);
-      echo "<td><strong><a href=/int/EventShow?e=$eid>" . $E['SN'] . "</a></strong>"; 
+      echo "<td><strong><a href=/int/EventShow?e=$eid>" . $E['SN'] . "</a></strong>";
       echo "<td>" . Venue_Parents($Vens,$E['Venue']) . "<a href=/int/VenueShow?v=" . $E['Venue'] . ">" . $Vens[$E['Venue']]['SN'] . "</a>";
       if ($E['BigEvent']) {
         $Others = Get_Other_Things_For($eid);
@@ -180,7 +180,7 @@
   } else {
     echo "<h3>" . Feature('NoEventsPre','Sorry there are currently no announced') . " $Types" . Feature('NoEventsPost', 'please check back later') . "</h3>";
   }
-  
+
   if ($YEAR > $BackStop) {
     echo "<h3>If you would like to see what we had last time: <a href=Sherlock?T=$Type&Y=" . ($YEAR-1) . "> $Types in " . ($YEAR-1) . "</h3></a>";
   }

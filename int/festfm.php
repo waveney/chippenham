@@ -845,6 +845,20 @@ function Ordinal($n) {
   return $ends[$n % 10];
 }
 
+function HtmlSanity($txt) {
+  static $Valid = ['b','i','ul','ol','li','br','p'];
+  $Break = preg_split('/<.*>/',txt,PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+  $ntxt = '';
+  $mtch = [];
+  foreach ($Break as $chunk) {
+    if ($chunk[0] == '<') {
+      $lc = strtolower(trim($chunk,'</>'));
+      if (!in_array($lc,$Valid)) continue;
+    }
+    $ntxt .= $chunk;
+  }
+  return $ntxt;
+}
 
 function Sanitise(&$txt,$len=40,$cat='') {
   $txt = trim($txt);
@@ -853,11 +867,21 @@ function Sanitise(&$txt,$len=40,$cat='') {
   case 'num':
     $txt = preg_replace('/[^0-9]/','',$txt);
     return $txt;
+  case 'phone':
+    $txt = preg_replace('/[^0-9 +]/','',$txt);
+    return $txt;
   case 'email':
     $txt = preg_replace('/[^a-zA-Z0-9@_.]/','',$txt);
     return $txt;
   case 'txt':
     $txt = preg_replace('/[^a-zA-Z0-9]/','',$txt);
+    return $txt;
+  case 'html':
+    return Html_Sanity($txt);
+  case 'skip':
+    return $txt;
+  case 'link':
+    $txt = preg_replace('/[^a-zA-Z0-9_&:\?\=\-\+ ,.\'\/\\\\]/','',$txt);
     return $txt;
   default:
     $txt = preg_replace('/[^a-zA-Z0-9_ ,.\'\/\\\\]/','',$txt);

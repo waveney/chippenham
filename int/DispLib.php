@@ -21,7 +21,7 @@ function formatminimax(&$side,$link,$mnat=2,$sdisp=1) {
     $imp = 0;
     foreach($PerfTypes as $pt=>$pd) if (Capability("Enable" . $pd[2])) if ($side[$pd[0]] && $imp < $side[$pd[2] . 'Importance'] ) $imp = $side[$pd[2] . 'Importance'];
   }
-  
+
   $mnmx = ($Imp >= $mnat?'maxi':'mini');
   $id = AlphaNumeric($side['SN']);
   echo "<div class=$mnmx" . "_$fmt id=$id>";
@@ -55,7 +55,7 @@ function formatLineups(&$perfs,$link,&$Sizes,$PerfCat,$sdisp=1) {
     }
     echo "<div class='LineupFit$LastSize LineUpBase' onmouseover=AddLineUpHighlight($Id) onmouseout=RemoveLineUpHighlight($Id) id=LineUp$Id>";
     echo "<a href=/int/$link?id=$Id&Y=$YEAR&C=$LinkCat>";
-     
+
     $Photo = OvPhoto($perf,$PerfCat);
     if (!$Photo) $Photo = '/images/icons/user2.png';
     if ($sdisp) {
@@ -63,7 +63,7 @@ function formatLineups(&$perfs,$link,&$Sizes,$PerfCat,$sdisp=1) {
       echo "<div class=LineUpFitTitle style='font-size:" . (18+$Imp) . "px'>" . OvName($perf,$PerfCat) . "</div>";
       echo "<img src=$Photo>";
       echo "<div class=LineUptxt>" . OvDesc($perf,$PerfCat) . "</div>";
-       
+
     } else {
       echo "<img src=$Photo>";
       echo "<br><div class=LineUpFitTitle style='font-size:" . (18+$Imp*3) . "px'>" . OvName($perf,$PerfCat) . "</div></a>";
@@ -77,17 +77,17 @@ function formatLineups(&$perfs,$link,&$Sizes,$PerfCat,$sdisp=1) {
 function Get_Imps(&$e,&$imps,$clear=1,$all=0) {
   global $Event_Types,$YEAR,$PerfTypes;
 
-  $ets = $Event_Types[$e['Type']]['State']; 
+  $ets = $Event_Types[$e['Type']]['State'];
   $useimp = ($Event_Types[$e['Type']]['UseImp'] && ($e['BigEvent']==0));
   $now=time();
   if ($clear) $imps = array();
   for($i=1;$i<5;$i++) {
-    if (isset($e["Side$i"]) && $e["Side$i"]) { 
-      if (($ee = $e["Side$i"]))  { 
+    if (isset($e["Side$i"]) && $e["Side$i"]) {
+      if (($ee = $e["Side$i"]))  {
         $si = Get_Side($ee);
         if ($si) {
           $y = Get_SideYear($ee,$YEAR);
-          $s = array_merge($si, munge_array($y)); 
+          $s = array_merge($si, munge_array($y));
           $s['Roll'] = (($e['SubEvent'] <= 0)?$e["Roll$i"]:'');
           if ($s && ($all || ((( $s['Coming'] == 2) || ($s['YearState'] >= 2)) && ($ets >1 || ($ets==1 && Access('Participant','Side',$s))) && $s['ReleaseDate'] < $now))) {
             if (!$useimp) {
@@ -100,7 +100,7 @@ function Get_Imps(&$e,&$imps,$clear=1,$all=0) {
               $imps[$s['Importance']][] = $s;
             }
           }
-        } 
+        }
       }
     }
   }
@@ -136,7 +136,7 @@ function Gallery($id,$embed=0) {
     if (isset($Gal['Banner'])) $Banner = $Gal['Banner'];
     dohead($name, ['/files/gallery.css'],$Banner);
   }
-  
+
   echo "<h2 class=maintitle>$name</h2><p>";
   if ($Gal['Description']) echo $Gal['Description'] . "<p>";
 
@@ -169,7 +169,7 @@ function Gallery($id,$embed=0) {
       $bl .= "&p=";
       $PStr .= $bl . "1>First</a> ";
       if ($Page > 1) $PStr .= $bl . ($Page-1) . ">Prev</a> ";
-      for ($p = 1; $p <= $lastP; $p++) { 
+      for ($p = 1; $p <= $lastP; $p++) {
         if ($p == $Page) {
           $PStr .= "$p ";
         } else {
@@ -185,9 +185,9 @@ function Gallery($id,$embed=0) {
       $last = $PS;
     }
     $PStr .= "<br clear=all><p>\n";
-  
+
     echo $PStr;
-  
+
     echo '<div id=galleryflex>';
 
 
@@ -195,7 +195,7 @@ function Gallery($id,$embed=0) {
     if ($Imgs) {
       foreach ($Imgs as $img) {
         if ($count >= $first && $count < $last) {
-      
+
           echo "<div class=galleryarticle><a href=/int/SlideShow?g=$id&s=$count><img class=galleryarticleimg src=\"" . $img['File'] . "\"></a>";
           if ($img['Caption']) echo "<div class=gallerycaption> " . $img['Caption'] . "</div>";
           echo "</div>\n";
@@ -207,7 +207,7 @@ function Gallery($id,$embed=0) {
     }
 
     echo "</div>" . $PStr;
-  
+
     if ($Gal['Credits']) {
       echo "<p>Photos by: " . $Gal['Credits'] . "<p>";
     }
@@ -220,7 +220,7 @@ function Gallery($id,$embed=0) {
 
     $Gals = Gen_Get_Cond('Galleries'," GallerySet='" . $Gal['SN'] . "' ORDER BY SetOrder DESC" );
 
-    echo "<div id=flex5>\n";    
+    echo "<div id=flex5>\n";
     foreach ($Gals as $G) {
       if ($G['id'] == $Gal['id']) continue;
       echo "<div class=GalleryFlexCont><a href=/int/ShowGallery?g=" . $G['id'] . "&Y=$YEAR>" . $G['SN'] . "</a><br>";
@@ -230,9 +230,9 @@ function Gallery($id,$embed=0) {
       }
       if ($G['Description']) echo $G['Description'];
       echo "</div>";
-    
+
     }
-    echo "</div><br>";  
+    echo "</div><br>";
   }
 
   if (!$embed) dotail();
@@ -246,7 +246,7 @@ function Count_Perf_Type($type,$Year=0) {
   global $YEAR,$db,$Coming_Type;
   $now = time();
   if ($Year == 0) $Year=$YEAR;
-  $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.$type=1 AND ( y.Coming=" . $Coming_Type['Y'] . 
+  $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.$type=1 AND ( y.Coming=" . $Coming_Type['Y'] .
                     " OR y.YearState>2 ) AND y.ReleaseDate<$now");
   $Dsc = 0;
   if ($ans) {
@@ -259,10 +259,10 @@ function Count_Perf_Type($type,$Year=0) {
 function Expand_Imp(&$Art,$Cometest,$Importance,$lvl,$future) {
   global $db,$YEAR,$Coming_Type,$ShownInArt;
   $now = time();
-    $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND $Cometest " .    
+    $ans = $db->query("SELECT s.* FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$YEAR' AND s.Photo!='' AND $Cometest " .
                     " AND ((s.DiffImportance=0 AND s.Importance>$lvl) OR (s.DiffImportance=1 AND s.$Importance>$lvl)) AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 5");
-    if (!$ans) { $Art = []; return; }  
-  
+    if (!$ans) { $Art = []; return; }
+
     while ( $Dstuff = $ans->fetch_assoc()) {
       if (in_array($Dstuff['SideId'],$ShownInArt)) continue;
       $ShownInArt[] = $Dstuff['SideId'];
@@ -287,25 +287,25 @@ function Expand_Many(&$Art,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx
   $Art['SN'] = $Name;
   if ($LineUp) $Art['Link'] = "/LineUp?T=$LineUp";
 
-    $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$Year' AND $Cometest " . 
+    $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$Year' AND $Cometest " .
            " AND y.ReleaseDate<$now AND s.IsNonPerf=0");
     $Dsc = 0;
     if ($ans) {
       $res = $ans->fetch_assoc();
       $Dsc = $res['Total'];
     }
-    
+
     if (($D2F > 0) || ($Year == $YEAR+1) ) {
       $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?" has":"s have") . " already confirmed for $Year.";
     } else {
-      $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?"":"s") . " performed in $Year.";       
+      $Art['Text'] = "$Pfx$Dsc $Generic" . ($Dsc == 1?"":"s") . " performed in $Year.";
     }
 
     $ans = $db->query("SELECT s.Photo,s.SideId,s.ImageHeight,s.ImageWidth,s.SN FROM Sides s, SideYear y " .
-                    "WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.Photo!='' AND $Cometest AND s.IsNonPerf=0" . 
+                    "WHERE s.SideId=y.SideId AND y.Year='$Year' AND s.Photo!='' AND $Cometest AND s.IsNonPerf=0" .
                     " AND y.ReleaseDate<$now ORDER BY RAND() LIMIT 10");
 
-    if (!$ans) return; 
+    if (!$ans) return;
     while ( $DMany = $ans->fetch_assoc()) {
       if (empty($DMany['SideId']) || in_array($DMany['SideId'],$ShownInArt)) continue;
       $ShownInArt[] = $DMany['SideId'];
@@ -323,20 +323,24 @@ function Expand_Special(&$Art,$future=0) {
   global $ShownInArt;
   global $EShownInArt;
   $now = time();
-//echo "In special 1";  
+//echo "In special 1";
   $words = explode(' ',$Art['SN']);
 //var_dump($words);
   switch ($words[0]) {
   case '@Dance_Imp':
     Expand_Imp($Art,'s.IsASide=1 AND y.Coming=' . $Coming_Type['Y'] ,'DanceImportance', (isset($words[1])?$words[1]:0),$future);
     return;
-    
-  case '@Music_Imp': 
+
+  case '@Music_Imp':
     Expand_Imp($Art,'s.IsAnAct=1 AND y.YearState>1' ,'MusicImportance', (isset($words[1])?$words[1]:0),$future);
     return;
-  
+
   case '@Family_Imp':
     Expand_Imp($Art,'s.IsFamily=1 AND y.YearState>1' ,'FamilyImportance', (isset($words[1])?$words[1]:0),$future);
+    return;
+
+  case '@Youth_Imp':
+    Expand_Imp($Art,'s.IsYouth=1 AND y.YearState>1' ,'YouthImportance', (isset($words[1])?$words[1]:0),$future);
     return;
 
   case '@Ceilidh_Imp':
@@ -346,7 +350,7 @@ function Expand_Special(&$Art,$future=0) {
   case '@Dance_Many':
     Expand_Many($Art,'s.IsASide=1 AND y.Coming=' . $Coming_Type['Y'], 'Dance Team', 'Dancing','Dance',$future);
     return;
-    
+
   case '@Music_Many':
     Expand_Many($Art,'s.IsAnAct=1 AND y.YearState>1', 'Music Act', 'Music','Music',$future);
     return;
@@ -355,10 +359,14 @@ function Expand_Special(&$Art,$future=0) {
     Expand_Many($Art,'s.IsFamily=1 AND y.YearState>1', 'Family Entertainer', 'Family Entertainment','Family',$future);
     return;
 
+  case '@Youth_Many':
+    Expand_Many($Art,'s.IsYouth=1 AND y.YearState>1', 'Youth Activity', 'Youth Activity','Family',$future);
+    return;
+
   case '@Ceilidh_Many':
     Expand_Many($Art,'s.IsCeilidh=1 AND y.YearState>1', 'Ceilidh and Dance bands and caller', 'Ceilidh and Dance ','Ceilidh',$future);
     return;
-    
+
   case '@NextYear':
     global $YEARDATA,$Months;
     $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);
@@ -367,19 +375,21 @@ function Expand_Special(&$Art,$future=0) {
     $NMonth = $Months[$NEXTYEARDATA['MonthFri']];
     $NYear = substr($YEARDATA['NextFest'],0,4);
 
-    Expand_Many($Art,'((s.IsASide AND y.Coming=' . $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsCeilidh=1)))', 
-       'Performer', "Next Year's Festival - $NYear",0,$future,$YEAR+($YEAR==$PLANYEAR?0:1),"We are already planning next year's festival from " . 
+    Expand_Many($Art,'((s.IsASide AND y.Coming=' .
+        $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsYouth=1 OR s.IsCeilidh=1)))',
+       'Performer', "Next Year's Festival - $NYear",0,$future,$YEAR+($YEAR==$PLANYEAR?0:1),"We are already planning next year's festival from " .
         "$NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) . "</sup> $NMonth $NYear and " );
     return;
-  
+
   case '@ThisYear':
     global $YEARDATA,$Months;
     $From = ($YEARDATA['DateFri']+$YEARDATA['FirstDay']);
     $To = ($YEARDATA['DateFri']+$YEARDATA['LastDay']);
     $Month = $Months[$YEARDATA['MonthFri']];
 
-    Expand_Many($Art,'((s.IsASide AND y.Coming=' . $Coming_Type['Y'] . ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsCeilidh=1)))', 
-       'Performer', "This Year's Festival",0,$future,$YEAR,"We are already planning this year's festival from " . 
+    Expand_Many($Art,'((s.IsASide AND y.Coming=' . $Coming_Type['Y'] .
+        ') OR (y.YearState>1 AND (s.IsAnAct=1 OR s.IsFamily=1 OR s.IsYouth=1 OR s.IsCeilidh=1)))',
+       'Performer', "This Year's Festival",0,$future,$YEAR,"We are already planning this year's festival from " .
         "$From<sup>" . ordinal($From) . "</sup> - $To<sup>" . ordinal($To) . "</sup> $Month $PLANYEAR and " );
     return;
 
@@ -391,14 +401,14 @@ function Expand_Special(&$Art,$future=0) {
     }
     $ShownInArt [] = $id;
     $Perf = Get_Side($id);
-   
+
     $Art['SN'] = $Perf['SN'];
     $Art['Link'] = '/int/ShowPerf?id=' . $Perf['SideId'];
     $Art['Text'] = $Perf['Description'];
     $Art['Image'] = $Perf['Photo'];
     $Art['ImageWidth'] = (isset($Perf['ImageWidth'])?$Perf['ImageWidth']:100);
     $Art['ImageHeight'] = (isset($Perf['ImageHeight'])?$Perf['ImageHeight']:100);
-    
+
     if ($YEAR != $PLANYEAR) {
       $Sy = Get_SideYear($id,$PLANYEAR);
       if (isset($Sy['syId']) && (($Perf['IsASide'] && ($Sy['Coming'] == $Coming_States['Coming'])) || $Sy['YearState']>1)) {
@@ -406,7 +416,7 @@ function Expand_Special(&$Art,$future=0) {
       }
     }
     break;
-    
+
   case '@Event' : // Just this Event
     include_once("ProgLib.php");
     $id = $words[1];
@@ -420,11 +430,11 @@ function Expand_Special(&$Art,$future=0) {
     $Art['Link'] = '/int/EventShow?e=' . $id;
     $Art['Text'] = $E['Description'];
     break;
-  
+
     break;
-    
+
   default:
-    
+
   }
 }
 
@@ -438,13 +448,13 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
   include_once("DanceLib.php");
   global $ShownInArt, $EShownInArt;
   $ShownInArt = $EShownInArt = [];
-  
+
   if (is_array($page)) {
     $Arts = &$page;
   } else {
     $Arts = Get_All_Articles(0,$page,$future);
   }
-  
+
   if (!$Arts) return 0;
 //  var_dump($Arts);
   echo "<div id=ShowArt data-settings='$datas'></div><p>";
@@ -453,7 +463,7 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
   foreach ($Arts as $i=>$Art) {
     $fmt = (isset($Art['Format'])?$Art['Format']:0);
     echo "<div id=Art$i data-format=$fmt class=\"Art ArtFormat$fmt\" ";
-// var_dump($Art['SN']);    
+// var_dump($Art['SN']);
     if (substr($Art['SN'],0,1) == '@') { // Special
       Expand_Special($Art,$future);  // Will Update content of Art
     }
@@ -467,48 +477,48 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
     default:
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] . 
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] .
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
       echo "<br><span class=\"ArtTextL\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
-          
+
     case 1: // Small Image (to left of title and text)
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
         " data-width=" . $Art['ImageWidth'] . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextS\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
-          
+
     case 2: // Text Only
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleT" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextT\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
-      
+
     case 3: // Banner Image
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextBI\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
-              
+
     case 4: // Banner Text
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . "'>";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBT" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextBT\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
-      
+
     case 5: // Fixed Image large box has ratio of 550:500
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleF" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div><br>";
-      if ($Art['Image']) echo "<img class=\"ArtImageF rounded\" id=\"ArtImg$i\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+      if ($Art['Image']) echo "<img class=\"ArtImageF rounded\" id=\"ArtImg$i\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
           " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a><br style='height:0' clear=\"all\">";
       echo "<div class=\"ArtTextF\" id=\"ArtText$i\">" . $Art['Text'] . "</div>";
@@ -517,39 +527,39 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
     case 6: // Left/Right
       // Not Written
       break;
-    
+
     case 7: // 2/3rds Banner Image
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI23" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI23\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI23\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextBI23\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
-              
+
     case 8: // image below text
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       echo "<br><span class=\"ArtTextL\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] . 
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] .
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
       echo "<br clear=all>";
       break;
-          
+
     case 9: // V Small image to right of heading
- 
+
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
-      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageVS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] . 
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageVS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
         " data-width=" . $Art['ImageWidth'] . ">";
       if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextS\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
-    
+
 
     }
-    echo "</div><br clear=all>\n";          
+    echo "</div><br clear=all>\n";
   }
   echo "</div>";
   echo "\n";
@@ -582,9 +592,9 @@ function SponsoredBy(&$Data,&$Name,$TType,$Tid,$Logosize='0') {
       $Spid = $Data['SponsoredBy'];
       if ($Spid > 0) {
         $Spon = Gen_Get('Trade',$Spid,'Tid');
-        echo "<div class=SponWrap><div class=SponSet><div class=SponWhat>$Name</div> is sponsored by:</div><div class=Sponsoring>" . 
-             weblink($Spon['Website'], 
-               (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . 
+        echo "<div class=SponWrap><div class=SponSet><div class=SponWhat>$Name</div> is sponsored by:</div><div class=Sponsoring>" .
+             weblink($Spon['Website'],
+               (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) .
                 "  class=sponImage$Logosize></center>"):'') .
                ($Spon['BizName']?$Spon['BizName']:$Spon['SN'] )," class=sponText") . "</div></div><br clear=all>";
 
@@ -594,16 +604,16 @@ function SponsoredBy(&$Data,&$Name,$TType,$Tid,$Logosize='0') {
           echo "<div><div class=SponSet><div class=SponWhat>$Name</div> is sponsored by:</div>";
           foreach ($Spids as $Spid) {
             $Spon = Gen_Get('Trade',$Spid['SponsorId'],'Tid');
-            echo "<div class=Sponsoring>" . 
-               weblink($Spon['Website'], 
-                 (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) . 
+            echo "<div class=Sponsoring>" .
+               weblink($Spon['Website'],
+                 (($Spon['Logo'] || $Spon['Photo'])?(" <center><img src=" . ($Spon['Logo']?$Spon['Logo']:$Spon['Photo']) .
                   "  class=sponImage$Logosize></center>"):'') .
                  ($Spon['BizName']?$Spon['BizName']:$Spon['SN'] )," class=sponText") . "</div>";
-               
-          }        
+
+          }
           echo "</div><br clear=all>";
         }
-        
+
       }
     }
 
@@ -625,7 +635,7 @@ function SponsoredByWho(&$Data,&$Name,$TType,$Tid,$cols=3) {
             $Spon = Gen_Get('Trade',$Spid['SponsorId'],'Tid');
             if ($num++ != 0) echo ", ";
             echo "<a href=Biz?ACTION=Show&id=" . $Spid['SponsorId'] . ">" . NoBreak($Spon['SN']) . "</a>";
-          }        
+          }
           echo "</div><br clear=all>";
         } else {
           echo "<td>Not Sponsored " . help('SponsoredBy');
