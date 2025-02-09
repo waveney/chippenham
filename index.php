@@ -1,33 +1,33 @@
 <?php
   include_once("int/fest.php");
-  set_ShowYear();  
+  set_ShowYear();
   global $YEARDATA,$PLANYEARDATA,$Months,$SHOWYEAR,$PLANYEAR;
   include_once("int/TradeLib.php");
   include_once("int/NewsLib.php");
   include_once("int/DispLib.php");
   include_once("int/DateTime.php");
-  
+
   if (isset($_REQUEST['F']) && Access('Staff') && is_numeric($_REQUEST['F']) ) {
     $future = $_REQUEST['F'];
   } else {
     $future = 0;
   }
-  
-//  set_ShowYear();  
+
+//  set_ShowYear();
   $DFrom = ($YEARDATA['DateFri']+$YEARDATA['FirstDay']);
   $DTo = ($YEARDATA['DateFri']+$YEARDATA['LastDay']);
   $DMonth = $Months[$YEARDATA['MonthFri']];
-  
+
   $D2F = Days2Festival();
-  
+
   $ShowDates = 0;
   if ($SHOWYEAR == $PLANYEAR) $ShowDates+=1;
   if ($D2F > -4) $ShowDates +=2;
   if (!empty($YEARDATA['NextFest'])) $ShowDates+=4;
   if ($YEARDATA['Years2Show'] == 0) $ShowDates+=8;
-  
+
   $ShowActions = [1,0,1,0,3,3,4,4,1,1,1,0,1,1,1,0];
-  
+
   if (($YEARDATA['Years2Show'] > 0)) {
     $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);
 //    var_dump($NEXTYEARDATA);
@@ -40,15 +40,15 @@
 
   $Sy = substr($PLANYEAR,0,4);
   $TopBans = Get_All_Articles(0,'TopPageBanner',$future);
-
+// var_dump($TopBans);
   $Banner  = "<div class=WMFFBanner400>";
-  
+
   if ($TopBans) { // Not modified for ShowDates (Yet)
     $Imgs = explode("\n",$TopBans[0]['Text']);
-    
+
 
     $Banner .= '<div class="rslides_container" style="margin:0;"><ul class="rslides" id="slider1">';
-    
+
     foreach ($Imgs as $img) {
       $Banner .= "<li><img src='$img' class=WMFFBannerDefault>";
     }
@@ -85,7 +85,7 @@
 
   $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
   $Banner .= "</div>";
-  dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner ); 
+  dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner );
 
   $TopShow = "Top";
   if ( !Show_Articles_For($TopShow,$future)) {

@@ -17,5 +17,7 @@
   echo "<script src=/js/tablesort.js?V=$VERSION></script>\n";
   echo "<script src=/js/Tools.js?V=$VERSION></script>\n";
   echo '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">';
+  echo '<script src="/js/responsiveslides.js"></script>';
+  echo '<link href="/css/responsiveslides.css" rel="stylesheet">';
 
 ?>

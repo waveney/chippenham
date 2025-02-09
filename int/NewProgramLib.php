@@ -727,7 +727,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
               echo "<br>";
             }
             echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
-            var_dump($All_Times,$Round,$G);
+ //           var_dump($All_Times,$Round,$G);
             for($i=1; $i<5;$i++) {
               if (!empty($G["S$i"])) {
                 $si = $G["S$i"];
