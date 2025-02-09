@@ -160,10 +160,12 @@ var InfoPaneDefault = '';
     var elem = rwst[0];
     while ((elem = elem.nextSibling)) vens.push((elem.id.match(/G:(\d*):(\d*):(\d*)/))[1]);
 
+    var unhide=1;
     for (var v in vens) {
       var id = "G:" + vens[v] + ":" + t + ":0";
       var loc = document.getElementById(id);
-      if (!loc.hasAttribute("hidden") && !loc.hasAttribute("rowspan")) {
+      if (!loc.hasAttribute("hidden")) {
+        if (loc.hasAttribute("rowspan") && loc.getAttribute("rowspan")!=4) continue;
         // check visibility of the 4 rows and work out the one to unhide
         for ( var unhide=1;unhide<4;unhide++) {
           if (document.getElementById("G:" + vens[v] + ":" + t + ":" + unhide).hasAttribute("hidden")) break;
@@ -172,9 +174,10 @@ var InfoPaneDefault = '';
       }
     }
     for (var v in vens) {
-      var id = "G:" + vens[v] + ":" + t + ":";
-        if (!document.getElementById(id + (unhide-1)).hasAttribute("hidden")) document.getElementById(id + unhide).removeAttribute("hidden");
-//      if (!document.getElementById(id + 0).hasAttribute("rowspan")) document.getElementById(id + unhide).removeAttribute("hidden");  // Duff
+      var id = "G:" + vens[v] + ":" + t + ":"; 
+      if (document.getElementById(id + unhide).hasAttribute("hidden")) {
+        document.getElementById(id + unhide).removeAttribute("hidden");
+      }
     };
     if (unhide == 3) {
       $('#AddRow' + t).hide();

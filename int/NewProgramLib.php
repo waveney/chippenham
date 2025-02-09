@@ -14,7 +14,8 @@ function Prog_Headers($Public='',$headers=1,$What='Dance') {
 }
 
 function Grab_Data($day='',$Media='Dance',$Paper=0) {
-  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$OffGrid,$VenueInfo,$Venues,$VenueNames;
+  global $DAY,$Times,$Back_Times,$lineLimit,$Sides,$SideCounts,$EV,$VenueUse,$evs,$Sand,$Earliest,$Latest,$OffGrid,$VenueInfo,$Venues,
+    $VenueNames,$Round,$DefLineLimit;
 
 //  $cats = ['Side','Act','Comedy','Ch Ent','Other'];
   $Times = array();
@@ -36,19 +37,15 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
   } else if (isset($_REQUEST['d'])) { $DAY = $_REQUEST['d']; } else { $DAY='Sat'; }
 
   if (!isset($_REQUEST['EInfo'])) $_REQUEST['EInfo'] = 0;
-/*
-  for ($t=9;$t<($Media=='Dance'?18:24);$t++) { // TODO fix for non 30 minute slots TODO Start and end from Master
-    $Times[] = $t*100;
-    if ($Media != 'Dance') $Times[] = $t*100+15;
-    $Times[] = $t*100+30;
-    if ($Media != 'Dance') $Times[] = $t*100+45;
-  }
 
-  $Back_Times = array_reverse($Times);
-*/
-  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
-    $Round = 30;
-    $DefLineLimit = 2;
+  if ($Media == 'Dance') {
+    if (Feature('DanceDefaultSlot') == 30) {
+      $Round = 30;
+      $DefLineLimit = 2;
+    } else {
+      $Round = 45;
+      $DefLineLimit = 3;
+    }
   } else {
     $Round = 15;
     $DefLineLimit = (($Media == 'Dance')?2:1);
@@ -98,7 +95,7 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
     }
 
 
-    $lineLimit[$t] = (isset($lineLimit[$t]) ? max(2,$lineLimit[$t]) : 2); // Min value
+    $lineLimit[$t] = (isset($lineLimit[$t]) ? max($DefLineLim,$lineLimit[$t]) : $DefLineLim); // Min value
 
     if (!$ev['BigEvent']) {
       $VenueUse[$v] = 1;
@@ -180,17 +177,9 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
 
 function Scan_Data($condense=0,$Media='Dance') {
   global $DAY,$Times,$Back_Times,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,
-         $Venues,$VenueNames,$OtherLocs,$SlotSize,$OffGrid;
+         $Venues,$VenueNames,$OtherLocs,$SlotSize,$OffGrid,$Round,$DefLineLimit;
 
-  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
-    $Round = 30;
-    $DefLineLimit = 2;
-  } else {
-    $Round = 15;
-    $DefLineLimit = (($Media == 'Dance')?2:1);
-  }
-
-  $OtherLocs = array();
+  $OtherLocs = [];
   $OtherLocUse = [];
 
   if ($Venues) foreach ($Venues as $v) if (isset($VenueUse[$v]) && $condense && $VenueInfo[$v]["Minor$DAY"]) $OtherLocs[] = $v;
@@ -239,15 +228,8 @@ function Scan_Data($condense=0,$Media='Dance') {
 */
 // Creates Raw Grid
 function Create_Grid($condense=0,$Media='Dance') {
-  global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$OffGrid,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList,$SlotSize;
-
-  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
-    $Round = 30;
-    $DefLineLimit = 2;
-  } else {
-    $Round = 15;
-    $DefLineLimit = (($Media == 'Dance')?2:1);
-  }
+  global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$OffGrid,$MaxOther,$VenueInfo,$Venues,$VenueNames,
+    $OtherLocs,$Sand,$VenueList,$SlotSize,$Round,$DefLineLimit ;
 
   $ForwardUse = array();
   $grid = array();
@@ -317,16 +299,7 @@ function Create_Grid($condense=0,$Media='Dance') {
 // Creates Raw Grid
 function Create_New_Grid($condense=0,$Media='Dance',$drag) {
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$OffGrid,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList,$SlotSize;
-  global $Earliest,$Latest,$SlotSize,$OffGrid,$pgrid,$pshow,$DTimes,$STimes;
-
-
-  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
-    $Round = 30;
-    $DefLineLimit = 2;
-  } else {
-    $Round = 15;
-    $DefLineLimit = (($Media == 'Dance')?2:1);
-  }
+  global $Earliest,$Latest,$SlotSize,$OffGrid,$pgrid,$pshow,$DTimes,$STimes,$Round,$DefLineLimit;
 
   $ForwardUse = array(); //??
   $pgrid = [];
@@ -409,7 +382,7 @@ function Create_New_Grid($condense=0,$Media='Dance',$drag) {
 
 function Test_Dump($format='') { // far far from complete
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,
-     $SlotSize,$OffGrid;
+    $SlotSize,$OffGrid,$Round,$DefLineLimit;
 
   echo "<div class=GridWrapper$format><div class=GridContainer$format>";
   echo "<table border id=Grid><thead><tr><th id=DayId width=60>$DAY";
@@ -431,19 +404,13 @@ function Test_Dump($format='') { // far far from complete
   h = Hide n rows
 */
 
+// NOT USED - look at Print Grid
 function Print_New_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dance',$Public=0) {
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList;
-  global $Earliest,$Latest,$SlotSize,$OffGrid,$pgrid,$pshow,$DTimes,$STimes;
+  global $Earliest,$Latest,$SlotSize,$OffGrid,$pgrid,$pshow,$DTimes,$STimes,$Round,$DefLineLimit;
 
   $links = $condense && !$types && $Links;
 //var_dump($links, $condense, $types ,$Links);
-  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
-    $Round = 30;
-    $DefLineLimit = 2;
-  } else {
-    $Round = 15;
-    $DefLineLimit = (($Media == 'Dance')?2:1);
-  }
 
   $All_Times = Feature('AllDanceTimes');
   $RowSet = ($All_Times?5:4);
@@ -653,22 +620,15 @@ function Print_New_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media=
 
 function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dance',$Public=0) {
   global $DAY,$Times,$Back_Times,$grid,$lineLimit,$EV,$Sides,$SideCounts,$VenueUse,$evs,$MaxOther,$VenueInfo,$Venues,$VenueNames,$OtherLocs,$Sand,$VenueList;
-  global $Earliest,$Latest,$SlotSize,$OffGrid;
+  global $Earliest,$Latest,$SlotSize,$OffGrid,$Round,$DefLineLimit;
 
 //var_dump($grid);exit;
 //var_dump($Earliest,$Latest);
 //  var_dump($lineLimit);exit;
   $links = $condense && !$types && $Links;
 //var_dump($links, $condense, $types ,$Links);
-  if ($Media == 'Dance' && (Feature('DanceDefaultSlot') == 30)) {
-    $Round = 30;
-    $DefLineLimit = 2;
-  } else {
-    $Round = 15;
-    $DefLineLimit = (($Media == 'Dance')?2:1);
-  }
 
-  $All_Times = Feature('AllDanceTimes');
+  $All_Times = 0; //Feature('AllDanceTimes');
   $RowSet = 4; //($All_Times?5:4);
   $StartLine = 0;
 //  if ($condense && $All_Times) $StartLine = -1;
@@ -759,7 +719,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
             $rows = (isset($G['r'])?($G['r']+1)*$RowSet:1); // Rounding?? *$RowSet; // intval(ceil($G['d']/$Round))*$RowSet; // WRONG
             // Need to create a wrapped event - not editble here currently
             $cls = (empty($G['n'])?'':'class=DPNamed ');
-            echo "$OtherLoc<td id=$id data-x=D $DRAG $dev $cls " . (($rows > 1)?"rowspan=$rows":'') . " valign=top >";
+            echo "$OtherLoc<td id=$id data-x=D $DRAG $dev $cls " . ((0 && $rows > 1)?"rowspan=$rows":'') . " valign=top >";
             if (!empty($G['n'])) {
               if ($links) echo "<a href=/int/EventShow?e=" . $G['e'] . ">";
               echo $G['n'];
@@ -767,6 +727,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
               echo "<br>";
             }
             echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
+            var_dump($All_Times,$Round,$G);
             for($i=1; $i<5;$i++) {
               if (!empty($G["S$i"])) {
                 $si = $G["S$i"];
@@ -785,7 +746,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
               }
             }
           } else {
-            echo "$OtherLoc<td " . ((1 || $Public)?'hidden':'') . " id=$id data-x=Q $DRAG $dev class=$class>&nbsp;";
+            echo "$OtherLoc<td " . (($Public)?'hidden':'') . " id=$id data-x=QQQ $DRAG $dev class=$class>&nbsp;"; // Had ALWAYS hiden
           }
         } else if ($line == 0  && !empty($G['n'])) {
 //          if (Feature('AllDanceTimes')) echo "<span class=DPETimes>" . sprintf('%04d',$t) . " - " . timeadd($t,$G['d']) . "<br></span>";
@@ -860,7 +821,7 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
 }
 
 function Side_List() {
-  global $DAY,$Sides,$SideCounts,$Sand;
+  global $DAY,$Sides,$SideCounts,$Sand,$Round,$DefLineLimit;
   echo "<div class=SideListWrapper><div class=SideListContainer>";
   echo "<table border id=SideList>";
 //  echo "<thead><tr><th>Side<th>i<th>W<th>H</thead><tbody>\n";
@@ -930,10 +891,11 @@ function MusicErrorPane($level=0) {
 }
 
 function Notes_Pane() {
+  global $Round;
   echo "<div id=Notes_Pane>";
   echo "To add a 3rd or 4th side to a time click on the + sign at the time needed, for more than 4 use a Big Event.<br>";
   echo "To remove a side drag back to the side list.<br>";
-  echo "Events > 30 mins shown for info, change using Edit Event (for now).<br>";
+  echo "Events > $Round mins shown for info, change using Edit Event (for now).<br>";
   echo "<div>";
 }
 

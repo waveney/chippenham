@@ -16,5 +16,6 @@ CREATE TABLE `Articles` (
   `RedTitle` tinyint NOT NULL,
   `RelOrder` int NOT NULL,
   `ExternalLink` tinyint NOT NULL,
+  `ColSet` int NOT NULL DEFAULT '3',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
