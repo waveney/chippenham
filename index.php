@@ -52,7 +52,7 @@
     foreach ($Imgs as $img) {
       $Banner .= "<li><img src='$img' class=WMFFBannerDefault>";
     }
-    $Banner .= '</ul></div><script>$(function() { $(".rslides").responsiveSlides(); });</script>';
+    $Banner .= '</ul></div><script>$(function() { $(".rslides").responsiveSlides({timeout: 2000}); });</script>';
   } else {
     $Banner  = "<div class=WMFFBanner400><img src=" . Feature('DefaultPageBanner') . " class=WMFFBannerDefault>";
   }
