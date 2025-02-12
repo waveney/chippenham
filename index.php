@@ -52,7 +52,8 @@
     foreach ($Imgs as $img) {
       $Banner .= "<li><img src='$img' class=WMFFBannerDefault>";
     }
-    $Banner .= '</ul></div><script>$(function() { $(".rslides").responsiveSlides({timeout: 2000}); });</script>';
+    $Banner .= '</ul></div><script>$(function() { $(".rslides").responsiveSlides({timeout: ' .
+      Feature('TopBannerScrollRate',2000) . '}); });</script>';
   } else {
     $Banner  = "<div class=WMFFBanner400><img src=" . Feature('DefaultPageBanner') . " class=WMFFBannerDefault>";
   }
@@ -83,7 +84,7 @@
                "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
   }
 
-  $Banner .= "<img align=center src=/images/icons/torn-top.png class=TornTopEdge>";
+  $Banner .= "<div class=TornWrapper><img align=center src=/images/icons/torn-top.png class=TornTopEdge></div>";
   $Banner .= "</div>";
   dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner );
 

@@ -11,6 +11,8 @@ img {
 body {
   background:var(--main-col);
   min-width:320px;
+  max-width:1560px;
+  width:100%;
   height:100%;
   color:#000000;
   font-family: Montserrat, Arial, Helvetica, sans-serif;
@@ -107,7 +109,8 @@ h2 {
   background-color:var(--main-col-dark);
 }
 .content, .contentlim {
-  min-height:650px;
+  max-width:100%;
+	min-height:650px;
   margin: 0 auto 0 auto;
   background-color:#fff;
 }
@@ -1187,7 +1190,7 @@ textarea {
 
 .ArtTextBT {
   text-align:center;
-  color: var(--main-col-dark);
+/*  color: var(--main-col-dark);*/
   font-weight:normal;
   font-size:24px;
 }

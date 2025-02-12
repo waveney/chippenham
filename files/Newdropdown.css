@@ -585,10 +585,22 @@
 .TornBottomEdge {
 }
 
-.TornTopEdge {
-  top:440px; 
+.TornWrapper {
+	display:none;
+	top:440px; 
   position: absolute;
+  overflow:hidden;
   z-index:10;
+	max-width:100%;
+}
+
+.TornTopEdge {
+/*  top:440px; 
+  position: absolute;
+  overflow:hidden;
+  z-index:10; */
+  max-width:100%;
+  display:none;
 }
 
 /* Footer Stuff */
