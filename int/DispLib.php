@@ -404,7 +404,7 @@ function Expand_Special(&$Art,$future=0) {
 
     $Art['SN'] = $Perf['SN'];
     $Art['Link'] = '/int/ShowPerf?id=' . $Perf['SideId'];
-    $Art['Text'] = (Feature('TopText4Perfs')?$Perf['Description']:'');
+    $Art['Text'] = (Feature('TopText4Perfs')?$Perf['Description']:' ');
     $Art['Image'] = $Perf['Photo'];
     $Art['ImageWidth'] = (isset($Perf['ImageWidth'])?$Perf['ImageWidth']:100);
     $Art['ImageHeight'] = (isset($Perf['ImageHeight'])?$Perf['ImageHeight']:100);
@@ -440,7 +440,7 @@ function Expand_Special(&$Art,$future=0) {
 }
 
 //
-// REMEMBER IF YOU ADD A FORMAT EDIT Articles.js AS WELL
+// REMEMBER IF YOU ADD A FORMAT TO EDIT Articles.js AS WELL
 //
 
 
@@ -462,21 +462,21 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
   echo "<div id=OrigArt hidden>";
 //  echo "<div id=OrigArt>";
   foreach ($Arts as $i=>$Art) {
-    $fmt = (isset($Art['Format'])?$Art['Format']:0);
-    $Cols = $Art['ColSet'];
-    echo "<div id=Art$i data-format=$fmt data-cols=$Cols class=\"Art ArtFormat$fmt\" ";
 // var_dump($Art['SN']);
     if (substr($Art['SN'],0,1) == '@') { // Special
       Expand_Special($Art,$future);  // Will Update content of Art
     }
+    $fmt = (isset($Art['Format'])?$Art['Format']:0);
+    $Cols = $Art['ColSet'];
+    echo "<div id=Art$i data-format=$fmt data-cols=$Cols class=\"Art ArtFormat$fmt\" ";
     if (count($Art)==0 || (!$Art['Text'] && !$Art['Image'] && (!$Art['SN'] || $Art['HideTitle']))) {
       if (substr($Art['SN']??'',0,1) !='@') {
-//        echo "hidden ></div>";
+        echo "hidden ></div>";
         continue; // No content...
       }
     }
     echo ">";
-
+// var_dump($Art);
     $TitleColour = " style='color:" . ($Art['TitleColour']?$Art['TitleColour']:feature('DefaultTitleColour','black')) . "' ";
     switch ($fmt) {
     case 0: // Large Image

@@ -1859,6 +1859,7 @@ input[type="radio"] {
 .bottom-center {
 	position: absolute;
   bottom: 28px;
+  margin-right:-50%;
   left: 50%;
   transform: translate(-50%);
 }
