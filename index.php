@@ -98,7 +98,7 @@
   echo '<center><h2>Sponsors & Supporters</h2></center>';
   echo "<center>Our festival would not be possible without the amazing help and generosity of many organisations including the following major sponsors<p>";
   echo "</center>";
-  $Spons = Get_Sponsors(1);echo count($Spons);
+  $Spons = Get_Sponsors(1);// echo count($Spons);
   $SPSize = '0';
 //  if (count($Spons) < 5) { $SPSize = "300";} elseif (count($Spons) < 7) { $SPSize = "150";}
   echo "<div hidden>" . fm_hidden('ChangeTime',Feature('SponsorTime',2000)); // IN msec

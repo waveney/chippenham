@@ -93,7 +93,8 @@
   echo "<div class=tablecont><table border>\n";
   echo "<tr>" . fm_text("Title",$Art,'SN',2);
     echo "<td>" . fm_checkbox('Hide Title',$Art,'HideTitle');
-    echo "<td>" . fm_checkbox('Red Title',$Art,'RedTitle');
+    echo fm_text1('Title Colour',$Art,'TitleColour',2) . " Black if not set";
+//    echo "<td>" . fm_checkbox('Red Title',$Art,'RedTitle');
   echo "<tr>" . fm_text("Usage",$Art,'UsedOn');
 /*    echo "<td colspan=2 rowspan=5>";
     if ( isset($Art['Image']) && $Art['Image']) {

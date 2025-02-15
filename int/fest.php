@@ -16,12 +16,12 @@ if (isset($YEAR)) {
   if (strlen($YEAR)>6) exit("Invalid Year");
 }
 
-$Access_Levels = ['','Participant','Upload','Steward','Staff','Committee','SysAdmin','Internal'];// Sound Engineers will be Stewards, Upload not used yet
+$Access_Levels = ['','Participant','Upload','Steward','Staff','Committee','SysAdmin','Internal'];
 $Access_Type = array_flip($Access_Levels);
 $Area_Levels = [ 'No','Edit','Edit and Report'];
 $Area_Type = array_flip($Area_Levels);
-$Sections = ['', 'Docs', 'Dance', 'Trade', 'Users', 'Venues', 'Music', 'Sponsors', 'Finance', 'Craft', 'OtherPerf', 'TLine', 'Bugs', 'Photos', 'Comedy',
-             'Family', 'News', 'Volunteers', 'Art', 'Tickets', 'Events', 'Ceilidh', 'Biz']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD
+$Sections = ['', 'Docs', 'Dance', 'Trade', 'Users', 'Venues', 'Music', 'Sponsors', 'Finance', 'Craft', 'OtherPerf', 'TLine', 'Bugs', 'Photos',
+   'Comedy', 'Family', 'News', 'Volunteers', 'Art', 'Tickets', 'Events', 'Ceilidh', 'Biz']; // DO NOT CHANGE ORDER IF CHANGED, JUST ADD
 $Importance = array('None','Some','High','Very High','Even Higher','Highest','The King');
 $Book_States = array('None','Declined','Booking','Contract Ready','Contract Signed','Contract Sent');
 $Book_Colours = ['white','salmon','yellow','orange','lime','Magenta'];
@@ -34,13 +34,14 @@ $Book_Actions = ['None'=>'Book',
   'Contract Signed'=>'Cancel,Decline,Dates,FestC',
   'Contract Sent'=>'Contract,Cancel,Decline,Confirm'];
 $Book_ActionExtras = array('Book'=>'', 'Contract'=>'', 'Decline'=>'', 'Cancel'=>'', 'Confirm'=>'', 'Dates'=>'', 'FestC'=>'');
-$Book_ActionColours = ['Book'=>'DarkGrey', 'Contract'=>'Yellow', 'Decline'=>'Coral', 'Cancel'=>'Red', 'Confirm'=>'lime', 'Dates'=>'', 'FestC'=>''];
+$Book_ActionColours = ['Book'=>'DarkGrey', 'Contract'=>'Yellow', 'Decline'=>'Coral', 'Cancel'=>'Red', 'Confirm'=>'lime', 'Dates'=>'',
+  'FestC'=>''];
 $Cancel_States = ['','Cancel: Sent','Cancel: Avail','Cancel: Not Avail','Cancel: Dont Know'];
 $Cancel_Colours = ['white','orange','green','red','yellow'];
 $EType_States = array('Very Early','Draft','Partial','Provisional','Complete');
 $TicketStates = array('Not Yet','Open','Closed','Remove','Remote');
-$ArticleFormats = ['Large Image','Small Image','Text','Banner Image','Banner Text','Fixed','Left/Right Pairs', '2/3rds Banner Image', 'Image below text',
- 'V Small image right of heading'];
+$ArticleFormats = ['Large Image','Small Image','Text','Banner Image','Banner Text','Fixed','Left/Right Pairs', '2/3rds Banner Image',
+  'Image below text', 'V Small image right of heading','Title Overlay Large Image'];
 // Name => [EnableFld, Email@, Capability, ?, Code]
 $PerfTypes = ['Dance Side'=>['IsASide','Displays','Dance','Dance Displays','D'],
               'Musical Act'=>['IsAnAct','Music','Music','Music','M'],

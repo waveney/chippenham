@@ -302,7 +302,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
       if ($prog) echo $prog;
   //    if ($Exted_prog) echo $Exted_prog;
     } else {
-      echo "<h2>The programme has not yet been published.</h2>\n";
+      echo "<h2>Performer(s) confirmed, we just finalising the programme.</h2>";
       echo "When it is, the programme for <b>" . $side['SN'] . "</b> will appear here.<p>";
     }
 

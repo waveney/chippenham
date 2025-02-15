@@ -11,8 +11,6 @@ img {
 body {
   background:var(--main-col);
   min-width:320px;
-  max-width:1560px;
-  width:100%;
   height:100%;
   color:#000000;
   font-family: Montserrat, Arial, Helvetica, sans-serif;
@@ -1123,10 +1121,18 @@ textarea {
 
 .ArtFormat0 {}
 
+
 .ArtTitleL {
   margin:0;
   font-size:30px;
   color:#005C8F;
+  font-weight:bold;
+  transition:opacity .5s, filter .5s;
+}
+
+.ArtTitleOverlay {
+  margin:0;
+  font-size:30px;
   font-weight:bold;
   transition:opacity .5s, filter .5s;
 }
@@ -1807,3 +1813,52 @@ input[type="radio"] {
   transform: translateY(4px);
 }
 
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+/* Bottom left text */
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+
+/* Top left text */
+.top-left {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
+
+/* Top right text */
+.top-right {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+}
+
+/* Bottom right text */
+.bottom-right {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+/* Centered text */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.bottom-center {
+	position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translate(-50%);
+}

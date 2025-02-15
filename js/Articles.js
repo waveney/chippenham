@@ -140,7 +140,18 @@ $(document).ready(function() {
         Col.append(clone); 
 //        $('#SArt'+ArtNum).height(newheight+PadWidth/2);
         break;
-      
+        
+      case 10: // Large - image display Title overlay width is actcolwidth, image display height = acthieght*actcolwith/origheight
+        var cloneimg = $('#ArtImg' + ArtNum);
+        var imgwd = cloneimg.data('width');
+        var imght = cloneimg.data('height');
+        var newwidth = ActColWidth;
+        var newheight = Math.floor(imght*newwidth/imgwd);
+        clone = clone.replace(/class="ArtImageL"/,'class="ArtImageL" width=' + newwidth + ' height=' + newheight);
+        Col.append(clone); 
+        break;
+          
+    
       }
       ArtNum++;
     }

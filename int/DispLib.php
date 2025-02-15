@@ -404,12 +404,13 @@ function Expand_Special(&$Art,$future=0) {
 
     $Art['SN'] = $Perf['SN'];
     $Art['Link'] = '/int/ShowPerf?id=' . $Perf['SideId'];
-    $Art['Text'] = $Perf['Description'];
+    $Art['Text'] = (Feature('TopText4Perfs')?$Perf['Description']:'');
     $Art['Image'] = $Perf['Photo'];
     $Art['ImageWidth'] = (isset($Perf['ImageWidth'])?$Perf['ImageWidth']:100);
     $Art['ImageHeight'] = (isset($Perf['ImageHeight'])?$Perf['ImageHeight']:100);
+    $Art['Format'] = 10; // Overlay
 
-    if ($YEAR != $PLANYEAR) {
+    if (($YEAR != $PLANYEAR) && Feature('TopText4Perfs')) {
       $Sy = Get_SideYear($id,$PLANYEAR);
       if (isset($Sy['syId']) && (($Perf['IsASide'] && ($Sy['Coming'] == $Coming_States['Coming'])) || $Sy['YearState']>1)) {
         $Art['Text'] = "CONFIRMED FOR $PLANYEAR<p>\n\n" . $Perf['Description'];
@@ -462,21 +463,26 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
 //  echo "<div id=OrigArt>";
   foreach ($Arts as $i=>$Art) {
     $fmt = (isset($Art['Format'])?$Art['Format']:0);
-    echo "<div id=Art$i data-format=$fmt class=\"Art ArtFormat$fmt\" ";
+    $Cols = $Art['ColSet'];
+    echo "<div id=Art$i data-format=$fmt data-cols=$Cols class=\"Art ArtFormat$fmt\" ";
 // var_dump($Art['SN']);
     if (substr($Art['SN'],0,1) == '@') { // Special
       Expand_Special($Art,$future);  // Will Update content of Art
     }
     if (count($Art)==0 || (!$Art['Text'] && !$Art['Image'] && (!$Art['SN'] || $Art['HideTitle']))) {
-      echo "hidden ></div>";
-      continue; // No content...
+      if (substr($Art['SN']??'',0,1) !='@') {
+//        echo "hidden ></div>";
+        continue; // No content...
+      }
     }
     echo ">";
+
+    $TitleColour = " style='color:" . ($Art['TitleColour']?$Art['TitleColour']:feature('DefaultTitleColour','black')) . "' ";
     switch ($fmt) {
     case 0: // Large Image
     default:
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=ArtTitleL $TitleColour id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] .
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
@@ -487,21 +493,21 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
         " data-width=" . $Art['ImageWidth'] . ">";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=ArtTitleS $TitleColour id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextS\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
 
     case 2: // Text Only
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleT" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=ArtTitleT $TitleColour id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextT\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
 
     case 3: // Banner Image
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=ArtTitleBI $TitleColour id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
@@ -510,14 +516,14 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
 
     case 4: // Banner Text
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . "'>";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBT" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=ArtTitleBT $TitleColour id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextBT\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
 
     case 5: // Fixed Image large box has ratio of 550:500
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleF" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div><br>";
+      if (!$Art['HideTitle']) echo "<div class=ArtTitleF $TitleColour id=\"ArtTitle$i\">" . $Art['SN'] . "</div><br>";
       if ($Art['Image']) echo "<img class=\"ArtImageF rounded\" id=\"ArtImg$i\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
           " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a><br style='height:0' clear=\"all\">";
@@ -530,7 +536,7 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
 
     case 7: // 2/3rds Banner Image
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleBI23" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=ArtTitleBI23 $TitleColour id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageBI23\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
          " data-width=" . $Art['ImageWidth'] .">";
       if ($Art['Link']) echo "</a>";
@@ -539,7 +545,7 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
 
     case 8: // image below text
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleL" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=ArtTitleL $TitleColour id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       echo "<br><span class=\"ArtTextL\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] .
          " data-width=" . $Art['ImageWidth'] .">";
@@ -552,9 +558,21 @@ function Show_Articles_For(&$page,$future=0,$datas='400,700,20,3') {
       if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
       if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageVS\" src=" . $Art['Image'] . " data-height=" . $Art['ImageHeight'] .
         " data-width=" . $Art['ImageWidth'] . ">";
-      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleS" . ($Art['RedTitle']?' Red':'') . "\" id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if (!$Art['HideTitle']) echo "<div class=ArtTitleS $TitleColour id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
       echo "<span class=\"ArtTextS\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
+      break;
+
+    case 10: // Large Image - title overlay - Does NOT use TitleColour
+      echo "<div class=container>";
+      if ($Art['Link']) echo "<a href='" . $Art['Link'] . (empty($Art['ExternalLink'])?"'":"' target=_blank") . ">";
+      if ($Art['Image']) echo "<img id=\"ArtImg$i\" class=\"ArtImageL\" src='" . $Art['Image'] . "' data-height=" . $Art['ImageHeight'] .
+        " data-width=" . $Art['ImageWidth'] .">";
+      if (!$Art['HideTitle']) echo "<div class=\"ArtTitleOverlay bottom-center \" style='color:" .
+        ($Art['TitleColour']?$Art['TitleColour']:feature('OverlayTitleColour','black')) .
+        "' id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
+      if ($Art['Link']) echo "</a>";
+      echo "<br><span class=\"ArtTextL\" id=\"ArtText$i\">" . $Art['Text'] . "</span>\</div>";
       break;
 
 
