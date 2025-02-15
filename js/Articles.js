@@ -18,7 +18,7 @@ $(document).ready(function() {
     
     if (WorkWidth > (2*MinWidth+PadWidth)) ColCount = Math.min(Math.floor(WorkWidth/(MinWidth+PadWidth)),MaxColns);
     var ActOutColWidth = Math.min(Math.floor((WorkWidth - ColCount*PadWidth)/ColCount) - 5,MaxWidth);
-    var ActColWidth = ActOutColWidth-PadWidth;
+    var ActColWidth = ActOutColWidth-PadWidth*2;
 
     // Create columns
     Show.append('<div class=ArtBanner id=ArtBanners></div><div id=ArtCols></div>');

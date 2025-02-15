@@ -1103,20 +1103,20 @@ textarea {
 
 .ArtColClass {
   float:left;
-  padding:10px;
+  padding:5px;
   max-width:100%;
   flex-wrap: wrap;
   word-wrap: break-word;
 }
 
 .Art {
-  border-width:2px;
+  border-width:1px;
   border-style:solid;
   border:none;
   background:white;
 /*  border-color:#a30046; */
-  padding:8px;
-  margin-bottom:20px;
+  padding:4px;
+  margin-bottom:10px;
 }
 
 .ArtFormat0 {}
@@ -1138,9 +1138,7 @@ textarea {
 }
 
 .ArtImageL {
-  padding-bottom:5px;
-  height:auto;
-/*  max-height:300px;*/
+  padding-bottom:3px;
 }
 
 .ArtTextL {
