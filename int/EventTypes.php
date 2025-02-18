@@ -18,17 +18,18 @@
   echo "Set Dont List to prevent the events being a category under the public timetables<br>\n";
   echo "Set Inc Type to indicate event type in description if it is not part of the events name.<br>";
   echo "State drives lots: - set to draft to enable the performers to see their own events. Set to complete when all events of given type are in<br>\n";
+  echo "State:Draft also allows selected events to be shown, higher ratings show all unless deselected<p>\n";
   echo "Set <b>No Part</b> if event type is valid without any participants.<br>";
   echo "First Year - first year this event type is listed - prevents backtracking.<br>\n";
   echo "If Banner is blank the default will be used<p>";
-  
+
   echo "Set the Not critical flag for sound checks - means that this event type does not have to be complete for contract signing.<br>";
   echo "Set the <b>Use Imp</b> flag to bring headline particpants to top of an event, they still get bigger fonts.<br>";
   echo "Set Format to drive EventShow rules 0=All Large, 2=Switch to large at Importance-High, 9+=All Small<br>";
   echo "Set The Map Feat to the MapFeature to enable maps of locations 0 = no map<br>";
   echo "Set Concert to surpress publication of indivdual act times<br>";
   echo "Set Sherlock to number to select event by number.  Text string used instead of Sherlock call - eg dance<p>";
-  
+
   echo "<form method=post action=EventTypes>";
   echo "<div class=Scrolltable><table id=indextable border>\n";
   echo "<thead><tr>";

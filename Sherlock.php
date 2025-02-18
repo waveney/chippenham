@@ -92,9 +92,9 @@
 
   $yr = substr($YEAR,0,4);
   $Titles = array("", // Not used
-                "Currently known $Types for $yr, there will be more", // Draft
-                "Currently known $Types for $yr, there will be more", // Partial
-                "Currently known $Types for $yr, there may be more", // Provisional
+                "Currently pubicised $Types for $yr, there will be more", // Draft
+                "Currently pubicised $Types for $yr, there will be more", // Partial
+                "Currently pubicised $Types for $yr, there may be more", // Provisional
                 "$Types for $YEAR", // Complete
                 );
 
