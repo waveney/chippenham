@@ -572,7 +572,8 @@ function Show_Articles_For(&$page,$future=0,$datas= '200,350,4,4') { //) {'400,7
         ($Art['TitleColour']?$Art['TitleColour']:feature('OverlayTitleColour','black')) .
         "' id=\"ArtTitle$i\">" . $Art['SN'] . "</div>";
       if ($Art['Link']) echo "</a>";
-      echo "<br><span class=\"ArtTextL\" id=\"ArtText$i\">" . $Art['Text'] . "</span>\</div>";
+      echo "</div>";
+      if (strlen($Art['Text']) > 2) echo "<span class=\"ArtTextL\" id=\"ArtText$i\">" . $Art['Text'] . "</span>";
       break;
 
 
