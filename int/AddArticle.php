@@ -9,6 +9,8 @@
   include_once("Uploading.php");
   include_once("DateTime.php");
 
+  $ColSet = [1=>1,2=>2,3=>3,4=>4,5=>5];
+
 //var_dump($_REQUEST);
   $Dates = array('StartDate','StopDate','RestartDate');
 
@@ -78,7 +80,7 @@
     $Art = Get_Article($id);
   } else {
     $id = -1;
-    $Art = [];
+    $Art = ['ColSet'=>Feature('DefaultColumns',4)];
   }
 
 //  var_dump($Art);
@@ -103,7 +105,7 @@
       echo "No Image";
     }*/
     if (isset($Art['id'])) echo "<td colspan=3 rowspan=4><table border><tr>" . fm_DragonDrop(1, 'Image','Article',$Art['id'],$Art) . "</table>";
-  echo "<tr><td>Format:<td>" . fm_select($ArticleFormats,$Art,'Format');
+  echo "<tr><td>Format:<td>" . fm_select($ArticleFormats,$Art,'Format') . " Cols:" . fm_select($ColSet,$Art,'ColSet');
   echo "<tr><td>Importance:<td>" . fm_select($Importance,$Art,'Importance');
   echo "<tr>" , fm_text("Relative Order",$Art,'RelOrder');
   echo "<tr>" . fm_date("Start Date",$Art,'StartDate') . fm_date("Stop Date",$Art,'StopDate');

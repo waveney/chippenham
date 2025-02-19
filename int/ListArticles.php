@@ -31,6 +31,7 @@ Click on the title to edit.<p>";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Start of Text</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Importance</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Order</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Cols</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Thumbnail</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>When</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Usage</a>\n";
@@ -44,7 +45,7 @@ Click on the title to edit.<p>";
 
     echo "<td>" . (isset($mtch[1]) ? htmlspec($mtch[1]) : "") ;
     echo "<td>" . $Importance[$t['Importance']];
-    echo "<td>" . $t['RelOrder'];
+    echo "<td>" . $t['RelOrder'] . "<td>" . $t['ColSet'];
     echo "<td>" . ($t['Image']?("<img src='" . $t['Image'] . "' height=80>") : "");
     echo "<td>" . ($t['StartDate'] ? date('j/m/y',$t['StartDate']) : "" ) . " - " . ($t['StopDate'] ? date('j/m/y',$t['StopDate']) : "" ) ;
     echo "<td>" . $t['UsedOn'] . "\n";
