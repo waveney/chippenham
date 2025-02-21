@@ -1,9 +1,3 @@
-:root{
-  --main-col:#fcb900;
-  --main-col-dark:#993300;
-  --main-contrast:black;
-}
-
 .ERR {
   font-weight: bold;
   color: red;

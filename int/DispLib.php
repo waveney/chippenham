@@ -284,7 +284,7 @@ function Expand_Many(&$Art,$Cometest,$Generic,$Name,$LineUp,$future,$Year=0,$Pfx
   $D2F = Days2Festival();
 
   $now = time();
-  $Art['SN'] = $Name;
+  $Art['SN'] = $Name . ' Line Up';
   if ($LineUp) $Art['Link'] = "/LineUp?T=$LineUp";
 
     $ans = $db->query("SELECT count(*) AS Total FROM Sides s, SideYear y WHERE s.SideId=y.SideId AND y.Year='$Year' AND $Cometest " .
