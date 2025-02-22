@@ -10,7 +10,17 @@
 
 //  echo "<div class='content'><h2>Manage Event Types</h2>\n";
   $Types = Get_Event_Types(1);
-  if (UpdateMany('EventTypes','Put_Event_Type',$Types,1)) $Types = Event_Types_ReRead();
+  if (UpdateMany('EventTypes','Put_Event_Type',$Types,1)) {
+    $Types = Event_Types_ReRead();
+    
+    $Vens = Get_Active_Venues(1);
+    $Vids = [];
+    
+    if ($Vens) foreach ($Vens as $Ven) $Vids[] = $Ven['VenueId'];
+    
+    file_put_contents("../cache/VenueList",json_encode($Vids));
+    
+  }
   $coln = 0;
 
   echo "Please don't have too many types.<p>\n";

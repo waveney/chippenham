@@ -454,7 +454,8 @@
       $txt .= "<p><li><a href=Volunteers?A=CompAdd>Add Festival team and Complimentary tickets</a>\n";
       $txt .= "<li><a href=Volunteers?A=CompList>List Festival team and Complimentary tickets</a>\n";
     }
-
+   
+    $txt .= "</ul><h2>Collecting</h2><ul>";
     $txt .= "<p><li><a href=Collecting?Y=$YEAR>General Collecting</a>\n";
     $txt .= "<li><a href=Collecting?ACTION=Records&Y=$YEAR>Tin Records</a>\n";
     $txt .= "<li><a href=Collecting?ACTION=IO&$YEAR>Tins in and out</a>\n";
@@ -500,6 +501,7 @@
   if ($x = StaffTable('Misc','Misc')) {
     $txt .= $x;
     $txt .= "<ul>\n";
+    $txt .= "<h2>Volunteers</h2>";
 //    $txt .= "<li><a href=StewardView>Stewarding Applications (old)</a>\n";
     $txt .= "<li><a href=Volunteers?A=New>Volunteering Application Form</a>\n";
     $txt .= "<li><a href=Volunteers?A=List>List Volunteers</a>\n";
@@ -510,16 +512,19 @@
                 "<input type=submit name=a value='Volunteer Details for ' id=staffformid>" .
                 fm_select($VolTeams,0,'Cat',0," onchange=this.form.submit()") . "</form>\n";
     if (Access('Staff','Photos')) {
+      $txt .= "<h2>Photos</h2>";
       $txt .= "<p><li><a href=PhotoUpload>Photo Upload</a>";
       $txt .= "<li><a href=PhotoManage>Photo Manage</a>";
       $txt .= "<li><a href=GallManage>Gallery Manage</a>";
     }
-    $txt .= "<p>";
 
 //    $txt .= "<li><a href=LaughView?Y=$YEAR>Show Laugh Out Loud applications</a>";
-    if (Access('Committee')) $txt .= "<li><a href=Campsites?Y=$YEAR>Campsites</a>\n";
-    if (Access('Committee')) $txt .= "<li><a href=CampTypes?Y=$YEAR>Camping Types</a>\n";
-    if (Access('Committee')) $txt .= "<li><a href=CampUse?Y=$YEAR>Camping Use</a>\n";
+    if (Access('Committee')) {
+      $txt .= "<h2>Campsites</h2>";
+      $txt .= "<li><a href=Campsites?Y=$YEAR>Campsites</a>\n";
+      $txt .= "<li><a href=CampTypes?Y=$YEAR>Camping Types</a>\n";
+      $txt .= "<li><a href=CampUse?Y=$YEAR>Camping Use</a>\n";
+    }
     $txt .= "<p>";
 
 //    if (Access('SysAdmin')) $txt .= "<li><a href=VolImport>Import Older Volunteers</a>";

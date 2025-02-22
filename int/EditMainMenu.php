@@ -11,7 +11,7 @@ echo "text=>link or text=>[submenu] (recuresive)<br>
 1st char of link ! - external, ~ Only after Program freeze<br>
 Specials 0 Sherlocks, 1 Gallery Index";
 
-echo fm_textarea1('Main Menu',$Menu,'Menu');
+echo fm_textarea1('Main Menu',$Menu,'Menu',1,100);
 
 dotail();
 

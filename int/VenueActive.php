@@ -8,7 +8,7 @@
   include_once("int/DateTime.php");
   global $db,$YEAR,$PLANYEAR,$YEARDATA;
 
-  $Vens = Get_Active_Venues(1);
+  $Vens = Get_Active_Venues(1); // Code also in Event types
   $Vids = [];
   
   if ($Vens) foreach ($Vens as $Ven) $Vids[] = $Ven['VenueId'];

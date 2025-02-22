@@ -7,7 +7,6 @@
   border-bottom: 1px solid #fff;
   height: 80px;
   background: var(--main-col);
-/*  background:  linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.2)); */
   transition: all ease-in-out 0.4s;
   color:white;
 }
@@ -105,7 +104,7 @@
   margin: 0;
   padding:0;
   border:0;
-  display: inline-block;
+/*  display: inline-block;*/
 }
 
 .PublicBar1 {
@@ -221,7 +220,7 @@
 }
 
 .navigation #MenuGetTicket:hover {
-  background:rgba(197, 31, 132,1);
+  background:var(--TicketHover);
 }
 
 .navigation #MenuDonate {
@@ -486,7 +485,7 @@
 }
 
 .WMFFbanner800 .BanDates:hover {
-  background:rgba(197, 31, 132,1);
+  background:var(--TicketHover);
   color:white;
   transition: all ease-in-out 0.4s;
 }
@@ -525,7 +524,7 @@
 }
 
 .WMFFbanner600 .BanDates:hover {
-  background:rgba(197, 31, 132,1);
+  background:var(--TicketHover);
   color:white;
   transition: all ease-in-out 0.4s;
 }
@@ -568,7 +567,7 @@
 }
 
 .WMFFbanner400 .BanDates:hover {
-  background:rgba(197, 31, 132,1);
+  background:var(--TicketHover);
   color:white;
   transition: all ease-in-out 0.4s;
 }
@@ -616,7 +615,7 @@
 .VersionBy{
   width: 28%;
   text-align: right;
-  display: inline-block;
+/*  display: inline-block;*/
   float: right; 
   padding-right:20px;
 }
