@@ -179,22 +179,23 @@ if (isset($_FILES['croppedImage'])) {
     $_REQUEST['SHAPE'] = $Shape;
   }
   $PhotoCats = array('Sides','Acts','Comics','Family','Other','Ceilidh', 'Traders','Sponsors','Venues','Venue2','Food');
+  $All = isset($_REQUEST['ALL']);
 
-  $Lists = array(
-        'Sides'=> Perf_Name_List('IsASide'),
-        'Acts'=>Perf_Name_List('IsAnAct'),
-        'Comics'=>Perf_Name_List('IsFunny'),
-        'Family'=>Perf_Name_List('IsFamily'),
-        'Other'=>Perf_Name_List('IsOther'),
-        'Ceilidh'=>Perf_Name_List('IsCeilidh'),
-        'Youth'=>Perf_Name_List('IsYouth'),
+  $Lists = [
+    'Sides'=> Perf_Name_List('IsASide',$All),
+    'Acts'=>Perf_Name_List('IsAnAct',$All),
+    'Comics'=>Perf_Name_List('IsFunny',$All),
+    'Family'=>Perf_Name_List('IsFamily',$All),
+    'Other'=>Perf_Name_List('IsOther',$All),
+    'Ceilidh'=>Perf_Name_List('IsCeilidh',$All),
+    'Youth'=>Perf_Name_List('IsYouth',$All),
 
-        'Traders'=>Get_All_Traders(0),
-        'Sponsors'=>Get_Sponsor_Names(),
-        'Venues'=>Get_Venues(0),
-        'Venue2'=>Get_Venues(0),
-        'Food'=>Gen_Get_Names('FoodAndDrink','','id','SN'),
-        );
+    'Traders'=>Get_All_Traders(0),
+    'Sponsors'=>Get_Sponsor_Names(),
+    'Venues'=>Get_Venues(0),
+    'Venue2'=>Get_Venues(0),
+    'Food'=>Gen_Get_Names('FoodAndDrink','','id','SN'),
+     ];
 
   $AccessNeeded = [
         'Sides'=>Access('Staff','Dance'),
@@ -297,7 +298,8 @@ if (isset($_FILES['croppedImage'])) {
     foreach($Lists as $cat=>$dog) {
 //if ($cat == 'Food') var_dump($dog);
       if (!empty($dog)) {
-        if ($AccessNeeded[$cat]) echo "<span id=MPC_$i " . ($cat == $PhotoCats[$mouse]?'':'hidden') . "> : " . fm_select($dog,$_REQUEST,"WHO$i") . "</span>";
+        if ($AccessNeeded[$cat]) echo "<span id=MPC_$i " . ($cat == $PhotoCats[$mouse]?'':'hidden') . "> : " . 
+          fm_select($dog,$_REQUEST,"WHO$i") . "</span>";
       }
       $i++;
     }

@@ -203,10 +203,21 @@ function Other_Name_List() {
   return $Sides;
 }
 
-function Perf_Name_List($isa) {
-  global $db;
+function Perf_Name_List($isa,$All) {
+  global $db,$PLANYEAR;
   $Sides = [];
-  $res = $db->query("SELECT SideId, SN FROM Sides WHERE SideStatus=0 AND $isa=1 ORDER BY SN");
+  if ($All) {
+    $res = $db->query("SELECT SideId, SN FROM Sides WHERE SideStatus=0 AND $isa=1 ORDER BY SN");
+    
+  } else {
+    if ($isa == 'IsASide') {
+      $res = $db->query("SELECT s.SideId, SN FROM Sides s, SideYear y WHERE s.SideId = y.SideId AND " .
+        "y.Year='$PLANYEAR' AND y.Coming=2 AND SideStatus=0 AND $isa=1 ORDER BY SN");
+    } else {
+      $res = $db->query("SELECT s.SideId, SN FROM Sides s, SideYear y WHERE s.SideId = y.SideId AND " .
+        "y.Year='$PLANYEAR' AND y.YearState>=2 AND SideStatus=0 AND $isa=1 ORDER BY SN");
+    }
+  }
   if ($res) while ($row = $res->fetch_assoc()) $Sides[$row['SideId']] = $row['SN'];
   return $Sides;
 }

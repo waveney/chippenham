@@ -13,8 +13,7 @@
 }
 
 .main-header a, .main-header a:link, .main-header a:visited  {
-  color:#404040;
-/*  color: #ff4000; */
+  color:var(--header-link);
 }
 /*
 @media (prefers-color-scheme: dark ) {  .main-header a, .main-header a:link, .main-header a:visited { color: #ff4000;  }}
@@ -125,7 +124,7 @@
 }
 
 .PrivateBar a {
-  background-color: #fff0b3; /* dimgrey; */
+  background-color: var(--private_bar); /* dimgrey; */
 }
 
 .MenuIcon {
@@ -208,7 +207,7 @@
 }
 
 .fixedheader .PrivateBar a {
-  color: #404040;
+  color:var(--header-link);
 }
 
 .navigation #MenuGetTicket {
@@ -226,7 +225,7 @@
 }
 
 .navigation #MenuDonate {
-  background:#b32d00;
+  background:var(--main-link);
   padding-left:20px;
   padding-right:20px;
   color:white;
@@ -234,12 +233,12 @@
 }
 
 .fixedheader .navigation #MenuDonate {
-  background:#b32d00;
+  background:var(--main-link);
   color:white;
 }
 
 .navigation #MenuDonate:hover {
-  background:#e67300;
+  background:var(--menu-donate);
 }
 
 
@@ -260,7 +259,7 @@
   text-align:center;
   font-size: 16pt;
   display: block; 
-  background-color:#f0f0f0;
+  background-color:var(--menu-dropdown);
   padding:12px;  
   color:var(--main-col-dark);
   border:0.5px solid var(--main-col); 
@@ -606,7 +605,7 @@
 /* Footer Stuff */
 .footer {
   font-size:9pt;
-  background-color:#00344c ;
+  background-color:#00344c ; /* Overridden I think */
   color:#FFFFFF;
 }
 
@@ -622,11 +621,5 @@
   padding-right:20px;
 }
 
-.BrianImg {
-  padding:5px;
-  background-color:#00344c ;  
-  max-width:800px;
-  width:100%;
-}
 
 
