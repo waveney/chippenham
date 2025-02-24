@@ -339,6 +339,21 @@
     $N[$field] = hexdec($Value);
     return Gen_Put($type,$N);
 
+  case 'Generic' : // General case of table:field:id
+    if ((preg_match('/(\w*):(\w*):(\d*)/',$field,$mtch)?true:false)) {
+      $t = $mtch[1];
+      $f = $mtch[2];
+      $i = $mtch[3];
+      if (($t == 'Ignore') || ($i==0)) exit;
+      $N = Gen_Get($t,$i);
+      $N[$f] = $Value;
+      echo Gen_Put($t,$N);
+    }
+    if ((preg_match('/Ignore:(\w*):(\w*):(\d*)/',$field,$mtch)?true:false)) {
+      exit;
+    }
+    exit;
+    
   default:
     break;
   }

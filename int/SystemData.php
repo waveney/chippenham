@@ -13,6 +13,8 @@
   }
 
   echo "<h2>System Data Settings and Global Actions</h2>\n";
+  
+  echo "<h2><a href=ShowFeatureHelp>Show Feature Help</a></h2>";
 
 // var_dump($_REQUEST);
 
@@ -23,7 +25,7 @@
     $txt = ":root {\n--main-col:" . Feature('CSSColourMain','#fcb900') . ";\n";
     $txt .= "--main-col-dark:" . Feature('CSSColourDark','#993300') . ";\n";
     $txt .= "--main-contrast:" . Feature('CSSColourContrast','#1a0000') . ";\n";
-    $txt .= "--header-link:" . Feature('CSSColourContrast','#404040') . ";\n";
+    $txt .= "--header-link:" . Feature('CSSColourHeader','#404040') . ";\n";
     $txt .= "--main-link:" . Feature('CSSColourMainLink','#b32d00') . ";\n";
     $txt .= "--menu-donate:" . Feature('CSSColourDonate','#e67300') . ";\n";
     $txt .= "--menu-dropdown:" . Feature('CSSColourDropdown','#f0f0f0') . ";\n";
@@ -36,7 +38,7 @@
     $txt .= "--TableSun:" . Feature('CSSColourSun','darkcyan') . ";\n";
     $txt .= "--TableMon:" . Feature('CSSColourMon','peru') . ";\n";
     $txt .= "--DayTabBack:" . Feature('CSSColourDayTabBack','#f4f4f4') . ";\n";
-    $txt .= "--DayArtTitle:" . Feature('CSSColourDonate','#005C8F') . ";\n";
+    $txt .= "--DayArtTitle:" . Feature('CSSColourArtTitle','#005C8F') . ";\n";
     $txt .= "--TicketHover:" . Feature('CSSColourTicket','#CF1F84') . ";\n";
  //   $txt .= "--DayArtTitle:" . Feature('CSSColourDonate','#005C8F') . ";\n";
     $txt .= "--private_bar:" . Feature('CSSColourPrivate','#fff0b3') . ";\n}\n";

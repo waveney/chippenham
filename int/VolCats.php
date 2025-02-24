@@ -15,6 +15,7 @@ function Show_Cat($Cat,$Act='UPDATE') {
        " 1000=LongQ1, 2000=LongQ2, 4000=LongQ3, 8000=LongQ4, " .
        " 10000=Special Camp, 20000=Don't list, 40000=Collecting Tins, 80000=Spare, 100000=Full AvailQs, 200000=GroupQs, " .
        "1000000=Q1GP, 2000000=Q2GP, 4000000=Q3GP, 8000000=Q4GP<br>";
+  echo "Props2: 1=Omit Notifs<p>";
   echo "For List of When: 'Before' - long time before, 'Week' - week before, 0=Friday of festival, Fest=Just Fest, -1 = day before, 1 next day etc.  " .
        "upto -4 and +11<p>\n";
   echo "Put ALL members of a Group in Priority order Higher than the Groups Questions.<p>";
@@ -31,7 +32,7 @@ function Show_Cat($Cat,$Act='UPDATE') {
   echo "<tr>" . fm_text('Name',$Cat,'Name',2) . "<td>Full name of volunteer Category\n";
   echo "<tr>" . fm_text('ShortName',$Cat,'ShortName',2)  . "<td>Short name of volunteer Category (May be the same)\n";
   echo "<tr>" . fm_text('Email',$Cat,'Email',2) . "<td>Email address of category leader can by multiple separated by commas\n";
-  echo "<tr>" . fm_hex('Properties',$Cat,'Props');
+  echo "<tr>" . fm_hex('Properties',$Cat,'Props') . fm_hex1('',$Cat,'Props2');
   echo          fm_text('Background Colour',$Cat,'Colour');
   echo "<tr>" . fm_number('Relative Importance',$Cat,'Importance') . fm_number('Group',$Cat,'FormGroup');
   echo "<tr>" . fm_textarea('Short Description',$Cat,'Description',5,3);

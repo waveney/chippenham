@@ -4,6 +4,7 @@
   "phpoffice/phpspreadsheet": "^1.8",
   "html2text/html2text": "^4.2",
   "chrisjean/php-ico": "^1.0",
-  "ideneal/emailoctopus": "^1.2"
+  "ideneal/emailoctopus": "^1.2",
+  "erusev/parsedown": "^1.7"
  }
 }

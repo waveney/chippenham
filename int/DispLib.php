@@ -445,7 +445,6 @@ function Expand_Special(&$Art,$future=0) {
 
 
 function Show_Articles_For(&$page,$future=0,$datas= '200,350,4,4') { //) {'400,700,20,3' set as 4 col, these for 3 col
-  if ($future == 0 && !Feature('UseArticles')) return 0;
   include_once("DanceLib.php");
   global $ShownInArt, $EShownInArt;
   $ShownInArt = $EShownInArt = [];

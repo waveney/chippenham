@@ -906,6 +906,19 @@ function NumbersOf($Text) {
   return preg_match_all('/([1-9]\d*?)/',$Text,$matches);
 }
 
+function NamesList(&$D,$fld='Name') {
+  $L = [];
+  foreach ($D as $i=>$R) $L[$i] = $R[$fld];
+  return $L;
+}
+
+function ParseText($txt) {
+//  include_once("vendor/erusev/parsedown/Parsedown.php");
+//  static $Parsedown = new Parsedown();
+//  $ftxt = $Parsedown->text(stripslashes($txt));
+//  return substr($ftxt,3);
+}
+
 /* TODO
 --Documents
 --Insurance

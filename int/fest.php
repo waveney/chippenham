@@ -406,7 +406,7 @@ function dostaffhead($title,$extras=[]) {
   if (isset($CONF['TitlePrefix'])) $pfx = $CONF['TitlePrefix'];
   echo "<html><head>";
   echo "<title>$pfx " . Feature('ShortName') . " | $title</title>\n";
-  if ($AdvancedHeaders && Feature('NewStyle') && ! UserGetPref('StaffOldFormat')) {
+  if ($AdvancedHeaders && ! UserGetPref('StaffOldFormat')) {
     include_once("files/Newheader.php");
     include_once("festcon.php");
     if ($extras) doextras($extras);

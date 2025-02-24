@@ -383,27 +383,40 @@ function set_ShowYear($last=0) { // Overrides default above if not set by a Y ar
 
 // Works for simple tables
 // Deletes = 0 none, 1=one, 2=many  Putfn=name of put fn or empty for gen_put call
-function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$Mstr='SN',$MstrNot='',$Hexflds='') {
+// Works for simple tables
+// Deletes = 0 none, 1=one, 2=many
+function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$Mstr='Name',$MstrNot='',$Hexflds='',$MstrChk='',$Sep='') {
   global $TableIndexes;
   include_once("DateTime.php");
   $Flds = table_fields($table);
   $DateFlds = explode(',',$Dateflds);
   $TimeFlds = explode(',',$Timeflds);
   $HexFlds = explode(',',$Hexflds);
-  $indxname = (isset($TableIndexes[$table])?$TableIndexes[$table]:'id');
-  if (!isset($Flds['SN']) && isset($Flds['Name'])) $Mstr='Name';
-
-// var_dump($Flds);
-//return;
-  if (isset($_REQUEST['Update'])) {
+  $indxname = ($TableIndexes[$table]??'id');
+  
+  // var_dump($Sep,$Mstr,$MstrNot);
+  //return;
+  if (isset($_POST['Update'])) {
+    $Pfx = '';
+    $mtch = [];
+    foreach ($_REQUEST as $R=>$V) {
+      if (preg_match("/$table:(\w*):(\d*)/",$R,$mtch)){
+        $Pfx = "$table:";
+        $Sep = ':';
+        break;
+      } else if (preg_match("/$Mstr$Sep(\d*)/",$R,$mtch)) {
+        break;
+      }
+    }
+    
     if ($data) foreach($data as $t) {
       $i = $t[$indxname];
-
       if ($i) {
-        if (isset($_REQUEST["$Mstr$i"]) && $_REQUEST["$Mstr$i"] == $MstrNot) {
+        if (isset($_POST["$Pfx$Mstr$Sep$i"]) && $_POST["$Pfx$Mstr$Sep$i"] == $MstrNot) {
           if ($Deletes) {
-//          echo "Would delete " . $t[$indxname] . "<br>";
-              db_delete($table,$t[$indxname]);
+            if (!empty($MstrChk) && !isset($_POST["$Pfx$MstrChk$Sep$i"])) continue;
+            //          echo "Would delete " . $t[$indxname] . "<br>";
+            db_delete($table,$t[$indxname]);
             if ($Deletes == 1) return 1;
           }
           continue;
@@ -412,53 +425,73 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
           foreach ($Flds as $fld=>$ftyp) {
             if ($fld == $indxname) continue;
             if (in_array($fld,$DateFlds)) {
-              $t[$fld] = Date_BestGuess($_REQUEST["$fld$i"]);
+              $t[$fld] = Date_BestGuess($_POST["$Pfx$fld$Sep$i"]);
               $recpres = 1;
             } else if (in_array($fld,$TimeFlds)) {
-              $t[$fld] = Time_BestGuess($_REQUEST["$fld$i"]);
+              $t[$fld] = Time_BestGuess($_POST["$Pfx$fld$Sep$i"]);
               $recpres = 1;
             } else if (in_array($fld,$HexFlds)) {
-              $t[$fld] = hexdec($_REQUEST["$fld$i"]);
+              $t[$fld] = hexdec($_POST["$Pfx$fld$Sep$i"]);
               $recpres = 1;
-            } else if (isset($_REQUEST["$fld$i"])) {
-              $t[$fld] = $_REQUEST["$fld$i"];
+            } else if (isset($_POST["$Pfx$fld$Sep$i"])) {
+              $t[$fld] = $_POST["$Pfx$fld$Sep$i"];
               $recpres = 1;
             } else {
               $t[$fld] = 0;
             }
           }
-// if ($i==15)  {       var_dump($recpres,$t);exit; };
-//          return;
+          //          var_dump($recpres,$t);exit;
+          //          return;
           if ($recpres) {
             if ($Putfn) {
               $Putfn($t);
             } else {
-              Gen_Put($table,$t,$indxname);
+              Gen_Put($table,$t);
             }
           }
         }
       }
     }
-    if (isset($_REQUEST[$Mstr . "0"] ) && $_REQUEST[$Mstr . "0"] != $MstrNot) {
-//echo "Here";
+    if (isset($_POST["$Mstr$Sep" . "0"] ) && $_POST["$Mstr$Sep" . "0"] != $MstrNot) {
       $t = array();
       foreach ($Flds as $fld=>$ftyp) {
         if ($fld == $indxname) continue;
-        if (isset($_REQUEST[$fld . "0"])) {
+        $Look = "$Pfx$fld$Sep" . "0";
+        if (isset($_POST[$Look])) {
           if (in_array($fld,$DateFlds)) {
-            $t[$fld] = Date_BestGuess($_REQUEST[$fld . "0"]);
+            $t[$fld] = Date_BestGuess($_POST[$Look]);
           } else if (in_array($fld,$TimeFlds)) {
-            $t[$fld] = Time_BestGuess($_REQUEST[$fld . "0"]);
+            $t[$fld] = Time_BestGuess($_POST[$Look]);
           } else if (in_array($fld,$HexFlds)) {
-            $t[$fld] = hexdec($_REQUEST[$fld . "0"]);
+            $t[$fld] = hexdec($_POST[$Look]);
           } else {
-            $t[$fld] = $_REQUEST[$fld . "0"];
+            $t[$fld] = $_POST[$Look];
           }
         }
       }
-//var_dump($t); exit;
+      //      var_dump("$Pfx$fld$Sep" . "0", $HexFlds,$t);
+      Insert_db($table,$t);
+    } else if (isset($_POST["$Pfx$Mstr$Sep" . "0"] ) && $_POST["$Pfx$Mstr$Sep" . "0"] != $MstrNot) {
+      $t = array();
+      foreach ($Flds as $fld=>$ftyp) {
+        if ($fld == $indxname) continue;
+        if (isset($_POST["$Pfx$fld$Sep" . "0"])) {
+          if (in_array($fld,$DateFlds)) {
+            $t[$fld] = Date_BestGuess($_POST["$Pfx$fld$Sep" . "0"]);
+          } else if (in_array($fld,$TimeFlds)) {
+            $t[$fld] = Time_BestGuess($_POST["$Pfx$fld$Sep" . "0"]);
+          } else if (in_array($fld,$HexFlds)) {
+            $t[$fld] = hexdec($_POST["$Pfx$fld$Sep" . "0"]);
+          } else {
+            $t[$fld] = $_POST["$Pfx$fld$Sep" . "0"];
+          }
+        }
+      }
+      //      var_dump($t);
       Insert_db($table,$t);
     }
+    
     return 1;
-  } 
+  }
 }
+

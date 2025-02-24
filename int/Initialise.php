@@ -279,11 +279,7 @@ EnableFinance:0
 EnableAdmin:1
 EnableCraft:0
 EnableVols:1',
-'Features'=>'; Global settings never change
-UseArticles = 1
-NewStyle = 1
-
-; Festival
+'Features'=>'; Festival
 FestName = Festival
 ShortName = Fest
 ShowYear = ' . $Year . '

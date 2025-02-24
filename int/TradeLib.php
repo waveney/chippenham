@@ -1397,7 +1397,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
               $Trady['BookingState'] = $Trade_State['Requote'];
               Put_Trade_Year($Trady);
             }
-            if (!Feature('AutoInvoices') && $Trady['Fee'] >=0 && $OldFee != $Trady['Fee'] && $Trady['BookingState'] >= $Trade_State['Accepted'])
+            if (!Feature('AutoInvoices',1) && $Trady['Fee'] >=0 && $OldFee != $Trady['Fee'] && $Trady['BookingState'] >= $Trade_State['Accepted'])
                   Send_Trade_Finance_Email($Trad,$Trady,'Trade_UpdateBalance');
           } else {
             $chks = ['Insurance','RiskAssessment','PitchSize0','PitchSize1','PitchSize2','Power0','Power1','Power2','YNotes','BookingState','Submit',
@@ -1495,7 +1495,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
       if (Access('SysAdmin')) {
         echo "<div class=floatright>";
         echo "<input type=Submit id=smallsubmit name='NewAccessKey' value='New Access Key'>";
-        if (!Feature("AutoInvoices") && $Trady['BookingState'] >= $Trade_State['Accepted'])
+        if (!Feature("AutoInvoices",1) && $Trady['BookingState'] >= $Trade_State['Accepted'])
           echo "<input type=Submit id=smallsubmit name='ACTION' value='Resend Finance'>";
         echo "</div>\n";
       }
@@ -1520,7 +1520,7 @@ function Trade_Main($Mode,$Program,$iddd=0) {
         if ($Mode==0 && !in_array($ac,$ButTrader)) continue;
         if ($Mode==1 && !Access('Committee','Trade') && !in_array($ac,$ButAdmin)) continue;
         if (!isset($Trady['Fee'])) $Trady['Fee'] = 0;
-        if (Feature('AutoInvoices') && !Access('SysAdmin') && in_array($ac,$RestrictButs)) continue;  // Normal people cant hit Paid have to be through the invoice
+        if (Feature('AutoInvoices',1) && !Access('SysAdmin') && in_array($ac,$RestrictButs)) continue;  // Normal people cant hit Paid have to be through the invoice
         $xtra = '';
         switch ($ac) {
           case 'Quote':
@@ -1540,10 +1540,10 @@ function Trade_Main($Mode,$Program,$iddd=0) {
             if ($Trady['Fee'] == 0) continue 2;
             break;
           case 'Dep Paid':
-            if ($Trady['Fee'] == 0 || Feature('AutoInvoices')) continue 2;
+            if ($Trady['Fee'] == 0 || Feature('AutoInvoices',1)) continue 2;
             break;
           case 'Paid':
-            if ($Trady['Fee'] == 0 || Feature('AutoInvoices')) continue 2;
+            if ($Trady['Fee'] == 0 || Feature('AutoInvoices',1)) continue 2;
             break;
           case 'Invoice':
           case 'Bal Request':
@@ -1640,7 +1640,7 @@ function Trade_Invoice_Code(&$Trad,&$Trady) {
 
 function Trade_Deposit_Invoice(&$Trad,&$Trady,$Full='Full',$extra='',$Paid=0) {
   global $PLANYEAR;
-  if (! Feature("AutoInvoices")) return 0;
+  if (! Feature("AutoInvoices",1)) return 0;
 
   $Dep = ($Trady['Fee']>0?T_Deposit($Trad):0);
   $InvPay = Feature('TradeInvoicePay');
@@ -1775,7 +1775,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         break;
       }
 
-      if (Feature("AutoInvoices")) {
+      if (Feature("AutoInvoices",1)) {
          $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ?
             "Trade_Artisan_Final_Invoice" : "Trade_Final_Invoice");
         $InvCode = Trade_Invoice_Code($Trad,$Trady);
@@ -2158,7 +2158,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
         if ($Trady['Fee']<0) $Pwr = 0;
 
-        if (Feature("AutoInvoices")) {
+        if (Feature("AutoInvoices",1)) {
           $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ?
                             "Trade_Artisan_Final_Invoice" : "Trade_Final_Invoice");
           $InvCode = Trade_Invoice_Code($Trad,$Trady);

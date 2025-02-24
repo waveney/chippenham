@@ -309,7 +309,7 @@ function Create_New_Grid($condense=0,$Media='Dance',$drag) {
   // at each grid time have 5 rows
   $STimes= [];
 
-  $DGSlt = Feature('DanceGridSlot',30);
+  $DGSlt = Feature('DanceDefaultSlot',30);
   $End = array_slice($Times,-1) + $DGSlt;
   for($T = $Times[0]; $T <= $End; $T += $DGSlt) {
     $STimes[] = $T;

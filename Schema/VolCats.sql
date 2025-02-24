@@ -6,6 +6,7 @@ CREATE TABLE `VolCats` (
   `Listofwhen` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Email` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `Props` int NOT NULL,
+  `Props2` int NOT NULL,
   `OtherQ1` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `OtherQ2` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `OtherQ3` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
