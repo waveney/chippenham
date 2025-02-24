@@ -42,7 +42,8 @@ define('VOL_HEADER',0x400000);
 define('VOL_GRP1',0x1000000);
 define('VOL_GRPS',0xf000000);
 
-define('VOL_OMIT_EMAIL',1); // Props 2
+define('VOL_OMIT_SUBMIT',1); // Props 2
+define('VOL_OMIT_CANCEL',2); // Props 2
 
 // Button Name, Vol_Button
 $EmailMsgs = [''=>'','U'=>'NotSub','E' => Feature('Vol_Special_Mess'),
@@ -1083,6 +1084,7 @@ function Vol_Emails(&$Vol,$reason='Submit') {// Allow diff message on reason=upd
   Email_Volunteer($Vol,"Vol_Application_$reason",$Vol['Email']);
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
   foreach($VolCats as $Cat) {
+    if ($Cat['Prop2'] && VOL_OMIT_SUBMIT) continue;
     $em = strtolower($Cat['Email']);
     foreach ($VCYs as $VCY) {
       if (($VCY['CatId'] == $Cat['id']) && ($VCY['Status']>0)) {
@@ -1105,7 +1107,7 @@ function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
   foreach($VolCats as $Cat) {
     $em = strtolower($Cat['Email']);
-    if ($Cat['Prop2'] && VOL_OMIT_EMAIL) continue;
+    if ($Cat['Prop2'] && VOL_OMIT_CANCEL) continue;
     foreach ($VCYs as $VCY) {
       
       if (($VCY['CatId'] == $Cat['id']) && ($VCY['Status']>0)) {

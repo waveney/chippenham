@@ -47,12 +47,15 @@
     $Css = file_get_contents('files/Basestyle.css');
 
     $txt .= $Css;
-    file_put_contents('cache/Style.css',$txt);
-
-    $Vtxt = "<?php\n\$VERSION=\"$VERSION-\"\n?>\n";
-    file_put_contents('Version.php',$Vtxt);
-
-    echo "Data and CSS updated<p>";
+    if (file_put_contents('cache/Style.css',$txt)) {
+  
+      $Vtxt = "<?php\n\$VERSION=\"$VERSION-\"\n?>\n";
+      file_put_contents('Version.php',$Vtxt);
+  
+      echo "Data and CSS updated<p>";
+    } else {
+      echo "<h2 class=Err>Failed to update Style - call Richard</h2>";
+    }
 
   }
 
