@@ -203,7 +203,7 @@ function Other_Name_List() {
   return $Sides;
 }
 
-function Perf_Name_List($isa,$All) {
+function Perf_Name_List($isa,$All=0) {
   global $db,$PLANYEAR;
   $Sides = [];
   if ($All) {

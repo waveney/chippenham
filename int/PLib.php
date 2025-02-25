@@ -336,7 +336,8 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       echo "<tr id=OverlapRow$row class=NotSide><td rowspan=$rows class=NotSide>Overlap Rules: \n" .
             help('OverlapRules'); //<button type=button onclick=AddOverlapRow()>+</button>\n";
 
-      foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $SelectPerf[$p] = ($d[0] == 'IsASide'? Sides_All($snum,1): Perf_Name_List(($d[0])));
+      foreach ($PerfTypes as $p=>$d) 
+        if (Capability("Enable" . $d[2])) $SelectPerf[$p] = ($d[0] == 'IsASide'? Sides_All($snum,1): Perf_Name_List(($d[0])));
 
       $PTypes = [];
       foreach ($PerfTypes as $p=>$d) if (Capability("Enable" . $d[2])) $PTypes[] = $p;
@@ -560,13 +561,20 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
     $ProcDays = intval(Feature('ProcessDays'));
     if ($YEARDATA['FirstDay'] <= 0) {
       echo "<tr><td rowspan=" . (2*$DayCount-1) . ">" . ((isset($Sidey['Invited']) && $Sidey['Invited']) ? "Dancing on:" : "Would like to dance on:" );
+      if ($Mode==0 && Feature('DanceFullFri') && (!$Sidey['Fri'])) {
+        echo "<td>Friday: Sorry Full Up";
+      } else {
         echo "<td>" . fm_checkbox('Friday',$Sidey,'Fri','onchange=ComeSwitch(event)');
 //      echo fm_text1('Daytime Spots',$Sidey,'FriDance',1,'class=ComeFri');
         echo "<td class=ComeFri>" . fm_checkbox('Dance Friday Eve?',$Sidey,'FriEve');
+      }
     }
     if ($YEARDATA['FirstDay'] <= 1 && $YEARDATA['LastDay'] > 0) {
       if (!empty($Sidey['Sat'])) $HereCount++;
-      echo "<tr>";
+      if ($Mode==0 && Feature('DanceFullSat') && (!$Sidey['Sat'])) {
+        echo "<tr><td rowspan=2>Saturday: Sorry Full Up<tr>";
+      } else {      
+        echo "<tr>";
         echo "<td rowspan=2>" . fm_checkbox('Saturday',$Sidey,'Sat','onchange=ComeSwitch(event)');
         echo fm_text1('Daytime &half; hr Spots',$Sidey,'SatDance',0.5,'class=ComeSat onchange=CheckDiscount()');
         if (($ProcDays & 2) && Feature("Procession"))
@@ -574,28 +582,37 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
         if ($YEARDATA['LastDay'] > 1)  echo "<td class=ComeSat>" . fm_checkbox('Dance Saturday Eve?',$Sidey,'SatEve');
         echo "<tr>" .fm_text1('Earliest Spot',$Sidey,'SatArrive',0.5,'class=ComeSat');
         echo fm_text1('End of latest Spot',$Sidey,'SatDepart',0.5,'class=ComeSat');
+      }
     }
     if ($YEARDATA['FirstDay'] <= 2 && $YEARDATA['LastDay'] > 1) {
       if (!empty($Sidey['Sun'])) $HereCount++;
-      echo "<tr>";
-      echo "<td rowspan=2>" . fm_checkbox('Sunday',$Sidey,'Sun','onchange=ComeSwitch(event)');
-      echo fm_text1('Daytime &half; hr Spots',$Sidey,'SunDance',0.5,'class=ComeSun onchange=CheckDiscount()');
-      if (($ProcDays & 4) && Feature("Procession"))
-        echo "<td class=ComeSun>" . fm_checkbox('Plus the ' . Feature("Procession","Procession"),$Sidey,'ProcessionSun',$chg);
-      if ($YEARDATA['LastDay'] > 2)  echo "<td class=ComeSun>" . fm_checkbox('Dance Sunday Eve?',$Sidey,'SunEve');
-      echo "<tr>" .fm_text1('Earliest Spot',$Sidey,'SunArrive',0.5,'class=ComeSun');
-      echo fm_text1('End of latest Spot',$Sidey,'SunDepart',0.5,'class=ComeSun');
+      if ($Mode==0 && Feature('DanceFullSun') && (!$Sidey['Sun'])) {
+        echo "<tr><td rowspan=2>Sunday: Sorry Full Up<tr>";
+      } else {
+        echo "<tr>";
+        echo "<td rowspan=2>" . fm_checkbox('Sunday',$Sidey,'Sun','onchange=ComeSwitch(event)');
+        echo fm_text1('Daytime &half; hr Spots',$Sidey,'SunDance',0.5,'class=ComeSun onchange=CheckDiscount()');
+        if (($ProcDays & 4) && Feature("Procession"))
+          echo "<td class=ComeSun>" . fm_checkbox('Plus the ' . Feature("Procession","Procession"),$Sidey,'ProcessionSun',$chg);
+        if ($YEARDATA['LastDay'] > 2)  echo "<td class=ComeSun>" . fm_checkbox('Dance Sunday Eve?',$Sidey,'SunEve');
+        echo "<tr>" .fm_text1('Earliest Spot',$Sidey,'SunArrive',0.5,'class=ComeSun');
+        echo fm_text1('End of latest Spot',$Sidey,'SunDepart',0.5,'class=ComeSun');
+      }
     }
     if ($YEARDATA['FirstDay'] <= 3 && $YEARDATA['LastDay'] > 2) {
       if (!empty($Sidey['Mon'])) $HereCount++;
-      echo "<tr>";
-      echo "<td rowspan=2>" . fm_checkbox('Monday',$Sidey,'Mon','onchange=ComeSwitch(event)');
-      echo fm_text1('Daytime &half; hr Spots',$Sidey,'MonDance',0.5,'class=ComeMon onchange=CheckDiscount()');
-      if (($ProcDays & 8) && Feature("Procession"))
-        echo "<td class=ComeMon>" . fm_checkbox('Plus the ' . Feature("Procession","Procession"),$Sidey,'ProcessionMon',$chg);
-      if ($YEARDATA['LastDay'] > 3)  echo "<td class=ComeMon>" . fm_checkbox('Dance Monday Eve?',$Sidey,'MonEve'); // Not Possible yet
-      echo "<tr>" .fm_text1('Earliest Spot',$Sidey,'MonArrive',0.5,'class=ComeMon');
-      echo fm_text1('End of latest Spot',$Sidey,'MonDepart',0.5,'class=ComeMon');
+      if ($Mode==0 && Feature('DanceFullMon') && (!$Sidey['Mon'])) {
+        echo "<tr><td rowspan=2>Monday: Sorry Full Up<tr>";
+      } else {
+        echo "<tr>";
+        echo "<td rowspan=2>" . fm_checkbox('Monday',$Sidey,'Mon','onchange=ComeSwitch(event)');
+        echo fm_text1('Daytime &half; hr Spots',$Sidey,'MonDance',0.5,'class=ComeMon onchange=CheckDiscount()');
+        if (($ProcDays & 8) && Feature("Procession"))
+          echo "<td class=ComeMon>" . fm_checkbox('Plus the ' . Feature("Procession","Procession"),$Sidey,'ProcessionMon',$chg);
+        if ($YEARDATA['LastDay'] > 3)  echo "<td class=ComeMon>" . fm_checkbox('Dance Monday Eve?',$Sidey,'MonEve'); // Not Possible yet
+        echo "<tr>" .fm_text1('Earliest Spot',$Sidey,'MonArrive',0.5,'class=ComeMon');
+        echo fm_text1('End of latest Spot',$Sidey,'MonDepart',0.5,'class=ComeMon');
+      }
     }
 
     if ($Mode) {
