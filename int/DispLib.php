@@ -466,7 +466,7 @@ function Show_Articles_For(&$page,$future=0,$datas= '200,350,4,4') { //) {'400,7
       Expand_Special($Art,$future);  // Will Update content of Art
     }
     $fmt = (isset($Art['Format'])?$Art['Format']:0);
-    $Cols = $Art['ColSet'];
+    $Cols = ($Art['ColSet']??1);
     echo "<div id=Art$i data-format=$fmt data-cols=$Cols class=\"Art ArtFormat$fmt\" ";
     if (count($Art)==0 || (!$Art['Text'] && !$Art['Image'] && (!$Art['SN'] || $Art['HideTitle']))) {
       if (substr($Art['SN']??'',0,1) !='@') {
@@ -476,7 +476,7 @@ function Show_Articles_For(&$page,$future=0,$datas= '200,350,4,4') { //) {'400,7
     }
     echo ">";
 // var_dump($Art);
-    $TitleColour = " style='color:" . ($Art['TitleColour']?$Art['TitleColour']:feature('DefaultTitleColour','black')) . "' ";
+    $TitleColour = " style='color:" . (($Art['TitleColour']??0)?$Art['TitleColour']:feature('DefaultTitleColour','black')) . "' ";
     switch ($fmt) {
     case 0: // Large Image
     default:
