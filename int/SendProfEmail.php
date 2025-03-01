@@ -94,7 +94,7 @@ if (isset($_REQUEST['REEDIT'])) {
   }
 }
 
-dominimalhead("Email for " . $Side['SN'],["css/festconstyle.css"]);
+dominimalhead("Email for " . $Side['SN'],["cache/FestStyle.css","css/festconstyle.css"]);
 
 Replace_Help('Dance',1);
 

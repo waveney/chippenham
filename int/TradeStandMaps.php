@@ -2,7 +2,7 @@
   include_once("fest.php");
   include_once("festcon.php");
 
-  dominimalhead("Trade Stand Maps",['css/PrintPage.css']);
+  dominimalhead("Trade Stand Maps",["cache/FestStyle.css",'css/PrintPage.css']);
 
   include_once("TradeLib.php");
   include_once("PitchMap.php");

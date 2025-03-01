@@ -7,7 +7,7 @@
   include_once("DispLib.php");
   include_once("DanceLib.php");
   include_once("MusicLib.php");
-  dominimalhead("All Event by Time", ['css/PrintPage.css']);
+  dominimalhead("All Event by Time", ["cache/FestStyle.css",'css/PrintPage.css']);
   echo "<div class=PaperL>";
   include_once("files/Newheader.php");
 //  include_once("festcon.php");

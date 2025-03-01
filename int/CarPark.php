@@ -3,7 +3,7 @@
   include_once("fest.php");
   A_Check('Committee','Dance');
 
-  dominimalhead("Car Park Address Labels");
+  dominimalhead("Car Park Address Labels",["cache/FestStyle.css"]);
 
   global $db,$PLANYEAR;
 /*

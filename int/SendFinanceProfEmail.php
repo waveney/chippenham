@@ -34,7 +34,7 @@ if (isset($_REQUEST['SAVE'])) {
   Put_Invoice($inv);
 }
 
-dominimalhead("Email for " . $inv['BZ'],["css/festconstyle.css"]);
+dominimalhead("Email for " . $inv['BZ'],["cache/FestStyle.css","css/festconstyle.css"]);
 echo "<h2>Email for " . $inv['BZ'] . " - " . $inv['Contact'] . "</h2>";
 if (isset($_REQUEST['PREVIEW'])) {
   echo "<p><h3>Preview...</h2>";

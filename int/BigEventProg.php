@@ -2,7 +2,7 @@
   include_once("fest.php");
   A_Check('Staff','Dance');
 
-  dominimalhead("Big Event Programming", ["js/tableHeadFixer.js", "js/Participants.js", "js/BigE.js", "css/festconstyle.css"] );
+  dominimalhead("Big Event Programming", ["js/tableHeadFixer.js", "js/Participants.js", "js/BigE.js","cache/FestStyle.css", "css/festconstyle.css"] );
 
   include_once("DanceLib.php");
   include_once("MusicLib.php");

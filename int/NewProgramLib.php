@@ -4,7 +4,7 @@ function Prog_Headers($Public='',$headers=1,$What='Dance') {
   if ($Public && $headers) {
     dohead("$What Programme", ["js/tableHeadFixer.js","js/NewDanceProg.jsdefer", "css/festconstyle.css" ]);
   } else {
-    dominimalhead("$What Programme", ["js/tableHeadFixer.js","js/NewDanceProg.jsdefer", "css/festconstyle.css"] );
+    dominimalhead("$What Programme", ["js/tableHeadFixer.js","js/NewDanceProg.jsdefer","cache/FestStyle.css", "css/festconstyle.css"] );
   }
 
   include_once("DanceLib.php");

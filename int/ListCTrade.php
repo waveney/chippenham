@@ -6,7 +6,7 @@
   $ToPrint = $_REQUEST['TOPRINT']??false;
 
   if ($ToPrint) {
-    dominimalhead('List Traders');
+    dominimalhead('List Traders',["cache/FestStyle.css"]);
     $Camps = Gen_Get_All('Campsites','ORDER BY Importance DESC');
   } else {
     dostaffhead("List Traders", ["/js/clipboard.min.js", "/js/emailclick.js"]);

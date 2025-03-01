@@ -7,7 +7,7 @@
   include_once("DispLib.php");
   include_once("DanceLib.php");
   include_once("MusicLib.php");
-  dominimalhead("Performer Print Pages", ['css/PrintPage.css']);
+  dominimalhead("Performer Print Pages", ["cache/FestStyle.css",'css/PrintPage.css']);
 
   global $db,$Coming_Type,$YEAR,$PLANYEAR,$Book_State,$EType_States;
   $Set = 0;
