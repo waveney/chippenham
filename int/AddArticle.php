@@ -74,6 +74,7 @@
     } elseif ($_REQUEST['ACTION'] == 'CREATE') {
       if (empty($_REQUEST['StartDate'])) $_REQUEST['StartDate'] = time()+7*24*3600;
       $id = Insert_db_post('Articles',$Art);
+      if (!($Art['UsedOn']??0)) echo "<h2 class=Err>WHERE IS THIS ARTICLE FOR...</h2>";
     }
   } elseif (isset($_REQUEST['id'])) {
     $id = $_REQUEST['id'];

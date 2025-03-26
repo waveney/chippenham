@@ -36,7 +36,7 @@
   case $Access_Type['Committee'] :
     $capmatch = 0;
     $Side = Get_Side($snum);
-    foreach ($PerfTypes as $p=>$d) if ($Side[$d[0]] && Is_SubType($d[2])) $capmatch = 1;
+    foreach ($PerfTypes as $p=>$d) if (($Side[$d[0]]??0) && Is_SubType($d[2])) $capmatch = 1;
     if (!$capmatch) fm_addall('disabled readonly');
     break;
 

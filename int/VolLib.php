@@ -48,7 +48,7 @@ define('VOL_OMIT_CANCEL',2); // Props 2
 // Button Name, Vol_Button
 $EmailMsgs = [''=>'','U'=>'NotSub','E' => Feature('Vol_Special_Mess'),
   'S'=>'Stew1','M'=>'Note2','F' => Feature('Vol_Special_Mess2'),'T' => 'Vol_Post_Fest1', 'O' => 'Vol_October',
-  'N'=>'Vol_November', 'D'=>'Vol_December', 'J'=>'Vol_January', 'R' => 'Vol_March', 'A'=>'Vol_April',
+  'N'=>'Vol_November', 'D'=>'Vol_December', 'J'=>'Vol_January', 'R' => 'Vol_March', 'A'=>'Vol_April', 'r'=>'Vol_March2',
 ];
 
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
