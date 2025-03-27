@@ -1398,12 +1398,16 @@ function List_Vols($AllVols='') {
     foreach ($VolCats as $i=>&$Cat) if ($Cat['Props'] & VOL_USE) echo "<td class=Cat$i>" . $Cat['Total'];
 
 
-  if (Access('SysAdmin')) echo "<tr><td class=NotSide>Debug<td colspan=20 class=NotSide><textarea id=Debug></textarea>";
+    if (Access('SysAdmin')) {
+      echo "<tr><td class=NotSide>Debug<td colspan=20 class=NotSide><textarea id=Debug></textarea>";
+      if ($VY['Status'] == 0) echo fm_submit('Action','Delete');
+    }
 
   echo "</tbody></table></div>\n";
 
   echo "<h2><a href=Volunteers?A=New>Add a Volunteer</a></h2>";
   echo "<h2><a href=Volunteers?A=CSV&F=CSV>Volunteer list as a CSV</a></h2>";
+  
   dotail();
 }
 
