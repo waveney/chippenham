@@ -476,7 +476,16 @@ function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=
   } else {
     $Mess = $mescat;
   }
+  
   Parse_Proforma($Mess,$helper,$helperdata,0,$attachments,$embeded);
+  
+  
+  var_dump($Mess);
+  
+  $Mess = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $Mess);
+  
+  var_dump($Mess);exit;
+  
 //echo "<p>After Pass:"; var_dump($attachments);
   NewSendEmail($Src,$SrcId,$to,$subject,$Mess,$attachments,$embeded,$from);
 //echo "<p>After Send:"; var_dump($attachments);
