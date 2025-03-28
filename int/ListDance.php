@@ -294,6 +294,12 @@
                  ">$mess</button>";
         }
 
+        if (($mess = Feature('DanceSpecialMessage2'))) {
+          $Mname = preg_replace('/ /', '',$mess);
+          echo "<button type=button id=$Mname$snum class=ProfButton onclick=ProformaSend('Dance_$Mname',$snum,'$Mname','SendProfEmail')" .
+          ">$mess</button>";
+        }
+        
         if ($fetch['Email']) {
           if (!$IsComp && ($_REQUEST['SEL'] == 'Coming')) {
             echo "<button type=button id=Detail$snum class=ProfButton onclick=ProformaSend('Dance_Details',$snum,'Details','SendProfEmail')" .

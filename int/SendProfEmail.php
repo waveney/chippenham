@@ -46,7 +46,19 @@ if (isset($_REQUEST['REEDIT'])) {
   $Side = Get_Side($id);
   $Sidey = Get_SideYear($id);
   $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
-  $Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:(Get_Email_Proforma($proforma))['Body']);
+  if (isset($_REQUEST['Message'])) {
+    $Mess = $_REQUEST['Message'];
+  } else {
+    $Proform = Get_Email_Proforma($proforma);
+    if ($Proform) {
+      $Mess = $Proform['Body'];
+    } else {
+      dostaffhead('ERROR');
+      echo "<h1 class=Err>Message $proforma not found - call Richard<h1>";
+      dotail();
+    }
+  }
+//  $Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:(Get_Email_Proforma($proforma))['Body']);
   $To = $Side['Email'];
   if (isset($_REQUEST['E']) && isset($Side[$_REQUEST['E']]) ) {
     $To = $Side[$_REQUEST['E']];
