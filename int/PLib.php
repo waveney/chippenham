@@ -723,8 +723,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
             echo "<tr><td colspan=6>Festival Tickets wanted at <span id=TickDiscount>No discount</span> - You will be sent a link to purchase these by the festival. " .
                  "Set Adults to -1 if you don't want any";
             echo "<tr>" . fm_number1('Adults',$Sidey,'Performers','',' onchange=CheckIfTickets() ') .
-                 fm_number1('Youth (10-16)',$Sidey,'PerformersYouth','',' onchange=CheckIfTickets() ') .
-                 fm_number1('Child (under 10)',$Sidey,'PerformersChild','',' onchange=CheckIfTickets() ');
+                 fm_number1('Youth (11-17)',$Sidey,'PerformersYouth','',' onchange=CheckIfTickets() ') .
+                 fm_number1('Child (under 11)',$Sidey,'PerformersChild','',' onchange=CheckIfTickets() ');
             echo "<td class=NOPerfTickets><b>No Tickets Wanted</b>";
             if ($Mode) echo "<td class=NotSide>" . fm_checkbox('These have changed',$Sidey,'PerfNumChange');
           }
@@ -732,8 +732,8 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
           if ($Side['IsAnAct'] || $Side['IsFunny'] || $Side['IsFamily'] || $Side['IsCeilidh'] || $Side['IsOther'] || $Side['IsYouth'] ) {
             echo "<tr class=NotCSide><td class=NotCSide>Free Tickets: " . fm_checkbox('Day Tickets',$Sidey,'DayTickets') .
                  fm_number1('Adults',$Sidey,'FreePerf','class=NotCSide') .
-                 fm_number1('Youth (10-16)',$Sidey,'FreeYouth','class=NotCSide') .
-                 fm_number1('Child (under 10)',$Sidey,'FreeChild','class=NotCSide');
+                 fm_number1('Youth (11-17)',$Sidey,'FreeYouth','class=NotCSide') .
+                 fm_number1('Child (under 11)',$Sidey,'FreeChild','class=NotCSide');
             if (Access('Staff')) {
               if ($Sidey['TicketsCollected'] ?? 0) {
                 $User = Get_User($Sidey['CollectedBy'] ?? 0);

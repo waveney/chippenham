@@ -32,7 +32,7 @@ function Print_Thing($thing,$right=0) {
     echo $thing['SN'];
     if (!empty($thing['Roll'])) {
       echo " (" . $Perf_Rolls[$thing['Roll']] . ")";
-    } else if (isset($thing['Type']) && $thing['Type']) echo " (" . $thing['Type'] . ") ";
+    } else if ($thing['IsASide'] && isset($thing['Type']) && $thing['Type']) echo " (" . $thing['Type'] . ") ";
     echo "</a></h2>";
     if ($thing['Description']) echo "<p class=EventMinitxt>" . $thing['Description'] . "</p>";
   }
