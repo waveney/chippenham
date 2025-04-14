@@ -267,7 +267,7 @@
       $txt .= "<li><a href=ListMusic?SEL=ALL&Y=$YEAR&T=U>List All Youth Activity Organisers in Database</a>\n";
       $txt .= "<li><a href=ListMusic?SEL=Booking&Y=$YEAR&T=U>List Youth Activity Organisers Booking</a>\n";
     }
-    if (Access('Staff','Family')) {
+    if (Access('Staff','Youth')) {
       $txt .= "<li><a href=CreatePerf?T=U&Y=$YEAR>Add Youth Activity Organiser to Database</a>";
     }
     $txt .= "<li><a href=/LineUp?T=Youth&FORCE&Y=$PLANYEAR>Youth Lineup</a> (Even if not public)";
