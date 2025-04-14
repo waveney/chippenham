@@ -1,7 +1,8 @@
 <?php
   include_once("fest.php");
-  A_Check('Staff','Dance');
+ // A_Check('Staff','Dance');
 
+  A_Check('Committee');
   dominimalhead("Big Event Programming", ["js/tableHeadFixer.js", "js/Participants.js", "js/BigE.js","cache/FestStyle.css", "css/festconstyle.css"] );
 
   include_once("DanceLib.php");
@@ -12,6 +13,7 @@
 
   if (isset($_REQUEST['e'])) { $Eid = $_REQUEST['e']; } else { Error_Page('Big Event without Event'); };
   $Event = Get_Event($Eid);
+  
   if (!$Event['BigEvent']) Error_Page('Not A Big Event');
   $DAY = $Event['Day'];
   $Day = DayList($DAY);
