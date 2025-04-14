@@ -385,7 +385,7 @@ function set_ShowYear($last=0) { // Overrides default above if not set by a Y ar
 // Deletes = 0 none, 1=one, 2=many  Putfn=name of put fn or empty for gen_put call
 // Works for simple tables
 // Deletes = 0 none, 1=one, 2=many
-function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$Mstr='Name',$MstrNot='',$Hexflds='',$MstrChk='',$Sep='') {
+function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$Mstr='SN',$MstrNot='',$Hexflds='',$MstrChk='',$Sep='') {
   global $TableIndexes;
   include_once("DateTime.php");
   $Flds = table_fields($table);
@@ -396,6 +396,7 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
   
   // var_dump($Sep,$Mstr,$MstrNot);
   //return;
+//  var_dump($_REQUEST);
   if (isset($_POST['Update'])) {
     $Pfx = '';
     $mtch = [];
@@ -453,7 +454,7 @@ function UpdateMany($table,$Putfn,&$data,$Deletes=1,$Dateflds='',$Timeflds='',$M
       }
     }
     if (isset($_POST["$Mstr$Sep" . "0"] ) && $_POST["$Mstr$Sep" . "0"] != $MstrNot) {
-      $t = array();
+      $t = [];
       foreach ($Flds as $fld=>$ftyp) {
         if ($fld == $indxname) continue;
         $Look = "$Pfx$fld$Sep" . "0";
