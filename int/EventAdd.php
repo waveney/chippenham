@@ -471,7 +471,7 @@ A similar feature will appear eventually for music.<p>
   echo "<h2><a href=EventList>List Events</a>";
   if ($eid) echo ", <a href=EventAdd>Add another event</a>";
   if ($eid>0) echo ", <a href=EventAdd?COPY=$eid>Copy to another event</a>";
-  if ($eid>0) echo ", <a href=EventShow?e=$eid>Show Event</a>";
+  if ($eid>0) echo ", <a href=EventShow?e=$eid&InsideShow=1>Show Event</a>";
   echo "</h2>\n";
 
   dotail();

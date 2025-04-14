@@ -197,7 +197,7 @@
       if (!$PFComms) echo "<td>" . ($evnt['Special']?"Y":"");
       if (!$PFComms) echo "<td>" . $Importance[$evnt['Importance']];
       if (!$PFComms) echo "<td>" . (isset($AllUsers[$evnt['Owner']]) ? $AllUsers[$evnt['Owner']] : "") ;
-      echo "<td><a href=EventShow?e=$i$PFX>Show</a>\n";
+      echo "<td><a href=EventShow?e=$i$PFX&InsideShow=1>Show</a>\n";
       if ($PFComms) echo (empty($Comments[$i])?'<td>No':'<td><a href=ShowComments?e=$i>Yes</a>');
     }
   }

@@ -105,17 +105,18 @@ function Print_Participants($e,$when=0,$thresh=0) {
   $ETs = Get_Event_Types(1);
   $OtherPart = $OtherVenues = $OtherNotes = [];
   $OVens = Get_Real_Venues();
+  $InsideShow = Access('Committee') && isset($_REQUEST['InsideShow']);
 
   $Se = $Ev['SubEvent'];
   $Subs = array();
   if ($Se < 0 ) {// Has Sub Events - Treat as Root
-    $Subs = Get_All_Public_Subevents_For($Eid);
+    $Subs = ($InsideShow?Get_All_Subevents_For($Eid):Get_All_Public_Subevents_For($Eid));
 //    $res=$db->query("SELECT * FROM Events WHERE SubEvent=$Eid ORDER BY Day, Start, Type");
 //    while($sev = $res->fetch_assoc()) $Subs[] = $sev;
   } else if ($Se > 0) { // Is Sub Event - Find Root
     $Eid = $Se;
-    $Subs = Get_All_Public_Subevents_For($Eid);
-//    $Ev = Get_Event($Eid);
+    $Subs = ($InsideShow?Get_All_Subevents_For($Eid):Get_All_Public_Subevents_For($Eid));
+    //    $Ev = Get_Event($Eid);
 //    $res=$db->query("SELECT * FROM Events WHERE SubEvent=$Eid ORDER BY Day, Start, Type");
 //    while($sev = $res->fetch_assoc()) $Subs[] = $sev;
   } else if ($Ev['BigEvent']) {

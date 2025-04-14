@@ -385,6 +385,18 @@ function Get_All_Public_Subevents_For($Eid) {
   return $evs;
 }
 
+function Get_All_Subevents_For($Eid) {
+  global $db,$YEAR,$Event_Types;
+  $evs = [];
+  $res=$db->query("SELECT * FROM Events WHERE SubEvent=$Eid ORDER BY Day, Start, Type");
+  if ($res) {
+    while($ev = $res->fetch_assoc()) {
+        $evs[$ev['EventId']] = $ev;
+    }
+  }
+  return $evs;
+}
+
 function Get_Other_Things_For($what) {
   global $db;
   $evs = array();
