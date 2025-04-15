@@ -270,7 +270,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
     }
   }
 
-  if ($Ev['Image']) echo "<img src=" . $Ev['Image'] . ">";
+  if ($Ev['Image']) echo "<img src='" . $Ev['Image'] . "'>";
   if ($Ev['Blurb']) {
     echo "<div style='width:800px;'>" . $Ev['Blurb'] . "</div><P>";
   } elseif ($Ev['Description'] && $DescNotShown) {
