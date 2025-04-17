@@ -51,7 +51,6 @@ global $Access_Type,$USER,$USERID,$YEAR,$YEARDATA,$NEXTYEARDATA,$Months,$PLANYEA
           'Travel'=>'InfoGettingHere',
           'Opening Times'=>'InfoFAQ?D=Opening Times',
           'Food & Drink'=>'InfoFood',
-  // /*        'FAQs, Rules and Policies' => [
           'FAQs' => 'InfoFAQ?D=FAQ',
           'Westmead Camping Rules' => 'InfoFAQ?D=Westmead Campsite Rules',
           'Monkton Park Camping Rules' => 'InfoFAQ?D=Monkton Park Campsite Rules',
