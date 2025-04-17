@@ -1665,6 +1665,8 @@ function Trade_Deposit_Invoice(&$Trad,&$Trady,$Full='Full',$extra='',$Paid=0) {
     if ($Trady['Fee']<0) $Pwr = 0;
 
     if ($Pwr) $details[]= ['Plus Power',$Pwr*100];
+    $TableCost = TableVost($Trady);
+    if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
     if ($extra) $details[]=$extra; // Probably wrong
     $ipdf = New_Invoice($Trad,
                         $details,
@@ -1781,7 +1783,10 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $InvCode = Trade_Invoice_Code($Trad,$Trady);
         $DueDate = Trade_Date_Cutoff();
         $details = [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
-        if ($details) $details[]= ['Plus Power',$Pwr*100];
+        if ($details && $Pwr) $details[]= ['Plus Power',$Pwr*100];
+        $TableCost = TableVost($Trady);
+        if ($details && $TableCost) $details[]= ['Plus Tables',$TableCost*100];
+        
         $details[]= ["Less your deposit payment",-$PaidSoFar*100];
         $ipdf = New_Invoice($Trad, $details, 'Trade Stand Balance Charge',
                              $InvCode, 1, ($DueDate?$DueDate:30) );
@@ -1902,6 +1907,9 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       if ($PaidSoFar) {
         $details = [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($Pwr) $details[]= ['Plus power',$Pwr*100];
+        $TableCost = TableVost($Trady);
+        if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
+        
         $details[]= ["Less your deposit payment",-$PaidSoFar*100];
         $ipdf = New_Invoice($Trad,
                            $details,
@@ -1911,7 +1919,9 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       } else {
         $details = [["Full payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($Pwr) $details[]= ['Plus power',$Pwr*100];
-
+        $TableCost = TableVost($Trady);
+        if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
+        
         $ipdf = New_Invoice($Trad,
                            $details,
                            'Trade Stand Full Charge',
@@ -1969,7 +1979,9 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $NewState = $Trade_State['Fully Paid'];
         $details = [["Full payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($Pwr) $details[]= ['Plus power',$Pwr*100];
-
+        $TableCost = TableVost($Trady);
+        if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
+        
         $ipdf = New_Invoice($Trad,$details,
                            $InvCode, 1,-1,0,0,1 );
         Send_Trader_Email($Trad,$Trady,'Trade_Fully_Paid_Invoice',$ipdf);
@@ -1977,6 +1989,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $NewState = $Trade_State['Fully Paid'];
         $details = [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($Pwr) $details[]= ['Plus power',$Pwr*100];
+        $TableCost = TableVost($Trady);
+        if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
         $details[]= ["Less your deposit payment",-$PaidBefore*100];
 
         $ipdf = New_Invoice($Trad,$details,
@@ -2164,6 +2178,8 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
           $InvCode = Trade_Invoice_Code($Trad,$Trady);
           $details = [["Full payment to secure your trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
           if ($Pwr) $details[]= ['Plus Power',$Pwr*100];
+          $TableCost = TableVost($Trady);
+          if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
           if ($InvoicedTotal) $details[] = ["Less previous invoice(s)",$InvoicedTotal];
           $type = "Full";
           if ($InvoicedTotal > $Dep) $type = "Change ";
