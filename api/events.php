@@ -18,7 +18,7 @@ function Get_Events($subEventId) {
             e.SponsoredBy,
             e.Side1, e.Side2, e.Side3, e.Side4,
             e.Roll1, e.Roll2, e.Roll3, e.Roll4,
-            t.SN as Type, e.ListDance, e.ListMusic, e.ListComedy, e.ListWorkshop, e.ListSession, e.Family, e.Special,
+            t.SN as Type, e.ListDance, e.ListMusic, e.ListComedy, e.ListWorkshop, e.ListSession, e.ListYouth, e.Family, e.Special,
             e.Venue, e.Status
         FROM
             Events e
@@ -42,6 +42,7 @@ function Get_Events($subEventId) {
             if ($row['ListComedy'] == 1) { array_push($row['Types'], 'Comedy'); }
             if ($row['ListWorkshop'] == 1) { array_push($row['Types'], 'Workshop'); }
             if ($row['ListSession'] == 1) { array_push($row['Types'], 'Session'); }
+            if ($row['ListYouth'] == 1) { array_push($row['Types'], 'Youth'); }
 
             if ($subEventId > 0 && $row['IsConcert']) {
                 $row['Start'] = null;    
@@ -68,6 +69,7 @@ function Get_Events($subEventId) {
             unset($row['ListComedy']);
             unset($row['ListWorkshop']);
             unset($row['ListSession']);
+            unset($row['ListYouth']);
             unset($row['Day']);
             unset($row['EndsNextDay']);
             unset($row['SeasonTicketOnly']);
@@ -170,7 +172,7 @@ function Load_Performers() {
     $qry="
         SELECT DISTINCT 
             p.SideId as Id, p.SN as Name,
-            p.Type, p.IsASide, p.IsAnAct, p.IsOther, p.IsFunny, p.IsFamily, p.IsCeilidh, p.IsNonPerf,
+            p.Type, p.IsASide, p.IsAnAct, p.IsOther, p.IsFunny, p.IsFamily, p.IsYouth, p.IsCeilidh, p.IsNonPerf,
             p.Importance, p.Photo, p.CostumeDesc, p.Description, p.Blurb,
             p.Website, p.Facebook, p.Twitter, p.Instagram, p.Video,
             y.SponsoredBy
@@ -179,7 +181,7 @@ function Load_Performers() {
             INNER JOIN SideYear y ON p.SideId=y.SideId
         WHERE
             y.Year='$YEAR'
-            AND ((p.IsASide AND y.Coming=2) OR ((p.IsAnAct OR p.IsOther OR p.IsFunny OR p.IsFamily OR p.IsCeilidh) AND y.YearState > 2))
+            AND ((p.IsASide AND y.Coming=2) OR ((p.IsAnAct OR p.IsOther OR p.IsFunny OR p.IsFamily OR p.IsYouth OR p.IsCeilidh) AND y.YearState > 2))
             AND y.ReleaseDate <= UNIX_TIMESTAMP()
         ";
     $res = $db->query($qry);
@@ -190,6 +192,7 @@ function Load_Performers() {
             $row['IsOther'] = $row['IsOther'] == 1;
             $row['IsFunny'] = $row['IsFunny'] == 1;
             $row['IsFamily'] = $row['IsFamily'] == 1;
+            $row['IsYouth'] = $row['IsYouth'] == 1;
             $row['IsCeilidh'] = $row['IsCeilidh'] == 1;
             $row['IsNonPerf'] = $row['IsNonPerf'] == 1;
             $row['Sponsors'] = Get_Sponsors($row['SponsoredBy'], $row['Name'], 3, $row['Id']);
