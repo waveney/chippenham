@@ -312,6 +312,7 @@
       $Spon = Gen_Get('Sponsorship',$mtch[2]);
       if ($Spon) {
         $Spon[$mtch[1]] = $Value;
+var_dump($mtch, $Spon);
         return Gen_Put('Sponsorship',$Spon);
       }
     }

@@ -70,7 +70,7 @@
       echo "<tr><td>";
       if ($YEARDATA['TicketControl'] == 1) echo "<a href='" . $YEARDATA[$day . "PassCode"] . "' target=_blank style='font-size:18px'>";
       echo "<strong>$day Pass</strong></a><br>";
-      echo "Adult (16+): <strong>";
+      echo "Adult (18+): <strong>";
 
       $str = '';
       $Cpri = $YEARDATA[$day . 'Pass'];
@@ -198,7 +198,7 @@
 
   echo "<h2>Child Tickets</h2>";
 
-  echo "<p>Child ticket pricing for the festival is 0-4 Free, 5-15 Half Price, 16+ Standard ticket price.</p>";
+//  echo "<p>Child ticket pricing for the festival is 0-4 Free, 5-15 Half Price, 16+ Standard ticket price.</p>";
 
   echo "<h2>Official Campsite</h2><p>";
   echo "<a href=/InfoCamping><b>Camping Information.</b></a><p>";

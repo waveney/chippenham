@@ -102,12 +102,13 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
         break;
       }
       echo fm_text1('',$S, 'Year',1,'','',"Year:$Spid") .
-           fm_text1('', $S, 'Importance',1,'','', "Importance:$Spid") .
+           fm_number1('', $S, 'Importance','','', "Importance:$Spid") .
            "<td>" . $SponStates[$S['Status']] . "<td>";
 
       echo "<a href=Biz?ACTION=SponAdd&Spid=$Spid>Edit</a>, ";
       echo "<a href=Biz?ACTION=SponDel&Spid=$Spid>Remove</a>, ";
-// Actions will go here
+ //     echo "<a href=Biz?ACTION=SponRefresh&Spid=$Spid>Refresh</a>, ";
+      // Actions will go here
     }
 
     if (Access('SysAdmin')) echo "<tr><td class=NotStaff>Debug<td colspan=5 class=NotSide><textarea id=Debug></textarea><p><span id=DebugPane></span>";
@@ -120,6 +121,7 @@ function List_Spons($Mode=0) { //Mode 0 = One sponsor, 1 = all
 
   if ($Mode ==2) return;
 
+  echo fm_submit('ACTION','ReHash');
   echo "<h2><a href=Trade?ORGS>Add Sponsor</a>, <a href=ListBiz>Back to list of Businesses</a></h2>"; // Invoice all | selected
   dotail();// TODO That is old code to add sponsor - should work
 }
@@ -477,10 +479,11 @@ function Spon_Validate() {
 
         break;
 
+      case 'SponRefresh' :
       case 'ReHash':
         ReHash();
         break;
-
+        
       case 'Convert': // Old format to new
         SponConvert();
 
