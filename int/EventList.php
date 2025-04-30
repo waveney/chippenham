@@ -115,7 +115,7 @@
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Venue</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Type</a>\n";
   if (!$PFComms) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Public</a>\n";
-  if (!$PFComms) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Price</a>\n";
+  if (!$PFComms) echo "<th><a href=javascript:SortTable(" . $coln++ . "," . Feature('ListPricesType','N') . ")>Price</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Stewards</a>\n";
   if ($se == 0) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Sub Es</a>\n";
   if ($se != 0) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>With</a>\n";

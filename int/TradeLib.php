@@ -1665,7 +1665,7 @@ function Trade_Deposit_Invoice(&$Trad,&$Trady,$Full='Full',$extra='',$Paid=0) {
     if ($Trady['Fee']<0) $Pwr = 0;
 
     if ($Pwr) $details[]= ['Plus Power',$Pwr*100];
-    $TableCost = TableVost($Trady);
+    $TableCost = TableCost($Trady);
     if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
     if ($extra) $details[]=$extra; // Probably wrong
     $ipdf = New_Invoice($Trad,
@@ -1784,7 +1784,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $DueDate = Trade_Date_Cutoff();
         $details = [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($details && $Pwr) $details[]= ['Plus Power',$Pwr*100];
-        $TableCost = TableVost($Trady);
+        $TableCost = TableCost($Trady);
         if ($details && $TableCost) $details[]= ['Plus Tables',$TableCost*100];
         
         $details[]= ["Less your deposit payment",-$PaidSoFar*100];
@@ -1907,7 +1907,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       if ($PaidSoFar) {
         $details = [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($Pwr) $details[]= ['Plus power',$Pwr*100];
-        $TableCost = TableVost($Trady);
+        $TableCost = TableCost($Trady);
         if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
         
         $details[]= ["Less your deposit payment",-$PaidSoFar*100];
@@ -1919,7 +1919,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       } else {
         $details = [["Full payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($Pwr) $details[]= ['Plus power',$Pwr*100];
-        $TableCost = TableVost($Trady);
+        $TableCost = TableCost($Trady);
         if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
         
         $ipdf = New_Invoice($Trad,
@@ -1979,7 +1979,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $NewState = $Trade_State['Fully Paid'];
         $details = [["Full payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($Pwr) $details[]= ['Plus power',$Pwr*100];
-        $TableCost = TableVost($Trady);
+        $TableCost = TableCost($Trady);
         if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
         
         $ipdf = New_Invoice($Trad,$details,
@@ -1989,7 +1989,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
         $NewState = $Trade_State['Fully Paid'];
         $details = [["Balance payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
         if ($Pwr) $details[]= ['Plus power',$Pwr*100];
-        $TableCost = TableVost($Trady);
+        $TableCost = TableCost($Trady);
         if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
         $details[]= ["Less your deposit payment",-$PaidBefore*100];
 
@@ -2178,7 +2178,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
           $InvCode = Trade_Invoice_Code($Trad,$Trady);
           $details = [["Full payment to secure your trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
           if ($Pwr) $details[]= ['Plus Power',$Pwr*100];
-          $TableCost = TableVost($Trady);
+          $TableCost = TableCost($Trady);
           if ($TableCost) $details[]= ['Plus Tables',$TableCost*100];
           if ($InvoicedTotal) $details[] = ["Less previous invoice(s)",$InvoicedTotal];
           $type = "Full";
