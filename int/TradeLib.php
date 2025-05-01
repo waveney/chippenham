@@ -2234,7 +2234,7 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
       echo "</thead><tbody>";
       foreach($Invs as $i=>$inv) {
         $id = $inv['id'];
-        echo "<td>" . $inv['OurRef'] . '/' . $inv['id'];
+        echo "<tr><td>" . $inv['OurRef'] . '/' . $inv['id'];
         echo "<td>" . date('j/n/Y',$inv['IssueDate']);
         echo "<td>";
         if ($inv['Total'] > 0) {

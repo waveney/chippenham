@@ -223,6 +223,7 @@ Price is for entire event - there are no prices for sub events - negative prices
         'ShowNameOnGrid'=>'Enable to put event name on the dance grid, normally ommied',
         'ListOffGrid'=>'Tick to list the dance event separate from the grid - weird times/venues',
         'Notes'=>'Anything you want to record - not used externally',
+        'AgeRange'=>'Target audience age range - for Family/Youth events'
 
   );
   Set_Help_Table($t);

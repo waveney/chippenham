@@ -92,5 +92,6 @@ CREATE TABLE `Events` (
   `NoPerfsPaper` tinyint NOT NULL,
   `VenuePaper` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `EndsNextDay` tinyint NOT NULL DEFAULT '0',
+  `AgeRange` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`EventId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

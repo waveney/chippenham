@@ -765,7 +765,7 @@ function Vol_Emails(&$Vol,$reason='Submit') {// Allow diff message on reason=upd
   Email_Volunteer($Vol,"Vol_Application_$reason",$Vol['Email']);
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
   foreach($VolCats as $Cat) {
-    if ($Cat['Prop2'] && VOL_OMIT_SUBMIT) continue;
+    if ($Cat['Props2'] && VOL_OMIT_SUBMIT) continue;
     $em = strtolower($Cat['Email']);
     foreach ($VCYs as $VCY) {
       if (($VCY['CatId'] == $Cat['id']) && ($VCY['Status']>0)) {
@@ -788,7 +788,7 @@ function Vol_Staff_Emails(&$Vol,$reason='NotThisYear') {// Allow diff message on
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
   foreach($VolCats as $Cat) {
     $em = strtolower($Cat['Email']);
-    if ($Cat['Prop2'] && VOL_OMIT_CANCEL) continue;
+    if ($Cat['Props2'] && VOL_OMIT_CANCEL) continue;
     foreach ($VCYs as $VCY) {
       
       if (($VCY['CatId'] == $Cat['id']) && ($VCY['Status']>0)) {

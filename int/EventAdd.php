@@ -369,6 +369,7 @@ A similar feature will appear eventually for music.<p>
           echo "<td class=NotSide>" . fm_simpletext('Price after ' . date('j M Y',$YEARDATA['PriceChange2']) . ' (if diff) &pound;',$Event,'Price3');
         echo "<td class=NotSide>" . fm_simpletext('Door Price (if different) &pound;',$Event,'DoorPrice');
         echo "<td class=NotSide>" . fm_simpletext('Ticket Code',$Event,'TicketCode');
+        echo fm_text1('Age Range',$Event,'AgeRange',2);
       }
       echo "<tr>" . fm_radio("<b><span class=mday $hidemday>Start </span>Day</b>",$FestDays,$Event,'Day',
                     ($se > 0?'class=FullD hidden':''),1,($se > 0?'class=FullD hidden':''));
