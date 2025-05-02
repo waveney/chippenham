@@ -33,13 +33,14 @@
    'Family and Community' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.FamilyImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
             "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
             " AND s.IsFamily=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
+    /*
    'Other Performers' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.OtherImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
             "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
             " AND s.IsOther=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
 
    'Youth' => "SELECT s.*, y.*, IF(s.DiffImportance=1,s.YouthImportance,s.Importance) AS EffectiveImportance  FROM Sides AS s, SideYear AS y " .
       "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
-      " AND s.IsYouth=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",
+      " AND s.IsYouth=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",*/
   ];
 
   $Displayed = [];
@@ -60,12 +61,11 @@
       }
       continue;
     }
-    
     echo "<div style='text-align:center;font-size:24;font-weight:bold;margin:10;'>$Title</div>";
     $Slist = [];
     $perfQ = $db->query($fetch);
     if ($perfQ) while($side = $perfQ->fetch_assoc()) $Slist[] = $side;
-    //var_dump("Type top",$PairLimit, $PairPageC, $Page);
+//var_dump("Type top",$PairLimit, $PairPageC, $Page);
     $Pair = 0;
     if ($PairPageC >= $PairLimit) {
       echo "<table class='PerfT pagebreak' width=100% border>";
@@ -74,31 +74,10 @@
     } else {
       echo "<table class=PerfT width=100% border>";
     }
-    
     foreach ($Slist as $perf) {
-      $Started = 0;
       if ($perf['NotPerformer'] ) continue;
       if (isset($Displayed[$perf['SideId']])) continue;
       if (empty($perf['Description']) && Feature('OmitEmptyDescriptions')) continue;
-      
-      if (!$Started) {
-        echo "<div style='text-align:center;font-size:24;font-weight:bold;margin:10;'>$Title</div>";
-        $Slist = [];
-        $perfQ = $db->query($fetch);
-        if ($perfQ) while($side = $perfQ->fetch_assoc()) $Slist[] = $side;
-        //var_dump("Type top",$PairLimit, $PairPageC, $Page);
-        $Pair = 0;
-        if ($PairPageC >= $PairLimit) {
-          echo "<table class='PerfT pagebreak' width=100% border>";
-          $PairPageC = 0;
-          $PairLimit = ($PageLimits[$Page++] ?? 7)+0;
-        } else {
-          echo "<table class=PerfT width=100% border>";
-        }
-        $Started = 1;
-      }
-      
-      
       $Displayed[$perf['SideId']] = 1;
       $Imp = $perf['EffectiveImportance'];
       if ($Pair == 0) {
@@ -111,7 +90,7 @@
         echo "<tr>";
 //var_dump("PAIR",$Pair, $PairLimit, $PairPageC, $Page);
 
-      }
+        }
 
 
 //      if ($Pair == 0) echo "<div class=PPair>";
@@ -125,12 +104,12 @@
 //      echo "<div class=PPDescP$Pair><div class=PPName$Imp>" . $perf['SN'] . "</div><div PPDesc$Imp>" . $perf['Description'] . "</div></div>";
 //      if ($Pair == 1) echo "</div><br>";
       $Pair = ($Pair+1)%2;
-      if ($Started){
-        echo "</table>";
-        echo "</div>";
-      }
     }
+    echo "</table>";
+//    if ($Pair == 1) echo "</div>";
+//    echo "<br clear=all>";
   }
+  echo "</div>";
   exit;
 ?>
 
