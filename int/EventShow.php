@@ -173,6 +173,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
     echo "<tr><td>Starting at:<td>" . timecolon($Ev['Start']) . "\n";
     echo "<tr><td>Finishing at:<td>" . timecolon($Ev['End']) . "\n";
   }
+  if ($Ev['AgeRange']) echo "<tr><td>Aimed at ages:<td>" . $Ev['AgeRange'] . "<p>";
   if ($Ev['Price1'] || $Ev['SpecPrice'] ) {
     echo "<tr><td>Price:<td>";
     if ($Ev['SpecPrice']) {

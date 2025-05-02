@@ -1868,3 +1868,8 @@ input[type="radio"] {
   left: 50%;
   transform: translate(-50%);
 }
+
+.SherlockAge {
+	float:right; 
+	color:blue;
+}

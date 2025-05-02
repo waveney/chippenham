@@ -67,6 +67,8 @@
       }
       echo "<td>";
       if ($e['Description']) echo $e['Description'] . "<br>";
+      if ($e['AgeRange']) echo "<div class=SherlockAge>Aimed at ages: " . $e['AgeRange'] . "</div>";
+      
       echo  ($e['BigEvent'] ? Get_Other_Participants($Others,0,1,15,1,'',$e) : Get_Event_Participants($eid,0,1,15));
       echo "<td>" . Price_Show($e,1);
     }

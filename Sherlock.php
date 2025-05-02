@@ -167,7 +167,8 @@
         }
       }
       echo "<td>";
-        if ($E['Description']) echo $E['Description'] . "<p>";
+      if ($E['Description']) echo $E['Description'] . "<p>";
+        if ($E['AgeRange']) echo "<div class=SherlockAge>Aimed at ages: " . $E['AgeRange'] . "</div>";
         if ($E['BigEvent']) {
           echo Get_Other_Participants($Others,0,1,15,1, 'With: ',$E);
         } else {

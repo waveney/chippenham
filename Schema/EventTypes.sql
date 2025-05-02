@@ -20,5 +20,6 @@ CREATE TABLE `EventTypes` (
   `Importance` int NOT NULL,
   `Sherlock` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `HasRolls` tinyint NOT NULL,
+  `AgeRange` tinyint NOT NULL,
   PRIMARY KEY (`ETypeNo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
