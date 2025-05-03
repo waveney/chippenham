@@ -8,8 +8,8 @@ body {
 }
 
 .PaperP {
-  width:800px;
-  max-width:800px;
+  width:900px;
+  max-width:900px;
   display:block;
   overflow-x: auto;
   margin:0;
@@ -30,39 +30,39 @@ body {
 }
 
 .Pic0 {
-  height:138;
-  width:177;
-  max-width:177;
+  height:161;
+  width:207;
+  max-width:207;
   border-style:solid none solid solid;
   background:AliceBlue;
 }
 
 .Pic1 {
-  height:138;
-  width:177;
-  max-width:177;
+  height:161;
+  width:207;
+  max-width:207;
   border-style:solid solid solid none;
   right:1;
   background:Linen;
 }
 
 .PL0, .PL1, .PL2 {
-  max-width:175;
-  max-height:188;
+  max-width:205;
+  max-height:211;
 }
 
 .Desc0 {
   height:69;
-  width:450;
-  max-width:450;
+  width:490;
+  max-width:490;
   border-style:solid solid solid none;
   background:AliceBlue;
 }
 
 .Desc1 {
   height:69;
-  width:450;
-  max-width:450;
+  width:490;
+  max-width:490;
   border-style:solid none solid solid;
   margin:0;
   background:Linen;
@@ -94,7 +94,6 @@ body {
 
 .SherlockAge {
 	float:right; 
-	color:blue;
 }
 
 /*
