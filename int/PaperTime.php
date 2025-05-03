@@ -119,6 +119,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
         $Desc = preg_replace('/<a href=(.*?)[ >].*?<\/a>/i','$1',$Desc);
         echo "$Desc ";
       }
+      if ($e['AgeRange']) echo "<div class=SherlockAge>Aimed at ages: " . $e['AgeRange'] . "</div>";
       if ($e['BigEvent']) {
         if ($e['NoPerfsPaper']) {
           echo "<span style='font-size:14'>For the full list of $PerfC teams see the website<span>";
