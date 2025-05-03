@@ -11,6 +11,8 @@
   include_once("EventCheck.php");
   global $YEARDATA,$YEAR,$USERID,$Importance,$PerfTypes,$Event_Access_Type,$Event_Access_Colours,$Event_Types,$Perf_Rolls;
   global $Public_Event_Types;
+  
+  $OffGridMenu = ['','Yes',"Hide"];
 
   Set_Event_Help();
 
@@ -321,7 +323,8 @@ A similar feature will appear eventually for music.<p>
       echo "<td class=NotSide>Originator:" . fm_select($AllActive,$Event,'Owner',1);
       echo "<td class=NotSide colspan=2>" . fm_checkbox('Enable Weird Stuff',$Event,'WeirdStuff');
         echo fm_checkbox('Name on Dance Grid',$Event,'ShowNameOnGrid');
-        echo fm_checkbox('List Off Dance Grid',$Event,'ListOffGrid');
+        echo 'List Off Dance Grid' . fm_select($OffGridMenu,$Event,'ListOffGrid');
+//        echo fm_checkbox('List Off Dance Grid',$Event,'ListOffGrid');
       echo "<tr class=FullD hidden>";
       echo "<td class=NotSide>" . fm_checkbox('Exclude From Spot Counts',$Event,'ExcludeCount');
       echo "<td class=NotSide>" . fm_checkbox('Ignore Clashes',$Event,'IgnoreClash');

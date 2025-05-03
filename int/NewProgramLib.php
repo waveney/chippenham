@@ -66,7 +66,9 @@ function Grab_Data($day='',$Media='Dance',$Paper=0) {
 //var_dump($evs);
   if ($evs) foreach ($evs as $ei=>$ev) {
     if ($ev['ListOffGrid']) {
-      $OffGrid[] = $ev;
+      if ($ev['ListOffGrid']==1) {
+        $OffGrid[] = $ev;
+      }
       continue;
     }
     $eid = $ev['EventId'];

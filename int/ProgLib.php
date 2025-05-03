@@ -221,7 +221,7 @@ Price is for entire event - there are no prices for sub events - negative prices
         'Roll'=>'To highlight band/callers for Ceilidhs and Folk Dances and MCs for concerts',
         'SeasonTicketOnly'=>'Event is only open to people with season tickets, no non ticket admission',
         'ShowNameOnGrid'=>'Enable to put event name on the dance grid, normally ommied',
-        'ListOffGrid'=>'Tick to list the dance event separate from the grid - weird times/venues',
+        'ListOffGrid'=>'Set to list the dance event separate from the grid or exclude totally, - weird times/venues',
         'Notes'=>'Anything you want to record - not used externally',
         'AgeRange'=>'Target audience age range - for Family/Youth events'
 

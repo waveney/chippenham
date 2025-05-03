@@ -8,8 +8,8 @@ body {
 }
 
 .PaperP {
-  width:900px;
-  max-width:900px;
+  width:950px;
+  max-width:950px;
   display:block;
   overflow-x: auto;
   margin:0;
@@ -53,16 +53,16 @@ body {
 
 .Desc0 {
   height:69;
-  width:490;
-  max-width:490;
+  width:510;
+  max-width:510;
   border-style:solid solid solid none;
   background:AliceBlue;
 }
 
 .Desc1 {
   height:69;
-  width:490;
-  max-width:490;
+  width:510;
+  max-width:510;
   border-style:solid none solid solid;
   margin:0;
   background:Linen;
