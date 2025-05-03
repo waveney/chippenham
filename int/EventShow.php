@@ -151,7 +151,11 @@ function Print_Participants($e,$when=0,$thresh=0) {
 
     $xtra .= ")";
   }
-  dohead($Ev['SN'] . $xtra,[],1); // TODO Event specific banners
+  
+  $Banner = 1;
+  if ($ETs[$Ev['Type']]['Banner']) $Banner = $Event_Types[$Ett]['Banner'];
+  
+  dohead($Ev['SN'] . $xtra,[],$Banner);
   $DescNotShown = true;
   if ($Ev['NonFest']) echo "This event is not run by the folk festival, but is shown here for your information.<p>\n";
   if ($Ev['Description'] && !$Ev['Blurb']) {
