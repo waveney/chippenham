@@ -20,7 +20,7 @@ function Get_Events($subEventId) {
             e.Roll1, e.Roll2, e.Roll3, e.Roll4,
             t.SN as Type, e.ListDance, e.ListMusic, e.ListComedy, e.ListWorkshop, e.ListSession, e.ListYouth, e.Family, e.Special,
             e.Venue, e.Status,
-            AgeRange
+            e.AgeRange
         FROM
             Events e
             INNER JOIN EventTypes t ON t.ETypeNo = e.Type
