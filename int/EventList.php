@@ -163,6 +163,9 @@
         echo "<td>" ;
         if ($evnt['SeasonTicketOnly']) {
           echo (['','ST only','ST+ET only','ET only'][$evnt['SeasonTicketOnly']]??"??");
+          if ($evnt['SeasonTicketOnly']==2) {
+            echo " (£" . $evnt['Price'] . ")";
+          }
         } else {
           if ($evnt['SubEvent'] <= 0 || ($evnt['SpecPrice'])) {
             if ($evnt['SpecPrice']) {

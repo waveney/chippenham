@@ -153,7 +153,7 @@ function Print_Participants($e,$when=0,$thresh=0) {
   }
   
   $Banner = 1;
-  if ($ETs[$Ev['Type']]['Banner']) $Banner = $Event_Types[$Ett]['Banner'];
+  if ($ETs[$Ev['Type']]['Banner']) $Banner = $ETs[$Ev['Type']]['Banner'];
   
   dohead($Ev['SN'] . $xtra,[],$Banner);
   $DescNotShown = true;

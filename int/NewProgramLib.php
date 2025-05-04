@@ -654,6 +654,8 @@ function Print_Grid($drag=1,$types=1,$condense=0,$Links=1,$format='',$Media='Dan
   $DRAG = ($drag)?"draggable=true ondragstart=drag(event) ondrop=drop(event,$Sand) ondragover=allow(event)":"";
 //  $WDRAG = ($drag)?"ondrop=drop(event,$Sand) ondragover=allow(event)":"";
   foreach ($Times as $t) {
+    $line = '';
+    $Blank = 1;
     if ($condense && ($t < $Earliest || $t >= $Latest)) continue;
     echo "<tr><th rowspan=$RowSet width=60 valign=top id=RowTime$t>" . sprintf('%04d',$t);
     if ($drag && ($lineLimit[$t]??0)<4) {
