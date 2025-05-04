@@ -15,16 +15,19 @@
   $coln = 0;
   echo "<div class=Scrolltable><table id=indextable border=1>\n";
   echo "<thead><tr>";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Day</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Start</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>End</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>With</a>\n";
+//  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>With</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Venue</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Price</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Door Price</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Buy Link</a>\n";
-  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Public</a>\n";
+  if (Feature('ExtendedTickets')) {
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Door Price</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Buy Link</a>\n";
+    echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Public</a>\n";
+  }
   echo "</thead><tbody>";
 
   while ($E = $Evs->fetch_assoc()) {
@@ -33,12 +36,14 @@
     echo "<td>" . $E['Start'];
     echo "<td>" . $E['End'];
     echo "<td><a href=EventAdd?e=" . $E['EventId'] . ">" . $E['SN'] . "</a>";
-    echo "<td>Coming...";
+  //  echo "<td>Coming...";
     echo "<td>" . (isset($Vens[$E['Venue']])? $Vens[$E['Venue']] : "Unknown");
     echo "<td>" . $E['Price1'];
-    echo "<td>" . $E['DoorPrice'];
-    echo "<td><a href=" . $E['TicketCode'] . "><strong>Buy Now</strong></a>\n";
-    echo "<td>" . $E['Public'];
+    if (Feature('ExtendedTickets')) {
+      echo "<td>" . $E['DoorPrice'];
+      echo "<td><a href=" . $E['TicketCode'] . "><strong>Buy Now</strong></a>\n";
+      echo "<td>" . $E['Public'];
+    }
   }
   echo "</tbody></table></div>\n";
   
