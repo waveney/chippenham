@@ -8,6 +8,7 @@
   A_Check('Committee','Finance');
   
   function SortCode($sc) {
+    if (!$sc) return '';
     $xsc = preg_replace("/[^0-9]/",'',$sc) . '000000';
     return substr($xsc,0,2) . '-' . substr($xsc,2,2) . '-' .substr($xsc,4,2);
   }
