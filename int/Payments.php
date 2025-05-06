@@ -6,6 +6,11 @@
   include_once("DocLib.php");
 
   A_Check('Committee','Finance');
+  
+  function SortCode($sc) {
+    $xsc = preg_replace("/[^0-9]/",'',$sc) . '000000';
+    return substr($xsc,0,2) . '-' . substr($xsc,2,2) . '-' .substr($xsc,4,2);
+  }
 
   $csv = 0;
   if (isset($_REQUEST['F'])) $csv = $_REQUEST['F'];
@@ -33,7 +38,7 @@
   $AllActive = Get_AllUsers(0);
 
   if ($csv) {
-    $heads = ['Name','Total Fee','Sort Code','Ac Number','Ac Name'];
+    $heads = ['Name','Total Fee','Sort Code','Ac Number','Ac Name','Booked by'];
     foreach($BUDGET as $i=>$b) {
       if ($b['id']) $heads[] = $b['SN'];
     }
@@ -75,7 +80,7 @@
     }
 
     if ($csv) {
-      $data = [$payee['SN'],$payee['TotalFee'], $payee['SortCode'], $payee['Account'], $payee['AccountName']];
+      $data = [$payee['SN'],$payee['TotalFee'], SortCode($payee['SortCode']), $payee['Account'], $payee['AccountName'],($AllActive[$payee['BookedBy']] ?? 'Unknown')];
 
       foreach($BUDGET as $i=>$b)  $data[]= (isset($bud[$i])?$bud[$i]:"");
       $csvdata = [];
@@ -85,7 +90,7 @@
     } else {
       echo "<tr><td>" . $payee['SideId'] . "/" . $payee['syId'] . "<td><a href=AddPerf?id=" . $payee['SideId'] . ">" . $payee['SN'] . "</a>";
       echo "<td>" . $payee['TotalFee'];
-      echo "<td>" . $payee['SortCode'] . "<td>" . $payee['Account'] . "<td>" . $payee['AccountName'];
+      echo "<td>" . SortCode($payee['SortCode']) . "<td>" . $payee['Account'] . "<td>" . $payee['AccountName'];
       echo "<td>" . ($AllActive[$payee['BookedBy']] ?? 'Unknown');
 
 

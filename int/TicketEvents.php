@@ -31,7 +31,7 @@
   echo "</thead><tbody>";
 
   while ($E = $Evs->fetch_assoc()) {
-    echo "<tr>";
+    echo "<tr><td>" . E['EventId'];
     echo "<td>" . DayList($E['Day']);
     echo "<td>" . $E['Start'];
     echo "<td>" . $E['End'];
