@@ -78,11 +78,11 @@ function NewSendEmail($SrcType,$SrcId,$to,$sub,&$letter,&$attachments=0,&$embede
 //  echo "Debug: XXX" .( UserGetPref('EmailDebug')?2:0) . "<p>";
 //var_dump($sub,$attachments,$to);
 
-/*if (Access('SysAdmin')) {
+if (0 && Access('SysAdmin')) {
   echo "Calling NewSendEmail: ";
-  var_dump($to); echo "<P>";
-  var_dump($from); echo "<P>";
-}*/
+  var_dump($to); echo "<P>"; // Test Path
+  var_dump($from); echo "<P>"; // Test Path
+}
   $Send = 1;
   if (!empty($CONF['testing'])){
     if (strstr($CONF['testing'],'@')) {
@@ -469,6 +469,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
 function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=0,$logfile='',&$attachments=0,$embeded=0,$from='') {
   global $PLANYEAR,$YEARDATA,$CONF;
 
+  var_dump($Src,$SrcId,$to,$mescat,$subject);
   if (strlen($mescat) < 40) {
     $Prof = Get_Email_Proforma($mescat);
     $Mess = ($Prof? $Prof['Body'] : "Unknown message $mescat ");

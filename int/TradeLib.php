@@ -13,11 +13,11 @@ $TS_Actions = ['Submit,Invite,Invite Better',
                 'Resend,Submit',
                 'Resend',
                 'Resend,Submit',
-                'Resend,Quote,Accept,Invite,Decline,Hold,Cancel,Invite Better,Dates,FestC',
-                'Resend,Quote,Invite,Accept,Decline,UnQuote,LastWeek,Dates,FestC', // Overdue
-                'Resend,Cancel,Dates,FestC',
-                'Pitch Assign,Pitch Change,Moved,Resend,Send Bal,Cancel,Dates,FestC',
-                'Pitch Assign,Pitch Change,Moved,Resend,Chase,Cancel,Dates,FestC',
+                'Resend,Quote,Accept,Invite,Decline,Hold,Cancel,Invite Better,Dates,FestC', // submitted
+                'Resend,Quote,Invite,Accept,Decline,UnQuote,LastWeek,Dates,FestC', // quoted
+                'Resend,Cancel,Dates,FestC', // ,Send All acceptted
+                'Pitch Assign,Pitch Change,Moved,Resend,Send Bal,Cancel,Dates,FestC', // Dep Paid
+                'Pitch Assign,Pitch Change,Moved,Resend,Chase,Cancel,Dates,FestC', // Bal Req
                 'Pitch Assign,Pitch Change,Moved,Resend,Cancel,Dates,FestC',
                 'Resend,Accept,Decline,Cancel,FestC',
                 'Resend,Quote,Cancel,Dates,FestC',
@@ -51,7 +51,8 @@ $ButExtra = [
         'LastWeek'=>'title="Last week of Quote"',
         'Dates'=>'title="Festival Changed Dates"',
         'FestC'=>'title="Festival Cancelled this year"',
-        'Overdue'=>'title="Total payment needed now"'
+        'Overdue'=>'title="Total payment needed now"',
+        'Send All'=>'title="Send Deposit reminder and Balance request in one message"',
         ];
 
 $ButTraderTips = [ // Overlay of diferent tips for traders
@@ -1549,6 +1550,9 @@ function Trade_Main($Mode,$Program,$iddd=0) {
           case 'Bal Request':
             if ($Trady['PitchLoc0'] == 0 || $Trady['Fee'] == 0) continue 2;
             break;
+          case 'Send All':
+            if (1) break;
+          
           case 'FestC' :
             if (!Feature('EnableCancelMsg')) continue 2;
             break;

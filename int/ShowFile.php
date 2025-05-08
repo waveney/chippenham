@@ -1,6 +1,6 @@
 <?php
   include_once("fest.php");
-//  A_Check('Staff');
+//  A_Check('Staff'); - Delibertly open
   include_once ("DocLib.php");
   include_once ("ViewLib.php");
   global $USERID;

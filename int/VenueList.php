@@ -15,6 +15,8 @@
     if ($Spid > 0) {
       $Spon = Gen_Get('Trade',$Spid,'Tid');
       $venues[$VY['VenueId']]['SponsoredBy'] = "<a href=Trade?id=$Spid&T=S>" . $Spon['SN'] . "</a>";
+    } else if ($Spid == 0 ){
+      $venues[$VY['VenueId']]['SponsoredBy'] = "";
     } else {
       $venues[$VY['VenueId']]['SponsoredBy'] = "<a href=SponSort?T=V&i=" . $VY['VenueId'] . ">Many</a>";
     }

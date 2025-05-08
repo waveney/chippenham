@@ -244,13 +244,32 @@
       if ($inv['Source'] == 1) Trade_F_Action($inv['SourceId'],'UnPaid',$inv['Total']); 
       break;
     
-    case 'REMIND' : //Send reminder email
+    case 'REMIND' : //Send reminder email - WRONG
+ /*     $subject = Feature('FestName') . " " . substr($PLANYEAR,0,4) . " and " . $inv['BZ'];
+      $too = [['to',$inv['Email'],$inv['Contact']],
+        ['from','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance'],
+        ['replyto','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance']];
+      $pdf = Get_Invoice_Pdf($id,'',$inv['Revision']);
+      echo Email_Proforma(EMAIL_INVOICE,$inv['SourceId'],$too,$inv['CoverNote'],$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
       
+      echo "Invoice " . $id . " resent to " . $inv['Contact'] . " at " . $inv['BZ'] . "<p>";
+      Put_Invoice($inv);
+ */     
       break;
     
 
-    case 'OVERDUE' : // Send Overdue email
+    case 'OVERDUE' : // Send Overdue email - WRONG
+ /*     $subject = Feature('FestName') . " " . substr($PLANYEAR,0,4) . " and " . $inv['BZ'];
+      $too = [['to',$inv['Email'],$inv['Contact']],
+        ['from','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance'],
+        ['replyto','Finance@' . Feature('HostURL'),Feature('ShortName') . ' Finance']];
+      $pdf = Get_Invoice_Pdf($id,'',$inv['Revision']);
+      echo Email_Proforma(EMAIL_INVOICE,$inv['SourceId'],$too,$inv['CoverNote'],$subject,'Invoice_Email_Details',$inv,$logfile='Invoices',$pdf);
       
+      echo "Invoice " . $id . " resent to " . $inv['Contact'] . " at " . $inv['BZ'] . "<p>";
+      Put_Invoice($inv);
+      
+      */
       break;
     
     }
@@ -411,9 +430,11 @@
         echo "<button name=ACTION value=CREDIT onclick=reasonprompt($id) >Cancel/credit</button> ";
       }
       if ($Overdue) {
-        echo "<button name=ACTION value=REMIND >Remind</button> ";
+        echo "<button name=ACTION type=Submit formaction=SendFinanceProfEmail?id=$id&Message=Invoice_Remind formtarget=_blank value=REMIND >Remind</button> ";
         
-        if ($BalancesSent) echo "<button name=ACTION value=OVERDUE >Overdue</button> ";
+        if ($BalancesSent) {
+          echo "<button name=ACTION type=Submit formaction=SendFinanceProfEmail?id=$id&Message=Invoice_Overdue formtarget=_blank value=OVERDUE >Overdue</button> ";
+        }
       }
 
       if ($All && Access('SysAdmin')) {
