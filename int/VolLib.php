@@ -44,6 +44,7 @@ define('VOL_GRPS',0xf000000);
 
 define('VOL_OMIT_SUBMIT',1); // Props 2
 define('VOL_OMIT_CANCEL',2); // Props 2
+define('VOL_CAT_FULL',4); //Props 2
 
 // Button Name, Vol_Button
 $EmailMsgs = [''=>'','U'=>'NotSub','E' => Feature('Vol_Special_Mess'),
@@ -449,6 +450,7 @@ function VolForm(&$Vol,$Err='',$View=0) {
       }
 
       $cp = $Cat['Props'];
+      $cp2 = $Cat['Props2'];
       if ((!$VolMgr) && ($cp & VOL_NoList) && ($VCY['Status'] == 0)) continue; // Skip if team not listed
 //      if ((!$VolMgr) && ($cp & VOL_TeamFull) && ($VCY['Status'] == 0)) continue; // Skip if team full Do differently if needed again
 
@@ -482,13 +484,19 @@ function VolForm(&$Vol,$Err='',$View=0) {
             "onchange=Update_VolCats(event,'$cls',$Catid,$YEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",-3,'',
             "Status:$Catid:$YEAR") . "<br>" .
             ($M?' &nbsp; ':"<td $Csp4 $Colour>") . $Cat['Description'] ;
+          
+            if ($cp2 & VOL_CAT_FULL) echo "<br>Note this category is full"; 
 
         } else {
-          echo "\n<tr $Colour><td $Colour>" .  fm_checkbox("<b>" . $Cat['Name'] . "</b>",$VCY,'Status',
-            "onchange=Update_VolCats(event,'$cls',$Catid,$YEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",
-            "Status:$Catid:$YEAR",0,'') .
-            "<span  class=$cls $Hide><br>Team Preference: " . fm_select($VolOrders,$VCY,'VolOrder',1,'',"VolOrder:$Catid:$YEAR") . "</span>" .
-            ($M?' &nbsp; ':"<td $Csp4 $Colour>") . $Cat['Description'] ;
+          if ((($cp2 & VOL_CAT_FULL) == 0) || $VCY['Status'] ) {
+            echo "\n<tr $Colour><td $Colour>" .  fm_checkbox("<b>" . $Cat['Name'] . "</b>",$VCY,'Status',
+              "onchange=Update_VolCats(event,'$cls',$Catid,$YEAR) data-name='" . $Cat['Name'] . "' data-props=$cp ",
+              "Status:$Catid:$YEAR",0,'') .
+              "<span  class=$cls $Hide><br>Team Preference: " . fm_select($VolOrders,$VCY,'VolOrder',1,'',"VolOrder:$Catid:$YEAR") . "</span>" .
+              ($M?' &nbsp; ':"<td $Csp4 $Colour>") . $Cat['Description'] ;
+          } else {
+            echo "\n<tr $Colour><td $Colour>" . $Cat['Name'] . "</b> is full please select another team.";
+          }
         }
         if ($VCY['Status'] > 0) {
           $ShowGroup = 1;

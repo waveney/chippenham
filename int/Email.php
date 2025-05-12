@@ -469,7 +469,7 @@ function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments
 function Email_Proforma($Src,$SrcId,$to,$mescat,$subject,$helper='',$helperdata=0,$logfile='',&$attachments=0,$embeded=0,$from='') {
   global $PLANYEAR,$YEARDATA,$CONF;
 
-  var_dump($Src,$SrcId,$to,$mescat,$subject);
+//  var_dump($Src,$SrcId,$to,$mescat,$subject);
   if (strlen($mescat) < 40) {
     $Prof = Get_Email_Proforma($mescat);
     $Mess = ($Prof? $Prof['Body'] : "Unknown message $mescat ");

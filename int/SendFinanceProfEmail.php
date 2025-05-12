@@ -35,7 +35,7 @@ if (isset($_REQUEST['SEND'])) {
 
   $inv['EmailDate'] = time();
   Put_Invoice($inv);
-  if (!empty($CONF['testing'])) echo "<script>window.close()</script>";
+  echo "<script>window.close()</script>";
   exit;
 }
 
