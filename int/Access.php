@@ -71,7 +71,8 @@
 
   if ($Data['AccessKey'] != $key) Error_Page("Sorry - This is not the right key");
 
-  $CakeTypes = ['s'=>'Side','a'=>'Act','o'=>'Other','t'=>'Trader','w'=>'Steward','v'=>'Volunteer','u'=>'SignUp','c'=>'Staff','p'=>'Venue','ART'=>'SignUp','m'=>'Venue'];
+  $CakeTypes = ['s'=>'Side','a'=>'Act','o'=>'Other','t'=>'Trader','w'=>'Steward','v'=>'Volunteer','u'=>'SignUp','c'=>'Staff','p'=>'Venue',
+    'ART'=>'SignUp','m'=>'Venue'];
     // Not Sure on staff
   $includes = ['s'=>'AddPerf.php','a'=>'AddPerf.php','o'=>'AddPerf.php','t'=>'TraderPage.php','w'=>'ViewStew.php',
                'v'=>'Volunteers.php','u'=>'SignUp','c'=>'Staff','p'=>'PAShow.php','ART'=>'ArtForm.php','m'=>'StewardShow.php'];

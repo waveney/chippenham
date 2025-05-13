@@ -236,7 +236,7 @@
   if (Access('Staff')) {
 
     echo "<h3>Link to send to Manager/Steward: $host/int/Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'];
-    if (Access('SysAdmin')) echo "<a href='Access?Y=$YEAR&t=p&i=$V&k=" . $Ven['AccessKey'] . "'> Use\n";
+    if (Access('SysAdmin')) echo "<a href='Access?Y=$YEAR&t=m&i=$V&k=" . $Ven['AccessKey'] . "'> Use\n";
     echo "</h3>\n";
   }
   echo "</div>";

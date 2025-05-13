@@ -114,7 +114,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
           if ($o['Type'] == 'Perf') $PerfC++;
         }
       }
-      echo "<td><span style='font-size:$FontSize>";
+      echo "<td><span style=font-size:$FontSize>";
       if ($e['Description']) {
         $Desc = $e['Description'];
         $Desc = preg_replace('/<a href=(.*?)[ >].*?<\/a>/i','$1',$Desc);
