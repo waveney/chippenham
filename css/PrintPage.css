@@ -1,5 +1,7 @@
 body {
   background:white;
+  font-family:Sans-serif;
+/*  font-stretch: condensed;*/
 }
 
 .pagebreak {
@@ -84,7 +86,7 @@ body {
 }
 
 .PDesc0, .PDesc1, .PDesc2 {
-  font-size:13.3pt;
+  font-size:13.5pt;
 }
 
 .DayHead {
@@ -94,103 +96,6 @@ body {
 
 .SherlockAge {
 	float:right; 
+	color:black;
 }
 
-/*
-
-
-.PPair {
-  position:static;
-  width:auto;
-  height:115;
-  border:1px;
-  border-color:gray;
-}
- 
-.PPPicP0 {
-  position: absolute;
-  width:15%;
-  height:120;
-  left:2;
-  top:2;
-  border-top:1px;
-  border-left:1px;
-  border-bottom:1px;
-}
-
-.PPPicP1 {
-  position: absolute;
-  width:15%;
-  height:120;
-  right:2;
-  top:2;
-  border-top:1px;
-  border-right:1px;
-  border-bottom:1px;
-}
-
-.PPPic0 {
-  width:100%;
-}
-.PPPic1 {
-  width:100%;
-}
-.PPPic2 {
-  width:100%;
-}
-
-.PPDescP0 {
-  position: absolute;
-  width:15%;
-  height:60;
-  left:16%;
-  top:2;
-  border-top:1px;
-  border-right:1px;
-  border-bottom:1px;
-}
-
-.PPDescP1 {
-  position: absolute;
-  width:15%;
-  height:60;
-  left:16%;
-  bottom:2;
-  border-top:1px;
-  border-left:1px;
-  border-bottom:1px;
-}
-
-.PPDesc0 {
-  position: static;
-  font-size:12pt;
-}
-
-.PPDesc1 {
-  position: static;
-  font-size:12pt;
-}
-
-.PPDesc2 {
-  position: static;
-  font-size:12pt;
-}
-
-.PPName0 {
-  position: static;
-  font-weight:bold;
-  font-size:12pt;
-}
-
-.PPName1 {
-  position: static;
-  font-weight:bold;
-  font-size:14pt;
-}
-
-.PPName2 {
-  position: static;
-  font-weight:bold;
-  font-size:16pt;
-}
-*/

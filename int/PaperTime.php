@@ -46,6 +46,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
   $Splits = explode(',',TnC('PaperSplits'));
 
   $Vens = Get_Venues(1);
+  $FontSize = Feature('PaperEventFont',12);
 
   /* Get all events that are public, sort by day, time
      opening display is each day - click to expand
@@ -113,7 +114,7 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
           if ($o['Type'] == 'Perf') $PerfC++;
         }
       }
-      echo "<td><span style='font-size:" . Feature('PaperEventFont',12) . "'>";
+      echo "<td><span style='font-size:$FontSize>";
       if ($e['Description']) {
         $Desc = $e['Description'];
         $Desc = preg_replace('/<a href=(.*?)[ >].*?<\/a>/i','$1',$Desc);
@@ -125,15 +126,15 @@ function PaperDayTable($d,$Types,$xtr='',$xtra2='',$xtra3='',$ForceNew=0,$PageBr
           echo "<span style='font-size:14'>For the full list of $PerfC teams see the website<span>";
 
         } else {
-          echo Get_Other_Participants($Others,0,-1,12,1,'',$e);
+          echo Get_Other_Participants($Others,0,-1,$FontSize,1,'',$e);
         }
       } elseif ($e['NoPerfsPaper'] || $e['SN'] == $Event_Types[1]['Plural']) {
         echo "<span style='font-size:14'><br>See the Dance Grid for details</span>";
       } else {
-        echo Get_Event_Participants($eid,0,-1,12);
+        echo Get_Event_Participants($eid,0,-1,$FontSize);
       }
 
-      echo "</span><td><span style='font-size:12'>" . Price_Show($e,1) . "</span>";
+      echo "</span><td><span style='font-size:$FontSize'>" . Price_Show($e,1) . "</span>";
     }
     echo "</table></div>\n";
 

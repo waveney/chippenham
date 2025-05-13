@@ -72,7 +72,6 @@
 
 125) Trade days (not needed)
 168) dance grid slot size agnostic (on hold)
-177) Invoice Reminders
 179) Generic sound link W/O Staff access
 181) Spotify for performers (part - need the links to work)
 182) Trade Assign drag/drop (not critical path)
@@ -89,6 +88,17 @@
 192) Delete Event -> CAncelled after print
 195) Remove Save Changes Button from Events
 196) Individual contracts for band members
+
+html2pdf 'https://chippfolk.co.uk/int/PaperProg?ALPHA=1&2025' Perf2025.pdf
+html2pdf -O Landscape 'https://chippfolk.co.uk/int/PaperTime?2025' Events2025.pdf
+html2pdf -O Landscape 'https://chippfolk.co.uk/int/ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sat&2025&Print=1' SatDance2025.pdf
+html2pdf -O Landscape 'https://chippfolk.co.uk/int/ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun&2025&Print=1' SunDance2025.pdf
+html2pdf -O Landscape 'https://chippfolk.co.uk/int/ShowDanceProg?Head=0&Pub=1&Links=0&Cond=1&NoBackground=1&Day=Sun&2025&Print=1' SunDance2025.pdf
+
+New year tasks
+1) Set up all dates
+2) set record perf/events to no
+3) Re-enable vol cats
 
 
 2025

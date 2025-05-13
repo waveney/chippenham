@@ -20,6 +20,8 @@
   }
 
   $TotA = $TotY = $TotC = $AC = $YC = 0;
+  $DTotA = $DTotY = $DTotC = $DAC = $DYC = 0;
+  
       $CampSites = Gen_Get_All('Campsites');
       $CampTypes = Gen_Get_All('Camptypes');
   $CampTot = [];
@@ -78,20 +80,34 @@
     echo "<td>" . $fetch['Contact'];
     echo "<td>" . ($fetch['DayTickets']?'<b>DAY</b>':'');
 
+    $DTick = !empty($fetch['DayTickets']);
+    
     if ($Collect) {
       $CampUse = Gen_Get_Cond('CampUse',"SideYearId=$syId");
       echo "<td>" . $fetch['FreePerf'] . ($CampUse ? " - Camping": '');
       echo "<td>" . $fetch['FreeYouth'] . ($CampUse ? " - Camping": '');
       echo "<td>" . $fetch['FreeChild'];
 
-      if ($CampUse) {
-        $AC += $fetch['FreePerf'];
-        $YC += $fetch['FreeYouth'];
-        $TotC += $fetch['FreeChild'];
+      if ($DTick) {
+        if ($CampUse) {
+          $DAC += $fetch['FreePerf'];
+          $DYC += $fetch['FreeYouth'];
+          $DTotC += $fetch['FreeChild'];
+        } else {
+          $DTotA += $fetch['FreePerf'];
+          $DTotY += $fetch['FreeYouth'];
+          $DTotC += $fetch['FreeChild'];
+        }
       } else {
-        $TotA += $fetch['FreePerf'];
-        $TotY += $fetch['FreeYouth'];
-        $TotC += $fetch['FreeChild'];
+        if ($CampUse) {
+          $AC += $fetch['FreePerf'];
+          $YC += $fetch['FreeYouth'];
+          $TotC += $fetch['FreeChild'];
+        } else {
+          $TotA += $fetch['FreePerf'];
+          $TotY += $fetch['FreeYouth'];
+          $TotC += $fetch['FreeChild'];
+        }
       }
 
       echo "<td id=Collect$sid>" . ($fetch['TicketsCollected']
@@ -101,9 +117,15 @@
       echo "<td>" . $fetch['FreePerf'];
       echo "<td>" . $fetch['FreeYouth'];
       echo "<td>" . $fetch['FreeChild'];
-      $TotA += $fetch['FreePerf'];
-      $TotY += $fetch['FreeYouth'];
-      $TotC += $fetch['FreeChild'];
+      if ($DTick) {
+        $DTotA += $fetch['FreePerf'];
+        $DTotY += $fetch['FreeYouth'];
+        $DTotC += $fetch['FreeChild'];
+      } else {
+        $TotA += $fetch['FreePerf'];
+        $TotY += $fetch['FreeYouth'];
+        $TotC += $fetch['FreeChild'];
+      }
 
       $syid = $fetch['syId'] ?? -1;
       $CampUse = Gen_Get_Cond('CampUse',"SideYearId=$syid");
@@ -114,8 +136,13 @@
       }
 
       if ($CampU) {
-        $AC += $fetch['FreePerf'];
-        $YC += $fetch['FreeYouth'];
+        if ($DTick) {
+          $DAC += $fetch['FreePerf'];
+          $DYC += $fetch['FreeYouth'];
+        } else {
+          $AC += $fetch['FreePerf'];
+          $YC += $fetch['FreeYouth'];
+        }
 
         foreach ($CampSites as $CSi => $CS) {
           if (($CS['Props'] & 1) ==0) continue;
@@ -138,18 +165,20 @@
   }
 
   if (!$Collect) {
-    echo "<tr><td><td>TOTALS<br>Camping<td><td>$TotA<br>$AC<td>$TotY<br>$YC<td>$TotC\n";
-
+    echo "<tr><td><td>TOTALS -Full<br>Camping<td><td>$TotA<br>$AC<td>$TotY<br>$YC<td>$TotC\n";
     foreach ($CampSites as $CSi => $CS) {
       if (($CS['Props'] & 1) ==0) continue;
       if (0 && ($CS['Props'] & 2)) {
-          echo "<td>";
+        echo "<td>";
       } else {
         foreach($CampTypes as $CTi => $CT) {
           echo "<td>" . $CampTot[$CSi][$CTi];
         }
       }
     }
+    
+    echo "<tr><td><td>TOTALS -Day<br>Camping<td><td>$DTotA<br>$DAC<td>$DTotY<br>$DYC<td>$DTotC\n";
+    
   }
 
   echo "</table></div>";

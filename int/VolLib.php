@@ -990,13 +990,16 @@ function List_Vols($AllVols='') {
 
 //var_dump($VY);
 //  $Ch = $Ad = $AdC = $Yth = $YthC = 0;
-    if (!empty($VY['Children'])) $Ch +=  NumbersOf($VY['Children']);
-    if (!empty($VY['CampNeed'])) {
-      $AdC++;
-      if (!empty($VY['Youth'])) $YthC += NumbersOf($VY['Youth']);
-    } else {
-      $Ad++;
-      if (!empty($VY['Youth'])) $Yth += NumbersOf($VY['Youth']);
+
+    if ($Accepted) {
+      if (!empty($VY['Children'])) $Ch +=  NumbersOf($VY['Children']);
+      if (!empty($VY['CampNeed'])) {
+        $AdC++;
+        if (!empty($VY['Youth'])) $YthC += NumbersOf($VY['Youth']);
+      } else {
+        $Ad++;
+        if (!empty($VY['Youth'])) $Yth += NumbersOf($VY['Youth']);
+      }
     }
 
 //    var_dump($VY);
