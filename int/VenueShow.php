@@ -37,9 +37,9 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 //echo "HELLO $Pictures<p>";
             if ($Pictures) {
               if ($SpecialImage) { echo "<img style='vertical-align:middle;float:left;border:5;margin:2;max-height:" .
-                    (100+20*$scale) .";' height=" . (100+20*$scale) . " src=" . $SpecialImage . ">";
+                    (100+20*$scale) .";' height=" . (100+20*$scale) . " src='" . $SpecialImage . "'>";
               } elseif ($thing['Photo']) echo "<img style='vertical-align:middle;float:left;border:5;margin:2;max-height:" .
-                    (100+20*$scale) .";' height=" . (100+20*$scale) . " src=" . $thing['Photo'] . ">";
+                    (100+20*$scale) .";' height=" . (100+20*$scale) . " src='" . $thing['Photo'] . "'>";
             }
             echo "<a href=/int/ShowPerf?id=" . $thing['SideId'] . ">" . NoBreak($thing['SN'],3) . "</a>";
             if (!empty($thing['Roll'])) {

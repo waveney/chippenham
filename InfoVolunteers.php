@@ -5,7 +5,7 @@
   include_once("int/Email.php");
   global $PLANYEAR,$YEARDATA;
 
-  dohead("Get Involved",["/js/Articles.js"],1);
+  dohead("Volunteer",["/js/Articles.js"],1);
 
   $msg = TnC('Volunteer_Header');
   Parse_Proforma($msg);
