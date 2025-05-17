@@ -488,6 +488,8 @@
     $txt .= "<li><a href=/PerfChanges?$YEAR>Performer Changes since programme went to print</a>";
     $txt .= "<li><a href=/EventChanges?$YEAR>Event Changes since programme went to print</a>";
     if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=PerfEventPrint?$YEAR>Event and Performer Changes to be printed</a>";
+    if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=EventUpdateEdit?$YEAR>Edit Event Changes</a>";
+    if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=PerfUpdateEdit?$YEAR>Edit Performer Changes</a>";
     if (Access('SysAdmin')) $txt .= "<li class=smalltext><a href=Analytics>Analyse Google Analytics</a>";
     $txt .= "<li><a href=QRMake>Generate a QR code</a><p>\n";
 
