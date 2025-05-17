@@ -41,7 +41,7 @@ function List_All() {
     echo "<tr><td>$i<td><a href=FoodDrink?ACTION=Edit&i=$i>" . $f['SN'] . "</a><td>" . $f['Year'] .
          "<td>" . ($f['Website']? weblink($f['Website']) : "") ;
     echo "<td>" . $f['Phone'] . "<td>" . $f['Description'] . "<td>" . ($f['Vegetarian']?'Y':'') . "<td>" . ($f['Vegan']?'Y':'') . "<td>" . $f['MapImp'] .
-       $Icons[$f['Type']] . $f['Importance'];
+    "<td>" . $Icons[$f['Type']] . "<td>" . $f['Importance'];
     echo "\n";
   }
   echo "</table></div>\n";
