@@ -12,6 +12,7 @@
 
 
 function List_All() {
+  global $PLANYEAR,$Icons;
   $food=Gen_Get_All('FoodAndDrink');
 
   echo "Only those where Year is current will be shown.<p>\n";
@@ -29,6 +30,9 @@ function List_All() {
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Description</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Veg</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Vg</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Map</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Icon</a>\n";
+  
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Importance</a>\n";
 
   echo "</thead><tbody>";
@@ -36,7 +40,8 @@ function List_All() {
     $i = $f['id'];
     echo "<tr><td>$i<td><a href=FoodDrink?ACTION=Edit&i=$i>" . $f['SN'] . "</a><td>" . $f['Year'] .
          "<td>" . ($f['Website']? weblink($f['Website']) : "") ;
-    echo "<td>" . $f['Phone'] . "<td>" . $f['Description'] . "<td>" . ($f['Vegetarian']?'Y':'') . "<td>" . ($f['Vegan']?'Y':'') . "<td>" . $f['Importance'];
+    echo "<td>" . $f['Phone'] . "<td>" . $f['Description'] . "<td>" . ($f['Vegetarian']?'Y':'') . "<td>" . ($f['Vegan']?'Y':'') . "<td>" . $f['MapImp'] .
+       $Icons[$f['Type']] . $f['Importance'];
     echo "\n";
   }
   echo "</table></div>\n";
@@ -59,7 +64,8 @@ function Edit_Food($i,$e=1) {
   echo "<tr><td>Id:<td>$i";
   echo "<tr>" . fm_text('Buisness Name',$f,'SN',2);
     echo "<td>Icon:<td>" . fm_select($Icons,$f,'Type');
-  echo "<tr>" . fm_number('Importance',$f,'Importance') . fm_number('Map Importance (16-20)',$f,'MapImp') . "<td colspan=2>Importance just affects order of list if not alpha";
+  echo "<tr>" . fm_number('Importance',$f,'Importance') . fm_number('Map Importance (16-20)',$f,'MapImp') . 
+       "<td colspan=2>Importance just affects order of list if not alpha";
   echo "<tr>" . fm_text('Website',$f,'Website',2);
   echo "<tr>" . fm_text('Address',$f,'Address',2) . fm_text1('Post Code',$f,'PostCode');
   echo "<tr>" . fm_text('Phone',$f,'Phone', 2);
