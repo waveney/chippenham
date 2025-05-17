@@ -117,11 +117,11 @@ function Gallery($id,$embed=0) {
   include_once("ImageLib.php");
   $PS = (isset($_REQUEST['S']) ? $_REQUEST['S'] : 50);
 
-
+  Sanitise($id);
   if (is_numeric($id)) {
     $Gal = db_get('Galleries',"id='$id'");
   } else {
-    $nam = preg_replace('/_/',' ',Sanitise($id));
+    $nam = preg_replace('/_/',' ',$id);
     $Gal = db_get('Galleries',"SN='$nam'");
   }
 

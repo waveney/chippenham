@@ -874,7 +874,7 @@ function Sanitise(&$txt,$len=40,$cat='') {
     $txt = preg_replace('/[^a-zA-Z0-9@_.]/','',$txt);
     return $txt;
   case 'txt':
-    $txt = preg_replace('/[^a-zA-Z0-9]/','',$txt);
+    $txt = preg_replace('/[^a-zA-Z0-9 ]/','',$txt);
     return $txt;
   case 'html':
     return Html_Sanity($txt);
@@ -884,7 +884,7 @@ function Sanitise(&$txt,$len=40,$cat='') {
     $txt = preg_replace('/[^a-zA-Z0-9_&:\?\=\-\+ ,.\'\/\\\\]/','',$txt);
     return $txt;
   default:
-    $txt = preg_replace('/[^a-zA-Z0-9_ ,.\'\/\\\\]/','',$txt);
+    $txt = preg_replace('/[^a-zA-Z0-9@_ ,.]/','',$txt);
     return $txt;
   }
 }

@@ -8,7 +8,7 @@
   include_once("int/DateTime.php");
 
   if (isset($_REQUEST['F']) && Access('Staff') && is_numeric($_REQUEST['F']) ) {
-    $future = $_REQUEST['F'];
+    $future = Sanitise($_REQUEST['F'],'num');
   } else {
     $future = 0;
   }
