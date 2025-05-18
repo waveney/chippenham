@@ -1,36 +1,41 @@
 <?php
 include_once("../int/fest.php");
 include_once("../int/ProgLib.php");
+include_once("../int/TradeLib.php");
 
 $locations = [];
 
 function Get_Traders(): array {
-    global $db,$YEAR,$Trade_Days;
-    $qry="
-        SELECT
-            t.Tid as id, t.SN as Name, t.BizName,
-            t.Website, t.Photo, t.GoodsDesc,
-            tp.SN as TypeName, tp.Description as TypeDescription, tp.Colour as typeColour, tp.ListOrder as TypeOrder,
-            y.PitchLoc0, y.PitchLoc1, y.PitchLoc2, y.Days
-        FROM
-            Trade t
-            INNER JOIN TradeYear y ON t.Tid = t.Tid
-            INNER JOIN TradePrices tp ON tp.id = t.TradeType
-            INNER JOIN TradeLocs
-        WHERE
-            y.Year='$YEAR'
-        ";
-    $res = $db->query($qry);
-    if ($res) {
-        $traders = [];
-        while($row = $res->fetch_assoc()) {
-            $row['PitchLoc0'] = Get_Location($row['PitchLoc0']);
-            $row['PitchLoc1'] = Get_Location($row['PitchLoc1']);
-            $row['PitchLoc2'] = Get_Location($row['PitchLoc2']);
-            $row['Days'] = $Trade_Days[$row['Days']];
-            array_push($traders, $row);
+    global $db,$YEAR,$Trade_Days,$Trade_State,$YEARDATA;
+    if ($YEARDATA != null && $YEARDATA['TradeState'] > 1) {
+        $qry="
+            SELECT
+                t.Tid as id, t.SN as Name, t.BizName,
+                t.Website, t.Photo, t.GoodsDesc,
+                tp.SN as TypeName, tp.Description as TypeDescription, tp.Colour as typeColour, tp.ListOrder as TypeOrder,
+                y.PitchLoc0, y.PitchLoc1, y.PitchLoc2, y.Days
+            FROM
+                Trade t
+                INNER JOIN TradeYear y ON t.Tid = t.Tid
+                INNER JOIN TradePrices tp ON tp.id = t.TradeType
+                INNER JOIN TradeLocs
+            WHERE
+                t.IsTrader=1 AND t.Status=0 AND
+                y.Year='$YEAR' AND
+                ((y.BookingState>=".$Trade_State['Deposit Paid']." AND y.BookingState<".$Trade_State['Wait List'] . ") OR y.ShowAnyway)
+            ";
+        $res = $db->query($qry);
+        if ($res) {
+            $traders = [];
+            while($row = $res->fetch_assoc()) {
+                $row['PitchLoc0'] = Get_API_Location($row['PitchLoc0']);
+                $row['PitchLoc1'] = Get_API_Location($row['PitchLoc1']);
+                $row['PitchLoc2'] = Get_API_Location($row['PitchLoc2']);
+                $row['Days'] = $Trade_Days[$row['Days']];
+                array_push($traders, $row);
+            }
+            return $traders;
         }
-        return $traders;
     }
     return [];
 }
@@ -53,7 +58,7 @@ function Load_Locations() {
     }
 }
 
-function Get_Location($id) {
+function Get_API_Location($id) {
     global $locations;
     foreach ($locations as $key => $value) {
         if ($value["id"] == $id) {
@@ -64,8 +69,7 @@ function Get_Location($id) {
 }
 
 function Get_FoodAndDrink(): array {
-    global $db,$YEAR,$Event_Access_Type;
-
+    global $db,$YEAR;
     $qry="
         SELECT
             fd.id, fd.SN as Name, fd.Description,
