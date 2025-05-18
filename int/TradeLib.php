@@ -18,7 +18,7 @@ $TS_Actions = ['Submit,Invite,Invite Better',
                 'Resend,Cancel,Dates,FestC', // ,Send All acceptted
                 'Pitch Assign,Pitch Change,Moved,Resend,Send Bal,Cancel,Dates,FestC', // Dep Paid
                 'Pitch Assign,Pitch Change,Moved,Resend,Chase,Cancel,Dates,FestC', // Bal Req
-                'Pitch Assign,Pitch Change,Moved,Resend,Cancel,Dates,FestC',
+                'Pitch Assign,Pitch Change,Moved,Resend,Cancel,Dates,FestC,Pay More', // Fully Paid
                 'Resend,Accept,Decline,Cancel,FestC',
                 'Resend,Quote,Cancel,Dates,FestC',
                 'Resend,Accept,Decline,Cancel,FestC',
@@ -53,6 +53,7 @@ $ButExtra = [
         'FestC'=>'title="Festival Cancelled this year"',
         'Overdue'=>'title="Total payment needed now"',
         'Send All'=>'title="Send Deposit reminder and Balance request in one message"',
+        'Pay More'=>'title="Pay more - eg for extra power"',
         ];
 
 $ButTraderTips = [ // Overlay of diferent tips for traders
@@ -749,8 +750,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
       if ($Pay && ($Pay['State']==0) && ($Trady)) {
       echo "<tr><td>Payment due for<td colspan=5><b>" . $Pay['Reason'] . "</b><br>Due " . date('j/n/Y',$Pay['DueDate']) .
         "<br>Please pay " . Print_Pence($Pay['Amount']) . " to:<br>" .
-        Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . "<p>Quote Reference: " .
-        $Pay['Code'];
+        Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . 
+        "<p>Quote Reference: " . $Pay['Code'];
       }
     } else { // Our own invoices
       $Invs = Invoice_Find(1,$Tid);
@@ -760,8 +761,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
 //var_dump($inv);
         echo "<tr><td>Payment due for<td colspan=5><b>" . $inv['Reason'] . "</b><br>Due " . date('j/n/Y',$inv['DueDate']) .
              "<br>Please pay " . Print_Pence($inv['Total']) . " to:<br>" .
-            Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . "<p>Quote Reference: " .
-            $inv['OurRef'] . "/" . $inv['id'];
+            Feature("FestBankAdr") . "<br>Sort Code: " . Feature("FestBankSortCode") . "<br>Account No: " . Feature("FestBankAccountNum") . 
+            "<p>Quote Reference: " . $inv['OurRef'] . "/" . $inv['id'];
       }
     }
   }
@@ -983,7 +984,7 @@ function Trader_Details($key,&$data,$att=0) {
     if ($Price ==0) return "Not Known";
     return "&pound;" . $Price;
   case 'DEPOSIT': return T_Deposit($Trad);
-  case 'BALANCE': return ($Trady['Fee'] + PowerCost($Trady) - max(T_Deposit($Trad),$Trady['TotalPaid']));
+  case 'BALANCE': return ($Trady['Fee'] + PowerCost($Trady) + $Trady['ExtraPowerCost'] + TableCost($Trady) - $Trady['TotalPaid']);
   case 'DETAILS': return Get_Trade_Details($Trad,$Trady);
   case 'PAIDSOFAR': return $Trady['TotalPaid'];
   case 'STATE': return ['No application has been made',
@@ -1587,7 +1588,17 @@ function Trade_Main($Mode,$Program,$iddd=0) {
           case 'Cancel' :
             if (!$Mode) $ac .= " Booking";
             break;
-
+            
+          case 'Pay More':
+            $TotPowerCost = PowerCost($Trady);
+            $TableCost = TableCost($Trady);
+            if (($Trady['Fee']??0) < 0) $TotPowerCost = $TableCost = 0;
+            $totchg = (($Trady['Fee'] ?? 0) +  ($Trady['ExtraPowerCost']??0) + $TotPowerCost + $TableCost);
+// var_dump($totchg,$Trady);
+            if ($Trady['TotalPaid'] >= $totchg ) continue 2;
+//var_dump("here");
+            break;
+            
           default:
         }
 //        var_dump($Mode, $ButTraderTips[$ac]);
@@ -2392,7 +2403,36 @@ function Trade_Action($Action,&$Trad,&$Trady,$Mode=0,$Hist='',$data='', $invid=0
     Send_Trader_Email($Trad,$Trady,'Trade_Cancel_Ack');
     break;
 
-
+  case 'Pay More' : // Extra charges after fully paid
+    if (!Feature('TradeInvoicePay')) {
+      $Pwr = PowerCost($Trady) + $Trady['ExtraPowerCost'];
+      $TableCost = TableCost($Trady);
+      $Fee = $Trady['Fee'];
+      if ($Fee <0) $TableCost = $Pwr = 0;
+      if (($Fee + $Pwr + $TableCost) <= $Trady['TotalPaid']) { // Fully paid already
+        $NewState = $Trade_State['Fully Paid']; // Should not be here...
+        break;
+      }
+      
+      if (Feature("AutoInvoices",1)) {
+        $ProformaName = (($TradeTypeData[$Trad['TradeType']]['ArtisanMsgs'] && $TradeLocData[$Trady['PitchLoc0']]['ArtisanMsgs']) ?
+          "Trade_Artisan_Extra_Invoice" : "Trade_Extra_Invoice");
+        $InvCode = Trade_Invoice_Code($Trad,$Trady);
+        $DueDate = Trade_Date_Cutoff();
+        $details = [["Extra payment to secure trade stand at the " . substr($PLANYEAR,0,4) . " festival",$Fee*100]];
+        if ($details && $Pwr) $details[]= ['Plus Power',$Pwr*100];
+        if ($details && $TableCost) $details[]= ['Plus Tables',$TableCost*100];
+        
+        $details[]= ["Less your currant payments",-$Trady['TotalPaid']*100];
+        $ipdf = New_Invoice($Trad, $details, 'Trade Stand Extra Charge', $InvCode, 1, ($DueDate?$DueDate:30) );
+        Send_Trader_Email($Trad,$Trady,$ProformaName,$ipdf);
+        $NewState = $Trade_State['Balance Requested'];
+      }
+      break;
+    } else { // Paycodes    
+      // Not Coded
+    }
+    
 
   default:
     break;
