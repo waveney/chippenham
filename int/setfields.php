@@ -85,11 +85,12 @@ case 'TP':
   break;
 
 case 'Z':
-  global $Book_Colours,$Book_State;
+  global $Book_Colours,$Book_States;
   $Sidey = Get_SideYear($id);
   if (!$Sidey) $Sidey = Default_SY($id);
   $State = $Sidey['YearState'];
-  echo "<td style='background-color:" . $Book_Colours[$State] . "' id=BookState$id >" . $Book_State[$State];
+//var_dump($State,$Book_State);
+  echo "<td style='background-color:" . $Book_Colours[$State] . "' id=BookState$id >" . $Book_States[$State];
   break;
 
 case 'PC':

@@ -32,10 +32,10 @@ $Book_Actions = ['None'=>'Book',
   'Booking'=>'Cancel,Dates,FestC',
   'Contract Ready'=>'Contract,Cancel,Dates,FestC',
   'Contract Signed'=>'Cancel,Decline,Dates,FestC',
-  'Contract Sent'=>'Contract,Cancel,Decline,Confirm'];
-$Book_ActionExtras = array('Book'=>'', 'Contract'=>'', 'Decline'=>'', 'Cancel'=>'', 'Confirm'=>'', 'Dates'=>'', 'FestC'=>'');
+  'Contract Sent'=>'Contract,Cancel,Decline,Confirm,Resend'];
+$Book_ActionExtras = array('Book'=>'', 'Contract'=>'', 'Decline'=>'', 'Cancel'=>'', 'Confirm'=>'', 'Dates'=>'', 'FestC'=>'', 'Resend'=>'');
 $Book_ActionColours = ['Book'=>'DarkGrey', 'Contract'=>'Yellow', 'Decline'=>'Coral', 'Cancel'=>'Red', 'Confirm'=>'lime', 'Dates'=>'',
-  'FestC'=>''];
+  'FestC'=>'', 'Resend'=>'Orange'];
 $Cancel_States = ['','Cancel: Sent','Cancel: Avail','Cancel: Not Avail','Cancel: Dont Know'];
 $Cancel_Colours = ['white','orange','green','red','yellow'];
 $EType_States = array('Very Early','Draft','Partial','Provisional','Complete');
