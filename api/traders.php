@@ -16,7 +16,7 @@ function Get_Traders(): array {
                 y.PitchLoc0, y.PitchLoc1, y.PitchLoc2, y.Days
             FROM
                 Trade t
-                INNER JOIN TradeYear y ON t.Tid = t.Tid
+                INNER JOIN TradeYear y ON y.Tid = t.Tid
                 INNER JOIN TradePrices tp ON tp.id = t.TradeType
             WHERE
                 t.IsTrader=1 AND t.Status=0 AND
