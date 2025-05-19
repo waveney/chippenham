@@ -58,7 +58,7 @@ function Load_Locations() {
     if ($res) {
         while ($row = $res->fetch_assoc()) {
             $row['Prefix'] = $Prefixes($row['Prefix']);
-            array_push($locations, $row['Id']);
+            array_push($locations, $row);
         }
     }
 }
