@@ -18,7 +18,6 @@ function Get_Traders(): array {
                 Trade t
                 INNER JOIN TradeYear y ON t.Tid = t.Tid
                 INNER JOIN TradePrices tp ON tp.id = t.TradeType
-                INNER JOIN TradeLocs
             WHERE
                 t.IsTrader=1 AND t.Status=0 AND
                 y.Year='$YEAR' AND
@@ -28,6 +27,11 @@ function Get_Traders(): array {
         if ($res) {
             $traders = [];
             while($row = $res->fetch_assoc()) {
+
+                if ($row['PitchLoc0'] == $row['PitchLoc1']) { $row['PitchLoc1'] = 0; }
+                if ($row['PitchLoc0'] == $row['PitchLoc2']) { $row['PitchLoc2'] = 0; }
+                if ($row['PitchLoc1'] == $row['PitchLoc2']) { $row['PitchLoc2'] = 0; }
+
                 $row['PitchLoc0'] = Get_API_Location($row['PitchLoc0']);
                 $row['PitchLoc1'] = Get_API_Location($row['PitchLoc1']);
                 $row['PitchLoc2'] = Get_API_Location($row['PitchLoc2']);
@@ -41,18 +45,19 @@ function Get_Traders(): array {
 }
 
 function Load_Locations() {
-    global $db,$locations;
+    global $db,$locations,$Prefixes;
     $locations = [];
 
     $qry="
         SELECT
-            l.TLocId as id, l.SN as locationName, l.prefix as locationPrefix
+            l.TLocId as Id, l.SN as Name, l.prefix as Prefix
         FROM
             TradeLocs l
         ";
     $res = $db->query($qry);
     if ($res) {
         while ($row = $res->fetch_assoc()) {
+            $row['Prefix'] = $Prefixes($row['Prefix']);
             array_push($locations, $row['Id']);
         }
     }
@@ -61,7 +66,7 @@ function Load_Locations() {
 function Get_API_Location($id) {
     global $locations;
     foreach ($locations as $key => $value) {
-        if ($value["id"] == $id) {
+        if ($value["Id"] == $id) {
             return $value;
         }
     }
@@ -87,6 +92,10 @@ function Get_FoodAndDrink(): array {
     if ($res) {
         $traders = [];
         while($row = $res->fetch_assoc()) {
+            $row['Vegan'] = $row['Vegan'] == 1;
+            $row['Vegetarian'] = $row['Vegetarian'] == 1;
+            $row['Food'] = $row['Food'] == 1;
+            $row['Drink'] = $row['Drink'] == 1;
             array_push($traders, $row);
         }
         return $traders;
