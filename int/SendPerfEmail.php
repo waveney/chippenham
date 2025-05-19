@@ -94,16 +94,16 @@ if (isset($_REQUEST['REEDIT'])) {
     }
 
     if (empty($Sidey['BookedBy'])) {
-      $ReplyTo = $USER['FestEmail'];
+      $ReplyTo = ($USER['FestEmail']?$USER['FestEmail']:$USER['Email']);
     } else if ($IsAC > 1 || empty($ReplyTo)) {
       if ($USERID == $Sidey['BookedBy']) {
         if (!empty($USER['FestEmail'])) {
-          $ReplyTo = $USER['FestEmail'];
+          $ReplyTo = ($USER['FestEmail']?$USER['FestEmail']:$USER['Email']);
           if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
-        }
+        } 
       } else {
         $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
-        $ReplyTo = $User['FestEmail'];
+        $ReplyTo = ($USER['FestEmail']?$USER['FestEmail']:$USER['Email']);
         if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
       }
     }

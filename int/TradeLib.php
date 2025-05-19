@@ -696,7 +696,7 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     } else if ($Trade_Prop & 1) { // Change Pos
       echo "<td>" . fm_select($TradeLocs,$Trady,"PitchLoc$i",1, "onchange=UpdatePower($i," . ($Trady['Fee'] ?? 0) .")");
     } else if ($Trady["PitchLoc$i"] ?? 0) {  // Assigned
-      echo "<td>" . $TradeLocs[$Trady["PitchLoc$i"]];
+      echo "<td>" . ($TradeLocs[$Trady["PitchLoc$i"]]??'');
     } else { // Not assigned
       echo "<td>";
     }
@@ -717,8 +717,8 @@ function Show_Trade_Year($Tid,&$Trady,$year=0,$Mode=0) {
     } else {
 //      echo "<td>";
       if (isset($Trady["PitchLoc$i"])  && $Trady["PitchLoc$i"]) {
-        echo $TradeLocs[$Trady["PitchLoc$i"]];
-        echo fm_hidden("PitchLoc$i",$Trady["PitchLoc$i"]);
+        echo ($TradeLocs[$Trady["PitchLoc$i"]]??'');
+        echo fm_hidden("PitchLoc$i",($Trady["PitchLoc$i"]??0));
         echo "<td>";
         if ($Trady["PitchNum$i"]) echo $Trady["PitchNum$i"] . " <a href=TradeStandMap?t=2&l=" . $Trady["PitchLoc$i"] . ">Map</a>"; // TODO Trade State testing for partial
       } else {
