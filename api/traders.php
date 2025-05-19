@@ -57,7 +57,7 @@ function Load_Locations() {
     $res = $db->query($qry);
     if ($res) {
         while ($row = $res->fetch_assoc()) {
-            $row['Prefix'] = $Prefixes($row['Prefix']);
+            $row['Prefix'] = $Prefixes[$row['Prefix']];
             array_push($locations, $row);
         }
     }
