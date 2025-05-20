@@ -884,7 +884,7 @@ function Sanitise(&$txt,$len=40,$cat='') {
     $txt = preg_replace('/[^a-zA-Z0-9_&:\?\=\-\+ ,.\'\/\\\\]/','',$txt);
     return $txt;
   default:
-    $txt = preg_replace('/[^a-zA-Z0-9@_ ,.]/','',$txt);
+    $txt = preg_replace('/[^a-zA-Z0-9@_  ,.\'\/\\\\]/','',$txt);
     return $txt;
   }
 }

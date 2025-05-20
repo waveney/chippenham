@@ -814,7 +814,7 @@ function CSV_Vols() {
   global $db,$VolCats,$YEARDATA,$YearStatus,$Cat_Status_Short,$VolGroups;
 
   $output = fopen('php://output', 'w');
-  $heads = ['Name','Email','Phone(s)','Status'];
+  $heads = ['Name','Email','Phone(s)','Status','DBS'];
   foreach ($VolCats as &$Cat) {
     if ($Cat['Props'] & VOL_USE) $heads[] = $Cat['Name'];
   }
@@ -831,7 +831,7 @@ function CSV_Vols() {
     $VY = Get_Vol_Year($id);
 
     if (empty($VY['id'])) continue;
-    $csvdat = [$Vol['SN'], $Vol['Email'], $Vol['Phone'], $YearStatus[$VY['Status']]];
+    $csvdat = [$Vol['SN'], $Vol['Email'], $Vol['Phone'], $YearStatus[$VY['Status']],$Vol['DBS'] ];
 
     foreach ($VolCats as &$Cat) {
       if ($Cat['Props'] & VOL_USE) {
@@ -1490,6 +1490,7 @@ function VolAction($Action,$csv=0) {
   case 'Submit':
   case 'Update': // Volunteer/Staff has updated entry - if Volunteer, remail relevant staff
   case 'Submit/Update Application':
+  case 'SubmitUpdate Application':
     $Volid = ((isset($_REQUEST['id']) ?$_REQUEST['id'] :(isset($_REQUEST['AutoRef'])?$_REQUEST['AutoRef']:0)));
     $Vol = Get_Volunteer($Volid);
     $res = Vol_Validate($Vol);
