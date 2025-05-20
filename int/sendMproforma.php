@@ -40,6 +40,10 @@ if (empty($Sidey['BookedBy'])) {
     $ReplyTo = ($USER['FestEmail']?$USER['FestEmail']:$USER['Email']);
     if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
   }
+} else {
+  $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
+  $ReplyTo = ($USER['FestEmail']?$USER['FestEmail']:$USER['Email']);
+  if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
 }
 
 $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
@@ -78,9 +82,9 @@ $subject = Feature('FestName') . " $PLANYEAR and " . $Side['SN'];
   }
   $Mess = (isset($_REQUEST['Message'])?$_REQUEST['Message']:(Get_Email_Proforma($proforma))['Body']);
 
-  $too = [['to',$To,$Contact],
-          ['replyto',$ReplyTo,Feature('ShortName')]];
-            
+  $too = [['to',$To,$Contact]];
+  if (!empty($ReplyTo) && (substr($ReplyTo,1,0) !='@')) $too[]= ['replyto',$ReplyTo,Feature('ShortName')];
+  
   $Atts = [];
 
   Email_Proforma(EMAIL_DANCE,$id, $too,$proforma,$subject,'Dance_Email_Details',[$Side,$Sidey],'Performer',$Atts);

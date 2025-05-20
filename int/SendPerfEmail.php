@@ -106,11 +106,15 @@ if (isset($_REQUEST['REEDIT'])) {
         $ReplyTo = ($USER['FestEmail']?$USER['FestEmail']:$USER['Email']);
         if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
       }
+    } else {
+      $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
+      $ReplyTo = ($USER['FestEmail']?$USER['FestEmail']:$USER['Email']);
+      if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
     }
 
-    $too = [['to',$To,$Contact],
-            ['replyto',$ReplyTo,Feature('ShortName')]];
-
+    $too = [['to',$To,$Contact]];
+    if (!empty($ReplyTo) && (substr($ReplyTo,1,0) !='@')) $too[]= ['replyto',$ReplyTo,Feature('ShortName')];
+    
 
     if ($_REQUEST['CCs']) {
       $CCs = explode("\n",$_REQUEST['CCs']);
