@@ -103,12 +103,12 @@ if (isset($_REQUEST['REEDIT'])) {
         } 
       } else {
         $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
-        $ReplyTo = ($USER['FestEmail']?$USER['FestEmail']:$USER['Email']);
+        $ReplyTo = ($User['FestEmail']?$User['FestEmail']:$User['Email']);
         if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
       }
     } else {
       $User = Gen_Get('FestUsers',$Sidey['BookedBy'],'UserId');
-      $ReplyTo = ($USER['FestEmail']?$USER['FestEmail']:$USER['Email']);
+      $ReplyTo = ($User['FestEmail']?$User['FestEmail']:$User['Email']);
       if (!strstr($ReplyTo,'@')) $ReplyTo .= '@' . Feature('HostURL');
     }
 
