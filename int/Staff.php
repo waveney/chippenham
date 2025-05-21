@@ -471,10 +471,13 @@
     $txt .= $x;
     $txt .= "<ul>\n";
     $txt .= "<li><form method=Post action=VenueShow?Poster=1 class=staffform>";
+    $XDays = $Days;
+    $XDays[]= 'Fri+Sat';
+    $XDays[]= 'Sun+Mon';
       $txt .= "<input type=submit name=a value='Poster For' id=Posterid>" .
                 fm_hidden('Y',$YEAR) .
                 fm_select($Vens,0,'v',0," onchange=this.form.submit()") . "<br>" .
-                fm_radio('',$Days,$_REQUEST,'DAYS','',0) . fm_checkbox('Pics',$_REQUEST,'Pics') .
+                fm_radio('',$XDays,$_REQUEST,'DAYS','',0) . fm_checkbox('Pics',$_REQUEST,'Pics') .
                 "</form>\n";
 
     $txt .= "<p>";

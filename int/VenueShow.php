@@ -110,7 +110,7 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 
   if ($Poster) {
     doheadpart("Venue Details",["js/qrcode.js","css/festconstyle.css"]);
-    echo "</head><body>\n";
+    echo "</head><body style=background:white>\n";
     $Pictures = (isset($_REQUEST['Pics']) && ($_REQUEST['Pics'] == 'on'));
     echo "<div id=Poster>";
     echo "<center>";
@@ -192,7 +192,15 @@ function PrintImps(&$imps,$NotAllFree,$Price,$rows,$ImpC,$maxwith=100) {
 
   $xtr = $Mode?'':"AND (e.Public=1 OR (e.Type=t.ETypeNo AND t.State>1 AND e.Public<2 )) AND t.Public=1 ";
   if ($Poster) {
-    if ($_REQUEST['DAYS'] >0 ) $xtr .= " AND Day=" . ($_REQUEST['DAYS']-1);
+    if ($_REQUEST['DAYS'] >0 ) {
+      if ($_REQUEST['DAYS']<=4) {
+        $xtr .= " AND Day=" . ($_REQUEST['DAYS']-1);
+      } else if ($_REQUEST['DAYS']==5) {
+        $xtr .= " AND (Day=0 OR Day=1)";
+      } else if ($_REQUEST['DAYS']==6) {
+        $xtr .= " AND (Day=2 OR Day=3)";
+      } // Short term fudge
+    }
   }
 
   $VenList[] = $V;
