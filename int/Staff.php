@@ -320,6 +320,7 @@
       $txt .= "<li><a href=TradeLocs?Y=$YEAR>Trade Locations</a>\n";
       $txt .= "</ul><td><ul>";
       $txt .= "<li><a href=TradeShow?STAFF>Trade Show</a> (even if not public)\n";
+      if (Access('SysAdmin')) $txt .= "<li><a href=TradeCheck>Trade Check Outstanding Payments </a>\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=TradeTypes>Trade Types and base Prices</a>\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=TradePower>Trade Power</a>\n";
       if (Access('SysAdmin')) $txt .= "<li><a href=EmailTraders>Email Groups of Traders</a>\n"; // Old code needs lots of changes

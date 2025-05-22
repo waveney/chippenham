@@ -1082,7 +1082,7 @@ function List_Vols($AllVols='') {
         }
         $Msg = $EmailMsgs['G'];
         if ($Msg && ($VY['Status'] == 3) && !strstr($Mmap,'G')) {
-          echo  " <button type=button id=VolSendEmailF$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'G')>$Msg</button>";
+          echo  " <button type=button id=VolSendEmailG$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'G')>$Msg</button>";
         }
         echo "<td id=MessMap$id>" . ($VY['MessMap'] ?? '');
       if ($VY['Status'] == 0) echo "<td><b><a href=Volunteers?ACTION=Del&id=$id>Del</a></b>\n";
