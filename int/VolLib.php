@@ -47,7 +47,7 @@ define('VOL_OMIT_CANCEL',2); // Props 2
 define('VOL_CAT_FULL',4); //Props 2
 
 // Button Name, Vol_Button
-$EmailMsgs = [''=>'','U'=>'NotSub','E' => Feature('Vol_Special_Mess'),
+$EmailMsgs = [''=>'','U'=>'NotSub','E' => Feature('Vol_Special_Mess'),'G' => Feature('Vol_Special_Mess3'),
   'S'=>'Stew1','M'=>'Note2','F' => Feature('Vol_Special_Mess2'),'T' => 'Vol_Post_Fest1', 'O' => 'Vol_October',
   'N'=>'Vol_November', 'D'=>'Vol_December', 'J'=>'Vol_January', 'R' => 'Vol_March', 'A'=>'Vol_April', 'r'=>'Vol_March2',
 ];
@@ -1080,7 +1080,11 @@ function List_Vols($AllVols='') {
         if ($Msg && ($VY['Status'] == 3) && !strstr($Mmap,'F')) {
           echo  " <button type=button id=VolSendEmailF$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'F')>$Msg</button>";
         }
-      echo "<td id=MessMap$id>" . ($VY['MessMap'] ?? '');
+        $Msg = $EmailMsgs['G'];
+        if ($Msg && ($VY['Status'] == 3) && !strstr($Mmap,'G')) {
+          echo  " <button type=button id=VolSendEmailF$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'G')>$Msg</button>";
+        }
+        echo "<td id=MessMap$id>" . ($VY['MessMap'] ?? '');
       if ($VY['Status'] == 0) echo "<td><b><a href=Volunteers?ACTION=Del&id=$id>Del</a></b>\n";
     }
   }
