@@ -59,6 +59,7 @@
     if (UpdateMany('TradePitch','Put_Trade_Pitch',$Pitches,1,'','','X',-9)) $Pitches = Get_Trade_Pitches($loc,$YEAR);
   }
   if (isset($_REQUEST['COPY'])) {
+    $Pitches = Get_Trade_Pitches($loc,($_REQUEST['LY']??($YEAR-1)));
     foreach($Pitches as $Pitch) {
       $Pitch['Year'] = $PLANYEAR;
       Insert_db('TradePitch', $Pitch);
@@ -83,10 +84,10 @@
   
   echo "<h2>";
   if ($YEAR < $PLANYEAR) {
-    echo "<a href=TradeSetup?COPY&i=$loc&Y=$YEAR>Copy to Current</a>,";
+    echo "<a href=TradeSetup?COPY&i=$loc&FY=$YEAR>Copy to Current</a>,";
   } else {
     $LYear = $YEAR-1;
-    echo "<a href=TradeSetup?COPY&i=$loc&Y=$LYear>Copy $LYear to Current</a>,";
+    echo "<a href=TradeSetup?COPY&i=$loc&FY=$LYear>Copy $LYear to Current</a>,";
   }
   echo " <a href=TradeLocs?Y=$YEAR>Trade Locs</a></h2>";
   echo "To delete an item put the X to -9<p>";
