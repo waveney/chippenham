@@ -1351,7 +1351,8 @@ function TicketList($Cat) {
   $coln = 0;
 // var_dump($VolCats);
   echo "<form method=post>";
-  echo "<div class=Scrolltable><table id=indextable border class=altcolours>\n";
+  if (!isset($_REQUEST['Nohead'])) echo "<div class=Scrolltable>";
+  echo "<table id=indextable border class=altcolours>\n";
   echo "<thead><tr>";
 
   if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
@@ -1391,7 +1392,8 @@ function TicketList($Cat) {
 
     echo "\n";
   }
-  echo "</table></div>";
+  echo "</table>";
+  if (!isset($_REQUEST['Nohead'])) echo "</div>";
   dotail();
 
 }
@@ -1429,7 +1431,9 @@ function Send_Accepts($Vol) {
 function VolAction($Action,$csv=0) {
   global $YEAR,$VolCats,$M,$YearColour,$YearStatus,$USER;
 
-  if ($csv == 0) {
+  if (isset($_REQUEST['Nohead'])) {
+    dominimalhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css",'/js/InviteThings.js' ]);
+  } else if ($csv == 0) {
     dostaffhead("Steward / Volunteer Application", ["/js/Volunteers.js","js/dropzone.js","css/dropzone.css",'/js/InviteThings.js' ]);
     SendCatsToBrowser();
   }

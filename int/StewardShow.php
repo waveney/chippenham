@@ -126,7 +126,7 @@
         "<td class=ES_What>" . $Event_Types[$e['Type']]['SN'] . ":<td><a href=EventShow?e=" . $e['EventId'] . ">" . $e['SN'] . "</a>";
       if ($Ven['IsVirtual']) {
         $rows++;
-        $str .= "<tr><tr>Where:<td>" . $Venues[$e['VenueId']]['SN'];
+        $str .= "<tr><td>Where:<td>" . $Venues[$e['VenueId']]['SN'];
       }
       if ($Event_Types[$e['Type']]['Public']) {
         $str .= "<tr><td class=ES_What>Price:<td class=ES_Detail>" . Price_Show($e,1);
@@ -149,7 +149,7 @@
       $rows = 3;
       if ($Ven['IsVirtual']) {
         $rows++;
-        $str .= "<tr><tr>Where:<td>" . $Venues[$e['VenueId']]['SN'];
+        $str .= "<tr><td>Where:<td>" . $Venues[$e['VenueId']]['SN'];
       }
     }
 

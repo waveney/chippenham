@@ -3,7 +3,7 @@ include_once("fest.php");
 A_Check('Committee','Trade');
 
 dostaffhead("Check Trade Finances");
-global $PLANYEAR,$TradeTypeStates,$YEAR,$Trade_State,$Trade_States,$Trade_State_Colours;
+global $PLANYEAR,$TradeTypeStates,$YEAR,$Trade_State,$Trade_States,$Trade_State_Colours,$db;
 
 include_once("TradeLib.php");
 include_once("InvoiceLib.php");
