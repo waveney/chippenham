@@ -17,6 +17,7 @@
   }
 
   $Ven = Get_Venue($V);
+  $Venues = Get_Venues(1);
   $host = "https://" . $_SERVER['HTTP_HOST'];
 
   $ShowMode = '';
@@ -123,6 +124,10 @@
       $rows = 4;
       $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']) .
         "<td class=ES_What>" . $Event_Types[$e['Type']]['SN'] . ":<td><a href=EventShow?e=" . $e['EventId'] . ">" . $e['SN'] . "</a>";
+      if ($Ven['IsVirtual']) {
+        $rows++;
+        $str .= "<tr><tr>Where:<td>" . $Venues[$e['VenueId']]['SN'];
+      }
       if ($Event_Types[$e['Type']]['Public']) {
         $str .= "<tr><td class=ES_What>Price:<td class=ES_Detail>" . Price_Show($e,1);
       } else {
@@ -142,6 +147,10 @@
     } else {
       $str = timecolon(timeadd($e['Start'], - $e['Setup'])) . "-" . timecolon($e['End']);
       $rows = 3;
+      if ($Ven['IsVirtual']) {
+        $rows++;
+        $str .= "<tr><tr>Where:<td>" . $Venues[$e['VenueId']]['SN'];
+      }
     }
 
 
