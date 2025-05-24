@@ -1,0 +1,22 @@
+CREATE TABLE `Consent` (
+  `id` int NOT NULL,
+  `Year` text COLLATE utf8mb4_general_ci NOT NULL,
+  `YoungName` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Age` int NOT NULL,
+  `PostCode` text COLLATE utf8mb4_general_ci NOT NULL,
+  `ParentName` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Relationship` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Email` text COLLATE utf8mb4_general_ci NOT NULL,
+  `ParentPhone` text COLLATE utf8mb4_general_ci NOT NULL,
+  `AltName` text COLLATE utf8mb4_general_ci NOT NULL,
+  `AltPhone` text COLLATE utf8mb4_general_ci NOT NULL,
+  `AltRelationship` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Musical` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Mobilty` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Medical` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Support` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Collect` text COLLATE utf8mb4_general_ci NOT NULL,
+  `PhotoConsent` int NOT NULL,
+  `ParentalConcent` int NOT NULL,
+  `DateTime` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

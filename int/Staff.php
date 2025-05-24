@@ -269,6 +269,7 @@
     }
     if (Access('Staff','Youth')) {
       $txt .= "<li><a href=CreatePerf?T=U&Y=$YEAR>Add Youth Activity Organiser to Database</a>";
+      $txt .= "<li><a href=ConsentForms?Y=$YEAR>Consent Forms</a>";
     }
     $txt .= "<li><a href=/LineUp?T=Youth&FORCE&Y=$PLANYEAR>Youth Lineup</a> (Even if not public)";
 
