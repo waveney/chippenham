@@ -53,7 +53,7 @@ including online and social media",$Con,'PhotoCons',4);
   echo "<tr>" . fm_text1("You acknowledge that it is the parent
 /guardian’s responsibility to update us
 of any change in contact details after
-completing this form",$Con,'PhotoCons',4);
+completing this form",$Con,'ParentCons',4);
   echo "</table>";
   if (!$Cid) {
     echo fm_submit('ACTION','Submit');
