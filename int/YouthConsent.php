@@ -10,7 +10,7 @@
     switch ($_REQUEST['ACTION']) {
       
       case 'Submit':
-        echo "Here<p>";
+//        echo "Here<p>";
         Insert_db_post('Consent',$Con);
     }
   }
@@ -46,14 +46,14 @@
   echo "<tr>" . fm_text("Alt Contact phone number (parent /guardian)",$Con,'AltPhone',3);
   echo "<tr>" . fm_text("Access Needs",$Con,"Mobility",3);
   echo "<tr>" . fm_text("Medical Conditions",$Con,"Medical",3);
-  echo "<tr><td colspan=4>" . fm_checkbox("You give us permission to produce
+  echo "<tr>" . fm_text1("You give us permission to produce
 recordings including photographs
 during sessions for marketing
-including online and social media",$Con,'PhotoConsent');
-  echo "<tr><td colspan=4>" . fm_checkbox("You acknowledge that it is the parent
+including online and social media",$Con,'PhotoCons',4);
+  echo "<tr>" . fm_text1("You acknowledge that it is the parent
 /guardian’s responsibility to update us
 of any change in contact details after
-completing this form",$Con,'PhotoConsent');
+completing this form",$Con,'PhotoCons',4);
   echo "</table>";
   if (!$Cid) {
     echo fm_submit('ACTION','Submit');

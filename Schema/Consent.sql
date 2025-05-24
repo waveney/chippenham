@@ -18,5 +18,7 @@ CREATE TABLE `Consent` (
   `Collect` text COLLATE utf8mb4_general_ci NOT NULL,
   `PhotoConsent` int NOT NULL,
   `ParentalConcent` int NOT NULL,
-  `DateTime` int NOT NULL
+  `DateTime` int NOT NULL,
+  `PhotoCons` text COLLATE utf8mb4_general_ci NOT NULL,
+  `ParentCons` text COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
