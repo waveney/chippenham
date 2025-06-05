@@ -35,6 +35,7 @@
     echo "Nothing to pay";
     dotail();
   }
+  $tot = 0;
 
   $AllActive = Get_AllUsers(0);
 
@@ -93,7 +94,7 @@
       echo "<td>" . $payee['TotalFee'];
       echo "<td>" . SortCode($payee['SortCode']) . "<td>" . $payee['Account'] . "<td>" . $payee['AccountName'];
       echo "<td>" . ($AllActive[$payee['BookedBy']] ?? 'Unknown');
-
+      $tot += $payee['TotalFee'];
 
       foreach($BUDGET as $i=>$b) {
         echo "<td>";
@@ -123,6 +124,7 @@
 
   } else {
     echo "</table></div>";
+    echo "Total: $tot<p>";
 
     dotail();
   }

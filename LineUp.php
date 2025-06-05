@@ -193,7 +193,7 @@
   $Prev = Feature('PrevRealFest',$YEARDATA['PrevFest']);
   if (isset($ET) && $Prev >= $ET['FirstYear']) {
     if ($T == 'Dance') echo "<b><a href=/int/ShowDanceProg?Y=$Prev>Complete Dance Programme for $Prev</a>, ";
-    echo "<br clear=all><a href=/LineUp?t=$T&Y=$Prev>$T Line Up $Prev</a></b><p>";
+    echo "<br clear=all><a href=/LineUp?T=$T&Y=$Prev>$T Line Up $Prev</a></b><p>";
   }
 
   dotail();
