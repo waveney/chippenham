@@ -59,7 +59,7 @@ $Perf_Rolls = ['','Band','Caller','MC','Sound','Support','Dance Spot'];
 // Perfname => [field to test, email address for,Capability name,budget,shortCode]
 $Months = ['','Jan','Feb','Mar','Apr','May','June','July','Aug','Sep','Oct','Nov','Dec'];
 
-date_default_timezone_set('GMT');
+date_default_timezone_set('Europe/London');
 
 function Check_Login() {
   global $db,$USER,$USERID;

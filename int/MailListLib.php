@@ -196,6 +196,17 @@ function RejectForm() {
   ListForms('Open');
 }
 
+function RemoveForm() {
+  global $StatusMail;
+  
+  $SubId = ($_REQUEST['id'] ?? 0);
+  $Sub = Gen_Get('MailingListRequest',$SubId);
+  
+  $Sub['Status'] = $StatusMail['Accepted'];
+  Gen_Put('MailingListRequest',$Sub);
+  ListForms('Open');
+}
+
 function ListForms($Status) {
   global $MailStatus;
   $coln = 0;
@@ -232,7 +243,8 @@ function ListForms($Status) {
         echo "<a href=MailListMgr?id=$SubId&A=Confirm>Confirm Address</a>";
         break;
       case 1: // Email Confirmed
-        echo "<a href=MailListMgr?id=$SubId&A=AcceptForm>Accept</a>, <a href=MailListMgr?id=$SubId&A=RejectForm>Reject</a> ";
+        echo "<a href=MailListMgr?id=$SubId&A=AcceptForm>Accept</a>, <a href=MailListMgr?id=$SubId&A=RejectForm>Reject</a>, " .
+             "<a href=MailListMgr?id=$SubId&A=RemoveForm>Silent Remove</a>";
         break;
       case 3: // Rejectted
         echo "<a href=MailListMgr?id=$SubId&A=AcceptForm>Accept</a> ";
@@ -285,6 +297,10 @@ function Mail_List_Action($Action) {
   case 'SendMail':
     SendMailToList(); // For the future
     break;
+    
+  case 'RemoveForm':
+    RemoveForm();
+    break;    
 
   default:
     echo "Unknown Action: $Action";

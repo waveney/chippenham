@@ -984,7 +984,7 @@ function List_Vols($AllVols='') {
           $Accepted++;
         }
         if ($VCY['Status']) $CatTot++;
-        if ($Cat_Status_Short[$VCY['Status']]) $VClass .= " VolCat" . $Cat['id'];
+        if ($CatStatus[$VCY['Status']] == 'Confirmed' || ($CatStatus[$VCY['Status']] == 'Applied' && $Form)) $VClass .= " VolCat" . $Cat['id'];
       }
     }
 
