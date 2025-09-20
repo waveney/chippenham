@@ -26,7 +26,7 @@
   if (!empty($YEARDATA['NextFest'])) $ShowDates+=4;
   if ($YEARDATA['Years2Show'] == 0) {
     $ShowDates+=8;
-  } elseif ($YEARDATA['Years2Show'] == 1) {
+  } elseif ($YEARDATA['Years2Show'] == 2) {
     $ShowDates=16;
   }
 

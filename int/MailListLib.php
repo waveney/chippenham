@@ -156,7 +156,8 @@ function MailConfirmed() {
   Email_Publicity($Sub,"MailList_Add");
   $Sub['Status'] = $StatusMail['Email Confirmed'];
   Gen_Put('MailingListRequest',$Sub);
-  echo "Thank you for confirming your Email address.<p>  You should be added to the actual list shortly.<p>";
+  echo "Thank you for confirming your Email address.<p>  You should be added to the actual list in a few days (there is a human in the loop).<p>";
+  Email_Sub($Sub,'MailList_AwaitAction');
   dotail();
 }
 
