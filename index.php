@@ -24,9 +24,13 @@
   if ($SHOWYEAR == $PLANYEAR) $ShowDates+=1;
   if ($D2F > -4) $ShowDates +=2;
   if (!empty($YEARDATA['NextFest'])) $ShowDates+=4;
-  if ($YEARDATA['Years2Show'] == 0) $ShowDates+=8;
+  if ($YEARDATA['Years2Show'] == 0) {
+    $ShowDates+=8;
+  } elseif ($YEARDATA['Years2Show'] == 1) {
+    $ShowDates=16;
+  }
 
-  $ShowActions = [1,0,1,0,3,3,4,4,1,1,1,0,1,1,1,0];
+  $ShowActions = [1,0,1,0,3,3,4,4,1,1,1,0,1,1,1,0,2];
 
   if (($YEARDATA['Years2Show'] > 0)) {
     $NEXTYEARDATA = Get_General($YEARDATA['NextFest']);
@@ -71,6 +75,11 @@
                "</sup> $DMonth $Sy<div class=BanNotice></div></div>";
         break;
 
+    case 2: // Next year
+      $Banner .= "<div class=BanDates2>Next year's dates: $NFrom<sup>" . ordinal($NFrom) . "</sup> - $NTo<sup>" . ordinal($NTo) .
+               "</sup> $NMonth $NYear<div class=BanNotice></div></div>";
+      break;
+      
     case 3: // Both, this has past
         $Banner .= "<div class=BanDates2>Diary dates:  $DFrom<sup>" . ordinal($DFrom) . "</sup> - $DTo<sup>" . ordinal($DTo) .
                "</sup> $DMonth $Sy<div class=BanNotice></div>";
