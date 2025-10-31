@@ -98,7 +98,8 @@
   dohead("$DFrom - $DTo $DMonth $Sy", ['/js/WmffAds.js', "/js/HomePage.js", "/js/Articles.js"],$Banner );
 
   $TopShow = "Top";
-  if ( !Show_Articles_For($TopShow,$future)) {
+  $TopCols = Feature('TopPageCols','200,350,4,4');
+  if ( !Show_Articles_For($TopShow,$future,$TopCols)) {
     echo "<center><a href=/Tickets>Details to Follow</a></center>";
   }
   echo "<br clear=all>";

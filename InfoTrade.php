@@ -9,7 +9,7 @@
 <p>Some of our traders.</p>
 </div>
 <h2>Trade in " . substr($PLANYEAR,0,4) . " </h2>
-Applications for trading at the festival, which will be held over the weekend of " . FestDate(0,'L') . " to " . FestDate(2,'L') . " are <a href=/int/Trader>OPEN</a>.<p>
+Applications for trading at the festival, which will be held over the weekend of " . FestDate(0,'L') . " to " . FestDate(3,'L') . " are <a href=/int/Trader>OPEN</a>.<p>
 
 Prices for $PLANYEAR trade stands are listed below.  See also the <a href=/int/TradeFAQ><strong>Trade FAQ</strong></a>.  
 Any queries should be sent to <a href='mailto:trade@chippfolk.co.uk'><strong>trade@chippfolk.co.uk</strong></a>.<p>
