@@ -384,6 +384,9 @@ function embedvideo($dest) {
   $dest = stripslashes($dest);
   $mtch = [];
   if (preg_match("/<iframe.*src/i",$dest)) return $dest;
+  if (preg_match("/https:\/\/",$dest)) {
+    return "<iframe style='max-width:100%; width:560; height:315' src='$dest' frameborder=0 allowfullscreen></iframe>";
+  }
   if (preg_match('/.*watch\?v=(.*)/',$dest,$mtch)) {
     $dest = $mtch[1];
     $dest = preg_replace('/&.*/','',$dest);
