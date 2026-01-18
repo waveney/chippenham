@@ -761,8 +761,6 @@ function Vol_Validate(&$Vol) {
   if (strlen(Sanitise($Vol['ContactPhone'])) < 6) return ">Please give emergency Phone number(s)";
   if (!isset($Vol['Relation']) || !$Vol['Relation']) return "Please give your emergency contact relationship to you";
 
-
-
   Clean_Email($Vol['Email']);
   return 0;
 }

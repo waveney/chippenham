@@ -514,7 +514,9 @@
     $txt .= "<li><a href=Volunteers?A=List>List Volunteers</a>\n";
     $txt .= "<li><a href=VolCats>Volunteer Categories</a>\n";
     $txt .= "<li><a href=VolRates>Volunteer Signup Rates</a>\n";
-    
+    if (Access('SysAdmin')) {
+      $txt .= "<li><a href=VolDataComp>Volunteer Data Compare</a>\n";
+    }
 //    $txt .= "<li><a href=VolGroups>Volunteer Groups</a>\n";
     $txt .= "<li><form method=Post action=Volunteers?ACTION=TeamList class=staffform>" .
                 fm_hidden('Y',$YEAR) .

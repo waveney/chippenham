@@ -174,7 +174,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       if (!$Wide) echo "<tr><td class=NotSide>Performer type:";//<td class=NotSide>";
         echo Help('PerfTypes') . " ";
         echo "<td class=NotSide colspan=2>";
-        $colours = ['white','lightgreen','lightpink','lightblue','lightyellow','bisque','#99ffcc','#b3b3ff',-1=>'lightgrey'];
+        $colours = ['white','lightgreen','lightpink','lightblue','lightyellow','bisque','#99ffcc','#b3b3ff','lightgrey'];
         $cindx = 1;
         foreach ($PerfTypes as $t=>$p) {
           if (Capability("Enable" . $p[2])) {
