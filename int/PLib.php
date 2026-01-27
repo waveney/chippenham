@@ -734,13 +734,13 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
           if ($Side['IsAnAct'] || $Side['IsFunny'] || $Side['IsFamily'] || $Side['IsCeilidh'] || $Side['IsOther'] || $Side['IsYouth'] ) {
             $AdLim = ($Sidey['MaxFreeAdult']>=0 ? " min=0 max=" . $Sidey['MaxFreeAdult'] :'');
             $YthLim = ($Sidey['MaxFreeYouth']>=0 ? " min=0 max=" . $Sidey['MaxFreeYouth'] :'');
-            echo "<tr><td class=NotCSide>Free Tickets: " . fm_checkbox('Day Tickets',$Sidey,'DayTickets') .
-                 fm_number1('Adults',$Sidey,'FreePerf','class=NotCSide',$AdLim) .
-                 fm_number1('Youth (' . Feature('YouthAges') . ')',$Sidey,'FreeYouth','class=NotCSide',$YthLim) .
-                 fm_number1('Child (' . Feature('ChildAges') . ')',$Sidey,'FreeChild','class=NotCSide');
+            echo "<tr><td>Free Tickets: " . fm_checkbox('Day Tickets',$Sidey,'DayTickets') .
+                 fm_number1('Adults',$Sidey,'FreePerf','',$AdLim) .
+                 fm_number1('Youth (' . Feature('YouthAges') . ')',$Sidey,'FreeYouth','',$YthLim) .
+                 fm_number1('Child (' . Feature('ChildAges') . ')',$Sidey,'FreeChild','');
             if (Access('Staff')) {
-              echo fm_number1('Adult Limit',$Sidey,'MaxFreeAdult');
-              echo fm_number1('Youth Limit',$Sidey,'MaxFreeYouth');
+              echo fm_number1('Adult Limit',$Sidey,'MaxFreeAdult','class=NotSide');
+              echo fm_number1('Youth Limit',$Sidey,'MaxFreeYouth','class=NotSide');
               if ($Sidey['TicketsCollected'] ?? 0) {
                 $User = Get_User($Sidey['CollectedBy'] ?? 0);
                 echo fm_text1("Tickets Collected", $Sidey,'TicketsCollected') . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
