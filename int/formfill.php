@@ -6,7 +6,7 @@
   $type  = $_REQUEST['D'];
   $vfv   = $_REQUEST['vfv']??'';
 
-  global $PLANYEAR,$YEARDATA;
+  global $PLANYEAR,$YEARDATA,$USERID;
   $match = [];
   $mtch = [];
 
@@ -273,6 +273,12 @@
     break;
 
   case 'Volunteers':
+    if (!Access('Staff')) {
+      Set_User();
+      if ($id != $USERID) break;
+    }
+    
+    
     if (preg_match('/(\w*):(.*?):(\d*)/',$field,$mtch)?true:false) {
  //var_dump($mtch);
       $vfld = $mtch[1];

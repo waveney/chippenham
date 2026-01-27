@@ -91,7 +91,7 @@ function Check_Login() {
   }
 }
 
-function Set_User() {
+function Set_User($Mode=0) {
   global $USER,$USERID;
   if (isset($USER)) return;
   $USER = array();
@@ -106,7 +106,7 @@ function Set_User() {
     if ($USERID) return;
     $USER = array();
   }
-  Check_Login();
+  if ($Mode==0) Check_Login();
 }
 
 function Is_SubType($Name) {

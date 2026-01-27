@@ -558,7 +558,9 @@ Contract Signed - Enables listing to public.',
         'ContractAnyway' => 'Forces contract even if none are needed',
         'NoEvents' => 'Set this if you are issuing a contract even without any events',
         'SponsoredBy' => 'This is setup from the Sponsor, just displayed here for info',
-
+        'MaxFreeAdult' => 'Limit of Free Adult Tickets, 0=None, -1=No limit',
+        'MaxFreeYouth' => 'Limit of Free Youth Tickets, 0=None, -1=No limit',
+    
   );
   Set_Help_Table($t);
 }
@@ -566,7 +568,9 @@ Contract Signed - Enables listing to public.',
 function Default_SY($id=0) {
   global $YEAR,$USERID;
   $numprocs = intval(Feature('ProcessDays'));
-  $ans = array('SatDance'=>4,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0,'Coming'=>0);
+  $ans = ['SatDance'=>4,'SunDance'=>4,'MonDance'=>4,'Year'=>$YEAR,'Invited'=>'','BookedBy'=>$USERID,'YearState'=>0,'Coming'=>0,
+    'MaxFreeAdult'=>Feature('MaxFreeAdult',6), 'MaxFreeYouth'=>Feature('MaxFreeYouth',6), 
+  ];
   if ($id) $ans['SideId'] = $id;
   switch ($numprocs) {
   case 0:
