@@ -710,6 +710,7 @@ function Vol_Validate(&$Vol) {
   $Clss=0;
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
   foreach ($VCYs as $VCY) if (isset($VCY['Status']) && $VCY['Status']) {
+    if (($VolCats[$VCY['CatId']]['Props2']??0) && VOL_OMIT_SUBMIT) continue;
     if (($VCY['CatId'] == 0) || ($VCY['Status']==0)) { /* var_dump($VCY);*/ continue; }
     $Clss++;
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_NeedDBS) && empty($Vol['DBS'])) return $VolCats[$VCY['CatId']]['Name'] . " requires DBS";
@@ -1487,6 +1488,16 @@ function VolAction($Action,$csv=0) {
   case 'ListAll': // List Volunteers
     List_Vols('All');
     break;
+    
+  case 'NewKey':
+    $Volid = ((isset($_REQUEST['id']) ?$_REQUEST['id'] :(isset($_REQUEST['AutoRef'])?$_REQUEST['AutoRef']:0)));
+    $Vol = Get_Volunteer($Volid);
+    $Vol['AccessKey'] = rand_string(40);
+    Put_Volunteer($Vol);
+    echo "New key set up";
+    VolView($Vol);
+    break;
+    
 
   case 'CSV': // List Volunteers as CSV
     CSV_Vols();
