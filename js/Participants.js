@@ -189,6 +189,16 @@ function ComeSwitch(ev) {
   CheckDiscount(); 
 }
 
+function ComeSwitchRefresh(ev,id) {
+	ComeSwitch(ev);
+	// Force reload
+	setTimeout(function(){
+	  var Location = window.location.pathname + "?id=" + id;  //  window.location.hostname
+	  window.location.href = Location;
+	  }, 100);
+}
+
+
 function CopyAndSubmit(name) {
   document.getElementById(name + 'Upload').value = document.getElementById(name + 'Form').value;
   document.forms[name].submit();
