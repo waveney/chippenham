@@ -699,8 +699,7 @@ function Vol_Validate(&$Vol) {
   if (!isset($_REQUEST['kvk']) || ($_REQUEST['kvk'] != substr($Vol['AccessKey'],0,6))) {
     Error_Page("No Hacking");
   }
-
-  if (strlen(Sanitise($Vol['SN'])) < 2) return "Please give your name";
+  if (strlen(Sanitise($Vol['SN'],50)) < 2) return "Please give your name";
   if ((strlen(Sanitise($Vol['Email'],40,'email')) < 6) || (strpos($Vol['Email'],'@')==false)) return "Please give your Email";
   if (strlen(Sanitise($Vol['Phone'])) < 6) return "Please give your Phone number(s)";
   if (strlen(Sanitise($Vol['Address'],100)) < 10) return "Please give your Address";
@@ -710,7 +709,8 @@ function Vol_Validate(&$Vol) {
   $Clss=0;
   $VCYs = Gen_Get_Cond('VolCatYear',"Volid=" . $Vol['id'] . " AND Year=$YEAR");
   foreach ($VCYs as $VCY) if (isset($VCY['Status']) && $VCY['Status']) {
-    if (($VolCats[$VCY['CatId']]['Props2']??0) && VOL_OMIT_SUBMIT) continue;
+    if ((($VolCats[$VCY['CatId']]['Props']??0) & VOL_USE) == 0) continue;
+    if (($VolCats[$VCY['CatId']]['Props2']??0) & VOL_OMIT_SUBMIT) continue;
     if (($VCY['CatId'] == 0) || ($VCY['Status']==0)) { /* var_dump($VCY);*/ continue; }
     $Clss++;
     if (($VolCats[$VCY['CatId']]['Props'] & VOL_NeedDBS) && empty($Vol['DBS'])) return $VolCats[$VCY['CatId']]['Name'] . " requires DBS";
@@ -1495,7 +1495,7 @@ function VolAction($Action,$csv=0) {
     $Vol['AccessKey'] = rand_string(40);
     Put_Volunteer($Vol);
     echo "New key set up";
-    VolView($Vol);
+    $M($Vol);
     break;
     
 

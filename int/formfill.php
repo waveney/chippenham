@@ -14,6 +14,12 @@
 // Special returns @x@ changes id to x, #x# sets feild to x, !x! important error message
   switch ($type) {
   case 'Performer':
+
+    if (!Access('Staff')) {
+      Set_User();
+      if ($id != $USERID) exit;
+    }
+    
     include_once("DanceLib.php");
     if (preg_match('/BandMember(\d*):(\d*)/',$field,$match)) { // Band Members are a special case
       include_once("MusicLib.php");
@@ -167,6 +173,11 @@
     exit;
 
   case 'Trader':
+    if (!Access('Staff')) {
+      Set_User();
+      if ($id != $USERID) exit;
+    }
+    
     include_once("TradeLib.php");
 
     $Trad = Get_Trader($id);
@@ -275,7 +286,7 @@
   case 'Volunteers':
     if (!Access('Staff')) {
       Set_User();
-      if ($id != $USERID) break;
+      if ($id != $USERID) exit;
     }
     
     
