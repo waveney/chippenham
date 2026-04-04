@@ -4,7 +4,8 @@
   global $db;
 
   $ToPrint = $_REQUEST['TOPRINT']??false;
-
+  $Now = time();
+  
   if ($ToPrint) {
     dominimalhead('List Traders',["cache/FestStyle.css"]);
     $Camps = Gen_Get_All('Campsites','ORDER BY Importance DESC');
@@ -12,7 +13,8 @@
     dostaffhead("List Traders", ["/js/clipboard.min.js", "/js/emailclick.js"]);
   }
 
-  global $YEAR,$PLANYEAR,$Trade_States,$Trade_State_Colours,$Trade_State,$TS_Actions,$ButAdmin,$AdminExtra,$TradeLocData,$ButExtra;
+  global $YEAR,$PLANYEAR,$Trade_States,$Trade_State_Colours,$Trade_State,$TS_Actions,$ButAdmin,$AdminExtra,$TradeLocData,$ButExtra,
+    $YEARDATA;
   include_once("TradeLib.php");
   $Sum = isset($_REQUEST['SUM']);
   if ($Sum) {
@@ -179,6 +181,10 @@
 
               case 'UnQuote' :
                 if (($fetch['DateQuoted'] == 0) || ($fetch['DateRemind'] == 0) || ($fetch['DateRemind'] > $UnQuoteThresh )) continue 2;
+                break;
+                
+              case 'Send Bal' :
+                if ($YEARDATA['TradeMainDate'] && ($Now < $YEARDATA['TradeMainDate'])) return 2;// Stop Send Bal before invoices sent
                 break;
 
               default:

@@ -202,10 +202,11 @@
 
           case 'N':
           case 'NY':
+/*
             if ($YEAR=='2020') echo "<button type=button id=Change$snum class=ProfButton " .
                "onclick=ProformaSend('Dance_Reinvite_Change_Dates',$snum,'Reinvite','SendProfEmail')" .
                                       Proforma_Background('Reinvite') . ">Reinvite</button>";
-
+*/
 //            echo "Woof";
             break;
           }

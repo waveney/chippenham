@@ -24,7 +24,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
     if (($d[0] != 'IsASide') && $Side[$d[0]]) $NotD = 1;
   }
  // if ( isset($Side['Photo']) && ($Side['Photo'])) echo "<img class=floatright id=PerfThumb src=" . $Side['Photo'] . " height=80>\n";
-//  if (Access('SysAdmin'))
+//  if (Access('SysAdmin'))7
   if (Access('SysAdmin')) echo "<input  class=floatright type=Submit name='Update' value='Save Changes' form=mainform>";
   if ($Mode && ((isset($Side['Email']) && strlen($Side['Email']) > 5) || (isset($Side['AltEmail']) && strlen($Side['AltEmail']) > 5)) )  {
     if (Feature('EmailButtons')) {
@@ -213,16 +213,17 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       echo "<tr><td>" . fm_checkbox("Has Agent",$Side,'HasAgent','onchange=AgentChange(event)') .
            "<td class=AgentDetail>" . fm_checkbox('Book Directly',$Side,'BookDirect');
     }
-
+    
     echo "<tr class=AgentDetail $AgentTxt>";
-      echo fm_text('<span id=AgentLabel>Agent</span>',$Side,'AgentName',1,'','','',($Wide?'':' rowspan=3 '));
+    echo fm_text('<span id=AgentLabel>Agent</span>',$Side,'AgentName',1,'','placeholder="Agent Name"','',($Wide?'':' rowspan=3 '));
       echo fm_text1('Email',$Side,'AgentEmail',2);
     if (!$Wide) echo "<tr class=AgentDetail $AgentTxt>";
       echo fm_text('Phone',$Side,'AgentPhone');
       echo fm_text('Mobile',$Side,'AgentMobile');
       echo "<tr class=AgentDetail $AgentTxt>" . fm_text('Address',$Side,'AgentAddress',3) . fm_text('Post Code',$Side,'AgentPostCode');
 
-    echo "<tr>" . fm_text('<span id=ContactLabel>Contact</span>',$Side,'Contact',1,'','','',($Wide?' rowspan=2':' rowspan=4 '));
+    echo "<tr>" . fm_text('<span id=ContactLabel>Contact</span>',$Side,'Contact',1,'','placeholder="Contact Name"','',
+        ($Wide?' rowspan=2':' rowspan=4 '));
       echo fm_text1('Email',$Side,'Email',2);
       if (!$Wide) echo "<tr>";
       echo fm_text('Phone',$Side,'Phone');
@@ -230,7 +231,7 @@ function Show_Part($Side,$CatT='',$Mode=0,$Form='AddPerf') { // if Cat blank loo
       echo "<tr>" . fm_text('Address',$Side,'Address',3,(Feature('DanceNeedAddress')?$Imp:''),(Feature('DanceNeedAddress')?'onchange=updateimps()':''));
       if (!$Wide) echo "<tr>";
       echo fm_text('Post Code',$Side,'PostCode')."\n";
-    echo "<tr $Adv>" . fm_text('Alt Contact',$Side,'AltContact',1,'','','',($Wide?'':' rowspan=2 '));
+      echo "<tr $Adv>" . fm_text('Alt Contact',$Side,'AltContact',1,'','placeholder="Alt Contact Name"','',($Wide?'':' rowspan=2 '));
       echo fm_text1('Alt Email',$Side,'AltEmail',2);
       if (!$Wide) echo "<tr>";
       echo fm_text('Alt Phone',$Side,'AltPhone');

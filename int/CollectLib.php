@@ -665,7 +665,7 @@ function CollectActions() {
   }
 
   echo "<hr><h2>Other Actions:<ul>";
-  if (Access('Staff','Finance')) {
+  if (Access('Staff','Finance') || Access('Staff','Collect')) {
     echo "<li><a href=Collecting?ACTION=ListTins&Y=$YEAR>Manage Tins</a>";
 //    echo "<li><a href=Collecting?ACTION=CurrentTins>Current Tins</a>";
     echo "<li><a href=Collecting?ACTION=Records&Y=$YEAR>List this year records</a>";
