@@ -424,11 +424,15 @@ function Contract_Decline($Side,$Sidey,$Reason) {
 function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result number, otherwise string
   global $YEAR;
 //echo "check $snum $YEAR<br>";
-  $Check_Fails = array('',"No Fee", "Start Time","Bank Details missing",'Not Booked',"No Events","Venue Unknown","Duration not yet known","Events Clash");
+  $Check_Fails = array('',"No Fee", "Start Time","Bank Details missing",'Not Booked',"No Events","Venue Unknown",
+    "Duration not yet known","Events Clash");
   // Least to most critical
   // 0=ok, 1 - No Fee, 2 - lack times, 3 - no bank details, 4 - Not Booked, 4 - no events, 6 - no Ven, 7 - no dur,8 - clash
   include_once('ProgLib.php');
 // All Events have - Venue, Start, Duration, Type - Start & End/Duration can be TBD if event-type has a not critical flag set
+
+  $Sy = Get_SideYear($snum,$YEAR);
+  
   $InValid = 5;
   $Evs = Get_Events4Act($snum,$YEAR);
   if ($Evs) {
@@ -442,7 +446,7 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
         if (($e['Day'] == $LastEv['Day']) && ($e['Start'] > 0) && ($e['Venue'] >0)) {
           if ($LastEv['SubEvent'] < 0) { $End = $LastEv['SlotEnd']; } else { $End = $LastEv['End']; };
           if ($LastEv['BigEvent']) $End -=30; // Fudge for procession
-          if (($End > 0) && !$LastEv['IgnoreClash'] && !$e['IgnoreClash']) {
+          if (($End > 0) && !$LastEv['IgnoreClash'] && !$e['IgnoreClash'] && !$Sy['IgnoreEventClash']) {
             if ($End > $e['Start']) $InValid = 8;
             if ($InValid < 7 && $End == $e['Start'] && $LastEv['Venue'] != $e['Venue']) $InValid = 8;
           }
@@ -460,7 +464,6 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
       $LastEv = $e;
     }
   } else {
-    $Sy = Get_SideYear($snum,$YEAR);
     if ($Sy['NoEvents'] ?? 1) $InValid = 0;
   }
 

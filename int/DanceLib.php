@@ -560,6 +560,7 @@ Contract Signed - Enables listing to public.',
         'SponsoredBy' => 'This is setup from the Sponsor, just displayed here for info',
         'MaxFreeAdult' => 'Limit of Free Adult Tickets, 0=None, -1=No limit',
         'MaxFreeYouth' => 'Limit of Free Youth Tickets, 0=None, -1=No limit',
+        'IgnoreEventClash'=>'Override event clashes for this performer - only set if you really have too',
     
   );
   Set_Help_Table($t);

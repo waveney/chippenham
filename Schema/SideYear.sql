@@ -102,6 +102,7 @@ CREATE TABLE `SideYear` (
   `NoDanceEvents` tinyint NOT NULL,
   `MaxFreeAdult` int NOT NULL,
   `MaxFreeYouth` int NOT NULL,
+  `IgnoreEventClash` int NOT NULL,
   PRIMARY KEY (`syId`),
   UNIQUE KEY `syId` (`syId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -458,8 +458,10 @@
     }
    
     $txt .= "</ul><h2>Collecting</h2><ul>";
-    $txt .= "<p><li><a href=Collecting?Y=$YEAR>General Collecting</a>\n";
-    $txt .= "<li><a href=Collecting?ACTION=Records&Y=$YEAR>Tin Records</a>\n";
+    if (Access('Staff','Collect') || Access('Staff','Finance')) {
+      $txt .= "<p><li><a href=Collecting?Y=$YEAR>General Collecting</a>\n";
+      $txt .= "<li><a href=Collecting?ACTION=Records&Y=$YEAR>Tin Records</a>\n";
+    }
     $txt .= "<li><a href=Collecting?ACTION=IO&$YEAR>Tins in and out</a>\n";
 //    $txt .= "<li><a href=ListPerfTickets?SEL=ALL&Y=$YEAR&COL=1>Record Performer Ticket Collection</a><p>\n";
 
