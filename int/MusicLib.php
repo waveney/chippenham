@@ -424,7 +424,7 @@ function Contract_Decline($Side,$Sidey,$Reason) {
 function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result number, otherwise string
   global $YEAR;
 //echo "check $snum $YEAR<br>";
-  $Check_Fails = array('',"No Fee", "Start Time","Bank Details missing",'NO Contact', 'No Email for Contact', 'Not Booked',"No Events",
+  $Check_Fails = array('',"No Fee", "Start Time","Bank Details missing",'No Contact Name', 'No Email for Contact', 'Not Booked',"No Events",
     "Venue Unknown", "Duration not yet known","Events Clash");
   // Least to most critical
   // 0=ok, 1 - No Fee, 2 - lack times, 3 - no bank details, 4 - NO cantact, 5 - NO email for contact, 6 - Not Booked, 7 - no events, 
@@ -468,12 +468,12 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
     if ($Sy['NoEvents'] ?? 1) $InValid = 0;
   }
 
+  $Side = Get_Side($snum);
   $ActY = Get_SideYear($snum);
   if ($InValid && $ActY['YearState'] < 2) $InValid = 6;
   if ($InValid == 0 && $chkba) { // Check Bank Account if fee
 
     if ($ActY['TotalFee']) {
-      $Side = Get_Side($snum);
       if ( (strlen($Side['SortCode'])<6 ) || ( strlen($Side['Account']) < 8) || (strlen($Side['AccountName']) < 6)) $InValid = 3;
     } elseif ($ActY['ContractAnyway'] == 0) {
       $InValid = 1;
@@ -483,14 +483,14 @@ function Contract_Check($snum,$chkba=1,$ret=0) { // if ret=1 returns result numb
   if ($InValid <6 ) {
     if ($Side['HasAgent']) {
       if (strlen($Side['AgentName']<6)) { 
-        $Invalid = 4;
+        $InValid = 4;
       } else if (strlen($Side['AgentEmail']<6)) {
-        $Invalid = 5;
+        $InValid = 5;
       }
     } elseif (strlen($Side['Contact']<6)) {
-      $Invalid = 4;
+      $InValid = 4;
     } else if (strlen($Side['Email']<6)) {
-      $Invalid = 5;
+      $InValid = 5;
     }
   }
 
