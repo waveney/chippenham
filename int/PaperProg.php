@@ -42,6 +42,7 @@
       "WHERE s.SideId=y.SideId AND y.year='$YEAR' AND y.YearState>=" . $Book_State['Booking'] .
       " AND s.IsYouth=1 AND y.ReleaseDate<$now AND s.NotPerformer=0 ORDER BY $Order",*/
   ];
+  $BreakBefore = ['Music'=> 0,'Dance Displays'=>1,'Ceilidhs and Folk Dance'=>0,'Family and Community' =>1];
 
   $Displayed = [];
   $SetNum = 1;
@@ -61,6 +62,7 @@
       }
       continue;
     }
+    if ($BreakBefore[$Title]) echo "<p>";
     echo "<div style='text-align:center;font-size:24;font-weight:bold;margin:10;'>$Title</div>";
     $Slist = [];
     $perfQ = $db->query($fetch);
