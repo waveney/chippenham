@@ -62,7 +62,7 @@
       }
       continue;
     }
-    if ($BreakBefore[$Title]) echo "<p>";
+    if ($BreakBefore[$Title]) echo "<p class=pagebreak>";
     echo "<div style='text-align:center;font-size:24;font-weight:bold;margin:10;'>$Title</div>";
     $Slist = [];
     $perfQ = $db->query($fetch);
