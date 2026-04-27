@@ -62,7 +62,11 @@
       }
       continue;
     }
-    if ($BreakBefore[$Title]) echo "<div class=pagebreak></div>";
+    if ($PairPageC >= $PairLimit-1) {
+      echo "<div class=pagebreak></div>";
+      $PairLimit = ($PageLimits[$Page++] ?? 7)+0;
+      $PairPageC = 0;
+    }
     echo "<div style='text-align:center;font-size:24;font-weight:bold;margin:10;'>$Title</div>";
     $Slist = [];
     $perfQ = $db->query($fetch);
