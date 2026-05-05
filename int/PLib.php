@@ -573,7 +573,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       if (($DLim = Feature('MaxDanceFri'))) {
         $Count = Gen_Select("SELECT SUM(Fri) FROM SideYear WHERE Year='$PLANYEAR' AND Coming=2");
       }
-      if ($DLim && ($Sidey['Comming'] != 2) && $Sidey['Fri'] && (($Count[0]['SUM(Fri)']??0)>$DLim) && ($Mode=0)) {
+      if ($DLim && ($Sidey['Coming'] != 2) && $Sidey['Fri'] && (($Count[0]['SUM(Fri)']??0)>$DLim) && ($Mode=0)) {
         $Sidey['Fri'] = 0;
         Put_SideYear($Sidey);
       }
@@ -593,7 +593,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       if (($DLim = Feature('MaxDanceSat'))) {
         $Count = Gen_Select("SELECT SUM(Sat) FROM SideYear WHERE Year='$PLANYEAR' AND Coming=2");
       }
-      if ($DLim && ($Sidey['Comming'] != 2) && $Sidey['Sat'] && (($Count[0]['SUM(Sat)']??0)>$DLim) && ($Mode=0)) {
+      if ($DLim && ($Sidey['Coming'] != 2) && $Sidey['Sat'] && (($Count[0]['SUM(Sat)']??0)>$DLim) && ($Mode=0)) {
         $Sidey['Sat'] = 0;
         Put_SideYear($Sidey);
       }
@@ -617,7 +617,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       if (($DLim = Feature('MaxDanceSun'))) {
         $Count = Gen_Select("SELECT SUM(Sun) FROM SideYear WHERE Year='$PLANYEAR' AND Coming=2");
       }
-      if ($DLim && ($Sidey['Comming'] != 2) && $Sidey['Sun'] && (($Count[0]['SUM(Sun)']??0)>$DLim) && ($Mode=0)) {
+      if ($DLim && ($Sidey['Coming'] != 2) && $Sidey['Sun'] && (($Count[0]['SUM(Sun)']??0)>$DLim) && ($Mode=0)) {
         $Sidey['Sun'] = 0;
         Put_SideYear($Sidey);
       }
@@ -641,7 +641,7 @@ function Show_Perf_Year($snum,$Sidey,$year=0,$Mode=0) { // if Cat blank look at 
       if (($DLim = Feature('MaxDanceMon'))) {
         $Count = Gen_Select("SELECT SUM(Mon) FROM SideYear WHERE Year='$PLANYEAR' AND Coming=2");
       }
-      if ($DLim && ($Sidey['Comming'] != 2) && $Sidey['Mon'] && (($Count[0]['SUM(Mon)']??0)>$DLim) && ($Mode=0)) {
+      if ($DLim && ($Sidey['Coming'] != 2) && $Sidey['Mon'] && (($Count[0]['SUM(Mon)']??0)>$DLim) && ($Mode=0)) {
         $Sidey['Mon'] = 0;
         Put_SideYear($Sidey);
       }
