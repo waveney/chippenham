@@ -12,8 +12,9 @@ function &TradersInLoc() {
    plot the pitches
    */
 
-function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {  
+function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='',$Origin=0) {  
   // Pub 0 = Public map, 1 = Trade (may be same as 0), 2 = Trader Only before public, 3 = Setup, 4=Assign, 5=EMP, 6=Infra Only
+  // Origin=0 sets rotation point to 0,0 Origin=1 sets rotation point to object X,Y
   global $TradeTypeData,$Trade_State,$TradersInLoc;
   $CatMask   = [1,1,1,3,1,3,2];
   $ShowPitch = [0,0,1,1,1,0,0];
@@ -79,7 +80,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
 
 //  $Map .= "scale=$scale sp=$sp Ht=$ImgHt Mapscale=$Mapscale <br>";
   $Map .= "<div class=img-overlay-wrap>";
-  $Map .= "<img src=" . $loc['MapImage'] . " width=" . ($ImgWi*$scale) . ">";
+  $Map .= "<img src='" . $loc['MapImage'] . "' width=" . ($ImgWi*$scale) . ">";
   $Map .= "<svg width=" . ($ImgWi*$scale) . " height=" . ($ImgHt*$scale) . ">";
   
   $Map .= '<pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
@@ -284,7 +285,7 @@ function Pitch_Map(&$loc,&$Pitches,$Traders=0,$Pub=0,$Scale=1,$LinkRoot='') {
     
     $Map .= "\n<text x=" . ($Xpos+2)  . " y=" . ($Ypos+$loc['TextFudge']); //(($Pitch['Y']+($Name?0.7:1.2)/$Mapscale) * $Factor -60);
     $YAdd = (11+$Pitch['Font']);
-    $Delta = 0;
+    $Delta = 11; // Set to 0 to be outside box, 11 for no detail
     
     $Map .= " style='";
     if ($Pitch['Angle']) $Map .= "transform: rotate(" . $Pitch['Angle'] . "Deg); ";

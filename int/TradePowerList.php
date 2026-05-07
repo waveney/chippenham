@@ -7,8 +7,15 @@
 
   include_once("TradeLib.php");
 
+  if (!Access('Internal')) {
+    echo "This page is being updated";
+    dotail();
+  }
+  
   $TradeTypeData = Get_Trade_Types(1);
   $TradeLocData = Get_Trade_Locs(1); 
+  
+  $MasterLoc = Feature('TradeBaseMap');
   
   switch ($_REQUEST['T']??'Powr') {
   case 'Tables':
@@ -48,7 +55,8 @@
 
       echo "<tr><th colspan=7><h2>Infrastructure</h2>";
 
-    $Infs = Gen_Get_Cond('Infrastructure',"Tables>0");
+      
+    $Infs = Gen_Get_Cond('Infrastructure',"Tables>0 AND Location=$MasterLoc");
     echo "<tr><td>Name<td><td><td><td><td>Tables\n";
 
     foreach ($Infs as $In) {
@@ -71,7 +79,7 @@
     $coln = 0;
     $t = [];
 
-    $Infs = Gen_Get_Cond('Infrastructure',"FireEx>0");
+    $Infs = Gen_Get_Cond('Infrastructure',"FireEx>0 AND Location=$MasterLoc");
     echo "<div class=Scrolltable+><table id=indextable border>\n";
     echo "<thead><tr>";
     echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
@@ -141,7 +149,7 @@
 
       echo "<tr><th colspan=7><h2>Infrastructure</h2>";
 
-    $Infs = Gen_Get_Cond('Infrastructure',"Power>1");
+    $Infs = Gen_Get_Cond('Infrastructure',"Power>1 AND Location=$MasterLoc");
     echo "<tr><td>Name<td><td>From<td>To<td>Number<td>Amps<td>Phases\n";
 
     foreach ($Infs as $In) {

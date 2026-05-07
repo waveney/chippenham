@@ -18,7 +18,7 @@ global $head_done;
 if (!file_exists($file)) Error_Page("Could not find file $file");
   Set_User();
   if (!$tfnum) system("rm Temp/$USERID.*");
-  $tf = $USERID . "." . $tfnum . "." . time() . ".$sfx";
+  $tf = $USERID . "." . $tfnum . "." . time() . ($sfx?".$sfx":'');
   $tfnum++;
   $id = "Embed$tfnum";
   $onload = ($Single?'':" onload=setIframeHeight(this.id) ");
@@ -155,7 +155,7 @@ function Cache_File($file) {
   $cachefile = "$Dir/CACHE$BName.jpg";
   Set_User();
   if (!$tfnum) system("rm Temp/$USERID.*");
-  $tf = $USERID . "." . ($tfnum++) . ".$sfx";
+  $tf = $USERID . "." . ($tfnum++) .  ($sfx?".$sfx":'');
 
   switch ($sfx) {
 

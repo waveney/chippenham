@@ -268,7 +268,7 @@ function Show_Side($snum,$Message='',$price=0,$Pcat='') {
               break;
           }
 
-          $OLap_Strings = ['','','','is also appearing as','is part of','includes'];
+          $OLap_Strings = ['','','','is also appearing as','includes','is part of'];
 
           $Aside = Get_SideAndYear($Aid);
           if ($Aside && (($Aside['IsASide'] && ($Aside['Coming'] == 2)) || ($Aside['YearState'] >= 2))) {
