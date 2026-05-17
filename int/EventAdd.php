@@ -391,7 +391,7 @@ A similar feature will appear eventually for music.<p>
       echo "<tr class='FullD' hidden>" . fm_textarea('Notes', $Event,'Notes',4,2);
       $et = 'Mixed';
       if (isset($Event['Type'])) $et = $Event_Types[$Event['Type']];
-      echo "<tr>" . fm_textarea('Description <span id=DescSize></span>',$Event,'Description',5,2,
+      echo "<tr>" . fm_textarea('Short Description <span id=DescSize></span>',$Event,'Description',5,2,
                         "maxlength=200 oninput=SetDSize('DescSize',200,'Description')");
 
 //      echo "<tr>" . fm_textarea('Description <span id=DescSize></span>',$Event,'Description',5,2,'',

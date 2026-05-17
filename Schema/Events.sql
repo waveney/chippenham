@@ -93,5 +93,7 @@ CREATE TABLE `Events` (
   `VenuePaper` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `EndsNextDay` tinyint NOT NULL DEFAULT '0',
   `AgeRange` text COLLATE utf8mb4_general_ci NOT NULL,
+  `FreeEventTicket` tinyint NOT NULL,
+  `AllowLongDesc` tinyint NOT NULL,
   PRIMARY KEY (`EventId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

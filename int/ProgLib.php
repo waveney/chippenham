@@ -53,6 +53,7 @@ function Set_Venue_Help() {
         'Minor'=>'Treatment of venue in final dance grid',
         'DisabilityStat'=>'A Statement about disabled access for the venue',
         'SuppressParent'=>'Set to Suppress showing Parent venue',
+        'ShowVenue'=>'Set to make venue appear as active venue, without any events',
   );
   Set_Help_Table($t);
 }
@@ -179,7 +180,7 @@ function Set_Event_Help() {
         'Sides'=>'Do not use this tool for dance programming use the tool under Dance, once the events have been created',
         'SN'=>'Needed for now, need not be unique',
         'Type'=>'Broad event category, if in doubt ask Richard',
-        'Description'=>'Brief description of event for website and programme book, max 150 chars.  Recommended for Workshops and particpartory events.',
+        'Description'=>'Brief description of event for website and programme book, max 200 chars.  Recommended for Workshops and particpartory events.',
         'Blurb'=>'Longer blurb if wanted, that will follow the description when this particular events is being looked at online',
         'Setup'=>'IF the event has setup prior to the start time, set it here in minutes to block out the venue',
         'Duration'=>'Duration in minutes of the event, this will normally be calculated from the End time',
@@ -759,11 +760,11 @@ function &Get_Active_Venues($All=0) {
   if ($All) {
 
   }
-  $res = $db->query("SELECT DISTINCT v.* FROM Venues v, Events e, EventTypes t WHERE " .
+  $res = $db->query("SELECT DISTINCT v.* FROM Venues v, Events e, EventTypes t WHERE ((v.ShowVenue) OR" .
          "( v.VenueId=e.Venue AND (e.Public=1 OR ( e.Public=0 AND e.Type=t.ETypeNo AND t.State>1 ) AND " .
-                    " e.Year='$YEAR' AND v.PartVirt=0)) OR ( v.IsVirtual=1 ) ORDER BY v.SN"); // v.IsVirtual needs to work for virt venues TODO
+                    " e.Year='$YEAR' AND v.PartVirt=0)) OR ( v.IsVirtual=1 )) ORDER BY v.SN"); // v.IsVirtual needs to work for virt venues TODO
   if ($res) while($ven = $res->fetch_assoc()) {
-    if ($ven['IsVirtual']) {
+    if ($ven['ShowVenue']==0 && $ven['IsVirtual']) {
       $vid = $ven['VenueId'];
       $r2 = $db->query("SELECT t.* FROM Events e, Venues v, EventTypes t WHERE e.Venue=v.VenueId AND v.PartVirt=$vid AND " .
                     "(e.Public=1 OR ( e.Public=0 AND e.Type=t.ETypeNo AND t.State>1 )) AND e.Year='$YEAR'");

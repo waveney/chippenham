@@ -57,18 +57,27 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
   if ($Staff) $ShowForm .= fm_hidden('STAFF',1);
 
   $ShowForm .= "<div class=tablecont><table class=InfoTable>";
-  $ShowForm .=  "<tr><td>Show by Location:"; // <td>Show by Type
-
-  $ShowForm .=  (($Dir=='H')?"<td>":"");
-    foreach($Locs as $loc) {
-      if ($loc['InUse'] && isset($LocUsed[$loc['TLocId']]) && !$loc['NoList']) {
-        $ShowForm .=  (($Dir=='H')?"":"<tr><td>");
-        $ShowForm .=  "<input type=submit name=SELLoc value='" . $loc['SN'] . "'> ";
-      }
+  
+  $LocC = 0;
+  foreach($Locs as $loc) {
+    if ($loc['InUse'] && isset($LocUsed[$loc['TLocId']]) && !$loc['NoList']) {
+      $LocC++;
     }
-  $ShowForm .=  (($Dir=='H')?"<td>":"<tr><td>");
-  $ShowForm .=  "<input type=submit name=SELLoc value='Show All Locations'> ";
-
+  }
+  
+  if ($LocC>1) {
+    $ShowForm .=  "<tr><td>Show by Location:"; // <td>Show by Type
+  
+    $ShowForm .=  (($Dir=='H')?"<td>":"");
+      foreach($Locs as $loc) {
+        if ($loc['InUse'] && isset($LocUsed[$loc['TLocId']]) && !$loc['NoList']) {
+          $ShowForm .=  (($Dir=='H')?"":"<tr><td>");
+          $ShowForm .=  "<input type=submit name=SELLoc value='" . $loc['SN'] . "'> ";
+        }
+      }
+    $ShowForm .=  (($Dir=='H')?"<td>":"<tr><td>");
+    $ShowForm .=  "<input type=submit name=SELLoc value='Show All Locations'> ";
+  }
   $ShowForm .=  "<tr><td>Show by Type:";
 
   $ShowForm .=  (($Dir=='H')?"<td>":"");

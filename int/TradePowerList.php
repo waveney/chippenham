@@ -6,11 +6,6 @@
   global $PLANYEAR,$TradeTypeStates,$Trade_States,$db;
 
   include_once("TradeLib.php");
-
-  if (!Access('Internal')) {
-    echo "This page is being updated";
-    dotail();
-  }
   
   $TradeTypeData = Get_Trade_Types(1);
   $TradeLocData = Get_Trade_Locs(1); 

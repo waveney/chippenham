@@ -310,7 +310,11 @@
         $TrRec[$fetch['TradeType']] += $fetch['TotalPaid'];
         if ($stat >$Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] &&
             $stat != $Trade_State['Wait List'] && $stat != $Trade_State['Requote']) {
-          $TrSub[$fetch['TradeType']] += $fee;
+              if (isset($TrSub[$fetch['TradeType']])) {
+                $TrSub[$fetch['TradeType']] += $fee;
+              } else {
+                $TrSub[$fetch['TradeType']] = $fee;
+              }
           $totsub += $fee;
         }
         $pitches = 0;
