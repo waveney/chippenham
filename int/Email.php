@@ -320,7 +320,7 @@ function Put_Email_Proforma(&$now) {
   return Update_db('EmailProformas',$Cur,$now);
 }
 
-function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments=0,&$embeded=[]) {
+function Parse_Proforma(&$Mess,$helper='',$helperdata=0,$Preview=0,&$attachments=[],&$embeded=[]) {
   global $PLANYEAR,$YEARDATA,$USERID,$USER;
   static $attnum = 0;
   $Reps = [];

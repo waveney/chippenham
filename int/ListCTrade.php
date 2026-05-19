@@ -307,7 +307,11 @@
         } else {
           $TrMon[$fetch['TradeType']] += $fee;
         }
-        $TrRec[$fetch['TradeType']] += $fetch['TotalPaid'];
+        if (isset($TrRec[$fetch['TradeType']])) {
+          $TrRec[$fetch['TradeType']] += $fetch['TotalPaid'];
+        } else {
+          $TrRec[$fetch['TradeType']] = $fetch['TotalPaid'];
+        }
         if ($stat >$Trade_State['Submitted'] && $stat != $Trade_State['Quoted'] &&
             $stat != $Trade_State['Wait List'] && $stat != $Trade_State['Requote']) {
               if (isset($TrSub[$fetch['TradeType']])) {
