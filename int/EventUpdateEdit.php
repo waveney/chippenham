@@ -11,6 +11,8 @@ if (isset($_REQUEST['Del'])) {
   db_delete('EventChanges',$_REQUEST['Del']);
 }
 
+echo "Only set Old Value if you need to make the changes clearer<p>";
+
 dostaffhead("Edit Event Changes");
 
 TableStart();
@@ -22,6 +24,7 @@ TableHead('Day');
 TableHead('When');
 TableHead('Field Changed');
 TableHead('New Value');
+TableHead('Old Value');
 TableHead('Actions');
 TableTop();
 
