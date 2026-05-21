@@ -760,7 +760,7 @@ function &Get_Active_Venues($All=0) {
   if ($All) {
 
   }
-  $res = $db->query("SELECT DISTINCT v.* FROM Venues v, Events e, EventTypes t WHERE ((v.ShowVenue=1) OR" .
+  $res = $db->query("SELECT DISTINCT v.* FROM Venues v, Events e, EventTypes t WHERE ((v.ShowVenue=1) OR " .
          "( v.VenueId=e.Venue AND (e.Public=1 OR ( e.Public=0 AND e.Type=t.ETypeNo AND t.State>1 ) AND " .
                     " e.Year='$YEAR' AND v.PartVirt=0)) OR ( v.IsVirtual=1 )) ORDER BY v.SN"); // v.IsVirtual needs to work for virt venues TODO
   if ($res) while($ven = $res->fetch_assoc()) {

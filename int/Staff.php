@@ -678,6 +678,9 @@
 
       $txt .= "<li><a href=RareAdmin>Rare Admin Tasks</a> \n";
     }
+    if (Access('Internal')) {
+      $txt .= "<li><a href=EmbedTest>Embeded Test Code</a>\n";
+    }
     $txt .= "</ul>\n";
   }
 

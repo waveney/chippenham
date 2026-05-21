@@ -652,7 +652,10 @@ function VolForm(&$Vol,$Err='',$View=0) {
     if ($VYear['Status'] == 1 && $VYear['SubmitDate'] != $VYear['LastUpdate']  && $VYear['LastUpdate'])
       echo ", Last updated on " . date('d/n/Y',$VYear['LastUpdate']);
 
+    if (Access('Staff') ) echo '<tr>' . fm_text('Ticket Notes', $VYear,'TickNotes',2,'class=NotSide','',"TickNotes::$YEAR");
+        
     if (Access('Staff') && ($VYear['TicketsCollected'] ?? 0)) {
+      echo fm_text('Ticket Notes', $VYear,'TickNotes',2,'class=NotSide');
       $User = Get_User($VYear['CollectedBy']);
       echo fm_text1("Tickets Collected", $VYear,'TicketsCollected') . " from " . ($User['SN'] ?? 'Unknown') . "</span>";
     }
@@ -1360,6 +1363,7 @@ function TicketList($Cat) {
   if (Access('SysAdmin')) echo "<th><a href=javascript:SortTable(" . $coln++ . ",'N')>Id</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Name</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Tickets</a>\n";
+  echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Ticket Notes</a>\n";
   echo "<th><a href=javascript:SortTable(" . $coln++ . ",'T')>Collect</a>\n";
 
   echo "</thead><tbody>";
@@ -1388,6 +1392,7 @@ function TicketList($Cat) {
       $Yn = NumbersOf($VY['Children']);
       echo ", $Yn" . Plural($Yn,'',' Child',' Children');
     }
+    echo "<td>" . ($VY['TickNotes']??'');
     echo "<td id=Collect$vid>" . ($VY['TicketsCollected']
         ? "Collected " . date("D M j G:i:s",$VY['TicketsCollected']) . " from " . ($Users[$VY['CollectedBy']]['SN'] ?? 'Unknown')
         : "<button type=button class=FakeButton onclick='VTicketsCollected($vid)'>Collect</button>");

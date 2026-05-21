@@ -39,5 +39,6 @@ CREATE TABLE `VolYear` (
   `ArriveTime` int NOT NULL,
   `DepartTime` int NOT NULL,
   `Commitments` text COLLATE utf8mb4_general_ci NOT NULL,
+  `TickNotes` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

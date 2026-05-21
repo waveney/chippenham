@@ -127,7 +127,7 @@ function ShowForm($Dir='H',$Loc=0,$Type=0) {
       } else {
       foreach($Locs as $loc) 
         if ($sel == $loc['SN']) {
-          $List = $LocUsed[$loc['TLocId']];
+          $List = $LocUsed[$loc['TLocId']]??0;
           $SLoc = $loc;
           $Title = 'All Traders ' . $Prefixes[$loc['prefix']] . ' ' . $loc['SN'];
           $Pitches = Get_Trade_Pitches($loc['TLocId']);
