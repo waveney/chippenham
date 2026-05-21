@@ -44,6 +44,7 @@ foreach($EChanges as $id=>$ec) {
   echo "<td>$dname<td>" . timecolon($Ev['Start']) . " - " . timecolon($Ev['End']);
   echo fm_text1('',$ec,'Field',1,'','',"EventChanges:Field:$id");
   echo fm_text1('',$ec,'Changes',1,'','',"EventChanges:Changes:$id");
+  echo fm_text1('',$ec,'OldValue',1,'','',"EventChanges:OldValue:$id");
   echo "<td><a href=EventUpdateEdit?Del=$id>Del</a>";
 }
 
