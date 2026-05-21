@@ -51,7 +51,7 @@
   }
 
   $loc = Get_Location(); 
-var_dump($loc);
+// var_dump($loc);
   $Pitches = Get_Trade_Pitches($loc,$YEAR);  
 //  var_dump($Pitches);
   // START HERE
