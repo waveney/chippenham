@@ -458,12 +458,20 @@ function Ignore($id) {
 
     case 'SendMe':
         $S = Get_Side($_REQUEST['SideId']);
+        if (empty($S['SideId'])) {
+          echo "Sorry something has gone wrong - please email details to " . Feature('DanceEmailsFrom','Dance') . "@" . Feature('HostURL');
+          dotail();
+        }
         Send_DanceMessage($S,'Dance_Blank',$S['Email']);
         echo "An email has been sent to you with a link, if you don't see it, please check your Spam folder.";
         dotail();
 
     case 'SendMeAlt':
         $S = Get_Side($_REQUEST['SideId']);
+        if (empty($S['SideId'])) {
+          echo "Sorry something has gone wrong - please email details to " . Feature('DanceEmailsFrom','Dance') . "@" . Feature('HostURL');
+          dotail();
+        }
         Send_DanceMessage($S,'Dance_Blank',$S['AltEmail']);
         echo "An email has been sent to you with a link, if you don't see it, please check your Spam folder.";
         dotail();

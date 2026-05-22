@@ -109,15 +109,15 @@ function EventChangePrint($Mode=1) {
         break;
       case 'SN' :
         $Chtxt[5] = 'Changed Name';
-        if ($Ch['OldValue']) $Chtxt[5] .= " from " . $Ch['OldValue'];
+        if ($Ch['OldValue']??0) $Chtxt[5] .= " from " . $Ch['OldValue'];
         break;
       case 'Type' :
         $Chtxt[6] = 'Changed Type';
-        if ($Ch['OldValue']) $Chtxt[6] .= " from " . $Ch['OldValue'];
+        if ($Ch['OldValue']??0) $Chtxt[6] .= " from " . $Ch['OldValue'];
         break;
       case 'Venue' :
         $Chtxt[7] = 'Changed Venue';
-        if ($Ch['OldValue']) $Chtxt[7] .= " from " . $Ch['OldValue'];
+        if ($Ch['OldValue']??0) $Chtxt[7] .= " from " . $Ch['OldValue'];
         break;
       case 'Description' :
         $Chtxt[8] = 'Changed Description';
