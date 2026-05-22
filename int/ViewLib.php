@@ -7,7 +7,7 @@ global $head_done;
   $path = pathinfo($file );
   $Dir = $path['dirname'];
   $BName = $path['basename'];
-  $sfx = $path['extension'];
+  $sfx = ($path['extension']??'');
   
   $cachefile = "$Dir/CACHE$BName.jpg";
 
