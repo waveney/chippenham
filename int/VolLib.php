@@ -46,10 +46,21 @@ define('VOL_OMIT_SUBMIT',1); // Props 2
 define('VOL_OMIT_CANCEL',2); // Props 2
 define('VOL_CAT_FULL',4); //Props 2
 
+
+$SpMsg = Feature('Vol_Special_Mess');
+if ($SpMsg) {
+  [$SpLet,$SpName] = explode(',',($SpMsg??''));
+} else {
+  $SpLet='@';
+  $SpName='Bug Call';
+}
+  
+
 // Button Name, Vol_Button
 $EmailMsgs = [''=>'','U'=>'NotSub','E' => Feature('Vol_Special_Mess'),'G' => Feature('Vol_Special_Mess3'),
-  'S'=>'Stew1','M'=>'Note2','F' => Feature('Vol_Special_Mess2'),'T' => 'Vol_Post_Fest1', 'O' => 'Vol_October',
+  'S'=>'Stew1','M'=>'Note2','F' => Feature('Vol_Special_Mess2'), 'O' => 'Vol_October',
   'N'=>'Vol_November', 'D'=>'Vol_December', 'J'=>'Vol_January', 'R' => 'Vol_March', 'A'=>'Vol_April', 'r'=>'Vol_March2',
+  $SpLet => $SpName,
 ];
 
 $VolCats = Gen_Get_All('VolCats','ORDER BY Importance DESC');
@@ -859,6 +870,7 @@ function CSV_Vols() {
 
 function List_Vols($AllVols='') {
   global $db,$VolCats,$YEARDATA,$YEAR,$YearStatus,$Cat_Status_Short,$YearColour,$CatStatus,$VolOrders,$EmailMsgs,$VolGroups,$ADTimes,$FDays;
+  global $SpMsg,$SpLet,$SpName;
 
   echo "<div class=floatright><form method=post>";
   $Avail = 0;
@@ -1077,6 +1089,12 @@ function List_Vols($AllVols='') {
           }
         }
 
+        if ($SpMsg) {
+            if (($year == $YEAR) && ($VY['Status'] == 3) && (!strstr($Mmap,$SpLet))) {
+              echo " <button type=button id=VolSendEmailN$id class=ProfButton onclick=ProformaVolSend('$SpName',$id,'$SpLet')>$SpLet</button>";
+            }
+        }
+        
         $Msg = $EmailMsgs['E'];
         if ($Msg && ($VY['Status'] == 0) && !strstr($Mmap,'E') && ($HasSetAvail == 0)) {
           echo  " <button type=button id=VolSendEmailE$id class=ProfButton onclick=ProformaVolSend('Vol_$Msg',$id,'E')>$Msg</button>";
